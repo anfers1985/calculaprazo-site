@@ -186,8 +186,8 @@ def salvar_post(dados, fonte_nome):
 
 
 def main():
-    print(f"\nAgente Notícias — {HOJE.strftime('%d/%m/%Y')}")
-    print("=" * 50)
+    print(f"\nAgente Notícias — {HOJE.strftime('%d/%m/%Y')} [MODO TESTE]")
+    print("=" * 60)
 
     random.seed(HOJE.year * 10000 + HOJE.month * 100 + HOJE.day)
     fontes_hoje = random.sample(SOURCES, len(SOURCES))
@@ -197,26 +197,21 @@ def main():
         print(f"\n[{fonte['nome']}] Verificando...")
         conteudo = buscar_conteudo(fonte)
         if not conteudo:
-            print("  Sem conteúdo acessível hoje.")
+            print("  Sem conteúdo acessível.")
             continue
 
-        avaliacao = avaliar_relevancia(conteudo, fonte["nome"])
-        if not avaliacao.get("relevante"):
-            print(f"  Nada relevante: {avaliacao.get('motivo','')}")
-            continue
+        # MODO TESTE: força relevância
+        avaliacao = {"relevante": True, "motivo": "Teste forçado", "tema": "Notícias jurídicas recentes"}
+        print(f"  → FORÇANDO publicação (modo teste)")
 
-        print(f"  Relevante! Tema: {avaliacao.get('tema','')}")
         dados = gerar_artigo(conteudo, avaliacao.get("tema",""), fonte["nome"])
         if not dados:
-            print("  Conteúdo insuficiente.")
+            print("  Conteúdo insuficiente para gerar artigo.")
             continue
 
         salvar_post(dados, fonte["nome"])
         publicados += 1
+        break  # publica só 1 para teste
 
-    print(f"\n{'='*50}")
-    print(f"Total publicado: {publicados} artigo(s) de notícias.")
-
-
-if __name__ == "__main__":
-    main()
+    print(f"\n{'='*60}")
+    print(f"Total publicado em modo teste: {publicados}")
