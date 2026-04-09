@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-Agente TST e STF — Monitora jurisprudência e notícias do Tribunal Superior do Trabalho e Supremo Tribunal Federal
+Agente Notícias — Conjur, Migalhas, G1 e UOL (VERSÃO FINAL 2026)
 """
-import os, json, re, requests, random
+import os, json, re, requests, random, time
 from datetime import date, timedelta
 from slugify import slugify
 from html.parser import HTMLParser
 
 API_KEY = os.environ["OPENROUTER_KEY"]
-MODEL   = "google/gemini-flash-1.5"
+MODEL   = "google/gemini-2.5-flash"   # ← Modelo corrigido (funciona em 2026)
 HOJE    = date.today()
 
 HEADERS = {
@@ -18,10 +18,7 @@ HEADERS = {
 
 PROPOSITO = """
 O site CalculaPrazo é voltado a advogados trabalhistas, profissionais de RH e contadores.
-Publica conteúdo sobre: decisões trabalhistas, jurisprudência do TST e TRTs,
-legislação trabalhista, eSocial, FGTS Digital, folha de pagamento, rescisões,
-férias, 13º salário, horas extras, jornada de trabalho e obrigações acessórias.
-NÃO é relevante: esportes, política geral, crimes, celebridades, economia macro.
+Publica conteúdo sobre: decisões trabalhistas, jurisprudência, legislação, eSocial, FGTS, rescisões, etc.
 """
 
 SOURCES = [
@@ -51,42 +48,50 @@ class TextExtractor(HTMLParser):
 
 def buscar_conteudo(fonte):
     try:
-        r = requests.get(fonte["url"], headers=HEADERS, timeout=15)
+        r = requests.get(fonte["url"], headers=HEADERS, timeout=20)
+        print(f"  Status: {r.status_code}")
         if r.ok:
             p = TextExtractor()
             p.feed(r.text)
-            return p.get_text(2000)
+            text = p.get_text(2000)
+            print(f"  Conteúdo extraído: {len(text)} caracteres")
+            return text
     except Exception as e:
         print(f"  Erro ao acessar {fonte['nome']}: {e}")
     return ""
 
 
 def avaliar_relevancia(conteudo, fonte_nome):
+    if len(conteudo) < 100:
+        return {"relevante": False, "motivo": "conteúdo muito curto", "tema": ""}
+    
     prompt = f"""
 Propósito do site: {PROPOSITO}
 
-Conteúdo coletado hoje ({HOJE.strftime('%d/%m/%Y')}) de: {fonte_nome}
+Conteúdo de {fonte_nome} hoje:
 ---
-{conteudo[:1500]}
+{conteudo[:1400]}
 ---
 
-Existe alguma notícia, decisão ou jurisprudência relevante para advogados trabalhistas, RH ou contadores?
-
-Responda APENAS com JSON:
-{{"relevante": true/false, "motivo": "explicação em 1 frase", "tema": "tema principal se relevante"}}
+Responda APENAS com JSON válido:
+{{"relevante": true/false, "motivo": "1 frase curta", "tema": "tema principal"}}
 """
     try:
         r = requests.post(
             "https://openrouter.ai/api/v1/chat/completions",
             headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
-            json={"model": MODEL, "messages": [{"role":"user","content":prompt}], "max_tokens":300},
-            timeout=30,
+            json={"model": MODEL, "messages": [{"role":"user","content":prompt}], "max_tokens":200, "temperature":0.3},
+            timeout=40,
         )
+        if r.status_code != 200:
+            print(f"  API Error: {r.status_code}")
+            return {"relevante": False, "motivo": f"api error {r.status_code}", "tema": ""}
+        
         raw = r.json()["choices"][0]["message"]["content"]
-        raw = re.sub(r"^```json\s*","",raw.strip())
-        raw = re.sub(r"\s*```$","",raw.strip())
+        raw = re.sub(r"^```json\s*|\s*```$", "", raw.strip())
         return json.loads(raw)
-    except:
+    except Exception as e:
+        print(f"  Erro na avaliação: {e}")
         return {"relevante": False, "motivo": "erro na avaliação", "tema": ""}
 
 
@@ -119,8 +124,7 @@ Responda APENAS com JSON:
             timeout=120,
         )
         raw = r.json()["choices"][0]["message"]["content"]
-        raw = re.sub(r"^```json\s*","",raw.strip())
-        raw = re.sub(r"\s*```$","",raw.strip())
+        raw = re.sub(r"^```json\s*|\s*```$", "", raw.strip())
         if "null" in raw.lower()[:50]:
             return None
         return json.loads(raw)
@@ -130,63 +134,68 @@ Responda APENAS com JSON:
 
 
 def salvar_post(dados, fonte_nome):
-    meses = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"]
-    data_str = HOJE.strftime("%Y-%m-%d")
-    data_br  = f"{HOJE.day} de {meses[HOJE.month-1]} de {HOJE.year}"
-    slug     = slugify(dados["title"])[:60]
-
-    with open("blog/POST_TEMPLATE.html", encoding="utf-8") as f:
-        template = f.read()
-
-    tags        = dados.get("tags", ["TST", "Jurisprudência"])
-    tags_json   = json.dumps(tags, ensure_ascii=False)
-    first_tag   = tags[0] if tags else "Jurisprudência"
-    tags_badges = "".join(f'<span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">{t}</span>' for t in tags)
-
-    html = (template
-        .replace("{{TITLE}}",            dados["title"])
-        .replace("{{DESCRIPTION}}",      dados["excerpt"])
-        .replace("{{SLUG}}",             slug)
-        .replace("{{CATEGORY}}",         "jurisprudencia")
-        .replace("{{CATEGORY_LABEL}}",   first_tag)
-        .replace("{{TAGS_BADGES}}",      tags_badges)
-        .replace("{{TAGS_JSON}}",        tags_json)
-        .replace("{{DATE}}",             data_str)
-        .replace("{{DATE_BR}}",          data_br)
-        .replace("{{CONTENT}}",          dados["content"])
-        .replace("{{OG_IMAGE}}",         "")
-        .replace("{{SCHEMA_IMAGE}}",     "")
-        .replace("{{COVER_IMAGE_HTML}}", "")
-    )
-
-    with open(f"blog/{slug}.html", "w", encoding="utf-8") as f:
-        f.write(html)
-
     try:
-        with open("data/posts.json", encoding="utf-8") as f:
-            posts = json.load(f)
-    except:
-        posts = []
-    
-    if not any(p["id"] == slug for p in posts):
-        posts.insert(0, {
-            "id": slug, "title": dados["title"],
-            "category": "jurisprudencia", "tags": tags,
-            "excerpt": dados["excerpt"], "image": "",
-            "imageCaption": "", "date": data_str,
-            "content": dados["content"],
-        })
-    posts = posts[:300]
-    with open("data/posts.json", "w", encoding="utf-8") as f:
-        json.dump(posts, f, ensure_ascii=False, indent=2)
+        meses = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"]
+        data_str = HOJE.strftime("%Y-%m-%d")
+        data_br  = f"{HOJE.day} de {meses[HOJE.month-1]} de {HOJE.year}"
+        slug     = slugify(dados["title"])[:60]
 
-    print(f"  PUBLICADO: {slug}.html")
-    return slug
+        with open("blog/POST_TEMPLATE.html", encoding="utf-8") as f:
+            template = f.read()
+
+        tags        = dados.get("tags", ["Notícia"])
+        tags_json   = json.dumps(tags, ensure_ascii=False)
+        first_tag   = tags[0] if tags else "Notícia"
+        tags_badges = "".join(f'<span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">{t}</span>' for t in tags)
+
+        html = (template
+            .replace("{{TITLE}}",            dados["title"])
+            .replace("{{DESCRIPTION}}",      dados["excerpt"])
+            .replace("{{SLUG}}",             slug)
+            .replace("{{CATEGORY}}",         "noticia")
+            .replace("{{CATEGORY_LABEL}}",   first_tag)
+            .replace("{{TAGS_BADGES}}",      tags_badges)
+            .replace("{{TAGS_JSON}}",        tags_json)
+            .replace("{{DATE}}",             data_str)
+            .replace("{{DATE_BR}}",          data_br)
+            .replace("{{CONTENT}}",          dados["content"])
+            .replace("{{OG_IMAGE}}",         "")
+            .replace("{{SCHEMA_IMAGE}}",     "")
+            .replace("{{COVER_IMAGE_HTML}}", "")
+        )
+
+        filepath = f"blog/{slug}.html"
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(html)
+        print(f"  ✅ ARQUIVO CRIADO: {filepath}")
+
+        # Atualiza posts.json
+        try:
+            with open("data/posts.json", encoding="utf-8") as f:
+                posts = json.load(f)
+        except:
+            posts = []
+        if not any(p["id"] == slug for p in posts):
+            posts.insert(0, {
+                "id": slug, "title": dados["title"],
+                "category": "noticia", "tags": tags,
+                "excerpt": dados["excerpt"], "image": "",
+                "imageCaption": "", "date": data_str,
+                "content": dados["content"],
+            })
+            posts = posts[:300]
+            with open("data/posts.json", "w", encoding="utf-8") as f:
+                json.dump(posts, f, ensure_ascii=False, indent=2)
+            print(f"  ✅ posts.json ATUALIZADO")
+        return slug
+    except Exception as e:
+        print(f"  ❌ ERRO AO SALVAR: {e}")
+        return None
 
 
 def main():
-    print(f"\nAgente TST/STF — {HOJE.strftime('%d/%m/%Y')}")
-    print("=" * 50)
+    print(f"\nAgente Notícias — {HOJE.strftime('%d/%m/%Y')} [VERSÃO FINAL]")
+    print("=" * 70)
 
     random.seed(HOJE.year * 10000 + HOJE.month * 100 + HOJE.day)
     fontes_hoje = random.sample(SOURCES, len(SOURCES))
@@ -196,25 +205,26 @@ def main():
         print(f"\n[{fonte['nome']}] Verificando...")
         conteudo = buscar_conteudo(fonte)
         if not conteudo:
-            print("  Sem conteúdo acessível hoje.")
             continue
 
         avaliacao = avaliar_relevancia(conteudo, fonte["nome"])
-        if not avaliacao.get("relevante"):
-            print(f"  Nada relevante: {avaliacao.get('motivo','')}")
+        print(f"  Avaliação: {avaliacao}")
+
+        if not avaliacao.get("relevante", False):
             continue
 
-        print(f"  Relevante! Tema: {avaliacao.get('tema','')}")
         dados = gerar_artigo(conteudo, avaliacao.get("tema",""), fonte["nome"])
         if not dados:
-            print("  Conteúdo insuficiente.")
+            print("  Falha ao gerar artigo")
             continue
 
         salvar_post(dados, fonte["nome"])
         publicados += 1
+        time.sleep(3)
 
-    print(f"\n{'='*50}")
-    print(f"Total publicado: {publicados} artigo(s) do TST/STF.")
+    print(f"\nAgente TST/STF — {HOJE.strftime('%d/%m/%Y')} [VERSÃO FINAL]")
+...
+print(f"Total publicado: {publicados} artigo(s) do TST/STF.")
 
 
 if __name__ == "__main__":
