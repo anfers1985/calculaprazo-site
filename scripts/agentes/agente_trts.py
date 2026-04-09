@@ -9,9 +9,8 @@ from slugify import slugify
 from html.parser import HTMLParser
 
 API_KEY = os.environ["OPENROUTER_KEY"]
-MODEL   = "google/gemini-flash-1.5"
+MODEL   = "google/gemini-2.5-flash"   # Modelo atualizado
 HOJE    = date.today()
-ONTEM   = HOJE - timedelta(days=1)
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (compatible; CalculaPrazoBot/1.0; +https://calculaprazo.com.br)",
