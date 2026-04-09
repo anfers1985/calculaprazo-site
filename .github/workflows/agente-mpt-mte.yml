@@ -1,0 +1,28 @@
+name: Agente MPT e MTE
+on:
+  schedule:
+    - cron: '0 14 * * 1-5'  # 11h Brasília, dias úteis
+  workflow_dispatch:
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests python-slugify
+      - name: Executar agente MPT/MTE
+        env:
+          OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY }}
+        run: python scripts/agentes/agente_mpt_mte.py
+      - name: Publicar
+        run: |
+          git config user.name "Agente MPT-MTE"
+          git config user.email "bot@calculaprazo.com.br"
+          git add -A
+          git diff --staged --quiet || git commit -m "MPT/MTE: $(date '+%d/%m/%Y %H:%M')"
+          git push
