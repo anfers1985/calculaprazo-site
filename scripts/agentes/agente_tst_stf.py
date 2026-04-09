@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Agente Notícias — Conjur, Migalhas, G1 e UOL (VERSÃO FINAL 2026)
+Agente TST e STF — Jurisprudência e Notícias (VERSÃO FINAL 2026)
 """
 import os, json, re, requests, random, time
 from datetime import date, timedelta
@@ -8,7 +8,7 @@ from slugify import slugify
 from html.parser import HTMLParser
 
 API_KEY = os.environ["OPENROUTER_KEY"]
-MODEL   = "google/gemini-2.5-flash"   # ← Modelo corrigido (funciona em 2026)
+MODEL   = "google/gemini-2.5-flash"   # Modelo atualizado
 HOJE    = date.today()
 
 HEADERS = {
@@ -18,7 +18,7 @@ HEADERS = {
 
 PROPOSITO = """
 O site CalculaPrazo é voltado a advogados trabalhistas, profissionais de RH e contadores.
-Publica conteúdo sobre: decisões trabalhistas, jurisprudência, legislação, eSocial, FGTS, rescisões, etc.
+Publica conteúdo sobre: decisões trabalhistas, jurisprudência do TST e TRTs, etc.
 """
 
 SOURCES = [
@@ -143,16 +143,16 @@ def salvar_post(dados, fonte_nome):
         with open("blog/POST_TEMPLATE.html", encoding="utf-8") as f:
             template = f.read()
 
-        tags        = dados.get("tags", ["Notícia"])
+        tags        = dados.get("tags", ["TST", "Jurisprudência"])
         tags_json   = json.dumps(tags, ensure_ascii=False)
-        first_tag   = tags[0] if tags else "Notícia"
+        first_tag   = tags[0] if tags else "Jurisprudência"
         tags_badges = "".join(f'<span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">{t}</span>' for t in tags)
 
         html = (template
             .replace("{{TITLE}}",            dados["title"])
             .replace("{{DESCRIPTION}}",      dados["excerpt"])
             .replace("{{SLUG}}",             slug)
-            .replace("{{CATEGORY}}",         "noticia")
+            .replace("{{CATEGORY}}",         "jurisprudencia")
             .replace("{{CATEGORY_LABEL}}",   first_tag)
             .replace("{{TAGS_BADGES}}",      tags_badges)
             .replace("{{TAGS_JSON}}",        tags_json)
@@ -169,7 +169,6 @@ def salvar_post(dados, fonte_nome):
             f.write(html)
         print(f"  ✅ ARQUIVO CRIADO: {filepath}")
 
-        # Atualiza posts.json
         try:
             with open("data/posts.json", encoding="utf-8") as f:
                 posts = json.load(f)
@@ -178,7 +177,7 @@ def salvar_post(dados, fonte_nome):
         if not any(p["id"] == slug for p in posts):
             posts.insert(0, {
                 "id": slug, "title": dados["title"],
-                "category": "noticia", "tags": tags,
+                "category": "jurisprudencia", "tags": tags,
                 "excerpt": dados["excerpt"], "image": "",
                 "imageCaption": "", "date": data_str,
                 "content": dados["content"],
@@ -194,7 +193,7 @@ def salvar_post(dados, fonte_nome):
 
 
 def main():
-    print(f"\nAgente Notícias — {HOJE.strftime('%d/%m/%Y')} [VERSÃO FINAL]")
+    print(f"\nAgente TST/STF — {HOJE.strftime('%d/%m/%Y')} [VERSÃO FINAL]")
     print("=" * 70)
 
     random.seed(HOJE.year * 10000 + HOJE.month * 100 + HOJE.day)
@@ -222,9 +221,7 @@ def main():
         publicados += 1
         time.sleep(3)
 
-    print(f"\nAgente TST/STF — {HOJE.strftime('%d/%m/%Y')} [VERSÃO FINAL]")
-...
-print(f"Total publicado: {publicados} artigo(s) do TST/STF.")
+    print(f"\nTotal publicado: {publicados} artigo(s) do TST/STF.")
 
 
 if __name__ == "__main__":
