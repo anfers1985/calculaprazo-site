@@ -1,29 +1,41 @@
 name: Agente TRTs
+
 on:
   schedule:
-    - cron: '0 11 * * 1-5'  # 08h Brasília, dias úteis
+    - cron: '0 11 * * 1-5'
   workflow_dispatch:
 
 jobs:
   publicar:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install requests python-slugify
+
+      - name: Instalar dependências
+        run: pip install requests python-slugify
+
       - name: Executar agente TRTs
         env:
           OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY }}
-          AGENTE_NOME: trts
         run: python scripts/agentes/agente_trts.py
+
       - name: Publicar no GitHub
         run: |
           git config user.name "Agente TRTs"
           git config user.email "bot@calculaprazo.com.br"
           git add -A
-          git diff --staged --quiet || git commit -m "TRTs: $(date '+%d/%m/%Y %H:%M')"
-          git push
+          if git diff --staged --quiet; then
+            echo "Nenhuma mudança para commitar."
+          else
+            git commit -m "TRTs: $(date '+%d/%m/%Y %H:%M')"
+            git push
+          fi
