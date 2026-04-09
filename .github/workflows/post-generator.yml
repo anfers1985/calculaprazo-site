@@ -2,36 +2,40 @@ name: Gerar Posts Diarios
 
 on:
   schedule:
-    - cron: '0 10 * * *'   # 07h Brasilia (UTC-3) todo dia
-  workflow_dispatch:         # permite rodar manualmente no GitHub
+    - cron: '0 9 * * 1-5'   # 6h da manhã em Brasília (ajuste se quiser)
+  workflow_dispatch:
 
 jobs:
-  gerar:
+  publicar:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
-      - name: Checkout repositorio
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Python 3.11
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Instalar dependencias
+      - name: Instalar dependências
         run: pip install requests python-slugify
 
-      - name: Gerar posts trabalhistas
+      - name: Executar Gerador de Posts (se você tiver um script principal)
         env:
           OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY }}
-        run: python scripts/gerar_posts.py
+        run: python scripts/gerar_posts.py   # ← mude se o nome do arquivo for diferente
 
-      - name: Commit e push automatico
+      - name: Publicar no GitHub
         run: |
-          git config user.name "Agente CalculaPrazo"
+          git config user.name "Gerador de Posts"
           git config user.email "bot@calculaprazo.com.br"
           git add -A
-          git diff --staged --quiet || git commit -m "Posts automaticos $(date '+%d/%m/%Y')"
-          git push
+          if git diff --staged --quiet; then
+            echo "Nenhuma mudança para commitar."
+          else
+            git commit -m "Posts Diários: $(date '+%d/%m/%Y %H:%M')"
+            git push
+          fi
