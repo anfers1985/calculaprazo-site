@@ -8,7 +8,7 @@ from slugify import slugify
 from html.parser import HTMLParser
 
 API_KEY = os.environ["OPENROUTER_KEY"]
-MODEL   = "google/gemini-2.5-flash"   # ← Modelo corrigido (funciona em 2026)
+MODEL   = "google/gemini-2.5-flash"   # Modelo atualizado
 HOJE    = date.today()
 
 HEADERS = {
@@ -170,7 +170,6 @@ def salvar_post(dados, fonte_nome):
             f.write(html)
         print(f"  ✅ ARQUIVO CRIADO: {filepath}")
 
-        # Atualiza posts.json
         try:
             with open("data/posts.json", encoding="utf-8") as f:
                 posts = json.load(f)
