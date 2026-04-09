@@ -1,0 +1,37 @@
+name: Gerar Posts Diarios
+
+on:
+  schedule:
+    - cron: '0 10 * * *'   # 07h Brasilia (UTC-3) todo dia
+  workflow_dispatch:         # permite rodar manualmente no GitHub
+
+jobs:
+  gerar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repositorio
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependencias
+        run: pip install requests python-slugify
+
+      - name: Gerar posts trabalhistas
+        env:
+          OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY }}
+        run: python scripts/gerar_posts.py
+
+      - name: Commit e push automatico
+        run: |
+          git config user.name "Agente CalculaPrazo"
+          git config user.email "bot@calculaprazo.com.br"
+          git add -A
+          git diff --staged --quiet || git commit -m "Posts automaticos $(date '+%d/%m/%Y')"
+          git push

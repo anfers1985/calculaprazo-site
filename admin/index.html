@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin – CalculaPrazo</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --acc:#2563EB;--acc-d:#1D4ED8;--b50:#EFF6FF;--b100:#DBEAFE;--b200:#BFDBFE;
+  --txt:#0F172A;--txt-m:#475569;--txt-s:#94A3B8;
+  --bg:#F1F5F9;--card:#FFFFFF;--brd:#E2E8F0;
+  --ok:#059669;--err:#DC2626;--warn:#D97706;
+  --fh:'Plus Jakarta Sans',sans-serif;
+  --r:10px;--sh:0 4px 16px rgba(15,23,42,.08);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100vh;}
+/* AUTH */
+#auth-wall{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+.auth-card{background:var(--card);border:1px solid var(--brd);border-radius:16px;padding:40px;width:100%;max-width:380px;box-shadow:var(--sh);text-align:center;}
+.auth-logo{font-size:1.3rem;font-weight:800;color:var(--acc);margin-bottom:6px;}
+.auth-logo span{color:var(--txt);}
+.auth-sub{font-size:.85rem;color:var(--txt-s);margin-bottom:28px;}
+.auth-card input{width:100%;padding:10px 14px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.9rem;font-family:var(--fh);margin-bottom:12px;color:var(--txt);}
+.auth-card input:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(37,99,235,.1);}
+.auth-btn{width:100%;padding:11px;background:var(--acc);color:#fff;border:none;border-radius:var(--r);font-family:var(--fh);font-weight:700;font-size:.9rem;cursor:pointer;transition:background .2s;}
+.auth-btn:hover{background:var(--acc-d);}
+.auth-err{color:var(--err);font-size:.82rem;margin-top:10px;display:none;}
+/* LAYOUT */
+#app{display:none;}
+.sidebar{width:240px;background:#0F172A;min-height:100vh;position:fixed;left:0;top:0;padding:20px 14px;display:flex;flex-direction:column;}
+.s-logo{font-size:1rem;font-weight:800;color:#fff;margin-bottom:28px;padding:0 8px;display:flex;align-items:center;gap:8px;}
+.s-logo-ic{width:28px;height:28px;background:var(--acc);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.75rem;}
+.s-logo span{color:rgba(255,255,255,.5);}
+.s-nav a{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:8px;font-size:.84rem;font-weight:600;color:rgba(255,255,255,.55);text-decoration:none;margin-bottom:2px;transition:all .15s;cursor:pointer;}
+.s-nav a:hover,.s-nav a.on{background:rgba(255,255,255,.08);color:#fff;}
+.s-nav a.on{background:rgba(37,99,235,.3);color:#93C5FD;}
+.s-icon{font-size:1rem;width:20px;text-align:center;}
+.s-sep{height:1px;background:rgba(255,255,255,.08);margin:12px 0;}
+.s-bottom{margin-top:auto;}
+.s-back{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:8px;font-size:.82rem;font-weight:600;color:rgba(255,255,255,.4);text-decoration:none;transition:all .15s;}
+.s-back:hover{color:#fff;background:rgba(255,255,255,.06);}
+.main{margin-left:240px;padding:28px 32px;min-height:100vh;}
+.page{display:none;}
+.page.on{display:block;}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.page-title{font-size:1.3rem;font-weight:800;letter-spacing:-.4px;}
+.page-sub{font-size:.85rem;color:var(--txt-s);margin-top:2px;}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:none;border-radius:var(--r);font-family:var(--fh);font-weight:700;font-size:.82rem;cursor:pointer;transition:all .18s;text-decoration:none;}
+.btn-p{background:var(--acc);color:#fff;}
+.btn-p:hover{background:var(--acc-d);}
+.btn-g{background:transparent;color:var(--txt-m);border:1.5px solid var(--brd);}
+.btn-g:hover{border-color:var(--acc);color:var(--acc);}
+.btn-danger{background:transparent;color:var(--err);border:1.5px solid #FCA5A5;}
+.btn-danger:hover{background:#FFF5F5;}
+.btn-sm{padding:5px 10px;font-size:.75rem;}
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--brd);border-radius:12px;padding:20px;box-shadow:var(--sh);}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:24px;}
+.stat-card{background:var(--card);border:1px solid var(--brd);border-radius:12px;padding:18px;box-shadow:var(--sh);}
+.stat-icon{font-size:1.4rem;margin-bottom:8px;}
+.stat-num{font-size:1.8rem;font-weight:800;letter-spacing:-.5px;color:var(--acc);}
+.stat-lbl{font-size:.78rem;color:var(--txt-s);margin-top:2px;}
+/* POSTS LIST */
+.posts-list{display:flex;flex-direction:column;gap:10px;}
+.post-item{background:var(--card);border:1px solid var(--brd);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:16px;box-shadow:var(--sh);}
+.post-cat{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+.cat-direito{background:#EFF6FF;color:#2563EB;}
+.cat-rh{background:#F0FDF4;color:#059669;}
+.cat-contabilidade{background:#FFFBEB;color:#D97706;}
+.cat-geral{background:#F8FAFC;color:#64748B;}
+.post-info{flex:1;}
+.post-title{font-size:.92rem;font-weight:700;margin-bottom:3px;}
+.post-date{font-size:.75rem;color:var(--txt-s);}
+.post-excerpt{font-size:.8rem;color:var(--txt-m);margin-top:4px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.post-actions{display:flex;gap:6px;flex-shrink:0;}
+/* FORM */
+.form-card{background:var(--card);border:1px solid var(--brd);border-radius:12px;padding:24px;box-shadow:var(--sh);}
+.fg{margin-bottom:16px;}
+.fg label{display:block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--txt-s);margin-bottom:6px;}
+.fg input,.fg select,.fg textarea{width:100%;padding:9px 13px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.88rem;font-family:var(--fh);color:var(--txt);background:#fff;transition:border-color .18s,box-shadow .18s;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(37,99,235,.1);}
+.fg textarea{min-height:120px;resize:vertical;line-height:1.6;}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.editor-toolbar{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;}
+.toolbar-btn{padding:5px 10px;border:1.5px solid var(--brd);border-radius:6px;background:#fff;font-size:.78rem;font-weight:600;cursor:pointer;color:var(--txt-m);transition:all .15s;}
+.toolbar-btn:hover{border-color:var(--acc);color:var(--acc);background:var(--b50);}
+#editor-area{width:100%;min-height:320px;padding:13px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.88rem;line-height:1.8;font-family:var(--fh);color:var(--txt);resize:vertical;}
+#editor-area:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(37,99,235,.1);}
+.img-preview{width:100%;max-height:180px;object-fit:cover;border-radius:8px;margin-top:8px;display:none;border:1px solid var(--brd);}
+.char-count{font-size:.72rem;color:var(--txt-s);text-align:right;margin-top:4px;}
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:#0F172A;color:#fff;padding:12px 20px;border-radius:10px;font-size:.84rem;font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,.2);z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s;pointer-events:none;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.ok{background:#059669;}
+.toast.err{background:#DC2626;}
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:8000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .2s;}
+.modal-bg.show{opacity:1;pointer-events:all;}
+.modal{background:#fff;border-radius:16px;padding:28px;max-width:440px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,.2);}
+.modal h3{font-size:1rem;font-weight:800;margin-bottom:8px;}
+.modal p{font-size:.86rem;color:var(--txt-m);margin-bottom:20px;line-height:1.6;}
+.modal-btns{display:flex;gap:10px;justify-content:flex-end;}
+/* PREVIEW */
+.preview-box{background:#F8FAFC;border:1.5px dashed var(--brd);border-radius:10px;padding:20px;margin-top:14px;}
+.preview-box h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--txt-s);margin-bottom:12px;}
+.preview-content h2{font-size:1rem;font-weight:700;margin:16px 0 8px;color:var(--txt);}
+.preview-content p{font-size:.88rem;color:var(--txt-m);line-height:1.7;margin-bottom:10px;}
+.preview-content ul,.preview-content ol{font-size:.88rem;color:var(--txt-m);line-height:1.7;margin:0 0 10px 18px;}
+.preview-content strong{color:var(--txt);font-weight:700;}
+/* EXPORT */
+.export-area{background:#0F172A;color:#94A3B8;border-radius:10px;padding:16px;font-family:monospace;font-size:.78rem;line-height:1.6;max-height:300px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;}
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sidebar{width:100%;min-height:auto;position:relative;flex-direction:row;flex-wrap:wrap;padding:12px;}
+  .s-nav{display:flex;flex-wrap:wrap;gap:4px;}
+  .s-nav a{padding:6px 10px;font-size:.78rem;}
+  .main{margin-left:0;padding:16px;}
+  .fg-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- AUTH WALL -->
+<div id="auth-wall">
+  <div class="auth-card">
+    <div class="auth-logo">⚖ Calcula<span>Prazo</span></div>
+    <p class="auth-sub">Painel de administração — acesso restrito</p>
+    <input type="password" id="auth-pass" placeholder="Senha de acesso" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="auth-btn" onclick="doLogin()">Entrar</button>
+    <p class="auth-err" id="auth-err">Senha incorreta. Tente novamente.</p>
+    <p style="font-size:.72rem;color:var(--txt-s);margin-top:16px;">⚠️ Defina sua senha no arquivo admin/index.html antes de publicar.</p>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="s-logo"><div class="s-logo-ic">⚖</div>Calcula<span>Prazo</span></div>
+    <nav class="s-nav">
+      <a onclick="goPage('dashboard')" id="nav-dashboard" class="on"><span class="s-icon">📊</span> Dashboard</a>
+      <a onclick="goPage('new')" id="nav-new"><span class="s-icon">✏️</span> Novo Conteúdo</a>
+      <a onclick="goPage('list')" id="nav-list"><span class="s-icon">📄</span> Gerenciar Posts</a>
+      <div class="s-sep"></div>
+      <a onclick="goPage('export')" id="nav-export"><span class="s-icon">📦</span> Exportar Dados</a>
+      <a onclick="goPage('settings')" id="nav-settings"><span class="s-icon">⚙️</span> Configurações</a>
+    </nav>
+    <div class="s-bottom">
+      <a class="s-back" href="/" target="_blank"><span>↗</span> Ver o site</a>
+      <a class="s-back" onclick="doLogout()" style="cursor:pointer;"><span>←</span> Sair</a>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- DASHBOARD -->
+    <div class="page on" id="page-dashboard">
+      <div class="page-header">
+        <div><div class="page-title">Dashboard</div><div class="page-sub">Visão geral do seu conteúdo</div></div>
+        <button class="btn btn-p" onclick="goPage('new')">✏️ Novo Post</button>
+      </div>
+      <div class="stats-grid" id="stats-grid"></div>
+      <div class="card">
+        <div style="font-size:.9rem;font-weight:700;margin-bottom:14px;">📝 Posts Recentes</div>
+        <div id="recent-posts"></div>
+      </div>
+    </div>
+
+    <!-- NEW/EDIT -->
+    <div class="page" id="page-new">
+      <div class="page-header">
+        <div><div class="page-title" id="form-page-title">Novo Conteúdo</div><div class="page-sub">Preencha os campos abaixo e publique</div></div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-g" onclick="togglePreview()">👁️ Preview</button>
+          <button class="btn btn-p" onclick="savePost()">💾 Publicar</button>
+        </div>
+      </div>
+      <div class="form-card">
+        <input type="hidden" id="edit-id">
+        <div class="fg">
+          <label>Título do artigo *</label>
+          <input type="text" id="f-title" placeholder="Ex: Como calcular rescisão trabalhista pela CLT" oninput="updateSlug()">
+        </div>
+        <div class="fg-row">
+          <div class="fg">
+            <label>Área / Categoria *</label>
+            <select id="f-cat">
+              <option value="direito">⚖️ Direito</option>
+              <option value="rh">👥 Recursos Humanos</option>
+              <option value="contabilidade">📊 Contabilidade</option>
+              <option value="geral">📌 Geral</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Slug (URL)</label>
+            <input type="text" id="f-slug" placeholder="gerado-automaticamente-do-titulo">
+          </div>
+        </div>
+        <div class="fg">
+          <label>Resumo / Excerpt * <span style="font-weight:400;text-transform:none;font-size:.68rem;">(aparece na listagem e no SEO)</span></label>
+          <textarea id="f-excerpt" rows="3" placeholder="Descreva em 1–2 frases o que o leitor vai aprender..." oninput="countChars(this,'exc-count',160)"></textarea>
+          <div class="char-count"><span id="exc-count">0</span>/160 caracteres (ideal para SEO)</div>
+        </div>
+        <div class="fg">
+          <label>Imagem de capa</label>
+          <input type="url" id="f-image" placeholder="https://... (URL pública da imagem)" oninput="previewImg()">
+          <img id="img-preview-el" class="img-preview" alt="Preview da imagem">
+        </div>
+        <div class="fg">
+          <label>Legenda da imagem</label>
+          <input type="text" id="f-caption" placeholder="Ex: Tabela de prazos processuais — CPC/2015">
+        </div>
+        <div class="fg">
+          <label>Conteúdo do artigo * <span style="font-weight:400;text-transform:none;font-size:.68rem;">(suporta HTML básico)</span></label>
+          <div class="editor-toolbar">
+            <button class="toolbar-btn" onclick="insertTag('h2')">H2</button>
+            <button class="toolbar-btn" onclick="insertTag('h3')">H3</button>
+            <button class="toolbar-btn" onclick="insertTag('p')">§</button>
+            <button class="toolbar-btn" onclick="insertTag('strong')"><b>B</b></button>
+            <button class="toolbar-btn" onclick="insertTag('em')"><i>I</i></button>
+            <button class="toolbar-btn" onclick="insertTag('ul-li')">Lista</button>
+            <button class="toolbar-btn" onclick="insertTag('ol-li')">1. Lista</button>
+            <button class="toolbar-btn" onclick="insertTag('blockquote')">❝</button>
+            <button class="toolbar-btn" onclick="insertTag('code')">Code</button>
+            <button class="toolbar-btn" onclick="insertTag('hr')">─</button>
+          </div>
+          <textarea id="editor-area" placeholder="<h2>Título da seção</h2>&#10;<p>Parágrafo de texto...</p>&#10;&#10;<h2>Segunda seção</h2>&#10;<p>Mais conteúdo...</p>"></textarea>
+        </div>
+        <!-- PREVIEW -->
+        <div class="preview-box" id="preview-box" style="display:none;">
+          <h4>👁️ Preview do Conteúdo</h4>
+          <div class="preview-content" id="preview-content"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIST -->
+    <div class="page" id="page-list">
+      <div class="page-header">
+        <div><div class="page-title">Gerenciar Posts</div><div class="page-sub">Edite ou remova conteúdo publicado</div></div>
+        <button class="btn btn-p" onclick="goPage('new')">✏️ Novo Post</button>
+      </div>
+      <div style="display:flex;gap:10px;margin-bottom:16px;">
+        <input type="text" id="search-posts" placeholder="🔍 Buscar posts..." style="flex:1;padding:9px 13px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.86rem;font-family:var(--fh);color:var(--txt);" oninput="renderList()">
+        <select id="filter-cat" style="padding:9px 13px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.86rem;font-family:var(--fh);color:var(--txt);" onchange="renderList()">
+          <option value="">Todas as categorias</option>
+          <option value="direito">Direito</option>
+          <option value="rh">RH</option>
+          <option value="contabilidade">Contabilidade</option>
+          <option value="geral">Geral</option>
+        </select>
+      </div>
+      <div class="posts-list" id="posts-list"></div>
+    </div>
+
+    <!-- EXPORT -->
+    <div class="page" id="page-export">
+      <div class="page-header">
+        <div><div class="page-title">Exportar Dados</div><div class="page-sub">Baixe o JSON com todos os posts para subir ao servidor</div></div>
+        <button class="btn btn-p" onclick="exportJSON()">⬇️ Baixar posts.json</button>
+      </div>
+      <div class="card" style="margin-bottom:16px;">
+        <p style="font-size:.88rem;color:var(--txt-m);line-height:1.7;margin-bottom:14px;">
+          <strong>Como funciona o fluxo de publicação:</strong><br>
+          1. Crie e edite posts aqui no painel (salvo localmente no navegador).<br>
+          2. Clique em <strong>"Baixar posts.json"</strong> para gerar o arquivo.<br>
+          3. Substitua o arquivo <code>data/posts.json</code> no seu servidor/Netlify.<br>
+          4. Os posts aparecerão automaticamente no site público.<br><br>
+          <em>Em breve: publicação automática via agente de IA configurado por você.</em>
+        </p>
+        <div class="export-area" id="export-area">Clique em "Baixar posts.json" para visualizar o conteúdo aqui.</div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="page" id="page-settings">
+      <div class="page-header">
+        <div><div class="page-title">Configurações</div><div class="page-sub">Ajuste as configurações do painel</div></div>
+      </div>
+      <div class="card">
+        <div style="font-size:.9rem;font-weight:700;margin-bottom:16px;">🔒 Alterar Senha</div>
+        <div class="fg"><label>Nova senha</label><input type="password" id="new-pass" placeholder="Mínimo 8 caracteres"></div>
+        <div class="fg"><label>Confirmar nova senha</label><input type="password" id="confirm-pass" placeholder="Repita a senha"></div>
+        <button class="btn btn-p" onclick="changePass()">Salvar Nova Senha</button>
+        <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--brd);">
+          <div style="font-size:.9rem;font-weight:700;margin-bottom:12px;">🗑️ Área de Perigo</div>
+          <p style="font-size:.84rem;color:var(--txt-m);margin-bottom:12px;">Apagar todos os posts salvos no navegador. Esta ação não pode ser desfeita.</p>
+          <button class="btn btn-danger" onclick="confirmClearAll()">Apagar todos os posts</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- MODAL CONFIRM -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <h3 id="modal-title">Confirmar ação</h3>
+    <p id="modal-msg">Tem certeza?</p>
+    <div class="modal-btns">
+      <button class="btn btn-g" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-danger" id="modal-confirm-btn">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════════════════════════════════════
+// CONFIG — altere a senha antes de publicar
+// ════════════════════════════════════════
+const ADMIN_PASS_KEY = 'cp_admin_pass';
+const DEFAULT_PASS   = 'admin2026'; // ← ALTERE AQUI antes de publicar!
+const POSTS_KEY      = 'cp_posts';
+
+// ════════════════════════════════════════
+// AUTH
+// ════════════════════════════════════════
+function getPass(){ return localStorage.getItem(ADMIN_PASS_KEY) || DEFAULT_PASS; }
+
+function doLogin(){
+  const v = document.getElementById('auth-pass').value;
+  if(v === getPass()){
+    localStorage.setItem('cp_session','1');
+    document.getElementById('auth-wall').style.display='none';
+    document.getElementById('app').style.display='block';
+    initApp();
+  } else {
+    document.getElementById('auth-err').style.display='block';
+    document.getElementById('auth-pass').value='';
+  }
+}
+
+function doLogout(){
+  localStorage.removeItem('cp_session');
+  location.reload();
+}
+
+function changePass(){
+  const np = document.getElementById('new-pass').value;
+  const cp = document.getElementById('confirm-pass').value;
+  if(np.length < 8){ toast('Senha deve ter mínimo 8 caracteres','err'); return; }
+  if(np !== cp){ toast('As senhas não coincidem','err'); return; }
+  localStorage.setItem(ADMIN_PASS_KEY, np);
+  toast('Senha alterada com sucesso!','ok');
+  document.getElementById('new-pass').value='';
+  document.getElementById('confirm-pass').value='';
+}
+
+// Check session
+window.onload = function(){
+  if(localStorage.getItem('cp_session')==='1'){
+    document.getElementById('auth-wall').style.display='none';
+    document.getElementById('app').style.display='block';
+    initApp();
+  }
+};
+
+// ════════════════════════════════════════
+// POSTS STORAGE
+// ════════════════════════════════════════
+function getPosts(){
+  try{ return JSON.parse(localStorage.getItem(POSTS_KEY)||'[]'); }
+  catch(e){ return []; }
+}
+function savePosts(arr){ localStorage.setItem(POSTS_KEY, JSON.stringify(arr)); }
+
+// ════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════
+function goPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.s-nav a').forEach(a=>a.classList.remove('on'));
+  document.getElementById('page-'+id).classList.add('on');
+  const nav = document.getElementById('nav-'+id);
+  if(nav) nav.classList.add('on');
+  if(id==='dashboard') renderDashboard();
+  if(id==='list') renderList();
+  if(id==='export') renderExport();
+  if(id==='new'){ resetForm(); document.getElementById('form-page-title').textContent='Novo Conteúdo'; }
+}
+
+// ════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════
+function initApp(){
+  // Load default posts if none exist
+  const existing = getPosts();
+  if(existing.length === 0){
+    // Try to fetch from data/posts.json (same-origin)
+    fetch('../data/posts.json')
+      .then(r=>r.ok?r.json():[])
+      .then(data=>{ if(data.length>0){ savePosts(data); renderDashboard(); } })
+      .catch(()=>{});
+  }
+  renderDashboard();
+}
+
+// ════════════════════════════════════════
+// DASHBOARD
+// ════════════════════════════════════════
+function renderDashboard(){
+  const posts = getPosts();
+  const cats = {direito:0,rh:0,contabilidade:0,geral:0};
+  posts.forEach(p=> cats[p.category] = (cats[p.category]||0)+1);
+  
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="stat-card"><div class="stat-icon">📄</div><div class="stat-num">${posts.length}</div><div class="stat-lbl">Total de Posts</div></div>
+    <div class="stat-card"><div class="stat-icon">⚖️</div><div class="stat-num">${cats.direito}</div><div class="stat-lbl">Direito</div></div>
+    <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-num">${cats.rh}</div><div class="stat-lbl">RH</div></div>
+    <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-num">${cats.contabilidade}</div><div class="stat-lbl">Contabilidade</div></div>
+  `;
+  
+  const recent = [...posts].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
+  document.getElementById('recent-posts').innerHTML = recent.length ? recent.map(p=>`
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--brd);">
+      <span class="post-cat cat-${p.category}">${p.category}</span>
+      <span style="font-size:.88rem;font-weight:600;flex:1;">${p.title}</span>
+      <span style="font-size:.76rem;color:var(--txt-s);">${formatDate(p.date)}</span>
+      <button class="btn btn-g btn-sm" onclick="editPost('${p.id}')">Editar</button>
+    </div>
+  `).join('') : '<p style="color:var(--txt-s);font-size:.86rem;">Nenhum post ainda. Crie o primeiro!</p>';
+}
+
+// ════════════════════════════════════════
+// POST LIST
+// ════════════════════════════════════════
+function renderList(){
+  const posts = getPosts();
+  const search = (document.getElementById('search-posts')?.value||'').toLowerCase();
+  const cat    = document.getElementById('filter-cat')?.value||'';
+  
+  const filtered = posts.filter(p=>{
+    const matchS = !search || p.title.toLowerCase().includes(search) || p.excerpt.toLowerCase().includes(search);
+    const matchC = !cat || p.category === cat;
+    return matchS && matchC;
+  }).sort((a,b)=>b.date.localeCompare(a.date));
+  
+  document.getElementById('posts-list').innerHTML = filtered.length ? filtered.map(p=>`
+    <div class="post-item">
+      <div style="flex:1;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+          <span class="post-cat cat-${p.category}">${catLabel(p.category)}</span>
+          <span style="font-size:.72rem;color:var(--txt-s);">${formatDate(p.date)}</span>
+        </div>
+        <div class="post-title">${p.title}</div>
+        <div class="post-excerpt">${p.excerpt}</div>
+      </div>
+      <div class="post-actions">
+        <a class="btn btn-g btn-sm" href="../blog/${p.id}.html" target="_blank">Ver</a>
+        <button class="btn btn-g btn-sm" onclick="editPost('${p.id}')">Editar</button>
+        <button class="btn btn-danger btn-sm" onclick="confirmDelete('${p.id}')">Excluir</button>
+      </div>
+    </div>
+  `).join('') : '<div class="card" style="text-align:center;color:var(--txt-s);padding:40px;">Nenhum post encontrado.</div>';
+}
+
+function catLabel(c){
+  return {direito:'⚖️ Direito',rh:'👥 RH',contabilidade:'📊 Contabilidade',geral:'📌 Geral'}[c]||c;
+}
+
+// ════════════════════════════════════════
+// FORM
+// ════════════════════════════════════════
+function resetForm(){
+  document.getElementById('edit-id').value='';
+  document.getElementById('f-title').value='';
+  document.getElementById('f-slug').value='';
+  document.getElementById('f-cat').value='direito';
+  document.getElementById('f-excerpt').value='';
+  document.getElementById('f-image').value='';
+  document.getElementById('f-caption').value='';
+  document.getElementById('editor-area').value='';
+  document.getElementById('img-preview-el').style.display='none';
+  document.getElementById('exc-count').textContent='0';
+  document.getElementById('preview-box').style.display='none';
+}
+
+function editPost(id){
+  const posts = getPosts();
+  const p = posts.find(x=>x.id===id);
+  if(!p) return;
+  goPage('new');
+  document.getElementById('form-page-title').textContent='Editar Post';
+  document.getElementById('edit-id').value=p.id;
+  document.getElementById('f-title').value=p.title;
+  document.getElementById('f-slug').value=p.id;
+  document.getElementById('f-cat').value=p.category;
+  document.getElementById('f-excerpt').value=p.excerpt;
+  document.getElementById('f-image').value=p.image||'';
+  document.getElementById('f-caption').value=p.imageCaption||'';
+  document.getElementById('editor-area').value=p.content;
+  countChars(document.getElementById('f-excerpt'),'exc-count',160);
+  previewImg();
+}
+
+async function savePost(){
+  const title   = document.getElementById('f-title').value.trim();
+  const slug    = document.getElementById('f-slug').value.trim() || slugify(title);
+  const cat     = document.getElementById('f-cat').value;
+  const excerpt = document.getElementById('f-excerpt').value.trim();
+  const image   = document.getElementById('f-image').value.trim();
+  const caption = document.getElementById('f-caption').value.trim();
+  const content = document.getElementById('editor-area').value.trim();
+  const editId  = document.getElementById('edit-id').value;
+
+  if(!title){ toast('Preencha o título','err'); return; }
+  if(!excerpt){ toast('Preencha o resumo','err'); return; }
+  if(!content){ toast('Adicione conteúdo ao artigo','err'); return; }
+
+  const posts = getPosts();
+  const now   = new Date().toISOString().split('T')[0];
+  const finalId = editId || slug || slugify(title);
+
+  const post = { id:finalId, title, category:cat, excerpt, image, imageCaption:caption, date:now, content };
+
+  const idx = posts.findIndex(p=>p.id===finalId);
+  if(idx>=0) posts[idx]=post; else posts.push(post);
+  savePosts(posts);
+
+  // Generate HTML file for this post
+  await generatePostHTML(post);
+
+  toast('Post salvo com sucesso!','ok');
+  setTimeout(()=>goPage('list'),1200);
+}
+
+async function generatePostHTML(p) {
+  const catLabels = {direito:'⚖️ Direito', rh:'👥 RH', contabilidade:'📊 Contabilidade', geral:'📌 Geral'};
+  const dateOptions = {day:'numeric', month:'long', year:'numeric'};
+  const dateBR = new Date(p.date + 'T12:00:00').toLocaleDateString('pt-BR', dateOptions);
+  const ogImage   = p.image ? `<meta property="og:image" content="${p.image}">` : '';
+  const schemaImg = p.image ? `,"image":"${p.image}"` : '';
+  const coverHtml = p.image
+    ? `<img src="${p.image}" alt="${p.title}" class="post-cover">
+       ${p.imageCaption ? `<p class="post-cover-caption">${p.imageCaption}</p>` : ''}`
+    : '';
+
+  // Fetch the template
+  let template = '';
+  try {
+    const r = await fetch('../blog/POST_TEMPLATE.html');
+    template = await r.text();
+  } catch(e) {
+    toast('Erro ao carregar template. Certifique-se que POST_TEMPLATE.html está na pasta /blog/', 'err');
+    return;
+  }
+
+  const html = template
+    .replace(/{{TITLE}}/g,          p.title)
+    .replace(/{{DESCRIPTION}}/g,    p.excerpt)
+    .replace(/{{SLUG}}/g,           p.id)
+    .replace(/{{CATEGORY}}/g,       p.category)
+    .replace(/{{CATEGORY_LABEL}}/g, catLabels[p.category] || p.category)
+    .replace(/{{DATE}}/g,           p.date)
+    .replace(/{{DATE_BR}}/g,        dateBR)
+    .replace(/{{CONTENT}}/g,        p.content)
+    .replace(/{{OG_IMAGE}}/g,       ogImage)
+    .replace(/{{SCHEMA_IMAGE}}/g,   schemaImg)
+    .replace(/{{COVER_IMAGE_HTML}}/g, coverHtml);
+
+  // Trigger download
+  const blob = new Blob([html], {type:'text/html'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = p.id + '.html';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// EXPORT
+function renderExport(){
+  const posts = getPosts();
+  document.getElementById('export-area').textContent = JSON.stringify(posts, null, 2);
+}
+function exportJSON(){
+  const posts = getPosts();
+  renderExport();
+  const blob = new Blob([JSON.stringify(posts,null,2)],{type:'application/json'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href=url; a.download='posts.json'; a.click();
+  URL.revokeObjectURL(url);
+  toast('posts.json baixado!','ok');
+}
+
+// DELETE
+function confirmDelete(id){
+  document.getElementById('modal-title').textContent='Excluir post?';
+  document.getElementById('modal-msg').textContent='Esta ação removerá o post permanentemente do painel. O arquivo .html no servidor precisará ser removido manualmente.';
+  document.getElementById('modal-confirm-btn').onclick=()=>{ deletePost(id); closeModal(); };
+  document.getElementById('modal-bg').classList.add('show');
+}
+function deletePost(id){
+  const posts = getPosts().filter(p=>p.id!==id);
+  savePosts(posts);
+  renderList();
+  toast('Post excluído.','ok');
+}
+function confirmClearAll(){
+  document.getElementById('modal-title').textContent='Apagar tudo?';
+  document.getElementById('modal-msg').textContent='Isso removerá TODOS os posts salvos no navegador. Esta ação não pode ser desfeita.';
+  document.getElementById('modal-confirm-btn').onclick=()=>{ localStorage.removeItem(POSTS_KEY); renderDashboard(); closeModal(); toast('Todos os posts foram apagados.','ok'); };
+  document.getElementById('modal-bg').classList.add('show');
+}
+function closeModal(){ document.getElementById('modal-bg').classList.remove('show'); }
+
+// TOAST
+function toast(msg, type='ok'){
+  const t = document.getElementById('toast');
+  t.textContent=msg; t.className='toast '+type+' show';
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+</script>
+</body>
+</html>

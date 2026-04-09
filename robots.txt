@@ -1,0 +1,23 @@
+# robots.txt para CalculaPrazo
+# Instruções para bots de busca
+
+User-agent: *
+Allow: /
+Disallow: /cdn-cgi/
+Disallow: /*.json$
+Disallow: /admin/
+Disallow: /private/
+
+# Permitir Google AdSense
+User-agent: Googlebot-Image
+Allow: /
+
+# Permitir Google
+User-agent: Googlebot
+Allow: /
+
+# Sitemap
+Sitemap: https://calculaprazo.com.br/sitemap.xml
+
+# Crawl delay (em segundos)
+Crawl-delay: 1

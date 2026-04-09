@@ -1,0 +1,82 @@
+[
+  {
+    "id": "rescisao-indireta-quando-cabe",
+    "title": "Rescisão Indireta: O Que É e Quando o Empregado Pode Pedir",
+    "category": "pratica",
+    "excerpt": "Entenda quando o empregado tem direito à rescisão indireta, quais faltas patronais autorizam o pedido e como o processo funciona na prática trabalhista.",
+    "image": "",
+    "imageCaption": "",
+    "date": "2026-04-07",
+    "content": "<h2>O que é rescisão indireta?</h2><p>A rescisão indireta é o encerramento do contrato de trabalho por culpa do empregador, prevista no art. 483 da CLT. Ela garante ao empregado todos os direitos da dispensa sem justa causa: aviso prévio, saldo de salário, férias proporcionais com 1/3, 13º proporcional, FGTS com multa de 40% e seguro-desemprego.</p><h2>Quando ela é cabível?</h2><ul><li><strong>Falta de pagamento de salários</strong> — atraso reiterado ou não pagamento;</li><li><strong>Exigência de serviços além das forças do empregado</strong> — trabalho excessivo ou perigoso;</li><li><strong>Tratamento com rigor excessivo</strong> — assédio moral comprovado;</li><li><strong>Perigo manifesto de dano grave</strong> — ambiente insalubre sem EPI;</li><li><strong>Descumprimento de obrigações contratuais</strong> — supressão de benefícios previstos em contrato;</li><li><strong>Redução unilateral do salário</strong> — fora das hipóteses legais ou negociadas.</li></ul><h2>Como agir na prática?</h2><p>O empregado pode continuar trabalhando enquanto ajuíza a reclamação pedindo reconhecimento da rescisão indireta. O TST pacificou esse entendimento na OJ 399 da SDI-1: não é necessário o afastamento imediato.</p><blockquote>OJ 399 SDI-1/TST: o empregado pode permanecer no emprego até a decisão final do processo.</blockquote><h2>Ônus da prova</h2><p>O empregado deve provar a falta patronal. Contracheques, e-mails, registros de ponto e laudos de insalubridade são provas fundamentais. O TST reconhece rescisão indireta por atraso de salários superior a três meses de forma reiterada.</p><h2>Diferença para o pedido de demissão</h2><p>No pedido de demissão, o empregado perde o aviso prévio indenizado, a multa de 40% do FGTS e o seguro-desemprego. Na rescisão indireta, todos esses direitos são mantidos — orientação jurídica prévia é indispensável.</p>",
+    "tags": [
+      "Rescisão Indireta",
+      "Prática",
+      "CLT",
+      "Advogado"
+    ]
+  },
+  {
+    "id": "tst-banco-de-horas-acordo-coletivo",
+    "title": "TST Reafirma: Banco de Horas Sem Acordo Coletivo Gera Horas Extras",
+    "category": "jurisprudencia",
+    "excerpt": "Decisão do TST consolida que banco de horas implantado apenas por acordo individual é inválido, gerando horas extras com adicional mínimo de 50%.",
+    "image": "",
+    "imageCaption": "",
+    "date": "2026-04-07",
+    "content": "<h2>O que decidiu o TST?</h2><p>O Tribunal Superior do Trabalho reafirmou que o regime de banco de horas só é válido quando instituído por acordo ou convenção coletiva, conforme exige o art. 59, §2º da CLT. A adesão individual do empregado não supre a exigência de negociação coletiva.</p><h2>Base legal e impacto da Reforma Trabalhista</h2><p>Após a Lei 13.467/2017, o acordo individual por escrito passou a ser admitido apenas para compensação em módulo semanal. Para o banco de horas anual, o instrumento coletivo permanece obrigatório. Essa distinção é frequentemente ignorada pelas empresas, gerando passivos relevantes.</p><h2>Consequência prática</h2><p>Declarado inválido o banco de horas, todas as horas que superaram a jornada contratual devem ser pagas como extras com adicional mínimo de 50% (art. 7º, XVI, CF/88), com reflexos em DSR, férias, 13º salário e FGTS.</p><h2>O que RH e contador devem fazer?</h2><p>Revise os acordos de banco de horas da empresa. Se apenas individuais, a empresa está exposta a passivo trabalhista. A regularização passa por negociar instrumento com o sindicato ou migrar para compensação semanal, esta sim admitida por acordo individual escrito.</p>",
+    "tags": [
+      "Jurisprudência",
+      "TST",
+      "Horas Extras",
+      "Banco de Horas"
+    ]
+  },
+  {
+    "id": "esocial-s-2299-desligamento-passo-a-passo",
+    "title": "eSocial S-2299: Como Enviar o Evento de Desligamento Corretamente",
+    "category": "esocial",
+    "excerpt": "Guia prático para envio do S-2299, com prazos, campos obrigatórios, motivos de desligamento e os erros mais comuns que causam rejeição no eSocial.",
+    "image": "",
+    "imageCaption": "",
+    "date": "2026-04-07",
+    "content": "<h2>O que é o S-2299?</h2><p>O S-2299 (Desligamento) é o evento obrigatório no eSocial que comunica o encerramento do vínculo empregatício. Deve ser enviado para qualquer modalidade de desligamento.</p><h2>Prazo de envio</h2><p>Até o dia 15 do mês seguinte ao desligamento ou antes do envio da DCTFWeb do período, o que ocorrer primeiro. Para saque do FGTS, o evento precisa estar com status Processado com Sucesso antes do agendamento.</p><h2>Campos obrigatórios</h2><ul><li><strong>dtDeslig</strong> — data do desligamento no formato AAAA-MM-DD;</li><li><strong>mtvDeslig</strong> — motivo conforme Tabela 19 do eSocial (01 = sem justa causa, 03 = pedido de demissão, 10 = culpa recíproca);</li><li><strong>pensAlim</strong> — informar se há pensão alimentícia descontada;</li><li><strong>verbasResc</strong> — verbas rescisórias detalhadas no S-1200 do mesmo período.</li></ul><h2>Erros mais comuns</h2><p><strong>Data anterior à admissão:</strong> verifique o S-2200 antes. <strong>Motivo incompatível:</strong> a Tabela 19 tem mais de 30 motivos — o erro gera inconsistência no CAGED. <strong>Competência fechada:</strong> reabra com S-1298 antes de enviar o desligamento.</p><h2>Checklist antes de enviar</h2><ul><li>S-2200 processado com sucesso;</li><li>Todos os S-1200 enviados até a competência do desligamento;</li><li>Motivo de desligamento conferido na Tabela 19;</li><li>Homologação agendada apenas após processamento do S-2299.</li></ul>",
+    "tags": [
+      "eSocial",
+      "S-2299",
+      "Desligamento",
+      "FGTS Digital"
+    ]
+  },
+  {
+    "id": "aviso-previo-proporcional-como-calcular",
+    "title": "Aviso Prévio Proporcional: Como Calcular Corretamente (Lei 12.506/2011)",
+    "category": "folha",
+    "excerpt": "Entenda a fórmula do aviso prévio proporcional, o que conta como ano completo e como o período afeta as demais verbas rescisórias.",
+    "image": "",
+    "imageCaption": "",
+    "date": "2026-04-07",
+    "content": "<h2>O que mudou com a Lei 12.506/2011?</h2><p>Antes da lei, o aviso prévio era fixo em 30 dias. Com ela, passou a ser proporcional: 30 dias + 3 dias por ano completo trabalhado, até o máximo de 90 dias no total.</p><h2>A fórmula de cálculo</h2><p><strong>Aviso Prévio = 30 dias + (anos completos x 3 dias)</strong></p><ul><li>1 ano completo: 33 dias</li><li>5 anos completos: 45 dias</li><li>10 anos completos: 60 dias</li><li>20 anos completos: 90 dias (teto máximo)</li></ul><h2>O que conta como ano completo?</h2><p>Somente anos inteiros. Frações não geram os 3 dias adicionais. Empregado com 4 anos e 11 meses tem direito ao adicional de apenas 4 anos (12 dias extras).</p><h2>Aplica-se ao pedido de demissão?</h2><p>Não. A proporcionalidade é exclusiva da dispensa sem justa causa. No pedido de demissão, o aviso continua sendo de 30 dias fixos, salvo convenção coletiva mais favorável.</p><h2>Impacto nas demais verbas</h2><p>O aviso prévio integra o tempo de serviço para FGTS, 13º e férias proporcionais. Um aviso de 90 dias acrescenta 3 meses ao período aquisitivo. No eSocial, o período deve ser refletido corretamente no S-2299 e nas rubricas do S-1200.</p>",
+    "tags": [
+      "Aviso Prévio",
+      "Rescisão",
+      "Folha de Pagamento",
+      "CLT"
+    ]
+  },
+  {
+    "id": "trabalho-hibrido-regras-mte-2025",
+    "title": "Trabalho Híbrido em 2025: O Que as Portarias do MTE Mudaram na Prática",
+    "category": "legislacao",
+    "excerpt": "A regulamentação do teletrabalho ganhou novos contornos em 2025. Veja o que muda para empregadores, RH e trabalhadores no regime híbrido.",
+    "image": "",
+    "imageCaption": "",
+    "date": "2026-04-07",
+    "content": "<h2>O cenário atual</h2><p>O teletrabalho foi incorporado à CLT pela Reforma Trabalhista de 2017 (arts. 75-A a 75-E). Em 2025, o Ministério do Trabalho editou portarias regulamentando o regime híbrido, especialmente sobre controle de jornada, fornecimento de equipamentos e reembolso de despesas.</p><h2>O que o contrato deve conter</h2><p>Conforme o art. 75-C da CLT e as portarias do MTE, o aditivo deve especificar: atividades realizadas remotamente; meios tecnológicos e responsabilidade pelo custeio; forma de controle por produção ou resultado; e se há ou não controle de jornada — ponto decisivo para definir direito a horas extras.</p><h2>Controle de jornada no home office</h2><p>O art. 62, II da CLT exclui do controle os empregados em teletrabalho quando a atividade for incompatível com horário fixo. O TST entende que se o empregador exige disponibilidade em horário determinado — mesmo remotamente — o empregado tem direito a horas extras.</p><blockquote>Entendimento predominante no TST (2024): o ajuste de teletrabalho não afasta horas extras se comprovado controle de jornada por meios telemáticos.</blockquote><h2>Quem paga as despesas de home office?</h2><p>As portarias do MTE reforçam que a responsabilidade pode ser definida em acordo individual ou coletivo. O entendimento majoritário é que o empregador deve arcar com as despesas — caso contrário, configura-se transferência ilícita de custo ao empregado.</p><h2>O que o RH precisa fazer agora</h2><ul><li>Revisar todos os aditivos de teletrabalho existentes;</li><li>Definir claramente o controle de jornada no regime remoto;</li><li>Documentar fornecimento ou reembolso de equipamentos e despesas;</li><li>Atualizar o eSocial com indicativo de teletrabalho nos eventos S-2200 ou S-2205.</li></ul>",
+    "tags": [
+      "Teletrabalho",
+      "Legislação",
+      "Home Office",
+      "MTE"
+    ]
+  }
+]
