@@ -1,8 +1,8 @@
-name: Gerar Posts Diarios
+name: Agente Noticias
 
 on:
   schedule:
-    - cron: '0 9 * * 1-5'   # 6h da manhã em Brasília (ajuste se quiser)
+    - cron: '0 16 * * 1-5'
   workflow_dispatch:
 
 jobs:
@@ -23,19 +23,19 @@ jobs:
       - name: Instalar dependências
         run: pip install requests python-slugify
 
-      - name: Executar Gerador de Posts (se você tiver um script principal)
+      - name: Executar agente Noticias
         env:
           OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY }}
-        run: python scripts/gerar_posts.py   # ← mude se o nome do arquivo for diferente
+        run: python scripts/agentes/agente_noticias.py
 
       - name: Publicar no GitHub
         run: |
-          git config user.name "Gerador de Posts"
+          git config user.name "Agente Noticias"
           git config user.email "bot@calculaprazo.com.br"
           git add -A
           if git diff --staged --quiet; then
             echo "Nenhuma mudança para commitar."
           else
-            git commit -m "Posts Diários: $(date '+%d/%m/%Y %H:%M')"
+            git commit -m "Noticias: $(date '+%d/%m/%Y %H:%M')"
             git push
           fi
