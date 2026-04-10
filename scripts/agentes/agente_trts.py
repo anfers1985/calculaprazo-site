@@ -219,7 +219,7 @@ def main():
     print("=" * 90)
 
     random.seed(HOJE.year * 10000 + HOJE.month * 100 + HOJE.day)
-    fontes_hoje = random.sample(SOURCES, min(8, len(SOURCES)))
+    fontes_hoje = random.sample(SOURCES, min(10, len(SOURCES)))   # aumentado para 10
 
     publicados = 0
     for fonte in fontes_hoje:
@@ -243,7 +243,6 @@ def main():
         time.sleep(5)
 
     print(f"\nTotal publicado: {publicados} boletim(s) técnico(s) dos TRTs")
-
 
 if __name__ == "__main__":
     main()
