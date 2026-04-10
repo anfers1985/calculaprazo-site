@@ -97,93 +97,56 @@ def gerar_artigo(conteudo, tema, fonte_nome):
 
 Conteúdo real de {fonte_nome}:
 ---
-{conteudo[:3200]}
+{conteudo[:3000]}
 ---
 
 Tema: {tema}
 
-Gere um boletim técnico direto:
+Gere um boletim técnico direto e pragmático no formato abaixo.
 
 **Título** (curto e objetivo)
-**Resumo Executivo** (1 linha com impacto)
-**Análise Técnica** (com número do processo ou norma quando existir)
-**Impacto Prático** 
+**Resumo Executivo** (1 linha)
+**Análise Técnica**
+**Impacto Prático**
 **Recomendação de Ação**
 
 Estilo: técnico, direto, pragmático.
-Responda APENAS com JSON válido.
+
+Responda APENAS com JSON válido e completo:
+{{
+  "title": "título objetivo até 65 caracteres",
+  "excerpt": "resumo até 155 caracteres",
+  "tags": ["tag1", "tag2", "tag3"],
+  "content": "HTML completo com <h2>, <p>, <ul>, <strong>..."
+}}
 """
     try:
         r = requests.post(
             "https://openrouter.ai/api/v1/chat/completions",
             headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
-            json={"model": MODEL, "messages": [{"role":"user","content":prompt}], "max_tokens":2800},
-            timeout=150,
+            json={"model": MODEL, "messages": [{"role":"user","content":prompt}], "max_tokens":3000, "temperature":0.3},
+            timeout=180,
         )
-        raw = r.json()["choices"][0]["message"]["content"]
-        raw = re.sub(r"^```json\s*|\s*```$", "", raw.strip())
-        return json.loads(raw)
+        
+        raw = r.json()["choices"][0]["message"]["content"].strip()
+        
+        raw = re.sub(r"^```json\s*", "", raw)
+        raw = re.sub(r"\s*```$", "", raw)
+        raw = re.sub(r"[\n\r]+", " ", raw)
+        
+        dados = json.loads(raw)
+        
+        if not dados.get("title"):
+            dados["title"] = f"Atualização {fonte_nome} - {HOJE.strftime('%d/%m')}"
+        if not dados.get("excerpt"):
+            dados["excerpt"] = tema[:120] if tema else "Atualização importante"
+        if not dados.get("content"):
+            dados["content"] = "<p>Conteúdo técnico gerado automaticamente.</p>"
+           
+        return dados
     except Exception as e:
         print(f"  Erro ao gerar artigo: {e}")
         return None
-
-
-def salvar_post(dados, fonte_nome):
-    try:
-        meses = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"]
-        data_str = HOJE.strftime("%Y-%m-%d")
-        data_br  = f"{HOJE.day} de {meses[HOJE.month-1]} de {HOJE.year}"
-        slug     = slugify(dados["title"])[:60]
-
-        with open("blog/POST_TEMPLATE.html", encoding="utf-8") as f:
-            template = f.read()
-
-        tags = dados.get("tags", ["TST", "STF", "Jurisprudência"])
-        tags_json = json.dumps(tags, ensure_ascii=False)
-        first_tag = tags[0] if tags else "Jurisprudência"
-
-        html = (template
-            .replace("{{TITLE}}", dados["title"])
-            .replace("{{DESCRIPTION}}", dados["excerpt"])
-            .replace("{{SLUG}}", slug)
-            .replace("{{CATEGORY}}", "jurisprudencia")
-            .replace("{{CATEGORY_LABEL}}", first_tag)
-            .replace("{{TAGS_BADGES}}", "".join(f'<span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">{t}</span>' for t in tags))
-            .replace("{{TAGS_JSON}}", tags_json)
-            .replace("{{DATE}}", data_str)
-            .replace("{{DATE_BR}}", data_br)
-            .replace("{{CONTENT}}", dados["content"])
-            .replace("{{OG_IMAGE}}", "")
-            .replace("{{SCHEMA_IMAGE}}", "")
-            .replace("{{COVER_IMAGE_HTML}}", "")
-        )
-
-        with open(f"blog/{slug}.html", "w", encoding="utf-8") as f:
-            f.write(html)
-        print(f"  ✅ ARQUIVO CRIADO: blog/{slug}.html")
-
-        try:
-            with open("data/posts.json", encoding="utf-8") as f:
-                posts = json.load(f)
-        except:
-            posts = []
-        if not any(p["id"] == slug for p in posts):
-            posts.insert(0, {
-                "id": slug, "title": dados["title"],
-                "category": "jurisprudencia", "tags": tags,
-                "excerpt": dados["excerpt"], "image": "",
-                "imageCaption": "", "date": data_str,
-                "content": dados["content"],
-            })
-            posts = posts[:300]
-            with open("data/posts.json", "w", encoding="utf-8") as f:
-                json.dump(posts, f, ensure_ascii=False, indent=2)
-            print("  ✅ posts.json ATUALIZADO")
-        return slug
-    except Exception as e:
-        print(f"  ❌ ERRO AO SALVAR: {e}")
-        return None
-
 
 def main():
     print(f"\nAgente TST/STF — {HOJE.strftime('%d/%m/%Y')} [ANALISTA ESTRATÉGICO]")
