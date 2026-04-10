@@ -2,7 +2,7 @@ name: Agente TST e STF
 
 on:
   schedule:
-    - cron: '30 12 * * 1-5'
+    - cron: '0 12 * * 1-5'   # 09h da manhã em Brasília
   workflow_dispatch:
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
       - name: Instalar dependências
         run: pip install requests python-slugify
 
-      - name: Executar agente TST/STF
+      - name: Executar Agente TST/STF
         env:
           OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY }}
         run: python scripts/agentes/agente_tst_stf.py
