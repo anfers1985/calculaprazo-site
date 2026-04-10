@@ -1495,7 +1495,7 @@ document.addEventListener('click', function(e) {
 // ── RELATED POSTS ─────────────────────────────
 var THIS_SLUG = 'acidente-canavial-queimaduras-tst';
 var THIS_CAT  = 'direito';
-var THIS_TAGS = {{TAGS_JSON}};
+var THIS_TAGS = ["direito"];
 
 async function loadRelated() {
   let posts = [];
@@ -1524,7 +1524,7 @@ async function loadRelated() {
     <h3>Artigos Relacionados</h3>
     <div class="related-grid">
       ${related.map(p => `
-        <a class="related-card" href="${p.id}.html">
+        <a class="related-card" href="/blog/${p.id}.html">
           <div class="r-cat">${catLabels[p.category]||p.category}</div>
           <div class="r-title">${p.title}</div>
           <div class="r-date">${new Date(p.date+'T12:00:00').toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'})}</div>

@@ -989,6 +989,22 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3280539734623058" crossorigin="anonymous"></script>
 <!-- Chart.js para gráfico comparativo de juros -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+// Remove post de teste do localStorage
+(function(){
+  try {
+    var raw = localStorage.getItem('cp_posts');
+    if (!raw) return;
+    var posts = JSON.parse(raw);
+    var filtered = posts.filter(function(p){ 
+      return p.id !== 'teste' && p.title !== 'teste' && p.id !== 'test'; 
+    });
+    if (filtered.length !== posts.length) {
+      localStorage.setItem('cp_posts', JSON.stringify(filtered));
+    }
+  } catch(e){}
+})();
+</script>
 </head>
 <body>
 
@@ -4269,7 +4285,7 @@ function buildPostCard(p) {
     ? '<div style="height:150px;overflow:hidden;border-radius:10px 10px 0 0;margin:-1px -1px 0;"><img src="' + p.image + '" alt="' + p.title + '" style="width:100%;height:100%;object-fit:cover;"></div>'
     : '<div style="height:72px;background:linear-gradient(135deg,var(--b50),#fff);border-radius:10px 10px 0 0;margin:-1px -1px 0;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">📰</div>';
 
-  return '<a href="blog/' + p.id + '.html" style="display:block;text-decoration:none;background:var(--card);border:1.5px solid var(--brd);border-radius:12px;overflow:hidden;transition:all .2s;box-shadow:var(--sh);"'
+  return '<a href="/blog/' + p.id + '.html" style="display:block;text-decoration:none;background:var(--card);border:1.5px solid var(--brd);border-radius:12px;overflow:hidden;transition:all .2s;box-shadow:var(--sh);"'
     + ' onmouseover="this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'var(--shl)\';this.style.borderColor=\'var(--b200)\'"'
     + ' onmouseout="this.style.transform=\'\';this.style.boxShadow=\'var(--sh)\';this.style.borderColor=\'var(--brd)\'">'
     + imgHtml
@@ -4360,7 +4376,7 @@ function renderSidebarPosts() {
   list.innerHTML = posts.map(function(p) {
     var tags = p.tags && p.tags.length ? p.tags : (p.category ? [p.category] : []);
     var tagEl = tags.length ? '<span style="font-size:.62rem;font-weight:700;color:var(--acc);background:var(--b50);border:1px solid var(--b100);border-radius:999px;padding:1px 7px;margin-bottom:3px;display:inline-block;">' + tags[0] + '</span>' : '';
-    return '<a href="blog/' + p.id + '.html" style="display:block;text-decoration:none;padding:8px 0;border-bottom:1px solid var(--brd);" onmouseover="this.style.opacity=\'.75\'" onmouseout="this.style.opacity=\'1\'">'
+    return '<a href="/blog/' + p.id + '.html" style="display:block;text-decoration:none;padding:8px 0;border-bottom:1px solid var(--brd);" onmouseover="this.style.opacity=\'.75\'" onmouseout="this.style.opacity=\'1\'">'
       + (tagEl ? '<div>' + tagEl + '</div>' : '')
       + '<div style="font-size:.82rem;font-weight:600;color:var(--txt);line-height:1.35;margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">' + p.title + '</div>'
       + '<div style="font-size:.7rem;color:var(--txt-s);margin-top:3px;">' + formatPostDate(p.date) + '</div>'
