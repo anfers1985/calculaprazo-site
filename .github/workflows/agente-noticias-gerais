@@ -1,0 +1,41 @@
+name: Agente Notícias Gerais
+
+on:
+  schedule:
+    - cron: '0 13 * * 1-5'   # 10h da manhã em Brasília
+  workflow_dispatch:
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências
+        run: pip install requests python-slugify
+
+      - name: Executar Agente Notícias Gerais
+        env:
+          OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY }}
+        run: python scripts/agentes/agente_noticias_gerais.py
+
+      - name: Publicar no GitHub
+        run: |
+          git config user.name "Agente Notícias Gerais"
+          git config user.email "bot@calculaprazo.com.br"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "Nenhuma mudança para commitar."
+          else
+            git commit -m "Notícias Gerais: $(date '+%d/%m/%Y %H:%M')"
+            git push
+          fi
