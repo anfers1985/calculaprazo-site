@@ -546,6 +546,16 @@ async function generatePostHTML(p) {
        ${p.imageCaption ? `<p class="post-cover-caption">${p.imageCaption}</p>` : ''}`
     : '';
 
+  // Tags badges HTML
+  const tagsArr  = (p.tags && Array.isArray(p.tags) && p.tags.length > 0) ? p.tags : [p.category];
+  const tagsJson = JSON.stringify(tagsArr);
+  const tagsBadges = tagsArr.map(t =>
+    `<span style="display:inline-block;padding:3px 12px;border-radius:999px;` +
+    `font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;` +
+    `background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);` +
+    `border:1px solid rgba(255,255,255,.25);margin-right:5px;margin-bottom:4px;">${t}</span>`
+  ).join('');
+
   // Fetch the template
   let template = '';
   try {
@@ -562,6 +572,8 @@ async function generatePostHTML(p) {
     .replace(/{{SLUG}}/g,           p.id)
     .replace(/{{CATEGORY}}/g,       p.category)
     .replace(/{{CATEGORY_LABEL}}/g, catLabels[p.category] || p.category)
+    .replace(/{{TAGS_BADGES}}/g,    tagsBadges)
+    .replace(/{{TAGS_JSON}}/g,      tagsJson)
     .replace(/{{DATE}}/g,           p.date)
     .replace(/{{DATE_BR}}/g,        dateBR)
     .replace(/{{CONTENT}}/g,        p.content)
