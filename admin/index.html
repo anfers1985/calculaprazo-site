@@ -549,7 +549,7 @@ async function generatePostHTML(p) {
   // Fetch the template
   let template = '';
   try {
-    const r = await fetch('../blog/POST_TEMPLATE.html');
+    const r = await fetch('/blog/POST_TEMPLATE.html');
     template = await r.text();
   } catch(e) {
     toast('Erro ao carregar template. Certifique-se que POST_TEMPLATE.html está na pasta /blog/', 'err');
