@@ -1,8 +1,8 @@
-name: Agente Noticias
+name: Agente MPT
 
 on:
   schedule:
-    - cron: '0 16 * * 1-5'
+    - cron: '0 10 * * 1-5'   # 07h da manhã em Brasília, dias úteis
   workflow_dispatch:
 
 jobs:
@@ -23,19 +23,19 @@ jobs:
       - name: Instalar dependências
         run: pip install requests python-slugify
 
-      - name: Executar agente Noticias
+      - name: Executar Agente MPT
         env:
           OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY }}
-        run: python scripts/agentes/agente_noticias.py
+        run: python scripts/agentes/agente_mpt.py
 
       - name: Publicar no GitHub
         run: |
-          git config user.name "Agente Noticias"
+          git config user.name "Agente MPT"
           git config user.email "bot@calculaprazo.com.br"
           git add -A
           if git diff --staged --quiet; then
             echo "Nenhuma mudança para commitar."
           else
-            git commit -m "Noticias: $(date '+%d/%m/%Y %H:%M')"
+            git commit -m "MPT: $(date '+%d/%m/%Y %H:%M')"
             git push
           fi

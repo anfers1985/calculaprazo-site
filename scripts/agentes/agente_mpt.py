@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Agente TRT — Analista Estratégico de Relações Trabalhistas e Auditor Jurídico
+Agente MPT — Analista Estratégico de Relações Trabalhistas e Auditor Jurídico
 Foco: Risco Jurídico, Impacto Financeiro, Conformidade Trabalhista
 """
 import os, json, re, requests, random, time
@@ -25,16 +25,13 @@ Nunca use linguagem genérica ou acadêmica.
 """
 
 SOURCES = [
-    {"nome": "TRT-4 RS", "url": "https://www.trt4.jus.br/portais/trt4/modulos/noticias/todas/0"},
-    {"nome": "TRT-12 SC", "url": "https://portal.trt12.jus.br/noticias"},
-    {"nome": "TRT-9 PR", "url": "https://www.trt9.jus.br/portal/noticias.xhtml"},
-    {"nome": "TRT-2 SP", "url": "https://ww2.trt2.jus.br/noticias/noticias"},
-    {"nome": "TRT-15 SP", "url": "https://trt15.jus.br/noticias/maisnoticias"},
-    {"nome": "TRT-1 RJ", "url": "https://trt1.jus.br/web/guest/ultimas-noticias"},
-    {"nome": "TRT-5 BA", "url": "https://www.trt5.jus.br/noticias"},
-    {"nome": "TRT-3 MG", "url": "https://portal.trt3.jus.br/internet/conheca-o-trt/comunicacao/noticias-juridicas"},
-    {"nome": "TRT-6 PE", "url": "https://www.trt6.jus.br/portal/noticias"},
-    {"nome": "TRT-10 DF", "url": "https://www.trt10.jus.br/ascom/?pagina=consulta_noticias_internet.php&chk_materia_juridica=S&idTRT10M=196"},
+    {"nome": "CNMP - Notícias", "url": "https://www.cnmp.mp.br/portal/noticias?o=date&t[]="},
+    {"nome": "PRT-12 MPT SC", "url": "https://www.prt12.mpt.mp.br/informe-se/noticias-do-mpt-sc"},
+    {"nome": "PRT-1 MPT RJ", "url": "https://www.prt1.mpt.mp.br/informe-se/noticias-do-mpt-rj"},
+    {"nome": "PRT-2 MPT SP", "url": "https://www.prt2.mpt.mp.br/informe-se/noticias-do-mpt-sp"},
+    {"nome": "PRT-4 MPT RS", "url": "https://www.prt4.mpt.mp.br/informe-se/noticias-do-mpt-rs"},
+    {"nome": "PRT-3 MPT MG", "url": "https://www.prt3.mpt.mp.br/comunicacao/noticias-do-mpt-mg"},
+    {"nome": "PRT-5 MPT BA", "url": "https://www.prt5.mpt.mp.br/informe-se/noticias-do-mpt-ba"},
 ]
 
 class TextExtractor(HTMLParser):
@@ -81,7 +78,7 @@ Conteúdo coletado de {fonte_nome} hoje:
 {conteudo[:1600]}
 ---
 
-Existe decisão ou notícia das últimas 24-72 horas com impacto em risco jurídico, condenação, multa ou conformidade trabalhista?
+Existe fato concreto das últimas 24-72 horas com impacto em risco jurídico, multa, conformidade ou custo trabalhista?
 Responda APENAS com JSON:
 {{"relevante": true/false, "motivo": "1 frase curta", "tema": "tema principal"}}
 """
@@ -167,15 +164,15 @@ def salvar_post(dados, fonte_nome):
         with open("blog/POST_TEMPLATE.html", encoding="utf-8") as f:
             template = f.read()
 
-        tags = dados.get("tags", ["TRT", "Jurisprudência"])
+        tags = dados.get("tags", ["MPT", "Conformidade"])
         tags_json = json.dumps(tags, ensure_ascii=False)
-        first_tag = tags[0] if tags else "TRT"
+        first_tag = tags[0] if tags else "MPT"
 
         html = (template
             .replace("{{TITLE}}", dados["title"])
             .replace("{{DESCRIPTION}}", dados["excerpt"])
             .replace("{{SLUG}}", slug)
-            .replace("{{CATEGORY}}", "jurisprudencia")
+            .replace("{{CATEGORY}}", "legislacao")
             .replace("{{CATEGORY_LABEL}}", first_tag)
             .replace("{{TAGS_BADGES}}", "".join(f'<span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">{t}</span>' for t in tags))
             .replace("{{TAGS_JSON}}", tags_json)
@@ -199,7 +196,7 @@ def salvar_post(dados, fonte_nome):
         if not any(p["id"] == slug for p in posts):
             posts.insert(0, {
                 "id": slug, "title": dados["title"],
-                "category": "jurisprudencia", "tags": tags,
+                "category": "legislacao", "tags": tags,
                 "excerpt": dados["excerpt"], "image": "",
                 "imageCaption": "", "date": data_str,
                 "content": dados["content"],
@@ -215,11 +212,11 @@ def salvar_post(dados, fonte_nome):
 
 
 def main():
-    print(f"\nAgente TRT — {HOJE.strftime('%d/%m/%Y')} [ANALISTA ESTRATÉGICO]")
+    print(f"\nAgente MPT — {HOJE.strftime('%d/%m/%Y')} [ANALISTA ESTRATÉGICO]")
     print("=" * 90)
 
     random.seed(HOJE.year * 10000 + HOJE.month * 100 + HOJE.day)
-    fontes_hoje = random.sample(SOURCES, min(10, len(SOURCES)))   # aumentado para 10
+    fontes_hoje = random.sample(SOURCES, len(SOURCES))
 
     publicados = 0
     for fonte in fontes_hoje:
@@ -242,7 +239,8 @@ def main():
         publicados += 1
         time.sleep(5)
 
-    print(f"\nTotal publicado: {publicados} boletim(s) técnico(s) dos TRTs")
+    print(f"\nTotal publicado: {publicados} boletim(s) técnico(s) do MPT")
+
 
 if __name__ == "__main__":
     main()

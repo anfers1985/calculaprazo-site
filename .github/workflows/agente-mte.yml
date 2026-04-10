@@ -1,8 +1,8 @@
-name: Agente MPT e MTE
+name: Agente MTE
 
 on:
   schedule:
-    - cron: '0 14 * * 1-5'
+    - cron: '30 10 * * 1-5'   # 07h30 da manhã em Brasília
   workflow_dispatch:
 
 jobs:
@@ -23,19 +23,19 @@ jobs:
       - name: Instalar dependências
         run: pip install requests python-slugify
 
-      - name: Executar agente MPT/MTE
+      - name: Executar Agente MTE
         env:
           OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY }}
-        run: python scripts/agentes/agente_mpt_mte.py
+        run: python scripts/agentes/agente_mte.py
 
       - name: Publicar no GitHub
         run: |
-          git config user.name "Agente MPT-MTE"
+          git config user.name "Agente MTE"
           git config user.email "bot@calculaprazo.com.br"
           git add -A
           if git diff --staged --quiet; then
             echo "Nenhuma mudança para commitar."
           else
-            git commit -m "MPT/MTE: $(date '+%d/%m/%Y %H:%M')"
+            git commit -m "MTE: $(date '+%d/%m/%Y %H:%M')"
             git push
           fi

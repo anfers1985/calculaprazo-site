@@ -1,8 +1,8 @@
-name: Agente TRT
+name: Agente Notícias Gerais
 
 on:
   schedule:
-    - cron: '0 11 * * 1-5'   # 08h da manhã em Brasília, dias úteis
+    - cron: '0 13 * * 1-5'   # 10h da manhã em Brasília
   workflow_dispatch:
 
 jobs:
@@ -23,19 +23,19 @@ jobs:
       - name: Instalar dependências
         run: pip install requests python-slugify
 
-      - name: Executar Agente TRT
+      - name: Executar Agente Notícias Gerais
         env:
           OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY }}
-        run: python scripts/agentes/agente_trt.py
+        run: python scripts/agentes/agente_noticias_gerais.py
 
       - name: Publicar no GitHub
         run: |
-          git config user.name "Agente TRT"
+          git config user.name "Agente Notícias Gerais"
           git config user.email "bot@calculaprazo.com.br"
           git add -A
           if git diff --staged --quiet; then
             echo "Nenhuma mudança para commitar."
           else
-            git commit -m "TRT: $(date '+%d/%m/%Y %H:%M')"
+            git commit -m "Notícias Gerais: $(date '+%d/%m/%Y %H:%M')"
             git push
           fi

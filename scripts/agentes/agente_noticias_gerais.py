@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Agente TRT — Analista Estratégico de Relações Trabalhistas e Auditor Jurídico
-Foco: Risco Jurídico, Impacto Financeiro, Conformidade Trabalhista
+Agente Notícias Gerais — Analista Estratégico de Relações Trabalhistas e Auditor Jurídico
 """
 import os, json, re, requests, random, time
 from datetime import date, timedelta
@@ -21,20 +20,15 @@ PROPOSITO = """
 Você é Analista Estratégico de Relações Trabalhistas e Auditor Jurídico atuando como consultor corporativo.
 Estilo: técnico, direto, pragmático e orientado à decisão.
 Foco exclusivo: risco jurídico, impacto financeiro, conformidade trabalhista e eficiência operacional.
-Nunca use linguagem genérica ou acadêmica.
 """
 
 SOURCES = [
-    {"nome": "TRT-4 RS", "url": "https://www.trt4.jus.br/portais/trt4/modulos/noticias/todas/0"},
-    {"nome": "TRT-12 SC", "url": "https://portal.trt12.jus.br/noticias"},
-    {"nome": "TRT-9 PR", "url": "https://www.trt9.jus.br/portal/noticias.xhtml"},
-    {"nome": "TRT-2 SP", "url": "https://ww2.trt2.jus.br/noticias/noticias"},
-    {"nome": "TRT-15 SP", "url": "https://trt15.jus.br/noticias/maisnoticias"},
-    {"nome": "TRT-1 RJ", "url": "https://trt1.jus.br/web/guest/ultimas-noticias"},
-    {"nome": "TRT-5 BA", "url": "https://www.trt5.jus.br/noticias"},
-    {"nome": "TRT-3 MG", "url": "https://portal.trt3.jus.br/internet/conheca-o-trt/comunicacao/noticias-juridicas"},
-    {"nome": "TRT-6 PE", "url": "https://www.trt6.jus.br/portal/noticias"},
-    {"nome": "TRT-10 DF", "url": "https://www.trt10.jus.br/ascom/?pagina=consulta_noticias_internet.php&chk_materia_juridica=S&idTRT10M=196"},
+    {"nome": "Contábeis - Trabalhista", "url": "https://www.contabeis.com.br/conteudo/trabalhista/"},
+    {"nome": "Contábeis - Previdência", "url": "https://www.contabeis.com.br/conteudo/previdencia/"},
+    {"nome": "G1 - Trabalho e Carreira", "url": "https://g1.globo.com/trabalho-e-carreira/"},
+    {"nome": "Senado - Direitos Trabalhistas", "url": "https://www12.senado.leg.br/noticias/tags/Direitos%20Trabalhistas"},
+    {"nome": "Câmara - CLT", "url": "https://www.camara.leg.br/noticias/ultimas/tags?tag=Consolida%C3%A7%C3%A3o%20das%20Leis%20do%20Trabalho%20(CLT)"},
+    {"nome": "G1 - Ministério do Trabalho", "url": "https://g1.globo.com/tudo-sobre/ministerio-do-trabalho/"},
 ]
 
 class TextExtractor(HTMLParser):
@@ -81,7 +75,7 @@ Conteúdo coletado de {fonte_nome} hoje:
 {conteudo[:1600]}
 ---
 
-Existe decisão ou notícia das últimas 24-72 horas com impacto em risco jurídico, condenação, multa ou conformidade trabalhista?
+Existe fato concreto das últimas 24-72 horas com impacto em risco jurídico, conformidade ou custo trabalhista?
 Responda APENAS com JSON:
 {{"relevante": true/false, "motivo": "1 frase curta", "tema": "tema principal"}}
 """
@@ -167,15 +161,15 @@ def salvar_post(dados, fonte_nome):
         with open("blog/POST_TEMPLATE.html", encoding="utf-8") as f:
             template = f.read()
 
-        tags = dados.get("tags", ["TRT", "Jurisprudência"])
+        tags = dados.get("tags", ["Notícia", "Trabalhista"])
         tags_json = json.dumps(tags, ensure_ascii=False)
-        first_tag = tags[0] if tags else "TRT"
+        first_tag = tags[0] if tags else "Notícia"
 
         html = (template
             .replace("{{TITLE}}", dados["title"])
             .replace("{{DESCRIPTION}}", dados["excerpt"])
             .replace("{{SLUG}}", slug)
-            .replace("{{CATEGORY}}", "jurisprudencia")
+            .replace("{{CATEGORY}}", "noticia")
             .replace("{{CATEGORY_LABEL}}", first_tag)
             .replace("{{TAGS_BADGES}}", "".join(f'<span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">{t}</span>' for t in tags))
             .replace("{{TAGS_JSON}}", tags_json)
@@ -199,7 +193,7 @@ def salvar_post(dados, fonte_nome):
         if not any(p["id"] == slug for p in posts):
             posts.insert(0, {
                 "id": slug, "title": dados["title"],
-                "category": "jurisprudencia", "tags": tags,
+                "category": "noticia", "tags": tags,
                 "excerpt": dados["excerpt"], "image": "",
                 "imageCaption": "", "date": data_str,
                 "content": dados["content"],
@@ -215,11 +209,11 @@ def salvar_post(dados, fonte_nome):
 
 
 def main():
-    print(f"\nAgente TRT — {HOJE.strftime('%d/%m/%Y')} [ANALISTA ESTRATÉGICO]")
+    print(f"\nAgente Notícias Gerais — {HOJE.strftime('%d/%m/%Y')} [ANALISTA ESTRATÉGICO]")
     print("=" * 90)
 
     random.seed(HOJE.year * 10000 + HOJE.month * 100 + HOJE.day)
-    fontes_hoje = random.sample(SOURCES, min(10, len(SOURCES)))   # aumentado para 10
+    fontes_hoje = random.sample(SOURCES, len(SOURCES))
 
     publicados = 0
     for fonte in fontes_hoje:
@@ -242,7 +236,8 @@ def main():
         publicados += 1
         time.sleep(5)
 
-    print(f"\nTotal publicado: {publicados} boletim(s) técnico(s) dos TRTs")
+    print(f"\nTotal publicado: {publicados} boletim(s) de Notícias Gerais")
+
 
 if __name__ == "__main__":
     main()
