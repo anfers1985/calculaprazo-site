@@ -100,36 +100,56 @@ def gerar_artigo(conteudo, tema, fonte_nome):
 
 Conteúdo real de {fonte_nome}:
 ---
-{conteudo[:3200]}
+{conteudo[:3000]}
 ---
 
 Tema: {tema}
 
-Gere um boletim técnico direto e pragmático:
+Gere um boletim técnico direto e pragmático no formato abaixo.
 
 **Título** (curto e objetivo)
-**Resumo Executivo** (1 linha com o impacto principal)
-**Análise Técnica** (com número da norma, portaria ou decreto quando existir)
-**Impacto Prático** (risco jurídico + financeiro quando possível)
-**Recomendação de Ação** (o que a empresa deve fazer agora)
+**Resumo Executivo** (1 linha)
+**Análise Técnica**
+**Impacto Prático**
+**Recomendação de Ação**
 
-Estilo: técnico, direto, pragmático. Sem enrolação.
-Responda APENAS com JSON válido.
+Estilo: técnico, direto, pragmático.
+
+Responda APENAS com JSON válido e completo:
+{{
+  "title": "título objetivo até 65 caracteres",
+  "excerpt": "resumo até 155 caracteres",
+  "tags": ["tag1", "tag2", "tag3"],
+  "content": "HTML completo com <h2>, <p>, <ul>, <strong>..."
+}}
 """
     try:
         r = requests.post(
             "https://openrouter.ai/api/v1/chat/completions",
             headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
-            json={"model": MODEL, "messages": [{"role":"user","content":prompt}], "max_tokens":2800},
-            timeout=150,
+            json={"model": MODEL, "messages": [{"role":"user","content":prompt}], "max_tokens":3000, "temperature":0.3},
+            timeout=180,
         )
-        raw = r.json()["choices"][0]["message"]["content"]
-        raw = re.sub(r"^```json\s*|\s*```$", "", raw.strip())
-        return json.loads(raw)
+        
+        raw = r.json()["choices"][0]["message"]["content"].strip()
+        
+        raw = re.sub(r"^```json\s*", "", raw)
+        raw = re.sub(r"\s*```$", "", raw)
+        raw = re.sub(r"[\n\r]+", " ", raw)
+        
+        dados = json.loads(raw)
+        
+        if not dados.get("title"):
+            dados["title"] = f"Atualização {fonte_nome} - {HOJE.strftime('%d/%m')}"
+        if not dados.get("excerpt"):
+            dados["excerpt"] = tema[:120] if tema else "Atualização importante"
+        if not dados.get("content"):
+            dados["content"] = "<p>Conteúdo técnico gerado automaticamente.</p>"
+           
+        return dados
     except Exception as e:
         print(f"  Erro ao gerar artigo: {e}")
         return None
-
 
 def salvar_post(dados, fonte_nome):
     try:
