@@ -755,7 +755,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   box-sizing: border-box;
 }
 .ad-container.ad-rect {
-  min-height: 280px;       /* para formatos retângulo */
+  min-height: 0;
   border: none;
   background: transparent;
   padding: 12px 0;
@@ -793,10 +793,10 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 /* mobile: uma coluna, sem anúncios empilhados */
 @media (max-width: 768px) {
-  .ad-container { min-height: 60px; }
-  .ad-container.ad-rect { min-height: 60px; }
-  .ad-placeholder { min-height: 58px; }
-  .ad-placeholder.rect { min-height: 58px; max-width: 100%; }
+  .ad-container { min-height: 0; }
+  .ad-container.ad-rect { min-height: 0; }
+  .ad-placeholder { min-height: 0; }
+  .ad-placeholder.rect { min-height: 0; max-width: 100%; }
   .ad-desktop-only { display: none !important; }  /* oculta ad extra no mobile */
 }
 
@@ -1046,7 +1046,10 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .article-body table td { padding:8px 12px; border-bottom:1px solid var(--brd); }
 .article-body table tr:nth-child(even) td { background:var(--b50); }
 
-.ad-block { margin: 16px 0; text-align:center; }
+.ad-block { margin: 0; text-align:center; }
+.ad-block:empty { display:none; }
+.ad-block ins[data-ad-status="unfilled"],
+.ad-block ins:not([data-ad-status]) { display:none !important; height:0 !important; }
 
 .post-cta {
   background: linear-gradient(135deg, var(--b900), var(--b700));
@@ -1093,6 +1096,10 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   .post-cta { padding:20px; }
   .post-cta-btns { flex-direction:column; }
 }
+
+/* ── AdSense: colapsa blocos vazios até aprovação ── */
+ins.adsbygoogle:not([data-ad-status="filled"]) { min-height: 0 !important; }
+ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !important; }
 </style>
 </head>
 <body>
@@ -1188,9 +1195,9 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
       <!-- Cover image -->
       {{COVER_IMAGE_HTML}}
 
-      <!-- Ad: topo do artigo -->
-      <div class="ad-block">
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_BLOG_TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <!-- Ad: topo do artigo (mostra apenas quando AdSense aprovado) -->
+      <div class="ad-block" id="ad-blog-top" style="overflow:hidden;">
+        <ins class="adsbygoogle" style="display:block;min-height:0;" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_BLOG_TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       </div>
 
