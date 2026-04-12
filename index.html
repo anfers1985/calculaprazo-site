@@ -881,7 +881,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .ad-sidebar-slot strong { font-size: .72rem; font-weight: 700; color: #64748B; }
 /* Mostra lateral apenas quando há espaço suficiente */
 @media(min-width:1400px){
-  .ad-sidebar-wrap { display: none !important; }  /* hidden until AdSense approved */
+  .ad-sidebar-wrap { display: block; }
 }
 
 
@@ -1014,15 +1014,32 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 <div class="ad-sidebar-wrap ad-sidebar-left" id="ad-sidebar-left">
   <div class="ad-sidebar-slot">
     <ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_SIDEBAR_LEFT"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 </div>
 <div class="ad-sidebar-wrap ad-sidebar-right" id="ad-sidebar-right">
   <div class="ad-sidebar-slot">
     <ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_SIDEBAR_RIGHT"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 </div>
+<script>
+(function() {
+  function initSidebarAds() {
+    var left  = document.getElementById('ad-sidebar-left');
+    var right = document.getElementById('ad-sidebar-right');
+    if (left && getComputedStyle(left).display !== 'none') {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    }
+    if (right && getComputedStyle(right).display !== 'none') {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSidebarAds);
+  } else {
+    initSidebarAds();
+  }
+})();
+</script>
 
 <header id="hdr">
   <div class="hdr-inner">
