@@ -1,125 +1,127 @@
 # -*- coding: utf-8 -*-
 """
-Gerador Manual / Fallback de Posts — CalculaPrazo
-Versão atualizada para funcionar com os novos agentes
+gerar_posts.py — Gerador Manual / Fallback de Posts — CalculaPrazo
+Integrado ao agente_base.py:
+  - Validacao de qualidade obrigatorio
+  - Verificacao de duplicatas
+  - Atualiza data/posts.json e sitemap.xml
+  - Adiciona source_url e nota de fonte
+  - Usa taxonomia de categorias padronizada
+Uso: python scripts/gerar_posts.py
 """
-import os, json, re, requests, random
+import os, json, re, requests, random, sys
 from datetime import date
 from slugify import slugify
-from html.parser import HTMLParser
 
-API_KEY = os.environ["OPENROUTER_KEY"]
-MODEL   = "google/gemini-2.5-flash"   # ← Atualizado
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'agentes'))
+from agente_base import validar_qualidade, is_duplicata, salvar_post, HOJE, CATEGORIAS_VALIDAS
 
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (compatible; CalculaPrazoBot/1.0; +https://calculaprazo.com.br)",
-    "Accept-Language": "pt-BR,pt;q=0.9",
-}
+API_KEY = os.environ.get("OPENROUTER_KEY", "")
+MODEL   = "google/gemini-2.5-flash"
 
-# =============================================================
-# BANCO DE TEMAS (mantido, mas reduzido)
-# =============================================================
+if not API_KEY:
+    print("OPENROUTER_KEY nao definida.")
+    sys.exit(1)
+
 BANCO_TEMAS = [
-    {"cat": "jurisprudencia", "tema": "horas extras, controle de jornada e reflexos"},
-    {"cat": "jurisprudencia", "tema": "reconhecimento de vínculo empregatício"},
-    {"cat": "pratica", "tema": "rescisão sem justa causa — cálculos completos"},
-    {"cat": "pratica", "tema": "demissão por justa causa — requisitos e riscos"},
-    {"cat": "legislacao", "tema": "atualizações do MTE e portarias recentes"},
-    {"cat": "esocial", "tema": "principais erros no eSocial e FGTS Digital"},
-    {"cat": "folha", "tema": "cálculo de 13º salário e férias com horas extras"},
+    {"cat": "jurisprudencia-tst",   "tema": "horas extras habituais e reflexos em verbas rescisorias — posicao atual do TST",             "fonte": "TST — Tribunal Superior do Trabalho",      "fonte_url": "https://www.tst.jus.br/jurisprudencia"},
+    {"cat": "jurisprudencia-tst",   "tema": "reconhecimento de vinculo empregaticio para trabalhadores de plataformas digitais",           "fonte": "TST — Tribunal Superior do Trabalho",      "fonte_url": "https://www.tst.jus.br/web/guest/noticias"},
+    {"cat": "jurisprudencia-trts",  "tema": "teletrabalho: controle de jornada e horas extras — decisoes recentes dos TRTs",              "fonte": "CSJT — Conselho Superior da Justica do Trabalho", "fonte_url": "https://www.csjt.jus.br/web/csjt/noticias-dos-trts"},
+    {"cat": "orientacoes-praticas", "tema": "rescisao sem justa causa — calculo completo das verbas e prazo de pagamento",                "fonte": "CLT — Consolidacao das Leis do Trabalho", "fonte_url": "https://www.planalto.gov.br/ccivil_03/decreto-lei/del5452.htm"},
+    {"cat": "orientacoes-praticas", "tema": "demissao por justa causa — requisitos legais, provas e riscos para o empregador",            "fonte": "CLT — Art. 482 e jurisprudencia TST",      "fonte_url": "https://www.planalto.gov.br/ccivil_03/decreto-lei/del5452.htm"},
+    {"cat": "orientacoes-praticas", "tema": "calculo de 13 salario proporcional com horas extras habituais — Sumula 264 TST",             "fonte": "Sumula 264/TST",                           "fonte_url": "https://www.tst.jus.br/sumulas"},
+    {"cat": "legislacao-normas",    "tema": "portarias recentes do MTE: obrigacoes e impacto para o departamento pessoal",                "fonte": "Ministerio do Trabalho e Emprego",         "fonte_url": "https://www.gov.br/trabalho-e-emprego/pt-br/noticias-e-conteudo"},
+    {"cat": "esocial-fgts-digital", "tema": "principais erros no envio de eventos do eSocial e como corrigir antes da multa",            "fonte": "Portal eSocial — gov.br",                 "fonte_url": "https://www.gov.br/esocial"},
+    {"cat": "esocial-fgts-digital", "tema": "FGTS Digital: como evitar pendencias e multas no recolhimento mensal",                       "fonte": "FGTS Digital — Caixa Economica Federal",  "fonte_url": "https://fgtsdigital.caixa.gov.br"},
+    {"cat": "saude-seguranca",      "tema": "NR-1 revisada: como implementar o PGR e evitar multas da fiscalizacao do MTE",              "fonte": "NR-1 — Portaria MTE 1.419/2022",           "fonte_url": "https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/ctpp-nrs/normas-regulamentadoras-nrs"},
+    {"cat": "noticias-mte-mpt",     "tema": "fiscalizacao do MPT em assedio moral organizacional: o que as empresas precisam saber",      "fonte": "Ministerio Publico do Trabalho",           "fonte_url": "https://mpt.mp.br/pgt/noticias"},
+    {"cat": "orientacoes-praticas", "tema": "ferias coletivas: regras, comunicacao ao MTE e impacto na folha de pagamento",               "fonte": "CLT — Arts. 139 a 141",                   "fonte_url": "https://www.planalto.gov.br/ccivil_03/decreto-lei/del5452.htm"},
 ]
 
-def gerar_post(tema):
+PROPOSITO = """
+Voce e um advogado trabalhista especialista e redator juridico do CalculaPrazo.
+Publico-alvo: advogados trabalhistas, profissionais de RH e contadores brasileiros.
+Estilo: tecnico, preciso, direto, orientado a pratica.
+REGRAS: citar base legal exata (artigo, lei, sumula, portaria); linguagem juridica profissional;
+minimo 400 palavras; concluir com impacto pratico e recomendacao acionavel.
+"""
+
+def gerar_artigo(tema_obj):
     prompt = f"""
-Você é Analista Estratégico de Relações Trabalhistas e Auditor Jurídico.
+{PROPOSITO}
 
-Escreva um boletim técnico direto e pragmático sobre:
+Tema: {tema_obj['tema']}
+Fonte de referencia: {tema_obj['fonte']}
+Data: {HOJE.strftime('%d/%m/%Y')}
 
-Tema: {tema['tema']}
+Redija artigo juridico completo com esta estrutura HTML:
 
-Público: advogados trabalhistas, RH e contadores.
+<h2>Contexto</h2><p>[situacao juridica atual e norma aplicavel]</p>
+<h2>Fundamentos Legais</h2><p>[base legal com numero do artigo/lei/sumula]</p><ul><li>...</li></ul>
+<h2>Situacoes Praticas e Riscos</h2><p>[casos concretos e valores de passivo]</p>
+<h2>Impacto para RH e Departamento Pessoal</h2><p>[acoes concretas e verificaveis]</p>
+<h2>Recomendacao Imediata</h2><p>[acao especifica que o leitor deve tomar agora]</p>
 
-Formato obrigatório:
-**Título** (curto e objetivo)
-**Resumo Executivo** (1 linha)
-**Análise Técnica**
-**Impacto Prático** (risco + financeiro)
-**Recomendação de Ação**
+Minimo 400 palavras. Sem frases genericas.
 
-Estilo: técnico, direto, pragmático. Sem enrolação.
-
-Responda APENAS com JSON válido:
-{{
-  "title": "...",
-  "excerpt": "...",
-  "tags": ["tag1", "tag2", "tag3"],
-  "content": "HTML completo com h2, p, ul, strong..."
-}}
+Responda APENAS com JSON valido:
+{{"title": "titulo tecnico ate 65 chars", "excerpt": "resumo ate 155 chars", "tags": ["Tag1","Tag2","Tag3"], "content": "<h2>Contexto</h2><p>...</p>..."}}
 """
     try:
         r = requests.post(
             "https://openrouter.ai/api/v1/chat/completions",
             headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
-            json={"model": MODEL, "messages": [{"role": "user", "content": prompt}], "max_tokens": 2800},
-            timeout=120,
+            json={"model": MODEL, "messages": [{"role": "user", "content": prompt}], "max_tokens": 3500, "temperature": 0.25},
+            timeout=180,
         )
-        raw = r.json()["choices"][0]["message"]["content"]
-        raw = re.sub(r"^```json\s*|\s*```$", "", raw.strip())
-        return json.loads(raw)
+        raw = r.json()["choices"][0]["message"]["content"].strip()
+        raw = re.sub(r"^```json\s*", "", raw)
+        raw = re.sub(r"\s*```$", "", raw)
+        dados = json.loads(raw)
+        dados.setdefault("title",   f"Orientacao Trabalhista — {HOJE.strftime('%d/%m/%Y')}")
+        dados.setdefault("excerpt", tema_obj["tema"][:120])
+        dados.setdefault("content", "<p>Conteudo em elaboracao.</p>")
+        dados.setdefault("tags",    [tema_obj["cat"]])
+        dados["source_url"] = tema_obj.get("fonte_url", "")
+        return dados
     except Exception as e:
-        print(f"Erro ao gerar post: {e}")
-        return None
-
-
-def salvar_post(dados, tema):
-    try:
-        data_str = date.today().strftime("%Y-%m-%d")
-        slug = slugify(dados["title"])[:60]
-
-        with open("blog/POST_TEMPLATE.html", encoding="utf-8") as f:
-            template = f.read()
-
-        tags = dados.get("tags", [tema["cat"]])
-        first_tag = tags[0] if tags else tema["cat"]
-
-        html = (template
-            .replace("{{TITLE}}", dados["title"])
-            .replace("{{DESCRIPTION}}", dados["excerpt"])
-            .replace("{{SLUG}}", slug)
-            .replace("{{CATEGORY}}", tema["cat"])
-            .replace("{{CATEGORY_LABEL}}", first_tag)
-            .replace("{{TAGS_BADGES}}", "".join(f'<span style="...">{t}</span>' for t in tags))  # ajuste o CSS se necessário
-            .replace("{{TAGS_JSON}}", json.dumps(tags, ensure_ascii=False))
-            .replace("{{DATE}}", data_str)
-            .replace("{{DATE_BR}}", f"{date.today().day} de {['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'][date.today().month-1]} de {date.today().year}")
-            .replace("{{CONTENT}}", dados["content"])
-        )
-
-        with open(f"blog/{slug}.html", "w", encoding="utf-8") as f:
-            f.write(html)
-
-        print(f"✅ Post gerado: {slug}.html")
-        return slug
-    except Exception as e:
-        print(f"Erro ao salvar: {e}")
+        print(f"  Erro ao gerar artigo: {e}")
         return None
 
 
 def main():
-    print(f"\nGerador Manual de Posts — {date.today().strftime('%d/%m/%Y')}")
-    print("=" * 60)
+    print(f"\nGerador Manual de Posts — {HOJE.strftime('%d/%m/%Y')}")
+    print("=" * 65)
 
-    random.seed(date.today().toordinal())
-    temas_dia = random.sample(BANCO_TEMAS, min(3, len(BANCO_TEMAS)))  # reduzido para não sobrecarregar
+    random.seed(HOJE.toordinal())
+    temas_dia = random.sample(BANCO_TEMAS, min(2, len(BANCO_TEMAS)))
 
-    for tema in temas_dia:
-        print(f"\nGerando: {tema['tema'][:60]}...")
-        dados = gerar_post(tema)
-        if dados:
-            salvar_post(dados, tema)
+    publicados = 0
+    for tema_obj in temas_dia:
+        print(f"\n[Tema] {tema_obj['tema'][:65]}...")
 
-    print("\nGerador manual finalizado.")
+        if is_duplicata(tema_obj["tema"], "data/posts.json"):
+            print(f"  Tema similar ja publicado. Pulando.")
+            continue
 
+        dados = gerar_artigo(tema_obj)
+        if not dados:
+            continue
+
+        aprovado, motivo = validar_qualidade(dados, tema_obj["cat"])
+        if not aprovado:
+            print(f"  Reprovado: {motivo} | Titulo: '{dados.get('title','')}'")
+            continue
+
+        if is_duplicata(dados["title"], "data/posts.json"):
+            print(f"  Titulo duplicado: '{dados['title']}'")
+            continue
+
+        sucesso = salvar_post(dados, tema_obj["cat"], tema_obj.get("fonte", "CalculaPrazo"))
+        if sucesso:
+            publicados += 1
+
+    print(f"\nTotal publicado: {publicados} post(s)")
 
 if __name__ == "__main__":
     main()
