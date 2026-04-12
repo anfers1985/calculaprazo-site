@@ -1,22 +1,23 @@
 name: Gerador Fallback de Posts
 
 on:
-  schedule:
-    - cron: '0 14 * * 1-5'   # 11h da manhã em Brasília (depois dos agentes especializados)
-  workflow_dispatch:
+  workflow_dispatch:   # Apenas execução manual (não mais automática)
 
 jobs:
-  publicar:
+  gerar-rascunho:
     runs-on: ubuntu-latest
     permissions:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repositório
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
-      - uses: actions/setup-python@v5
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
@@ -28,7 +29,7 @@ jobs:
           OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY }}
         run: python scripts/gerar_posts.py
 
-      - name: Publicar no GitHub
+      - name: Commit para branch de rascunho
         run: |
           git config user.name "Gerador Fallback"
           git config user.email "bot@calculaprazo.com.br"
@@ -36,6 +37,8 @@ jobs:
           if git diff --staged --quiet; then
             echo "Nenhuma mudança para commitar."
           else
-            git commit -m "Fallback: Posts Gerados Manualmente $(date '+%d/%m/%Y %H:%M')"
-            git push
+            git checkout -B "draft/agentes"
+            git commit -m "[RASCUNHO] Fallback: $(date '+%d/%m/%Y %H:%M') — aguardando revisão"
+            git push origin "draft/agentes" --force
+            echo "Rascunho publicado em draft/agentes. Abra um PR para main após revisão."
           fi

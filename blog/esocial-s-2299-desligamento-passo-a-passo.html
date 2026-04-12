@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index, follow">
-<title>eSocial S-2299: Como Enviar o Evento de Desligamento Corretamente | CalculaPrazo</title>
-<meta name="description" content="Guia prático para envio do S-2299, com prazos, campos obrigatórios, motivos de desligamento e os erros mais comuns que causam rejeição no eSocial.">
+<title>eSocial S-2299: Guia Completo do Evento de Desligamento em 2026 | CalculaPrazo</title>
+<meta name="description" content="Tudo sobre o evento S-2299 (Desligamento) no eSocial: prazo de envio, campos obrigatórios, motivos de rescisão, integração com FGTS Digital e erros mais comuns que geram multa.">
 <link id="canonical" rel="canonical" href="https://calculaprazo.com.br/blog/esocial-s-2299-desligamento-passo-a-passo">
-<meta property="og:title" content="eSocial S-2299: Como Enviar o Evento de Desligamento Corretamente">
-<meta property="og:description" content="Guia prático para envio do S-2299, com prazos, campos obrigatórios, motivos de desligamento e os erros mais comuns que causam rejeição no eSocial.">
+<meta property="og:title" content="eSocial S-2299: Guia Completo do Evento de Desligamento em 2026">
+<meta property="og:description" content="Tudo sobre o evento S-2299 (Desligamento) no eSocial: prazo de envio, campos obrigatórios, motivos de rescisão, integração com FGTS Digital e erros mais comuns que geram multa.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://calculaprazo.com.br/blog/esocial-s-2299-desligamento-passo-a-passo">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="CalculaPrazo">
-
+<meta property="og:image" content="https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=1200&q=80">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Article","headline":"eSocial S-2299: Como Enviar o Evento de Desligamento Corretamente","description":"Guia prático para envio do S-2299, com prazos, campos obrigatórios, motivos de desligamento e os erros mais comuns que causam rejeição no eSocial.","url":"https://calculaprazo.com.br/blog/esocial-s-2299-desligamento-passo-a-passo","publisher":{"@type":"Organization","name":"CalculaPrazo","url":"https://calculaprazo.com.br"},"datePublished":"2026-04-07","dateModified":"2026-04-07","inLanguage":"pt-BR"}
+{"@context":"https://schema.org","@type":"Article","headline":"eSocial S-2299: Guia Completo do Evento de Desligamento em 2026","description":"Tudo sobre o evento S-2299 (Desligamento) no eSocial: prazo de envio, campos obrigatórios, motivos de rescisão, integração com FGTS Digital e erros mais comuns que geram multa.","url":"https://calculaprazo.com.br/blog/esocial-s-2299-desligamento-passo-a-passo","author":{"@type":"Organization","name":"Equipe Editorial CalculaPrazo","url":"https://calculaprazo.com.br/sobre"},"publisher":{"@type":"Organization","name":"CalculaPrazo","url":"https://calculaprazo.com.br","logo":{"@type":"ImageObject","url":"https://calculaprazo.com.br/og-image.png"}},"datePublished":"2026-04-07","dateModified":"2026-04-07","inLanguage":"pt-BR","mainEntityOfPage":{"@type":"WebPage","@id":"https://calculaprazo.com.br/blog/esocial-s-2299-desligamento-passo-a-passo"},"image":"https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=1200&q=80"}
 </script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3280539734623058" crossorigin="anonymous"></script>
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
@@ -751,11 +751,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   border-top: 1px solid var(--brd);
   border-bottom: 1px solid var(--brd);
   padding: 8px 0;
-  min-height: 90px;        /* reserva espaço — evita layout shift */
+  min-height: 0;           /* sem reserva — colapsa quando sem anuncio */
   box-sizing: border-box;
 }
 .ad-container.ad-rect {
-  min-height: 280px;       /* para formatos retângulo */
+  min-height: 0;
   border: none;
   background: transparent;
   padding: 12px 0;
@@ -769,9 +769,9 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .ad-placeholder {
   width: 100%;
   max-width: 728px;
-  min-height: 88px;
-  background: #f1f5f9;
-  border: 1.5px dashed #CBD5E1;
+  min-height: 0;
+  background: transparent;
+  border: none;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -784,7 +784,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 .ad-placeholder.rect {
   max-width: 336px;
-  min-height: 278px;
+  min-height: 0;
 }
 .ad-placeholder strong {
   font-size: .72rem;
@@ -793,10 +793,10 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 /* mobile: uma coluna, sem anúncios empilhados */
 @media (max-width: 768px) {
-  .ad-container { min-height: 60px; }
-  .ad-container.ad-rect { min-height: 60px; }
-  .ad-placeholder { min-height: 58px; }
-  .ad-placeholder.rect { min-height: 58px; max-width: 100%; }
+  .ad-container { min-height: 0; }
+  .ad-container.ad-rect { min-height: 0; }
+  .ad-placeholder { min-height: 0; }
+  .ad-placeholder.rect { min-height: 0; max-width: 100%; }
   .ad-desktop-only { display: none !important; }  /* oculta ad extra no mobile */
 }
 
@@ -852,9 +852,9 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .ad-sidebar-right { right: 8px; }
 .ad-sidebar-slot {
   width: 160px;
-  min-height: 600px;
-  background: #f1f5f9;
-  border: 1.5px dashed #CBD5E1;
+  min-height: 0;
+  background: transparent;
+  border: none;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -1005,14 +1005,9 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .post-hero-meta { font-size:.82rem; color:rgba(255,255,255,.5); }
 .post-hero-meta strong { color:rgba(255,255,255,.75); }
 
-.post-body-wrap { padding: 48px 0 64px; }
+.post-body-wrap { padding: 20px 0 40px; }
 
-.post-excerpt-block {
-  font-size: 1rem; color: var(--txt-m); line-height: 1.75;
-  border-left: 3px solid var(--acc); padding: 14px 20px;
-  background: var(--b50); border-radius: 0 var(--r) var(--r) 0;
-  margin-bottom: 28px; font-style: italic;
-}
+.post-excerpt-block { display: none; }
 
 .post-cover {
   width: 100%; max-height: 400px; object-fit: cover;
@@ -1051,7 +1046,10 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .article-body table td { padding:8px 12px; border-bottom:1px solid var(--brd); }
 .article-body table tr:nth-child(even) td { background:var(--b50); }
 
-.ad-block { margin: 28px 0; text-align:center; min-height:90px; }
+.ad-block { margin: 0; text-align:center; }
+.ad-block:empty { display:none; }
+.ad-block ins[data-ad-status="unfilled"],
+.ad-block ins:not([data-ad-status]) { display:none !important; height:0 !important; }
 
 .post-cta {
   background: linear-gradient(135deg, var(--b900), var(--b700));
@@ -1094,10 +1092,14 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 @media(max-width:768px){
   .post-hero { padding:32px 0 40px; }
   .post-hero h1 { font-size:1.5rem; }
-  .post-body-wrap { padding:32px 0 48px; }
+  
   .post-cta { padding:20px; }
   .post-cta-btns { flex-direction:column; }
 }
+
+/* ── AdSense: colapsa blocos vazios até aprovação ── */
+ins.adsbygoogle:not([data-ad-status="filled"]) { min-height: 0 !important; }
+ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !important; }
 </style>
 </head>
 <body>
@@ -1108,16 +1110,12 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 <!-- ▸ BANNERS LATERAIS (desktop ≥1400px) -->
 <div class="ad-sidebar-wrap ad-sidebar-left" id="ad-sidebar-left">
   <div class="ad-sidebar-slot">
-    <strong>Publicidade</strong>
-    160×600<br>Desktop
     <ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_SIDEBAR_LEFT"></ins>
 <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 </div>
 <div class="ad-sidebar-wrap ad-sidebar-right" id="ad-sidebar-right">
   <div class="ad-sidebar-slot">
-    <strong>Publicidade</strong>
-    160×600<br>Desktop
     <ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_SIDEBAR_RIGHT"></ins>
 <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
@@ -1178,12 +1176,13 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
         <span>›</span>
         <a href="/#conteudo">Conteúdo</a>
         <span>›</span>
-        <span style="color:rgba(255,255,255,.75);">eSocial</span>
+        <span style="color:rgba(255,255,255,.75);">eSocial e FGTS Digital</span>
       </nav>
-      <div id="post-tags-display" style="margin-bottom:10px;"><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;margin-bottom:4px;">eSocial</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;margin-bottom:4px;">S-2299</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;margin-bottom:4px;">Desligamento</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;margin-bottom:4px;">FGTS Digital</span></div>
-      <h1>eSocial S-2299: Como Enviar o Evento de Desligamento Corretamente</h1>
+      <div id="post-tags-display" style="margin-bottom:10px;"><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">eSocial</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">S-2299</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">Desligamento</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">FGTS Digital</span></div>
+      <h1>eSocial S-2299: Guia Completo do Evento de Desligamento em 2026</h1>
       <div class="post-hero-meta">
-        <strong>CalculaPrazo</strong> · 7 de abril de 2026
+        <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:3px 12px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:8px;">✍️ Equipe Editorial CalculaPrazo</span><br>
+        <strong>Publicado em:</strong> 7 de abril de 2026 &nbsp;·&nbsp; <span style="color:rgba(255,255,255,.4);font-size:.78rem;">Conteúdo informativo — não constitui assessoria jurídica</span>
       </div>
     </div>
   </div>
@@ -1194,27 +1193,66 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   <div class="container">
     <div class="article-wrap">
 
-      <!-- Excerpt highlight -->
-      <div class="post-excerpt-block">Guia prático para envio do S-2299, com prazos, campos obrigatórios, motivos de desligamento e os erros mais comuns que causam rejeição no eSocial.</div>
-
       <!-- Cover image -->
-      
+      <div style="margin-bottom:28px;border-radius:12px;overflow:hidden;max-height:400px;"><img src="https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=1200&q=80" alt="eSocial S-2299: Guia Completo do Evento de Desligamento em 2026" style="width:100%;object-fit:cover;" loading="lazy"></div>
 
-      <!-- Ad: topo do artigo -->
-      <div class="ad-block">
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_BLOG_TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <!-- Ad: topo do artigo (mostra apenas quando AdSense aprovado) -->
+      <div class="ad-block" id="ad-blog-top" style="overflow:hidden;">
+        <ins class="adsbygoogle" style="display:block;min-height:0;" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_BLOG_TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       </div>
 
       <!-- Article content -->
       <article class="article-body">
-        <h2>O que é o S-2299?</h2><p>O S-2299 (Desligamento) é o evento obrigatório no eSocial que comunica o encerramento do vínculo empregatício. Deve ser enviado para qualquer modalidade de desligamento.</p><h2>Prazo de envio</h2><p>Até o dia 15 do mês seguinte ao desligamento ou antes do envio da DCTFWeb do período, o que ocorrer primeiro. Para saque do FGTS, o evento precisa estar com status Processado com Sucesso antes do agendamento.</p><h2>Campos obrigatórios</h2><ul><li><strong>dtDeslig</strong> — data do desligamento no formato AAAA-MM-DD;</li><li><strong>mtvDeslig</strong> — motivo conforme Tabela 19 do eSocial (01 = sem justa causa, 03 = pedido de demissão, 10 = culpa recíproca);</li><li><strong>pensAlim</strong> — informar se há pensão alimentícia descontada;</li><li><strong>verbasResc</strong> — verbas rescisórias detalhadas no S-1200 do mesmo período.</li></ul><h2>Erros mais comuns</h2><p><strong>Data anterior à admissão:</strong> verifique o S-2200 antes. <strong>Motivo incompatível:</strong> a Tabela 19 tem mais de 30 motivos — o erro gera inconsistência no CAGED. <strong>Competência fechada:</strong> reabra com S-1298 antes de enviar o desligamento.</p><h2>Checklist antes de enviar</h2><ul><li>S-2200 processado com sucesso;</li><li>Todos os S-1200 enviados até a competência do desligamento;</li><li>Motivo de desligamento conferido na Tabela 19;</li><li>Homologação agendada apenas após processamento do S-2299.</li></ul>
+        
+<h2>O que é o S-2299</h2>
+<p>O <strong>S-2299 — Desligamento</strong> é o evento do eSocial que comunica ao governo o encerramento do vínculo empregatício. Ele substitui a homologação presencial no sindicato (extinta para contratos acima de 1 ano pela Reforma Trabalhista de 2017) e é pré-requisito para a movimentação do FGTS pelo empregado, para o seguro-desemprego e para a emissão do Termo de Rescisão do Contrato de Trabalho (TRCT) pelo sistema.</p>
+
+<h2>Prazo de envio</h2>
+<p>O S-2299 deve ser transmitido até o <strong>10º dia após a data do desligamento</strong>, nos termos da Resolução do Comitê Gestor do eSocial. O não cumprimento do prazo impede que o empregado movimente o FGTS e pode gerar autuação pela Receita Federal.</p>
+<p><strong>Atenção:</strong> quando o desligamento ocorre com aviso prévio indenizado, a data do desligamento para fins do S-2299 é a <strong>data fim do aviso prévio</strong> (mesmo que o empregado não trabalhe durante o período), não a data da comunicação da dispensa.</p>
+
+<h2>Campos obrigatórios e principais informações</h2>
+<ul>
+  <li><strong>dtDeslig:</strong> data do desligamento (fim do aviso prévio, se indenizado);</li>
+  <li><strong>mtvDeslig:</strong> motivo do desligamento — código do CAGED. Os mais usados: 01 (dispensa sem justa causa), 02 (dispensa com justa causa pelo empregador), 03 (rescisão por parte do empregado — pedido de demissão), 04 (término de contrato por prazo determinado), 10 (rescisão indireta);</li>
+  <li><strong>tpAvPrv:</strong> tipo de aviso prévio — 1 (indenizado pelo empregador), 2 (trabalhado pelo empregado), 3 (indenizado pelo empregado);</li>
+  <li><strong>dtProjFimAv:</strong> data projetada para o fim do aviso (obrigatória quando há aviso prévio);</li>
+  <li><strong>Verbas rescisórias:</strong> informadas no S-1200 (remuneração) do mês da rescisão, com as rubricas específicas de rescisão.</li>
+</ul>
+
+<h2>Integração com o FGTS Digital</h2>
+<p>Desde fevereiro de 2024, o <strong>FGTS Digital</strong> substituiu o SEFIP/GFIP para o recolhimento do FGTS. O S-2299 alimenta automaticamente o FGTS Digital com as informações de desligamento. O empregador deve:</p>
+<ul>
+  <li>Transmitir o S-2299 dentro do prazo;</li>
+  <li>Verificar no FGTS Digital se o débito de rescisão foi gerado corretamente (FGTS do mês + FGTS do aviso prévio indenizado + multa de 40% ou 20%);</li>
+  <li>Realizar o pagamento até a data de vencimento gerada pelo sistema — o prazo é o <strong>décimo dia após o desligamento</strong>.</li>
+</ul>
+
+<h2>Erros mais comuns e como evitar</h2>
+<ul>
+  <li><strong>Data de desligamento incorreta:</strong> usar a data da comunicação da dispensa em vez da data do fim do aviso prévio gera inconsistência no FGTS Digital;</li>
+  <li><strong>Motivo de rescisão errado:</strong> usar código incorreto impede o empregado de sacar o FGTS ou requerer seguro-desemprego;</li>
+  <li><strong>Não informar o tipo de aviso prévio:</strong> campo tpAvPrv é obrigatório quando há aviso — sua omissão causa rejeição do evento;</li>
+  <li><strong>Retificação fora do prazo:</strong> após 10 dias do desligamento, a retificação do S-2299 pode exigir contato com a Receita Federal e pode impactar o acesso do empregado ao FGTS;</li>
+  <li><strong>Não encerrar o vínculo no S-2299 antes de admitir outro empregado no mesmo CPF:</strong> o sistema rejeita S-2200 de novo vínculo se o anterior não foi encerrado.</li>
+</ul>
+
+<h2>Impacto prático para o DP</h2>
+<p>O S-2299 é um dos eventos mais críticos do eSocial porque impacta diretamente os direitos do trabalhador (saque do FGTS e seguro-desemprego). O DP deve criar um checklist de desligamento que inclua: (1) confirmação do motivo da rescisão com o gestor, (2) cálculo da data correta de desligamento considerando o aviso prévio proporcional, (3) transmissão do S-2299 dentro do prazo, (4) verificação do débito no FGTS Digital, (5) entrega do TRCT assinado ao empregado.</p>
+
+<p style="font-size:.78rem;color:#64748B;margin-top:28px;padding-top:12px;border-top:1px solid #E2E8F0;">
+  📌 <strong>Base legal:</strong> Manual de Orientação do eSocial v.S-1.3 (Resolução CCESOCIAL 001/2021); Art. 477, § 6º, CLT (prazo para pagamento das verbas); Lei 8.036/1990 (FGTS); Portaria MTE 671/2021 (CTPS Digital e procedimentos de rescisão); Resolução CJEF/CGFGTS sobre FGTS Digital (2024).
+  <br>🔗 <a href="https://www.gov.br/esocial" target="_blank" rel="noopener" style="color:#2563EB;">Portal eSocial — gov.br</a>
+</p>
+
       </article>
 
-      <!-- Ad: meio do artigo -->
-      <div class="ad-block">
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_BLOG_MID" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+
+      <!-- Disclaimer jurídico -->
+      <div style="background:#FFF7ED;border-left:4px solid #D97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:28px 0;font-size:.82rem;color:#78350F;line-height:1.6;">
+        <strong>⚠️ Aviso legal:</strong> Este conteúdo tem caráter exclusivamente informativo e não constitui assessoria jurídica, contábil ou financeira. Para decisões concretas, consulte sempre um profissional habilitado. As informações refletem o estado da legislação e jurisprudência na data de publicação.
       </div>
 
       <!-- CTA Block -->
@@ -1463,7 +1501,7 @@ document.addEventListener('click', function(e) {
 
 // ── RELATED POSTS ─────────────────────────────
 var THIS_SLUG = 'esocial-s-2299-desligamento-passo-a-passo';
-var THIS_CAT  = 'esocial';
+var THIS_CAT  = 'esocial-fgts-digital';
 var THIS_TAGS = ["eSocial", "S-2299", "Desligamento", "FGTS Digital"];
 
 async function loadRelated() {

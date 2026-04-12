@@ -1,1 +1,11 @@
-/* /index.html 200
+# Cloudflare Pages / Netlify redirect rules
+# Páginas estáticas têm prioridade — NÃO redirecionar para index.html
+/privacidade      /privacidade/index.html  200
+/termos           /termos/index.html       200
+/contato          /contato/index.html      200
+
+# Blog posts (arquivos HTML reais)
+/blog/*           /blog/:splat             200
+
+# SPA fallback — todas as outras rotas vão para index.html
+/*                /index.html              200

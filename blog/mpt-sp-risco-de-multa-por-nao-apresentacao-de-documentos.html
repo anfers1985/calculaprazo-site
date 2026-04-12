@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index, follow">
-<title>MPT-SP: Risco de Multa por Não Apresentação de Documentos | CalculaPrazo</title>
-<meta name="description" content="Empresa BIOGESP multada por não apresentar documentos trabalhistas ao MPT, impactando 1.700 empregados. Alerta para conformidade documental e fiscalização.">
+<title>MPT-SP: Empresa é Multada por Não Apresentar Documentos Trabalhistas à Fiscalização | CalculaPrazo</title>
+<meta name="description" content="O MPT-SP obteve multa diária por descumprimento de ordem judicial de apresentação de documentos trabalhistas. Entenda o que o empregador deve ter disponível em caso de fiscalização.">
 <link id="canonical" rel="canonical" href="https://calculaprazo.com.br/blog/mpt-sp-risco-de-multa-por-nao-apresentacao-de-documentos">
-<meta property="og:title" content="MPT-SP: Risco de Multa por Não Apresentação de Documentos">
-<meta property="og:description" content="Empresa BIOGESP multada por não apresentar documentos trabalhistas ao MPT, impactando 1.700 empregados. Alerta para conformidade documental e fiscalização.">
+<meta property="og:title" content="MPT-SP: Empresa é Multada por Não Apresentar Documentos Trabalhistas à Fiscalização">
+<meta property="og:description" content="O MPT-SP obteve multa diária por descumprimento de ordem judicial de apresentação de documentos trabalhistas. Entenda o que o empregador deve ter disponível em caso de fiscalização.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://calculaprazo.com.br/blog/mpt-sp-risco-de-multa-por-nao-apresentacao-de-documentos">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="CalculaPrazo">
-
+<meta property="og:image" content="https://images.unsplash.com/photo-1568992687947-868a62a9f521?w=1200&q=80">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Article","headline":"MPT-SP: Risco de Multa por Não Apresentação de Documentos","description":"Empresa BIOGESP multada por não apresentar documentos trabalhistas ao MPT, impactando 1.700 empregados. Alerta para conformidade documental e fiscalização.","url":"https://calculaprazo.com.br/blog/mpt-sp-risco-de-multa-por-nao-apresentacao-de-documentos","publisher":{"@type":"Organization","name":"CalculaPrazo","url":"https://calculaprazo.com.br"},"datePublished":"2026-04-10","dateModified":"2026-04-10","inLanguage":"pt-BR"}
+{"@context":"https://schema.org","@type":"Article","headline":"MPT-SP: Empresa é Multada por Não Apresentar Documentos Trabalhistas à Fiscalização","description":"O MPT-SP obteve multa diária por descumprimento de ordem judicial de apresentação de documentos trabalhistas. Entenda o que o empregador deve ter disponível em caso de fiscalização.","url":"https://calculaprazo.com.br/blog/mpt-sp-risco-de-multa-por-nao-apresentacao-de-documentos","author":{"@type":"Organization","name":"Equipe Editorial CalculaPrazo","url":"https://calculaprazo.com.br/sobre"},"publisher":{"@type":"Organization","name":"CalculaPrazo","url":"https://calculaprazo.com.br","logo":{"@type":"ImageObject","url":"https://calculaprazo.com.br/og-image.png"}},"datePublished":"2026-04-08","dateModified":"2026-04-08","inLanguage":"pt-BR","mainEntityOfPage":{"@type":"WebPage","@id":"https://calculaprazo.com.br/blog/mpt-sp-risco-de-multa-por-nao-apresentacao-de-documentos"},"image":"https://images.unsplash.com/photo-1568992687947-868a62a9f521?w=1200&q=80"}
 </script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3280539734623058" crossorigin="anonymous"></script>
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
@@ -755,7 +755,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   box-sizing: border-box;
 }
 .ad-container.ad-rect {
-  min-height: 280px;       /* para formatos retângulo */
+  min-height: 0;
   border: none;
   background: transparent;
   padding: 12px 0;
@@ -793,10 +793,10 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 /* mobile: uma coluna, sem anúncios empilhados */
 @media (max-width: 768px) {
-  .ad-container { min-height: 60px; }
-  .ad-container.ad-rect { min-height: 60px; }
-  .ad-placeholder { min-height: 58px; }
-  .ad-placeholder.rect { min-height: 58px; max-width: 100%; }
+  .ad-container { min-height: 0; }
+  .ad-container.ad-rect { min-height: 0; }
+  .ad-placeholder { min-height: 0; }
+  .ad-placeholder.rect { min-height: 0; max-width: 100%; }
   .ad-desktop-only { display: none !important; }  /* oculta ad extra no mobile */
 }
 
@@ -1046,7 +1046,10 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .article-body table td { padding:8px 12px; border-bottom:1px solid var(--brd); }
 .article-body table tr:nth-child(even) td { background:var(--b50); }
 
-.ad-block { margin: 16px 0; text-align:center; }
+.ad-block { margin: 0; text-align:center; }
+.ad-block:empty { display:none; }
+.ad-block ins[data-ad-status="unfilled"],
+.ad-block ins:not([data-ad-status]) { display:none !important; height:0 !important; }
 
 .post-cta {
   background: linear-gradient(135deg, var(--b900), var(--b700));
@@ -1093,6 +1096,10 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   .post-cta { padding:20px; }
   .post-cta-btns { flex-direction:column; }
 }
+
+/* ── AdSense: colapsa blocos vazios até aprovação ── */
+ins.adsbygoogle:not([data-ad-status="filled"]) { min-height: 0 !important; }
+ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !important; }
 </style>
 </head>
 <body>
@@ -1169,12 +1176,13 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
         <span>›</span>
         <a href="/#conteudo">Conteúdo</a>
         <span>›</span>
-        <span style="color:rgba(255,255,255,.75);">MPT</span>
+        <span style="color:rgba(255,255,255,.75);">MTE & MPT</span>
       </nav>
-      <div id="post-tags-display" style="margin-bottom:10px;"><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">MPT</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">Fiscalização</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">Multa</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">Conformidade Trabalhista</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">Risco Jurídico</span></div>
-      <h1>MPT-SP: Risco de Multa por Não Apresentação de Documentos</h1>
+      <div id="post-tags-display" style="margin-bottom:10px;"><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">MPT</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">Fiscalização</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">Documentos Trabalhistas</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">Multa</span></div>
+      <h1>MPT-SP: Empresa é Multada por Não Apresentar Documentos Trabalhistas à Fiscalização</h1>
       <div class="post-hero-meta">
-        <strong>CalculaPrazo</strong> · 10 de abril de 2026
+        <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:3px 12px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:8px;">✍️ Equipe Editorial CalculaPrazo</span><br>
+        <strong>Publicado em:</strong> 8 de abril de 2026 &nbsp;·&nbsp; <span style="color:rgba(255,255,255,.4);font-size:.78rem;">Conteúdo informativo — não constitui assessoria jurídica</span>
       </div>
     </div>
   </div>
@@ -1186,20 +1194,55 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
     <div class="article-wrap">
 
       <!-- Cover image -->
-      
+      <div style="margin-bottom:28px;border-radius:12px;overflow:hidden;max-height:400px;"><img src="https://images.unsplash.com/photo-1568992687947-868a62a9f521?w=1200&q=80" alt="MPT-SP: Empresa é Multada por Não Apresentar Documentos Trabalhistas à Fiscalização" style="width:100%;object-fit:cover;" loading="lazy"></div>
 
-      <!-- Ad: topo do artigo -->
-      <div class="ad-block">
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_BLOG_TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <!-- Ad: topo do artigo (mostra apenas quando AdSense aprovado) -->
+      <div class="ad-block" id="ad-blog-top" style="overflow:hidden;">
+        <ins class="adsbygoogle" style="display:block;min-height:0;" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_BLOG_TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       </div>
 
       <!-- Article content -->
       <article class="article-body">
-        <h2>Resumo Executivo</h2><p>A Justiça determinou multa diária à BIOGESP por não apresentar documentos trabalhistas ao MPT, afetando 1.700 empregados. Este caso reitera o risco de sanções por descumprimento de requisições ministeriais.</p><h2>Análise Técnica</h2><p>A notícia destaca a atuação do Ministério Público do Trabalho (MPT) em São Paulo na fiscalização de conformidade trabalhista. Especificamente, a determinação judicial de multa diária contra a BIOGESP por não apresentar documentos trabalhistas ao MPT configura um precedente relevante. A requisição de documentos pelo MPT é um instrumento de investigação e fiscalização. A recusa ou omissão na apresentação de tais documentos, quando solicitados formalmente, pode ensejar ações judiciais e a imposição de multas coercitivas, conforme o artigo 8º, inciso II, da Lei Complementar nº 75/93 e o artigo 628 da CLT. A abrangência de 1.700 empregados na acusação de violações trabalhistas indica a potencial materialidade do dano e a relevância da fiscalização.</p><h2>Impacto Prático</h2><p>O caso BIOGESP demonstra o impacto financeiro direto e o risco reputacional decorrentes da não conformidade com as requisições do MPT. A imposição de multa diária representa um custo operacional contínuo e crescente até a regularização. Além disso, a publicidade de tais decisões judiciais pode gerar desconfiança entre empregados, sindicatos e parceiros comerciais, afetando a imagem corporativa. A ausência de documentos impede a defesa adequada em eventuais ações trabalhistas e a comprovação de conformidade, elevando o risco de condenações e passivos trabalhistas.</p><h2>Recomendação de Ação</h2><ul><li><strong>Revisão de Procedimentos Internos:</strong> Implementar ou aprimorar um protocolo robusto para atendimento a requisições de órgãos fiscalizadores (MPT, SRTE, etc.), garantindo prazos e responsabilidades claras.</li><li><strong>Auditoria Documental Preventiva:</strong> Realizar auditorias periódicas para assegurar que todos os documentos trabalhistas (registros de ponto, contratos, recibos de pagamento, exames médicos, etc.) estejam completos, atualizados e acessíveis.</li><li><strong>Treinamento de Equipes:</strong> Capacitar equipes de RH e Jurídico sobre a importância da conformidade documental e os riscos associados à sua ausência ou incorreção.</li><li><strong>Assessoria Jurídica Especializada:</strong> Manter assessoria jurídica trabalhista para análise e resposta estratégica a quaisquer notificações ou requisições do MPT, evitando omissões que possam gerar multas ou outras sanções.</li><li><strong>Monitoramento de Notícias:</strong> Acompanhar as publicações do MPT e decisões judiciais para identificar tendências de fiscalização e ajustar as práticas internas proativamente.</li></ul>
+        
+<h2>O caso: multa por não apresentação de documentos</h2>
+<p>A Procuradoria Regional do Trabalho da 2ª Região (MPT-SP) obteve, em ação civil pública, decisão judicial determinando multa diária de <strong>R$ 5.000</strong> a uma empresa do setor agro-industrial (denominada BIOGESP nos autos) por descumprir ordem de apresentação de documentos trabalhistas solicitados durante investigação sobre condições de trabalho. O caso ilustra o poder coercitivo do MPT e da Justiça do Trabalho para exigir transparência documental das empresas investigadas.</p>
+
+<h2>Quais documentos o empregador deve ter disponíveis</h2>
+<p>Em caso de fiscalização do MPT ou do MTE (Auditor-Fiscal do Trabalho), a empresa deve apresentar imediatamente:</p>
+<ul>
+  <li><strong>Registros de empregados (livro ou ficha):</strong> com nome completo, CPF, data de admissão, cargo e salário (art. 41 da CLT);</li>
+  <li><strong>Cartões de ponto:</strong> físicos, eletrônicos ou por exceção — todos os empregados com jornada não enquadrada no art. 62 da CLT devem ter registro (Portaria MTE 671/2021);</li>
+  <li><strong>Folhas de pagamento:</strong> demonstrativo mensal de remuneração, descontos e FGTS dos últimos 5 anos (prazo de prescrição);</li>
+  <li><strong>Guias de recolhimento de FGTS:</strong> GRRF, GFIP ou extratos do FGTS Digital — comprovando regularidade dos depósitos;</li>
+  <li><strong>CAGED / eSocial:</strong> admissões, demissões e movimentações transmitidas;</li>
+  <li><strong>LTCAT e PPRA/PGR:</strong> laudos ambientais de segurança do trabalho (NR-1 e NR-9);</li>
+  <li><strong>ASO (Atestado de Saúde Ocupacional):</strong> exames admissional, periódico e demissional de todos os empregados;</li>
+  <li><strong>PPP (Perfil Profissiográfico Previdenciário):</strong> para trabalhadores expostos a agentes nocivos.</li>
+</ul>
+
+<h2>Prazo para apresentação em fiscalização</h2>
+<p>O Auditor-Fiscal do Trabalho pode exigir a apresentação imediata dos documentos durante a inspeção. A recusa ou omissão configura infração ao art. 630 da CLT, sujeita a multa administrativa autônoma que varia de R$ 402,53 a R$ 4.025,33 por empregado (valores reajustados pelo MTE). Em casos de investigação pelo MPT com ordem judicial, o descumprimento sujeita a empresa à multa por contempt of court (descumprimento de ordem judicial), como no caso BIOGESP.</p>
+
+<h2>O papel do MPT na fiscalização trabalhista</h2>
+<p>O Ministério Público do Trabalho (MPT) não é um órgão de fiscalização direta (função do MTE/AFT), mas pode instaurar Inquérito Civil para investigar irregularidades e, não alcançando o TAC (Termo de Ajuste de Conduta), ajuizar Ação Civil Pública. No contexto de investigação, o MPT pode requisitar documentos às empresas — e a recusa pode ser objeto de ação judicial com pedido de multa diária (astreinte), como ocorreu no caso em tela.</p>
+
+<h2>Impacto prático: o que o RH deve fazer agora</h2>
+<p>O departamento de RH e o escritório contábil responsável pela folha devem garantir que todos os documentos listados acima estejam organizados, atualizados e acessíveis — físicos e digitais — com retenção mínima de 5 anos (prazo de prescrição trabalhista) e de 30 anos para documentos previdenciários (ASO, PPP). Um checklist documental anual é a melhor defesa contra fiscalizações surpresa.</p>
+
+<p style="font-size:.78rem;color:#64748B;margin-top:28px;padding-top:12px;border-top:1px solid #E2E8F0;">
+  📌 <strong>Base legal:</strong> Art. 41 da CLT (registro de empregados); Art. 630, CLT (obrigação de apresentação de documentos à fiscalização); Portaria MTE 671/2021 (registros de ponto); NR-1 (PGR), NR-7 (PCMSO); Art. 855-B CLT (Inquérito Civil e TAC); Lei 7.347/1985 (Ação Civil Pública).
+  <br>🔗 <a href="https://mpt.mp.br/pgt/noticias" target="_blank" rel="noopener" style="color:#2563EB;">Notícias do MPT — mpt.mp.br</a>
+</p>
+
       </article>
 
 
+
+      <!-- Disclaimer jurídico -->
+      <div style="background:#FFF7ED;border-left:4px solid #D97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:28px 0;font-size:.82rem;color:#78350F;line-height:1.6;">
+        <strong>⚠️ Aviso legal:</strong> Este conteúdo tem caráter exclusivamente informativo e não constitui assessoria jurídica, contábil ou financeira. Para decisões concretas, consulte sempre um profissional habilitado. As informações refletem o estado da legislação e jurisprudência na data de publicação.
+      </div>
 
       <!-- CTA Block -->
       <div class="post-cta">
@@ -1447,8 +1490,8 @@ document.addEventListener('click', function(e) {
 
 // ── RELATED POSTS ─────────────────────────────
 var THIS_SLUG = 'mpt-sp-risco-de-multa-por-nao-apresentacao-de-documentos';
-var THIS_CAT  = 'legislacao';
-var THIS_TAGS = ["MPT", "Fiscalização", "Multa", "Conformidade Trabalhista", "Risco Jurídico"];
+var THIS_CAT  = 'noticias-mte-mpt';
+var THIS_TAGS = ["MPT", "Fiscalização", "Documentos Trabalhistas", "Multa"];
 
 async function loadRelated() {
   let posts = [];

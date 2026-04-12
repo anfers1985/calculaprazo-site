@@ -1,92 +1,107 @@
 # -*- coding: utf-8 -*-
 """
-Agente MPT — Analista Estratégico de Relações Trabalhistas e Auditor Jurídico
-Foco: Risco Jurídico, Impacto Financeiro, Conformidade Trabalhista
+agente_mpt.py — CalculaPrazo
+Monitora ações, TACs, notícias e alertas do Ministério Público do Trabalho.
+Categoria: noticias-mte-mpt
+Execução: dias úteis, 09h (Brasília) via GitHub Actions.
 """
 import os, json, re, requests, random, time
-from datetime import date, timedelta
+from datetime import date
 from slugify import slugify
 from html.parser import HTMLParser
+from agente_base import (
+    validar_qualidade, is_duplicata, salvar_post, HOJE
+)
 
 API_KEY = os.environ["OPENROUTER_KEY"]
 MODEL   = "google/gemini-2.5-flash"
-HOJE    = date.today()
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (compatible; CalculaPrazoBot/1.0; +https://calculaprazo.com.br)",
     "Accept-Language": "pt-BR,pt;q=0.9",
 }
 
+CATEGORIA   = "noticias-mte-mpt"
+FONTE_LABEL = "MPT"
+
 PROPOSITO = """
-Você é Analista Estratégico de Relações Trabalhistas e Auditor Jurídico atuando como consultor corporativo.
-Estilo: técnico, direto, pragmático e orientado à decisão.
-Foco exclusivo: risco jurídico, impacto financeiro, conformidade trabalhista e eficiência operacional.
-Nunca use linguagem genérica ou acadêmica.
+Você é um advogado trabalhista especialista, redator jurídico do CalculaPrazo.
+Seu público: advogados trabalhistas, profissionais de RH e contadores brasileiros.
+Estilo: técnico, preciso, direto e orientado à prática.
+REGRAS ABSOLUTAS:
+1. Cite fontes verificáveis — número de processo, portaria, lei ou URL quando disponível.
+2. Linguagem jurídica profissional — sem generalidades ou "tendências".
+3. Cada afirmação deve ter base no conteúdo fornecido — nunca invente dados.
+4. Conclua com impacto prático e ação recomendada ao leitor.
+Identifique o Procurador responsável, a empresa/setor investigado e o tipo de irregularidade (TAC, ACP, notícia-crime) sempre que disponível no conteúdo.
 """
 
 SOURCES = [
-    {"nome": "CNMP - Notícias", "url": "https://www.cnmp.mp.br/portal/noticias?o=date&t[]="},
-    {"nome": "PRT-12 MPT SC", "url": "https://www.prt12.mpt.mp.br/informe-se/noticias-do-mpt-sc"},
-    {"nome": "PRT-1 MPT RJ", "url": "https://www.prt1.mpt.mp.br/informe-se/noticias-do-mpt-rj"},
-    {"nome": "PRT-2 MPT SP", "url": "https://www.prt2.mpt.mp.br/informe-se/noticias-do-mpt-sp"},
-    {"nome": "PRT-4 MPT RS", "url": "https://www.prt4.mpt.mp.br/informe-se/noticias-do-mpt-rs"},
-    {"nome": "PRT-3 MPT MG", "url": "https://www.prt3.mpt.mp.br/comunicacao/noticias-do-mpt-mg"},
-    {"nome": "PRT-5 MPT BA", "url": "https://www.prt5.mpt.mp.br/informe-se/noticias-do-mpt-ba"},
+{"nome": "MPT - Notícias", "url": "https://mpt.mp.br/pgt/noticias"},
+    {"nome": "MPT Nacional", "url": "https://mpt.mp.br/pgt/noticias/noticias-nacionais"}
 ]
+
 
 class TextExtractor(HTMLParser):
     def __init__(self):
         super().__init__()
         self.texts, self._skip = [], False
+
     def handle_starttag(self, tag, attrs):
-        if tag in ("script","style","nav","header","footer","aside","noscript"):
+        if tag in ("script","style","nav","header","footer","aside","noscript","form"):
             self._skip = True
+
     def handle_endtag(self, tag):
-        if tag in ("script","style","nav","header","footer","aside","noscript"):
+        if tag in ("script","style","nav","header","footer","aside","noscript","form"):
             self._skip = False
+
     def handle_data(self, data):
         if not self._skip:
             t = data.strip()
-            if len(t) > 30:
+            if len(t) > 40:
                 self.texts.append(t)
-    def get_text(self, max_chars=4000):
+
+    def get_text(self, max_chars=5000):
         return " ".join(self.texts)[:max_chars]
 
 
 def buscar_conteudo(fonte):
     try:
-        r = requests.get(fonte["url"], headers=HEADERS, timeout=25)
+        r = requests.get(fonte["url"], headers=HEADERS, timeout=30)
         print(f"  Status: {r.status_code} | {fonte['nome']}")
         if r.ok:
             p = TextExtractor()
             p.feed(r.text)
-            return p.get_text(4000)
+            return p.get_text(5000), r.url
     except Exception as e:
         print(f"  Erro ao acessar {fonte['nome']}: {e}")
-    return ""
+    return "", fonte["url"]
 
 
 def avaliar_relevancia(conteudo, fonte_nome):
     if len(conteudo) < 150:
         return {"relevante": False, "motivo": "conteúdo insuficiente", "tema": ""}
-    
+
     prompt = f"""
 {PROPOSITO}
 
-Conteúdo coletado de {fonte_nome} hoje:
+Conteúdo de {fonte_nome} (hoje: {HOJE.strftime('%d/%m/%Y')}):
 ---
-{conteudo[:1600]}
+{conteudo[:2000]}
 ---
 
-Existe fato concreto das últimas 24-72 horas com impacto em risco jurídico, multa, conformidade ou custo trabalhista?
+Existe decisão, norma ou notícia das últimas 72 horas com impacto relevante para
+advogados trabalhistas, RH ou empresas?
+
 Responda APENAS com JSON:
-{{"relevante": true/false, "motivo": "1 frase curta", "tema": "tema principal"}}
+{{"relevante": true/false, "motivo": "1 frase objetiva", "tema": "tema específico e concreto"}}
 """
     try:
         r = requests.post(
             "https://openrouter.ai/api/v1/chat/completions",
             headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
-            json={"model": MODEL, "messages": [{"role":"user","content":prompt}], "max_tokens":250, "temperature":0.2},
+            json={"model": MODEL, "messages": [{"role":"user","content":prompt}],
+                  "max_tokens": 200, "temperature": 0.1},
             timeout=45,
         )
         raw = r.json()["choices"][0]["message"]["content"]
@@ -94,152 +109,123 @@ Responda APENAS com JSON:
         return json.loads(raw)
     except Exception as e:
         print(f"  Erro na avaliação: {e}")
-        return {"relevante": False, "motivo": "erro na avaliação", "tema": ""}
+        return {"relevante": False, "motivo": "erro", "tema": ""}
 
 
-def gerar_artigo(conteudo, tema, fonte_nome):
+def gerar_artigo(conteudo, tema, fonte_nome, fonte_url):
     prompt = f"""
 {PROPOSITO}
 
-Conteúdo real de {fonte_nome}:
----
-{conteudo[:3000]}
----
-
+Fonte: {fonte_nome} ({fonte_url})
+Data: {HOJE.strftime('%d/%m/%Y')}
 Tema: {tema}
 
-Gere um boletim técnico direto e pragmático no formato abaixo.
+Conteúdo coletado:
+---
+{conteudo[:4000]}
+---
 
-**Título** (curto e objetivo)
-**Resumo Executivo** (1 linha)
-**Análise Técnica**
-**Impacto Prático**
-**Recomendação de Ação**
+Redija um artigo jurídico completo com EXATAMENTE esta estrutura HTML:
 
-Estilo: técnico, direto, pragmático.
+<h2>Contexto</h2>
+<p>[Situação jurídica, norma ou súmula aplicável]</p>
 
-Responda APENAS com JSON válido e completo:
+<h2>O que aconteceu</h2>
+<p>[Fato concreto com órgão, data e número do processo/ato se disponível]</p>
+
+<h2>Fundamentação</h2>
+<p>[Base legal, artigo CLT/CPC/CF citado]</p>
+
+<h2>Impacto Prático para Empresas e RH</h2>
+<p>[O que muda, o que o RH/advogado deve fazer]</p>
+
+<h2>Recomendação Imediata</h2>
+<p>[Ação concreta e verificável]</p>
+
+Mínimo 400 palavras. NÃO invente dados não presentes no conteúdo.
+
+Responda APENAS com JSON:
 {{
-  "title": "título objetivo até 65 caracteres",
-  "excerpt": "resumo até 155 caracteres",
-  "tags": ["tag1", "tag2", "tag3"],
-  "content": "HTML completo com <h2>, <p>, <ul>, <strong>..."
+  "title": "Título técnico e específico (máx 65 caracteres)",
+  "excerpt": "Resumo objetivo (máx 155 caracteres)",
+  "tags": ["Tag1", "Tag2", "Tag3"],
+  "content": "<h2>Contexto</h2><p>...</p>..."
 }}
 """
     try:
         r = requests.post(
             "https://openrouter.ai/api/v1/chat/completions",
             headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
-            json={"model": MODEL, "messages": [{"role":"user","content":prompt}], "max_tokens":3000, "temperature":0.3},
+            json={"model": MODEL, "messages": [{"role":"user","content":prompt}],
+                  "max_tokens": 3500, "temperature": 0.25},
             timeout=180,
         )
-        
         raw = r.json()["choices"][0]["message"]["content"].strip()
-        
         raw = re.sub(r"^```json\s*", "", raw)
         raw = re.sub(r"\s*```$", "", raw)
-        raw = re.sub(r"[\n\r]+", " ", raw)
-        
+
         dados = json.loads(raw)
-        
-        if not dados.get("title"):
-            dados["title"] = f"Atualização {fonte_nome} - {HOJE.strftime('%d/%m')}"
-        if not dados.get("excerpt"):
-            dados["excerpt"] = tema[:120] if tema else "Atualização importante"
-        if not dados.get("content"):
-            dados["content"] = "<p>Conteúdo técnico gerado automaticamente.</p>"
-           
+        dados.setdefault("title", f"Atualização {FONTE_LABEL} — {HOJE.strftime('%d/%m/%Y')}")
+        dados.setdefault("excerpt", tema[:120])
+        dados.setdefault("content", "<p>Análise técnica em elaboração.</p>")
+        dados.setdefault("tags", ["MPT", "Fiscalização Trabalhista"])
+        dados["source_url"] = fonte_url
         return dados
     except Exception as e:
         print(f"  Erro ao gerar artigo: {e}")
         return None
 
-def salvar_post(dados, fonte_nome):
-    try:
-        meses = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"]
-        data_str = HOJE.strftime("%Y-%m-%d")
-        data_br  = f"{HOJE.day} de {meses[HOJE.month-1]} de {HOJE.year}"
-        slug     = slugify(dados["title"])[:60]
-
-        with open("blog/POST_TEMPLATE.html", encoding="utf-8") as f:
-            template = f.read()
-
-        tags = dados.get("tags", ["MPT", "Conformidade"])
-        tags_json = json.dumps(tags, ensure_ascii=False)
-        first_tag = tags[0] if tags else "MPT"
-
-        html = (template
-            .replace("{{TITLE}}", dados["title"])
-            .replace("{{DESCRIPTION}}", dados["excerpt"])
-            .replace("{{SLUG}}", slug)
-            .replace("{{CATEGORY}}", "legislacao")
-            .replace("{{CATEGORY_LABEL}}", first_tag)
-            .replace("{{TAGS_BADGES}}", "".join(f'<span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">{t}</span>' for t in tags))
-            .replace("{{TAGS_JSON}}", tags_json)
-            .replace("{{DATE}}", data_str)
-            .replace("{{DATE_BR}}", data_br)
-            .replace("{{CONTENT}}", dados["content"])
-            .replace("{{OG_IMAGE}}", "")
-            .replace("{{SCHEMA_IMAGE}}", "")
-            .replace("{{COVER_IMAGE_HTML}}", "")
-        )
-
-        with open(f"blog/{slug}.html", "w", encoding="utf-8") as f:
-            f.write(html)
-        print(f"  ✅ ARQUIVO CRIADO: blog/{slug}.html")
-
-        try:
-            with open("data/posts.json", encoding="utf-8") as f:
-                posts = json.load(f)
-        except:
-            posts = []
-        if not any(p["id"] == slug for p in posts):
-            posts.insert(0, {
-                "id": slug, "title": dados["title"],
-                "category": "legislacao", "tags": tags,
-                "excerpt": dados["excerpt"], "image": "",
-                "imageCaption": "", "date": data_str,
-                "content": dados["content"],
-            })
-            posts = posts[:300]
-            with open("data/posts.json", "w", encoding="utf-8") as f:
-                json.dump(posts, f, ensure_ascii=False, indent=2)
-            print("  ✅ posts.json ATUALIZADO")
-        return slug
-    except Exception as e:
-        print(f"  ❌ ERRO AO SALVAR: {e}")
-        return None
-
 
 def main():
-    print(f"\nAgente MPT — {HOJE.strftime('%d/%m/%Y')} [ANALISTA ESTRATÉGICO]")
-    print("=" * 90)
+    print(f"\nAgente {FONTE_LABEL} — {HOJE.strftime('%d/%m/%Y')}")
+    print("=" * 70)
 
     random.seed(HOJE.year * 10000 + HOJE.month * 100 + HOJE.day)
-    fontes_hoje = random.sample(SOURCES, len(SOURCES))
+    fontes = random.sample(SOURCES, min(len(SOURCES), 3))
 
     publicados = 0
-    for fonte in fontes_hoje:
+    for fonte in fontes:
         print(f"\n[{fonte['nome']}] Verificando...")
-        conteudo = buscar_conteudo(fonte)
+        conteudo, url_real = buscar_conteudo(fonte)
         if not conteudo or len(conteudo) < 200:
+            print("  ⚠️  Conteúdo insuficiente, pulando.")
             continue
 
         avaliacao = avaliar_relevancia(conteudo, fonte["nome"])
         print(f"  Avaliação: {avaliacao}")
 
         if not avaliacao.get("relevante", False):
+            print(f"  ⏭  Sem relevância: {avaliacao.get('motivo')}")
             continue
 
-        dados = gerar_artigo(conteudo, avaliacao.get("tema",""), fonte["nome"])
+        tema = avaliacao.get("tema", "")
+        if is_duplicata(tema, "data/posts.json"):
+            print(f"  ⏭  Possível duplicata para: '{tema}'")
+            continue
+
+        dados = gerar_artigo(conteudo, tema, fonte["nome"], url_real)
         if not dados:
             continue
 
-        salvar_post(dados, fonte["nome"])
-        publicados += 1
-        time.sleep(5)
+        # Validação de qualidade obrigatória
+        aprovado, motivo = validar_qualidade(dados, CATEGORIA)
+        if not aprovado:
+            print(f"  ❌ Reprovado: {motivo} | Título: '{dados.get('title','')}'")
+            continue
 
-    print(f"\nTotal publicado: {publicados} boletim(s) técnico(s) do MPT")
+        if is_duplicata(dados["title"], "data/posts.json"):
+            print(f"  ⏭  Duplicata por título: '{dados['title']}'")
+            continue
+
+        sucesso = salvar_post(dados, CATEGORIA, fonte["nome"])
+        if sucesso:
+            publicados += 1
+
+        time.sleep(5)
+        if publicados >= 1:
+            break
+
+    print(f"\n{'✅' if publicados else '⚠️ '} Total publicado: {publicados} post(s) {FONTE_LABEL}")
 
 
 if __name__ == "__main__":

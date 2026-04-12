@@ -1,181 +1,113 @@
-#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
-rebuild_posts_json.py — CalculaPrazo
-====================================
-Varre todos os .html da pasta blog/ (exceto POST_TEMPLATE.html),
-extrai os metadados de cada post e regera data/posts.json completo.
-
-USO:
-  python rebuild_posts_json.py
-
-Execute a partir da raiz do repositório (onde ficam index.html e data/).
-
-DEPENDÊNCIAS:
-  pip install beautifulsoup4
+rebuild_posts_json.py — Reconstrói data/posts.json a partir dos arquivos HTML do blog.
+Execute na raiz do projeto: python rebuild_posts_json.py
+Uso: após edição manual de posts, para sincronizar o JSON.
 """
+import os, json, re
+from datetime import datetime
 
-import os
-import re
-import json
-import sys
-from pathlib import Path
-from bs4 import BeautifulSoup
+BLOG_DIR   = "blog"
+OUTPUT     = "data/posts.json"
+SKIP_FILES = {"POST_TEMPLATE.html"}
 
-# ─── Posts a EXCLUIR do JSON (slugs exatos) ──────────────────────────────────
-# Adicione aqui slugs de posts de teste ou que não devem aparecer no site
-EXCLUDE_SLUGS = {
-    # Exemplo: "meu-post-de-teste",
+CATEGORY_LABELS = {
+    "jurisprudencia-tst":   "Jurisprudência TST/STF",
+    "jurisprudencia-trts":  "Jurisprudência TRTs",
+    "noticias-mte-mpt":     "MTE & MPT",
+    "legislacao-normas":    "Legislação e Normas",
+    "esocial-fgts-digital": "eSocial e FGTS Digital",
+    "orientacoes-praticas": "Orientações Práticas RH",
+    "saude-seguranca":      "Saúde e Segurança",
+    # legados (mapeados automaticamente)
+    "direito":      "Jurisprudência TST/STF",
+    "noticia":      "MTE & MPT",
+    "legislacao":   "Legislação e Normas",
+    "folha":        "Orientações Práticas RH",
+    "pratica":      "Orientações Práticas RH",
+    "esocial":      "eSocial e FGTS Digital",
+    "jurisprudencia":"Jurisprudência TST/STF",
+    "geral":        "MTE & MPT",
 }
 
-# ─── Utilitários ─────────────────────────────────────────────────────────────
+CATEGORY_REMAP = {
+    "direito":       "jurisprudencia-tst",
+    "noticia":       "noticias-mte-mpt",
+    "legislacao":    "legislacao-normas",
+    "folha":         "orientacoes-praticas",
+    "pratica":       "orientacoes-praticas",
+    "esocial":       "esocial-fgts-digital",
+    "jurisprudencia":"jurisprudencia-tst",
+    "geral":         "noticias-mte-mpt",
+}
 
-def find_repo_root():
-    cwd = Path.cwd()
-    for p in [cwd, *cwd.parents]:
-        if (p / "index.html").exists() and (p / "blog").is_dir():
-            return p
-    return cwd
+def extract_meta(filepath):
+    with open(filepath, encoding="utf-8") as f:
+        html = f.read()
 
+    def get(pattern, default=""):
+        m = re.search(pattern, html)
+        return m.group(1).strip() if m else default
 
-def extract_post_meta(html_path: Path) -> dict | None:
-    try:
-        with open(html_path, encoding="utf-8") as f:
-            html = f.read()
-    except Exception as e:
-        print(f"  ⚠ Erro ao ler {html_path.name}: {e}")
+    title    = get(r'<title>(.+?) \| CalculaPrazo', "")
+    desc     = get(r'<meta name="description" content="([^"]+)"', "")
+    slug     = get(r'<link[^>]+canonical[^>]+href="https://calculaprazo\.com\.br/blog/([^"]+)"', "")
+    date_pub = get(r'"datePublished":"([^"]+)"', "")
+    category = get(r'var THIS_CAT\s*=\s*'([^']+)\'', "")
+    tags_raw = get(r'var THIS_TAGS\s*=\s*(\[[^\]]+\])', "[]")
+    image    = get(r'"image":"([^"]+)"', "")
+
+    if not slug:
+        slug = os.path.splitext(os.path.basename(filepath))[0]
+
+    if not title or len(title) < 5:
         return None
 
-    soup = BeautifulSoup(html, "html.parser")
-
-    # ── Slug, categoria e tags ──
-    slug_m = re.search(r"THIS_SLUG\s*=\s*['\"]([^'\"]+)['\"]", html)
-    cat_m  = re.search(r"THIS_CAT\s*=\s*['\"]([^'\"]+)['\"]", html)
-    tags_m = re.search(r"THIS_TAGS\s*=\s*(\[[^\]]*\])", html)
-
-    slug = slug_m.group(1) if slug_m else html_path.stem
-    cat  = cat_m.group(1)  if cat_m  else "geral"
-
-    # Detectar template não preenchido (placeholders {{...}})
-    if "{{" in slug or "{{" in cat:
-        return None
-
     try:
-        tags = json.loads(tags_m.group(1)) if tags_m else []
+        tags = json.loads(tags_raw)
     except Exception:
         tags = []
 
-    # ── Título ──
-    og_title = soup.find("meta", property="og:title")
-    h1       = soup.find("h1")
-    title    = (og_title["content"] if og_title else None) \
-               or (h1.get_text(strip=True) if h1 else slug)
+    # Normalize category
+    if category in CATEGORY_REMAP:
+        category = CATEGORY_REMAP[category]
 
-    # ── Descrição / excerpt ──
-    og_desc = soup.find("meta", property="og:description")
-    meta_d  = soup.find("meta", attrs={"name": "description"})
-    excerpt = (og_desc["content"] if og_desc else None) \
-              or (meta_d["content"] if meta_d else "")
-
-    # ── Imagem de capa ──
-    og_img = soup.find("meta", property="og:image")
-    image  = og_img["content"] if og_img else ""
-
-    # ── Legenda da imagem ──
-    caption_el    = soup.find(class_="post-cover-caption") or soup.find("figcaption")
-    image_caption = caption_el.get_text(strip=True) if caption_el else ""
-
-    # ── Data de publicação (Schema.org) ──
-    date = ""
-    schema_tag = soup.find("script", type="application/ld+json")
-    if schema_tag and schema_tag.string:
-        try:
-            schema = json.loads(schema_tag.string)
-            date   = schema.get("datePublished", "")
-        except Exception:
-            pass
-    if not date:
-        time_el = soup.find("time")
-        if time_el:
-            date = time_el.get("datetime", "") or time_el.get_text(strip=True)
-
-    # ── Conteúdo HTML ──
-    article = soup.find("article")
-    content = article.decode_contents().strip() if article else ""
+    cat_label = CATEGORY_LABELS.get(category, category)
 
     return {
-        "id":           slug,
-        "title":        title,
-        "category":     cat,
-        "excerpt":      excerpt,
-        "image":        image,
-        "imageCaption": image_caption,
-        "date":         date,
-        "content":      content,
-        "tags":         tags,
+        "id":             slug,
+        "title":          title,
+        "category":       category,
+        "category_label": cat_label,
+        "tags":           [t for t in tags if isinstance(t, str) and len(t) < 50][:4],
+        "excerpt":        desc,
+        "image":          image,
+        "imageCaption":   "",
+        "date":           date_pub or "2026-04-10",
     }
 
-
-# ─── Main ────────────────────────────────────────────────────────────────────
-
 def main():
-    repo     = find_repo_root()
-    blog_dir = repo / "blog"
-    output   = repo / "data" / "posts.json"
+    posts = []
+    files = [f for f in os.listdir(BLOG_DIR) if f.endswith(".html") and f not in SKIP_FILES]
 
-    if not blog_dir.is_dir():
-        sys.exit(f"❌ Pasta blog/ não encontrada em {repo}")
+    for fname in files:
+        fpath = os.path.join(BLOG_DIR, fname)
+        meta = extract_meta(fpath)
+        if meta:
+            posts.append(meta)
+        else:
+            print(f"  ⚠️  Ignorado (sem título): {fname}")
 
-    print(f"📂 Repositório : {repo}")
-    print(f"📂 Pasta blog  : {blog_dir}")
-    print(f"📄 Saída       : {output}")
-    print()
-
-    # Ignora POST_TEMPLATE.html (qualquer capitalização)
-    html_files = sorted(
-        [f for f in blog_dir.glob("*.html")
-         if f.name.upper() != "POST_TEMPLATE.HTML"],
-        key=lambda f: f.name
-    )
-
-    if not html_files:
-        sys.exit("❌ Nenhum .html encontrado na pasta blog/ (exceto o template).")
-
-    print(f"🔍 {len(html_files)} arquivo(s) encontrado(s):\n")
-
-    posts   = []
-    skipped = []
-
-    for html_file in html_files:
-        meta = extract_post_meta(html_file)
-
-        if meta is None:
-            print(f"  ⊘ IGNORADO   {html_file.name:<50} (template ou erro de leitura)")
-            skipped.append(html_file.name)
-            continue
-
-        if meta["id"].lower() in {s.lower() for s in EXCLUDE_SLUGS}:
-            print(f"  ⊘ EXCLUÍDO   {html_file.name:<50} (listado em EXCLUDE_SLUGS)")
-            skipped.append(html_file.name)
-            continue
-
-        posts.append(meta)
-        date_str = meta["date"] or "sem data"
-        print(f"  ✔ {html_file.name:<55} [{date_str}]  {meta['title'][:45]}")
-
-    # Ordenar por data decrescente (mais recente primeiro)
+    # Ordenar por data decrescente
     posts.sort(key=lambda p: p.get("date", ""), reverse=True)
 
-    # Salvar
-    output.parent.mkdir(parents=True, exist_ok=True)
-    with open(output, "w", encoding="utf-8") as f:
+    os.makedirs("data", exist_ok=True)
+    with open(OUTPUT, "w", encoding="utf-8") as f:
         json.dump(posts, f, ensure_ascii=False, indent=2)
 
-    print()
-    print(f"✅ posts.json gerado com {len(posts)} post(s).")
-    if skipped:
-        print(f"⊘  Ignorados : {', '.join(skipped)}")
-    print(f"\n📌 Próximo passo: faça commit de data/posts.json no GitHub Desktop.")
-
+    print(f"\n✅ {OUTPUT} reconstruído com {len(posts)} posts.")
+    for p in posts:
+        print(f"  {p['date']} | {p['category']:<24} | {p['title'][:55]}")
 
 if __name__ == "__main__":
     main()

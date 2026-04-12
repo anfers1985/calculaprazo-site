@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index, follow">
-<title>TST Reafirma: Banco de Horas Sem Acordo Coletivo Gera Horas Extras | CalculaPrazo</title>
-<meta name="description" content="Decisão do TST consolida que banco de horas implantado apenas por acordo individual é inválido, gerando horas extras com adicional mínimo de 50%.">
+<title>TST: Banco de Horas Sem Acordo Coletivo é Nulo e Gera Horas Extras | CalculaPrazo</title>
+<meta name="description" content="O TST reafirma que banco de horas por acordo individual é inválido para compensação além de 30 dias. Empresa deve pagar horas extras com adicional mínimo de 50%. Impacto para RH e advogados.">
 <link id="canonical" rel="canonical" href="https://calculaprazo.com.br/blog/tst-banco-de-horas-acordo-coletivo">
-<meta property="og:title" content="TST Reafirma: Banco de Horas Sem Acordo Coletivo Gera Horas Extras">
-<meta property="og:description" content="Decisão do TST consolida que banco de horas implantado apenas por acordo individual é inválido, gerando horas extras com adicional mínimo de 50%.">
+<meta property="og:title" content="TST: Banco de Horas Sem Acordo Coletivo é Nulo e Gera Horas Extras">
+<meta property="og:description" content="O TST reafirma que banco de horas por acordo individual é inválido para compensação além de 30 dias. Empresa deve pagar horas extras com adicional mínimo de 50%. Impacto para RH e advogados.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://calculaprazo.com.br/blog/tst-banco-de-horas-acordo-coletivo">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="CalculaPrazo">
-
+<meta property="og:image" content="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Article","headline":"TST Reafirma: Banco de Horas Sem Acordo Coletivo Gera Horas Extras","description":"Decisão do TST consolida que banco de horas implantado apenas por acordo individual é inválido, gerando horas extras com adicional mínimo de 50%.","url":"https://calculaprazo.com.br/blog/tst-banco-de-horas-acordo-coletivo","publisher":{"@type":"Organization","name":"CalculaPrazo","url":"https://calculaprazo.com.br"},"datePublished":"2026-04-07","dateModified":"2026-04-07","inLanguage":"pt-BR"}
+{"@context":"https://schema.org","@type":"Article","headline":"TST: Banco de Horas Sem Acordo Coletivo é Nulo e Gera Horas Extras","description":"O TST reafirma que banco de horas por acordo individual é inválido para compensação além de 30 dias. Empresa deve pagar horas extras com adicional mínimo de 50%. Impacto para RH e advogados.","url":"https://calculaprazo.com.br/blog/tst-banco-de-horas-acordo-coletivo","author":{"@type":"Organization","name":"Equipe Editorial CalculaPrazo","url":"https://calculaprazo.com.br/sobre"},"publisher":{"@type":"Organization","name":"CalculaPrazo","url":"https://calculaprazo.com.br","logo":{"@type":"ImageObject","url":"https://calculaprazo.com.br/og-image.png"}},"datePublished":"2026-04-07","dateModified":"2026-04-07","inLanguage":"pt-BR","mainEntityOfPage":{"@type":"WebPage","@id":"https://calculaprazo.com.br/blog/tst-banco-de-horas-acordo-coletivo"},"image":"https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80"}
 </script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3280539734623058" crossorigin="anonymous"></script>
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
@@ -751,11 +751,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   border-top: 1px solid var(--brd);
   border-bottom: 1px solid var(--brd);
   padding: 8px 0;
-  min-height: 90px;        /* reserva espaço — evita layout shift */
+  min-height: 0;           /* sem reserva — colapsa quando sem anuncio */
   box-sizing: border-box;
 }
 .ad-container.ad-rect {
-  min-height: 280px;       /* para formatos retângulo */
+  min-height: 0;
   border: none;
   background: transparent;
   padding: 12px 0;
@@ -769,9 +769,9 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .ad-placeholder {
   width: 100%;
   max-width: 728px;
-  min-height: 88px;
-  background: #f1f5f9;
-  border: 1.5px dashed #CBD5E1;
+  min-height: 0;
+  background: transparent;
+  border: none;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -784,7 +784,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 .ad-placeholder.rect {
   max-width: 336px;
-  min-height: 278px;
+  min-height: 0;
 }
 .ad-placeholder strong {
   font-size: .72rem;
@@ -793,10 +793,10 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 /* mobile: uma coluna, sem anúncios empilhados */
 @media (max-width: 768px) {
-  .ad-container { min-height: 60px; }
-  .ad-container.ad-rect { min-height: 60px; }
-  .ad-placeholder { min-height: 58px; }
-  .ad-placeholder.rect { min-height: 58px; max-width: 100%; }
+  .ad-container { min-height: 0; }
+  .ad-container.ad-rect { min-height: 0; }
+  .ad-placeholder { min-height: 0; }
+  .ad-placeholder.rect { min-height: 0; max-width: 100%; }
   .ad-desktop-only { display: none !important; }  /* oculta ad extra no mobile */
 }
 
@@ -852,9 +852,9 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .ad-sidebar-right { right: 8px; }
 .ad-sidebar-slot {
   width: 160px;
-  min-height: 600px;
-  background: #f1f5f9;
-  border: 1.5px dashed #CBD5E1;
+  min-height: 0;
+  background: transparent;
+  border: none;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -1005,14 +1005,9 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .post-hero-meta { font-size:.82rem; color:rgba(255,255,255,.5); }
 .post-hero-meta strong { color:rgba(255,255,255,.75); }
 
-.post-body-wrap { padding: 48px 0 64px; }
+.post-body-wrap { padding: 20px 0 40px; }
 
-.post-excerpt-block {
-  font-size: 1rem; color: var(--txt-m); line-height: 1.75;
-  border-left: 3px solid var(--acc); padding: 14px 20px;
-  background: var(--b50); border-radius: 0 var(--r) var(--r) 0;
-  margin-bottom: 28px; font-style: italic;
-}
+.post-excerpt-block { display: none; }
 
 .post-cover {
   width: 100%; max-height: 400px; object-fit: cover;
@@ -1051,7 +1046,10 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .article-body table td { padding:8px 12px; border-bottom:1px solid var(--brd); }
 .article-body table tr:nth-child(even) td { background:var(--b50); }
 
-.ad-block { margin: 28px 0; text-align:center; min-height:90px; }
+.ad-block { margin: 0; text-align:center; }
+.ad-block:empty { display:none; }
+.ad-block ins[data-ad-status="unfilled"],
+.ad-block ins:not([data-ad-status]) { display:none !important; height:0 !important; }
 
 .post-cta {
   background: linear-gradient(135deg, var(--b900), var(--b700));
@@ -1094,10 +1092,14 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 @media(max-width:768px){
   .post-hero { padding:32px 0 40px; }
   .post-hero h1 { font-size:1.5rem; }
-  .post-body-wrap { padding:32px 0 48px; }
+  
   .post-cta { padding:20px; }
   .post-cta-btns { flex-direction:column; }
 }
+
+/* ── AdSense: colapsa blocos vazios até aprovação ── */
+ins.adsbygoogle:not([data-ad-status="filled"]) { min-height: 0 !important; }
+ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !important; }
 </style>
 </head>
 <body>
@@ -1108,16 +1110,12 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 <!-- ▸ BANNERS LATERAIS (desktop ≥1400px) -->
 <div class="ad-sidebar-wrap ad-sidebar-left" id="ad-sidebar-left">
   <div class="ad-sidebar-slot">
-    <strong>Publicidade</strong>
-    160×600<br>Desktop
     <ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_SIDEBAR_LEFT"></ins>
 <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 </div>
 <div class="ad-sidebar-wrap ad-sidebar-right" id="ad-sidebar-right">
   <div class="ad-sidebar-slot">
-    <strong>Publicidade</strong>
-    160×600<br>Desktop
     <ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_SIDEBAR_RIGHT"></ins>
 <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
@@ -1178,12 +1176,13 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
         <span>›</span>
         <a href="/#conteudo">Conteúdo</a>
         <span>›</span>
-        <span style="color:rgba(255,255,255,.75);">Jurisprudência</span>
+        <span style="color:rgba(255,255,255,.75);">Jurisprudência TST/STF</span>
       </nav>
-      <div id="post-tags-display" style="margin-bottom:10px;"><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;margin-bottom:4px;">Jurisprudência</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;margin-bottom:4px;">TST</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;margin-bottom:4px;">Horas Extras</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;margin-bottom:4px;">Banco de Horas</span></div>
-      <h1>TST Reafirma: Banco de Horas Sem Acordo Coletivo Gera Horas Extras</h1>
+      <div id="post-tags-display" style="margin-bottom:10px;"><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">TST</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">Banco de Horas</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">Horas Extras</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">CLT</span></div>
+      <h1>TST: Banco de Horas Sem Acordo Coletivo é Nulo e Gera Horas Extras</h1>
       <div class="post-hero-meta">
-        <strong>CalculaPrazo</strong> · 7 de abril de 2026
+        <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:3px 12px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:8px;">✍️ Equipe Editorial CalculaPrazo</span><br>
+        <strong>Publicado em:</strong> 7 de abril de 2026 &nbsp;·&nbsp; <span style="color:rgba(255,255,255,.4);font-size:.78rem;">Conteúdo informativo — não constitui assessoria jurídica</span>
       </div>
     </div>
   </div>
@@ -1194,27 +1193,63 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   <div class="container">
     <div class="article-wrap">
 
-      <!-- Excerpt highlight -->
-      <div class="post-excerpt-block">Decisão do TST consolida que banco de horas implantado apenas por acordo individual é inválido, gerando horas extras com adicional mínimo de 50%.</div>
-
       <!-- Cover image -->
-      
+      <div style="margin-bottom:28px;border-radius:12px;overflow:hidden;max-height:400px;"><img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80" alt="TST: Banco de Horas Sem Acordo Coletivo é Nulo e Gera Horas Extras" style="width:100%;object-fit:cover;" loading="lazy"></div>
 
-      <!-- Ad: topo do artigo -->
-      <div class="ad-block">
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_BLOG_TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <!-- Ad: topo do artigo (mostra apenas quando AdSense aprovado) -->
+      <div class="ad-block" id="ad-blog-top" style="overflow:hidden;">
+        <ins class="adsbygoogle" style="display:block;min-height:0;" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_BLOG_TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       </div>
 
       <!-- Article content -->
       <article class="article-body">
-        <h2>O que decidiu o TST?</h2><p>O Tribunal Superior do Trabalho reafirmou que o regime de banco de horas só é válido quando instituído por acordo ou convenção coletiva, conforme exige o art. 59, §2º da CLT. A adesão individual do empregado não supre a exigência de negociação coletiva.</p><h2>Base legal e impacto da Reforma Trabalhista</h2><p>Após a Lei 13.467/2017, o acordo individual por escrito passou a ser admitido apenas para compensação em módulo semanal. Para o banco de horas anual, o instrumento coletivo permanece obrigatório. Essa distinção é frequentemente ignorada pelas empresas, gerando passivos relevantes.</p><h2>Consequência prática</h2><p>Declarado inválido o banco de horas, todas as horas que superaram a jornada contratual devem ser pagas como extras com adicional mínimo de 50% (art. 7º, XVI, CF/88), com reflexos em DSR, férias, 13º salário e FGTS.</p><h2>O que RH e contador devem fazer?</h2><p>Revise os acordos de banco de horas da empresa. Se apenas individuais, a empresa está exposta a passivo trabalhista. A regularização passa por negociar instrumento com o sindicato ou migrar para compensação semanal, esta sim admitida por acordo individual escrito.</p>
+        
+<h2>O que decidiu o TST</h2>
+<p>O Tribunal Superior do Trabalho reafirma sistematicamente, por suas Turmas, que o banco de horas para compensação em período <strong>superior a 30 dias</strong> exige obrigatoriamente instrumento coletivo — Convenção Coletiva de Trabalho (CCT) ou Acordo Coletivo de Trabalho (ACT) —, com participação do sindicato da categoria. Quando implantado apenas por acordo individual escrito, o banco de horas é <strong>nulo de pleno direito</strong>, e todas as horas trabalhadas além da jornada legal devem ser pagas como horas extras, com adicional mínimo de 50% (art. 7º, XVI, CF/88).</p>
+
+<h2>Base legal: o que diz a CLT após a Reforma de 2017</h2>
+<p>O art. 59, §§ 2º e 5º da CLT, com a redação conferida pela Lei 13.467/2017 (Reforma Trabalhista), regula o banco de horas da seguinte forma:</p>
+<ul>
+  <li><strong>§ 2º — Compensação em até 6 meses:</strong> pode ser estabelecida por <strong>acordo individual</strong> tácito ou escrito (novidade da Reforma);</li>
+  <li><strong>§ 5º — Compensação no mesmo mês:</strong> permitida também por acordo individual;</li>
+  <li><strong>Banco de horas anual (art. 59-B CLT):</strong> exige <strong>norma coletiva</strong> — CCT ou ACT com participação sindical obrigatória.</li>
+</ul>
+<p>O ponto de atenção é que, mesmo com a Reforma, o TST tem exigido a norma coletiva para banco de horas que superem 6 meses ou não cumpram os requisitos do § 2º. Acordos individuais firmados antes de novembro de 2017 são invariavelmente nulos para qualquer período além de 30 dias.</p>
+
+<h2>A Súmula 85 do TST e suas atualizações</h2>
+<p>A <strong>Súmula 85 do TST</strong> é a principal referência sobre o tema e deve ser consultada integralmente. Em seu item V, o TST estabelece que, reconhecida a invalidade do banco de horas, as horas trabalhadas além da jornada devem ser pagas como extraordinárias, com o adicional mínimo de 50% — não como simples diferença salarial. O item VI da Súmula 85, inserido após a Reforma, trata especificamente dos acordos individuais permitidos pela Lei 13.467/2017.</p>
+
+<h2>O risco concreto para as empresas</h2>
+<p>Uma empresa que mantém banco de horas implantado apenas por acordo individual (sem CCT/ACT) para compensação além de 6 meses enfrenta os seguintes riscos:</p>
+<ul>
+  <li><strong>Passivo retroativo de 5 anos</strong> (prazo de prescrição, art. 11 da CLT) de horas extras com adicional de 50%;</li>
+  <li><strong>FGTS sobre as horas não pagas</strong> + multa de mora de 10% sobre os depósitos em atraso;</li>
+  <li><strong>Reflexos em férias, 13º salário e aviso prévio</strong> — as horas extras habituais integram a remuneração (Súmula 264/TST);</li>
+  <li><strong>Honorários advocatícios</strong> de 5% a 15% sobre a condenação (art. 791-A CLT).</li>
+</ul>
+
+<h2>Impacto prático para o RH</h2>
+<p>O departamento de RH deve, com urgência, verificar:</p>
+<ul>
+  <li>Se o banco de horas vigente está amparado em CCT ou ACT assinada pelo sindicato da categoria;</li>
+  <li>Se o período de compensação previsto no acordo está dentro dos limites do art. 59, § 2º da CLT (até 6 meses) ou exige negociação coletiva;</li>
+  <li>Se há registro adequado de entrada e saída (cartões de ponto ou sistema eletrônico) para controle transparente do saldo do banco;</li>
+  <li>Se o acordo individual escrito — quando permitido — consta formalmente no contrato de trabalho ou aditivo assinado pelo empregado.</li>
+</ul>
+<p>Utilize a <a href="/calculadora-verbas-trabalhistas" style="color:#2563EB;font-weight:600;">Calculadora de Verbas Trabalhistas</a> para estimar o passivo de horas extras caso o banco de horas vigente seja declarado inválido em eventual reclamação trabalhista.</p>
+
+<p style="font-size:.78rem;color:#64748B;margin-top:28px;padding-top:12px;border-top:1px solid #E2E8F0;">
+  📌 <strong>Base legal:</strong> Art. 59, §§ 2º e 5º, e art. 59-B da CLT (Lei 13.467/2017); Súmula 85/TST (itens I a VI); Art. 7º, XVI, CF/88; Súmula 264/TST (integração de horas extras habituais).
+</p>
+
       </article>
 
-      <!-- Ad: meio do artigo -->
-      <div class="ad-block">
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_BLOG_MID" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+
+      <!-- Disclaimer jurídico -->
+      <div style="background:#FFF7ED;border-left:4px solid #D97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:28px 0;font-size:.82rem;color:#78350F;line-height:1.6;">
+        <strong>⚠️ Aviso legal:</strong> Este conteúdo tem caráter exclusivamente informativo e não constitui assessoria jurídica, contábil ou financeira. Para decisões concretas, consulte sempre um profissional habilitado. As informações refletem o estado da legislação e jurisprudência na data de publicação.
       </div>
 
       <!-- CTA Block -->
@@ -1463,8 +1498,8 @@ document.addEventListener('click', function(e) {
 
 // ── RELATED POSTS ─────────────────────────────
 var THIS_SLUG = 'tst-banco-de-horas-acordo-coletivo';
-var THIS_CAT  = 'jurisprudencia';
-var THIS_TAGS = ["Jurisprudência", "TST", "Horas Extras", "Banco de Horas"];
+var THIS_CAT  = 'jurisprudencia-tst';
+var THIS_TAGS = ["TST", "Banco de Horas", "Horas Extras", "CLT"];
 
 async function loadRelated() {
   let posts = [];

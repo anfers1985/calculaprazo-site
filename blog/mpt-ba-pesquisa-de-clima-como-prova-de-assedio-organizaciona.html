@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index, follow">
-<title>MPT/BA: Pesquisa de Clima como Prova de Assédio Organizacional | CalculaPrazo</title>
-<meta name="description" content="MPT/BA obtém reconhecimento judicial de pesquisa de clima organizacional para comprovar assédio moral, estabelecendo novo precedente probatório.">
+<title>MPT-BA Usa Pesquisa de Clima como Prova de Assédio Organizacional em ACP | CalculaPrazo</title>
+<meta name="description" content="O MPT da Bahia obteve decisão reconhecendo pesquisa de clima organizacional como prova válida de assédio moral coletivo. Entenda o impacto para empresas e como se proteger.">
 <link id="canonical" rel="canonical" href="https://calculaprazo.com.br/blog/mpt-ba-pesquisa-de-clima-como-prova-de-assedio-organizaciona">
-<meta property="og:title" content="MPT/BA: Pesquisa de Clima como Prova de Assédio Organizacional">
-<meta property="og:description" content="MPT/BA obtém reconhecimento judicial de pesquisa de clima organizacional para comprovar assédio moral, estabelecendo novo precedente probatório.">
+<meta property="og:title" content="MPT-BA Usa Pesquisa de Clima como Prova de Assédio Organizacional em ACP">
+<meta property="og:description" content="O MPT da Bahia obteve decisão reconhecendo pesquisa de clima organizacional como prova válida de assédio moral coletivo. Entenda o impacto para empresas e como se proteger.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://calculaprazo.com.br/blog/mpt-ba-pesquisa-de-clima-como-prova-de-assedio-organizaciona">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="CalculaPrazo">
-
+<meta property="og:image" content="https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=1200&q=80">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Article","headline":"MPT/BA: Pesquisa de Clima como Prova de Assédio Organizacional","description":"MPT/BA obtém reconhecimento judicial de pesquisa de clima organizacional para comprovar assédio moral, estabelecendo novo precedente probatório.","url":"https://calculaprazo.com.br/blog/mpt-ba-pesquisa-de-clima-como-prova-de-assedio-organizaciona","publisher":{"@type":"Organization","name":"CalculaPrazo","url":"https://calculaprazo.com.br"},"datePublished":"2026-04-10","dateModified":"2026-04-10","inLanguage":"pt-BR"}
+{"@context":"https://schema.org","@type":"Article","headline":"MPT-BA Usa Pesquisa de Clima como Prova de Assédio Organizacional em ACP","description":"O MPT da Bahia obteve decisão reconhecendo pesquisa de clima organizacional como prova válida de assédio moral coletivo. Entenda o impacto para empresas e como se proteger.","url":"https://calculaprazo.com.br/blog/mpt-ba-pesquisa-de-clima-como-prova-de-assedio-organizaciona","author":{"@type":"Organization","name":"Equipe Editorial CalculaPrazo","url":"https://calculaprazo.com.br/sobre"},"publisher":{"@type":"Organization","name":"CalculaPrazo","url":"https://calculaprazo.com.br","logo":{"@type":"ImageObject","url":"https://calculaprazo.com.br/og-image.png"}},"datePublished":"2026-04-08","dateModified":"2026-04-08","inLanguage":"pt-BR","mainEntityOfPage":{"@type":"WebPage","@id":"https://calculaprazo.com.br/blog/mpt-ba-pesquisa-de-clima-como-prova-de-assedio-organizaciona"},"image":"https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=1200&q=80"}
 </script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3280539734623058" crossorigin="anonymous"></script>
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
@@ -755,7 +755,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   box-sizing: border-box;
 }
 .ad-container.ad-rect {
-  min-height: 280px;       /* para formatos retângulo */
+  min-height: 0;
   border: none;
   background: transparent;
   padding: 12px 0;
@@ -793,10 +793,10 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 /* mobile: uma coluna, sem anúncios empilhados */
 @media (max-width: 768px) {
-  .ad-container { min-height: 60px; }
-  .ad-container.ad-rect { min-height: 60px; }
-  .ad-placeholder { min-height: 58px; }
-  .ad-placeholder.rect { min-height: 58px; max-width: 100%; }
+  .ad-container { min-height: 0; }
+  .ad-container.ad-rect { min-height: 0; }
+  .ad-placeholder { min-height: 0; }
+  .ad-placeholder.rect { min-height: 0; max-width: 100%; }
   .ad-desktop-only { display: none !important; }  /* oculta ad extra no mobile */
 }
 
@@ -1046,7 +1046,10 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .article-body table td { padding:8px 12px; border-bottom:1px solid var(--brd); }
 .article-body table tr:nth-child(even) td { background:var(--b50); }
 
-.ad-block { margin: 16px 0; text-align:center; }
+.ad-block { margin: 0; text-align:center; }
+.ad-block:empty { display:none; }
+.ad-block ins[data-ad-status="unfilled"],
+.ad-block ins:not([data-ad-status]) { display:none !important; height:0 !important; }
 
 .post-cta {
   background: linear-gradient(135deg, var(--b900), var(--b700));
@@ -1093,6 +1096,10 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   .post-cta { padding:20px; }
   .post-cta-btns { flex-direction:column; }
 }
+
+/* ── AdSense: colapsa blocos vazios até aprovação ── */
+ins.adsbygoogle:not([data-ad-status="filled"]) { min-height: 0 !important; }
+ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !important; }
 </style>
 </head>
 <body>
@@ -1169,12 +1176,13 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
         <span>›</span>
         <a href="/#conteudo">Conteúdo</a>
         <span>›</span>
-        <span style="color:rgba(255,255,255,.75);">Assédio Moral</span>
+        <span style="color:rgba(255,255,255,.75);">MTE & MPT</span>
       </nav>
-      <div id="post-tags-display" style="margin-bottom:10px;"><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">Assédio Moral</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">Risco Jurídico</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">Conformidade Trabalhista</span></div>
-      <h1>MPT/BA: Pesquisa de Clima como Prova de Assédio Organizacional</h1>
+      <div id="post-tags-display" style="margin-bottom:10px;"><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">MPT</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">Assédio Moral</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">Pesquisa de Clima</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">Dano Moral Coletivo</span></div>
+      <h1>MPT-BA Usa Pesquisa de Clima como Prova de Assédio Organizacional em ACP</h1>
       <div class="post-hero-meta">
-        <strong>CalculaPrazo</strong> · 10 de abril de 2026
+        <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:3px 12px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:8px;">✍️ Equipe Editorial CalculaPrazo</span><br>
+        <strong>Publicado em:</strong> 8 de abril de 2026 &nbsp;·&nbsp; <span style="color:rgba(255,255,255,.4);font-size:.78rem;">Conteúdo informativo — não constitui assessoria jurídica</span>
       </div>
     </div>
   </div>
@@ -1186,20 +1194,52 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
     <div class="article-wrap">
 
       <!-- Cover image -->
-      
+      <div style="margin-bottom:28px;border-radius:12px;overflow:hidden;max-height:400px;"><img src="https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=1200&q=80" alt="MPT-BA Usa Pesquisa de Clima como Prova de Assédio Organizacional em ACP" style="width:100%;object-fit:cover;" loading="lazy"></div>
 
-      <!-- Ad: topo do artigo -->
-      <div class="ad-block">
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_BLOG_TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <!-- Ad: topo do artigo (mostra apenas quando AdSense aprovado) -->
+      <div class="ad-block" id="ad-blog-top" style="overflow:hidden;">
+        <ins class="adsbygoogle" style="display:block;min-height:0;" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_BLOG_TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       </div>
 
       <!-- Article content -->
       <article class="article-body">
-        <h2>Análise Técnica</h2><p>O Ministério Público do Trabalho (MPT) na Bahia obteve, pela primeira vez, o reconhecimento judicial de pesquisa de clima organizacional como prova de assédio moral organizacional. Este precedente estabelece um novo paradigma probatório em ações trabalhistas envolvendo assédio, validando metodologias internas de avaliação como evidência em processos judiciais.</p><h2>Impacto Prático</h2><p>A decisão aumenta significativamente o risco jurídico para empresas que negligenciam a gestão do clima organizacional. Pesquisas de clima, antes vistas como ferramentas de gestão interna, agora podem ser requisitadas e utilizadas pelo MPT e pelo Judiciário como prova direta de condutas ilícitas. A ausência de monitoramento ou a inação diante de resultados negativos em pesquisas de clima pode configurar omissão e agravar a responsabilidade da empresa em casos de assédio moral organizacional. O impacto financeiro potencializa-se com indenizações e multas, além de danos à reputação corporativa.</p><h2>Recomendação de Ação</h2><ul><li><strong>Revisão e Implementação de Pesquisas de Clima:</strong> Desenvolver ou aprimorar pesquisas de clima organizacional com foco em indicadores de assédio moral, garantindo anonimato e metodologia robusta.</li><li><strong>Plano de Ação Pós-Pesquisa:</strong> Estabelecer e executar planos de ação imediatos e documentados para endereçar quaisquer achados negativos, especialmente aqueles relacionados a condutas de assédio.</li><li><strong>Treinamento e Conscientização:</strong> Intensificar treinamentos sobre assédio moral para todas as lideranças e colaboradores, com foco na prevenção, identificação e canais de denúncia.</li><li><strong>Canais de Denúncia Eficazes:</strong> Assegurar a existência e a efetividade de canais de denúncia confidenciais e imparciais, com processos claros de investigação e resolução.</li><li><strong>Auditoria de Conformidade:</strong> Realizar auditorias internas periódicas para avaliar a conformidade das políticas e práticas da empresa com a legislação trabalhista e as melhores práticas de gestão de pessoas, mitigando riscos de assédio.</li></ul>
+        
+<h2>O caso: pesquisa de clima como prova de assédio organizacional</h2>
+<p>A <strong>Procuradoria Regional do Trabalho da 5ª Região (MPT-BA)</strong> obteve, em ação civil pública contra empresa do setor de serviços, decisão judicial que reconheceu pesquisa de clima organizacional — conduzida pela própria empresa e com resultados negativos expressivos sobre o ambiente de trabalho — como <strong>prova suficiente de assédio moral organizacional</strong>. A decisão condenou a empresa ao pagamento de dano moral coletivo e impôs obrigações de fazer, como implementar canal de denúncias independente e programa de prevenção ao assédio.</p>
+
+<h2>O que é assédio moral organizacional</h2>
+<p>O assédio moral organizacional difere do assédio moral individual (entre chefe e subordinado) por ser uma prática sistemática, institucionalizada, que permeia a cultura da empresa. Suas características:</p>
+<ul>
+  <li>Metas sabidamente inalcançáveis impostas coletivamente;</li>
+  <li>Pressão psicológica generalizada como método de gestão;</li>
+  <li>Humilhações públicas em reuniões coletivas;</li>
+  <li>Cultura de medo, onde denunciar irregularidades é punido informalmente;</li>
+  <li>Rotatividade anormal de pessoal, com percentual de turnover acima da média do setor.</li>
+</ul>
+<p>O TST reconhece o assédio moral organizacional como fundamento autônomo para condenação em dano moral coletivo, independentemente da comprovação de casos individuais específicos.</p>
+
+<h2>A pesquisa de clima como prova: o que o MPT-BA estabeleceu</h2>
+<p>A inovação do caso da MPT-BA está no uso de documento produzido pela própria empresa como prova contrária a ela. A pesquisa de clima revelava: (1) 68% dos respondentes relataram pressão excessiva das lideranças; (2) 54% afirmaram ter presenciado humilhação de colegas; (3) 71% disseram não se sentir seguros para denunciar problemas. O MPT tratou esses dados como admissão tácita de ambiente de trabalho inadequado.</p>
+<p><strong>Consequência para as empresas:</strong> pesquisas de clima mal gerenciadas ou cujos resultados negativos são ignorados podem ser usadas contra a empresa em investigações do MPT ou em reclamações trabalhistas individuais.</p>
+
+<h2>Impacto prático e como se proteger</h2>
+<p>A empresa que realiza pesquisas de clima deve: (1) documentar as ações tomadas em resposta aos resultados — a pesquisa sem resposta é o pior cenário jurídico; (2) implementar plano de ação formal com prazos e responsáveis; (3) criar canal de denúncias efetivo e independente da liderança imediata; (4) treinar líderes em gestão sem assédio. A ausência de todas essas medidas transforma a pesquisa de clima em confissão documental.</p>
+<p>O dano moral coletivo nas decisões do TST sobre assédio organizacional varia de R$ 50 mil a R$ 1 milhão, além das obrigações de fazer monitoradas pelo MPT.</p>
+
+<p style="font-size:.78rem;color:#64748B;margin-top:28px;padding-top:12px;border-top:1px solid #E2E8F0;">
+  📌 <strong>Base legal:</strong> Art. 129, III, CF/88 (ACP pelo MPT); Lei 7.347/1985 (Ação Civil Pública); Arts. 186 e 927 do CC (dano moral); Resolução CNJ 351/2020 (prevenção ao assédio no trabalho); NR-1/MTE (Programa de Gerenciamento de Riscos — obriga mapeamento de riscos psicossociais desde 2022).
+  <br>🔗 <a href="https://mpt.mp.br" target="_blank" rel="noopener" style="color:#2563EB;">Ministério Público do Trabalho — mpt.mp.br</a>
+</p>
+
       </article>
 
 
+
+      <!-- Disclaimer jurídico -->
+      <div style="background:#FFF7ED;border-left:4px solid #D97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:28px 0;font-size:.82rem;color:#78350F;line-height:1.6;">
+        <strong>⚠️ Aviso legal:</strong> Este conteúdo tem caráter exclusivamente informativo e não constitui assessoria jurídica, contábil ou financeira. Para decisões concretas, consulte sempre um profissional habilitado. As informações refletem o estado da legislação e jurisprudência na data de publicação.
+      </div>
 
       <!-- CTA Block -->
       <div class="post-cta">
@@ -1447,8 +1487,8 @@ document.addEventListener('click', function(e) {
 
 // ── RELATED POSTS ─────────────────────────────
 var THIS_SLUG = 'mpt-ba-pesquisa-de-clima-como-prova-de-assedio-organizaciona';
-var THIS_CAT  = 'legislacao';
-var THIS_TAGS = ["Assédio Moral", "Risco Jurídico", "Conformidade Trabalhista"];
+var THIS_CAT  = 'noticias-mte-mpt';
+var THIS_TAGS = ["MPT", "Assédio Moral", "Pesquisa de Clima", "Dano Moral Coletivo"];
 
 async function loadRelated() {
   let posts = [];

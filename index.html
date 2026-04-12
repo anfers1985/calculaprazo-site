@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- SEO: título e descrição dinâmicos via JS (ver função updateSEO) -->
-<title id="page-title">Calcula Prazo Online Grátis – Dias Úteis e Corridos | Calculadora Processual</title>
-<meta id="meta-desc" name="description" content="Calcula prazo online grátis em dias úteis e corridos. Calculadora de prazos + ferramentas profissionais (correção monetária, juros, salário líquido, verbas trabalhistas e mais). 100% gratuita e sem cadastro.">
+<title id="page-title">Calculadora de Prazo Processual Grátis – Dias Úteis e Corridos | CalculaPrazo</title>
+<meta id="meta-desc" name="description" content="Calculadora de prazo processual gratuita em dias úteis e corridos (CPC e CLT). Verbas trabalhistas, correção monetária, salário líquido, INSS, IRRF e muito mais. Sem cadastro.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="CalculaPrazo">
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 <link id="canonical" rel="canonical" href="https://calculaprazo.com.br/">
 <!-- Open Graph -->
-<meta id="og-title"    property="og:title"       content="Calcular Prazo Online | CalculaPrazo">
-<meta id="og-desc"     property="og:description"  content="Calculadora de prazos processuais, juros, correção monetária, salário líquido, IMC e muito mais. 100% gratuito.">
+<meta id="og-title"    property="og:title"       content="Calculadora de Prazo Processual Grátis | CalculaPrazo">
+<meta id="og-desc"     property="og:description"  content="Calculadora de prazo processual em dias úteis e corridos (CPC/CLT). Verbas trabalhistas, correção monetária, salário líquido e mais. 100% gratuito.">
 <meta                  property="og:type"         content="website">
 <meta id="og-url"      property="og:url"          content="https://calculaprazo.com.br/">
 <meta                  property="og:image"        content="https://calculaprazo.com.br/og-image.png">
@@ -20,8 +20,8 @@
 <meta                  property="og:site_name"    content="CalculaPrazo">
 <!-- Twitter Card -->
 <meta name="twitter:card"        content="summary_large_image">
-<meta id="tw-title" name="twitter:title"       content="Calcular Prazo Online | CalculaPrazo">
-<meta id="tw-desc"  name="twitter:description" content="Calculadora de prazos processuais, juros, correção monetária, salário líquido e mais. 100% grátis.">
+<meta id="tw-title" name="twitter:title"       content="Calculadora de Prazo Processual Grátis | CalculaPrazo">
+<meta id="tw-desc"  name="twitter:description" content="Calculadora de prazo processual em dias úteis e corridos. Verbas trabalhistas, correção monetária, salário líquido e mais. 100% grátis.">
 <!-- Schema.org WebSite + SiteSearch -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebSite","name":"CalculaPrazo","url":"https://calculaprazo.com.br","description":"Ferramentas jurídicas e profissionais gratuitas","potentialAction":{"@type":"SearchAction","target":"https://calculaprazo.com.br/?q={search_term_string}","query-input":"required name=search_term_string"}}
@@ -1058,7 +1058,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
         </div>
       </div>
       <a onclick="goTo('sobre')" style="cursor:pointer;">Sobre</a>
-      <a href="mailto:calculaprazo@calculaprazo.com.br">✉ Contato</a>
+      <a href="/contato">✉ Contato</a>
       <a class="hdr-doacao" onclick="document.getElementById('modal-doacao').style.display='flex'">☕ Doação</a>
     </nav>
   </div>
@@ -2407,17 +2407,18 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       <div class="ftr-col"><h4>Informações</h4><ul>
         <li><a onclick="window.goTo('sobre')" style="cursor:pointer;">Sobre o CalculaPrazo</a></li>
         <li><a onclick="navGoTo('blog')" style="cursor:pointer;color:rgba(255,255,255,.5);">Conteúdo / Blog</a></li>
-        <li><a href="mailto:calculaprazo@calculaprazo.com.br">Contato</a></li>
-        <li><a onclick="document.getElementById('modal-privacidade').style.display='flex'" style="cursor:pointer;">Privacidade & LGPD</a></li>
-        <li><a onclick="document.getElementById('modal-termos').style.display='flex'" style="cursor:pointer;">Termos de Uso</a></li>
+        <li><a href="/contato">Contato</a></li>
+        <li><a href="/privacidade">Privacidade & LGPD</a></li>
+        <li><a href="/termos">Termos de Uso</a></li>
       </ul></div>
     </div>
     <div class="ftr-bot">
       <p class="ftr-copy">&copy; <span id="yr"></span> CalculaPrazo. Todos os direitos reservados. Ferramenta gratuita para advogados e profissionais. Os cálculos são de caráter informativo e não substituem assessoria jurídica.</p>
       <div style="display:flex;gap:16px;align-items:center;">
         <a onclick="document.getElementById('modal-doacao').style.display='flex'" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;cursor:pointer;">☕ Doação</a>
-        <a onclick="document.getElementById('modal-termos').style.display='flex'" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;cursor:pointer;">Termos de Uso</a>
-        <a onclick="document.getElementById('modal-privacidade').style.display='flex'" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;cursor:pointer;">Privacidade & LGPD</a>
+        <a href="/contato" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;">Contato</a>
+        <a href="/termos" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;">Termos de Uso</a>
+        <a href="/privacidade" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;">Privacidade & LGPD</a>
       </div>
     </div>
   </div>
@@ -4078,8 +4079,15 @@ window.addEventListener('popstate', function(e) {
 // ── Inicialização — lê a URL ao carregar ────────────────
 document.addEventListener('DOMContentLoaded', function() {
   const id = resolveIdFromURL();
-  if (id && id !== 'prazos') _navOriginal(id);
-  updateSEO(id || 'prazos');
+  // Se a URL é a raiz '/', mostrar home; caso contrário, mostrar a seção correspondente
+  if (location.pathname === '/' || location.pathname === '') {
+    _navOriginal('home');
+    updateSEO('home');
+  } else {
+    if (id && id !== 'prazos') _navOriginal(id);
+    else _navOriginal(id || 'prazos');
+    updateSEO(id || 'prazos');
+  }
 });
 
 
@@ -4087,7 +4095,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!-- ══════════ COOKIE BANNER ══════════ -->
 <div id="cookie-banner">
-  <p>Usamos cookies para melhorar sua experiência e exibir anúncios relevantes. Ao continuar, você concorda com nossa <a onclick="document.getElementById('modal-privacidade').style.display='flex'">Política de Privacidade</a> e <a onclick="document.getElementById('modal-termos').style.display='flex'">Termos de Uso</a>.</p>
+  <p>Usamos cookies para melhorar sua experiência e exibir anúncios relevantes. Ao continuar, você concorda com nossa <a href="/privacidade">Política de Privacidade</a> e <a href="/termos">Termos de Uso</a>.</p>
   <div class="cookie-btns">
     <button class="cookie-btn-ok" onclick="setCookiePref(true)">Aceitar</button>
     <button class="cookie-btn-no" onclick="setCookiePref(false)">Recusar</button>
