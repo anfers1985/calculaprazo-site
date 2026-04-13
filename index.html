@@ -1085,7 +1085,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 <!-- ══════════════════════════════════════
      HOME
 ══════════════════════════════════════ -->
-<div id="sec-home" class="sec">
+<div id="sec-home" class="sec active">
 
   <!-- HERO: Portal profissional — SEM calculadora duplicada -->
   <div class="home-hero">
@@ -1209,7 +1209,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 <!-- ══════════════════════════════════════
      PRAZOS
 ══════════════════════════════════════ -->
-<div id="sec-prazos" class="sec active">
+<div id="sec-prazos" class="sec">
 
   <!-- ▸ ANÚNCIO: prazos-top -->
   <div class="ad-container" id="ad-prazos-top">
@@ -2170,7 +2170,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <div style="background:var(--b900);padding:14px 0;">
     <div class="container">
       <div style="font-size:.78rem;color:rgba(255,255,255,.5);">
-        <span onclick="goTo('prazos')" style="cursor:pointer;color:rgba(255,255,255,.6);">Início</span>
+        <span onclick="goTo('home')" style="cursor:pointer;color:rgba(255,255,255,.6);">Início</span>
         <span class="bsep"> › </span>
         <span style="color:#fff;font-weight:600;">Sobre o CalculaPrazo</span>
       </div>
@@ -2289,7 +2289,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <div style="background:var(--b900);padding:14px 0;">
     <div class="container">
       <div style="font-size:.78rem;color:rgba(255,255,255,.5);">
-        <span onclick="goTo('prazos')" style="cursor:pointer;color:rgba(255,255,255,.6);">Início</span>
+        <span onclick="goTo('home')" style="cursor:pointer;color:rgba(255,255,255,.6);">Início</span>
         <span class="bsep"> › </span>
         <span style="color:#fff;font-weight:600;">Conteúdo Profissional</span>
       </div>
@@ -2459,6 +2459,8 @@ const NAV_ACTIVE = {
 
 function goTo(id) {
   document.querySelectorAll('.sec').forEach(s => s.classList.remove('active'));
+  // Atualiza URL sem recarregar
+  try { history.replaceState(null, '', id === 'home' ? '/' : '#' + id); } catch(e) {}
   const sec = document.getElementById('sec-' + (NAV_MAP[id] || id));
   if (sec) sec.classList.add('active');
   document.querySelectorAll('#hdr .hdr-nav>a, #hdr .nav-dropdown>a').forEach(a => a.classList.remove('on'));
@@ -3706,28 +3708,13 @@ function toggleFerramentas(e){
   if(opening) positionDropdown();
 }
 
-// navGoTo: navigate + close dropdown
-function navGoTo(id){
-  // Handled by the blog navGoTo below — this call delegates to it
-  document.querySelectorAll('.nav-dropdown').forEach(function(d){ d.classList.remove('open'); });
-  if (id === 'blog') {
-    document.querySelectorAll('.sec').forEach(function(s){ s.classList.remove('active'); });
-    var secBlog = document.getElementById('sec-blog');
-    if (secBlog) secBlog.classList.add('active');
-    renderBlogSection();
-    window.scrollTo(0, 0);
-    document.querySelectorAll('#hdr .hdr-nav>a, #hdr .nav-dropdown>a').forEach(function(a){ a.classList.remove('on'); });
-    var navC = document.getElementById('nav-conteudo');
-    if (navC) navC.classList.add('on');
-  } else {
-    window.goTo(id);
-  }
-}
+// navGoTo definida no bloco Blog Engine abaixo
 // Fecha ao clicar fora
 document.addEventListener('click', function(e){
-  // Close dropdown when clicking outside
-  const dd = document.getElementById('nav-dropdown-ferramentas');
-  if(dd && !dd.contains(e.target)) dd.classList.remove('open');
+  // Fecha todos os dropdowns ao clicar fora
+  document.querySelectorAll('.nav-dropdown').forEach(function(d){
+    if (!d.contains(e.target)) d.classList.remove('open');
+  });
   // FAQ accordion (event delegation)
   const q = e.target.closest('.faq-q');
   if(q){
@@ -4242,7 +4229,7 @@ const BLOG_PER_PAGE = 10;
 // ── Carrega posts ──
 async function loadBlogPosts() {
   try {
-    var r = await fetch('data/posts.json');
+    var r = await fetch('/data/posts.json');
     if (r.ok) BLOG_POSTS = await r.json();
   } catch(e) { BLOG_POSTS = []; }
   renderHomeBlog();
@@ -4422,6 +4409,7 @@ function navGoTo(id) {
     if (secBlog) secBlog.classList.add('active');
     renderBlogSection();
     window.scrollTo(0, 0);
+    try { history.replaceState(null, '', '#conteudo'); } catch(e) {}
     document.querySelectorAll('#hdr .hdr-nav>a, #hdr .nav-dropdown>a').forEach(function(a){ a.classList.remove('on'); });
     var navC = document.getElementById('nav-conteudo');
     if (navC) navC.classList.add('on');
@@ -4434,6 +4422,7 @@ function navGoTo(id) {
 // ── Toggle Conteúdo dropdown ──
 function toggleConteudo(e) {
   e.preventDefault();
+  e.stopPropagation();
   var dd = document.getElementById('nav-dropdown-conteudo');
   var isOpen = dd.classList.contains('open');
   document.querySelectorAll('.nav-dropdown').forEach(function(d){ d.classList.remove('open'); });
