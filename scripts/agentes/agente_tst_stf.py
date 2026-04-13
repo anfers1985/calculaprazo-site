@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 """
 agente_tst_stf.py — CalculaPrazo
-Monitora decisões e notícias do TST, STF e CSJT.
+Monitora publicações do TST e STF.
+Foco: decisões, súmulas, teses vinculantes, campanhas e informativos com
+      impacto em relações de trabalho, empresas, RH e trabalhadores.
+Descarta: conteúdo institucional interno (concursos, eleições de diretoria,
+          eventos internos, homenagens a servidores).
 Categoria: jurisprudencia-tst
 Execução: dias úteis, 09h (Brasília) via GitHub Actions.
 """
 import os, json, re, requests, random, time
-from datetime import date
+from datetime import date, timedelta
 from slugify import slugify
 from html.parser import HTMLParser
 from agente_base import (
@@ -24,22 +28,34 @@ HEADERS = {
 CATEGORIA   = "jurisprudencia-tst"
 FONTE_LABEL = "TST/STF"
 
+# Janela de atualidade: prioriza 24h, aceita até 72h
+JANELA_HORAS = 72
+
 PROPOSITO = """
-Você é um advogado trabalhista especialista, redator jurídico do CalculaPrazo.
-Seu público: advogados trabalhistas, profissionais de RH e contadores brasileiros.
-Estilo: técnico, preciso, direto e orientado à prática.
+Você é um Analista Estratégico de Relações Trabalhistas e Auditor Jurídico do CalculaPrazo.
+P�blico-alvo: advogados trabalhistas, diretoria jurídica, RH estratégico e controladoria.
+Estilo: técnico, direto, pragmático — sem juridiquês acadêmico, sem generalidades.
+
+MISSÃO DESTE AGENTE:
+Monitorar publicações do TST e STF que impactem relações de trabalho, empresas e trabalhadores.
+Isso inclui: decisões de turmas, acórdãos relevantes, súmulas novas ou revisadas, teses de
+repercussão geral, informativos de jurisprudência, campanhas e orientações ao jurisdicionado.
+
+NÃO PUBLICAR: conteúdo institucional interno — concurso público, eleição de diretoria,
+evento social, homenagem a servidor, inauguração, visita protocolar.
+
 REGRAS ABSOLUTAS:
-1. Cite fontes verificáveis — número de processo, portaria, lei ou URL quando disponível.
-2. Linguagem jurídica profissional — sem generalidades ou "tendências".
-3. Cada afirmação deve ter base no conteúdo fornecido — nunca invente dados.
-4. Conclua com impacto prático e ação recomendada ao leitor.
-Cite SEMPRE o número do processo, acórdão ou Súmula quando disponível no conteúdo coletado.
+1. Citar número do processo (ex: RR-1234-56.2023.5.02.0000), turma julgadora e relator
+   sempre que constarem no conteúdo coletado.
+2. Citar súmula, OJ ou tese de repercussão geral pelo número quando disponível.
+3. Nunca inventar dados — se não estiver na fonte, não escreva.
+4. Cada afirmação factual deve ser rastreável ao conteúdo coletado.
+5. Concluir com impacto prático e ação recomendada para jurídico/RH/controladoria.
 """
 
 SOURCES = [
-{"nome": "TST - Notícias", "url": "https://www.tst.jus.br/web/guest/noticias"},
-    {"nome": "CSJT - Notícias dos TRTs", "url": "https://www.csjt.jus.br/web/csjt/noticias-dos-trts"},
-    {"nome": "STF - Notícias", "url": "https://noticias.stf.jus.br/"}
+    {"nome": "TST — Notícias",  "url": "https://www.tst.jus.br/web/guest/noticias"},
+    {"nome": "STF — Notícias",  "url": "https://noticias.stf.jus.br/"},
 ]
 
 
@@ -62,7 +78,7 @@ class TextExtractor(HTMLParser):
             if len(t) > 40:
                 self.texts.append(t)
 
-    def get_text(self, max_chars=5000):
+    def get_text(self, max_chars=6000):
         return " ".join(self.texts)[:max_chars]
 
 
@@ -73,7 +89,7 @@ def buscar_conteudo(fonte):
         if r.ok:
             p = TextExtractor()
             p.feed(r.text)
-            return p.get_text(5000), r.url
+            return p.get_text(6000), r.url
     except Exception as e:
         print(f"  Erro ao acessar {fonte['nome']}: {e}")
     return "", fonte["url"]
@@ -86,16 +102,16 @@ def avaliar_relevancia(conteudo, fonte_nome):
     prompt = f"""
 {PROPOSITO}
 
-Conteúdo de {fonte_nome} (hoje: {HOJE.strftime('%d/%m/%Y')}):
+Conteúdo coletado de {fonte_nome} (hoje: {HOJE.strftime('%d/%m/%Y')}):
 ---
-{conteudo[:2000]}
+{conteudo[:3000]}
 ---
 
-Existe decisão, norma ou notícia das últimas 72 horas com impacto relevante para
-advogados trabalhistas, RH ou empresas?
+Há publicação das últimas 72 horas com impacto relevante para advogados trabalhistas,
+empresas ou trabalhadores? Exclua conteúdo institucional interno.
 
 Responda APENAS com JSON:
-{{"relevante": true/false, "motivo": "1 frase objetiva", "tema": "tema específico e concreto"}}
+{{"relevante": true/false, "motivo": "1 frase objetiva", "tema": "tema específico e concreto com processo/súmula se disponível"}}
 """
     try:
         r = requests.post(
@@ -117,40 +133,35 @@ def gerar_artigo(conteudo, tema, fonte_nome, fonte_url):
     prompt = f"""
 {PROPOSITO}
 
-Fonte: {fonte_nome} ({fonte_url})
+Fonte: {fonte_nome}
+Link direto: {fonte_url}
 Data: {HOJE.strftime('%d/%m/%Y')}
-Tema: {tema}
+Tema identificado: {tema}
 
 Conteúdo coletado:
 ---
-{conteudo[:4000]}
+{conteudo[:5000]}
 ---
 
-Redija um artigo jurídico completo com EXATAMENTE esta estrutura HTML:
+Redija um boletim técnico completo. Varie os subtítulos conforme o caso, mas inclua
+obrigatoriamente estes elementos em sequência lógica:
 
-<h2>Contexto</h2>
-<p>[Situação jurídica, norma ou súmula aplicável]</p>
+1. Resumo executivo (2-3 frases): o que aconteceu, qual órgão, número do processo/súmula/tese, impacto imediato.
+2. Contexto jurídico: norma ou entendimento anterior aplicável (CLT, CF/88, Súmula TST/STF).
+3. O que foi decidido/publicado: descreva com base exclusiva no conteúdo coletado, cite processo, turma e relator se disponíveis.
+4. Tese jurídica central: qual entendimento foi firmado ou reforçado.
+5. Impacto para empresas e RH: o que muda na prática, riscos de passivo, padrões de erro empresarial.
+6. Ação recomendada: medidas objetivas para diretoria jurídica, RH estratégico e controladoria.
 
-<h2>O que aconteceu</h2>
-<p>[Fato concreto com órgão, data e número do processo/ato se disponível]</p>
+Mínimo 450 palavras. Nunca invente dados ausentes da fonte.
 
-<h2>Fundamentação</h2>
-<p>[Base legal, artigo CLT/CPC/CF citado]</p>
-
-<h2>Impacto Prático para Empresas e RH</h2>
-<p>[O que muda, o que o RH/advogado deve fazer]</p>
-
-<h2>Recomendação Imediata</h2>
-<p>[Ação concreta e verificável]</p>
-
-Mínimo 400 palavras. NÃO invente dados não presentes no conteúdo.
-
-Responda APENAS com JSON:
+Responda APENAS com JSON válido:
 {{
-  "title": "Título técnico e específico (máx 65 caracteres)",
-  "excerpt": "Resumo objetivo (máx 155 caracteres)",
+  "title": "Título técnico direto com foco em risco ou impacto (máx 70 chars)",
+  "excerpt": "Resumo executivo em 1-2 frases (máx 160 chars)",
   "tags": ["Tag1", "Tag2", "Tag3"],
-  "content": "<h2>Contexto</h2><p>...</p>..."
+  "image_query": "3-5 palavras em inglês descrevendo imagem contextual (ex: supreme court gavel law)",
+  "content": "<h2>...</h2><p>...</p>..."
 }}
 """
     try:
@@ -164,12 +175,12 @@ Responda APENAS com JSON:
         raw = r.json()["choices"][0]["message"]["content"].strip()
         raw = re.sub(r"^```json\s*", "", raw)
         raw = re.sub(r"\s*```$", "", raw)
-
         dados = json.loads(raw)
-        dados.setdefault("title", f"Atualização {FONTE_LABEL} — {HOJE.strftime('%d/%m/%Y')}")
-        dados.setdefault("excerpt", tema[:120])
-        dados.setdefault("content", "<p>Análise técnica em elaboração.</p>")
-        dados.setdefault("tags", ["TST", "Jurisprudência"])
+        dados.setdefault("title",       f"Atualização {FONTE_LABEL} — {HOJE.strftime('%d/%m/%Y')}")
+        dados.setdefault("excerpt",     tema[:120])
+        dados.setdefault("content",     "<p>Análise técnica em elaboração.</p>")
+        dados.setdefault("tags",        ["TST", "Jurisprudência"])
+        dados.setdefault("image_query", "supreme court justice gavel law")
         dados["source_url"] = fonte_url
         return dados
     except Exception as e:
@@ -181,11 +192,10 @@ def main():
     print(f"\nAgente {FONTE_LABEL} — {HOJE.strftime('%d/%m/%Y')}")
     print("=" * 70)
 
-    random.seed(HOJE.year * 10000 + HOJE.month * 100 + HOJE.day)
-    fontes = random.sample(SOURCES, min(len(SOURCES), 3))
-
+    random.shuffle(SOURCES)
     publicados = 0
-    for fonte in fontes:
+
+    for fonte in SOURCES:
         print(f"\n[{fonte['nome']}] Verificando...")
         conteudo, url_real = buscar_conteudo(fonte)
         if not conteudo or len(conteudo) < 200:
@@ -208,7 +218,6 @@ def main():
         if not dados:
             continue
 
-        # Validação de qualidade obrigatória
         aprovado, motivo = validar_qualidade(dados, CATEGORIA)
         if not aprovado:
             print(f"  ❌ Reprovado: {motivo} | Título: '{dados.get('title','')}'")

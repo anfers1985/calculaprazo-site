@@ -6,7 +6,6 @@ Contém: validação de qualidade, salvar_post com sitemap, deduplicação e pad
 
 import os, json, re, datetime
 from slugify import slugify
-from xml.etree import ElementTree as ET
 
 HOJE = datetime.date.today()
 
@@ -19,25 +18,45 @@ CATEGORIAS_VALIDAS = {
     "esocial-fgts-digital": "eSocial e FGTS Digital",
     "orientacoes-praticas": "Orientações Práticas RH",
     "saude-seguranca":      "Saúde e Segurança",
+    "modelos":              "Modelos",
+    "artigos":              "Artigos",
+    "geral":                "Geral",
 }
 
 MESES = ["janeiro","fevereiro","março","abril","maio","junho",
          "julho","agosto","setembro","outubro","novembro","dezembro"]
 
+# ─── Query de imagem padrão por categoria ────────────────────────────
+IMAGEM_QUERY_CATEGORIA = {
+    "jurisprudencia-tst":   "supreme court justice gavel law",
+    "jurisprudencia-trts":  "labor court hearing workplace law",
+    "noticias-mte-mpt":     "labor inspection ministry work regulation",
+    "legislacao-normas":    "legislation law books gavel",
+    "esocial-fgts-digital": "digital documents HR payroll technology",
+    "orientacoes-praticas": "HR human resources office management",
+    "saude-seguranca":      "workplace safety health equipment worker",
+}
+
+
+def obter_imagem_url(image_query: str, categoria: str) -> str:
+    """
+    Monta URL de imagem contextual via source.unsplash.com (sem autenticação).
+    Usa image_query gerada pelo modelo; fallback para query da categoria.
+    """
+    query = re.sub(r'[^a-zA-Z0-9 ]', '', (image_query or "")).strip()
+    if len(query) < 5:
+        query = IMAGEM_QUERY_CATEGORIA.get(categoria, "law justice workplace")
+    query_url = query.replace(' ', ',')
+    return f"https://source.unsplash.com/1200x600/?{query_url}"
+
 
 # ─── Validação de qualidade ───────────────────────────────────────────
 def validar_qualidade(dados: dict, categoria: str) -> tuple[bool, str]:
-    """
-    Valida se o artigo gerado atende ao padrão editorial mínimo.
-    Retorna (aprovado: bool, motivo: str).
-    """
-    title   = dados.get("title", "")
-    excerpt = dados.get("excerpt", "")
-    content = dados.get("content", "")
-    tags    = dados.get("tags", [])
-    source_url = dados.get("source_url", "")
+    title      = dados.get("title", "")
+    excerpt    = dados.get("excerpt", "")
+    content    = dados.get("content", "")
+    tags       = dados.get("tags", [])
 
-    # 1. Título não pode ser genérico ou vazio
     if not title or len(title.strip()) < 10:
         return False, "Título ausente ou muito curto"
 
@@ -48,36 +67,37 @@ def validar_qualidade(dados: dict, categoria: str) -> tuple[bool, str]:
     if any(g in title.lower() for g in TITULOS_GENERICOS):
         return False, f"Título genérico detectado: '{title}'"
 
-    # 2. Excerpt mínimo
     if not excerpt or len(excerpt.strip()) < 30:
         return False, "Resumo (excerpt) ausente ou muito curto"
 
-    # 3. Conteúdo mínimo: 400 palavras
     text_only = re.sub(r'<[^>]+>', ' ', content)
     words = len(text_only.split())
     if words < 300:
         return False, f"Conteúdo muito curto: {words} palavras (mínimo: 300)"
 
-    # 4. Deve ter pelo menos um H2
     if '<h2' not in content.lower():
         return False, "Conteúdo sem H2 — estrutura mínima não atendida"
 
-    # 5. Tags não podem ser vazias
     if not tags:
         return False, "Nenhuma tag informada"
 
-    # 6. Categoria deve ser válida
     if categoria not in CATEGORIAS_VALIDAS:
         return False, f"Categoria inválida: '{categoria}'"
+
+    # Aviso (não reprovação) se não houver referência de processo/norma
+    refs = re.findall(
+        r'(processo\s*n[º°.]|portaria|instrução normativa|acórdão|súmula|'
+        r'lei\s+n[º°.]|resolução|RR-|AIRR-|AgR-|TAC|ACP)',
+        content, re.IGNORECASE
+    )
+    if not refs:
+        print(f"  ⚠️  Aviso: sem referência explícita de processo/norma — '{title}'")
 
     return True, "OK"
 
 
 # ─── Verificar duplicata ──────────────────────────────────────────────
 def is_duplicata(title: str, posts_path: str = "data/posts.json") -> bool:
-    """
-    Retorna True se já existe post com título muito similar (similaridade > 80%).
-    """
     try:
         with open(posts_path, encoding="utf-8") as f:
             posts = json.load(f)
@@ -85,21 +105,19 @@ def is_duplicata(title: str, posts_path: str = "data/posts.json") -> bool:
         return False
 
     title_lower = title.lower().strip()
-    slug_novo = slugify(title)[:40]
+    slug_novo   = slugify(title)[:40]
 
     for p in posts:
-        existing_slug = p.get("id", "")
+        existing_slug  = p.get("id", "")
         existing_title = p.get("title", "").lower()
 
-        # Checar slug
         if slug_novo in existing_slug or existing_slug in slug_novo:
             return True
 
-        # Checar similaridade de título (palavras em comum)
         words_new = set(title_lower.split())
         words_old = set(existing_title.split())
         if len(words_new) > 3 and len(words_old) > 3:
-            common = words_new & words_old
+            common     = words_new & words_old
             similarity = len(common) / max(len(words_new), len(words_old))
             if similarity > 0.75:
                 return True
@@ -109,18 +127,12 @@ def is_duplicata(title: str, posts_path: str = "data/posts.json") -> bool:
 
 # ─── Salvar post + atualizar JSON + atualizar sitemap ─────────────────
 def salvar_post(dados: dict, categoria: str, fonte_nome: str = "") -> bool:
-    """
-    Salva o HTML do post, atualiza data/posts.json e sitemap.xml.
-    Retorna True se salvo com sucesso.
-    """
     try:
-        data_str = HOJE.strftime("%Y-%m-%d")
-        data_br  = f"{HOJE.day} de {MESES[HOJE.month - 1]} de {HOJE.year}"
-        slug     = slugify(dados["title"])[:60]
-
+        data_str  = HOJE.strftime("%Y-%m-%d")
+        data_br   = f"{HOJE.day} de {MESES[HOJE.month - 1]} de {HOJE.year}"
+        slug      = slugify(dados["title"])[:60]
         cat_label = CATEGORIAS_VALIDAS.get(categoria, categoria)
 
-        # ── Carregar template ─────────────────────────────────────────
         with open("blog/POST_TEMPLATE.html", encoding="utf-8") as f:
             template = f.read()
 
@@ -128,7 +140,6 @@ def salvar_post(dados: dict, categoria: str, fonte_nome: str = "") -> bool:
         tags_json  = json.dumps(tags, ensure_ascii=False)
         source_url = dados.get("source_url", "")
 
-        # Badges de tags (hero)
         tags_badges = "".join(
             f'<span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;'
             f'font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);'
@@ -136,7 +147,6 @@ def salvar_post(dados: dict, categoria: str, fonte_nome: str = "") -> bool:
             for t in tags
         )
 
-        # Nota de fonte ao final do conteúdo
         fonte_nota = ""
         if source_url:
             fonte_nota = (
@@ -153,43 +163,40 @@ def salvar_post(dados: dict, categoria: str, fonte_nome: str = "") -> bool:
 
         content_final = dados.get("content", "") + fonte_nota
 
-        # Schema image (if present)
-        schema_image = ""
-        og_image_tag = ""
-        cover_html   = ""
-        if dados.get("image"):
-            img = dados["image"]
-            schema_image = f',"image":"{img}"'
-            og_image_tag = f'<meta property="og:image" content="{img}">'
-            cover_html   = (
-                f'<div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;">'
-                f'<img src="{img}" alt="{dados["title"]}" '
-                f'style="width:100%;object-fit:cover;" loading="lazy"></div>'
-            )
+        # ── Imagem contextual via Unsplash ────────────────────────────
+        image_query = dados.get("image_query", dados.get("title", ""))
+        img = obter_imagem_url(image_query, categoria)
+
+        schema_image = f',"image":"{img}"'
+        og_image_tag = f'<meta property="og:image" content="{img}">'
+        cover_html   = (
+            f'<div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;">'
+            f'<img src="{img}" alt="{dados["title"]}" '
+            f'style="width:100%;object-fit:cover;" loading="lazy" '
+            f'onerror="this.parentElement.style.display=\'none\'"></div>'
+        )
 
         html = (template
-            .replace("{{TITLE}}", dados["title"])
-            .replace("{{DESCRIPTION}}", dados["excerpt"])
-            .replace("{{SLUG}}", slug)
-            .replace("{{CATEGORY}}", categoria)
-            .replace("{{CATEGORY_LABEL}}", cat_label)
-            .replace("{{TAGS_BADGES}}", tags_badges)
-            .replace("{{TAGS_JSON}}", tags_json)
-            .replace("{{DATE}}", data_str)
-            .replace("{{DATE_BR}}", data_br)
-            .replace("{{CONTENT}}", content_final)
-            .replace("{{OG_IMAGE}}", og_image_tag)
-            .replace("{{SCHEMA_IMAGE}}", schema_image)
+            .replace("{{TITLE}}",            dados["title"])
+            .replace("{{DESCRIPTION}}",      dados["excerpt"])
+            .replace("{{SLUG}}",             slug)
+            .replace("{{CATEGORY}}",         categoria)
+            .replace("{{CATEGORY_LABEL}}",   cat_label)
+            .replace("{{TAGS_BADGES}}",      tags_badges)
+            .replace("{{TAGS_JSON}}",        tags_json)
+            .replace("{{DATE}}",             data_str)
+            .replace("{{DATE_BR}}",          data_br)
+            .replace("{{CONTENT}}",          content_final)
+            .replace("{{OG_IMAGE}}",         og_image_tag)
+            .replace("{{SCHEMA_IMAGE}}",     schema_image)
             .replace("{{COVER_IMAGE_HTML}}", cover_html)
         )
 
-        # ── Salvar HTML ───────────────────────────────────────────────
         blog_path = f"blog/{slug}.html"
         with open(blog_path, "w", encoding="utf-8") as f:
             f.write(html)
         print(f"  ✅ Post salvo: {blog_path}")
 
-        # ── Atualizar posts.json ──────────────────────────────────────
         try:
             with open("data/posts.json", encoding="utf-8") as f:
                 posts = json.load(f)
@@ -204,7 +211,7 @@ def salvar_post(dados: dict, categoria: str, fonte_nome: str = "") -> bool:
                 "category_label": cat_label,
                 "tags":           tags,
                 "excerpt":        dados["excerpt"],
-                "image":          dados.get("image", ""),
+                "image":          img,
                 "imageCaption":   "",
                 "date":           data_str,
                 "source":         fonte_nome,
@@ -214,9 +221,7 @@ def salvar_post(dados: dict, categoria: str, fonte_nome: str = "") -> bool:
                 json.dump(posts, f, ensure_ascii=False, indent=2)
             print(f"  ✅ posts.json atualizado")
 
-        # ── Atualizar sitemap.xml ─────────────────────────────────────
         _atualizar_sitemap(slug, data_str)
-
         return True
 
     except Exception as e:
@@ -226,18 +231,16 @@ def salvar_post(dados: dict, categoria: str, fonte_nome: str = "") -> bool:
 
 
 def _atualizar_sitemap(slug: str, data_str: str):
-    """Adiciona nova URL ao sitemap.xml sem duplicar."""
     try:
         sitemap_path = "sitemap.xml"
-        nova_url = f"https://calculaprazo.com.br/blog/{slug}"
+        nova_url     = f"https://calculaprazo.com.br/blog/{slug}"
 
         with open(sitemap_path, "r", encoding="utf-8") as f:
             sitemap_content = f.read()
 
         if nova_url in sitemap_content:
-            return  # já existe
+            return
 
-        # Atualiza lastmod das entradas existentes do blog
         nova_entrada = (
             f"  <url>\n"
             f"    <loc>{nova_url}</loc>\n"
@@ -247,7 +250,6 @@ def _atualizar_sitemap(slug: str, data_str: str):
             f"  </url>\n"
         )
 
-        # Insere antes do fechamento do urlset
         sitemap_content = sitemap_content.replace(
             "</urlset>",
             nova_entrada + "</urlset>"

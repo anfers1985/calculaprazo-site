@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 """
 agente_mte.py — CalculaPrazo
-Monitora portarias, normas, fiscalizações e atualizações do Ministério do Trabalho e Emprego.
+Monitora publicações do Ministério do Trabalho e Emprego (MTE) e Governo Federal.
+Foco: mudanças de legislação, novas normas, portarias, instruções normativas,
+      operações de fiscalização, programas e obrigações para empregadores.
 Categoria: legislacao-normas
-Execução: dias úteis, 09h (Brasília) via GitHub Actions.
+Execução: dias úteis, 08h (Brasília) via GitHub Actions.
 """
 import os, json, re, requests, random, time
 from datetime import date
-from slugify import slugify
 from html.parser import HTMLParser
 from agente_base import (
     validar_qualidade, is_duplicata, salvar_post, HOJE
@@ -25,20 +26,35 @@ CATEGORIA   = "legislacao-normas"
 FONTE_LABEL = "MTE"
 
 PROPOSITO = """
-Você é um advogado trabalhista especialista, redator jurídico do CalculaPrazo.
-Seu público: advogados trabalhistas, profissionais de RH e contadores brasileiros.
-Estilo: técnico, preciso, direto e orientado à prática.
+Você é um Analista Estratégico de Relações Trabalhistas e Auditor Jurídico do CalculaPrazo.
+P�blico-alvo: advogados trabalhistas, diretoria jurídica, RH estratégico, controladoria,
+              departamento pessoal.
+Estilo: técnico, direto, pragmático — foco em obrigações concretas e prazos.
+
+MISSÃO DESTE AGENTE:
+Monitorar publicações do Ministério do Trabalho e Emprego (MTE) e do Governo Federal
+com impacto para empregadores, trabalhadores e profissionais de RH/DP.
+Isso inclui: novas portarias, instruções normativas, decretos, resoluções, mudanças
+na CLT ou legislação trabalhista, operações de fiscalização, novos programas
+obrigatórios, alterações de NRs, prazos de adequação.
+
+NÃO PUBLICAR: notas de pesar, agendas de eventos internos, discursos políticos sem
+conteúdo normativo, nomeações de servidores sem impacto na regulação trabalhista.
+
 REGRAS ABSOLUTAS:
-1. Cite fontes verificáveis — número de processo, portaria, lei ou URL quando disponível.
-2. Linguagem jurídica profissional — sem generalidades ou "tendências".
-3. Cada afirmação deve ter base no conteúdo fornecido — nunca invente dados.
-4. Conclua com impacto prático e ação recomendada ao leitor.
-Cite o número da Portaria, Instrução Normativa ou lei sempre que disponível. Indique a data de vigência da norma.
+1. Citar SEMPRE o número e nome da norma (ex: Portaria MTE nº 671/2021, IN nº 2/2023).
+2. Informar a data de vigência ou prazo de adequação quando disponível.
+3. Descrever objetivamente o que muda na prática para empresas e RH/DP.
+4. Nunca inventar dados ausentes da fonte.
+5. Concluir com checklist de ação para o departamento pessoal e jurídico.
 """
 
 SOURCES = [
-{"nome": "MTE - Notícias", "url": "https://www.gov.br/trabalho-e-emprego/pt-br/noticias-e-conteudo"},
-    {"nome": "Agência Gov - Trabalho", "url": "https://agenciagov.ebc.com.br/noticias/trabalho-e-emprego"}
+    {"nome": "MTE — Notícias",              "url": "https://www.gov.br/trabalho-e-emprego/pt-br/noticias-e-conteudo"},
+    {"nome": "Planalto — Resenha Diária",   "url": "http://www4.planalto.gov.br/legislacao/portal-legis/resenha-diaria/copy_of_resenha-diaria-ano"},
+    {"nome": "Agência Gov — Trabalho",      "url": "https://agenciagov.ebc.com.br/noticias/trabalho-e-emprego"},
+    {"nome": "Agência Gov — Previdência",   "url": "https://agenciagov.ebc.com.br/noticias/previdencia"},
+    {"nome": "Agência Gov — Economia",      "url": "https://agenciagov.ebc.com.br/noticias/economia"},
 ]
 
 
@@ -61,7 +77,7 @@ class TextExtractor(HTMLParser):
             if len(t) > 40:
                 self.texts.append(t)
 
-    def get_text(self, max_chars=5000):
+    def get_text(self, max_chars=6000):
         return " ".join(self.texts)[:max_chars]
 
 
@@ -72,7 +88,7 @@ def buscar_conteudo(fonte):
         if r.ok:
             p = TextExtractor()
             p.feed(r.text)
-            return p.get_text(5000), r.url
+            return p.get_text(6000), r.url
     except Exception as e:
         print(f"  Erro ao acessar {fonte['nome']}: {e}")
     return "", fonte["url"]
@@ -85,16 +101,16 @@ def avaliar_relevancia(conteudo, fonte_nome):
     prompt = f"""
 {PROPOSITO}
 
-Conteúdo de {fonte_nome} (hoje: {HOJE.strftime('%d/%m/%Y')}):
+Conteúdo coletado de {fonte_nome} (hoje: {HOJE.strftime('%d/%m/%Y')}):
 ---
-{conteudo[:2000]}
+{conteudo[:3000]}
 ---
 
-Existe decisão, norma ou notícia das últimas 72 horas com impacto relevante para
-advogados trabalhistas, RH ou empresas?
+Há publicação das últimas 72 horas com nova norma, mudança regulatória, fiscalização
+ou obrigação com impacto para empregadores, RH ou DP? 
 
 Responda APENAS com JSON:
-{{"relevante": true/false, "motivo": "1 frase objetiva", "tema": "tema específico e concreto"}}
+{{"relevante": true/false, "motivo": "1 frase objetiva", "tema": "tema com número da norma e data de vigência se disponíveis"}}
 """
     try:
         r = requests.post(
@@ -116,40 +132,35 @@ def gerar_artigo(conteudo, tema, fonte_nome, fonte_url):
     prompt = f"""
 {PROPOSITO}
 
-Fonte: {fonte_nome} ({fonte_url})
+Fonte: {fonte_nome}
+Link direto: {fonte_url}
 Data: {HOJE.strftime('%d/%m/%Y')}
-Tema: {tema}
+Tema identificado: {tema}
 
 Conteúdo coletado:
 ---
-{conteudo[:4000]}
+{conteudo[:5000]}
 ---
 
-Redija um artigo jurídico completo com EXATAMENTE esta estrutura HTML:
+Redija um boletim técnico completo. Varie os subtítulos conforme o caso, mas inclua
+obrigatoriamente estes elementos em sequência lógica:
 
-<h2>Contexto</h2>
-<p>[Situação jurídica, norma ou súmula aplicável]</p>
+1. Resumo executivo (2-3 frases): o que foi publicado, número da norma, data de vigência e impacto imediato.
+2. O que muda: descreva objetivamente as novas obrigações ou alterações com base no conteúdo coletado.
+3. Base legal: cite a norma completa (número, ementa, órgão emissor).
+4. Impacto para RH e departamento pessoal: o que deve ser revisado — contratos, políticas, sistemas, folha.
+5. Risco de descumprimento: multas, autuações, passivo trabalhista.
+6. Checklist de adequação: ações concretas com sugestão de prazo.
 
-<h2>O que aconteceu</h2>
-<p>[Fato concreto com órgão, data e número do processo/ato se disponível]</p>
+Mínimo 450 palavras. Nunca invente dados.
 
-<h2>Fundamentação</h2>
-<p>[Base legal, artigo CLT/CPC/CF citado]</p>
-
-<h2>Impacto Prático para Empresas e RH</h2>
-<p>[O que muda, o que o RH/advogado deve fazer]</p>
-
-<h2>Recomendação Imediata</h2>
-<p>[Ação concreta e verificável]</p>
-
-Mínimo 400 palavras. NÃO invente dados não presentes no conteúdo.
-
-Responda APENAS com JSON:
+Responda APENAS com JSON válido:
 {{
-  "title": "Título técnico e específico (máx 65 caracteres)",
-  "excerpt": "Resumo objetivo (máx 155 caracteres)",
+  "title": "Título com número da norma e impacto (máx 70 chars)",
+  "excerpt": "Resumo em 1-2 frases (máx 160 chars)",
   "tags": ["Tag1", "Tag2", "Tag3"],
-  "content": "<h2>Contexto</h2><p>...</p>..."
+  "image_query": "3-5 palavras em inglês para imagem contextual (ex: labor law regulation ministry)",
+  "content": "<h2>...</h2><p>...</p>..."
 }}
 """
     try:
@@ -157,18 +168,18 @@ Responda APENAS com JSON:
             "https://openrouter.ai/api/v1/chat/completions",
             headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
             json={"model": MODEL, "messages": [{"role":"user","content":prompt}],
-                  "max_tokens": 3500, "temperature": 0.25},
+                  "max_tokens": 3500, "temperature": 0.2},
             timeout=180,
         )
         raw = r.json()["choices"][0]["message"]["content"].strip()
         raw = re.sub(r"^```json\s*", "", raw)
         raw = re.sub(r"\s*```$", "", raw)
-
         dados = json.loads(raw)
-        dados.setdefault("title", f"Atualização {FONTE_LABEL} — {HOJE.strftime('%d/%m/%Y')}")
-        dados.setdefault("excerpt", tema[:120])
-        dados.setdefault("content", "<p>Análise técnica em elaboração.</p>")
-        dados.setdefault("tags", ["MTE", "Legislação Trabalhista"])
+        dados.setdefault("title",       f"Atualização {FONTE_LABEL} — {HOJE.strftime('%d/%m/%Y')}")
+        dados.setdefault("excerpt",     tema[:120])
+        dados.setdefault("content",     "<p>Análise técnica em elaboração.</p>")
+        dados.setdefault("tags",        ["MTE", "Legislação"])
+        dados.setdefault("image_query", "labor law regulation ministry document")
         dados["source_url"] = fonte_url
         return dados
     except Exception as e:
@@ -180,11 +191,10 @@ def main():
     print(f"\nAgente {FONTE_LABEL} — {HOJE.strftime('%d/%m/%Y')}")
     print("=" * 70)
 
-    random.seed(HOJE.year * 10000 + HOJE.month * 100 + HOJE.day)
-    fontes = random.sample(SOURCES, min(len(SOURCES), 3))
-
+    random.shuffle(SOURCES)
     publicados = 0
-    for fonte in fontes:
+
+    for fonte in SOURCES:
         print(f"\n[{fonte['nome']}] Verificando...")
         conteudo, url_real = buscar_conteudo(fonte)
         if not conteudo or len(conteudo) < 200:
@@ -207,7 +217,6 @@ def main():
         if not dados:
             continue
 
-        # Validação de qualidade obrigatória
         aprovado, motivo = validar_qualidade(dados, CATEGORIA)
         if not aprovado:
             print(f"  ❌ Reprovado: {motivo} | Título: '{dados.get('title','')}'")

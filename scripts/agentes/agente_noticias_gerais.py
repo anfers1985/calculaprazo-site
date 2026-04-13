@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 """
 agente_noticias_gerais.py — CalculaPrazo
-Monitora notícias gerais de Direito do Trabalho, eSocial e folha de pagamento.
+Monitora portais de notícias jurídicas, contábeis e de negócios.
+Foco: repercussão trabalhista, previdenciária e contábil com impacto
+      para trabalhadores e empresas — legislação, decisões comentadas,
+      tendências com base em fatos concretos.
+Fontes de apoio NUNCA usadas isoladamente — sempre com referência a fonte oficial.
 Categoria: orientacoes-praticas
-Execução: dias úteis, 09h (Brasília) via GitHub Actions.
+Execução: dias úteis, 13h (Brasília) via GitHub Actions.
 """
 import os, json, re, requests, random, time
 from datetime import date
-from slugify import slugify
 from html.parser import HTMLParser
 from agente_base import (
     validar_qualidade, is_duplicata, salvar_post, HOJE
@@ -25,20 +28,45 @@ CATEGORIA   = "orientacoes-praticas"
 FONTE_LABEL = "Geral"
 
 PROPOSITO = """
-Você é um advogado trabalhista especialista, redator jurídico do CalculaPrazo.
-Seu público: advogados trabalhistas, profissionais de RH e contadores brasileiros.
-Estilo: técnico, preciso, direto e orientado à prática.
+Você é um Analista Estratégico de Relações Trabalhistas e Auditor Jurídico do CalculaPrazo.
+P�blico-alvo: advogados, RH estratégico, controladoria, contadores, empresários.
+Estilo: técnico, direto, pragmático — útil para decisão corporativa imediata.
+
+MISSÃO DESTE AGENTE:
+Monitorar portais de notícias jurídicas, contábeis e econômicas em busca de conteúdo
+com repercussão trabalhista, previdenciária ou contábil para trabalhadores e empresas.
+Isso inclui: análises de novas leis com impacto em folha ou contratos, decisões do TST/STF
+comentadas por especialistas, mudanças previdenciárias, alterações tributárias que afetam
+RH, movimentos legislativos no Congresso com impacto trabalhista.
+
+REGRA CRÍTICA DE FONTES:
+Estas fontes são de APOIO — nunca usar isoladamente. Todo boletim deve referenciar
+ao menos uma fonte oficial (TST, TRT, STF, MTE, MPT, INSS, Congresso) citada no
+próprio conteúdo coletado. Se o conteúdo coletado não mencionar fonte oficial,
+NÃO PUBLICAR.
+
+NÃO PUBLICAR: especulação sem base legal, "tendências" sem fato concreto,
+conteúdo de marketing ou opinião sem referência normativa verificável.
+
 REGRAS ABSOLUTAS:
-1. Cite fontes verificáveis — número de processo, portaria, lei ou URL quando disponível.
-2. Linguagem jurídica profissional — sem generalidades ou "tendências".
-3. Cada afirmação deve ter base no conteúdo fornecido — nunca invente dados.
-4. Conclua com impacto prático e ação recomendada ao leitor.
-Foque em conteúdo de aplicação prática para RH e departamento pessoal. Evite conteúdo especulativo ou sem base em fato concreto.
+1. Referenciar sempre a fonte oficial citada no conteúdo (lei, processo, norma).
+2. Nunca inventar dados ausentes da fonte coletada.
+3. Foco em impacto prático para RH, folha, contratos e compliance.
+4. Concluir com ação concreta e verificável para o leitor.
 """
 
 SOURCES = [
-{"nome": "Conjur - Trabalhista", "url": "https://www.conjur.com.br/direito-trabalho"},
-    {"nome": "Migalhas - Trabalhista", "url": "https://www.migalhas.com.br/quentes/trabalhista"}
+    {"nome": "Contábeis — Trabalhista",   "url": "https://www.contabeis.com.br/conteudo/trabalhista/"},
+    {"nome": "Contábeis — Previdência",   "url": "https://www.contabeis.com.br/conteudo/previdencia/"},
+    {"nome": "Contábeis — Economia",      "url": "https://www.contabeis.com.br/conteudo/economia/"},
+    {"nome": "Contábeis — Contábil",      "url": "https://www.contabeis.com.br/conteudo/contabil/"},
+    {"nome": "G1 — Trabalho e Carreira",  "url": "https://g1.globo.com/trabalho-e-carreira/"},
+    {"nome": "G1 — Ministério do Trabalho","url": "https://g1.globo.com/tudo-sobre/ministerio-do-trabalho/"},
+    {"nome": "Senado — Dir. Trabalhistas","url": "https://www12.senado.leg.br/noticias/tags/Direitos%20Trabalhistas"},
+    {"nome": "Câmara — CLT",              "url": "https://www.camara.leg.br/noticias/ultimas/tags?tag=Consolida%C3%A7%C3%A3o%20das%20Leis%20do%20Trabalho%20(CLT)"},
+    {"nome": "AMATRAXV — Jurídico",       "url": "https://amatraxv.org.br/noticias/noticias-juridicas"},
+    {"nome": "Conjur — Trabalhista",      "url": "https://www.conjur.com.br/direito-trabalho"},
+    {"nome": "Migalhas — Trabalhista",    "url": "https://www.migalhas.com.br/quentes/trabalhista"},
 ]
 
 
@@ -61,7 +89,7 @@ class TextExtractor(HTMLParser):
             if len(t) > 40:
                 self.texts.append(t)
 
-    def get_text(self, max_chars=5000):
+    def get_text(self, max_chars=6000):
         return " ".join(self.texts)[:max_chars]
 
 
@@ -72,7 +100,7 @@ def buscar_conteudo(fonte):
         if r.ok:
             p = TextExtractor()
             p.feed(r.text)
-            return p.get_text(5000), r.url
+            return p.get_text(6000), r.url
     except Exception as e:
         print(f"  Erro ao acessar {fonte['nome']}: {e}")
     return "", fonte["url"]
@@ -85,16 +113,17 @@ def avaliar_relevancia(conteudo, fonte_nome):
     prompt = f"""
 {PROPOSITO}
 
-Conteúdo de {fonte_nome} (hoje: {HOJE.strftime('%d/%m/%Y')}):
+Conteúdo coletado de {fonte_nome} (hoje: {HOJE.strftime('%d/%m/%Y')}):
 ---
-{conteudo[:2000]}
+{conteudo[:3000]}
 ---
 
-Existe decisão, norma ou notícia das últimas 72 horas com impacto relevante para
-advogados trabalhistas, RH ou empresas?
+Há conteúdo das últimas 72 horas com impacto trabalhista, previdenciário ou contábil
+para empresas ou trabalhadores, COM referência a fonte oficial (lei, processo, norma)?
+Se não houver referência oficial verificável no conteúdo, retorne relevante: false.
 
 Responda APENAS com JSON:
-{{"relevante": true/false, "motivo": "1 frase objetiva", "tema": "tema específico e concreto"}}
+{{"relevante": true/false, "motivo": "1 frase objetiva", "tema": "tema com referência oficial identificada"}}
 """
     try:
         r = requests.post(
@@ -116,40 +145,35 @@ def gerar_artigo(conteudo, tema, fonte_nome, fonte_url):
     prompt = f"""
 {PROPOSITO}
 
-Fonte: {fonte_nome} ({fonte_url})
+Fonte de apoio: {fonte_nome}
+Link: {fonte_url}
 Data: {HOJE.strftime('%d/%m/%Y')}
-Tema: {tema}
+Tema identificado: {tema}
 
 Conteúdo coletado:
 ---
-{conteudo[:4000]}
+{conteudo[:5000]}
 ---
 
-Redija um artigo jurídico completo com EXATAMENTE esta estrutura HTML:
+Redija um boletim técnico completo com base exclusiva no conteúdo coletado.
+Varie os subtítulos conforme o caso, mas inclua obrigatoriamente estes elementos:
 
-<h2>Contexto</h2>
-<p>[Situação jurídica, norma ou súmula aplicável]</p>
+1. Resumo executivo (2-3 frases): fato concreto, fonte oficial referenciada, impacto imediato.
+2. Contexto e base legal: qual norma, decisão ou movimento legislativo está em jogo.
+3. Desenvolvimento analítico: explique o tema com foco em impacto para empresas e trabalhadores.
+4. Reflexos para RH e folha de pagamento: o que muda na prática operacional.
+5. Risco financeiro e de compliance: exposição potencial, multas, passivo.
+6. Ação recomendada: medidas objetivas para jurídico, RH e controladoria.
 
-<h2>O que aconteceu</h2>
-<p>[Fato concreto com órgão, data e número do processo/ato se disponível]</p>
+Mínimo 450 palavras. Nunca invente dados — se não estiver no conteúdo, não escreva.
 
-<h2>Fundamentação</h2>
-<p>[Base legal, artigo CLT/CPC/CF citado]</p>
-
-<h2>Impacto Prático para Empresas e RH</h2>
-<p>[O que muda, o que o RH/advogado deve fazer]</p>
-
-<h2>Recomendação Imediata</h2>
-<p>[Ação concreta e verificável]</p>
-
-Mínimo 400 palavras. NÃO invente dados não presentes no conteúdo.
-
-Responda APENAS com JSON:
+Responda APENAS com JSON válido:
 {{
-  "title": "Título técnico e específico (máx 65 caracteres)",
-  "excerpt": "Resumo objetivo (máx 155 caracteres)",
+  "title": "Título técnico com foco em impacto ou risco (máx 70 chars)",
+  "excerpt": "Resumo em 1-2 frases (máx 160 chars)",
   "tags": ["Tag1", "Tag2", "Tag3"],
-  "content": "<h2>Contexto</h2><p>...</p>..."
+  "image_query": "3-5 palavras em inglês para imagem contextual (ex: HR payroll office compliance)",
+  "content": "<h2>...</h2><p>...</p>..."
 }}
 """
     try:
@@ -157,18 +181,18 @@ Responda APENAS com JSON:
             "https://openrouter.ai/api/v1/chat/completions",
             headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
             json={"model": MODEL, "messages": [{"role":"user","content":prompt}],
-                  "max_tokens": 3500, "temperature": 0.3},
+                  "max_tokens": 3500, "temperature": 0.2},
             timeout=180,
         )
         raw = r.json()["choices"][0]["message"]["content"].strip()
         raw = re.sub(r"^```json\s*", "", raw)
         raw = re.sub(r"\s*```$", "", raw)
-
         dados = json.loads(raw)
-        dados.setdefault("title", f"Atualização {FONTE_LABEL} — {HOJE.strftime('%d/%m/%Y')}")
-        dados.setdefault("excerpt", tema[:120])
-        dados.setdefault("content", "<p>Análise técnica em elaboração.</p>")
-        dados.setdefault("tags", ["Direito do Trabalho", "RH"])
+        dados.setdefault("title",       f"Orientação Trabalhista — {HOJE.strftime('%d/%m/%Y')}")
+        dados.setdefault("excerpt",     tema[:120])
+        dados.setdefault("content",     "<p>Análise técnica em elaboração.</p>")
+        dados.setdefault("tags",        ["RH", "Trabalhista"])
+        dados.setdefault("image_query", "HR payroll office compliance workplace")
         dados["source_url"] = fonte_url
         return dados
     except Exception as e:
@@ -180,10 +204,10 @@ def main():
     print(f"\nAgente {FONTE_LABEL} — {HOJE.strftime('%d/%m/%Y')}")
     print("=" * 70)
 
-    random.seed(HOJE.year * 10000 + HOJE.month * 100 + HOJE.day)
-    fontes = random.sample(SOURCES, min(len(SOURCES), 3))
-
+    # Sorteia 3 fontes por dia
+    fontes = random.sample(SOURCES, min(3, len(SOURCES)))
     publicados = 0
+
     for fonte in fontes:
         print(f"\n[{fonte['nome']}] Verificando...")
         conteudo, url_real = buscar_conteudo(fonte)
@@ -207,7 +231,6 @@ def main():
         if not dados:
             continue
 
-        # Validação de qualidade obrigatória
         aprovado, motivo = validar_qualidade(dados, CATEGORIA)
         if not aprovado:
             print(f"  ❌ Reprovado: {motivo} | Título: '{dados.get('title','')}'")

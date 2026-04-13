@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 """
 agente_mpt.py — CalculaPrazo
-Monitora ações, TACs, notícias e alertas do Ministério Público do Trabalho.
+Monitora publicações do Ministério Público do Trabalho (MPT) — nacional e PRTs.
+Foco: TACs, ACPs, operações de fiscalização, resultados de investigações,
+      setores e empresas autuadas, irregularidades identificadas.
 Categoria: noticias-mte-mpt
-Execução: dias úteis, 09h (Brasília) via GitHub Actions.
+Execução: dias úteis, 11h (Brasília) via GitHub Actions.
 """
 import os, json, re, requests, random, time
 from datetime import date
-from slugify import slugify
 from html.parser import HTMLParser
 from agente_base import (
     validar_qualidade, is_duplicata, salvar_post, HOJE
@@ -25,20 +26,37 @@ CATEGORIA   = "noticias-mte-mpt"
 FONTE_LABEL = "MPT"
 
 PROPOSITO = """
-Você é um advogado trabalhista especialista, redator jurídico do CalculaPrazo.
-Seu público: advogados trabalhistas, profissionais de RH e contadores brasileiros.
-Estilo: técnico, preciso, direto e orientado à prática.
+Você é um Analista Estratégico de Relações Trabalhistas e Auditor Jurídico do CalculaPrazo.
+P�blico-alvo: advogados trabalhistas, diretoria jurídica, compliance, RH estratégico.
+Estilo: técnico, direto, pragmático — foco em risco e conformidade para empresas.
+
+MISSÃO DESTE AGENTE:
+Monitorar publicações do Ministério Público do Trabalho (MPT) com impacto para
+empresas e empregadores.
+Isso inclui: TACs assinados, ACPs ajuizadas, operações de fiscalização, resultados
+de investigações, setores autuados, irregularidades identificadas, multas aplicadas,
+orientações de compliance trabalhista emitidas pelo MPT.
+
+NÃO PUBLICAR: notas de pesar, agendas de eventos internos, posses e nomeações sem
+conteúdo de fiscalização, eventos acadêmicos internos.
+
 REGRAS ABSOLUTAS:
-1. Cite fontes verificáveis — número de processo, portaria, lei ou URL quando disponível.
-2. Linguagem jurídica profissional — sem generalidades ou "tendências".
-3. Cada afirmação deve ter base no conteúdo fornecido — nunca invente dados.
-4. Conclua com impacto prático e ação recomendada ao leitor.
-Identifique o Procurador responsável, a empresa/setor investigado e o tipo de irregularidade (TAC, ACP, notícia-crime) sempre que disponível no conteúdo.
+1. Identificar o Procurador responsável e a PRT (regional) quando disponíveis.
+2. Identificar a empresa ou setor investigado/autuado.
+3. Classificar o tipo de instrumento: TAC, ACP, Recomendação, Notícia-Crime, Operação.
+4. Informar valor da multa ou obrigação firmada quando disponível.
+5. Nunca inventar dados ausentes da fonte.
+6. Concluir com padrões de risco e ação preventiva para empresas do setor afetado.
 """
 
 SOURCES = [
-{"nome": "MPT - Notícias", "url": "https://mpt.mp.br/pgt/noticias"},
-    {"nome": "MPT Nacional", "url": "https://mpt.mp.br/pgt/noticias/noticias-nacionais"}
+    {"nome": "CNMP — Notícias MPT",   "url": "https://www.cnmp.mp.br/portal/noticias?o=date&t[]="},
+    {"nome": "PRT-12 (SC)",            "url": "https://www.prt12.mpt.mp.br/informe-se/noticias-do-mpt-sc"},
+    {"nome": "PRT-1 (RJ)",             "url": "https://www.prt1.mpt.mp.br/informe-se/noticias-do-mpt-rj"},
+    {"nome": "PRT-2 (SP)",             "url": "https://www.prt2.mpt.mp.br/informe-se/noticias-do-mpt-sp"},
+    {"nome": "PRT-4 (RS)",             "url": "https://www.prt4.mpt.mp.br/informe-se/noticias-do-mpt-rs"},
+    {"nome": "PRT-3 (MG)",             "url": "https://www.prt3.mpt.mp.br/comunicacao/noticias-do-mpt-mg"},
+    {"nome": "PRT-5 (BA)",             "url": "https://www.prt5.mpt.mp.br/informe-se/noticias-do-mpt-ba"},
 ]
 
 
@@ -61,7 +79,7 @@ class TextExtractor(HTMLParser):
             if len(t) > 40:
                 self.texts.append(t)
 
-    def get_text(self, max_chars=5000):
+    def get_text(self, max_chars=6000):
         return " ".join(self.texts)[:max_chars]
 
 
@@ -72,7 +90,7 @@ def buscar_conteudo(fonte):
         if r.ok:
             p = TextExtractor()
             p.feed(r.text)
-            return p.get_text(5000), r.url
+            return p.get_text(6000), r.url
     except Exception as e:
         print(f"  Erro ao acessar {fonte['nome']}: {e}")
     return "", fonte["url"]
@@ -85,16 +103,17 @@ def avaliar_relevancia(conteudo, fonte_nome):
     prompt = f"""
 {PROPOSITO}
 
-Conteúdo de {fonte_nome} (hoje: {HOJE.strftime('%d/%m/%Y')}):
+Conteúdo coletado de {fonte_nome} (hoje: {HOJE.strftime('%d/%m/%Y')}):
 ---
-{conteudo[:2000]}
+{conteudo[:3000]}
 ---
 
-Existe decisão, norma ou notícia das últimas 72 horas com impacto relevante para
-advogados trabalhistas, RH ou empresas?
+Há publicação das últimas 72 horas sobre TAC, ACP, fiscalização, autuação ou
+irregularidade com impacto para empresas ou empregadores?
+Exclua conteúdo institucional interno do MPT.
 
 Responda APENAS com JSON:
-{{"relevante": true/false, "motivo": "1 frase objetiva", "tema": "tema específico e concreto"}}
+{{"relevante": true/false, "motivo": "1 frase objetiva", "tema": "tema com PRT, empresa/setor e tipo de instrumento se disponíveis"}}
 """
     try:
         r = requests.post(
@@ -116,40 +135,35 @@ def gerar_artigo(conteudo, tema, fonte_nome, fonte_url):
     prompt = f"""
 {PROPOSITO}
 
-Fonte: {fonte_nome} ({fonte_url})
+Fonte: {fonte_nome}
+Link direto: {fonte_url}
 Data: {HOJE.strftime('%d/%m/%Y')}
-Tema: {tema}
+Tema identificado: {tema}
 
 Conteúdo coletado:
 ---
-{conteudo[:4000]}
+{conteudo[:5000]}
 ---
 
-Redija um artigo jurídico completo com EXATAMENTE esta estrutura HTML:
+Redija um boletim técnico completo. Varie os subtítulos conforme o caso, mas inclua
+obrigatoriamente estes elementos em sequência lógica:
 
-<h2>Contexto</h2>
-<p>[Situação jurídica, norma ou súmula aplicável]</p>
+1. Resumo executivo (2-3 frases): o que aconteceu, qual PRT/MPT, empresa ou setor, tipo de instrumento e valor se disponível.
+2. Contexto da irregularidade: qual norma foi violada (CLT, NR, CF/88) e como o MPT identificou o problema.
+3. Instrumento utilizado: TAC, ACP, Recomendação ou Operação — descreva os termos e obrigações.
+4. Risco para empresas do setor: padrões de irregularidade recorrente, valor de multas típicas.
+5. Impacto para compliance e RH: o que revisar internamente para evitar o mesmo tipo de autuação.
+6. Ação preventiva: medidas concretas para diretoria jurídica, compliance e RH estratégico.
 
-<h2>O que aconteceu</h2>
-<p>[Fato concreto com órgão, data e número do processo/ato se disponível]</p>
+Mínimo 450 palavras. Nunca invente dados.
 
-<h2>Fundamentação</h2>
-<p>[Base legal, artigo CLT/CPC/CF citado]</p>
-
-<h2>Impacto Prático para Empresas e RH</h2>
-<p>[O que muda, o que o RH/advogado deve fazer]</p>
-
-<h2>Recomendação Imediata</h2>
-<p>[Ação concreta e verificável]</p>
-
-Mínimo 400 palavras. NÃO invente dados não presentes no conteúdo.
-
-Responda APENAS com JSON:
+Responda APENAS com JSON válido:
 {{
-  "title": "Título técnico e específico (máx 65 caracteres)",
-  "excerpt": "Resumo objetivo (máx 155 caracteres)",
+  "title": "Título com MPT/PRT, setor e tipo de instrumento (máx 70 chars)",
+  "excerpt": "Resumo em 1-2 frases (máx 160 chars)",
   "tags": ["Tag1", "Tag2", "Tag3"],
-  "content": "<h2>Contexto</h2><p>...</p>..."
+  "image_query": "3-5 palavras em inglês para imagem contextual (ex: labor inspection compliance audit)",
+  "content": "<h2>...</h2><p>...</p>..."
 }}
 """
     try:
@@ -157,18 +171,18 @@ Responda APENAS com JSON:
             "https://openrouter.ai/api/v1/chat/completions",
             headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
             json={"model": MODEL, "messages": [{"role":"user","content":prompt}],
-                  "max_tokens": 3500, "temperature": 0.25},
+                  "max_tokens": 3500, "temperature": 0.2},
             timeout=180,
         )
         raw = r.json()["choices"][0]["message"]["content"].strip()
         raw = re.sub(r"^```json\s*", "", raw)
         raw = re.sub(r"\s*```$", "", raw)
-
         dados = json.loads(raw)
-        dados.setdefault("title", f"Atualização {FONTE_LABEL} — {HOJE.strftime('%d/%m/%Y')}")
-        dados.setdefault("excerpt", tema[:120])
-        dados.setdefault("content", "<p>Análise técnica em elaboração.</p>")
-        dados.setdefault("tags", ["MPT", "Fiscalização Trabalhista"])
+        dados.setdefault("title",       f"Atualização {FONTE_LABEL} — {HOJE.strftime('%d/%m/%Y')}")
+        dados.setdefault("excerpt",     tema[:120])
+        dados.setdefault("content",     "<p>Análise técnica em elaboração.</p>")
+        dados.setdefault("tags",        ["MPT", "Fiscalização"])
+        dados.setdefault("image_query", "labor inspection compliance audit workplace")
         dados["source_url"] = fonte_url
         return dados
     except Exception as e:
@@ -180,10 +194,10 @@ def main():
     print(f"\nAgente {FONTE_LABEL} — {HOJE.strftime('%d/%m/%Y')}")
     print("=" * 70)
 
-    random.seed(HOJE.year * 10000 + HOJE.month * 100 + HOJE.day)
-    fontes = random.sample(SOURCES, min(len(SOURCES), 3))
-
+    # Sorteia 3 PRTs por dia para variar cobertura regional
+    fontes = random.sample(SOURCES, min(3, len(SOURCES)))
     publicados = 0
+
     for fonte in fontes:
         print(f"\n[{fonte['nome']}] Verificando...")
         conteudo, url_real = buscar_conteudo(fonte)
@@ -207,7 +221,6 @@ def main():
         if not dados:
             continue
 
-        # Validação de qualidade obrigatória
         aprovado, motivo = validar_qualidade(dados, CATEGORIA)
         if not aprovado:
             print(f"  ❌ Reprovado: {motivo} | Título: '{dados.get('title','')}'")
