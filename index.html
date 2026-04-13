@@ -4233,230 +4233,195 @@ document.addEventListener('DOMContentLoaded', function() {
      BLOG / CONTEÚDO — JavaScript
 ══════════════════════════════════════ -->
 <script>
-// ─── BLOG ENGINE ─────────────────────────────────
-let BLOG_POSTS    = [];
-let BLOG_TAG      = '';   // tag activa no filtro ('' = todos)
-let BLOG_H_FILTER = '';   // filtro no widget da home
+// ==================== BLOG ENGINE - VERSÃO FINAL ====================
+let BLOG_POSTS = [];
+let currentPage = 1;
+let currentView = 'grid'; // grid ou list
+const POSTS_PER_PAGE = 10;
 
-// ── Carrega posts do servidor ou localStorage ──
+const CATEGORY_LABELS = {
+  "all": "Todos",
+  "jurisprudencia-tst": "⚖️ TST",
+  "jurisprudencia-trts": "🏛️ TRTs",
+  "noticias-mte-mpt": "🔎 MTE",
+  "legislacao-normas": "📋 Legislação",
+  "esocial-fgts-digital": "💻 eSocial",
+  "orientacoes-praticas": "👥 RH",
+  "saude-seguranca": "🦺 Saúde e Segurança",
+  "modelos": "📄 Modelos",
+  "artigos": "✍️ Artigos",
+  "geral": "📌 Geral"
+};
+
 async function loadBlogPosts() {
   try {
-    var local = localStorage.getItem('cp_posts');
-    if (local) {
-      var arr = JSON.parse(local);
-      if (arr && arr.length > 0) {
-        BLOG_POSTS = arr;
-        renderHomeBlog();
-        renderBlogSection();
-        renderSidebarPosts();
-        return;
-      }
+    const response = await fetch('/data/posts.json');
+    if (response.ok) {
+      BLOG_POSTS = await response.json();
     }
-  } catch(e) {}
-  try {
-    var r = await fetch('data/posts.json');
-    if (r.ok) BLOG_POSTS = await r.json();
-  } catch(e) { BLOG_POSTS = []; }
-  renderHomeBlog();
+  } catch (e) {
+    console.error("Erro ao carregar posts:", e);
+  }
+  
+  renderCategoryButtons();
   renderBlogSection();
+  renderHomeBlog();
   renderSidebarPosts();
 }
 
-// ── Helpers de data e tags ──
-function formatPostDate(d) {
-  return new Date(d + 'T12:00:00').toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'});
-}
+function renderCategoryButtons() {
+  const container = document.getElementById('blog-categories');
+  let html = `<button data-category="all" class="ctab on">Todos</button>`;
 
-// Extrai todas as tags únicas de todos os posts
-// Cada post pode ter: post.tags (array) OR post.category (string)
-function getAllTags() {
-  // Slug-style internal categories to hide from tag cloud
-  var HIDDEN = ['jurisprudencia','pratica','esocial','folha','legislacao',
-                'noticias','direito','rh','contabilidade','geral','trabalhista'];
-  var tagCount = {};
-  BLOG_POSTS.forEach(function(p) {
-    // Only use the tags[] array — ignore raw category slugs
-    var tags = (p.tags && Array.isArray(p.tags)) ? p.tags : [];
-    tags.forEach(function(t) {
-      if (HIDDEN.indexOf(t.toLowerCase()) === -1) {
-        tagCount[t] = (tagCount[t] || 0) + 1;
-      }
+  Object.keys(CATEGORY_LABELS).forEach(key => {
+    if (key === "all") return;
+    html += `<button data-category="${key}" class="ctab">${CATEGORY_LABELS[key]}</button>`;
+  });
+
+  container.innerHTML = html;
+
+  container.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      container.querySelectorAll('button').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      currentPage = 1;
+      renderBlogSection();
     });
   });
-  return Object.entries(tagCount).sort(function(a,b){ return b[1]-a[1]; });
 }
 
-function postMatchesTag(p, tag) {
-  if (!tag) return true;
-  if (p.tags && Array.isArray(p.tags)) return p.tags.indexOf(tag) >= 0;
-  return p.category === tag;
-}
+function filterPosts() {
+  const searchTerm = document.getElementById('blog-search').value.toLowerCase().trim();
+  const dateFilter = parseInt(document.getElementById('blog-date-filter').value) || 0;
+  const activeCat = document.querySelector('#blog-categories button.on').dataset.category;
 
-// Tag badge HTML
-function tagBadge(tag, count) {
-  return '<button onclick="filterBlog(\'' + tag.replace(/'/g,"\\'") + '\',this)" '
-    + 'class="ctab" style="font-size:.74rem;padding:4px 12px;margin:0;">'
-    + tag + (count > 1 ? ' <span style="opacity:.55;font-size:.68rem;">(' + count + ')</span>' : '')
-    + '</button>';
-}
+  return BLOG_POSTS.filter(post => {
+    const matchesSearch = !searchTerm || 
+      post.title.toLowerCase().includes(searchTerm) || 
+      (post.excerpt && post.excerpt.toLowerCase().includes(searchTerm));
 
-// ── Card de post (grid) ──
-function buildPostCard(p) {
-  var tags = p.tags && p.tags.length ? p.tags : (p.category ? [p.category] : []);
-  var tagHtml = tags.slice(0,3).map(function(t) {
-    return '<span style="display:inline-block;padding:2px 8px;border-radius:999px;font-size:.65rem;font-weight:700;background:var(--b50);color:var(--acc);border:1px solid var(--b100);margin-right:3px;">' + t + '</span>';
-  }).join('');
+    const matchesCategory = activeCat === 'all' || post.category === activeCat;
 
-  var imgHtml = p.image
-    ? '<div style="height:150px;overflow:hidden;border-radius:10px 10px 0 0;margin:-1px -1px 0;"><img src="' + p.image + '" alt="' + p.title + '" style="width:100%;height:100%;object-fit:cover;"></div>'
-    : '<div style="height:72px;background:linear-gradient(135deg,var(--b50),#fff);border-radius:10px 10px 0 0;margin:-1px -1px 0;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">📰</div>';
+    let matchesDate = true;
+    if (dateFilter > 0) {
+      const postDate = new Date(post.date);
+      const daysDiff = (Date.now() - postDate.getTime()) / (1000 * 3600 * 24);
+      matchesDate = daysDiff <= dateFilter;
+    }
 
-  return '<a href="/blog/' + p.id + '.html" style="display:block;text-decoration:none;background:var(--card);border:1.5px solid var(--brd);border-radius:12px;overflow:hidden;transition:all .2s;box-shadow:var(--sh);"'
-    + ' onmouseover="this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'var(--shl)\';this.style.borderColor=\'var(--b200)\'"'
-    + ' onmouseout="this.style.transform=\'\';this.style.boxShadow=\'var(--sh)\';this.style.borderColor=\'var(--brd)\'">'
-    + imgHtml
-    + '<div style="padding:14px;">'
-    + '<div style="margin-bottom:8px;">' + tagHtml + '</div>'
-    + '<div style="font-size:.88rem;font-weight:700;color:var(--txt);line-height:1.35;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">' + p.title + '</div>'
-    + '<div style="font-size:.76rem;color:var(--txt-m);line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">' + p.excerpt + '</div>'
-    + '<div style="margin-top:10px;font-size:.75rem;color:var(--txt-s);">' + formatPostDate(p.date) + '</div>'
-    + '</div></a>';
-}
-
-// ── Seção Blog ──
-function filterBlog(tag, btn) {
-  BLOG_TAG = tag;
-  document.querySelectorAll('#blog-tags-cloud .ctab, #blog-tab-all').forEach(function(b){ b.classList.remove('on'); });
-  if (btn) btn.classList.add('on');
-  else if (!tag) {
-    var allBtn = document.getElementById('blog-tab-all');
-    if (allBtn) allBtn.classList.add('on');
-  }
-  renderBlogSection();
+    return matchesSearch && matchesCategory && matchesDate;
+  }).sort((a, b) => b.date.localeCompare(a.date));
 }
 
 function renderBlogSection() {
-  var grid  = document.getElementById('blog-posts-grid');
-  var empty = document.getElementById('blog-empty');
-  var tagsEl = document.getElementById('blog-tags-cloud');
-  if (!grid) return;
+  const filtered = filterPosts();
+  const totalPages = Math.ceil(filtered.length / POSTS_PER_PAGE);
+  const start = (currentPage - 1) * POSTS_PER_PAGE;
+  const postsToShow = filtered.slice(start, start + POSTS_PER_PAGE);
 
-  // Render tag cloud
-  if (tagsEl) {
-    var tags = getAllTags();
-    if (tags.length) {
-      tagsEl.innerHTML = tags.map(function(e){ return tagBadge(e[0], e[1]); }).join('');
-      // Mark active tag
-      if (BLOG_TAG) {
-        tagsEl.querySelectorAll('.ctab').forEach(function(b){
-          if (b.textContent.trim().startsWith(BLOG_TAG)) b.classList.add('on');
-        });
-      }
+  // Contador
+  document.getElementById('blog-count').innerHTML = 
+    `${filtered.length} artigo${filtered.length !== 1 ? 's' : ''} encontrado${filtered.length !== 1 ? 's' : ''}`;
+
+  // Render Grid ou Lista
+  if (currentView === 'grid') {
+    document.getElementById('blog-posts-grid').style.display = 'grid';
+    document.getElementById('blog-posts-list').style.display = 'none';
+    document.getElementById('blog-posts-grid').innerHTML = postsToShow.map(buildCard).join('');
+  } else {
+    document.getElementById('blog-posts-grid').style.display = 'none';
+    document.getElementById('blog-posts-list').style.display = 'block';
+    document.getElementById('blog-posts-list').innerHTML = postsToShow.map(buildListItem).join('');
+  }
+
+  document.getElementById('blog-empty').style.display = filtered.length ? 'none' : 'block';
+  renderPagination(totalPages);
+}
+
+function buildCard(post) {
+  return `
+    <a href="/blog/${post.id}.html" style="text-decoration:none; color:inherit;">
+      <div class="card" style="overflow:hidden; height:100%; display:flex; flex-direction:column;">
+        ${post.image ? `<img src="${post.image}" style="width:100%; height:160px; object-fit:cover;" alt="${post.title}">` : ''}
+        <div style="padding:16px; flex:1; display:flex; flex-direction:column;">
+          <span style="font-size:0.75rem; padding:3px 10px; background:var(--b50); color:var(--acc); border-radius:999px; align-self:start;">
+            ${post.category_label || 'Geral'}
+          </span>
+          <h3 style="margin:12px 0 8px; font-size:0.98rem; line-height:1.35;">${post.title}</h3>
+          <p style="flex:1; font-size:0.82rem; color:var(--txt-m); line-height:1.5; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;">
+            ${post.excerpt || ''}
+          </p>
+          <div style="margin-top:auto; padding-top:12px; font-size:0.78rem; color:var(--txt-s);">
+            ${new Date(post.date).toLocaleDateString('pt-BR', {day:'numeric', month:'short', year:'numeric'})}
+          </div>
+        </div>
+      </div>
+    </a>`;
+}
+
+function buildListItem(post) {
+  return `
+    <a href="/blog/${post.id}.html" style="text-decoration:none; color:inherit; display:flex; padding:14px 0; border-bottom:1px solid var(--brd); gap:16px;">
+      <div style="min-width:85px; color:var(--txt-s); font-size:0.82rem;">${new Date(post.date).toLocaleDateString('pt-BR')}</div>
+      <div>
+        <span style="font-size:0.73rem; padding:2px 9px; background:var(--b50); color:var(--acc); border-radius:999px;">${post.category_label}</span>
+        <div style="font-weight:600; margin-top:6px; line-height:1.4;">${post.title}</div>
+      </div>
+    </a>`;
+}
+
+function renderPagination(totalPages) {
+  let html = '';
+  if (totalPages <= 1) {
+    document.getElementById('blog-pagination').innerHTML = '';
+    return;
+  }
+
+  html += `<button onclick="changePage(${currentPage-1})" ${currentPage===1?'disabled':''} style="padding:8px 14px;">← Anterior</button>`;
+
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === currentPage) {
+      html += `<button class="btn btn-p" style="padding:8px 14px;">${i}</button>`;
+    } else {
+      html += `<button onclick="changePage(${i})" style="padding:8px 14px;">${i}</button>`;
     }
   }
 
-  var search = (document.getElementById('blog-search') ? document.getElementById('blog-search').value : '').toLowerCase();
-  var posts = BLOG_POSTS.filter(function(p) {
-    var matchTag  = postMatchesTag(p, BLOG_TAG);
-    var matchText = !search || p.title.toLowerCase().indexOf(search) >= 0 || p.excerpt.toLowerCase().indexOf(search) >= 0;
-    return matchTag && matchText;
-  }).sort(function(a,b){ return b.date.localeCompare(a.date); });
+  html += `<button onclick="changePage(${currentPage+1})" ${currentPage===totalPages?'disabled':''} style="padding:8px 14px;">Próxima →</button>`;
 
-  if (!posts.length) {
-    grid.innerHTML = '';
-    if (empty) empty.style.display = 'block';
-    return;
-  }
-  if (empty) empty.style.display = 'none';
-  grid.innerHTML = posts.map(buildPostCard).join('');
+  document.getElementById('blog-pagination').innerHTML = html;
 }
 
-// ── Widget home (últimos 6 posts) ──
-function filterHomeBlog(tag) {
-  BLOG_H_FILTER = tag;
-  renderHomeBlog();
-}
+window.changePage = function(page) {
+  if (page < 1) return;
+  currentPage = page;
+  renderBlogSection();
+  window.scrollTo({ top: document.getElementById('sec-blog').offsetTop - 80, behavior: 'smooth' });
+};
 
-function renderHomeBlog() {
-  var grid = document.getElementById('home-blog-grid');
-  if (!grid) return;
-  var posts = BLOG_POSTS
-    .filter(function(p){ return postMatchesTag(p, BLOG_H_FILTER); })
-    .sort(function(a,b){ return b.date.localeCompare(a.date); })
-    .slice(0, 6);
-  if (!posts.length) {
-    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--txt-s);padding:40px 0;font-size:.88rem;">Nenhum artigo publicado ainda. Em breve!</div>';
-    return;
-  }
-  grid.innerHTML = posts.map(buildPostCard).join('');
-}
-
-// ── Sidebar de últimos posts (no sec-prazos) ──
-function renderSidebarPosts() {
-  var list    = document.getElementById('sidebar-posts-list');
-  var wrapper = document.getElementById('prazos-sidebar-wrap');
-  if (!list) return;
-  var posts = BLOG_POSTS.slice().sort(function(a,b){ return b.date.localeCompare(a.date); }).slice(0,6);
-  if (!posts.length) return;
-  // wrapper visibility controlled by parent .sec.active CSS
-  list.innerHTML = posts.map(function(p) {
-    var tags = p.tags && p.tags.length ? p.tags : (p.category ? [p.category] : []);
-    var tagEl = tags.length ? '<span style="font-size:.62rem;font-weight:700;color:var(--acc);background:var(--b50);border:1px solid var(--b100);border-radius:999px;padding:1px 7px;margin-bottom:3px;display:inline-block;">' + tags[0] + '</span>' : '';
-    return '<a href="/blog/' + p.id + '.html" style="display:block;text-decoration:none;padding:8px 0;border-bottom:1px solid var(--brd);" onmouseover="this.style.opacity=\'.75\'" onmouseout="this.style.opacity=\'1\'">'
-      + (tagEl ? '<div>' + tagEl + '</div>' : '')
-      + '<div style="font-size:.82rem;font-weight:600;color:var(--txt);line-height:1.35;margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">' + p.title + '</div>'
-      + '<div style="font-size:.7rem;color:var(--txt-s);margin-top:3px;">' + formatPostDate(p.date) + '</div>'
-      + '</a>';
-  }).join('');
-}
-
-// ── Nav hook ──
-function navGoTo(id) {
-  if (id === 'blog') {
-    document.querySelectorAll('.sec').forEach(function(s){ s.classList.remove('active'); });
-    var secBlog = document.getElementById('sec-blog');
-    if (secBlog) secBlog.classList.add('active');
-    renderBlogSection();
-    window.scrollTo(0, 0);
-    // Sync nav
-    document.querySelectorAll('#hdr .hdr-nav>a, #hdr .nav-dropdown>a').forEach(function(a){ a.classList.remove('on'); });
-    var navC = document.getElementById('nav-conteudo');
-    if (navC) navC.classList.add('on');
-  } else {
-    goTo(id);
-  }
-  document.querySelectorAll('.nav-dropdown').forEach(function(d){ d.classList.remove('open'); });
-}
-
-// ── Toggle Conteúdo dropdown ──
-function toggleConteudo(e) {
-  e.preventDefault();
-  var dd = document.getElementById('nav-dropdown-conteudo');
-  var isOpen = dd.classList.contains('open');
-  document.querySelectorAll('.nav-dropdown').forEach(function(d){ d.classList.remove('open'); });
-  if (!isOpen) dd.classList.add('open');
-}
-
-// ── Boot ──
+// Inicialização
 document.addEventListener('DOMContentLoaded', function() {
   loadBlogPosts();
-  var hash = window.location.hash;
-  if (hash === '#conteudo' || hash === '#blog') {
-    setTimeout(function(){ navGoTo('blog'); }, 150);
-  }
-});
-if (document.readyState !== 'loading') {
-  loadBlogPosts();
-  var hash = window.location.hash;
-  if (hash === '#conteudo' || hash === '#blog') {
-    setTimeout(function(){ navGoTo('blog'); }, 150);
-  }
-}
-window.addEventListener('hashchange', function() {
-  var h = window.location.hash;
-  if (h === '#conteudo' || h === '#blog') navGoTo('blog');
+
+  // Eventos dos filtros
+  document.getElementById('blog-search').addEventListener('input', () => { currentPage = 1; renderBlogSection(); });
+  document.getElementById('blog-date-filter').addEventListener('change', () => { currentPage = 1; renderBlogSection(); });
+
+  // Troca de visualização
+  document.getElementById('blog-view-grid').addEventListener('click', () => {
+    currentView = 'grid';
+    document.getElementById('blog-view-grid').classList.add('active');
+    document.getElementById('blog-view-list').classList.remove('active');
+    renderBlogSection();
+  });
+
+  document.getElementById('blog-view-list').addEventListener('click', () => {
+    currentView = 'list';
+    document.getElementById('blog-view-list').classList.add('active');
+    document.getElementById('blog-view-grid').classList.remove('active');
+    renderBlogSection();
+  });
 });
 </script>
-
 </body>
 </html>
