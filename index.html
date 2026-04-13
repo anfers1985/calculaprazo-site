@@ -4233,193 +4233,230 @@ document.addEventListener('DOMContentLoaded', function() {
      BLOG / CONTEÚDO — JavaScript
 ══════════════════════════════════════ -->
 <script>
-// ==================== BLOG ENGINE - VERSÃO FUNCIONAL ====================
-let BLOG_POSTS = [];
-let currentPage = 1;
-let currentView = 'grid';
-const POSTS_PER_PAGE = 10;
+// ─── BLOG ENGINE ─────────────────────────────────
+let BLOG_POSTS    = [];
+let BLOG_TAG      = '';   // tag activa no filtro ('' = todos)
+let BLOG_H_FILTER = '';   // filtro no widget da home
 
-const CATEGORY_LABELS = {
-  "all": "Todos",
-  "jurisprudencia-tst": "⚖️ TST",
-  "jurisprudencia-trts": "🏛️ TRTs",
-  "noticias-mte-mpt": "🔎 MTE",
-  "legislacao-normas": "📋 Legislação",
-  "esocial-fgts-digital": "💻 eSocial",
-  "orientacoes-praticas": "👥 RH",
-  "saude-seguranca": "🦺 Saúde e Segurança",
-  "modelos": "📄 Modelos",
-  "artigos": "✍️ Artigos",
-  "geral": "📌 Geral"
-};
-
+// ── Carrega posts do servidor ou localStorage ──
 async function loadBlogPosts() {
   try {
-    const res = await fetch('/data/posts.json');
-    if (res.ok) {
-      BLOG_POSTS = await res.json();
-      console.log("✅ Posts carregados:", BLOG_POSTS.length);
+    var local = localStorage.getItem('cp_posts');
+    if (local) {
+      var arr = JSON.parse(local);
+      if (arr && arr.length > 0) {
+        BLOG_POSTS = arr;
+        renderHomeBlog();
+        renderBlogSection();
+        renderSidebarPosts();
+        return;
+      }
     }
-  } catch (e) {
-    console.error("❌ Erro ao carregar posts:", e);
-  }
+  } catch(e) {}
+  try {
+    var r = await fetch('data/posts.json');
+    if (r.ok) BLOG_POSTS = await r.json();
+  } catch(e) { BLOG_POSTS = []; }
+  renderHomeBlog();
+  renderBlogSection();
+  renderSidebarPosts();
+}
 
-  renderCategoryButtons();
+// ── Helpers de data e tags ──
+function formatPostDate(d) {
+  return new Date(d + 'T12:00:00').toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'});
+}
+
+// Extrai todas as tags únicas de todos os posts
+// Cada post pode ter: post.tags (array) OR post.category (string)
+function getAllTags() {
+  // Slug-style internal categories to hide from tag cloud
+  var HIDDEN = ['jurisprudencia','pratica','esocial','folha','legislacao',
+                'noticias','direito','rh','contabilidade','geral','trabalhista'];
+  var tagCount = {};
+  BLOG_POSTS.forEach(function(p) {
+    // Only use the tags[] array — ignore raw category slugs
+    var tags = (p.tags && Array.isArray(p.tags)) ? p.tags : [];
+    tags.forEach(function(t) {
+      if (HIDDEN.indexOf(t.toLowerCase()) === -1) {
+        tagCount[t] = (tagCount[t] || 0) + 1;
+      }
+    });
+  });
+  return Object.entries(tagCount).sort(function(a,b){ return b[1]-a[1]; });
+}
+
+function postMatchesTag(p, tag) {
+  if (!tag) return true;
+  if (p.tags && Array.isArray(p.tags)) return p.tags.indexOf(tag) >= 0;
+  return p.category === tag;
+}
+
+// Tag badge HTML
+function tagBadge(tag, count) {
+  return '<button onclick="filterBlog(\'' + tag.replace(/'/g,"\\'") + '\',this)" '
+    + 'class="ctab" style="font-size:.74rem;padding:4px 12px;margin:0;">'
+    + tag + (count > 1 ? ' <span style="opacity:.55;font-size:.68rem;">(' + count + ')</span>' : '')
+    + '</button>';
+}
+
+// ── Card de post (grid) ──
+function buildPostCard(p) {
+  var tags = p.tags && p.tags.length ? p.tags : (p.category ? [p.category] : []);
+  var tagHtml = tags.slice(0,3).map(function(t) {
+    return '<span style="display:inline-block;padding:2px 8px;border-radius:999px;font-size:.65rem;font-weight:700;background:var(--b50);color:var(--acc);border:1px solid var(--b100);margin-right:3px;">' + t + '</span>';
+  }).join('');
+
+  var imgHtml = p.image
+    ? '<div style="height:150px;overflow:hidden;border-radius:10px 10px 0 0;margin:-1px -1px 0;"><img src="' + p.image + '" alt="' + p.title + '" style="width:100%;height:100%;object-fit:cover;"></div>'
+    : '<div style="height:72px;background:linear-gradient(135deg,var(--b50),#fff);border-radius:10px 10px 0 0;margin:-1px -1px 0;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">📰</div>';
+
+  return '<a href="/blog/' + p.id + '.html" style="display:block;text-decoration:none;background:var(--card);border:1.5px solid var(--brd);border-radius:12px;overflow:hidden;transition:all .2s;box-shadow:var(--sh);"'
+    + ' onmouseover="this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'var(--shl)\';this.style.borderColor=\'var(--b200)\'"'
+    + ' onmouseout="this.style.transform=\'\';this.style.boxShadow=\'var(--sh)\';this.style.borderColor=\'var(--brd)\'">'
+    + imgHtml
+    + '<div style="padding:14px;">'
+    + '<div style="margin-bottom:8px;">' + tagHtml + '</div>'
+    + '<div style="font-size:.88rem;font-weight:700;color:var(--txt);line-height:1.35;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">' + p.title + '</div>'
+    + '<div style="font-size:.76rem;color:var(--txt-m);line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">' + p.excerpt + '</div>'
+    + '<div style="margin-top:10px;font-size:.75rem;color:var(--txt-s);">' + formatPostDate(p.date) + '</div>'
+    + '</div></a>';
+}
+
+// ── Seção Blog ──
+function filterBlog(tag, btn) {
+  BLOG_TAG = tag;
+  document.querySelectorAll('#blog-tags-cloud .ctab, #blog-tab-all').forEach(function(b){ b.classList.remove('on'); });
+  if (btn) btn.classList.add('on');
+  else if (!tag) {
+    var allBtn = document.getElementById('blog-tab-all');
+    if (allBtn) allBtn.classList.add('on');
+  }
   renderBlogSection();
 }
 
-// Renderiza botões de categoria
-function renderCategoryButtons() {
-  const container = document.getElementById('blog-categories');
-  if (!container) return;
-
-  let html = `<button data-category="all" class="ctab on">Todos</button>`;
-  Object.keys(CATEGORY_LABELS).forEach(key => {
-    if (key === "all") return;
-    html += `<button data-category="${key}" class="ctab">${CATEGORY_LABELS[key]}</button>`;
-  });
-  container.innerHTML = html;
-
-  container.querySelectorAll('button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      container.querySelectorAll('button').forEach(b => b.classList.remove('on'));
-      btn.classList.add('on');
-      currentPage = 1;
-      renderBlogSection();
-    });
-  });
-}
-
-function filterPosts() {
-  const search = (document.getElementById('blog-search')?.value || '').toLowerCase().trim();
-  const dateFilter = parseInt(document.getElementById('blog-date-filter')?.value) || 0;
-  const activeCat = document.querySelector('#blog-categories button.on')?.dataset.category || 'all';
-
-  return BLOG_POSTS.filter(p => {
-    const matchSearch = !search || 
-      p.title.toLowerCase().includes(search) || 
-      (p.excerpt && p.excerpt.toLowerCase().includes(search));
-    
-    const matchCat = activeCat === 'all' || p.category === activeCat;
-    
-    let matchDate = true;
-    if (dateFilter > 0) {
-      const days = (Date.now() - new Date(p.date)) / (86400000);
-      matchDate = days <= dateFilter;
-    }
-    return matchSearch && matchCat && matchDate;
-  }).sort((a,b) => b.date.localeCompare(a.date));
-}
-
 function renderBlogSection() {
-  const filtered = filterPosts();
-  const start = (currentPage - 1) * POSTS_PER_PAGE;
-  const toShow = filtered.slice(start, start + POSTS_PER_PAGE);
-
-  document.getElementById('blog-count').textContent = 
-    `${filtered.length} artigo${filtered.length !== 1 ? 's' : ''} encontrado${filtered.length !== 1 ? 's' : ''}`;
-
-  if (currentView === 'grid') {
-    document.getElementById('blog-posts-grid').style.display = 'grid';
-    document.getElementById('blog-posts-list').style.display = 'none';
-    document.getElementById('blog-posts-grid').innerHTML = toShow.map(buildCard).join('');
-  } else {
-    document.getElementById('blog-posts-grid').style.display = 'none';
-    document.getElementById('blog-posts-list').style.display = 'block';
-    document.getElementById('blog-posts-list').innerHTML = toShow.map(buildListItem).join('');
-  }
-
-  document.getElementById('blog-empty').style.display = filtered.length ? 'none' : 'block';
-}
-
-function buildCard(p) {
-  return `<a href="/blog/${p.id}.html" style="text-decoration:none;color:inherit;">
-    <div class="card" style="height:100%;display:flex;flex-direction:column;overflow:hidden;">
-      ${p.image ? `<img src="${p.image}" style="width:100%;height:160px;object-fit:cover;">` : ''}
-      <div style="padding:16px;flex:1;">
-        <span style="font-size:0.75rem;padding:3px 10px;background:var(--b50);color:var(--acc);border-radius:999px;">${p.category_label}</span>
-        <h3 style="margin:12px 0 8px;font-size:0.98rem;">${p.title}</h3>
-        <p style="font-size:0.82rem;color:var(--txt-m);line-height:1.5;">${p.excerpt || ''}</p>
-        <small style="color:var(--txt-s);">${new Date(p.date).toLocaleDateString('pt-BR')}</small>
-      </div>
-    </div>
-  </a>`;
-}
-
-function buildListItem(p) {
-  return `<a href="/blog/${p.id}.html" style="display:flex;padding:12px 0;border-bottom:1px solid var(--brd);text-decoration:none;color:inherit;">
-    <div style="width:90px;color:var(--txt-s);">${new Date(p.date).toLocaleDateString('pt-BR')}</div>
-    <div><strong>${p.title}</strong></div>
-  </a>`;
-}
-
-// Inicialização
-document.addEventListener('DOMContentLoaded', () => {
-  loadBlogPosts();
-
-  // Filtros
-  const searchInput = document.getElementById('blog-search');
-  const dateSelect = document.getElementById('blog-date-filter');
-  if (searchInput) searchInput.addEventListener('input', () => renderBlogSection());
-  if (dateSelect) dateSelect.addEventListener('change', () => renderBlogSection());
-
-  // Visualização
-  document.getElementById('blog-view-grid').addEventListener('click', () => {
-    currentView = 'grid';
-    document.getElementById('blog-view-grid').classList.add('active');
-    document.getElementById('blog-view-list').classList.remove('active');
-    renderBlogSection();
-  });
-
-  document.getElementById('blog-view-list').addEventListener('click', () => {
-    currentView = 'list';
-    document.getElementById('blog-view-list').classList.add('active');
-    document.getElementById('blog-view-grid').classList.remove('active');
-    renderBlogSection();
-  });
-});
-</script>
-<script>
-// === BLOG DIAGNÓSTICO SIMPLES ===
-let BLOG_POSTS = [];
-
-async function loadBlogPosts() {
-  console.log("🔄 Tentando carregar posts...");
-
-  try {
-    const res = await fetch('/data/posts.json');
-    if (res.ok) {
-      BLOG_POSTS = await res.json();
-      console.log("✅ Posts carregados com sucesso!", BLOG_POSTS.length, "posts");
-      renderBlogSimple();
-    } else {
-      console.error("❌ Erro HTTP:", res.status);
-    }
-  } catch (e) {
-    console.error("❌ Erro ao carregar /data/posts.json →", e);
-    alert("Não consegui carregar o arquivo posts.json\nVerifique se ele existe na pasta 'data'");
-  }
-}
-
-function renderBlogSimple() {
-  const grid = document.getElementById('blog-posts-grid');
+  var grid  = document.getElementById('blog-posts-grid');
+  var empty = document.getElementById('blog-empty');
+  var tagsEl = document.getElementById('blog-tags-cloud');
   if (!grid) return;
 
-  if (BLOG_POSTS.length === 0) {
-    grid.innerHTML = "<p style='padding:40px;text-align:center;color:red;'>Nenhum post encontrado no JSON</p>";
-    return;
+  // Render tag cloud
+  if (tagsEl) {
+    var tags = getAllTags();
+    if (tags.length) {
+      tagsEl.innerHTML = tags.map(function(e){ return tagBadge(e[0], e[1]); }).join('');
+      // Mark active tag
+      if (BLOG_TAG) {
+        tagsEl.querySelectorAll('.ctab').forEach(function(b){
+          if (b.textContent.trim().startsWith(BLOG_TAG)) b.classList.add('on');
+        });
+      }
+    }
   }
 
-  grid.innerHTML = BLOG_POSTS.slice(0, 6).map(p => `
-    <div style="border:1px solid #ddd; padding:15px; border-radius:8px; margin-bottom:15px;">
-      <h3>${p.title}</h3>
-      <small>${p.date} - ${p.category_label || p.category}</small>
-    </div>
-  `).join('');
+  var search = (document.getElementById('blog-search') ? document.getElementById('blog-search').value : '').toLowerCase();
+  var posts = BLOG_POSTS.filter(function(p) {
+    var matchTag  = postMatchesTag(p, BLOG_TAG);
+    var matchText = !search || p.title.toLowerCase().indexOf(search) >= 0 || p.excerpt.toLowerCase().indexOf(search) >= 0;
+    return matchTag && matchText;
+  }).sort(function(a,b){ return b.date.localeCompare(a.date); });
+
+  if (!posts.length) {
+    grid.innerHTML = '';
+    if (empty) empty.style.display = 'block';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+  grid.innerHTML = posts.map(buildPostCard).join('');
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  console.log("🚀 Script de blog carregado");
+// ── Widget home (últimos 6 posts) ──
+function filterHomeBlog(tag) {
+  BLOG_H_FILTER = tag;
+  renderHomeBlog();
+}
+
+function renderHomeBlog() {
+  var grid = document.getElementById('home-blog-grid');
+  if (!grid) return;
+  var posts = BLOG_POSTS
+    .filter(function(p){ return postMatchesTag(p, BLOG_H_FILTER); })
+    .sort(function(a,b){ return b.date.localeCompare(a.date); })
+    .slice(0, 6);
+  if (!posts.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--txt-s);padding:40px 0;font-size:.88rem;">Nenhum artigo publicado ainda. Em breve!</div>';
+    return;
+  }
+  grid.innerHTML = posts.map(buildPostCard).join('');
+}
+
+// ── Sidebar de últimos posts (no sec-prazos) ──
+function renderSidebarPosts() {
+  var list    = document.getElementById('sidebar-posts-list');
+  var wrapper = document.getElementById('prazos-sidebar-wrap');
+  if (!list) return;
+  var posts = BLOG_POSTS.slice().sort(function(a,b){ return b.date.localeCompare(a.date); }).slice(0,6);
+  if (!posts.length) return;
+  // wrapper visibility controlled by parent .sec.active CSS
+  list.innerHTML = posts.map(function(p) {
+    var tags = p.tags && p.tags.length ? p.tags : (p.category ? [p.category] : []);
+    var tagEl = tags.length ? '<span style="font-size:.62rem;font-weight:700;color:var(--acc);background:var(--b50);border:1px solid var(--b100);border-radius:999px;padding:1px 7px;margin-bottom:3px;display:inline-block;">' + tags[0] + '</span>' : '';
+    return '<a href="/blog/' + p.id + '.html" style="display:block;text-decoration:none;padding:8px 0;border-bottom:1px solid var(--brd);" onmouseover="this.style.opacity=\'.75\'" onmouseout="this.style.opacity=\'1\'">'
+      + (tagEl ? '<div>' + tagEl + '</div>' : '')
+      + '<div style="font-size:.82rem;font-weight:600;color:var(--txt);line-height:1.35;margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">' + p.title + '</div>'
+      + '<div style="font-size:.7rem;color:var(--txt-s);margin-top:3px;">' + formatPostDate(p.date) + '</div>'
+      + '</a>';
+  }).join('');
+}
+
+// ── Nav hook ──
+function navGoTo(id) {
+  if (id === 'blog') {
+    document.querySelectorAll('.sec').forEach(function(s){ s.classList.remove('active'); });
+    var secBlog = document.getElementById('sec-blog');
+    if (secBlog) secBlog.classList.add('active');
+    renderBlogSection();
+    window.scrollTo(0, 0);
+    // Sync nav
+    document.querySelectorAll('#hdr .hdr-nav>a, #hdr .nav-dropdown>a').forEach(function(a){ a.classList.remove('on'); });
+    var navC = document.getElementById('nav-conteudo');
+    if (navC) navC.classList.add('on');
+  } else {
+    goTo(id);
+  }
+  document.querySelectorAll('.nav-dropdown').forEach(function(d){ d.classList.remove('open'); });
+}
+
+// ── Toggle Conteúdo dropdown ──
+function toggleConteudo(e) {
+  e.preventDefault();
+  var dd = document.getElementById('nav-dropdown-conteudo');
+  var isOpen = dd.classList.contains('open');
+  document.querySelectorAll('.nav-dropdown').forEach(function(d){ d.classList.remove('open'); });
+  if (!isOpen) dd.classList.add('open');
+}
+
+// ── Boot ──
+document.addEventListener('DOMContentLoaded', function() {
   loadBlogPosts();
+  var hash = window.location.hash;
+  if (hash === '#conteudo' || hash === '#blog') {
+    setTimeout(function(){ navGoTo('blog'); }, 150);
+  }
+});
+if (document.readyState !== 'loading') {
+  loadBlogPosts();
+  var hash = window.location.hash;
+  if (hash === '#conteudo' || hash === '#blog') {
+    setTimeout(function(){ navGoTo('blog'); }, 150);
+  }
+}
+window.addEventListener('hashchange', function() {
+  var h = window.location.hash;
+  if (h === '#conteudo' || h === '#blog') navGoTo('blog');
 });
 </script>
+
+</body>
+</html>
