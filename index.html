@@ -3731,6 +3731,11 @@ document.querySelectorAll('#nav-dropdown-ferramentas .nav-drop-menu a').forEach(
     document.getElementById('nav-dropdown-ferramentas').classList.remove('open');
   });
 });
+document.querySelectorAll('#nav-dropdown-conteudo .nav-drop-menu a').forEach(a=>{
+  a.addEventListener('click', ()=>{
+    document.getElementById('nav-dropdown-conteudo').classList.remove('open');
+  });
+});
 
 // ─── PRAZOS DE REFERÊNCIA — botão no nav ────────────
 function toggleRefNav(){
@@ -4420,30 +4425,41 @@ function navGoTo(id) {
 }
 
 // ── Toggle Conteúdo dropdown ──
+function positionDropdownConteudo() {
+  var btn  = document.getElementById('nav-conteudo');
+  var menu = document.getElementById('conteudo-menu');
+  if (!btn || !menu) return;
+  var r = btn.getBoundingClientRect();
+  menu.style.left = Math.min(r.left, window.innerWidth - 260) + 'px';
+  menu.style.top  = (r.bottom + 4) + 'px';
+}
+
 function toggleConteudo(e) {
-  e.preventDefault();
-  e.stopPropagation();
+  if (e) { e.stopPropagation(); e.preventDefault(); }
   var dd = document.getElementById('nav-dropdown-conteudo');
-  var isOpen = dd.classList.contains('open');
+  var opening = !dd.classList.contains('open');
   document.querySelectorAll('.nav-dropdown').forEach(function(d){ d.classList.remove('open'); });
-  if (!isOpen) dd.classList.add('open');
+  if (opening) {
+    dd.classList.add('open');
+    positionDropdownConteudo();
+  }
 }
 
 // ── Boot ──
-document.addEventListener('DOMContentLoaded', function() {
-  loadBlogPosts();
-  var hash = window.location.hash;
-  if (hash === '#conteudo' || hash === '#blog') {
-    setTimeout(function(){ navGoTo('blog'); }, 150);
+(function() {
+  function boot() {
+    loadBlogPosts();
+    var hash = window.location.hash;
+    if (hash === '#conteudo' || hash === '#blog') {
+      setTimeout(function(){ navGoTo('blog'); }, 200);
+    }
   }
-});
-if (document.readyState !== 'loading') {
-  loadBlogPosts();
-  var hash = window.location.hash;
-  if (hash === '#conteudo' || hash === '#blog') {
-    setTimeout(function(){ navGoTo('blog'); }, 150);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
   }
-}
+})();
 window.addEventListener('hashchange', function() {
   var h = window.location.hash;
   if (h === '#conteudo' || h === '#blog') navGoTo('blog');
