@@ -4379,6 +4379,48 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
-   
-</body>
+<script>
+// === BLOG DIAGNÓSTICO SIMPLES ===
+let BLOG_POSTS = [];
+
+async function loadBlogPosts() {
+  console.log("🔄 Tentando carregar posts...");
+
+  try {
+    const res = await fetch('/data/posts.json');
+    if (res.ok) {
+      BLOG_POSTS = await res.json();
+      console.log("✅ Posts carregados com sucesso!", BLOG_POSTS.length, "posts");
+      renderBlogSimple();
+    } else {
+      console.error("❌ Erro HTTP:", res.status);
+    }
+  } catch (e) {
+    console.error("❌ Erro ao carregar /data/posts.json →", e);
+    alert("Não consegui carregar o arquivo posts.json\nVerifique se ele existe na pasta 'data'");
+  }
+}
+
+function renderBlogSimple() {
+  const grid = document.getElementById('blog-posts-grid');
+  if (!grid) return;
+
+  if (BLOG_POSTS.length === 0) {
+    grid.innerHTML = "<p style='padding:40px;text-align:center;color:red;'>Nenhum post encontrado no JSON</p>";
+    return;
+  }
+
+  grid.innerHTML = BLOG_POSTS.slice(0, 6).map(p => `
+    <div style="border:1px solid #ddd; padding:15px; border-radius:8px; margin-bottom:15px;">
+      <h3>${p.title}</h3>
+      <small>${p.date} - ${p.category_label || p.category}</small>
+    </div>
+  `).join('');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  console.log("🚀 Script de blog carregado");
+  loadBlogPosts();
+});
+</script>
 </html>
