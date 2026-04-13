@@ -4233,7 +4233,7 @@ document.addEventListener('DOMContentLoaded', function() {
      BLOG / CONTEÚDO — JavaScript
 ══════════════════════════════════════ -->
 <script>
-// ==================== BLOG ENGINE - VERSÃO CORRIGIDA ====================
+// ==================== BLOG ENGINE - VERSÃO FUNCIONAL ====================
 let BLOG_POSTS = [];
 let currentPage = 1;
 let currentView = 'grid';
@@ -4253,55 +4253,26 @@ const CATEGORY_LABELS = {
   "geral": "📌 Geral"
 };
 
-// Funções que estavam faltando
-function renderHomeBlog() {
-  // Widget da Home (6 posts mais recentes)
-  const grid = document.getElementById('home-blog-grid');
-  if (!grid) return;
-  const recent = BLOG_POSTS.slice().sort((a,b) => b.date.localeCompare(a.date)).slice(0,6);
-  grid.innerHTML = recent.map(post => `
-    <a href="/blog/${post.id}.html" class="card" style="text-decoration:none;">
-      ${post.image ? `<img src="${post.image}" style="width:100%;height:140px;object-fit:cover;border-radius:8px 8px 0 0;">` : ''}
-      <div style="padding:12px;">
-        <span style="font-size:0.7rem;background:var(--b50);color:var(--acc);padding:2px 8px;border-radius:999px;">${post.category_label}</span>
-        <div style="margin-top:8px;font-weight:600;line-height:1.3;">${post.title}</div>
-      </div>
-    </a>
-  `).join('');
-}
-
-function renderSidebarPosts() {
-  // Sidebar na calculadora de prazos
-  const container = document.getElementById('sidebar-posts-list');
-  if (!container) return;
-  const recent = BLOG_POSTS.slice().sort((a,b) => b.date.localeCompare(a.date)).slice(0,5);
-  container.innerHTML = recent.map(p => `
-    <a href="/blog/${p.id}.html" style="text-decoration:none;color:inherit;display:block;padding:10px 0;border-bottom:1px solid var(--brd);">
-      <div style="font-size:0.85rem;font-weight:600;">${p.title}</div>
-      <div style="font-size:0.75rem;color:var(--txt-s);">${new Date(p.date).toLocaleDateString('pt-BR')}</div>
-    </a>
-  `).join('');
-}
-
-// ==================== FUNÇÕES PRINCIPAIS ====================
 async function loadBlogPosts() {
   try {
     const res = await fetch('/data/posts.json');
-    if (res.ok) BLOG_POSTS = await res.json();
-  } catch(e) {
-    console.error("Erro ao carregar posts:", e);
+    if (res.ok) {
+      BLOG_POSTS = await res.json();
+      console.log("✅ Posts carregados:", BLOG_POSTS.length);
+    }
+  } catch (e) {
+    console.error("❌ Erro ao carregar posts:", e);
   }
 
   renderCategoryButtons();
   renderBlogSection();
-  renderHomeBlog();
-  renderSidebarPosts();
 }
 
+// Renderiza botões de categoria
 function renderCategoryButtons() {
   const container = document.getElementById('blog-categories');
   if (!container) return;
-  
+
   let html = `<button data-category="all" class="ctab on">Todos</button>`;
   Object.keys(CATEGORY_LABELS).forEach(key => {
     if (key === "all") return;
@@ -4319,72 +4290,95 @@ function renderCategoryButtons() {
   });
 }
 
-// ... (o resto das funções filterPosts, renderBlogSection, buildCard, etc. permanecem iguais)
-
 function filterPosts() {
-  const searchTerm = (document.getElementById('blog-search')?.value || '').toLowerCase().trim();
+  const search = (document.getElementById('blog-search')?.value || '').toLowerCase().trim();
   const dateFilter = parseInt(document.getElementById('blog-date-filter')?.value) || 0;
   const activeCat = document.querySelector('#blog-categories button.on')?.dataset.category || 'all';
 
-  return BLOG_POSTS.filter(post => {
-    const matchesSearch = !searchTerm || 
-      post.title.toLowerCase().includes(searchTerm) || 
-      (post.excerpt && post.excerpt.toLowerCase().includes(searchTerm));
+  return BLOG_POSTS.filter(p => {
+    const matchSearch = !search || 
+      p.title.toLowerCase().includes(search) || 
+      (p.excerpt && p.excerpt.toLowerCase().includes(search));
     
-    const matchesCategory = activeCat === 'all' || post.category === activeCat;
+    const matchCat = activeCat === 'all' || p.category === activeCat;
     
-    let matchesDate = true;
+    let matchDate = true;
     if (dateFilter > 0) {
-      const daysDiff = (Date.now() - new Date(post.date).getTime()) / (1000 * 3600 * 24);
-      matchesDate = daysDiff <= dateFilter;
+      const days = (Date.now() - new Date(p.date)) / (86400000);
+      matchDate = days <= dateFilter;
     }
-    return matchesSearch && matchesCategory && matchesDate;
-  }).sort((a, b) => b.date.localeCompare(a.date));
+    return matchSearch && matchCat && matchDate;
+  }).sort((a,b) => b.date.localeCompare(a.date));
 }
-
-// (Coloque aqui as funções renderBlogSection, buildCard, buildListItem, renderPagination, changePage que eu te mandei antes)
 
 function renderBlogSection() {
   const filtered = filterPosts();
-  const totalPages = Math.ceil(filtered.length / POSTS_PER_PAGE);
   const start = (currentPage - 1) * POSTS_PER_PAGE;
-  const postsToShow = filtered.slice(start, start + POSTS_PER_PAGE);
+  const toShow = filtered.slice(start, start + POSTS_PER_PAGE);
 
-  document.getElementById('blog-count').innerHTML = 
+  document.getElementById('blog-count').textContent = 
     `${filtered.length} artigo${filtered.length !== 1 ? 's' : ''} encontrado${filtered.length !== 1 ? 's' : ''}`;
 
   if (currentView === 'grid') {
     document.getElementById('blog-posts-grid').style.display = 'grid';
     document.getElementById('blog-posts-list').style.display = 'none';
-    document.getElementById('blog-posts-grid').innerHTML = postsToShow.map(buildCard).join('');
+    document.getElementById('blog-posts-grid').innerHTML = toShow.map(buildCard).join('');
   } else {
     document.getElementById('blog-posts-grid').style.display = 'none';
     document.getElementById('blog-posts-list').style.display = 'block';
-    document.getElementById('blog-posts-list').innerHTML = postsToShow.map(buildListItem).join('');
+    document.getElementById('blog-posts-list').innerHTML = toShow.map(buildListItem).join('');
   }
 
   document.getElementById('blog-empty').style.display = filtered.length ? 'none' : 'block';
-  renderPagination(totalPages);
 }
 
-// buildCard, buildListItem, renderPagination, changePage... (use as mesmas que te mandei na mensagem anterior)
+function buildCard(p) {
+  return `<a href="/blog/${p.id}.html" style="text-decoration:none;color:inherit;">
+    <div class="card" style="height:100%;display:flex;flex-direction:column;overflow:hidden;">
+      ${p.image ? `<img src="${p.image}" style="width:100%;height:160px;object-fit:cover;">` : ''}
+      <div style="padding:16px;flex:1;">
+        <span style="font-size:0.75rem;padding:3px 10px;background:var(--b50);color:var(--acc);border-radius:999px;">${p.category_label}</span>
+        <h3 style="margin:12px 0 8px;font-size:0.98rem;">${p.title}</h3>
+        <p style="font-size:0.82rem;color:var(--txt-m);line-height:1.5;">${p.excerpt || ''}</p>
+        <small style="color:var(--txt-s);">${new Date(p.date).toLocaleDateString('pt-BR')}</small>
+      </div>
+    </div>
+  </a>`;
+}
 
-document.addEventListener('DOMContentLoaded', function() {
+function buildListItem(p) {
+  return `<a href="/blog/${p.id}.html" style="display:flex;padding:12px 0;border-bottom:1px solid var(--brd);text-decoration:none;color:inherit;">
+    <div style="width:90px;color:var(--txt-s);">${new Date(p.date).toLocaleDateString('pt-BR')}</div>
+    <div><strong>${p.title}</strong></div>
+  </a>`;
+}
+
+// Inicialização
+document.addEventListener('DOMContentLoaded', () => {
   loadBlogPosts();
 
-  // Botão "Conteúdo" no menu
-  const btnConteudo = document.getElementById('nav-conteudo');
-  if (btnConteudo) {
-    btnConteudo.addEventListener('click', function(e) {
-      e.preventDefault();
-      document.querySelectorAll('.sec').forEach(s => s.classList.remove('active'));
-      document.getElementById('sec-blog').classList.add('active');
-      renderBlogSection();
-      window.scrollTo(0, 0);
-    });
-  }
+  // Filtros
+  const searchInput = document.getElementById('blog-search');
+  const dateSelect = document.getElementById('blog-date-filter');
+  if (searchInput) searchInput.addEventListener('input', () => renderBlogSection());
+  if (dateSelect) dateSelect.addEventListener('change', () => renderBlogSection());
+
+  // Visualização
+  document.getElementById('blog-view-grid').addEventListener('click', () => {
+    currentView = 'grid';
+    document.getElementById('blog-view-grid').classList.add('active');
+    document.getElementById('blog-view-list').classList.remove('active');
+    renderBlogSection();
+  });
+
+  document.getElementById('blog-view-list').addEventListener('click', () => {
+    currentView = 'list';
+    document.getElementById('blog-view-list').classList.add('active');
+    document.getElementById('blog-view-grid').classList.remove('active');
+    renderBlogSection();
+  });
 });
 </script>
-
+   
 </body>
 </html>
