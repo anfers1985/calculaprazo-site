@@ -4086,15 +4086,13 @@ window.addEventListener('popstate', function(e) {
 
 // ── Inicialização — lê a URL ao carregar ────────────────
 document.addEventListener('DOMContentLoaded', function() {
-  const id = resolveIdFromURL();
-  // Se a URL é a raiz '/', mostrar home; caso contrário, mostrar a seção correspondente
-  if (location.pathname === '/' || location.pathname === '') {
+  var id = resolveIdFromURL();
+  if (location.pathname === '/' || location.pathname === '' || !id) {
     _navOriginal('home');
     updateSEO('home');
   } else {
-    if (id && id !== 'prazos') _navOriginal(id);
-    else _navOriginal(id || 'prazos');
-    updateSEO(id || 'prazos');
+    _navOriginal(id);
+    updateSEO(id);
   }
 });
 
