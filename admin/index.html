@@ -134,7 +134,12 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
     <input type="password" id="auth-pass" placeholder="Senha de acesso" onkeydown="if(event.key==='Enter')doLogin()">
     <button class="auth-btn" onclick="doLogin()">Entrar</button>
     <p class="auth-err" id="auth-err">Senha incorreta. Tente novamente.</p>
-    <p style="font-size:.72rem;color:var(--txt-s);margin-top:16px;">⚠️ Defina sua senha no arquivo admin/index.html antes de publicar.</p>
+    <p style="font-size:.72rem;color:var(--txt-s);margin-top:16px;">
+      Senha padrão: <strong>admin2026</strong><br>
+      <span style="cursor:pointer;color:var(--acc);text-decoration:underline;" onclick="resetarSenha()">
+        Clique aqui se esqueceu a senha (redefinir para padrão)
+      </span>
+    </p>
   </div>
 </div>
 
@@ -333,7 +338,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
 // CONFIG — altere antes de usar
 // ════════════════════════════════════════
 const ADMIN_PASS_KEY = 'cp_admin_pass';
-const DEFAULT_PASS   = 'admin2026'; // <- ALTERE AQUI antes de publicar
+const DEFAULT_PASS   = 'admin2026'; // <- senha padrao. Para alterar: entre com esta senha, va em Configuracoes no menu lateral e troque
 const POSTS_KEY      = 'cp_posts';
 
 // ── GitHub API — publicação direta ───────────────────────────────────
@@ -345,12 +350,20 @@ const GITHUB_BRANCH = 'main';                         // <- branch principal (na
 // IMPORTANTE: Cole aqui o seu GitHub Personal Access Token (PAT)
 // Nome do token: calculaprazo-admin-publish
 // Permissão necessária: Contents -> Read and write
-const GITHUB_PAT = 'COLE_AQUI_SEU_GITHUB_PAT';       // <- SUBSTITUA ESTE VALOR
+const GITHUB_PAT = 'COLE_AQUI_SEU_NOVO_GITHUB_PAT';  // <- Cole aqui o seu novo PAT (calculaprazo-admin-publish)
 
 // ════════════════════════════════════════
 // AUTH
 // ════════════════════════════════════════
 function getPass(){ return localStorage.getItem(ADMIN_PASS_KEY) || DEFAULT_PASS; }
+
+function resetarSenha(){
+  if(confirm('Isso vai redefinir a senha para "admin2026". Confirmar?')){
+    localStorage.removeItem('cp_admin_pass');
+    localStorage.removeItem('cp_session');
+    alert('Senha redefinida para: admin2026\nEntre com essa senha agora.');
+  }
+}
 
 function doLogin(){
   const v = document.getElementById('auth-pass').value;

@@ -1,14 +1,16 @@
-name: Gerador Fallback de Posts
+name: Gerador de Posts (todos os agentes)
 
 on:
-  workflow_dispatch:   # Apenas execução manual (não mais automática)
+  schedule:
+    - cron: '0 12 * * 1-5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
-  gerar-rascunho:
+  gerar:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
     steps:
       - name: Checkout repositório
         uses: actions/checkout@v4
@@ -16,7 +18,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
-      - name: Configurar Python 3.11
+      - name: Configurar Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -24,21 +26,16 @@ jobs:
       - name: Instalar dependências
         run: pip install requests python-slugify
 
-      - name: Executar Gerador Fallback
-        env:
-          OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY }}
+      - name: Rodar todos os agentes
         run: python scripts/gerar_posts.py
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
 
-      - name: Commit para branch de rascunho
+      - name: Commit e push
         run: |
-          git config user.name "Gerador Fallback"
+          git config user.name "CalculaPrazo Bot"
           git config user.email "bot@calculaprazo.com.br"
-          git add -A
-          if git diff --staged --quiet; then
-            echo "Nenhuma mudança para commitar."
-          else
-            git checkout -B "draft/agentes"
-            git commit -m "[RASCUNHO] Fallback: $(date '+%d/%m/%Y %H:%M') — aguardando revisão"
-            git push origin "draft/agentes" --force
-            echo "Rascunho publicado em draft/agentes. Abra um PR para main após revisão."
-          fi
+          git add blog/ data/posts.json sitemap.xml
+          git diff --staged --quiet || git commit -m "conteudo: agentes automaticos $(date +%d/%m/%Y)"
+          git push
