@@ -179,7 +179,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
         <div><div class="page-title" id="form-page-title">Novo Conteúdo</div><div class="page-sub">Preencha os campos abaixo e publique</div></div>
         <div style="display:flex;gap:8px;">
           <button class="btn btn-g" onclick="togglePreview()">👁️ Preview</button>
-          <button class="btn btn-p" onclick="savePost()">💾 Publicar</button>
+          <button class="btn btn-p" onclick="savePost()" style="background:#64748B;">💾 Salvar local</button>
+          <button class="btn btn-p" id="btn-publicar" onclick="publicarNoSite()" style="background:#059669;font-size:.9rem;padding:9px 20px;">🚀 Publicar no site</button>
         </div>
       </div>
       <div class="form-card">
@@ -192,9 +193,15 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
           <div class="fg">
             <label>Área / Categoria *</label>
             <select id="f-cat">
-              <option value="direito">⚖️ Direito</option>
-              <option value="rh">👥 Recursos Humanos</option>
-              <option value="contabilidade">📊 Contabilidade</option>
+              <option value="jurisprudencia-tst">⚖️ TST</option>
+              <option value="jurisprudencia-trts">🏛️ TRTs</option>
+              <option value="noticias-mte-mpt">🔎 MTE &amp; MPT</option>
+              <option value="legislacao-normas">📋 Legislação</option>
+              <option value="esocial-fgts-digital">💻 eSocial</option>
+              <option value="orientacoes-praticas">👥 RH</option>
+              <option value="saude-seguranca">🦺 Saúde e Segurança</option>
+              <option value="modelos">📄 Modelos</option>
+              <option value="artigos">✍️ Artigos</option>
               <option value="geral">📌 Geral</option>
             </select>
           </div>
@@ -251,9 +258,15 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
         <input type="text" id="search-posts" placeholder="🔍 Buscar posts..." style="flex:1;padding:9px 13px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.86rem;font-family:var(--fh);color:var(--txt);" oninput="renderList()">
         <select id="filter-cat" style="padding:9px 13px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.86rem;font-family:var(--fh);color:var(--txt);" onchange="renderList()">
           <option value="">Todas as categorias</option>
-          <option value="direito">Direito</option>
-          <option value="rh">RH</option>
-          <option value="contabilidade">Contabilidade</option>
+          <option value="jurisprudencia-tst">TST</option>
+          <option value="jurisprudencia-trts">TRTs</option>
+          <option value="noticias-mte-mpt">MTE &amp; MPT</option>
+          <option value="legislacao-normas">Legislação</option>
+          <option value="esocial-fgts-digital">eSocial</option>
+          <option value="orientacoes-praticas">RH</option>
+          <option value="saude-seguranca">Saúde</option>
+          <option value="modelos">Modelos</option>
+          <option value="artigos">Artigos</option>
           <option value="geral">Geral</option>
         </select>
       </div>
@@ -317,11 +330,22 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
 
 <script>
 // ════════════════════════════════════════
-// CONFIG — altere a senha antes de publicar
+// CONFIG — altere antes de usar
 // ════════════════════════════════════════
 const ADMIN_PASS_KEY = 'cp_admin_pass';
-const DEFAULT_PASS   = 'admin2026'; // ← ALTERE AQUI antes de publicar!
+const DEFAULT_PASS   = 'admin2026'; // <- ALTERE AQUI antes de publicar
 const POSTS_KEY      = 'cp_posts';
+
+// ── GitHub API — publicação direta ───────────────────────────────────
+// INSTRUCAO: substitua os valores abaixo com suas credenciais
+// Depois salve este arquivo admin/index.html no seu repositório
+const GITHUB_OWNER = 'anfers1985';                    // <- seu usuario GitHub (nao alterar)
+const GITHUB_REPO  = 'calculaprazo-site';             // <- seu repositorio (nao alterar)
+const GITHUB_BRANCH = 'main';                         // <- branch principal (nao alterar)
+// IMPORTANTE: Cole aqui o seu GitHub Personal Access Token (PAT)
+// Nome do token: calculaprazo-admin-publish
+// Permissão necessária: Contents -> Read and write
+const GITHUB_PAT = 'COLE_AQUI_SEU_GITHUB_PAT';       // <- SUBSTITUA ESTE VALOR
 
 // ════════════════════════════════════════
 // AUTH
@@ -466,7 +490,20 @@ function renderList(){
 }
 
 function catLabel(c){
-  return {direito:'⚖️ Direito',rh:'👥 RH',contabilidade:'📊 Contabilidade',geral:'📌 Geral'}[c]||c;
+  var map = {
+    'jurisprudencia-tst':   '⚖️ TST',
+    'jurisprudencia-trts':  '🏛️ TRTs',
+    'noticias-mte-mpt':     '🔎 MTE & MPT',
+    'legislacao-normas':    '📋 Legislação',
+    'esocial-fgts-digital': '💻 eSocial',
+    'orientacoes-praticas': '👥 RH',
+    'saude-seguranca':      '🦺 Saúde',
+    'modelos':              '📄 Modelos',
+    'artigos':              '✍️ Artigos',
+    'geral':                '📌 Geral',
+    'direito':'⚖️ Direito','rh':'👥 RH','contabilidade':'📊 Contabilidade'
+  };
+  return map[c] || c;
 }
 
 // ════════════════════════════════════════
@@ -581,13 +618,193 @@ async function generatePostHTML(p) {
     .replace(/{{SCHEMA_IMAGE}}/g,   schemaImg)
     .replace(/{{COVER_IMAGE_HTML}}/g, coverHtml);
 
-  // Trigger download
+  // Trigger download (backup local)
   const blob = new Blob([html], {type:'text/html'});
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
   a.href = url; a.download = p.id + '.html';
   a.click();
   URL.revokeObjectURL(url);
+  return html;
+}
+
+// ════════════════════════════════════════
+// GITHUB API — Publicação direta no site
+// ════════════════════════════════════════
+async function githubGetFileSha(path) {
+  // Retorna o SHA do arquivo se existir (necessário para atualizar arquivo existente)
+  try {
+    const r = await fetch(
+      'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/' + path + '?ref=' + GITHUB_BRANCH,
+      { headers: { 'Authorization': 'token ' + GITHUB_PAT, 'Accept': 'application/vnd.github.v3+json' } }
+    );
+    if (r.ok) {
+      const d = await r.json();
+      return d.sha || null;
+    }
+  } catch(e) {}
+  return null;
+}
+
+async function githubUpsertFile(path, content, commitMsg) {
+  // Cria ou atualiza um arquivo no repositório via GitHub API
+  const sha = await githubGetFileSha(path);
+  const body = {
+    message: commitMsg,
+    content: btoa(unescape(encodeURIComponent(content))),
+    branch:  GITHUB_BRANCH,
+    committer: { name: 'CalculaPrazo Bot', email: 'bot@calculaprazo.com.br' }
+  };
+  if (sha) body.sha = sha;
+
+  const r = await fetch(
+    'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/' + path,
+    {
+      method: 'PUT',
+      headers: {
+        'Authorization': 'token ' + GITHUB_PAT,
+        'Content-Type':  'application/json',
+        'Accept':        'application/vnd.github.v3+json'
+      },
+      body: JSON.stringify(body)
+    }
+  );
+  if (!r.ok) {
+    const err = await r.json();
+    throw new Error('GitHub API erro ' + r.status + ': ' + (err.message || JSON.stringify(err)));
+  }
+  return await r.json();
+}
+
+async function publicarNoSite() {
+  const btn = document.getElementById('btn-publicar');
+
+  if (!GITHUB_PAT || GITHUB_PAT === 'COLE_AQUI_SEU_GITHUB_PAT') {
+    toast('Configure o GITHUB_PAT no arquivo admin/index.html antes de publicar.', 'err');
+    return;
+  }
+
+  // Validar campos mínimos
+  const title   = document.getElementById('f-title').value.trim();
+  const excerpt = document.getElementById('f-excerpt').value.trim();
+  const content = document.getElementById('editor-area').value.trim();
+  if (!title)   { toast('Preencha o título', 'err'); return; }
+  if (!excerpt) { toast('Preencha o resumo', 'err'); return; }
+  if (!content) { toast('Adicione conteúdo ao artigo', 'err'); return; }
+
+  btn.disabled = true;
+  btn.textContent = '⏳ Publicando...';
+
+  try {
+    // 1. Salvar localmente primeiro
+    await savePost();
+
+    // 2. Reconstruir post object para garantir dados atuais
+    const slug    = document.getElementById('f-slug').value.trim() || slugify(title);
+    const cat     = document.getElementById('f-cat').value;
+    const image   = document.getElementById('f-image').value.trim();
+    const caption = document.getElementById('f-caption').value.trim();
+    const now     = new Date().toISOString().split('T')[0];
+    const post = { id: slug, title, category: cat, excerpt, image, imageCaption: caption, date: now, content };
+
+    // 3. Gerar HTML do post
+    toast('Gerando HTML do post...', 'ok');
+    const catLabelsMap = {
+      'jurisprudencia-tst':'Jurisprudência TST','jurisprudencia-trts':'Jurisprudência TRTs',
+      'noticias-mte-mpt':'MTE & MPT','legislacao-normas':'Legislação e Normas',
+      'esocial-fgts-digital':'eSocial e FGTS Digital','orientacoes-praticas':'Orientações Práticas RH',
+      'saude-seguranca':'Saúde e Segurança','modelos':'Modelos','artigos':'Artigos','geral':'Geral'
+    };
+    const dateOptions = {day:'numeric', month:'long', year:'numeric'};
+    const dateBR = new Date(post.date + 'T12:00:00').toLocaleDateString('pt-BR', dateOptions);
+    const ogImage   = post.image ? '<meta property="og:image" content="' + post.image + '">' : '';
+    const schemaImg = post.image ? ',"image":"' + post.image + '"' : '';
+    const coverHtml = post.image
+      ? '<img src="' + post.image + '" alt="' + post.title + '" class="post-cover">'
+        + (post.imageCaption ? '<p class="post-cover-caption">' + post.imageCaption + '</p>' : '')
+      : '';
+    const tagsArr    = (post.tags && Array.isArray(post.tags) && post.tags.length > 0) ? post.tags : [post.category];
+    const tagsJson   = JSON.stringify(tagsArr);
+    const tagsBadges = tagsArr.map(t =>
+      '<span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;' +
+      'background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">' + t + '</span>'
+    ).join('');
+
+    let template = '';
+    try {
+      const r = await fetch('/blog/POST_TEMPLATE.html');
+      template = await r.text();
+    } catch(e) {
+      throw new Error('Nao foi possivel carregar POST_TEMPLATE.html: ' + e.message);
+    }
+
+    const postHTML = template
+      .replace(/{{TITLE}}/g,           post.title)
+      .replace(/{{DESCRIPTION}}/g,     post.excerpt)
+      .replace(/{{SLUG}}/g,            post.id)
+      .replace(/{{CATEGORY}}/g,        post.category)
+      .replace(/{{CATEGORY_LABEL}}/g,  catLabelsMap[post.category] || post.category)
+      .replace(/{{TAGS_BADGES}}/g,     tagsBadges)
+      .replace(/{{TAGS_JSON}}/g,       tagsJson)
+      .replace(/{{DATE}}/g,            post.date)
+      .replace(/{{DATE_BR}}/g,         dateBR)
+      .replace(/{{CONTENT}}/g,         post.content)
+      .replace(/{{OG_IMAGE}}/g,        ogImage)
+      .replace(/{{SCHEMA_IMAGE}}/g,    schemaImg)
+      .replace(/{{COVER_IMAGE_HTML}}/g, coverHtml);
+
+    // 4. Publicar HTML do post no GitHub
+    toast('Enviando blog/' + post.id + '.html para o GitHub...', 'ok');
+    await githubUpsertFile(
+      'blog/' + post.id + '.html',
+      postHTML,
+      'publicacao: ' + post.title + ' via admin'
+    );
+
+    // 5. Ler posts.json atual do GitHub e atualizar
+    toast('Atualizando posts.json...', 'ok');
+    let postsAtuais = [];
+    try {
+      const rj = await fetch(
+        'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/data/posts.json?ref=' + GITHUB_BRANCH,
+        { headers: { 'Authorization': 'token ' + GITHUB_PAT, 'Accept': 'application/vnd.github.v3+json' } }
+      );
+      if (rj.ok) {
+        const dj = await rj.json();
+        postsAtuais = JSON.parse(decodeURIComponent(escape(atob(dj.content.replace(/
+/g,'')))));
+      }
+    } catch(e) { postsAtuais = []; }
+
+    // Remover se já existe e adicionar no início
+    postsAtuais = postsAtuais.filter(p => p.id !== post.id);
+    postsAtuais.unshift({
+      id:             post.id,
+      title:          post.title,
+      category:       post.category,
+      category_label: catLabelsMap[post.category] || post.category,
+      excerpt:        post.excerpt,
+      image:          post.image || '',
+      date:           post.date,
+      tags:           tagsArr,
+    });
+
+    await githubUpsertFile(
+      'data/posts.json',
+      JSON.stringify(postsAtuais, null, 2),
+      'publicacao: posts.json atualizado via admin'
+    );
+
+    toast('✅ Post publicado com sucesso! O site será atualizado em ~1 minuto.', 'ok');
+    setTimeout(() => goPage('list'), 2000);
+
+  } catch(e) {
+    toast('Erro na publicação: ' + e.message, 'err');
+    console.error(e);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🚀 Publicar no site';
+  }
 }
 
 // EXPORT

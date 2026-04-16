@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
-"""
-agente_noticias_rh.py — CalculaPrazo
-Categoria: orientacoes-praticas
-"""
+# agente_noticias_gerais.py - CalculaPrazo
+# Categoria: orientacoes-praticas
 import json, re, requests, random, time
 from html.parser import HTMLParser
-from agente_base import claude, validar_qualidade, is_duplicata, salvar_post, HOJE
+from agente_base import chamar_llm, validar_qualidade, is_duplicata, salvar_post, HOJE
 
 CATEGORIA   = "orientacoes-praticas"
 FONTE_LABEL = "Noticias/RH"
@@ -16,25 +14,26 @@ HEADERS = {
 }
 
 SOURCES = [
-    {"nome": "Contabeis — Trabalhista",  "url": "https://www.contabeis.com.br/conteudo/trabalhista/"},
-    {"nome": "Contabeis — Previdencia",  "url": "https://www.contabeis.com.br/conteudo/previdencia/"},
-    {"nome": "LegisWeb — CLT",           "url": "https://www.legisweb.com.br/legislacao/?lista=1&area=5"},
-    {"nome": "Migalhas — Trabalhista",   "url": "https://www.migalhas.com.br/quentes/trabalhista"},
-    {"nome": "Jus.com.br — Trabalhista", "url": "https://jus.com.br/artigos/direito-do-trabalho"},
+    {"nome": "Contabeis -- Trabalhista", "url": "https://www.contabeis.com.br/conteudo/trabalhista/"},
+    {"nome": "Contabeis -- Previdencia", "url": "https://www.contabeis.com.br/conteudo/previdencia/"},
+    {"nome": "Migalhas -- Trabalhista", "url": "https://www.migalhas.com.br/quentes/trabalhista"},
+    {"nome": "Jus.com.br -- Trabalhista", "url": "https://jus.com.br/artigos/direito-do-trabalho"},
 ]
 
-PROPOSITO = """Voce e Consultor de Gestao de Pessoas do CalculaPrazo.
-Publico: profissionais de RH, DP, contadores, gestores.
-Foco: orientacoes praticas de folha, rescisoes, admissoes, ferias, 13o,
-      novas legislacoes com impacto operacional, dicas para evitar passivos.
-NAO PUBLICAR: conteudo muito academico ou sem aplicacao pratica imediata.
-REGRAS: linguagem clara e direta, com exemplos concretos. Nunca inventar dados."""
+PROPOSITO = (
+    "Voce e Consultor de Gestao de Pessoas do CalculaPrazo.\n"
+    "Publico: profissionais de RH, DP, contadores, gestores.\n"
+    "Foco: orientacoes praticas de folha, rescisoes, admissoes, ferias, 13o, dicas para evitar passivos.\n"
+    "NAO PUBLICAR: conteudo muito academico sem aplicacao pratica imediata.\n"
+    "REGRAS: linguagem clara e direta, com exemplos concretos. Nunca inventar dados."
+)
 
 
 class TextExtractor(HTMLParser):
     def __init__(self):
         super().__init__()
-        self.texts, self._skip = [], False
+        self.texts = []
+        self._skip = False
     def handle_starttag(self, tag, attrs):
         if tag in ("script","style","nav","header","footer","aside","noscript","form"):
             self._skip = True
@@ -53,125 +52,108 @@ class TextExtractor(HTMLParser):
 def buscar_conteudo(fonte):
     try:
         r = requests.get(fonte["url"], headers=HEADERS, timeout=30)
-        print(f"  HTTP {r.status_code} | {fonte['nome']}")
+        print("  HTTP " + str(r.status_code) + " | " + fonte["nome"])
         if r.ok:
             p = TextExtractor()
             p.feed(r.text)
             return p.get_text(6000), r.url
     except Exception as e:
-        print(f"  Erro: {e}")
+        print("  Erro: " + str(e))
     return "", fonte["url"]
 
 
 def avaliar_relevancia(conteudo, fonte_nome):
     if len(conteudo) < 150:
         return {"relevante": False, "motivo": "conteudo insuficiente", "tema": ""}
-    prompt = f"""
-{PROPOSITO}
-
-Conteudo coletado de {fonte_nome} (hoje: {HOJE.strftime('%d/%m/%Y')}):
----
-{conteudo[:3000]}
----
-
-Ha publicacao recente (ultimas 72h) com impacto relevante para o publico-alvo?
-Responda APENAS com JSON valido (sem markdown):
-{"relevante": true/false, "motivo": "1 frase", "tema": "tema concreto com numero de norma/processo se disponivel"}
-"""
+    prompt = (
+        PROPOSITO + "\n\n"
+        "Conteudo coletado de " + fonte_nome + " (hoje: " + HOJE.strftime("%d/%m/%Y") + "):\n"
+        "---\n" + conteudo[:3000] + "\n---\n\n"
+        "Ha publicacao recente (ultimas 72h) com impacto relevante para o publico-alvo?\n"
+        "Responda APENAS com JSON valido (sem markdown):\n"
+        '{"relevante": true, "motivo": "1 frase", "tema": "tema concreto com numero norma/processo se disponivel"}'
+    )
     try:
-        raw = claude(prompt, max_tokens=300, temperature=0.1)
+        raw = chamar_llm(prompt, max_tokens=300, temperature=0.1)
         raw = re.sub(r"^```json\s*|\s*```$", "", raw.strip())
         return json.loads(raw)
     except Exception as e:
-        print(f"  Erro avaliacao: {e}")
+        print("  Erro avaliacao: " + str(e))
         return {"relevante": False, "motivo": "erro", "tema": ""}
 
 
 def gerar_artigo(conteudo, tema, fonte_nome, fonte_url):
-    prompt = f"""
-{PROPOSITO}
-
-Fonte: {fonte_nome}
-URL: {fonte_url}
-Data: {HOJE.strftime('%d/%m/%Y')}
-Tema: {tema}
-
-Conteudo coletado:
----
-{conteudo[:5000]}
----
-
-Redija boletim tecnico completo (minimo 450 palavras) com:
-1. O que aconteceu (fato, orgao, numero de norma/processo)
-2. Base legal aplicavel
-3. Analise do conteudo (baseada APENAS no que foi coletado)
-4. Impacto para empresas, RH ou trabalhadores
-5. Acao recomendada
-
-Nunca invente dados ausentes da fonte.
-
-Responda APENAS com JSON valido (sem markdown):
-{
-  "title": "Titulo tecnico direto (max 70 chars)",
-  "excerpt": "Resumo executivo 1-2 frases (max 160 chars)",
-  "tags": ["Tag1", "Tag2", "Tag3"],
-  "image_query": "3-5 palavras em ingles para busca de imagem",
-  "content": "<h2>...</h2><p>...</p>..."
-}
-"""
+    prompt = (
+        PROPOSITO + "\n\n"
+        "Fonte: " + fonte_nome + "\n"
+        "URL: " + fonte_url + "\n"
+        "Data: " + HOJE.strftime("%d/%m/%Y") + "\n"
+        "Tema: " + tema + "\n\n"
+        "Conteudo coletado:\n---\n" + conteudo[:5000] + "\n---\n\n"
+        "Redija boletim tecnico completo (minimo 450 palavras) com:\n"
+        "1. O que aconteceu (fato, orgao, numero norma/processo)\n"
+        "2. Base legal aplicavel\n"
+        "3. Analise do conteudo (baseada APENAS no que foi coletado)\n"
+        "4. Impacto para empresas, RH ou trabalhadores\n"
+        "5. Acao recomendada\n\n"
+        "Nunca invente dados ausentes da fonte.\n\n"
+        "Responda APENAS com JSON valido (sem markdown):\n"
+        '{"title": "Titulo tecnico max 70 chars", "excerpt": "Resumo max 160 chars", "tags": ["Tag1", "Tag2", "Tag3"], "image_query": "3-5 palavras em ingles", "content": "<h2>...</h2><p>...</p>..."}'
+    )
     try:
-        raw = claude(prompt, max_tokens=4000, temperature=0.2)
+        raw = chamar_llm(prompt, max_tokens=4000, temperature=0.2)
         raw = re.sub(r"^```json\s*", "", raw)
         raw = re.sub(r"\s*```$", "", raw)
         dados = json.loads(raw)
-        dados.setdefault("title",       f"Atualizacao {FONTE_LABEL} — {HOJE.strftime('%d/%m/%Y')}")
+        dados.setdefault("title",       "Atualizacao " + FONTE_LABEL + " -- " + HOJE.strftime("%d/%m/%Y"))
         dados.setdefault("excerpt",     tema[:120])
-        dados.setdefault("content",     "<p>Analise tecnica em elaboracao.</p>")
+        dados.setdefault("content",     "<p>Analise em elaboracao.</p>")
         dados.setdefault("tags",        [FONTE_LABEL])
         dados.setdefault("image_query", "human resources office meeting")
         dados["source_url"] = fonte_url
         return dados
     except Exception as e:
-        print(f"  Erro gerar artigo: {e}")
+        print("  Erro gerar artigo: " + str(e))
         return None
 
 
 def main():
-    print(f"\nAgente {FONTE_LABEL} — {HOJE.strftime('%d/%m/%Y')}")
+    print("\nAgente " + FONTE_LABEL + " -- " + HOJE.strftime("%d/%m/%Y"))
     print("=" * 70)
     random.shuffle(SOURCES)
     publicados = 0
     for fonte in SOURCES:
-        print(f"\n[{fonte['nome']}]")
+        print("\n[" + fonte["nome"] + "]")
         conteudo, url_real = buscar_conteudo(fonte)
         if not conteudo or len(conteudo) < 200:
             print("  Conteudo insuficiente, pulando.")
             continue
         avaliacao = avaliar_relevancia(conteudo, fonte["nome"])
-        print(f"  Avaliacao: {avaliacao}")
+        print("  Avaliacao: " + str(avaliacao))
         if not avaliacao.get("relevante"):
-            print(f"  Sem relevancia: {avaliacao.get('motivo')}")
+            print("  Sem relevancia: " + str(avaliacao.get("motivo")))
             continue
         tema = avaliacao.get("tema", "")
         if is_duplicata(tema, "data/posts.json"):
-            print(f"  Duplicata: '{tema}'")
+            print("  Duplicata: " + tema)
             continue
         dados = gerar_artigo(conteudo, tema, fonte["nome"], url_real)
         if not dados:
             continue
         aprovado, motivo = validar_qualidade(dados, CATEGORIA)
         if not aprovado:
-            print(f"  Reprovado: {motivo}")
+            print("  Reprovado: " + motivo)
             continue
         if is_duplicata(dados["title"], "data/posts.json"):
-            print(f"  Duplicata por titulo: '{dados['title']}'")
+            print("  Duplicata: " + dados["title"])
             continue
         if salvar_post(dados, CATEGORIA, fonte["nome"]):
             publicados += 1
         time.sleep(5)
         if publicados >= 1:
             break
-    print(f"\n{'OK' if publicados else 'AVISO'} Total publicado: {publicados} post(s) {FONTE_LABEL}")
+    status = "OK" if publicados else "AVISO"
+    print("\n" + status + " Total: " + str(publicados) + " post(s) " + FONTE_LABEL)
 
 
 if __name__ == "__main__":

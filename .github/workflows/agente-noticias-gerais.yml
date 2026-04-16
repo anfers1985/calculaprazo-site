@@ -1,67 +1,28 @@
-name: Agente Noticias Gerais
-
+name: Agente noticias-gerais
 on:
   schedule:
-    - cron: '0 16 * * 2,4'   # Horário Brasília (UTC-3)
-  workflow_dispatch:   # Permite execução manual
+    - cron: '0 12 * * 1-5'
+  workflow_dispatch:
 
 jobs:
-  gerar-rascunho:
+  rodar:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
     steps:
-      - name: Checkout repositório
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0
-
-      - name: Configurar Python 3.11
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
-      - name: Instalar dependências
+      - name: Instalar dependencias
         run: pip install requests python-slugify
-
-      - name: Executar agente — gerar rascunho
-        env:
-          OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY }}
+      - name: Rodar agente
         run: python scripts/agentes/agente_noticias_gerais.py
-
-      - name: Verificar se há conteúdo novo
-        id: check_changes
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+      - name: Commit e push
         run: |
-          git add -A
-          if git diff --staged --quiet; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-            echo "Nenhum conteúdo novo gerado."
-          else
-            echo "changed=true" >> $GITHUB_OUTPUT
-            echo "Conteúdo novo detectado."
-          fi
-
-      - name: Commit e push para branch de rascunho
-        if: steps.check_changes.outputs.changed == 'true'
-        run: |
-          git config user.name "Agente Noticias-Gerais"
+          git config user.name "CalculaPrazo Bot"
           git config user.email "bot@calculaprazo.com.br"
-
-          # Cria/atualiza a branch draft/agentes
-          BRANCH="draft/agentes"
-          git checkout -B "$BRANCH"
-
-          git add -A
-          git commit -m "[RASCUNHO] Noticias-Gerais: $(date '+%d/%m/%Y %H:%M') — aguardando revisão"
-          git push origin "$BRANCH" --force
-
-          echo ""
-          echo "=============================================="
-          echo "  RASCUNHO PUBLICADO — REVISÃO NECESSÁRIA"
-          echo "  Branch: $BRANCH"
-          echo "  Ação: abra um Pull Request no GitHub"
-          echo "        de 'draft/agentes' para 'main'"
-          echo "        REVISE o conteúdo antes de mergear"
-          echo "=============================================="
+          git add blog/ data/posts.json sitemap.xml
+          git diff --staged --quiet || git commit -m "conteudo: agente-noticias-gerais $(date +%d/%m/%Y)"
+          git push

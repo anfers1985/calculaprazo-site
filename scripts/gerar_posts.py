@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
-"""
-gerar_posts.py — Orquestrador dos agentes do CalculaPrazo.
-Execute a partir da raiz do projeto:
-  python scripts/gerar_posts.py
-
-Variaveis de ambiente necessarias:
-  ANTHROPIC_API_KEY
-  PEXELS_API_KEY
-"""
+# gerar_posts.py - Orquestrador dos agentes do CalculaPrazo
+#
+# Execute a partir da raiz do projeto:
+#   python scripts/gerar_posts.py
+#
+# Variaveis de ambiente necessarias:
+#   OPENROUTER_API_KEY   -> sua chave OpenRouter
+#   UNSPLASH_ACCESS_KEY  -> sua chave Unsplash
+#
 import sys, os, time, importlib
 
-# Garante que agente_base seja encontrado
 AGENTES_DIR = os.path.join(os.path.dirname(__file__), "agentes")
 sys.path.insert(0, AGENTES_DIR)
 
@@ -24,33 +23,33 @@ AGENTES = [
 
 def main():
     print("=" * 70)
-    print("CalculaPrazo — Geracao de Conteudo Automatica")
+    print("CalculaPrazo -- Geracao de Conteudo Automatica")
     print("=" * 70)
 
-    if not os.environ.get("ANTHROPIC_API_KEY"):
-        print("\nERRO: ANTHROPIC_API_KEY nao configurada.")
-        print("  export ANTHROPIC_API_KEY='sk-ant-...'")
+    if not os.environ.get("OPENROUTER_API_KEY"):
+        print("\nERRO: OPENROUTER_API_KEY nao configurada.")
+        print("  export OPENROUTER_API_KEY='sk-or-v1-...'")
         sys.exit(1)
 
-    if not os.environ.get("PEXELS_API_KEY"):
-        print("\nAVISO: PEXELS_API_KEY nao configurada — imagens padrao serao usadas.")
+    if not os.environ.get("UNSPLASH_ACCESS_KEY"):
+        print("\nAVISO: UNSPLASH_ACCESS_KEY nao configurada -- imagem fallback sera usada.")
 
     resultados = {}
     for nome in AGENTES:
-        print(f"\n{'='*70}")
+        print("\n" + "=" * 70)
         try:
             mod = importlib.import_module(nome)
             mod.main()
             resultados[nome] = "OK"
         except Exception as e:
-            print(f"  ERRO no agente {nome}: {e}")
-            resultados[nome] = f"ERRO: {e}"
-        time.sleep(10)  # Pausa entre agentes
+            print("  ERRO no agente " + nome + ": " + str(e))
+            resultados[nome] = "ERRO: " + str(e)
+        time.sleep(10)
 
-    print(f"\n{'='*70}")
+    print("\n" + "=" * 70)
     print("RESUMO:")
     for nome, status in resultados.items():
-        print(f"  {nome}: {status}")
+        print("  " + nome + ": " + status)
 
 if __name__ == "__main__":
     main()

@@ -1,40 +1,37 @@
 # -*- coding: utf-8 -*-
-"""
-agente_base.py — Módulo compartilhado por todos os agentes do CalculaPrazo.
-
-Variáveis de ambiente necessárias:
-  ANTHROPIC_API_KEY  — chave da API Anthropic (Claude)
-  PEXELS_API_KEY     — chave da API Pexels  (pexels.com/api — gratuita)
-"""
-
+# agente_base.py - Modulo compartilhado por todos os agentes do CalculaPrazo
+#
+# VARIAVEIS DE AMBIENTE NECESSARIAS:
+#   OPENROUTER_API_KEY   -> sua chave OpenRouter  (sk-or-v1-...)
+#   UNSPLASH_ACCESS_KEY  -> sua chave Unsplash Access Key
+#
 import os, json, re, datetime, requests, random
 from slugify import slugify
 
 HOJE = datetime.date.today()
 
-ANTHROPIC_KEY   = os.environ.get("ANTHROPIC_API_KEY", "")
-PEXELS_KEY      = os.environ.get("PEXELS_API_KEY", "")
-ANTHROPIC_MODEL = "claude-opus-4-5"
-ANTHROPIC_URL   = "https://api.anthropic.com/v1/messages"
+OPENROUTER_KEY  = os.environ.get("OPENROUTER_API_KEY", "")
+UNSPLASH_KEY    = os.environ.get("UNSPLASH_ACCESS_KEY", "")
+MODEL           = "anthropic/claude-3-5-sonnet-20241022"
 
 CATEGORIAS_VALIDAS = {
-    "jurisprudencia-tst":   "Jurisprudência TST",
-    "jurisprudencia-trts":  "Jurisprudência TRTs",
-    "noticias-mte-mpt":     "MTE & MPT",
-    "legislacao-normas":    "Legislação e Normas",
+    "jurisprudencia-tst":   "Jurisprudencia TST",
+    "jurisprudencia-trts":  "Jurisprudencia TRTs",
+    "noticias-mte-mpt":     "MTE e MPT",
+    "legislacao-normas":    "Legislacao e Normas",
     "esocial-fgts-digital": "eSocial e FGTS Digital",
-    "orientacoes-praticas": "Orientações Práticas RH",
-    "saude-seguranca":      "Saúde e Segurança",
+    "orientacoes-praticas": "Orientacoes Praticas RH",
+    "saude-seguranca":      "Saude e Seguranca",
     "modelos":              "Modelos",
     "artigos":              "Artigos",
     "geral":                "Geral",
 }
 
-MESES = ["janeiro","fevereiro","março","abril","maio","junho",
+MESES = ["janeiro","fevereiro","marco","abril","maio","junho",
          "julho","agosto","setembro","outubro","novembro","dezembro"]
 
-PEXELS_QUERY_CATEGORIA = {
-    "jurisprudencia-tst":   "justice court law gavel",
+UNSPLASH_QUERY_CAT = {
+    "jurisprudencia-tst":   "justice court gavel law",
     "jurisprudencia-trts":  "labor court hearing workplace",
     "noticias-mte-mpt":     "labor inspection ministry workers",
     "legislacao-normas":    "law books legislation documents",
@@ -47,62 +44,67 @@ PEXELS_QUERY_CATEGORIA = {
 }
 
 
-def claude(prompt: str, max_tokens: int = 3500, temperature: float = 0.2) -> str:
-    """Chama Claude via API Anthropic. Lança RuntimeError em caso de falha."""
-    if not ANTHROPIC_KEY:
-        raise RuntimeError("ANTHROPIC_API_KEY nao configurada")
-    headers = {
-        "x-api-key":         ANTHROPIC_KEY,
-        "anthropic-version": "2023-06-01",
-        "content-type":      "application/json",
-    }
-    body = {
-        "model":       ANTHROPIC_MODEL,
-        "max_tokens":  max_tokens,
-        "temperature": temperature,
-        "messages": [{"role": "user", "content": prompt}],
-    }
-    r = requests.post(ANTHROPIC_URL, headers=headers, json=body, timeout=180)
+def chamar_llm(prompt, max_tokens=3500, temperature=0.2):
+    """Chama OpenRouter com o modelo configurado. Retorna texto da resposta."""
+    if not OPENROUTER_KEY:
+        raise RuntimeError("OPENROUTER_API_KEY nao configurada")
+    r = requests.post(
+        "https://openrouter.ai/api/v1/chat/completions",
+        headers={
+            "Authorization": "Bearer " + OPENROUTER_KEY,
+            "Content-Type": "application/json",
+            "HTTP-Referer": "https://calculaprazo.com.br",
+            "X-Title": "CalculaPrazo Agentes",
+        },
+        json={
+            "model": MODEL,
+            "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": max_tokens,
+            "temperature": temperature,
+        },
+        timeout=180,
+    )
     r.raise_for_status()
-    return r.json()["content"][0]["text"].strip()
+    return r.json()["choices"][0]["message"]["content"].strip()
 
 
-def obter_imagem_url(image_query: str, categoria: str) -> str:
-    """Busca imagem via Pexels API (gratuita). Fallback para imagem padrao."""
+def obter_imagem_url(image_query, categoria):
+    """Busca imagem via Unsplash API. Fallback para imagem padrao."""
     query    = re.sub(r'[^a-zA-Z0-9 ]', '', (image_query or "")).strip()
-    fallback = "https://images.pexels.com/photos/5668858/pexels-photo-5668858.jpeg?auto=compress&cs=tinysrgb&w=1200"
+    fallback = "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=1200&auto=format&fit=crop"
 
     if len(query) < 5:
-        query = PEXELS_QUERY_CATEGORIA.get(categoria, "law justice professional")
+        query = UNSPLASH_QUERY_CAT.get(categoria, "law justice professional")
 
-    if not PEXELS_KEY:
-        print("  AVISO: PEXELS_API_KEY nao configurada — usando imagem padrao")
-        return fallback
+    if not UNSPLASH_KEY:
+        print("  AVISO: UNSPLASH_ACCESS_KEY nao configurada -- usando imagem padrao")
+        query_url = query.replace(" ", ",")
+        return "https://source.unsplash.com/1200x600/?" + query_url
 
-    for tentativa_query in [query, PEXELS_QUERY_CATEGORIA.get(categoria, "")]:
-        if not tentativa_query:
+    for q in [query, UNSPLASH_QUERY_CAT.get(categoria, "law")]:
+        if not q:
             continue
         try:
             r = requests.get(
-                "https://api.pexels.com/v1/search",
-                headers={"Authorization": PEXELS_KEY},
-                params={"query": tentativa_query, "per_page": 10, "orientation": "landscape"},
+                "https://api.unsplash.com/photos/random",
+                headers={"Authorization": "Client-ID " + UNSPLASH_KEY},
+                params={"query": q, "orientation": "landscape", "count": 5},
                 timeout=15,
             )
             if r.ok:
-                photos = r.json().get("photos", [])
-                if photos:
+                photos = r.json()
+                if isinstance(photos, list) and photos:
                     foto = random.choice(photos[:5])
-                    url = foto["src"].get("large2x") or foto["src"].get("large")
+                    url = foto.get("urls", {}).get("regular") or foto.get("urls", {}).get("full")
                     if url:
                         return url
         except Exception as e:
-            print(f"  AVISO Pexels: {e}")
+            print("  AVISO Unsplash: " + str(e))
 
     return fallback
 
 
-def validar_qualidade(dados: dict, categoria: str) -> tuple:
+def validar_qualidade(dados, categoria):
     title   = dados.get("title", "")
     excerpt = dados.get("excerpt", "")
     content = dados.get("content", "")
@@ -111,17 +113,17 @@ def validar_qualidade(dados: dict, categoria: str) -> tuple:
     if not title or len(title.strip()) < 10:
         return False, "Titulo ausente ou muito curto"
 
-    GENERICOS = ["novas tendencias","tendencias","atualizacao","novidades",
+    genericos = ["novas tendencias","tendencias","atualizacao","novidades",
                  "analise pos","novas fronteiras","perspectivas","o futuro"]
-    if any(g in title.lower() for g in GENERICOS):
-        return False, f"Titulo generico: '{title}'"
+    if any(g in title.lower() for g in genericos):
+        return False, "Titulo generico: " + title
 
     if not excerpt or len(excerpt.strip()) < 30:
         return False, "Excerpt ausente ou muito curto"
 
     words = len(re.sub(r'<[^>]+>', ' ', content).split())
     if words < 300:
-        return False, f"Conteudo curto: {words} palavras (min 300)"
+        return False, "Conteudo curto: " + str(words) + " palavras (min 300)"
 
     if '<h2' not in content.lower():
         return False, "Sem H2 no conteudo"
@@ -130,12 +132,12 @@ def validar_qualidade(dados: dict, categoria: str) -> tuple:
         return False, "Sem tags"
 
     if categoria not in CATEGORIAS_VALIDAS:
-        return False, f"Categoria invalida: '{categoria}'"
+        return False, "Categoria invalida: " + categoria
 
     return True, "OK"
 
 
-def is_duplicata(title: str, posts_path: str = "data/posts.json") -> bool:
+def is_duplicata(title, posts_path="data/posts.json"):
     try:
         with open(posts_path, encoding="utf-8") as f:
             posts = json.load(f)
@@ -164,10 +166,10 @@ def is_duplicata(title: str, posts_path: str = "data/posts.json") -> bool:
     return False
 
 
-def salvar_post(dados: dict, categoria: str, fonte_nome: str = "") -> bool:
+def salvar_post(dados, categoria, fonte_nome=""):
     try:
         data_str  = HOJE.strftime("%Y-%m-%d")
-        data_br   = f"{HOJE.day} de {MESES[HOJE.month - 1]} de {HOJE.year}"
+        data_br   = str(HOJE.day) + " de " + MESES[HOJE.month - 1] + " de " + str(HOJE.year)
         slug      = slugify(dados["title"])[:60]
         cat_label = CATEGORIAS_VALIDAS.get(categoria, categoria)
 
@@ -178,34 +180,34 @@ def salvar_post(dados: dict, categoria: str, fonte_nome: str = "") -> bool:
         tags_json  = json.dumps(tags, ensure_ascii=False)
         source_url = dados.get("source_url", "")
 
-        tags_badges = "".join(
-            f'<span style="display:inline-block;padding:3px 12px;border-radius:999px;'
-            f'font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);'
-            f'color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);'
-            f'margin-right:5px;">{t}</span>'
-            for t in tags
-        )
+        tags_badges = ""
+        for t in tags:
+            tags_badges += (
+                '<span style="display:inline-block;padding:3px 12px;border-radius:999px;'
+                'font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);'
+                'color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);'
+                'margin-right:5px;">' + t + '</span>'
+            )
 
         fonte_nota = ""
         if source_url:
             fonte_nota = (
-                f'\n<p style="font-size:.78rem;color:#64748B;margin-top:28px;'
-                f'padding-top:12px;border-top:1px solid #E2E8F0;">'
-                f'<strong>Fonte:</strong> '
-                f'<a href="{source_url}" target="_blank" rel="noopener noreferrer">'
-                f'{fonte_nome or source_url}</a> — acesso em {data_br}.</p>'
+                '\n<p style="font-size:.78rem;color:#64748B;margin-top:28px;'
+                'padding-top:12px;border-top:1px solid #E2E8F0;">'
+                '<strong>Fonte:</strong> '
+                '<a href="' + source_url + '" target="_blank" rel="noopener noreferrer">'
+                + (fonte_nome or source_url) + '</a> -- acesso em ' + data_br + '.</p>'
             )
         elif fonte_nome:
             fonte_nota = (
-                f'\n<p style="font-size:.78rem;color:#64748B;margin-top:28px;'
-                f'padding-top:12px;border-top:1px solid #E2E8F0;">'
-                f'<strong>Fonte:</strong> {fonte_nome} — {data_br}.</p>'
+                '\n<p style="font-size:.78rem;color:#64748B;margin-top:28px;'
+                'padding-top:12px;border-top:1px solid #E2E8F0;">'
+                '<strong>Fonte:</strong> ' + fonte_nome + ' -- ' + data_br + '.</p>'
             )
 
         content_final = dados.get("content", "") + fonte_nota
-
-        image_query = dados.get("image_query", dados.get("title", ""))
-        img         = obter_imagem_url(image_query, categoria)
+        image_query   = dados.get("image_query", dados.get("title", ""))
+        img           = obter_imagem_url(image_query, categoria)
 
         html = (template
             .replace("{{TITLE}}",            dados["title"])
@@ -218,21 +220,21 @@ def salvar_post(dados: dict, categoria: str, fonte_nome: str = "") -> bool:
             .replace("{{DATE}}",             data_str)
             .replace("{{DATE_BR}}",          data_br)
             .replace("{{CONTENT}}",          content_final)
-            .replace("{{OG_IMAGE}}",         f'<meta property="og:image" content="{img}">')
-            .replace("{{SCHEMA_IMAGE}}",     f',"image":"{img}"')
+            .replace("{{OG_IMAGE}}",         '<meta property="og:image" content="' + img + '">')
+            .replace("{{SCHEMA_IMAGE}}",     ',"image":"' + img + '"')
             .replace("{{COVER_IMAGE_HTML}}", (
-                f'<div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;">'
-                f'<img src="{img}" alt="{dados["title"]}" '
-                f'style="width:100%;object-fit:cover;" loading="lazy" '
-                f'onerror="this.parentElement.style.display=\'none\'"></div>'
+                '<div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;">'
+                '<img src="' + img + '" alt="' + dados["title"] + '" '
+                'style="width:100%;object-fit:cover;" loading="lazy" '
+                'onerror="this.parentElement.style.display=\'none\'"></div>'
             ))
         )
 
-        blog_path = f"blog/{slug}.html"
+        blog_path = "blog/" + slug + ".html"
         with open(blog_path, "w", encoding="utf-8") as f:
             f.write(html)
-        print(f"  OK Post salvo: {blog_path}")
-        print(f"  OK Imagem: {img}")
+        print("  OK Post salvo: " + blog_path)
+        print("  OK Imagem: " + img)
 
         # Atualizar data/posts.json
         try:
@@ -258,34 +260,34 @@ def salvar_post(dados: dict, categoria: str, fonte_nome: str = "") -> bool:
             })
             with open("data/posts.json", "w", encoding="utf-8") as f:
                 json.dump(posts, f, ensure_ascii=False, indent=2)
-            print(f"  OK posts.json atualizado ({len(posts)} posts)")
+            print("  OK posts.json atualizado (" + str(len(posts)) + " posts)")
 
         _atualizar_sitemap(slug, data_str)
         return True
 
     except Exception as e:
-        print(f"  ERRO ao salvar post: {e}")
-        import traceback; traceback.print_exc()
+        import traceback
+        print("  ERRO ao salvar post: " + str(e))
+        traceback.print_exc()
         return False
 
 
-def _atualizar_sitemap(slug: str, data_str: str):
+def _atualizar_sitemap(slug, data_str):
     try:
-        sitemap_path = "sitemap.xml"
-        nova_url     = f"https://calculaprazo.com.br/blog/{slug}"
-        with open(sitemap_path, "r", encoding="utf-8") as f:
+        nova_url = "https://calculaprazo.com.br/blog/" + slug
+        with open("sitemap.xml", "r", encoding="utf-8") as f:
             sc = f.read()
         if nova_url in sc:
             return
         nova_entrada = (
-            f"  <url>\n    <loc>{nova_url}</loc>\n"
-            f"    <lastmod>{data_str}</lastmod>\n"
-            f"    <changefreq>monthly</changefreq>\n"
-            f"    <priority>0.8</priority>\n  </url>\n"
+            "  <url>\n    <loc>" + nova_url + "</loc>\n"
+            "    <lastmod>" + data_str + "</lastmod>\n"
+            "    <changefreq>monthly</changefreq>\n"
+            "    <priority>0.8</priority>\n  </url>\n"
         )
         sc = sc.replace("</urlset>", nova_entrada + "</urlset>")
-        with open(sitemap_path, "w", encoding="utf-8") as f:
+        with open("sitemap.xml", "w", encoding="utf-8") as f:
             f.write(sc)
-        print(f"  OK sitemap.xml atualizado")
+        print("  OK sitemap.xml atualizado")
     except Exception as e:
-        print(f"  AVISO sitemap: {e}")
+        print("  AVISO sitemap: " + str(e))
