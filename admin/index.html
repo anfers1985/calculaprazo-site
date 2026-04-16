@@ -334,32 +334,22 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
 
 <script>
 // ════════════════════════════════════════
-// CONFIG — altere antes de usar
+// CONFIG
 // ════════════════════════════════════════
 const ADMIN_PASS_KEY = 'cp_admin_pass';
-const DEFAULT_PASS   = 'admin2026'; // <- senha padrao. Para alterar: entre com esta senha, va em Configuracoes no menu lateral e troque
+const DEFAULT_PASS   = 'admin2026';
 const POSTS_KEY      = 'cp_posts';
 
-// ── GitHub API — publicação direta ───────────────────────────────────
-// INSTRUCAO: substitua os valores abaixo com suas credenciais
-// Depois salve este arquivo admin/index.html no seu repositório
-const GITHUB_OWNER = 'anfers1985';                    // <- seu usuario GitHub (nao alterar)
-const GITHUB_REPO  = 'calculaprazo-site';             // <- seu repositorio (nao alterar)
-const GITHUB_BRANCH = 'main';                         // <- branch principal (nao alterar)
-// IMPORTANTE: Cole aqui o seu GitHub Personal Access Token (PAT)
-// Nome do token: calculaprazo-admin-publish
-// Permissão necessária: Contents -> Read and write
-<<<<<<< HEAD
-const GITHUB_PAT = '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';  // <- Cole aqui o seu novo PAT (calculaprazo-admin-publish)
-=======
->>>>>>> 40b2b0109981d4123a741a45b371df25527fc345
->>>>>>> 481e852f75fe0795b66e8b9ac053da09d05e32f3
+const GITHUB_OWNER  = 'anfers1985';
+const GITHUB_REPO   = 'calculaprazo-site';
+const GITHUB_BRANCH = 'main';
+const GITHUB_PAT    = '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';
 
 // ════════════════════════════════════════
 // AUTH
 // ════════════════════════════════════════
 function getPass(){ return localStorage.getItem(ADMIN_PASS_KEY) || DEFAULT_PASS; }
-const MASTER_PASS = DEFAULT_PASS; // senha mestra sempre funciona
+const MASTER_PASS = DEFAULT_PASS;
 
 function resetarSenha(){
   if(confirm('Isso vai redefinir a senha para o padrão do arquivo. Confirmar?')){
@@ -372,9 +362,7 @@ function resetarSenha(){
 
 function doLogin(){
   const v = document.getElementById('auth-pass').value;
-  // Aceita: senha salva no localStorage, senha padrão do arquivo, ou senha mestra
   if(v === getPass() || v === DEFAULT_PASS || v === MASTER_PASS){
-    // Se usou a senha padrão/mestra, limpar qualquer senha antiga no localStorage
     if(v === DEFAULT_PASS || v === MASTER_PASS){
       localStorage.removeItem(ADMIN_PASS_KEY);
     }
@@ -441,10 +429,8 @@ function goPage(id){
 // INIT
 // ════════════════════════════════════════
 function initApp(){
-  // Load default posts if none exist
   const existing = getPosts();
   if(existing.length === 0){
-    // Try to fetch from data/posts.json (same-origin)
     fetch('../data/posts.json')
       .then(r=>r.ok?r.json():[])
       .then(data=>{ if(data.length>0){ savePosts(data); renderDashboard(); } })
@@ -523,20 +509,16 @@ function catLabel(c){
     'saude-seguranca':      '🦺 Saúde',
     'modelos':              '📄 Modelos',
     'artigos':              '✍️ Artigos',
-    'geral':                '📌 Geral',
-    'direito':'⚖️ Direito','rh':'👥 RH','contabilidade':'📊 Contabilidade'
+    'geral':                '📌 Geral'
   };
   return map[c] || c;
 }
 
-// ════════════════════════════════════════
-// FORM
-// ════════════════════════════════════════
 function resetForm(){
   document.getElementById('edit-id').value='';
   document.getElementById('f-title').value='';
   document.getElementById('f-slug').value='';
-  document.getElementById('f-cat').value='direito';
+  document.getElementById('f-cat').value='jurisprudencia-tst';
   document.getElementById('f-excerpt').value='';
   document.getElementById('f-image').value='';
   document.getElementById('f-caption').value='';
@@ -564,7 +546,7 @@ function editPost(id){
   previewImg();
 }
 
-async function savePost(){
+function savePost(){
   const title   = document.getElementById('f-title').value.trim();
   const slug    = document.getElementById('f-slug').value.trim() || slugify(title);
   const cat     = document.getElementById('f-cat').value;
@@ -580,7 +562,7 @@ async function savePost(){
 
   const posts = getPosts();
   const now   = new Date().toISOString().split('T')[0];
-  const finalId = editId || slug || slugify(title);
+  const finalId = editId || slug;
 
   const post = { id:finalId, title, category:cat, excerpt, image, imageCaption:caption, date:now, content };
 
@@ -588,13 +570,9 @@ async function savePost(){
   if(idx>=0) posts[idx]=post; else posts.push(post);
   savePosts(posts);
 
-  // Generate HTML file for this post
-  await generatePostHTML(post);
-
   toast('Post salvo com sucesso!','ok');
   setTimeout(()=>goPage('list'),1200);
 }
-
 async function generatePostHTML(p) {
   const catLabels = {direito:'⚖️ Direito', rh:'👥 RH', contabilidade:'📊 Contabilidade', geral:'📌 Geral'};
   const dateOptions = {day:'numeric', month:'long', year:'numeric'};
