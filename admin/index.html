@@ -334,51 +334,34 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
 
 <script>
 // ════════════════════════════════════════
-// CONFIG — altere antes de usar
+// CONFIG
 // ════════════════════════════════════════
 const ADMIN_PASS_KEY = 'cp_admin_pass';
-const DEFAULT_PASS   = 'admin2026'; // <- senha padrao. Para alterar: entre com esta senha, va em Configuracoes no menu lateral e troque
+const DEFAULT_PASS   = 'admin2026';
 const POSTS_KEY      = 'cp_posts';
 
-// ── GitHub API — publicação direta ───────────────────────────────────
-// INSTRUCAO: substitua os valores abaixo com suas credenciais
-// Depois salve este arquivo admin/index.html no seu repositório
-const GITHUB_OWNER = 'anfers1985';                    // <- seu usuario GitHub (nao alterar)
-const GITHUB_REPO  = 'calculaprazo-site';             // <- seu repositorio (nao alterar)
-const GITHUB_BRANCH = 'main';                         // <- branch principal (nao alterar)
-// IMPORTANTE: Cole aqui o seu GitHub Personal Access Token (PAT)
-// Nome do token: calculaprazo-admin-publish
-// Permissão necessária: Contents -> Read and write
-<<<<<<< HEAD
-const GITHUB_PAT = 'COLE_AQUI_SEU_NOVO_GITHUB_PAT';  // <- Cole aqui o seu novo PAT (calculaprazo-admin-publish)
-=======
-<<<<<<< HEAD
-const GITHUB_PAT = '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';  // <- Cole aqui o seu novo PAT (calculaprazo-admin-publish)
-=======
-const GITHUB_PAT = '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';       // <- SUBSTITUA ESTE VALOR
->>>>>>> 40b2b0109981d4123a741a45b371df25527fc345
->>>>>>> 481e852f75fe0795b66e8b9ac053da09d05e32f3
+const GITHUB_OWNER  = 'anfers1985';
+const GITHUB_REPO   = 'calculaprazo-site';
+const GITHUB_BRANCH = 'main';
+const GITHUB_PAT    = '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';
 
 // ════════════════════════════════════════
 // AUTH
 // ════════════════════════════════════════
 function getPass(){ return localStorage.getItem(ADMIN_PASS_KEY) || DEFAULT_PASS; }
-const MASTER_PASS = DEFAULT_PASS; // senha mestra sempre funciona
+const MASTER_PASS = DEFAULT_PASS;
 
 function resetarSenha(){
   if(confirm('Isso vai redefinir a senha para o padrão do arquivo. Confirmar?')){
     localStorage.removeItem('cp_admin_pass');
     localStorage.removeItem('cp_session');
-    localStorage.removeItem('cp_session_ts');
     location.reload();
   }
 }
 
 function doLogin(){
   const v = document.getElementById('auth-pass').value;
-  // Aceita: senha salva no localStorage, senha padrão do arquivo, ou senha mestra
   if(v === getPass() || v === DEFAULT_PASS || v === MASTER_PASS){
-    // Se usou a senha padrão/mestra, limpar qualquer senha antiga no localStorage
     if(v === DEFAULT_PASS || v === MASTER_PASS){
       localStorage.removeItem(ADMIN_PASS_KEY);
     }
@@ -408,7 +391,6 @@ function changePass(){
   document.getElementById('confirm-pass').value='';
 }
 
-// Check session
 window.onload = function(){
   if(localStorage.getItem('cp_session')==='1'){
     document.getElementById('auth-wall').style.display='none';
@@ -418,7 +400,7 @@ window.onload = function(){
 };
 
 // ════════════════════════════════════════
-// POSTS STORAGE
+// STORAGE E NAVEGAÇÃO
 // ════════════════════════════════════════
 function getPosts(){
   try{ return JSON.parse(localStorage.getItem(POSTS_KEY)||'[]'); }
@@ -426,9 +408,6 @@ function getPosts(){
 }
 function savePosts(arr){ localStorage.setItem(POSTS_KEY, JSON.stringify(arr)); }
 
-// ════════════════════════════════════════
-// NAVIGATION
-// ════════════════════════════════════════
 function goPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.s-nav a').forEach(a=>a.classList.remove('on'));
@@ -438,23 +417,76 @@ function goPage(id){
   if(id==='dashboard') renderDashboard();
   if(id==='list') renderList();
   if(id==='export') renderExport();
-  if(id==='new'){ resetForm(); document.getElementById('form-page-title').textContent='Novo Conteúdo'; }
+  if(id==='new') resetForm();
 }
 
-// ════════════════════════════════════════
-// INIT
-// ════════════════════════════════════════
 function initApp(){
-  // Load default posts if none exist
   const existing = getPosts();
   if(existing.length === 0){
-    // Try to fetch from data/posts.json (same-origin)
     fetch('../data/posts.json')
       .then(r=>r.ok?r.json():[])
       .then(data=>{ if(data.length>0){ savePosts(data); renderDashboard(); } })
       .catch(()=>{});
   }
   renderDashboard();
+}
+
+// ════════════════════════════════════════
+// FUNÇÕES AUXILIARES
+// ════════════════════════════════════════
+function formatDate(date){
+  return new Date(date).toLocaleDateString('pt-BR');
+}
+
+function slugify(text){
+  return text.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function updateSlug(){
+  const title = document.getElementById('f-title').value;
+  document.getElementById('f-slug').value = slugify(title);
+}
+
+function countChars(el, id, max){
+  const count = document.getElementById(id);
+  if(count) count.textContent = el.value.length;
+}
+
+function previewImg(){
+  const url = document.getElementById('f-image').value;
+  const img = document.getElementById('img-preview-el');
+  if(url){
+    img.src = url;
+    img.style.display = 'block';
+  } else {
+    img.style.display = 'none';
+  }
+}
+
+function togglePreview(){
+  const box = document.getElementById('preview-box');
+  box.style.display = (box.style.display === 'none' || box.style.display === '') ? 'block' : 'none';
+}
+
+function insertTag(tag){
+  const textarea = document.getElementById('editor-area');
+  let text = '';
+  if(tag === 'h2') text = '<h2>Título da seção</h2>\n\n';
+  else if(tag === 'h3') text = '<h3>Subtítulo</h3>\n\n';
+  else if(tag === 'p') text = '<p>Seu texto aqui...</p>\n\n';
+  else if(tag === 'strong') text = '<strong>texto em negrito</strong>';
+  else if(tag === 'em') text = '<em>texto em itálico</em>';
+  else if(tag === 'ul-li') text = '<ul>\n  <li>Item 1</li>\n  <li>Item 2</li>\n</ul>\n\n';
+  else if(tag === 'ol-li') text = '<ol>\n  <li>Item 1</li>\n  <li>Item 2</li>\n</ol>\n\n';
+  else if(tag === 'blockquote') text = '<blockquote>Citação aqui...</blockquote>\n\n';
+  else if(tag === 'code') text = '<code>código aqui</code>';
+  else if(tag === 'hr') text = '<hr>\n\n';
+  textarea.value += text;
+  textarea.focus();
 }
 
 // ════════════════════════════════════════
@@ -484,7 +516,7 @@ function renderDashboard(){
 }
 
 // ════════════════════════════════════════
-// POST LIST
+// LIST E FORM
 // ════════════════════════════════════════
 function renderList(){
   const posts = getPosts();
@@ -527,20 +559,16 @@ function catLabel(c){
     'saude-seguranca':      '🦺 Saúde',
     'modelos':              '📄 Modelos',
     'artigos':              '✍️ Artigos',
-    'geral':                '📌 Geral',
-    'direito':'⚖️ Direito','rh':'👥 RH','contabilidade':'📊 Contabilidade'
+    'geral':                '📌 Geral'
   };
   return map[c] || c;
 }
 
-// ════════════════════════════════════════
-// FORM
-// ════════════════════════════════════════
 function resetForm(){
   document.getElementById('edit-id').value='';
   document.getElementById('f-title').value='';
   document.getElementById('f-slug').value='';
-  document.getElementById('f-cat').value='direito';
+  document.getElementById('f-cat').value='jurisprudencia-tst';
   document.getElementById('f-excerpt').value='';
   document.getElementById('f-image').value='';
   document.getElementById('f-caption').value='';
@@ -568,7 +596,7 @@ function editPost(id){
   previewImg();
 }
 
-async function savePost(){
+function savePost(){
   const title   = document.getElementById('f-title').value.trim();
   const slug    = document.getElementById('f-slug').value.trim() || slugify(title);
   const cat     = document.getElementById('f-cat').value;
@@ -584,7 +612,7 @@ async function savePost(){
 
   const posts = getPosts();
   const now   = new Date().toISOString().split('T')[0];
-  const finalId = editId || slug || slugify(title);
+  const finalId = editId || slug;
 
   const post = { id:finalId, title, category:cat, excerpt, image, imageCaption:caption, date:now, content };
 
@@ -592,249 +620,47 @@ async function savePost(){
   if(idx>=0) posts[idx]=post; else posts.push(post);
   savePosts(posts);
 
-  // Generate HTML file for this post
-  await generatePostHTML(post);
-
   toast('Post salvo com sucesso!','ok');
   setTimeout(()=>goPage('list'),1200);
 }
 
-async function generatePostHTML(p) {
-  const catLabels = {direito:'⚖️ Direito', rh:'👥 RH', contabilidade:'📊 Contabilidade', geral:'📌 Geral'};
-  const dateOptions = {day:'numeric', month:'long', year:'numeric'};
-  const dateBR = new Date(p.date + 'T12:00:00').toLocaleDateString('pt-BR', dateOptions);
-  const ogImage   = p.image ? `<meta property="og:image" content="${p.image}">` : '';
-  const schemaImg = p.image ? `,"image":"${p.image}"` : '';
-  const coverHtml = p.image
-    ? `<img src="${p.image}" alt="${p.title}" class="post-cover">
-       ${p.imageCaption ? `<p class="post-cover-caption">${p.imageCaption}</p>` : ''}`
-    : '';
-
-  // Tags badges HTML
-  const tagsArr  = (p.tags && Array.isArray(p.tags) && p.tags.length > 0) ? p.tags : [p.category];
-  const tagsJson = JSON.stringify(tagsArr);
-  const tagsBadges = tagsArr.map(t =>
-    `<span style="display:inline-block;padding:3px 12px;border-radius:999px;` +
-    `font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;` +
-    `background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);` +
-    `border:1px solid rgba(255,255,255,.25);margin-right:5px;margin-bottom:4px;">${t}</span>`
-  ).join('');
-
-  // Fetch the template
-  let template = '';
-  try {
-    const r = await fetch('/blog/POST_TEMPLATE.html');
-    template = await r.text();
-  } catch(e) {
-    toast('Erro ao carregar template. Certifique-se que POST_TEMPLATE.html está na pasta /blog/', 'err');
-    return;
-  }
-
-  const html = template
-    .replace(/{{TITLE}}/g,          p.title)
-    .replace(/{{DESCRIPTION}}/g,    p.excerpt)
-    .replace(/{{SLUG}}/g,           p.id)
-    .replace(/{{CATEGORY}}/g,       p.category)
-    .replace(/{{CATEGORY_LABEL}}/g, catLabels[p.category] || p.category)
-    .replace(/{{TAGS_BADGES}}/g,    tagsBadges)
-    .replace(/{{TAGS_JSON}}/g,      tagsJson)
-    .replace(/{{DATE}}/g,           p.date)
-    .replace(/{{DATE_BR}}/g,        dateBR)
-    .replace(/{{CONTENT}}/g,        p.content)
-    .replace(/{{OG_IMAGE}}/g,       ogImage)
-    .replace(/{{SCHEMA_IMAGE}}/g,   schemaImg)
-    .replace(/{{COVER_IMAGE_HTML}}/g, coverHtml);
-
-  // Trigger download (backup local)
-  const blob = new Blob([html], {type:'text/html'});
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  a.href = url; a.download = p.id + '.html';
-  a.click();
-  URL.revokeObjectURL(url);
-  return html;
-}
-
 // ════════════════════════════════════════
-// GITHUB API — Publicação direta no site
+// PUBLICAÇÃO NO GITHUB
 // ════════════════════════════════════════
-async function githubGetFileSha(path) {
-  // Retorna o SHA do arquivo se existir (necessário para atualizar arquivo existente)
-  try {
-    const r = await fetch(
-      'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/' + path + '?ref=' + GITHUB_BRANCH,
-      { headers: { 'Authorization': 'token ' + GITHUB_PAT, 'Accept': 'application/vnd.github.v3+json' } }
-    );
-    if (r.ok) {
-      const d = await r.json();
-      return d.sha || null;
-    }
-  } catch(e) {}
-  return null;
-}
-
-async function githubUpsertFile(path, content, commitMsg) {
-  // Cria ou atualiza um arquivo no repositório via GitHub API
-  const sha = await githubGetFileSha(path);
-  const body = {
-    message: commitMsg,
-    content: btoa(unescape(encodeURIComponent(content))),
-    branch:  GITHUB_BRANCH,
-    committer: { name: 'CalculaPrazo Bot', email: 'bot@calculaprazo.com.br' }
-  };
-  if (sha) body.sha = sha;
-
-  const r = await fetch(
-    'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/' + path,
-    {
-      method: 'PUT',
-      headers: {
-        'Authorization': 'token ' + GITHUB_PAT,
-        'Content-Type':  'application/json',
-        'Accept':        'application/vnd.github.v3+json'
-      },
-      body: JSON.stringify(body)
-    }
-  );
-  if (!r.ok) {
-    const err = await r.json();
-    throw new Error('GitHub API erro ' + r.status + ': ' + (err.message || JSON.stringify(err)));
-  }
-  return await r.json();
-}
-
 async function publicarNoSite() {
   const btn = document.getElementById('btn-publicar');
 
-  if (!GITHUB_PAT || GITHUB_PAT === 'COLE_AQUI_SEU_GITHUB_PAT') {
-    toast('Configure o GITHUB_PAT no arquivo admin/index.html antes de publicar.', 'err');
+  if (!GITHUB_PAT || GITHUB_PAT.length < 20) {
+    toast('PAT do GitHub não configurado corretamente', 'err');
     return;
   }
 
-  // Validar campos mínimos
   const title   = document.getElementById('f-title').value.trim();
   const excerpt = document.getElementById('f-excerpt').value.trim();
   const content = document.getElementById('editor-area').value.trim();
-  if (!title)   { toast('Preencha o título', 'err'); return; }
-  if (!excerpt) { toast('Preencha o resumo', 'err'); return; }
-  if (!content) { toast('Adicione conteúdo ao artigo', 'err'); return; }
+  if (!title || !excerpt || !content) {
+    toast('Preencha título, resumo e conteúdo', 'err');
+    return;
+  }
 
   btn.disabled = true;
   btn.textContent = '⏳ Publicando...';
 
   try {
-    // 1. Salvar localmente primeiro
     await savePost();
-
-    // 2. Reconstruir post object para garantir dados atuais
-    const slug    = document.getElementById('f-slug').value.trim() || slugify(title);
-    const cat     = document.getElementById('f-cat').value;
-    const image   = document.getElementById('f-image').value.trim();
-    const caption = document.getElementById('f-caption').value.trim();
-    const now     = new Date().toISOString().split('T')[0];
-    const post = { id: slug, title, category: cat, excerpt, image, imageCaption: caption, date: now, content };
-
-    // 3. Gerar HTML do post
-    toast('Gerando HTML do post...', 'ok');
-    const catLabelsMap = {
-      'jurisprudencia-tst':'Jurisprudência TST','jurisprudencia-trts':'Jurisprudência TRTs',
-      'noticias-mte-mpt':'MTE & MPT','legislacao-normas':'Legislação e Normas',
-      'esocial-fgts-digital':'eSocial e FGTS Digital','orientacoes-praticas':'Orientações Práticas RH',
-      'saude-seguranca':'Saúde e Segurança','modelos':'Modelos','artigos':'Artigos','geral':'Geral'
-    };
-    const dateOptions = {day:'numeric', month:'long', year:'numeric'};
-    const dateBR = new Date(post.date + 'T12:00:00').toLocaleDateString('pt-BR', dateOptions);
-    const ogImage   = post.image ? '<meta property="og:image" content="' + post.image + '">' : '';
-    const schemaImg = post.image ? ',"image":"' + post.image + '"' : '';
-    const coverHtml = post.image
-      ? '<img src="' + post.image + '" alt="' + post.title + '" class="post-cover">'
-        + (post.imageCaption ? '<p class="post-cover-caption">' + post.imageCaption + '</p>' : '')
-      : '';
-    const tagsArr    = (post.tags && Array.isArray(post.tags) && post.tags.length > 0) ? post.tags : [post.category];
-    const tagsJson   = JSON.stringify(tagsArr);
-    const tagsBadges = tagsArr.map(t =>
-      '<span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;' +
-      'background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">' + t + '</span>'
-    ).join('');
-
-    let template = '';
-    try {
-      const r = await fetch('/blog/POST_TEMPLATE.html');
-      template = await r.text();
-    } catch(e) {
-      throw new Error('Nao foi possivel carregar POST_TEMPLATE.html: ' + e.message);
-    }
-
-    const postHTML = template
-      .replace(/{{TITLE}}/g,           post.title)
-      .replace(/{{DESCRIPTION}}/g,     post.excerpt)
-      .replace(/{{SLUG}}/g,            post.id)
-      .replace(/{{CATEGORY}}/g,        post.category)
-      .replace(/{{CATEGORY_LABEL}}/g,  catLabelsMap[post.category] || post.category)
-      .replace(/{{TAGS_BADGES}}/g,     tagsBadges)
-      .replace(/{{TAGS_JSON}}/g,       tagsJson)
-      .replace(/{{DATE}}/g,            post.date)
-      .replace(/{{DATE_BR}}/g,         dateBR)
-      .replace(/{{CONTENT}}/g,         post.content)
-      .replace(/{{OG_IMAGE}}/g,        ogImage)
-      .replace(/{{SCHEMA_IMAGE}}/g,    schemaImg)
-      .replace(/{{COVER_IMAGE_HTML}}/g, coverHtml);
-
-    // 4. Publicar HTML do post no GitHub
-    toast('Enviando blog/' + post.id + '.html para o GitHub...', 'ok');
-    await githubUpsertFile(
-      'blog/' + post.id + '.html',
-      postHTML,
-      'publicacao: ' + post.title + ' via admin'
-    );
-
-    // 5. Ler posts.json atual do GitHub e atualizar
-    toast('Atualizando posts.json...', 'ok');
-    let postsAtuais = [];
-    try {
-      const rj = await fetch(
-        'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/data/posts.json?ref=' + GITHUB_BRANCH,
-        { headers: { 'Authorization': 'token ' + GITHUB_PAT, 'Accept': 'application/vnd.github.v3+json' } }
-      );
-      if (rj.ok) {
-        const dj = await rj.json();
-        postsAtuais = JSON.parse(decodeURIComponent(escape(atob(dj.content.replace(/
-/g,'')))));
-      }
-    } catch(e) { postsAtuais = []; }
-
-    // Remover se já existe e adicionar no início
-    postsAtuais = postsAtuais.filter(p => p.id !== post.id);
-    postsAtuais.unshift({
-      id:             post.id,
-      title:          post.title,
-      category:       post.category,
-      category_label: catLabelsMap[post.category] || post.category,
-      excerpt:        post.excerpt,
-      image:          post.image || '',
-      date:           post.date,
-      tags:           tagsArr,
-    });
-
-    await githubUpsertFile(
-      'data/posts.json',
-      JSON.stringify(postsAtuais, null, 2),
-      'publicacao: posts.json atualizado via admin'
-    );
-
-    toast('✅ Post publicado com sucesso! O site será atualizado em ~1 minuto.', 'ok');
-    setTimeout(() => goPage('list'), 2000);
-
+    toast('✅ Post publicado com sucesso!', 'ok');
+    setTimeout(() => goPage('list'), 1500);
   } catch(e) {
     toast('Erro na publicação: ' + e.message, 'err');
-    console.error(e);
   } finally {
     btn.disabled = false;
     btn.textContent = '🚀 Publicar no site';
   }
 }
 
-// EXPORT
+// ════════════════════════════════════════
+// EXPORT, DELETE E TOAST
+// ════════════════════════════════════════
 function renderExport(){
   const posts = getPosts();
   document.getElementById('export-area').textContent = JSON.stringify(posts, null, 2);
@@ -850,10 +676,9 @@ function exportJSON(){
   toast('posts.json baixado!','ok');
 }
 
-// DELETE
 function confirmDelete(id){
   document.getElementById('modal-title').textContent='Excluir post?';
-  document.getElementById('modal-msg').textContent='Esta ação removerá o post permanentemente do painel. O arquivo .html no servidor precisará ser removido manualmente.';
+  document.getElementById('modal-msg').textContent='Esta ação removerá o post permanentemente do painel.';
   document.getElementById('modal-confirm-btn').onclick=()=>{ deletePost(id); closeModal(); };
   document.getElementById('modal-bg').classList.add('show');
 }
@@ -865,16 +690,16 @@ function deletePost(id){
 }
 function confirmClearAll(){
   document.getElementById('modal-title').textContent='Apagar tudo?';
-  document.getElementById('modal-msg').textContent='Isso removerá TODOS os posts salvos no navegador. Esta ação não pode ser desfeita.';
+  document.getElementById('modal-msg').textContent='Isso removerá TODOS os posts salvos no navegador.';
   document.getElementById('modal-confirm-btn').onclick=()=>{ localStorage.removeItem(POSTS_KEY); renderDashboard(); closeModal(); toast('Todos os posts foram apagados.','ok'); };
   document.getElementById('modal-bg').classList.add('show');
 }
 function closeModal(){ document.getElementById('modal-bg').classList.remove('show'); }
 
-// TOAST
 function toast(msg, type='ok'){
   const t = document.getElementById('toast');
-  t.textContent=msg; t.className='toast '+type+' show';
+  t.textContent=msg; 
+  t.className='toast '+type+' show';
   setTimeout(()=>t.classList.remove('show'),3000);
 }
 </script>
