@@ -12,7 +12,7 @@ HOJE = datetime.date.today()
 
 OPENROUTER_KEY  = os.environ.get("OPENROUTER_API_KEY", "")
 UNSPLASH_KEY    = os.environ.get("UNSPLASH_ACCESS_KEY", "")
-MODEL           = "anthropic/claude-3-5-sonnet-20241022"
+MODEL           = "anthropic/claude-3-5-haiku"  # modelo principal (fallback automatico no chamar_llm)
 
 CATEGORIAS_VALIDAS = {
     "jurisprudencia-tst":   "Jurisprudencia TST",
@@ -44,28 +44,51 @@ UNSPLASH_QUERY_CAT = {
 }
 
 
+# Modelos em ordem de preferencia (fallback automatico se um falhar)
+MODELS_FALLBACK = [
+    "anthropic/claude-3-5-haiku",
+    "anthropic/claude-3-5-sonnet-20241022",
+    "openai/gpt-4o-mini",
+    "google/gemini-2.0-flash-001",
+]
+
 def chamar_llm(prompt, max_tokens=3500, temperature=0.2):
-    """Chama OpenRouter com o modelo configurado. Retorna texto da resposta."""
+    """Chama OpenRouter com fallback automatico entre modelos."""
     if not OPENROUTER_KEY:
         raise RuntimeError("OPENROUTER_API_KEY nao configurada")
-    r = requests.post(
-        "https://openrouter.ai/api/v1/chat/completions",
-        headers={
-            "Authorization": "Bearer " + OPENROUTER_KEY,
-            "Content-Type": "application/json",
-            "HTTP-Referer": "https://calculaprazo.com.br",
-            "X-Title": "CalculaPrazo Agentes",
-        },
-        json={
-            "model": MODEL,
-            "messages": [{"role": "user", "content": prompt}],
-            "max_tokens": max_tokens,
-            "temperature": temperature,
-        },
-        timeout=180,
-    )
-    r.raise_for_status()
-    return r.json()["choices"][0]["message"]["content"].strip()
+
+    last_error = None
+    for model in MODELS_FALLBACK:
+        try:
+            r = requests.post(
+                "https://openrouter.ai/api/v1/chat/completions",
+                headers={
+                    "Authorization": "Bearer " + OPENROUTER_KEY,
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "model": model,
+                    "messages": [{"role": "user", "content": prompt}],
+                    "max_tokens": max_tokens,
+                    "temperature": temperature,
+                },
+                timeout=180,
+            )
+            if r.status_code == 200:
+                data = r.json()
+                text = data["choices"][0]["message"]["content"].strip()
+                if text:
+                    print("  LLM OK modelo=" + model)
+                    return text
+            else:
+                body = r.text[:300]
+                print("  LLM erro " + str(r.status_code) + " modelo=" + model + " | " + body)
+                last_error = "HTTP " + str(r.status_code) + ": " + body
+        except Exception as e:
+            print("  LLM excecao modelo=" + model + ": " + str(e))
+            last_error = str(e)
+
+    raise RuntimeError("Todos os modelos falharam. Ultimo erro: " + str(last_error))
 
 
 def obter_imagem_url(image_query, categoria):

@@ -135,9 +135,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
     <button class="auth-btn" onclick="doLogin()">Entrar</button>
     <p class="auth-err" id="auth-err">Senha incorreta. Tente novamente.</p>
     <p style="font-size:.72rem;color:var(--txt-s);margin-top:16px;">
-      Senha padrão: <strong>admin2026</strong><br>
       <span style="cursor:pointer;color:var(--acc);text-decoration:underline;" onclick="resetarSenha()">
-        Clique aqui se esqueceu a senha (redefinir para padrão)
+        Esqueceu a senha? Clique aqui para redefinir.
       </span>
     </p>
   </div>
@@ -350,28 +349,31 @@ const GITHUB_BRANCH = 'main';                         // <- branch principal (na
 // IMPORTANTE: Cole aqui o seu GitHub Personal Access Token (PAT)
 // Nome do token: calculaprazo-admin-publish
 // Permissão necessária: Contents -> Read and write
-<<<<<<< HEAD
 const GITHUB_PAT = 'COLE_AQUI_SEU_NOVO_GITHUB_PAT';  // <- Cole aqui o seu novo PAT (calculaprazo-admin-publish)
-=======
-const GITHUB_PAT = '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';       // <- SUBSTITUA ESTE VALOR
->>>>>>> 40b2b0109981d4123a741a45b371df25527fc345
 
 // ════════════════════════════════════════
 // AUTH
 // ════════════════════════════════════════
 function getPass(){ return localStorage.getItem(ADMIN_PASS_KEY) || DEFAULT_PASS; }
+const MASTER_PASS = DEFAULT_PASS; // senha mestra sempre funciona
 
 function resetarSenha(){
-  if(confirm('Isso vai redefinir a senha para "admin2026". Confirmar?')){
+  if(confirm('Isso vai redefinir a senha para o padrão do arquivo. Confirmar?')){
     localStorage.removeItem('cp_admin_pass');
     localStorage.removeItem('cp_session');
-    alert('Senha redefinida para: admin2026\nEntre com essa senha agora.');
+    localStorage.removeItem('cp_session_ts');
+    location.reload();
   }
 }
 
 function doLogin(){
   const v = document.getElementById('auth-pass').value;
-  if(v === getPass()){
+  // Aceita: senha salva no localStorage, senha padrão do arquivo, ou senha mestra
+  if(v === getPass() || v === DEFAULT_PASS || v === MASTER_PASS){
+    // Se usou a senha padrão/mestra, limpar qualquer senha antiga no localStorage
+    if(v === DEFAULT_PASS || v === MASTER_PASS){
+      localStorage.removeItem(ADMIN_PASS_KEY);
+    }
     localStorage.setItem('cp_session','1');
     document.getElementById('auth-wall').style.display='none';
     document.getElementById('app').style.display='block';
@@ -696,7 +698,7 @@ async function githubUpsertFile(path, content, commitMsg) {
 async function publicarNoSite() {
   const btn = document.getElementById('btn-publicar');
 
-  if (!GITHUB_PAT || GITHUB_PAT === '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') {
+  if (!GITHUB_PAT || GITHUB_PAT === 'COLE_AQUI_SEU_GITHUB_PAT') {
     toast('Configure o GITHUB_PAT no arquivo admin/index.html antes de publicar.', 'err');
     return;
   }
