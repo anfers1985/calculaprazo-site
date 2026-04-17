@@ -1,0 +1,59 @@
+name: Agente Único — Publicação Diária
+
+on:
+  schedule:
+    - cron: '0 9 * * 1-5'   # 06h Brasília (horário de verão UTC-3) dias úteis
+    - cron: '0 14 * * 1-5'  # 11h Brasília — segunda execução do dia
+  workflow_dispatch:          # Permite rodar manualmente pelo botão no GitHub
+
+permissions:
+  contents: write
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repositório
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências
+        run: pip install requests python-slugify
+
+      - name: Verificar secrets configuradas
+        run: |
+          if [ -z "$OPENROUTER_API_KEY" ]; then
+            echo "❌ OPENROUTER_API_KEY está VAZIA — verifique os Secrets do repositório"
+            exit 1
+          fi
+          echo "✅ OPENROUTER_API_KEY presente (${#OPENROUTER_API_KEY} chars)"
+          if [ -z "$UNSPLASH_ACCESS_KEY" ]; then
+            echo "⚠️  UNSPLASH_ACCESS_KEY não configurada — imagem fallback será usada"
+          else
+            echo "✅ UNSPLASH_ACCESS_KEY presente"
+          fi
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+
+      - name: Rodar agente
+        run: python scripts/gerar_posts.py
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+          PYTHONPATH: scripts/agentes
+
+      - name: Commit e push
+        run: |
+          git config user.name "CalculaPrazo Bot"
+          git config user.email "bot@calculaprazo.com.br"
+          git add blog/ data/posts.json sitemap.xml
+          git diff --staged --quiet || git commit -m "conteudo: agente-unico $(date +%d/%m/%Y-%H:%M)"
+          git push

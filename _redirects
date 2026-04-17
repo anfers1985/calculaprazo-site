@@ -1,5 +1,16 @@
-# Cloudflare Pages / Netlify redirect rules
-# Páginas estáticas têm prioridade — NÃO redirecionar para index.html
+# Cloudflare Pages — regras de roteamento CalculaPrazo
+# Arquivos estáticos têm prioridade — NÃO redirecionar para index.html
+
+# Arquivos raiz obrigatórios para SEO e monetização
+/ads.txt          /ads.txt                 200
+/robots.txt       /robots.txt              200
+/sitemap.xml      /sitemap.xml             200
+
+# Painel administrativo
+/admin            /admin/index.html        200
+/admin/           /admin/index.html        200
+
+# Páginas estáticas
 /privacidade      /privacidade/index.html  200
 /termos           /termos/index.html       200
 /contato          /contato/index.html      200
