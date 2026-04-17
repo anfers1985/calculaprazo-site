@@ -1,0 +1,108 @@
+name: Diagnóstico — testar secrets e fontes
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnostico:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências
+        run: pip install requests
+
+      - name: Verificar secrets
+        run: |
+          echo "=== SECRETS ==="
+          if [ -z "$OPENROUTER_API_KEY" ]; then
+            echo "❌ OPENROUTER_API_KEY: VAZIA ou não configurada"
+          else
+            echo "✅ OPENROUTER_API_KEY: presente (${#OPENROUTER_API_KEY} chars)"
+          fi
+          if [ -z "$UNSPLASH_ACCESS_KEY" ]; then
+            echo "⚠️  UNSPLASH_ACCESS_KEY: não configurada"
+          else
+            echo "✅ UNSPLASH_ACCESS_KEY: presente"
+          fi
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+
+      - name: Testar OpenRouter API
+        run: |
+          python3 -c "
+          import os, requests, json
+          key = os.environ.get('OPENROUTER_API_KEY','')
+          if not key:
+              print('❌ OPENROUTER_API_KEY vazia — impossível testar')
+              exit(1)
+          print('Testando OpenRouter...')
+          r = requests.post(
+              'https://openrouter.ai/api/v1/chat/completions',
+              headers={'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json'},
+              json={'model': 'openai/gpt-4o-mini',
+                    'messages': [{'role':'user','content':'Responda somente: OK'}],
+                    'max_tokens': 10},
+              timeout=30
+          )
+          print('HTTP:', r.status_code)
+          if r.status_code == 200:
+              resp = r.json()['choices'][0]['message']['content']
+              print('✅ OpenRouter OK — resposta:', resp)
+          elif r.status_code == 401:
+              print('❌ Chave INVÁLIDA ou expirada')
+              exit(1)
+          elif r.status_code == 402:
+              print('❌ Créditos ESGOTADOS na conta OpenRouter')
+              exit(1)
+          else:
+              print('❌ Erro:', r.text[:300])
+              exit(1)
+          "
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+
+      - name: Testar acesso às fontes
+        run: |
+          python3 -c "
+          import requests, time
+          UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+          fontes = [
+              ('TST',           'https://www.tst.jus.br/web/guest/noticias'),
+              ('STF',           'https://noticias.stf.jus.br/'),
+              ('CSJT-TRTs',    'https://www.csjt.jus.br/web/csjt/noticias-dos-trts'),
+              ('MTE',           'https://www.gov.br/trabalho-e-emprego/pt-br/noticias-e-conteudo'),
+              ('MPT',           'https://mpt.mp.br/pgt/noticias'),
+              ('eSocial',       'https://www.gov.br/esocial/pt-br/noticias'),
+              ('Contabeis',     'https://www.contabeis.com.br/conteudo/trabalhista/'),
+              ('Migalhas',      'https://www.migalhas.com.br/quentes/trabalhista'),
+              ('Jus.com.br',    'https://jus.com.br/artigos/direito-do-trabalho'),
+              ('Agência Gov',   'https://agenciagov.ebc.com.br/noticias/trabalho-e-emprego'),
+          ]
+          ok = 0
+          for nome, url in fontes:
+              try:
+                  r = requests.get(url, headers={'User-Agent': UA}, timeout=15)
+                  chars = len(r.text)
+                  icone = '✅' if r.ok and chars > 1000 else '⚠️ ' if r.ok else '❌'
+                  print(f'{icone} {nome}: HTTP {r.status_code} | {chars} chars')
+                  if r.ok and chars > 1000:
+                      ok += 1
+              except Exception as e:
+                  print(f'❌ {nome}: ERRO — {e}')
+              time.sleep(1)
+          print(f'')
+          print(f'Fontes acessíveis: {ok}/{len(fontes)}')
+          if ok == 0:
+              print('⚠️  Nenhuma fonte acessível — os agentes não publicarão hoje')
+          "
