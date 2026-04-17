@@ -349,7 +349,7 @@ const GITHUB_BRANCH = 'main';                         // <- branch principal (na
 // IMPORTANTE: Cole aqui o seu GitHub Personal Access Token (PAT)
 // Nome do token: calculaprazo-admin-publish
 // Permissão necessária: Contents -> Read and write
-const GITHUB_PAT = 'COLE_AQUI_SEU_NOVO_GITHUB_PAT';  // <- Cole aqui o seu novo PAT (calculaprazo-admin-publish)
+const GITHUB_PAT = 'COLE_AQUI_SEU_NOVO_GITHUB_PAT'; // ⚠️ SUBSTITUA ESTE VALOR PELO SEU GITHUB PAT  // <- Cole aqui o seu novo PAT (calculaprazo-admin-publish)
 
 // ════════════════════════════════════════
 // AUTH
@@ -698,7 +698,7 @@ async function githubUpsertFile(path, content, commitMsg) {
 async function publicarNoSite() {
   const btn = document.getElementById('btn-publicar');
 
-  if (!GITHUB_PAT || GITHUB_PAT === 'COLE_AQUI_SEU_GITHUB_PAT') {
+  if (!GITHUB_PAT || GITHUB_PAT === 'COLE_AQUI_SEU_NOVO_GITHUB_PAT' || GITHUB_PAT === 'COLE_AQUI_SEU_GITHUB_PAT') {
     toast('Configure o GITHUB_PAT no arquivo admin/index.html antes de publicar.', 'err');
     return;
   }

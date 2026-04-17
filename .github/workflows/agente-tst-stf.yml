@@ -1,4 +1,4 @@
-name: Agente tst-stf
+name: Agente agente-tst-stf
 
 on:
   schedule:
@@ -31,6 +31,7 @@ jobs:
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+          PYTHONPATH: scripts/agentes
 
       - name: Commit e push
         run: |
