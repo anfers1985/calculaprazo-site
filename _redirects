@@ -19,4 +19,6 @@
 /blog/*           /blog/:splat             200
 
 # SPA fallback — todas as outras rotas vão para index.html
+/admin            /admin/index.html        200
+/admin/           /admin/index.html        200
 /*                /index.html              200
