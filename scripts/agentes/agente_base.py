@@ -1,33 +1,32 @@
 # -*- coding: utf-8 -*-
-# agente_base.py - Modulo compartilhado por todos os agentes do CalculaPrazo
+# agente_base.py - Modulo compartilhado — CalculaPrazo
 #
-# VARIAVEIS DE AMBIENTE NECESSARIAS:
-#   OPENROUTER_API_KEY   -> sua chave OpenRouter  (sk-or-v1-...)
-#   UNSPLASH_ACCESS_KEY  -> sua chave Unsplash Access Key
+# VARIAVEIS DE AMBIENTE:
+#   OPENROUTER_API_KEY   -> chave OpenRouter (sk-or-v1-...)
+#   UNSPLASH_ACCESS_KEY  -> chave Unsplash Access Key
 #
 import os, json, re, datetime, requests, random
 from slugify import slugify
 
 HOJE = datetime.date.today()
 
-OPENROUTER_KEY  = os.environ.get("OPENROUTER_API_KEY", "")
-UNSPLASH_KEY    = os.environ.get("UNSPLASH_ACCESS_KEY", "")
-MODEL           = "anthropic/claude-3-5-haiku"  # modelo principal (fallback automatico no chamar_llm)
+OPENROUTER_KEY = os.environ.get("OPENROUTER_API_KEY", "")
+UNSPLASH_KEY   = os.environ.get("UNSPLASH_ACCESS_KEY", "")
 
 CATEGORIAS_VALIDAS = {
-    "jurisprudencia-tst":   "Jurisprudencia TST",
-    "jurisprudencia-trts":  "Jurisprudencia TRTs",
+    "jurisprudencia-tst":   "Jurisprudência TST",
+    "jurisprudencia-trts":  "Jurisprudência TRTs",
     "noticias-mte-mpt":     "MTE e MPT",
-    "legislacao-normas":    "Legislacao e Normas",
+    "legislacao-normas":    "Legislação e Normas",
     "esocial-fgts-digital": "eSocial e FGTS Digital",
-    "orientacoes-praticas": "Orientacoes Praticas RH",
-    "saude-seguranca":      "Saude e Seguranca",
+    "orientacoes-praticas": "Orientações Práticas RH",
+    "saude-seguranca":      "Saúde e Segurança",
     "modelos":              "Modelos",
     "artigos":              "Artigos",
     "geral":                "Geral",
 }
 
-MESES = ["janeiro","fevereiro","marco","abril","maio","junho",
+MESES = ["janeiro","fevereiro","março","abril","maio","junho",
          "julho","agosto","setembro","outubro","novembro","dezembro"]
 
 UNSPLASH_QUERY_CAT = {
@@ -43,8 +42,6 @@ UNSPLASH_QUERY_CAT = {
     "geral":                "law justice office professional",
 }
 
-
-# Modelos em ordem de preferencia (fallback automatico se um falhar)
 MODELS_FALLBACK = [
     "anthropic/claude-3-5-haiku",
     "anthropic/claude-3-5-sonnet-20241022",
@@ -52,58 +49,40 @@ MODELS_FALLBACK = [
     "google/gemini-2.0-flash-001",
 ]
 
-def chamar_llm(prompt, max_tokens=3500, temperature=0.2):
-    """Chama OpenRouter com fallback automatico entre modelos."""
+def chamar_llm(prompt, max_tokens=4000, temperature=0.2):
     if not OPENROUTER_KEY:
         raise RuntimeError("OPENROUTER_API_KEY nao configurada")
-
     last_error = None
     for model in MODELS_FALLBACK:
         try:
             r = requests.post(
                 "https://openrouter.ai/api/v1/chat/completions",
-                headers={
-                    "Authorization": "Bearer " + OPENROUTER_KEY,
-                    "Content-Type": "application/json",
-                },
-                json={
-                    "model": model,
-                    "messages": [{"role": "user", "content": prompt}],
-                    "max_tokens": max_tokens,
-                    "temperature": temperature,
-                },
+                headers={"Authorization": "Bearer " + OPENROUTER_KEY, "Content-Type": "application/json"},
+                json={"model": model, "messages": [{"role": "user", "content": prompt}],
+                      "max_tokens": max_tokens, "temperature": temperature},
                 timeout=180,
             )
             if r.status_code == 200:
-                data = r.json()
-                text = data["choices"][0]["message"]["content"].strip()
+                text = r.json()["choices"][0]["message"]["content"].strip()
                 if text:
                     print("  LLM OK modelo=" + model)
                     return text
             else:
-                body = r.text[:300]
-                print("  LLM erro " + str(r.status_code) + " modelo=" + model + " | " + body)
-                last_error = "HTTP " + str(r.status_code) + ": " + body
+                last_error = "HTTP " + str(r.status_code) + ": " + r.text[:200]
+                print("  LLM erro " + str(r.status_code) + " modelo=" + model)
         except Exception as e:
-            print("  LLM excecao modelo=" + model + ": " + str(e))
             last_error = str(e)
-
+            print("  LLM excecao modelo=" + model + ": " + str(e))
     raise RuntimeError("Todos os modelos falharam. Ultimo erro: " + str(last_error))
 
 
 def obter_imagem_url(image_query, categoria):
-    """Busca imagem via Unsplash API. Fallback para imagem padrao."""
     query    = re.sub(r'[^a-zA-Z0-9 ]', '', (image_query or "")).strip()
     fallback = "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=1200&auto=format&fit=crop"
-
     if len(query) < 5:
         query = UNSPLASH_QUERY_CAT.get(categoria, "law justice professional")
-
     if not UNSPLASH_KEY:
-        print("  AVISO: UNSPLASH_ACCESS_KEY nao configurada -- usando imagem padrao")
-        query_url = query.replace(" ", ",")
-        return "https://source.unsplash.com/1200x600/?" + query_url
-
+        return "https://source.unsplash.com/1200x600/?" + query.replace(" ", ",")
     for q in [query, UNSPLASH_QUERY_CAT.get(categoria, "law")]:
         if not q:
             continue
@@ -123,7 +102,6 @@ def obter_imagem_url(image_query, categoria):
                         return url
         except Exception as e:
             print("  AVISO Unsplash: " + str(e))
-
     return fallback
 
 
@@ -132,31 +110,23 @@ def validar_qualidade(dados, categoria):
     excerpt = dados.get("excerpt", "")
     content = dados.get("content", "")
     tags    = dados.get("tags", [])
-
     if not title or len(title.strip()) < 10:
         return False, "Titulo ausente ou muito curto"
-
     genericos = ["novas tendencias","tendencias","atualizacao","novidades",
                  "analise pos","novas fronteiras","perspectivas","o futuro"]
     if any(g in title.lower() for g in genericos):
         return False, "Titulo generico: " + title
-
     if not excerpt or len(excerpt.strip()) < 30:
         return False, "Excerpt ausente ou muito curto"
-
     words = len(re.sub(r'<[^>]+>', ' ', content).split())
     if words < 300:
         return False, "Conteudo curto: " + str(words) + " palavras (min 300)"
-
     if '<h2' not in content.lower():
         return False, "Sem H2 no conteudo"
-
     if not tags:
         return False, "Sem tags"
-
     if categoria not in CATEGORIAS_VALIDAS:
         return False, "Categoria invalida: " + categoria
-
     return True, "OK"
 
 
@@ -168,24 +138,19 @@ def is_duplicata(title, posts_path="data/posts.json"):
             return False
     except Exception:
         return False
-
     title_lower = title.lower().strip()
     slug_novo   = slugify(title)[:40]
-
     for p in posts:
         existing_slug  = p.get("id", "")
         existing_title = p.get("title", "").lower()
-
         if slug_novo in existing_slug or existing_slug in slug_novo:
             return True
-
         words_new = set(title_lower.split())
         words_old = set(existing_title.split())
         if len(words_new) > 3 and len(words_old) > 3:
             common = words_new & words_old
             if len(common) / max(len(words_new), len(words_old)) > 0.75:
                 return True
-
     return False
 
 
@@ -219,13 +184,13 @@ def salvar_post(dados, categoria, fonte_nome=""):
                 'padding-top:12px;border-top:1px solid #E2E8F0;">'
                 '<strong>Fonte:</strong> '
                 '<a href="' + source_url + '" target="_blank" rel="noopener noreferrer">'
-                + (fonte_nome or source_url) + '</a> -- acesso em ' + data_br + '.</p>'
+                + (fonte_nome or source_url) + '</a> — acesso em ' + data_br + '.</p>'
             )
         elif fonte_nome:
             fonte_nota = (
                 '\n<p style="font-size:.78rem;color:#64748B;margin-top:28px;'
                 'padding-top:12px;border-top:1px solid #E2E8F0;">'
-                '<strong>Fonte:</strong> ' + fonte_nome + ' -- ' + data_br + '.</p>'
+                '<strong>Fonte:</strong> ' + fonte_nome + ' — ' + data_br + '.</p>'
             )
 
         content_final = dados.get("content", "") + fonte_nota
@@ -257,9 +222,7 @@ def salvar_post(dados, categoria, fonte_nome=""):
         with open(blog_path, "w", encoding="utf-8") as f:
             f.write(html)
         print("  OK Post salvo: " + blog_path)
-        print("  OK Imagem: " + img)
 
-        # Atualizar data/posts.json
         try:
             with open("data/posts.json", encoding="utf-8") as f:
                 posts = json.load(f)
