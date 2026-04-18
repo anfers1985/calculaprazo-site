@@ -1,21 +1,19 @@
 # -*- coding: utf-8 -*-
-# agente_base.py - Módulo compartilhado — CalculaPrazo v2
+# agente_base.py - Modulo compartilhado — CalculaPrazo
 #
-# VARIÁVEIS DE AMBIENTE:
-#   GEMINI_API_KEY       -> Google AI Studio (primário, gratuito, 1.500 req/dia)
-#   GROK_API_KEY         -> xAI Grok (secundário, gratuito)
-#   OPENROUTER_API_KEY   -> OpenRouter modelos :free (terciário)
-#   UNSPLASH_ACCESS_KEY  -> Unsplash (imagens)
+# VARIAVEIS DE AMBIENTE:
+#   GEMINI_API_KEY       -> chave Google Gemini
+#   GROK_API_KEY         -> chave xAI Grok
+#   UNSPLASH_ACCESS_KEY  -> chave Unsplash Access Key
 #
-import os, json, re, datetime, requests, random, time
+import os, json, re, datetime, requests, random
 from slugify import slugify
 
 HOJE = datetime.date.today()
 
-GEMINI_KEY     = os.environ.get("GEMINI_API_KEY", "")
-GROK_KEY       = os.environ.get("GROK_API_KEY", "")
-OPENROUTER_KEY = os.environ.get("OPENROUTER_API_KEY", "")
-UNSPLASH_KEY   = os.environ.get("UNSPLASH_ACCESS_KEY", "")
+GEMINI_KEY   = os.environ.get("GEMINI_API_KEY", "")
+GROK_KEY     = os.environ.get("GROK_API_KEY", "")
+UNSPLASH_KEY = os.environ.get("UNSPLASH_ACCESS_KEY", "")
 
 CATEGORIAS_VALIDAS = {
     "jurisprudencia-tst":   "Jurisprudência TST",
@@ -46,209 +44,116 @@ UNSPLASH_QUERY_CAT = {
     "geral":                "law justice office professional",
 }
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-# LLM — cadeia Gemini → Grok → OpenRouter (todos gratuitos)
-# ─────────────────────────────────────────────────────────────────────────────
-
-def _chamar_gemini(prompt, max_tokens=4000, temperature=0.2):
-    """Google AI Studio — gemini-1.5-flash (1.500 req/dia gratuitas)."""
-    if not GEMINI_KEY:
-        raise RuntimeError("GEMINI_API_KEY não configurada")
-    url = (
-        "https://generativelanguage.googleapis.com/v1beta/models/"
-        "gemini-1.5-flash:generateContent?key=" + GEMINI_KEY
-    )
-    payload = {
-        "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {
-            "maxOutputTokens": max_tokens,
-            "temperature": temperature,
-        },
-    }
-    r = requests.post(url, json=payload, timeout=180)
-    if r.status_code == 200:
-        data = r.json()
-        # Verifica bloqueio de segurança
-        candidate = data.get("candidates", [{}])[0]
-        if candidate.get("finishReason") == "SAFETY":
-            raise RuntimeError("Gemini bloqueou por segurança")
-        text = (candidate
-                .get("content", {})
-                .get("parts", [{}])[0]
-                .get("text", "").strip())
-        if text:
-            print("  LLM OK modelo=gemini-1.5-flash")
-            return text
-        raise RuntimeError("Gemini retornou texto vazio")
-    elif r.status_code == 429:
-        raise RuntimeError("Gemini 429 (rate limit): " + r.text[:200])
-    else:
-        raise RuntimeError("Gemini HTTP " + str(r.status_code) + ": " + r.text[:200])
-
-
-def _chamar_grok(prompt, max_tokens=4000, temperature=0.2):
-    """xAI Grok — grok-3-mini (gratuito no free tier)."""
-    if not GROK_KEY:
-        raise RuntimeError("GROK_API_KEY não configurada")
-    r = requests.post(
-        "https://api.x.ai/v1/chat/completions",
-        headers={
-            "Authorization": "Bearer " + GROK_KEY,
-            "Content-Type": "application/json",
-        },
-        json={
-            "model": "grok-3-mini",
-            "messages": [{"role": "user", "content": prompt}],
-            "max_tokens": max_tokens,
-            "temperature": temperature,
-        },
-        timeout=180,
-    )
-    if r.status_code == 200:
-        text = r.json()["choices"][0]["message"]["content"].strip()
-        if text:
-            print("  LLM OK modelo=grok-3-mini")
-            return text
-        raise RuntimeError("Grok retornou texto vazio")
-    elif r.status_code == 429:
-        raise RuntimeError("Grok 429 (rate limit): " + r.text[:200])
-    else:
-        raise RuntimeError("Grok HTTP " + str(r.status_code) + ": " + r.text[:200])
-
-
-def _chamar_openrouter_free(prompt, max_tokens=4000, temperature=0.2):
-    """OpenRouter — modelos :free (sem custo, rate-limited)."""
-    if not OPENROUTER_KEY:
-        raise RuntimeError("OPENROUTER_API_KEY não configurada")
-    modelos_free = [
-        "meta-llama/llama-3.3-70b-instruct:free",
-        "google/gemma-3-27b-it:free",
-        "deepseek/deepseek-r1:free",
-        "mistralai/mistral-7b-instruct:free",
-    ]
-    last_error = None
-    for model in modelos_free:
+def chamar_llm(prompt, max_tokens=4000, temperature=0.2):
+    """Chama Gemini ou Grok como fallback."""
+    
+    # 1. Tentar Gemini
+    if GEMINI_KEY:
         try:
-            r = requests.post(
-                "https://openrouter.ai/api/v1/chat/completions",
-                headers={
-                    "Authorization": "Bearer " + OPENROUTER_KEY,
-                    "Content-Type": "application/json",
-                    "HTTP-Referer": "https://calculaprazo.com.br",
-                    "X-Title": "CalculaPrazo Blog Agent",
-                },
-                json={
-                    "model": model,
-                    "messages": [{"role": "user", "content": prompt}],
-                    "max_tokens": max_tokens,
+            # Usando a API do Gemini via REST
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_KEY}"
+            headers = {"Content-Type": "application/json"}
+            payload = {
+                "contents": [{"parts": [{"text": prompt}]}],
+                "generationConfig": {
                     "temperature": temperature,
-                },
-                timeout=180,
-            )
+                    "maxOutputTokens": max_tokens
+                }
+            }
+            r = requests.post(url, headers=headers, json=payload, timeout=120)
+            if r.status_code == 200:
+                res = r.json()
+                text = res['candidates'][0]['content']['parts'][0]['text'].strip()
+                print("  LLM OK modelo=gemini-1.5-flash")
+                return text
+            else:
+                print(f"  LLM erro Gemini: {r.status_code} - {r.text[:100]}")
+        except Exception as e:
+            print(f"  LLM excecao Gemini: {str(e)}")
+
+    # 2. Tentar Grok (xAI)
+    if GROK_KEY:
+        try:
+            url = "https://api.x.ai/v1/chat/completions"
+            headers = {
+                "Authorization": f"Bearer {GROK_KEY}",
+                "Content-Type": "application/json"
+            }
+            payload = {
+                "model": "grok-beta", # ou o modelo atual disponível
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": temperature,
+                "max_tokens": max_tokens
+            }
+            r = requests.post(url, headers=headers, json=payload, timeout=120)
             if r.status_code == 200:
                 text = r.json()["choices"][0]["message"]["content"].strip()
-                if text:
-                    print("  LLM OK modelo=" + model)
-                    return text
-            elif r.status_code == 429:
-                last_error = "429 rate limit modelo=" + model
-                print("  OpenRouter 429 modelo=" + model + " — aguardando 3s...")
-                time.sleep(3)
+                print("  LLM OK modelo=grok-beta")
+                return text
             else:
-                last_error = "HTTP " + str(r.status_code) + " modelo=" + model
-                print("  OpenRouter " + str(r.status_code) + " modelo=" + model)
+                print(f"  LLM erro Grok: {r.status_code} - {r.text[:100]}")
         except Exception as e:
-            last_error = str(e)
-            print("  OpenRouter exceção modelo=" + model + ": " + str(e))
-    raise RuntimeError("OpenRouter free esgotado. Último erro: " + str(last_error))
+            print(f"  LLM excecao Grok: {str(e)}")
 
+    raise RuntimeError("Todos os modelos (Gemini/Grok) falharam ou chaves nao configuradas.")
 
-def chamar_llm(prompt, max_tokens=4000, temperature=0.2):
-    """
-    Cadeia de fallback 100% gratuita:
-      1. Gemini 1.5 Flash  (Google AI Studio — 1.500 req/dia)
-      2. Grok 3 Mini       (xAI — free tier)
-      3. OpenRouter :free  (vários modelos gratuitos)
-    """
-    tentativas = [
-        ("Gemini",     _chamar_gemini),
-        ("Grok",       _chamar_grok),
-        ("OpenRouter", _chamar_openrouter_free),
-    ]
-    last_error = None
-    for nome, func in tentativas:
-        try:
-            return func(prompt, max_tokens=max_tokens, temperature=temperature)
-        except RuntimeError as e:
-            last_error = str(e)
-            print("  [" + nome + "] falhou: " + last_error[:150])
-    raise RuntimeError("Todas as APIs falharam. Último erro: " + str(last_error))
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# IMAGEM
-# ─────────────────────────────────────────────────────────────────────────────
 
 def obter_imagem_url(image_query, categoria):
     query    = re.sub(r'[^a-zA-Z0-9 ]', '', (image_query or "")).strip()
     fallback = "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=1200&auto=format&fit=crop"
     if len(query) < 5:
         query = UNSPLASH_QUERY_CAT.get(categoria, "law justice professional")
+    
     if not UNSPLASH_KEY:
-        return "https://source.unsplash.com/1200x600/?" + query.replace(" ", ",")
+        return "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=1200&auto=format&fit=crop"
+
     for q in [query, UNSPLASH_QUERY_CAT.get(categoria, "law")]:
-        if not q:
-            continue
+        if not q: continue
         try:
             r = requests.get(
                 "https://api.unsplash.com/photos/random",
                 headers={"Authorization": "Client-ID " + UNSPLASH_KEY},
-                params={"query": q, "orientation": "landscape", "count": 5},
+                params={"query": q, "orientation": "landscape", "count": 1},
                 timeout=15,
             )
             if r.ok:
                 photos = r.json()
                 if isinstance(photos, list) and photos:
-                    foto = random.choice(photos[:5])
-                    url = foto.get("urls", {}).get("regular") or foto.get("urls", {}).get("full")
-                    if url:
-                        return url
+                    url = photos[0].get("urls", {}).get("regular")
+                    if url: return url
+                elif isinstance(photos, dict):
+                    url = photos.get("urls", {}).get("regular")
+                    if url: return url
         except Exception as e:
             print("  AVISO Unsplash: " + str(e))
     return fallback
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# VALIDAÇÃO
-# ─────────────────────────────────────────────────────────────────────────────
-
 def validar_qualidade(dados, categoria):
     title   = dados.get("title", "")
     excerpt = dados.get("excerpt", "")
     content = dados.get("content", "")
-    tags    = dados.get("tags", [])
     if not title or len(title.strip()) < 10:
         return False, "Titulo ausente ou muito curto"
-    genericos = ["novas tendencias","tendencias","atualizacao","novidades",
-                 "analise pos","novas fronteiras","perspectivas","o futuro"]
-    if any(g in title.lower() for g in genericos):
-        return False, "Titulo generico: " + title
     if not excerpt or len(excerpt.strip()) < 30:
         return False, "Excerpt ausente ou muito curto"
-    words = len(re.sub(r'<[^>]+>', ' ', content).split())
+    
+    # Contagem de palavras aproximada removendo tags HTML
+    text_only = re.sub(r'<[^>]+>', ' ', content)
+    words = len(text_only.split())
+    
     if words < 300:
-        return False, "Conteudo curto: " + str(words) + " palavras (min 300)"
+        return False, f"Conteudo curto: {words} palavras (min 300)"
     if '<h2' not in content.lower():
         return False, "Sem H2 no conteudo"
-    if not tags:
-        return False, "Sem tags"
     if categoria not in CATEGORIAS_VALIDAS:
         return False, "Categoria invalida: " + categoria
     return True, "OK"
 
 
 def is_duplicata(title, posts_path="data/posts.json"):
+    if not os.path.exists(posts_path):
+        return False
     try:
         with open(posts_path, encoding="utf-8") as f:
             posts = json.load(f)
@@ -256,13 +161,17 @@ def is_duplicata(title, posts_path="data/posts.json"):
             return False
     except Exception:
         return False
+    
     title_lower = title.lower().strip()
     slug_novo   = slugify(title)[:40]
+    
     for p in posts:
         existing_slug  = p.get("id", "")
         existing_title = p.get("title", "").lower()
         if slug_novo in existing_slug or existing_slug in slug_novo:
             return True
+        
+        # Similaridade simples por palavras
         words_new = set(title_lower.split())
         words_old = set(existing_title.split())
         if len(words_new) > 3 and len(words_old) > 3:
@@ -272,10 +181,6 @@ def is_duplicata(title, posts_path="data/posts.json"):
     return False
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# SALVAR POST
-# ─────────────────────────────────────────────────────────────────────────────
-
 def salvar_post(dados, categoria, fonte_nome=""):
     try:
         data_str  = HOJE.strftime("%Y-%m-%d")
@@ -283,37 +188,34 @@ def salvar_post(dados, categoria, fonte_nome=""):
         slug      = slugify(dados["title"])[:60]
         cat_label = CATEGORIAS_VALIDAS.get(categoria, categoria)
 
-        with open("blog/POST_TEMPLATE.html", encoding="utf-8") as f:
+        template_path = "blog/POST_TEMPLATE.html"
+        if not os.path.exists(template_path):
+            print(f"  ERRO: Template {template_path} nao encontrado.")
+            return False
+            
+        with open(template_path, encoding="utf-8") as f:
             template = f.read()
 
         tags       = dados.get("tags", [])[:4]
         tags_json  = json.dumps(tags, ensure_ascii=False)
         source_url = dados.get("source_url", "")
 
-        tags_badges = ""
-        for t in tags:
-            tags_badges += (
-                '<span style="display:inline-block;padding:3px 12px;border-radius:999px;'
-                'font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);'
-                'color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);'
-                'margin-right:5px;">' + t + '</span>'
-            )
+        tags_badges = "".join([
+            f'<span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">{t}</span>'
+            for t in tags
+        ])
 
         fonte_nota = ""
         if source_url:
             fonte_nota = (
-                '\n<p style="font-size:.78rem;color:#64748B;margin-top:28px;'
-                'padding-top:12px;border-top:1px solid #E2E8F0;">'
-                '<strong>Fonte:</strong> '
-                '<a href="' + source_url + '" target="_blank" rel="noopener noreferrer">'
-                + (fonte_nome or source_url) + '</a>'
-                ' — acesso em ' + data_br + '.</p>'
+                f'\n<p style="font-size:.78rem;color:#64748B;margin-top:28px;padding-top:12px;border-top:1px solid #E2E8F0;">'
+                f'<strong>Fonte:</strong> <a href="{source_url}" target="_blank" rel="noopener noreferrer">'
+                f'{fonte_nome or source_url}</a> — acesso em {data_br}.</p>'
             )
         elif fonte_nome:
             fonte_nota = (
-                '\n<p style="font-size:.78rem;color:#64748B;margin-top:28px;'
-                'padding-top:12px;border-top:1px solid #E2E8F0;">'
-                '<strong>Fonte:</strong> ' + fonte_nome + ' — ' + data_br + '.</p>'
+                f'\n<p style="font-size:.78rem;color:#64748B;margin-top:28px;padding-top:12px;border-top:1px solid #E2E8F0;">'
+                f'<strong>Fonte:</strong> {fonte_nome} — {data_br}.</p>'
             )
 
         content_final = dados.get("content", "") + fonte_nota
@@ -331,25 +233,26 @@ def salvar_post(dados, categoria, fonte_nome=""):
             .replace("{{DATE}}",             data_str)
             .replace("{{DATE_BR}}",          data_br)
             .replace("{{CONTENT}}",          content_final)
-            .replace("{{OG_IMAGE}}",         '<meta property="og:image" content="' + img + '">')
-            .replace("{{SCHEMA_IMAGE}}",     ',"image":"' + img + '"')
+            .replace("{{OG_IMAGE}}",         f'<meta property="og:image" content="{img}">')
+            .replace("{{SCHEMA_IMAGE}}",     f',"image":"{img}"')
             .replace("{{COVER_IMAGE_HTML}}", (
-                '<div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;">'
-                '<img src="' + img + '" alt="' + dados["title"] + '" '
-                'style="width:100%;object-fit:cover;" loading="lazy" '
-                'onerror="this.parentElement.style.display=\'none\'"></div>'
+                f'<div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;">'
+                f'<img src="{img}" alt="{dados["title"]}" style="width:100%;object-fit:cover;" loading="lazy" '
+                f'onerror="this.parentElement.style.display=\'none\'"></div>'
             ))
         )
 
-        blog_path = "blog/" + slug + ".html"
+        blog_path = f"blog/{slug}.html"
         with open(blog_path, "w", encoding="utf-8") as f:
             f.write(html)
-        print("  OK Post salvo: " + blog_path)
+        print(f"  OK Post salvo: {blog_path}")
 
+        posts_path = "data/posts.json"
         try:
-            with open("data/posts.json", encoding="utf-8") as f:
-                posts = json.load(f)
-            if not isinstance(posts, list):
+            if os.path.exists(posts_path):
+                with open(posts_path, encoding="utf-8") as f:
+                    posts = json.load(f)
+            else:
                 posts = []
         except Exception:
             posts = []
@@ -367,36 +270,37 @@ def salvar_post(dados, categoria, fonte_nome=""):
                 "source":         fonte_nome,
                 "source_url":     source_url,
             })
-            with open("data/posts.json", "w", encoding="utf-8") as f:
+            with open(posts_path, "w", encoding="utf-8") as f:
                 json.dump(posts, f, ensure_ascii=False, indent=2)
-            print("  OK posts.json atualizado (" + str(len(posts)) + " posts)")
+            print(f"  OK posts.json atualizado ({len(posts)} posts)")
 
         _atualizar_sitemap(slug, data_str)
         return True
 
     except Exception as e:
-        import traceback
-        print("  ERRO ao salvar post: " + str(e))
-        traceback.print_exc()
+        print(f"  ERRO ao salvar post: {str(e)}")
         return False
 
 
 def _atualizar_sitemap(slug, data_str):
     try:
-        nova_url = "https://calculaprazo.com.br/blog/" + slug
-        with open("sitemap.xml", "r", encoding="utf-8") as f:
+        sitemap_path = "sitemap.xml"
+        if not os.path.exists(sitemap_path): return
+        
+        nova_url = f"https://calculaprazo.com.br/blog/{slug}"
+        with open(sitemap_path, "r", encoding="utf-8") as f:
             sc = f.read()
         if nova_url in sc:
             return
         nova_entrada = (
-            "  <url>\n    <loc>" + nova_url + "</loc>\n"
-            "    <lastmod>" + data_str + "</lastmod>\n"
-            "    <changefreq>monthly</changefreq>\n"
-            "    <priority>0.8</priority>\n  </url>\n"
+            f"  <url>\n    <loc>{nova_url}</loc>\n"
+            f"    <lastmod>{data_str}</lastmod>\n"
+            f"    <changefreq>monthly</changefreq>\n"
+            f"    <priority>0.8</priority>\n  </url>\n"
         )
         sc = sc.replace("</urlset>", nova_entrada + "</urlset>")
-        with open("sitemap.xml", "w", encoding="utf-8") as f:
+        with open(sitemap_path, "w", encoding="utf-8") as f:
             f.write(sc)
         print("  OK sitemap.xml atualizado")
     except Exception as e:
-        print("  AVISO sitemap: " + str(e))
+        print(f"  AVISO sitemap: {str(e)}")
