@@ -180,8 +180,9 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
     <div class="page" id="page-new">
       <div class="page-header">
         <div><div class="page-title" id="form-page-title">Novo Conteúdo</div><div class="page-sub">Crie artigos otimizados para o blog</div></div>
-        <div style="display:flex;gap:10px;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button class="btn btn-g" onclick="goPage('list')">Cancelar</button>
+          <button class="btn btn-g" id="btn-baixar" onclick="baixarHTML()">⬇️ Baixar HTML</button>
           <button class="btn btn-p" id="btn-publicar" onclick="publicarNoSite()">🚀 Publicar no GitHub</button>
         </div>
       </div>
@@ -215,6 +216,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
         <div class="fg-row">
           <div class="fg"><label>URL da Imagem de Capa</label><input type="text" id="f-image" placeholder="https://images.unsplash.com/..." onchange="previewImg()"></div>
           <div class="fg"><label>Legenda da Imagem</label><input type="text" id="f-caption" placeholder="Créditos ou descrição da imagem"></div>
+        </div>
+        <div class="fg">
+          <label>Tags (separadas por vírgula, máx. 4)</label>
+          <input type="text" id="f-tags" placeholder="Ex: TST, Jurisprudência, Gestante, CLT">
+          <p style="font-size:.72rem;color:var(--txt-s);margin-top:4px;">Aparecem como badges coloridas no post.</p>
         </div>
         <img id="img-preview-el" class="img-preview">
         
@@ -398,19 +404,18 @@ function saveGitHubSettings(){
   const pat = document.getElementById('github-pat-input').value.trim();
   if(!pat){ toast('Informe o token PAT','err'); return; }
   if(!pat.startsWith('ghp_') && !pat.startsWith('github_pat_')){
-    if(!confirm('O token não tem o formato padrão do GitHub (ghp_ ou github_pat_). Salvar mesmo assim?')) return;
+    if(!confirm('Token fora do formato padrão (ghp_ ou github_pat_). Salvar mesmo assim?')) return;
   }
   localStorage.setItem(GH_PAT_KEY, pat);
-  toast('Token salvo! Clique em "Testar Token" para verificar.','ok');
+  toast('Token salvo! Clique em Testar Token para verificar.','ok');
 }
 
 async function testGitHubPAT(){
   const pat = localStorage.getItem(GH_PAT_KEY) || document.getElementById('github-pat-input').value.trim();
   if(!pat){ toast('Salve o token primeiro.','err'); return; }
   const div = document.getElementById('pat-test-result');
-  div.style.display='block';
-  div.style.background='#FFFBEB';
-  div.innerHTML='<span style="color:#D97706;">⏳ Testando conexão com o GitHub...</span>';
+  div.style.display='block'; div.style.background='#FFFBEB';
+  div.innerHTML='<span style="color:#D97706;">⏳ Testando conexão com GitHub...</span>';
   try {
     const r = await fetch(
       `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}`,
@@ -420,19 +425,19 @@ async function testGitHubPAT(){
       const d = await r.json();
       const perms = d.permissions ? Object.entries(d.permissions).filter(([k,v])=>v).map(([k])=>k).join(', ') : 'ok';
       div.style.background='#F0FDF4';
-      div.innerHTML=`<span style="color:#059669;">✅ Token válido! Repositório: <strong>${d.full_name}</strong> — permissões: ${perms}</span>`;
+      div.innerHTML=`<span style="color:#059669;">✅ Token válido! Repo: <strong>${d.full_name}</strong> — permissões: ${perms}</span>`;
     } else if(r.status===401){
       div.style.background='#FFF5F5';
-      div.innerHTML='<span style="color:#DC2626;">❌ Token inválido ou expirado (401). Gere um novo PAT em <strong>github.com/settings/tokens</strong> com escopo <strong>repo</strong>.</span>';
+      div.innerHTML='<span style="color:#DC2626;">❌ Token inválido ou expirado (401). Gere novo em <strong>github.com/settings/tokens</strong> com escopo <strong>repo</strong>.</span>';
     } else if(r.status===403){
       div.style.background='#FFF5F5';
-      div.innerHTML='<span style="color:#DC2626;">❌ Sem permissão (403). Verifique se o token tem o escopo <strong>repo</strong> habilitado.</span>';
+      div.innerHTML='<span style="color:#DC2626;">❌ Sem permissão (403). Token precisa do escopo <strong>repo</strong>.</span>';
     } else if(r.status===404){
       div.style.background='#FFF5F5';
-      div.innerHTML=`<span style="color:#DC2626;">❌ Repositório não encontrado (404). Verifique se o token tem acesso ao repositório <strong>${GITHUB_OWNER}/${GITHUB_REPO}</strong> e se o escopo <strong>repo</strong> está habilitado. Tokens "Fine-grained" exigem permissão explícita de Contents: Read & Write.</span>`;
+      div.innerHTML=`<span style="color:#DC2626;">❌ Repositório não encontrado (404). Verifique se o token tem acesso ao repo <strong>${GITHUB_OWNER}/${GITHUB_REPO}</strong> e se o escopo <strong>repo</strong> está habilitado. Tokens Fine-grained precisam de Contents: Read & Write.</span>`;
     } else {
       div.style.background='#FFF5F5';
-      div.innerHTML=`<span style="color:#DC2626;">❌ Erro ${r.status}. Tente novamente.</span>`;
+      div.innerHTML=`<span style="color:#DC2626;">❌ Erro ${r.status}.</span>`;
     }
   } catch(e) {
     div.style.background='#FFF5F5';
@@ -639,6 +644,7 @@ function resetForm(){
   document.getElementById('f-excerpt').value='';
   document.getElementById('f-image').value='';
   document.getElementById('f-caption').value='';
+  document.getElementById('f-tags').value='';
   document.getElementById('editor-area').value='';
   document.getElementById('img-preview-el').style.display='none';
   document.getElementById('exc-count').textContent='0';
@@ -654,6 +660,7 @@ function editPost(id){
   document.getElementById('f-title').value=p.title;
   document.getElementById('f-slug').value=p.id;
   document.getElementById('f-cat').value=p.category;
+  document.getElementById('f-tags').value=Array.isArray(p.tags)?p.tags.join(', '):(p.tags||'');
   document.getElementById('f-excerpt').value=p.excerpt;
   document.getElementById('f-image').value=p.image||'';
   document.getElementById('f-caption').value=p.imageCaption||'';
@@ -704,13 +711,9 @@ async function githubUpsertFile(path, content, commitMsg, pat) {
   if (!r.ok) {
     let errMsg = '';
     try { const e = await r.json(); errMsg = e.message || JSON.stringify(e); } catch(_){}
-    if(r.status === 404){
-      throw new Error('GitHub API 404: Repositório não encontrado ou token sem acesso. Vá em Configurações → Testar Token para diagnosticar. Tokens Fine-grained precisam de permissão "Contents: Read & Write".');
-    } else if(r.status === 401){
-      throw new Error('GitHub API 401: Token inválido ou expirado. Gere um novo PAT em github.com/settings/tokens com escopo "repo".');
-    } else if(r.status === 403){
-      throw new Error('GitHub API 403: Sem permissão de escrita. Verifique se o token tem escopo "repo" ou "contents:write".');
-    }
+    if(r.status===404) throw new Error('GitHub 404: Repositório não encontrado ou token sem permissão "repo". Vá em Configurações → Testar Token.');
+    if(r.status===401) throw new Error('GitHub 401: Token inválido ou expirado. Gere novo PAT em github.com/settings/tokens com escopo "repo".');
+    if(r.status===403) throw new Error('GitHub 403: Sem permissão de escrita. Token precisa do escopo "repo".');
     throw new Error(`GitHub API erro ${r.status}: ${errMsg}`);
   }
   return await r.json();
@@ -772,7 +775,9 @@ async function publicarNoSite() {
 
   try {
     const now = new Date().toISOString().split('T')[0];
-    const post = { id: slug, title, category: cat, excerpt, image, imageCaption: caption, date: now, content };
+    const tagsInput = document.getElementById('f-tags') ? document.getElementById('f-tags').value.trim() : '';
+  const tags = tagsInput ? tagsInput.split(',').map(t=>t.trim()).filter(Boolean).slice(0,4) : [];
+  const post = { id: slug, title, category: cat, excerpt, image, imageCaption: caption, date: now, content, tags };
 
     // 1. Gerar HTML do post
     toast('Gerando HTML do post...', 'ok');
@@ -789,17 +794,34 @@ async function publicarNoSite() {
     };
     const dateBR = new Date(post.date + 'T12:00:00').toLocaleDateString('pt-BR', {day:'numeric', month:'long', year:'numeric'});
     
+    // Montar tags_badges HTML
+    const tagsArr = Array.isArray(post.tags) ? post.tags.slice(0,4) : [];
+    const tagsBadgesHTML = tagsArr.map(t =>
+      `<span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">${t}</span>`
+    ).join('');
+    const tagsJSON = JSON.stringify(tagsArr);
+
+    // Imagem de capa
+    const coverHTML = post.image
+      ? `<div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;"><img src="${post.image}" alt="${post.title}" style="width:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>`
+      : '';
+    const ogImageTag  = post.image ? `<meta property="og:image" content="${post.image}">` : '';
+    const schemaImage = post.image ? `,"image":"${post.image}"` : '';
+
     const postHTML = template
-      .replace(/{{TITLE}}/g, post.title)
-      .replace(/{{DESCRIPTION}}/g, post.excerpt)
-      .replace(/{{SLUG}}/g, post.id)
-      .replace(/{{CATEGORY}}/g, post.category)
-      .replace(/{{CATEGORY_LABEL}}/g, catLabelsMap[post.category] || post.category)
-      .replace(/{{DATE}}/g, post.date)
-      .replace(/{{DATE_BR}}/g, dateBR)
-      .replace(/{{CONTENT}}/g, post.content)
-      .replace(/{{OG_IMAGE}}/g, post.image ? `<meta property="og:image" content="${post.image}">` : '')
-      .replace(/{{COVER_IMAGE_HTML}}/g, post.image ? `<img src="${post.image}" alt="${post.title}" class="post-cover">` : '');
+      .replace(/\{\{TITLE\}\}/g,          post.title)
+      .replace(/\{\{DESCRIPTION\}\}/g,    post.excerpt)
+      .replace(/\{\{SLUG\}\}/g,           post.id)
+      .replace(/\{\{CATEGORY\}\}/g,       post.category)
+      .replace(/\{\{CATEGORY_LABEL\}\}/g, catLabelsMap[post.category] || post.category)
+      .replace(/\{\{DATE\}\}/g,           post.date)
+      .replace(/\{\{DATE_BR\}\}/g,        dateBR)
+      .replace(/\{\{CONTENT\}\}/g,        post.content)
+      .replace(/\{\{TAGS_BADGES\}\}/g,    tagsBadgesHTML)
+      .replace(/\{\{TAGS_JSON\}\}/g,      tagsJSON)
+      .replace(/\{\{OG_IMAGE\}\}/g,       ogImageTag)
+      .replace(/\{\{SCHEMA_IMAGE\}\}/g,   schemaImage)
+      .replace(/\{\{COVER_IMAGE_HTML\}\}/g, coverHTML);
 
     // 2. Enviar HTML
     toast('Enviando arquivo HTML...', 'ok');
@@ -828,7 +850,7 @@ async function publicarNoSite() {
       excerpt: post.excerpt,
       image: post.image || '',
       date: post.date,
-      tags: []
+      tags: post.tags || []
     });
 
     await githubUpsertFile('data/posts.json', JSON.stringify(postsAtuais, null, 2), 'atualizacao: posts.json', pat);
@@ -847,6 +869,93 @@ async function publicarNoSite() {
   } finally {
     btn.disabled = false;
     btn.textContent = '🚀 Publicar no GitHub';
+  }
+}
+
+// ════════════════════════════════════════
+// DOWNLOAD HTML MANUAL
+// ════════════════════════════════════════
+async function baixarHTML() {
+  const title   = document.getElementById('f-title').value.trim();
+  const excerpt = document.getElementById('f-excerpt').value.trim();
+  const content = document.getElementById('editor-area').value.trim();
+  const slug    = document.getElementById('f-slug').value.trim() || slugify(title);
+  const cat     = document.getElementById('f-cat').value;
+  const image   = document.getElementById('f-image').value.trim();
+  const caption = document.getElementById('f-caption').value.trim();
+  const tagsRaw = document.getElementById('f-tags') ? document.getElementById('f-tags').value.trim() : '';
+
+  if (!title || !content) { toast('Preencha título e conteúdo.', 'err'); return; }
+
+  const btn = document.getElementById('btn-baixar');
+  btn.disabled = true;
+  btn.textContent = '⏳ Gerando...';
+
+  try {
+    const now = new Date().toISOString().split('T')[0];
+    const tagsArr = tagsRaw ? tagsRaw.split(',').map(t=>t.trim()).filter(Boolean).slice(0,4) : [];
+
+    const catLabelsMap = {
+      'jurisprudencia-tst':'Jurisprudência TST','jurisprudencia-trts':'Jurisprudência TRTs',
+      'noticias-mte-mpt':'MTE & MPT','legislacao-normas':'Legislação e Normas',
+      'esocial-fgts-digital':'eSocial e FGTS Digital','orientacoes-praticas':'Orientações Práticas RH',
+      'saude-seguranca':'Saúde e Segurança','modelos':'Modelos','artigos':'Artigos','geral':'Geral'
+    };
+
+    const respTemp = await fetch('/blog/POST_TEMPLATE.html');
+    if(!respTemp.ok) throw new Error('Template não encontrado');
+    const template = await respTemp.text();
+
+    const dateBR = new Date(now + 'T12:00:00').toLocaleDateString('pt-BR', {day:'numeric', month:'long', year:'numeric'});
+    const tagsBadgesHTML = tagsArr.map(t =>
+      `<span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">${t}</span>`
+    ).join('');
+
+    const coverHTML = image
+      ? `<div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;"><img src="${image}" alt="${title}" style="width:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display=\'none\'"></div>`
+      : '';
+
+    const postHTML = template
+      .replace(/\{\{TITLE\}\}/g,          title)
+      .replace(/\{\{DESCRIPTION\}\}/g,    excerpt)
+      .replace(/\{\{SLUG\}\}/g,           slug)
+      .replace(/\{\{CATEGORY\}\}/g,       cat)
+      .replace(/\{\{CATEGORY_LABEL\}\}/g, catLabelsMap[cat] || cat)
+      .replace(/\{\{DATE\}\}/g,           now)
+      .replace(/\{\{DATE_BR\}\}/g,        dateBR)
+      .replace(/\{\{CONTENT\}\}/g,        content)
+      .replace(/\{\{TAGS_BADGES\}\}/g,    tagsBadgesHTML)
+      .replace(/\{\{TAGS_JSON\}\}/g,      JSON.stringify(tagsArr))
+      .replace(/\{\{OG_IMAGE\}\}/g,       image ? `<meta property="og:image" content="${image}">` : '')
+      .replace(/\{\{SCHEMA_IMAGE\}\}/g,   image ? `,"image":"${image}"` : '')
+      .replace(/\{\{COVER_IMAGE_HTML\}\}/g, coverHTML);
+
+    // Download the HTML file
+    const blob = new Blob([postHTML], {type: 'text/html;charset=utf-8'});
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url;
+    a.download = slug + '.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    // Also download updated posts.json entry reminder
+    toast('HTML baixado: ' + slug + '.html — suba em blog/ no GitHub Desktop', 'ok');
+
+    // Save locally too
+    const localPosts = getPosts();
+    const post = {id:slug, title, category:cat, excerpt, image, imageCaption:caption, date:now, content, tags:tagsArr};
+    const idx = localPosts.findIndex(p=>p.id===slug);
+    if(idx>=0) localPosts[idx]=post; else localPosts.push(post);
+    savePosts(localPosts);
+
+  } catch(e) {
+    toast('Erro: ' + e.message, 'err');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '⬇️ Baixar HTML';
   }
 }
 
