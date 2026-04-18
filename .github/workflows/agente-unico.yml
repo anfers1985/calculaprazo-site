@@ -2,7 +2,7 @@ name: Agente Único — Publicação Diária
 
 on:
   schedule:
-    - cron: '0 9 * * 1-5'   # 06h Brasília (horário de verão UTC-3) dias úteis
+    - cron: '0 9 * * 1-5'   # 06h Brasília (UTC-3) dias úteis
     - cron: '0 14 * * 1-5'  # 11h Brasília — segunda execução do dia
   workflow_dispatch:          # Permite rodar manualmente pelo botão no GitHub
 
@@ -25,28 +25,53 @@ jobs:
           python-version: '3.11'
 
       - name: Instalar dependências
-        run: pip install requests python-slugify
+        run: pip install requests python-slugify urllib3
 
       - name: Verificar secrets configuradas
         run: |
+          echo "=== VERIFICAÇÃO DE SECRETS ==="
+
+          if [ -z "$GEMINI_API_KEY" ]; then
+            echo "❌ GEMINI_API_KEY: não configurada (primário)"
+          else
+            echo "✅ GEMINI_API_KEY: presente (${#GEMINI_API_KEY} chars)"
+          fi
+
+          if [ -z "$GROK_API_KEY" ]; then
+            echo "⚠️  GROK_API_KEY: não configurada (secundário)"
+          else
+            echo "✅ GROK_API_KEY: presente (${#GROK_API_KEY} chars)"
+          fi
+
           if [ -z "$OPENROUTER_API_KEY" ]; then
-            echo "❌ OPENROUTER_API_KEY está VAZIA — verifique os Secrets do repositório"
+            echo "⚠️  OPENROUTER_API_KEY: não configurada (terciário)"
+          else
+            echo "✅ OPENROUTER_API_KEY: presente (${#OPENROUTER_API_KEY} chars)"
+          fi
+
+          if [ -z "$UNSPLASH_ACCESS_KEY" ]; then
+            echo "⚠️  UNSPLASH_ACCESS_KEY: não configurada — imagem fallback será usada"
+          else
+            echo "✅ UNSPLASH_ACCESS_KEY: presente"
+          fi
+
+          # Ao menos uma API de LLM é obrigatória
+          if [ -z "$GEMINI_API_KEY" ] && [ -z "$GROK_API_KEY" ] && [ -z "$OPENROUTER_API_KEY" ]; then
+            echo "❌ ERRO CRÍTICO: nenhuma API de LLM configurada (GEMINI, GROK ou OPENROUTER)"
             exit 1
           fi
-          echo "✅ OPENROUTER_API_KEY presente (${#OPENROUTER_API_KEY} chars)"
-          if [ -z "$UNSPLASH_ACCESS_KEY" ]; then
-            echo "⚠️  UNSPLASH_ACCESS_KEY não configurada — imagem fallback será usada"
-          else
-            echo "✅ UNSPLASH_ACCESS_KEY presente"
-          fi
         env:
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_API_KEY:      ${{ secrets.GEMINI_API_KEY }}
+          GROK_API_KEY:        ${{ secrets.GROK_API_KEY }}
+          OPENROUTER_API_KEY:  ${{ secrets.OPENROUTER_API_KEY }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
 
       - name: Rodar agente
         run: python scripts/gerar_posts.py
         env:
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_API_KEY:      ${{ secrets.GEMINI_API_KEY }}
+          GROK_API_KEY:        ${{ secrets.GROK_API_KEY }}
+          OPENROUTER_API_KEY:  ${{ secrets.OPENROUTER_API_KEY }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
           PYTHONPATH: scripts/agentes
 

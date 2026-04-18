@@ -1,15 +1,19 @@
 # -*- coding: utf-8 -*-
-# agente_base.py - Modulo compartilhado — CalculaPrazo
+# agente_base.py - Módulo compartilhado — CalculaPrazo v2
 #
-# VARIAVEIS DE AMBIENTE:
-#   OPENROUTER_API_KEY   -> chave OpenRouter (sk-or-v1-...)
-#   UNSPLASH_ACCESS_KEY  -> chave Unsplash Access Key
+# VARIÁVEIS DE AMBIENTE:
+#   GEMINI_API_KEY       -> Google AI Studio (primário, gratuito, 1.500 req/dia)
+#   GROK_API_KEY         -> xAI Grok (secundário, gratuito)
+#   OPENROUTER_API_KEY   -> OpenRouter modelos :free (terciário)
+#   UNSPLASH_ACCESS_KEY  -> Unsplash (imagens)
 #
-import os, json, re, datetime, requests, random
+import os, json, re, datetime, requests, random, time
 from slugify import slugify
 
 HOJE = datetime.date.today()
 
+GEMINI_KEY     = os.environ.get("GEMINI_API_KEY", "")
+GROK_KEY       = os.environ.get("GROK_API_KEY", "")
 OPENROUTER_KEY = os.environ.get("OPENROUTER_API_KEY", "")
 UNSPLASH_KEY   = os.environ.get("UNSPLASH_ACCESS_KEY", "")
 
@@ -42,24 +46,104 @@ UNSPLASH_QUERY_CAT = {
     "geral":                "law justice office professional",
 }
 
-MODELS_FALLBACK = [
-    "anthropic/claude-3-5-haiku",
-    "anthropic/claude-3-5-sonnet-20241022",
-    "openai/gpt-4o-mini",
-    "google/gemini-2.0-flash-001",
-]
 
-def chamar_llm(prompt, max_tokens=4000, temperature=0.2):
+# ─────────────────────────────────────────────────────────────────────────────
+# LLM — cadeia Gemini → Grok → OpenRouter (todos gratuitos)
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _chamar_gemini(prompt, max_tokens=4000, temperature=0.2):
+    """Google AI Studio — gemini-1.5-flash (1.500 req/dia gratuitas)."""
+    if not GEMINI_KEY:
+        raise RuntimeError("GEMINI_API_KEY não configurada")
+    url = (
+        "https://generativelanguage.googleapis.com/v1beta/models/"
+        "gemini-1.5-flash:generateContent?key=" + GEMINI_KEY
+    )
+    payload = {
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {
+            "maxOutputTokens": max_tokens,
+            "temperature": temperature,
+        },
+    }
+    r = requests.post(url, json=payload, timeout=180)
+    if r.status_code == 200:
+        data = r.json()
+        # Verifica bloqueio de segurança
+        candidate = data.get("candidates", [{}])[0]
+        if candidate.get("finishReason") == "SAFETY":
+            raise RuntimeError("Gemini bloqueou por segurança")
+        text = (candidate
+                .get("content", {})
+                .get("parts", [{}])[0]
+                .get("text", "").strip())
+        if text:
+            print("  LLM OK modelo=gemini-1.5-flash")
+            return text
+        raise RuntimeError("Gemini retornou texto vazio")
+    elif r.status_code == 429:
+        raise RuntimeError("Gemini 429 (rate limit): " + r.text[:200])
+    else:
+        raise RuntimeError("Gemini HTTP " + str(r.status_code) + ": " + r.text[:200])
+
+
+def _chamar_grok(prompt, max_tokens=4000, temperature=0.2):
+    """xAI Grok — grok-3-mini (gratuito no free tier)."""
+    if not GROK_KEY:
+        raise RuntimeError("GROK_API_KEY não configurada")
+    r = requests.post(
+        "https://api.x.ai/v1/chat/completions",
+        headers={
+            "Authorization": "Bearer " + GROK_KEY,
+            "Content-Type": "application/json",
+        },
+        json={
+            "model": "grok-3-mini",
+            "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": max_tokens,
+            "temperature": temperature,
+        },
+        timeout=180,
+    )
+    if r.status_code == 200:
+        text = r.json()["choices"][0]["message"]["content"].strip()
+        if text:
+            print("  LLM OK modelo=grok-3-mini")
+            return text
+        raise RuntimeError("Grok retornou texto vazio")
+    elif r.status_code == 429:
+        raise RuntimeError("Grok 429 (rate limit): " + r.text[:200])
+    else:
+        raise RuntimeError("Grok HTTP " + str(r.status_code) + ": " + r.text[:200])
+
+
+def _chamar_openrouter_free(prompt, max_tokens=4000, temperature=0.2):
+    """OpenRouter — modelos :free (sem custo, rate-limited)."""
     if not OPENROUTER_KEY:
-        raise RuntimeError("OPENROUTER_API_KEY nao configurada")
+        raise RuntimeError("OPENROUTER_API_KEY não configurada")
+    modelos_free = [
+        "meta-llama/llama-3.3-70b-instruct:free",
+        "google/gemma-3-27b-it:free",
+        "deepseek/deepseek-r1:free",
+        "mistralai/mistral-7b-instruct:free",
+    ]
     last_error = None
-    for model in MODELS_FALLBACK:
+    for model in modelos_free:
         try:
             r = requests.post(
                 "https://openrouter.ai/api/v1/chat/completions",
-                headers={"Authorization": "Bearer " + OPENROUTER_KEY, "Content-Type": "application/json"},
-                json={"model": model, "messages": [{"role": "user", "content": prompt}],
-                      "max_tokens": max_tokens, "temperature": temperature},
+                headers={
+                    "Authorization": "Bearer " + OPENROUTER_KEY,
+                    "Content-Type": "application/json",
+                    "HTTP-Referer": "https://calculaprazo.com.br",
+                    "X-Title": "CalculaPrazo Blog Agent",
+                },
+                json={
+                    "model": model,
+                    "messages": [{"role": "user", "content": prompt}],
+                    "max_tokens": max_tokens,
+                    "temperature": temperature,
+                },
                 timeout=180,
             )
             if r.status_code == 200:
@@ -67,14 +151,44 @@ def chamar_llm(prompt, max_tokens=4000, temperature=0.2):
                 if text:
                     print("  LLM OK modelo=" + model)
                     return text
+            elif r.status_code == 429:
+                last_error = "429 rate limit modelo=" + model
+                print("  OpenRouter 429 modelo=" + model + " — aguardando 3s...")
+                time.sleep(3)
             else:
-                last_error = "HTTP " + str(r.status_code) + ": " + r.text[:200]
-                print("  LLM erro " + str(r.status_code) + " modelo=" + model)
+                last_error = "HTTP " + str(r.status_code) + " modelo=" + model
+                print("  OpenRouter " + str(r.status_code) + " modelo=" + model)
         except Exception as e:
             last_error = str(e)
-            print("  LLM excecao modelo=" + model + ": " + str(e))
-    raise RuntimeError("Todos os modelos falharam. Ultimo erro: " + str(last_error))
+            print("  OpenRouter exceção modelo=" + model + ": " + str(e))
+    raise RuntimeError("OpenRouter free esgotado. Último erro: " + str(last_error))
 
+
+def chamar_llm(prompt, max_tokens=4000, temperature=0.2):
+    """
+    Cadeia de fallback 100% gratuita:
+      1. Gemini 1.5 Flash  (Google AI Studio — 1.500 req/dia)
+      2. Grok 3 Mini       (xAI — free tier)
+      3. OpenRouter :free  (vários modelos gratuitos)
+    """
+    tentativas = [
+        ("Gemini",     _chamar_gemini),
+        ("Grok",       _chamar_grok),
+        ("OpenRouter", _chamar_openrouter_free),
+    ]
+    last_error = None
+    for nome, func in tentativas:
+        try:
+            return func(prompt, max_tokens=max_tokens, temperature=temperature)
+        except RuntimeError as e:
+            last_error = str(e)
+            print("  [" + nome + "] falhou: " + last_error[:150])
+    raise RuntimeError("Todas as APIs falharam. Último erro: " + str(last_error))
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# IMAGEM
+# ─────────────────────────────────────────────────────────────────────────────
 
 def obter_imagem_url(image_query, categoria):
     query    = re.sub(r'[^a-zA-Z0-9 ]', '', (image_query or "")).strip()
@@ -104,6 +218,10 @@ def obter_imagem_url(image_query, categoria):
             print("  AVISO Unsplash: " + str(e))
     return fallback
 
+
+# ─────────────────────────────────────────────────────────────────────────────
+# VALIDAÇÃO
+# ─────────────────────────────────────────────────────────────────────────────
 
 def validar_qualidade(dados, categoria):
     title   = dados.get("title", "")
@@ -154,6 +272,10 @@ def is_duplicata(title, posts_path="data/posts.json"):
     return False
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# SALVAR POST
+# ─────────────────────────────────────────────────────────────────────────────
+
 def salvar_post(dados, categoria, fonte_nome=""):
     try:
         data_str  = HOJE.strftime("%Y-%m-%d")
@@ -184,7 +306,8 @@ def salvar_post(dados, categoria, fonte_nome=""):
                 'padding-top:12px;border-top:1px solid #E2E8F0;">'
                 '<strong>Fonte:</strong> '
                 '<a href="' + source_url + '" target="_blank" rel="noopener noreferrer">'
-                + (fonte_nome or source_url) + '</a> — acesso em ' + data_br + '.</p>'
+                + (fonte_nome or source_url) + '</a>'
+                ' — acesso em ' + data_br + '.</p>'
             )
         elif fonte_nome:
             fonte_nota = (

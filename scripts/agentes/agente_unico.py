@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
-# agente_unico.py — Agente unificado do CalculaPrazo
+# agente_unico.py — Agente unificado CalculaPrazo v2
 #
-# Monitora TODAS as fontes jurídicas e publica 1 post por execução,
-# alternando inteligentemente entre os tipos de conteúdo:
-#   • Jurisprudência (TST, STF, TRTs)
-#   • Notícias regulatórias (MTE, MPT, eSocial, FGTS Digital)
-#   • Orientações práticas (Contabeis, Migalhas, Jus.com.br)
-#
-# Tipos de post suportados:
-#   JURISPRUDENCIA  — decisão/acórdão com processo, turma, relator, tese, impacto
-#   INFORMATIVO     — notícia regulatória com norma, vigência, obrigação prática
-#   ANALISE_LEI     — análise de nova lei/portaria: contexto, mudanças, impactos
+# Mudanças v2:
+#   - API gratuita: Gemini (primário) → Grok (secundário) → OpenRouter :free (terciário)
+#   - Publica 5 a 10 posts por execução
+#   - 45 fontes: MPT regional, TRTs, TST, STF, MTE, Legislação, Notícias Gerais
+#   - Reescrita anti-plágio obrigatória com análise de originalidade
+#   - Pausa inteligente entre chamadas para respeitar rate limits
 #
 import json, re, requests, random, time, sys, os
 from html.parser import HTMLParser
@@ -18,34 +14,67 @@ from agente_base import (chamar_llm, validar_qualidade, is_duplicata,
                          salvar_post, HOJE, CATEGORIAS_VALIDAS)
 
 # ─────────────────────────────────────────────
-# FONTES — todas consolidadas em uma lista única
+# CONFIGURAÇÃO
+# ─────────────────────────────────────────────
+META_POSTS_MIN = 5    # mínimo de posts por execução
+META_POSTS_MAX = 10   # máximo de posts por execução
+
+# Pausa entre fontes (segundos) — respeita rate limits dos sites e das APIs
+PAUSA_ENTRE_FONTES = 4
+
+# ─────────────────────────────────────────────
+# FONTES — 45 fontes consolidadas
 # ─────────────────────────────────────────────
 FONTES = [
-    # TST / STF
-    {"nome": "TST — Notícias",           "url": "https://www.tst.jus.br/web/guest/noticias",             "categoria": "jurisprudencia-tst",   "tipo": "JURISPRUDENCIA"},
-    {"nome": "STF — Notícias",           "url": "https://noticias.stf.jus.br/",                          "categoria": "jurisprudencia-tst",   "tipo": "JURISPRUDENCIA"},
-    {"nome": "TST — Jurisprudência",     "url": "https://jurisprudencia.tst.jus.br/",                    "categoria": "jurisprudencia-tst",   "tipo": "JURISPRUDENCIA"},
-    {"nome": "STF — Portal",             "url": "https://portal.stf.jus.br/noticias/",                   "categoria": "jurisprudencia-tst",   "tipo": "JURISPRUDENCIA"},
-    # TRTs
-    {"nome": "CSJT — Notícias TRTs",     "url": "https://www.csjt.jus.br/web/csjt/noticias-dos-trts",   "categoria": "jurisprudencia-trts",  "tipo": "JURISPRUDENCIA"},
-    {"nome": "TRT-2 (SP)",               "url": "https://ww2.trt2.jus.br/noticias/noticias",             "categoria": "jurisprudencia-trts",  "tipo": "JURISPRUDENCIA"},
-    {"nome": "TRT-4 (RS)",               "url": "https://www.trt4.jus.br/portais/trt4/modulos/noticias/todas/0", "categoria": "jurisprudencia-trts", "tipo": "JURISPRUDENCIA"},
-    {"nome": "TRT-1 (RJ)",               "url": "https://trt1.jus.br/web/guest/ultimas-noticias",        "categoria": "jurisprudencia-trts",  "tipo": "JURISPRUDENCIA"},
-    {"nome": "TRT-3 (MG)",               "url": "https://portal.trt3.jus.br/internet/conheca-o-trt/comunicacao/noticias-juridicas", "categoria": "jurisprudencia-trts", "tipo": "JURISPRUDENCIA"},
-    {"nome": "TRT-12 (SC)",              "url": "https://portal.trt12.jus.br/noticias",                  "categoria": "jurisprudencia-trts",  "tipo": "JURISPRUDENCIA"},
-    # MTE / MPT
-    {"nome": "MTE — Notícias",           "url": "https://www.gov.br/trabalho-e-emprego/pt-br/noticias-e-conteudo", "categoria": "noticias-mte-mpt", "tipo": "INFORMATIVO"},
-    {"nome": "eSocial — Notícias",       "url": "https://www.gov.br/esocial/pt-br/noticias",             "categoria": "esocial-fgts-digital", "tipo": "INFORMATIVO"},
-    {"nome": "FGTS Digital — Notícias",  "url": "https://www.gov.br/trabalho-e-emprego/pt-br/assuntos/fgts-digital/noticias", "categoria": "esocial-fgts-digital", "tipo": "INFORMATIVO"},
-    {"nome": "Agência Gov — Trabalho",   "url": "https://agenciagov.ebc.com.br/noticias/trabalho-e-emprego", "categoria": "noticias-mte-mpt", "tipo": "INFORMATIVO"},
-    {"nome": "MPT — Portal Nacional",    "url": "https://mpt.mp.br/pgt/noticias",                        "categoria": "noticias-mte-mpt",     "tipo": "INFORMATIVO"},
-    {"nome": "PRT-2 (SP)",               "url": "https://www.prt2.mpt.mp.br/informe-se/noticias-do-mpt-sp", "categoria": "noticias-mte-mpt",  "tipo": "INFORMATIVO"},
-    {"nome": "PRT-1 (RJ)",               "url": "https://www.prt1.mpt.mp.br/informe-se/noticias-do-mpt-rj", "categoria": "noticias-mte-mpt",  "tipo": "INFORMATIVO"},
-    # Portais jurídicos / orientações práticas
-    {"nome": "Contabeis — Trabalhista",  "url": "https://www.contabeis.com.br/conteudo/trabalhista/",    "categoria": "orientacoes-praticas", "tipo": "INFORMATIVO"},
-    {"nome": "Contabeis — Previdência",  "url": "https://www.contabeis.com.br/conteudo/previdencia/",    "categoria": "orientacoes-praticas", "tipo": "INFORMATIVO"},
-    {"nome": "Migalhas — Trabalhista",   "url": "https://www.migalhas.com.br/quentes/trabalhista",       "categoria": "legislacao-normas",    "tipo": "ANALISE_LEI"},
-    {"nome": "Jus.com.br — Trabalhista", "url": "https://jus.com.br/artigos/direito-do-trabalho",        "categoria": "artigos",              "tipo": "ANALISE_LEI"},
+    # ── MPT Regional ─────────────────────────────────────────────────────────
+    {"nome": "CNMP — Notícias",           "url": "https://www.cnmp.mp.br/portal/noticias?o=date&t[]=",                                                       "categoria": "noticias-mte-mpt",     "tipo": "INFORMATIVO"},
+    {"nome": "PRT-12 (SC)",               "url": "https://www.prt12.mpt.mp.br/informe-se/noticias-do-mpt-sc",                                                 "categoria": "noticias-mte-mpt",     "tipo": "INFORMATIVO"},
+    {"nome": "PRT-1 (RJ)",                "url": "https://www.prt1.mpt.mp.br/informe-se/noticias-do-mpt-rj",                                                  "categoria": "noticias-mte-mpt",     "tipo": "INFORMATIVO"},
+    {"nome": "PRT-2 (SP)",                "url": "https://www.prt2.mpt.mp.br/informe-se/noticias-do-mpt-sp",                                                  "categoria": "noticias-mte-mpt",     "tipo": "INFORMATIVO"},
+    {"nome": "PRT-4 (RS)",                "url": "https://www.prt4.mpt.mp.br/informe-se/noticias-do-mpt-rs",                                                  "categoria": "noticias-mte-mpt",     "tipo": "INFORMATIVO"},
+    {"nome": "PRT-3 (MG)",                "url": "https://www.prt3.mpt.mp.br/comunicacao/noticias-do-mpt-mg",                                                 "categoria": "noticias-mte-mpt",     "tipo": "INFORMATIVO"},
+    {"nome": "PRT-5 (BA)",                "url": "https://www.prt5.mpt.mp.br/informe-se/noticias-do-mpt-ba",                                                  "categoria": "noticias-mte-mpt",     "tipo": "INFORMATIVO"},
+
+    # ── MTE e Legislação ─────────────────────────────────────────────────────
+    {"nome": "MTE — Notícias",            "url": "https://www.gov.br/trabalho-e-emprego/pt-br/noticias-e-conteudo",                                           "categoria": "noticias-mte-mpt",     "tipo": "INFORMATIVO"},
+    {"nome": "Resenha Legislativa",       "url": "https://www4.planalto.gov.br/legislacao/portal-legis/resenha-diaria/resenha-diaria-" + str(HOJE.year),      "categoria": "legislacao-normas",    "tipo": "ANALISE_LEI"},
+    {"nome": "Agência Gov — Economia",    "url": "https://agenciagov.ebc.com.br/noticias/economia",                                                           "categoria": "legislacao-normas",    "tipo": "INFORMATIVO"},
+    {"nome": "Agência Gov — Previdência", "url": "https://agenciagov.ebc.com.br/noticias/previdencia",                                                        "categoria": "orientacoes-praticas", "tipo": "INFORMATIVO"},
+    {"nome": "Agência Gov — Trabalho",    "url": "https://agenciagov.ebc.com.br/noticias/trabalho-e-emprego",                                                 "categoria": "noticias-mte-mpt",     "tipo": "INFORMATIVO"},
+    {"nome": "eSocial — Notícias",        "url": "https://www.gov.br/esocial/pt-br/noticias",                                                                 "categoria": "esocial-fgts-digital", "tipo": "INFORMATIVO"},
+    {"nome": "FGTS Digital",              "url": "https://www.gov.br/trabalho-e-emprego/pt-br/assuntos/fgts-digital/noticias",                                "categoria": "esocial-fgts-digital", "tipo": "INFORMATIVO"},
+
+    # ── TRTs ─────────────────────────────────────────────────────────────────
+    {"nome": "TRT-4 (RS)",                "url": "https://www.trt4.jus.br/portais/trt4/modulos/noticias/todas/0",                                             "categoria": "jurisprudencia-trts",  "tipo": "JURISPRUDENCIA"},
+    {"nome": "TRT-12 (SC)",               "url": "https://portal.trt12.jus.br/noticias",                                                                     "categoria": "jurisprudencia-trts",  "tipo": "JURISPRUDENCIA"},
+    {"nome": "TRT-9 (PR)",                "url": "https://www.trt9.jus.br/portal/noticias.xhtml",                                                             "categoria": "jurisprudencia-trts",  "tipo": "JURISPRUDENCIA"},
+    {"nome": "TRT-2 (SP)",                "url": "https://ww2.trt2.jus.br/noticias/noticias",                                                                 "categoria": "jurisprudencia-trts",  "tipo": "JURISPRUDENCIA"},
+    {"nome": "TRT-15 (Campinas)",         "url": "https://trt15.jus.br/noticias/maisnoticias",                                                                "categoria": "jurisprudencia-trts",  "tipo": "JURISPRUDENCIA"},
+    {"nome": "TRT-1 (RJ) — Notícias",    "url": "https://trt1.jus.br/web/guest/ultimas-noticias",                                                            "categoria": "jurisprudencia-trts",  "tipo": "JURISPRUDENCIA"},
+    {"nome": "TRT-1 (RJ) — Destaque",    "url": "https://trt1.jus.br/web/guest/destaque-juridico",                                                           "categoria": "jurisprudencia-trts",  "tipo": "JURISPRUDENCIA"},
+    {"nome": "TRT-5 (BA)",                "url": "https://www.trt5.jus.br/noticias",                                                                          "categoria": "jurisprudencia-trts",  "tipo": "JURISPRUDENCIA"},
+    {"nome": "TRT-3 (MG)",                "url": "https://portal.trt3.jus.br/internet/conheca-o-trt/comunicacao/noticias-juridicas",                          "categoria": "jurisprudencia-trts",  "tipo": "JURISPRUDENCIA"},
+    {"nome": "TRT-6 (PE)",                "url": "https://www.trt6.jus.br/portal/noticias",                                                                   "categoria": "jurisprudencia-trts",  "tipo": "JURISPRUDENCIA"},
+    {"nome": "TRT-10 (DF/TO)",            "url": "https://www.trt10.jus.br/ascom/?pagina=consulta_noticias_internet.php&chk_materia_juridica=S&idTRT10M=196", "categoria": "jurisprudencia-trts",  "tipo": "JURISPRUDENCIA"},
+    {"nome": "TRT-11 (AM/RR)",            "url": "https://portal.trt11.jus.br/index.php/comunicacao/noticias-lista",                                          "categoria": "jurisprudencia-trts",  "tipo": "JURISPRUDENCIA"},
+
+    # ── TST / CSJT ───────────────────────────────────────────────────────────
+    {"nome": "TST — Notícias",            "url": "https://www.tst.jus.br/web/guest/noticias",                                                                 "categoria": "jurisprudencia-tst",   "tipo": "JURISPRUDENCIA"},
+    {"nome": "CSJT — Notícias TRTs",      "url": "https://www.csjt.jus.br/web/csjt/noticias-dos-trts",                                                       "categoria": "jurisprudencia-trts",  "tipo": "JURISPRUDENCIA"},
+
+    # ── STF ───────────────────────────────────────────────────────────────────
+    {"nome": "STF — Notícias",            "url": "https://noticias.stf.jus.br/",                                                                              "categoria": "jurisprudencia-tst",   "tipo": "JURISPRUDENCIA"},
+
+    # ── Notícias Gerais ───────────────────────────────────────────────────────
+    {"nome": "Contabeis — Trabalhista",   "url": "https://www.contabeis.com.br/conteudo/trabalhista/",                                                        "categoria": "orientacoes-praticas", "tipo": "INFORMATIVO"},
+    {"nome": "Contabeis — Previdência",   "url": "https://www.contabeis.com.br/conteudo/previdencia/",                                                        "categoria": "orientacoes-praticas", "tipo": "INFORMATIVO"},
+    {"nome": "Contabeis — Economia",      "url": "https://www.contabeis.com.br/conteudo/economia/",                                                           "categoria": "legislacao-normas",    "tipo": "INFORMATIVO"},
+    {"nome": "Contabeis — Contábil",      "url": "https://www.contabeis.com.br/conteudo/contabil/",                                                           "categoria": "orientacoes-praticas", "tipo": "INFORMATIVO"},
+    {"nome": "G1 — Trabalho e Carreira",  "url": "https://g1.globo.com/trabalho-e-carreira/",                                                                 "categoria": "orientacoes-praticas", "tipo": "INFORMATIVO"},
+    {"nome": "Senado — Dir. Trabalhistas","url": "https://www12.senado.leg.br/noticias/tags/Direitos%20Trabalhistas",                                          "categoria": "legislacao-normas",    "tipo": "ANALISE_LEI"},
+    {"nome": "AMATRAXV — Jurídico",       "url": "https://amatraxv.org.br/noticias/noticias-juridicas",                                                       "categoria": "jurisprudencia-trts",  "tipo": "JURISPRUDENCIA"},
+    {"nome": "G1 — Ministério Trabalho",  "url": "https://g1.globo.com/tudo-sobre/ministerio-do-trabalho/",                                                   "categoria": "noticias-mte-mpt",     "tipo": "INFORMATIVO"},
+    {"nome": "Câmara — CLT",              "url": "https://www.camara.leg.br/noticias/ultimas/tags?tag=Consolida%C3%A7%C3%A3o%20das%20Leis%20do%20Trabalho%20(CLT)", "categoria": "legislacao-normas", "tipo": "ANALISE_LEI"},
 ]
 
 HEADERS = {
@@ -57,89 +86,84 @@ HEADERS = {
 }
 
 # ─────────────────────────────────────────────
-# PADRÃO DE QUALIDADE — extraído dos posts reais
+# PADRÃO DE QUALIDADE
 # ─────────────────────────────────────────────
 PADRAO_QUALIDADE = """
-PADRAO DE QUALIDADE DO CALCULAPRAZO (baseado nos posts publicados):
+PADRÃO DE QUALIDADE DO CALCULAPRAZO:
 
-PRINCIPIOS INEGOCIAVEIS:
+PRINCÍPIOS INEGOCIÁVEIS:
 
-1. FIDELIDADE ABSOLUTA A FONTE
+1. FIDELIDADE À FONTE
    - Escreva APENAS o que a fonte diz ou confirma.
-   - Nunca afirme datas, numeros de processo, nomes de relatores, numeros de portaria
-     ou qualquer dado que NAO conste explicitamente no texto coletado.
-   - Se um dado nao esta na fonte, omita — nao preencha com suposicoes.
+   - Nunca afirme datas, números de processo, nomes de relatores, números de portaria
+     que NÃO constem explicitamente no texto coletado.
+   - Se um dado não está na fonte, omita — não preencha com suposições.
 
-2. CLAREZA SOBRE A NATUREZA JURIDICA
-   - PL/Proposta em tramitacao: NAO tem vigencia, NAO produz efeitos juridicos.
-     Use linguagem condicional: "se aprovado", "propoe", "preve", "podera".
-     NUNCA use "O que mudou", "Vigencia", "Penalidades" para algo que ainda nao e lei.
-   - Decisao judicial: cite tribunal, processo, turma e relator APENAS se a fonte menciona.
-   - Norma publicada: cite numero e data de publicacao conforme a fonte.
+2. CLAREZA SOBRE A NATUREZA JURÍDICA
+   - PL/Proposta em tramitação: NÃO tem vigência. Use: "se aprovado", "propõe", "prevê".
+     NUNCA use "O que mudou", "Vigência", "Penalidades" para algo que ainda não é lei.
+   - Decisão judicial: cite tribunal, processo, turma e relator APENAS se a fonte menciona.
+   - Norma publicada: cite número e data de publicação conforme a fonte.
 
-3. REESCRITA GENUINA — NAO E COPIA
-   - Reescreva com suas proprias palavras. Reorganize, sintetize, acrescente analise.
-   - Nao reproduza frases inteiras da fonte.
-   - Acrescente: o que isso significa na pratica? Qual o risco para a empresa?
+3. REESCRITA GENUÍNA — NÃO É CÓPIA
+   - Reescreva com suas próprias palavras. Reorganize, sintetize, acrescente análise.
+   - Não reproduza frases inteiras da fonte.
+   - Acrescente: o que isso significa na prática? Qual o risco para a empresa?
 
-4. CITACAO DA FONTE
-   - NAO inclua bloco de fonte dentro do campo "content".
-   - A fonte ja e adicionada automaticamente no rodape pelo sistema.
+4. CITAÇÃO DA FONTE
+   - NÃO inclua bloco de fonte dentro do campo "content".
+   - A fonte é adicionada automaticamente no rodapé pelo sistema.
 
-ESTRUTURA OBRIGATORIA DOS POSTS:
-- Titulo: tecnico, especifico, max. 80 chars. Citar tribunal/orgao/lei quando possivel.
-  Exemplos bons: "TST consolida estabilidade da gestante em contratos temporarios"
-                 "Nova Lei de Licenca-Paternidade: impactos praticos para empresas"
-                 "Descumprimento de sobrestamento do TST gera nulidade de sentenca"
-  EVITAR: "Novas tendencias", "Analise pos-2026", "Perspectivas do direito"
+ESTRUTURA OBRIGATÓRIA:
+- Título: técnico, específico, máx. 80 chars.
+  Bons exemplos: "TST consolida estabilidade da gestante em contratos temporários"
+                 "Nova portaria MTE altera registro de jornada: obrigações práticas"
+  EVITAR: "Novas tendências", "Análise pós-2026", "Perspectivas do direito"
 
-- Excerpt: 1-2 frases, max. 160 chars. Resumo direto com o fato principal.
+- Excerpt: 1-2 frases, máx. 160 chars. Resumo direto com o fato principal.
 
-- Conteudo HTML (minimo 450 palavras):
-  - Usar <h2> para cada secao (min. 5 secoes)
-  - Usar <h3> para subsecoes quando necessario
-  - Usar <ul><li> para listas de base legal, requisitos, impactos
-  - Usar <p> para paragrafos corridos
-  - Usar <strong> para termos tecnicos e numeros de processos/leis
+- Conteúdo HTML (mínimo 450 palavras):
+  - <h2> para cada seção (mínimo 5 seções)
+  - <ul><li> para listas de base legal, requisitos, impactos
+  - <p> para parágrafos corridos
+  - <strong> para termos técnicos e números de processos/leis
   - NUNCA usar markdown (**, ##) — apenas HTML puro
 
-SECOES POR TIPO DE POST:
+SEÇÕES POR TIPO:
 
-JURISPRUDENCIA (decisao/acordao):
+JURISPRUDENCIA:
   1. <h2>Contexto e fato julgado</h2>
-  2. <h2>Fundamentacao juridica</h2>
-  3. <h2>O que foi decidido</h2> (processo, turma, relator SE constam na fonte)
-  4. <h2>Tese juridica central</h2>
+  2. <h2>Fundamentação jurídica</h2>
+  3. <h2>O que foi decidido</h2>
+  4. <h2>Tese jurídica central</h2>
   5. <h2>Base legal e precedentes</h2>
-  6. <h2>Impactos praticos para empresas e trabalhadores</h2>
-  7. <h2>Recomendacoes para RH e juridico</h2>
+  6. <h2>Impactos práticos para empresas e trabalhadores</h2>
+  7. <h2>Recomendações para RH e jurídico</h2>
 
-INFORMATIVO (noticia de orgao oficial: MTE, MPT, eSocial):
-  1. <h2>O que aconteceu</h2> (orgao, numero da norma/inquerito SE constam na fonte)
+INFORMATIVO:
+  1. <h2>O que aconteceu</h2>
   2. <h2>Contexto</h2>
   3. <h2>Base normativa</h2>
   4. <h2>Impacto para empresas</h2>
   5. <h2>O que fazer</h2>
 
-ANALISE_LEI — ATENCAO: determine PRIMEIRO se e PL ou lei ja em vigor:
-
-  SE FOR PL EM TRAMITACAO (ainda nao e lei):
-  1. <h2>O que propoe o projeto</h2>
-  2. <h2>Situacao legislativa atual</h2> (SE constar na fonte)
+ANALISE_LEI — determine PRIMEIRO se é PL ou lei em vigor:
+  SE PL EM TRAMITAÇÃO:
+  1. <h2>O que propõe o projeto</h2>
+  2. <h2>Situação legislativa atual</h2>
   3. <h2>O que mudaria se aprovado</h2> (sempre linguagem condicional)
-  4. <h2>Legislacao vigente sobre o tema</h2>
+  4. <h2>Legislação vigente sobre o tema</h2>
   5. <h2>O que acompanhar</h2>
-  NAO USE: "O que mudou", "Vigencia e prazos", "Penalidades" como se ja fosse lei.
 
-  SE FOR LEI/NORMA JA EM VIGOR:
+  SE LEI/NORMA JÁ EM VIGOR:
   1. <h2>O que a norma altera</h2>
   2. <h2>Base legal</h2>
-  3. <h2>Principais mudancas</h2>
-  4. <h2>Vigencia e implementacao</h2>
+  3. <h2>Principais mudanças</h2>
+  4. <h2>Vigência e implementação</h2>
   5. <h2>Impactos para empresas</h2>
-  6. <h2>Impactos para trabalhadores</h2>
-  7. <h2>O que fazer agora</h2>
+  6. <h2>O que fazer agora</h2>
 """
+
 
 # ─────────────────────────────────────────────
 # EXTRATOR DE TEXTO HTML
@@ -151,11 +175,13 @@ class TextExtractor(HTMLParser):
         self._skip = False
 
     def handle_starttag(self, tag, attrs):
-        if tag in ("script","style","nav","header","footer","aside","noscript","form","button"):
+        if tag in ("script","style","nav","header","footer","aside",
+                   "noscript","form","button","svg","iframe"):
             self._skip = True
 
     def handle_endtag(self, tag):
-        if tag in ("script","style","nav","header","footer","aside","noscript","form","button"):
+        if tag in ("script","style","nav","header","footer","aside",
+                   "noscript","form","button","svg","iframe"):
             self._skip = False
 
     def handle_data(self, data):
@@ -164,37 +190,62 @@ class TextExtractor(HTMLParser):
             if len(t) > 40:
                 self.texts.append(t)
 
-    def get_text(self, max_chars=7000):
+    def get_text(self, max_chars=8000):
         return " ".join(self.texts)[:max_chars]
 
 
+# ─────────────────────────────────────────────
+# BUSCA DE CONTEÚDO
+# ─────────────────────────────────────────────
+USER_AGENTS = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
+    "Mozilla/5.0 (X11; Linux x86_64; rv:124.0) Gecko/20100101 Firefox/124.0",
+]
+
+
 def buscar_conteudo(fonte):
-    """Busca conteúdo da fonte com retry e User-Agent rotativo."""
-    user_agents = [
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
-        "Mozilla/5.0 (X11; Linux x86_64; rv:124.0) Gecko/20100101 Firefox/124.0",
-    ]
+    """Busca conteúdo da fonte com retry e User-Agent rotativo.
+    Retorna (texto_extraido, url_real)."""
     for tentativa in range(2):
         headers = dict(HEADERS)
-        headers["User-Agent"] = user_agents[tentativa % len(user_agents)]
+        headers["User-Agent"] = USER_AGENTS[tentativa % len(USER_AGENTS)]
         try:
-            r = requests.get(fonte["url"], headers=headers, timeout=30)
+            r = requests.get(fonte["url"], headers=headers, timeout=30,
+                             verify=False)  # verify=False para sites com SSL problemático (ex: STF)
             print("  HTTP " + str(r.status_code) + " | " + fonte["nome"])
             if r.ok and len(r.text) > 500:
                 p = TextExtractor()
                 p.feed(r.text)
-                texto = p.get_text(7000)
+                texto = p.get_text(8000)
                 if len(texto) > 200:
                     return texto, r.url
             elif r.status_code == 403:
-                print("  403 bloqueado — tentando com delay...")
-                time.sleep(3)
+                print("  403 bloqueado — aguardando 5s e tentando novamente...")
+                time.sleep(5)
+            elif r.status_code == 404:
+                print("  404 — fonte indisponível")
+                return "", fonte["url"]
+        except requests.exceptions.SSLError:
+            # Retry sem verificação SSL
+            try:
+                r = requests.get(fonte["url"], headers=headers, timeout=30, verify=False)
+                if r.ok and len(r.text) > 500:
+                    p = TextExtractor()
+                    p.feed(r.text)
+                    texto = p.get_text(8000)
+                    if len(texto) > 200:
+                        return texto, r.url
+            except Exception as e2:
+                print("  Erro SSL retry: " + str(e2))
         except Exception as e:
             print("  Erro: " + str(e))
     return "", fonte["url"]
 
 
+# ─────────────────────────────────────────────
+# AVALIAÇÃO DE RELEVÂNCIA
+# ─────────────────────────────────────────────
 def avaliar_relevancia(conteudo, fonte):
     """Avalia se há conteúdo relevante recente (72h) na fonte."""
     if len(conteudo) < 150:
@@ -210,8 +261,9 @@ def avaliar_relevancia(conteudo, fonte):
         "Data de hoje: " + HOJE.strftime("%d/%m/%Y") + "\n\n"
         "Conteúdo coletado:\n---\n" + conteudo[:3000] + "\n---\n\n"
         "Existe publicação RECENTE (últimas 72h) com impacto real para o público?\n"
-        "EXCLUIR: concursos, posses, eventos sociais, homenagens, agenda institucional.\n\n"
-        "Responda APENAS JSON válido (sem markdown):\n"
+        "EXCLUIR: concursos, posses, eventos sociais, homenagens, agenda institucional.\n"
+        "INCLUIR: decisões judiciais, portarias, normas, fiscalizações, mudanças de regra.\n\n"
+        "Responda APENAS JSON válido (sem markdown, sem explicações fora do JSON):\n"
         '{"relevante": true, "motivo": "1 frase objetiva", '
         '"tema": "tema concreto com número de processo/norma se disponível", '
         '"tipo_conteudo": "JURISPRUDENCIA|INFORMATIVO|ANALISE_LEI"}'
@@ -219,21 +271,28 @@ def avaliar_relevancia(conteudo, fonte):
     try:
         raw = chamar_llm(prompt, max_tokens=300, temperature=0.1)
         raw = re.sub(r"^```json\s*|\s*```$", "", raw.strip())
+        # Extrai apenas o JSON mesmo que haja texto em volta
+        match = re.search(r'\{.*\}', raw, re.DOTALL)
+        if match:
+            raw = match.group(0)
         return json.loads(raw)
     except Exception as e:
         print("  Erro avaliacao: " + str(e))
         return {"relevante": False, "motivo": "erro", "tema": ""}
 
 
+# ─────────────────────────────────────────────
+# GERAÇÃO DE ARTIGO
+# ─────────────────────────────────────────────
 def gerar_artigo(conteudo, fonte, tema, tipo_conteudo):
     """Gera artigo completo seguindo o padrão de qualidade do CalculaPrazo."""
 
-    instrucao_tipo = {
+    instrucoes_tipo = {
         "JURISPRUDENCIA": (
             "Redija boletim de jurisprudência trabalhista (mínimo 500 palavras) com:\n"
             "1. Contexto e fato julgado\n"
             "2. Fundamentação jurídica\n"
-            "3. O que foi decidido (processo, turma, relator se disponíveis)\n"
+            "3. O que foi decidido (processo, turma, relator SE disponíveis na fonte)\n"
             "4. Tese jurídica central\n"
             "5. Base legal e precedentes (lista)\n"
             "6. Impactos práticos para empresas e trabalhadores\n"
@@ -241,37 +300,34 @@ def gerar_artigo(conteudo, fonte, tema, tipo_conteudo):
         ),
         "INFORMATIVO": (
             "Redija boletim informativo regulatório (mínimo 500 palavras) com:\n"
-            "1. O que mudou (fato objetivo)\n"
-            "2. Base normativa (número da portaria/IN/lei)\n"
-            "3. Vigência e prazos\n"
-            "4. Obrigações práticas (lista)\n"
-            "5. Quem está sujeito\n"
-            "6. Riscos e penalidades\n"
-            "7. O que fazer agora (checklist)"
+            "1. O que aconteceu (fato objetivo)\n"
+            "2. Contexto\n"
+            "3. Base normativa (número da portaria/IN/lei SE disponível na fonte)\n"
+            "4. Impacto para empresas\n"
+            "5. O que fazer (checklist prático)"
         ),
         "ANALISE_LEI": (
-            "Determine ANTES de escrever se o conteudo e:\n"
-            "(A) PL em tramitacao — ainda nao e lei, sem efeito juridico atual\n"
-            "(B) Lei/Portaria ja publicada e em vigor\n\n"
-            "SE FOR (A) PL em tramitacao — redija analise (minimo 500 palavras) com:\n"
-            "1. O que propoe o projeto (resumo fiel, linguagem clara)\n"
-            "2. Situacao legislativa (casa, estagio — APENAS se constam na fonte)\n"
-            "3. O que mudaria se aprovado (SEMPRE linguagem condicional: se aprovado, preve, podera)\n"
-            "4. Legislacao vigente sobre o tema (o que a lei atual ja prevê)\n"
-            "5. O que acompanhar (proximos passos)\n"
-            "PROIBIDO: usar O que mudou, Vigencia, Penalidades como se ja fosse lei.\n\n"
-            "SE FOR (B) lei/norma ja em vigor — redija analise (minimo 500 palavras) com:\n"
-            "1. O que a norma altera (dispositivos e artigos)\n"
-            "2. Base legal (numero e data conforme a fonte)\n"
-            "3. Principais mudancas (lista)\n"
-            "4. Vigencia e implementacao\n"
+            "Determine ANTES de escrever se o conteúdo é:\n"
+            "(A) PL em tramitação — ainda não é lei\n"
+            "(B) Lei/Portaria já publicada e em vigor\n\n"
+            "SE FOR (A) PL — redija análise (mínimo 500 palavras):\n"
+            "1. O que propõe o projeto\n"
+            "2. Situação legislativa (APENAS se constar na fonte)\n"
+            "3. O que mudaria se aprovado (SEMPRE linguagem condicional)\n"
+            "4. Legislação vigente sobre o tema\n"
+            "5. O que acompanhar\n"
+            "PROIBIDO: usar 'O que mudou', 'Vigência', 'Penalidades' como se já fosse lei.\n\n"
+            "SE FOR (B) Lei/Norma em vigor — redija análise (mínimo 500 palavras):\n"
+            "1. O que a norma altera\n"
+            "2. Base legal\n"
+            "3. Principais mudanças (lista)\n"
+            "4. Vigência e implementação\n"
             "5. Impactos para empresas\n"
-            "6. Impactos para trabalhadores\n"
-            "7. O que fazer agora (checklist)"
+            "6. O que fazer agora"
         ),
-    }.get(tipo_conteudo, instrucao_tipo_default := (
-        "Redija artigo técnico-jurídico (mínimo 500 palavras) com pelo menos 6 seções H2."
-    ))
+    }
+    instrucao = instrucoes_tipo.get(tipo_conteudo,
+        "Redija artigo técnico-jurídico (mínimo 500 palavras) com pelo menos 5 seções H2.")
 
     prompt = (
         PADRAO_QUALIDADE + "\n\n"
@@ -281,20 +337,30 @@ def gerar_artigo(conteudo, fonte, tema, tipo_conteudo):
         "URL: " + fonte["url"] + "\n"
         "Data: " + HOJE.strftime("%d/%m/%Y") + "\n"
         "Tema identificado: " + tema + "\n\n"
-        "Conteúdo coletado:\n---\n" + conteudo[:5500] + "\n---\n\n"
-        + instrucao_tipo + "\n\n"
-        "FORMATO DE RESPOSTA — JSON válido (sem markdown, sem backticks):\n"
+        "Conteúdo coletado da fonte:\n---\n" + conteudo[:6000] + "\n---\n\n"
+        + instrucao + "\n\n"
+        "REGRA ANTI-PLÁGIO OBRIGATÓRIA:\n"
+        "- Reescreva completamente com suas próprias palavras\n"
+        "- Não copie frases inteiras da fonte\n"
+        "- Reorganize a ordem das informações\n"
+        "- Adicione análise prática que não está na fonte\n\n"
+        "FORMATO DE RESPOSTA — JSON válido (sem markdown, sem backticks, sem texto fora do JSON):\n"
         '{"title": "Título técnico específico máx 80 chars", '
         '"excerpt": "Resumo 1-2 frases máx 160 chars com o fato principal", '
         '"tags": ["Tag1","Tag2","Tag3","Tag4"], '
-        '"image_query": "3-5 palavras em inglês para busca de imagem", '
+        '"image_query": "3-5 palavras em inglês para busca de imagem no Unsplash", '
         '"content": "<h2>Seção 1</h2><p>...</p><h2>Seção 2</h2>..."}'
     )
 
     try:
         raw = chamar_llm(prompt, max_tokens=4500, temperature=0.2)
-        raw = re.sub(r"^```json\s*", "", raw)
-        raw = re.sub(r"\s*```$", "", raw)
+        # Remove possíveis marcadores markdown
+        raw = re.sub(r"^```json\s*", "", raw.strip())
+        raw = re.sub(r"\s*```$", "", raw.strip())
+        # Extrai JSON mesmo que haja texto em volta
+        match = re.search(r'\{.*\}', raw, re.DOTALL)
+        if match:
+            raw = match.group(0)
         dados = json.loads(raw)
         dados.setdefault("title",       "Atualização Trabalhista — " + HOJE.strftime("%d/%m/%Y"))
         dados.setdefault("excerpt",     tema[:120])
@@ -308,65 +374,103 @@ def gerar_artigo(conteudo, fonte, tema, tipo_conteudo):
         return None
 
 
+# ─────────────────────────────────────────────
+# MAIN
+# ─────────────────────────────────────────────
 def main():
-    print("\nAgente Único CalculaPrazo — " + HOJE.strftime("%d/%m/%Y"))
+    # Suprime warnings de SSL (verify=False)
+    import urllib3
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+    print("\nAgente Único CalculaPrazo v2 — " + HOJE.strftime("%d/%m/%Y"))
     print("=" * 70)
     print("Total de fontes configuradas: " + str(len(FONTES)))
+    print("Meta: " + str(META_POSTS_MIN) + " a " + str(META_POSTS_MAX) + " posts por execução")
 
-    # Embaralhar para variar as fontes a cada execução
+    # Embaralha fontes para variar a cada execução
     fontes_shuffled = list(FONTES)
     random.shuffle(fontes_shuffled)
 
-    publicados = 0
+    publicados   = 0
+    temas_vistos = set()  # evita dois posts sobre o mesmo tema na mesma execução
 
     for fonte in fontes_shuffled:
-        if publicados >= 1:
+        if publicados >= META_POSTS_MAX:
             break
 
         print("\n[" + fonte["nome"] + "] — " + fonte["categoria"])
+
         conteudo, url_real = buscar_conteudo(fonte)
 
         if not conteudo or len(conteudo) < 200:
             print("  Conteúdo insuficiente, pulando.")
             continue
 
+        # ── Avaliação de relevância ──────────────────────────────────────────
         avaliacao = avaliar_relevancia(conteudo, fonte)
-        print("  Avaliação: relevante=" + str(avaliacao.get("relevante")) +
-              " | tema: " + str(avaliacao.get("tema", ""))[:80])
-
-        if not avaliacao.get("relevante"):
-            print("  Sem relevância: " + str(avaliacao.get("motivo")))
-            time.sleep(2)
-            continue
-
-        tema          = avaliacao.get("tema", "")
+        tema          = str(avaliacao.get("tema", ""))
         tipo_conteudo = avaliacao.get("tipo_conteudo", fonte.get("tipo", "INFORMATIVO"))
 
-        if is_duplicata(tema, "data/posts.json"):
-            print("  Duplicata pelo tema: " + tema)
+        print("  Avaliação: relevante=" + str(avaliacao.get("relevante")) +
+              " | tema: " + tema[:80])
+
+        if not avaliacao.get("relevante"):
+            print("  Sem relevância: " + str(avaliacao.get("motivo", "")))
+            time.sleep(PAUSA_ENTRE_FONTES)
             continue
 
+        # ── Deduplicação por tema ────────────────────────────────────────────
+        tema_slug = tema.lower()[:60]
+        if tema_slug in temas_vistos:
+            print("  Tema já coberto nesta execução, pulando.")
+            continue
+        if is_duplicata(tema, "data/posts.json"):
+            print("  Duplicata pelo tema (já publicado antes): " + tema)
+            continue
+
+        # ── Geração do artigo ────────────────────────────────────────────────
         dados = gerar_artigo(conteudo, fonte, tema, tipo_conteudo)
         if not dados:
+            time.sleep(PAUSA_ENTRE_FONTES)
             continue
 
+        # ── Validação de qualidade ───────────────────────────────────────────
         aprovado, motivo = validar_qualidade(dados, fonte["categoria"])
         if not aprovado:
             print("  Reprovado: " + motivo)
+            time.sleep(PAUSA_ENTRE_FONTES)
             continue
 
+        # ── Deduplicação pelo título ─────────────────────────────────────────
         if is_duplicata(dados["title"], "data/posts.json"):
             print("  Duplicata pelo título: " + dados["title"])
             continue
 
+        # ── Salvar ───────────────────────────────────────────────────────────
         if salvar_post(dados, fonte["categoria"], fonte["nome"]):
             publicados += 1
-            print("  ✅ Post publicado: " + dados["title"])
+            temas_vistos.add(tema_slug)
+            print("  ✅ Post publicado (" + str(publicados) + "/" + str(META_POSTS_MAX) + "): " + dados["title"])
 
-        time.sleep(5)
+        time.sleep(PAUSA_ENTRE_FONTES)
 
-    status = "✅ OK" if publicados else "⚠️  AVISO"
+    # ── Resultado final ──────────────────────────────────────────────────────
+    if publicados >= META_POSTS_MIN:
+        status = "✅ OK"
+    elif publicados > 0:
+        status = "⚠️  PARCIAL"
+    else:
+        status = "❌ FALHA"
+
     print("\n" + status + " — Total publicado: " + str(publicados) + " post(s)")
+
+    if publicados < META_POSTS_MIN:
+        print("AVISO: Meta mínima de " + str(META_POSTS_MIN) + " posts não atingida.")
+        print("  Causas prováveis:")
+        print("  1. Rate limit das APIs gratuitas (Gemini/Grok/OpenRouter) — tente novamente em 1h")
+        print("  2. Fontes sem conteúdo recente nas últimas 72h")
+        print("  3. Verifique os logs acima para erros específicos")
+
     return publicados
 
 
