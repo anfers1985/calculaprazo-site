@@ -434,7 +434,7 @@ async function testGitHubPAT(){
       div.innerHTML='<span style="color:#DC2626;">❌ Sem permissão (403). Token precisa do escopo <strong>repo</strong>.</span>';
     } else if(r.status===404){
       div.style.background='#FFF5F5';
-      div.innerHTML=`<span style="color:#DC2626;">❌ Repositório não encontrado (404). Verifique se o token tem acesso ao repo <strong>${GITHUB_OWNER}/${GITHUB_REPO}</strong> e se o escopo <strong>repo</strong> está habilitado. Tokens Fine-grained precisam de Contents: Read & Write.</span>`;
+      div.innerHTML=`<span style="color:#DC2626;">❌ Repositório não encontrado (404).<br><br>Isso significa que o Token não tem permissão para ver o repositório <strong>${GITHUB_OWNER}/${GITHUB_REPO}</strong>.<br><br><strong>Como resolver:</strong><br>1. Vá em Settings -> Developer Settings -> Personal Access Tokens no GitHub.<br>2. Se for Fine-grained: Em "Repository access", selecione o repositório <strong>calculaprazo-site</strong>.<br>3. Em "Permissions", coloque <strong>Contents: Read & Write</strong> e <strong>Workflows: Read & Write</strong>.</span>`;
     } else {
       div.style.background='#FFF5F5';
       div.innerHTML=`<span style="color:#DC2626;">❌ Erro ${r.status}.</span>`;
