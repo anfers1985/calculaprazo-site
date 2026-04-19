@@ -58,15 +58,6 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
 }
 
-PADRAO_QUALIDADE = """
-PADRÃO DE QUALIDADE DO CALCULAPRAZO:
-1. PROFISSIONAL E PRAGMÁTICO: Linguagem técnica, acessível a profissionais de RH e Direito.
-2. SEM LADO: Relato imparcial dos fatos e decisões.
-3. CONTEÚDO INFORMATIVO: Muito próximo do original, mas completamente reescrito para evitar plágio.
-4. ESTRUTURA: Mínimo 500 palavras, use <h2>, <ul>, <li> e <strong>. Pelo menos 5 seções <h2>.
-5. NÃO inclua bloco de fonte no campo "content" — a fonte é adicionada automaticamente.
-"""
-
 
 # ─────────────────────────────────────────────
 # EXTRATOR DE TEXTO HTML
@@ -184,63 +175,90 @@ def avaliar_relevancia(conteudo, fonte):
 # GERAÇÃO DE ARTIGO
 # ─────────────────────────────────────────────
 def gerar_artigo(conteudo, fonte, tema, tipo_conteudo):
-    instrucoes = {
+
+    # Orientação por tipo — SEM ditar subtítulos fixos.
+    # O modelo cria os h2 a partir do conteúdo real, como um redator faria.
+    orientacao_tipo = {
         "JURISPRUDENCIA": (
-            "Redija boletim de jurisprudência trabalhista com MÍNIMO ABSOLUTO DE 800 PALAVRAS.\n\n"
-            "SEÇÕES OBRIGATÓRIAS (cada uma com pelo menos 2 parágrafos densos):\n"
-            "1. <h2>Contexto e fato julgado</h2> — explique o caso completo: partes, setor econômico, histórico do conflito, instâncias anteriores.\n"
-            "2. <h2>Fundamentação jurídica</h2> — cite dispositivos legais (CLT, CF, leis específicas), súmulas, OJs e precedentes mencionados na fonte.\n"
-            "3. <h2>O que foi decidido</h2> — descreva a decisão em detalhes: tribunal, câmara/turma, relator se disponível, sentido do julgamento, unanimidade ou divergência.\n"
-            "4. <h2>Tese jurídica firmada</h2> — explique o entendimento jurídico estabelecido e seu alcance.\n"
-            "5. <h2>Impactos práticos para empresas e trabalhadores</h2> — consequências concretas: riscos, obrigações, mudanças operacionais.\n"
-            "6. <h2>Recomendações para departamentos de RH e jurídico</h2> — lista de ações práticas com <ul><li>."
+            "Você está redigindo um boletim de jurisprudência trabalhista.\n"
+            "Cubra obrigatoriamente: o caso concreto (partes, fato, setor), "
+            "os fundamentos legais e súmulas aplicados, o que foi decidido e por quê, "
+            "a tese jurídica que se extrai e as consequências práticas para empresas e trabalhadores.\n"
+            "Inclua também orientações objetivas para RH e jurídico."
         ),
         "INFORMATIVO": (
-            "Redija boletim informativo regulatório com MÍNIMO ABSOLUTO DE 800 PALAVRAS.\n\n"
-            "SEÇÕES OBRIGATÓRIAS (cada uma com pelo menos 2 parágrafos densos):\n"
-            "1. <h2>O que aconteceu</h2> — descreva o fato em detalhes: órgão responsável, data, contexto, número de portaria/resolução/IN se disponível.\n"
-            "2. <h2>Contexto e histórico</h2> — por que isso está acontecendo agora? Qual o histórico legislativo ou regulatório que levou a essa medida?\n"
-            "3. <h2>Base normativa aplicável</h2> — liste as leis, portarias e normas envolvidas com <ul><li>.\n"
-            "4. <h2>Quem é afetado e como</h2> — setores, portes de empresa, categorias de trabalhadores impactados.\n"
-            "5. <h2>Impactos operacionais para empresas</h2> — consequências concretas no dia a dia: processos, sistemas, contratos.\n"
-            "6. <h2>Checklist de conformidade</h2> — lista de ações práticas para adequação com <ul><li>."
+            "Você está redigindo um boletim informativo regulatório.\n"
+            "Cubra obrigatoriamente: o fato central (órgão, data, número da norma se disponível), "
+            "o contexto que levou a essa medida, quem é afetado e como, "
+            "as obrigações práticas geradas e os riscos de não conformidade."
         ),
         "ANALISE_LEI": (
-            "Redija análise jurídico-legislativa com MÍNIMO ABSOLUTO DE 800 PALAVRAS.\n\n"
-            "SEÇÕES OBRIGATÓRIAS (cada uma com pelo menos 2 parágrafos densos):\n"
-            "1. <h2>O que a norma ou proposta estabelece</h2> — descreva o conteúdo completo: artigos principais, objeto central, escopo.\n"
-            "2. <h2>Contexto legislativo e histórico</h2> — tramitação, motivação do legislador, problemas que visa resolver.\n"
-            "3. <h2>Principais mudanças em relação ao regime anterior</h2> — compare com a legislação vigente usando <ul><li>.\n"
-            "4. <h2>Vigência e prazos de adequação</h2> — quando entra em vigor, vacatio legis, prazos transitórios.\n"
-            "5. <h2>Impactos para empregadores</h2> — obrigações novas, custos, riscos de autuação.\n"
-            "6. <h2>Impactos para trabalhadores</h2> — direitos ampliados, restrições, mudanças práticas.\n"
-            "7. <h2>O que fazer agora</h2> — lista de medidas imediatas com <ul><li>."
+            "Você está redigindo uma análise jurídico-legislativa.\n"
+            "Cubra obrigatoriamente: o que a norma ou proposta estabelece, "
+            "o contexto legislativo, as mudanças em relação ao regime anterior, "
+            "vigência e prazos, impactos para empregadores e trabalhadores, "
+            "e medidas imediatas de adequação."
         ),
     }.get(tipo_conteudo,
-        "Redija artigo técnico-jurídico com MÍNIMO ABSOLUTO DE 800 PALAVRAS e pelo menos 6 seções <h2>, "
-        "cada uma com pelo menos 2 parágrafos densos."
+        "Você está redigindo um artigo técnico-jurídico trabalhista. "
+        "Cubra todos os aspectos relevantes do tema: contexto, normas aplicáveis, "
+        "impactos práticos e orientações para empresas."
     )
 
     prompt = (
-        f"{PADRAO_QUALIDADE}\n\n"
-        f"TAREFA: Gerar artigo jornalístico-jurídico profissional sobre: {tema}\n"
-        f"Fonte: {fonte['nome']} | Data: {HOJE.strftime('%d/%m/%Y')} | Tipo: {tipo_conteudo}\n\n"
-        f"CONTEÚDO ORIGINAL DA FONTE (use como base):\n{conteudo[:6000]}\n\n"
-        f"{instrucoes}\n\n"
-        "REGRAS DE ESCRITA OBRIGATÓRIAS:\n"
-        "— Escreva no mínimo 800 palavras de conteúdo real (não conte as tags HTML).\n"
-        "— Fique próximo do conteúdo original: preserve todos os fatos, números, datas e nomes citados na fonte.\n"
-        "— Reescreva completamente a forma: use frases diferentes, ordem diferente, palavras sinônimas.\n"
-        "— Adicione análise própria: o que isso significa na prática? Qual o risco para a empresa?\n"
-        "— Use apenas HTML puro: <h2>, <h3>, <p>, <strong>, <ul>, <li>. NUNCA use markdown (**, ##, -).\n"
-        "— Parágrafos densos: mínimo 3 frases por parágrafo.\n"
-        "— NÃO inclua nota de fonte no content — ela é adicionada automaticamente.\n\n"
-        "Responda APENAS com um objeto JSON válido, sem texto antes ou depois, sem markdown:\n"
-        '{"title": "Título técnico específico máx 80 chars", '
-        '"excerpt": "Resumo direto com o fato principal, máx 160 chars", '
+        "Você é redator jurídico sênior do site CalculaPrazo.com.br, especializado em Direito do Trabalho.\n"
+        "Seu público são advogados trabalhistas, gestores de RH, analistas de DP e empresários.\n\n"
+
+        "═══════════════════════════════════════════\n"
+        f"TEMA DO ARTIGO: {tema}\n"
+        f"FONTE: {fonte['nome']} — {fonte['url']}\n"
+        f"DATA: {HOJE.strftime('%d/%m/%Y')}\n"
+        f"TIPO: {tipo_conteudo}\n"
+        "═══════════════════════════════════════════\n\n"
+
+        "CONTEÚDO ORIGINAL DA FONTE:\n"
+        "───────────────────────────\n"
+        f"{conteudo[:6000]}\n"
+        "───────────────────────────\n\n"
+
+        f"{orientacao_tipo}\n\n"
+
+        "COMO ESCREVER — LEIA COM ATENÇÃO:\n\n"
+
+        "1. FIDELIDADE AOS FATOS\n"
+        "   Preserve todos os dados da fonte: números, datas, nomes de tribunais, "
+        "   números de processos, artigos de lei, valores, percentuais. "
+        "   Não invente nada que não esteja na fonte.\n\n"
+
+        "2. REESCRITA GENUÍNA (não é cópia, não é resumo)\n"
+        "   Reescreva cada parágrafo com suas próprias palavras e estrutura de frase diferente. "
+        "   O texto final deve transmitir as mesmas informações da fonte, mas em prosa original. "
+        "   Acrescente análise: o que isso significa na prática? Qual o risco concreto para a empresa?\n\n"
+
+        "3. SUBTÍTULOS LIVRES E NATURAIS\n"
+        "   Crie os subtítulos <h2> a partir do conteúdo real — não use fórmulas genéricas "
+        "   como 'O que aconteceu', 'Contexto', 'Conclusão'. "
+        "   Bons exemplos baseados no conteúdo: "
+        "   'FGTS Digital passa a ser obrigatório em reclamatórias', "
+        "   'Gestante em contrato temporário mantém estabilidade, decide TST', "
+        "   'Prazo de 30 dias para adequação dos sistemas'. "
+        "   Cada subtítulo deve ser específico e informativo por si só.\n\n"
+
+        "4. EXTENSÃO E ESTRUTURA\n"
+        "   Mínimo de 800 palavras de texto corrido (não contam as tags HTML). "
+        "   Parágrafos com no mínimo 3 frases cada. "
+        "   Use <h2> para seções principais, <h3> para subseções quando necessário, "
+        "   <ul><li> para listas de itens, <strong> para termos técnicos e dados importantes. "
+        "   Apenas HTML puro — nunca markdown (**, ##, - ).\n\n"
+
+        "5. NÃO inclua bloco de 'Fonte:' no campo content — é inserido automaticamente.\n\n"
+
+        "Responda APENAS com um objeto JSON válido, sem nenhum texto antes ou depois:\n"
+        '{"title": "Título direto e específico, máx 80 chars", '
+        '"excerpt": "1-2 frases com o fato principal, máx 160 chars", '
         '"tags": ["Tag1", "Tag2", "Tag3", "Tag4"], '
         '"image_query": "3-5 palavras em inglês para Unsplash", '
-        '"content": "<h2>...</h2><p>...</p>..."}'
+        '"content": "<h2>Subtítulo específico</h2><p>...</p>..."}'
     )
     try:
         raw = chamar_llm(prompt, max_tokens=6000, temperature=0.2)
