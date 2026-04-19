@@ -1,10 +1,21 @@
 name: Agente Único — Publicação Diária
 
+# ─────────────────────────────────────────────────────────────────────────────
+# HORÁRIOS DE EXECUÇÃO (horário de Brasília = UTC-3)
+#
+#  Seg a Sex: 07h e 13h  →  2 execuções × 5 posts = 10 posts por dia
+#  Sábado:    08h         →  1 execução  × 5 posts (conteúdo do fim de semana)
+#  Domingo:   sem execução (volume de publicações institucionais muito baixo)
+#
+# Janela de busca de conteúdo: 48h — garante que nenhuma publicação
+# de sexta-feira ou fim de semana seja perdida.
+# ─────────────────────────────────────────────────────────────────────────────
 on:
   schedule:
-    - cron: '0 9 * * 1-5'   # 06h Brasília (UTC-3) dias úteis
-    - cron: '0 14 * * 1-5'  # 11h Brasília — segunda execução do dia
-  workflow_dispatch:
+    - cron: '0 10 * * 1-5'   # 07h Brasília — seg a sex (manhã)
+    - cron: '0 16 * * 1-5'   # 13h Brasília — seg a sex (tarde)
+    - cron: '0 11 * * 6'     # 08h Brasília — sábado
+  workflow_dispatch:           # Permite disparar manualmente pelo GitHub
 
 permissions:
   contents: write
@@ -31,14 +42,14 @@ jobs:
         run: |
           echo "=== SECRETS ==="
           ALGUMA=""
-          [ -n "$GEMINI_API_KEY" ]     && echo "✅ GEMINI_API_KEY (${#GEMINI_API_KEY} chars) [1º]"        && ALGUMA=1 || echo "-- GEMINI_API_KEY ausente"
-          [ -n "$GROQ_API_KEY" ]       && echo "✅ GROQ_API_KEY (${#GROQ_API_KEY} chars) [2º — NOVO]"     && ALGUMA=1 || echo "-- GROQ_API_KEY ausente (cadastrar em console.groq.com)"
-          [ -n "$GLM_API_KEY" ]        && echo "✅ GLM_API_KEY (${#GLM_API_KEY} chars) [3º]"              && ALGUMA=1 || echo "-- GLM_API_KEY ausente"
-          [ -n "$QWEN_API_KEY" ]       && echo "✅ QWEN_API_KEY (${#QWEN_API_KEY} chars) [4º]"            && ALGUMA=1 || echo "-- QWEN_API_KEY ausente (recadastrar em bailian.console.aliyun.com)"
-          [ -n "$GROK_API_KEY" ]       && echo "✅ GROK_API_KEY (${#GROK_API_KEY} chars) [5º]"            && ALGUMA=1 || echo "-- GROK_API_KEY ausente"
-          [ -n "$OPENROUTER_API_KEY" ] && echo "✅ OPENROUTER_API_KEY (${#OPENROUTER_API_KEY} chars) [6º]" && ALGUMA=1 || echo "-- OPENROUTER_API_KEY ausente"
+          [ -n "$GEMINI_API_KEY" ]     && echo "✅ GEMINI_API_KEY (${#GEMINI_API_KEY} chars)"     && ALGUMA=1 || echo "-- GEMINI_API_KEY ausente"
+          [ -n "$GROQ_API_KEY" ]       && echo "✅ GROQ_API_KEY (${#GROQ_API_KEY} chars)"         && ALGUMA=1 || echo "-- GROQ_API_KEY ausente"
+          [ -n "$GLM_API_KEY" ]        && echo "✅ GLM_API_KEY (${#GLM_API_KEY} chars)"           && ALGUMA=1 || echo "-- GLM_API_KEY ausente"
+          [ -n "$QWEN_API_KEY" ]       && echo "✅ QWEN_API_KEY (${#QWEN_API_KEY} chars)"         && ALGUMA=1 || echo "-- QWEN_API_KEY ausente"
+          [ -n "$GROK_API_KEY" ]       && echo "✅ GROK_API_KEY (${#GROK_API_KEY} chars)"         && ALGUMA=1 || echo "-- GROK_API_KEY ausente"
+          [ -n "$OPENROUTER_API_KEY" ] && echo "✅ OPENROUTER_API_KEY (${#OPENROUTER_API_KEY} chars)" && ALGUMA=1 || echo "-- OPENROUTER_API_KEY ausente"
           [ -n "$UNSPLASH_ACCESS_KEY" ] && echo "✅ UNSPLASH_ACCESS_KEY" || echo "⚠️  UNSPLASH_ACCESS_KEY ausente (imagem fallback)"
-          [ -z "$ALGUMA" ] && echo "❌ ERRO: nenhuma API de LLM configurada" && exit 1 || true
+          [ -z "$ALGUMA" ] && echo "❌ ERRO: nenhuma API de LLM configurada" && exit 1 || echo "✅ APIs OK"
         env:
           GEMINI_API_KEY:      ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY:        ${{ secrets.GROQ_API_KEY }}

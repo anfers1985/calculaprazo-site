@@ -162,9 +162,9 @@ def avaliar_relevancia(conteudo, fonte):
         f"Analise o conteúdo abaixo da fonte {fonte['nome']}.\n"
         f"Data de hoje: {HOJE.strftime('%d/%m/%Y')}\n\n"
         f"Conteúdo:\n{conteudo[:2000]}\n\n"
-        "Existe alguma notícia ou decisão RECENTE (últimos 3 dias) relevante para o Direito do Trabalho ou RH?\n"
-        "EXCLUIR: concursos, posses, eventos sociais, homenagens.\n"
-        "INCLUIR: decisões judiciais, portarias, normas, fiscalizações, mudanças de regra.\n\n"
+        "Existe alguma notícia ou decisão RECENTE (últimas 48 horas) relevante para o Direito do Trabalho ou RH?\n"
+        "EXCLUIR: concursos, posses, eventos sociais, homenagens, agenda institucional.\n"
+        "INCLUIR: decisões judiciais, acórdãos, portarias, normas, fiscalizações, mudanças de regra, autuações.\n\n"
         "Responda APENAS com um objeto JSON válido, sem texto antes ou depois:\n"
         '{"relevante": true, "tema": "Título curto do assunto", "tipo_conteudo": "JURISPRUDENCIA|INFORMATIVO|ANALISE_LEI"}'
     )
@@ -186,50 +186,64 @@ def avaliar_relevancia(conteudo, fonte):
 def gerar_artigo(conteudo, fonte, tema, tipo_conteudo):
     instrucoes = {
         "JURISPRUDENCIA": (
-            "Redija boletim de jurisprudência trabalhista (mínimo 500 palavras) com:\n"
-            "1. <h2>Contexto e fato julgado</h2>\n"
-            "2. <h2>Fundamentação jurídica</h2>\n"
-            "3. <h2>O que foi decidido</h2>\n"
-            "4. <h2>Impactos práticos para empresas e trabalhadores</h2>\n"
-            "5. <h2>Recomendações para RH e jurídico</h2>"
+            "Redija boletim de jurisprudência trabalhista com MÍNIMO ABSOLUTO DE 800 PALAVRAS.\n\n"
+            "SEÇÕES OBRIGATÓRIAS (cada uma com pelo menos 2 parágrafos densos):\n"
+            "1. <h2>Contexto e fato julgado</h2> — explique o caso completo: partes, setor econômico, histórico do conflito, instâncias anteriores.\n"
+            "2. <h2>Fundamentação jurídica</h2> — cite dispositivos legais (CLT, CF, leis específicas), súmulas, OJs e precedentes mencionados na fonte.\n"
+            "3. <h2>O que foi decidido</h2> — descreva a decisão em detalhes: tribunal, câmara/turma, relator se disponível, sentido do julgamento, unanimidade ou divergência.\n"
+            "4. <h2>Tese jurídica firmada</h2> — explique o entendimento jurídico estabelecido e seu alcance.\n"
+            "5. <h2>Impactos práticos para empresas e trabalhadores</h2> — consequências concretas: riscos, obrigações, mudanças operacionais.\n"
+            "6. <h2>Recomendações para departamentos de RH e jurídico</h2> — lista de ações práticas com <ul><li>."
         ),
         "INFORMATIVO": (
-            "Redija boletim informativo regulatório (mínimo 500 palavras) com:\n"
-            "1. <h2>O que aconteceu</h2>\n"
-            "2. <h2>Contexto</h2>\n"
-            "3. <h2>Base normativa</h2>\n"
-            "4. <h2>Impacto para empresas</h2>\n"
-            "5. <h2>O que fazer agora</h2>"
+            "Redija boletim informativo regulatório com MÍNIMO ABSOLUTO DE 800 PALAVRAS.\n\n"
+            "SEÇÕES OBRIGATÓRIAS (cada uma com pelo menos 2 parágrafos densos):\n"
+            "1. <h2>O que aconteceu</h2> — descreva o fato em detalhes: órgão responsável, data, contexto, número de portaria/resolução/IN se disponível.\n"
+            "2. <h2>Contexto e histórico</h2> — por que isso está acontecendo agora? Qual o histórico legislativo ou regulatório que levou a essa medida?\n"
+            "3. <h2>Base normativa aplicável</h2> — liste as leis, portarias e normas envolvidas com <ul><li>.\n"
+            "4. <h2>Quem é afetado e como</h2> — setores, portes de empresa, categorias de trabalhadores impactados.\n"
+            "5. <h2>Impactos operacionais para empresas</h2> — consequências concretas no dia a dia: processos, sistemas, contratos.\n"
+            "6. <h2>Checklist de conformidade</h2> — lista de ações práticas para adequação com <ul><li>."
         ),
         "ANALISE_LEI": (
-            "Redija análise jurídica (mínimo 500 palavras) com:\n"
-            "1. <h2>O que propõe ou altera</h2>\n"
-            "2. <h2>Contexto legislativo</h2>\n"
-            "3. <h2>Principais pontos</h2>\n"
-            "4. <h2>Impactos para empresas</h2>\n"
-            "5. <h2>O que acompanhar</h2>"
+            "Redija análise jurídico-legislativa com MÍNIMO ABSOLUTO DE 800 PALAVRAS.\n\n"
+            "SEÇÕES OBRIGATÓRIAS (cada uma com pelo menos 2 parágrafos densos):\n"
+            "1. <h2>O que a norma ou proposta estabelece</h2> — descreva o conteúdo completo: artigos principais, objeto central, escopo.\n"
+            "2. <h2>Contexto legislativo e histórico</h2> — tramitação, motivação do legislador, problemas que visa resolver.\n"
+            "3. <h2>Principais mudanças em relação ao regime anterior</h2> — compare com a legislação vigente usando <ul><li>.\n"
+            "4. <h2>Vigência e prazos de adequação</h2> — quando entra em vigor, vacatio legis, prazos transitórios.\n"
+            "5. <h2>Impactos para empregadores</h2> — obrigações novas, custos, riscos de autuação.\n"
+            "6. <h2>Impactos para trabalhadores</h2> — direitos ampliados, restrições, mudanças práticas.\n"
+            "7. <h2>O que fazer agora</h2> — lista de medidas imediatas com <ul><li>."
         ),
-    }.get(tipo_conteudo, "Redija artigo técnico-jurídico (mínimo 500 palavras) com 5 seções <h2>.")
+    }.get(tipo_conteudo,
+        "Redija artigo técnico-jurídico com MÍNIMO ABSOLUTO DE 800 PALAVRAS e pelo menos 6 seções <h2>, "
+        "cada uma com pelo menos 2 parágrafos densos."
+    )
 
     prompt = (
         f"{PADRAO_QUALIDADE}\n\n"
-        f"TAREFA: Gerar post profissional sobre: {tema}\n"
-        f"Fonte: {fonte['nome']} — {fonte['url']}\n"
-        f"Data: {HOJE.strftime('%d/%m/%Y')}\n"
-        f"Tipo: {tipo_conteudo}\n\n"
-        f"Conteúdo de base:\n{conteudo[:5000]}\n\n"
+        f"TAREFA: Gerar artigo jornalístico-jurídico profissional sobre: {tema}\n"
+        f"Fonte: {fonte['nome']} | Data: {HOJE.strftime('%d/%m/%Y')} | Tipo: {tipo_conteudo}\n\n"
+        f"CONTEÚDO ORIGINAL DA FONTE (use como base):\n{conteudo[:6000]}\n\n"
         f"{instrucoes}\n\n"
-        "IMPORTANTE: Use apenas HTML puro (h2, p, strong, ul, li). NUNCA use markdown.\n"
-        "Reescreva completamente com suas próprias palavras — não copie frases da fonte.\n\n"
+        "REGRAS DE ESCRITA OBRIGATÓRIAS:\n"
+        "— Escreva no mínimo 800 palavras de conteúdo real (não conte as tags HTML).\n"
+        "— Fique próximo do conteúdo original: preserve todos os fatos, números, datas e nomes citados na fonte.\n"
+        "— Reescreva completamente a forma: use frases diferentes, ordem diferente, palavras sinônimas.\n"
+        "— Adicione análise própria: o que isso significa na prática? Qual o risco para a empresa?\n"
+        "— Use apenas HTML puro: <h2>, <h3>, <p>, <strong>, <ul>, <li>. NUNCA use markdown (**, ##, -).\n"
+        "— Parágrafos densos: mínimo 3 frases por parágrafo.\n"
+        "— NÃO inclua nota de fonte no content — ela é adicionada automaticamente.\n\n"
         "Responda APENAS com um objeto JSON válido, sem texto antes ou depois, sem markdown:\n"
-        '{"title": "Título técnico específico (max 80 chars)", '
-        '"excerpt": "Resumo 1-2 frases (max 160 chars)", '
-        '"tags": ["Tag1", "Tag2", "Tag3"], '
-        '"image_query": "3-5 palavras em inglês para busca de imagem", '
-        '"content": "<h2>Seção 1</h2><p>...</p><h2>Seção 2</h2>..."}'
+        '{"title": "Título técnico específico máx 80 chars", '
+        '"excerpt": "Resumo direto com o fato principal, máx 160 chars", '
+        '"tags": ["Tag1", "Tag2", "Tag3", "Tag4"], '
+        '"image_query": "3-5 palavras em inglês para Unsplash", '
+        '"content": "<h2>...</h2><p>...</p>..."}'
     )
     try:
-        raw = chamar_llm(prompt, max_tokens=4000, temperature=0.2)
+        raw = chamar_llm(prompt, max_tokens=6000, temperature=0.2)
         dados = parse_json_robusto(raw)
         if not dados:
             print(f"  ERRO parse artigo: JSON não encontrado na resposta")
@@ -257,8 +271,9 @@ def main():
     print(f"\nAgente CalculaPrazo — {HOJE.strftime('%d/%m/%Y')}")
     print(f"Fontes: {len(FONTES)}")
 
-    meta = random.randint(5, 10)
-    print(f"Meta de hoje: {meta} posts")
+    # 5 posts por execução × 2 execuções/dia = 10 posts/dia
+    meta = 5
+    print(f"Meta desta execução: {meta} posts")
 
     fontes_shuffled = list(FONTES)
     random.shuffle(fontes_shuffled)
@@ -308,7 +323,7 @@ def main():
             print(f"  Qualidade insuficiente: {motivo}")
             # Tenta salvar mesmo assim se tiver conteúdo mínimo
             words = len(re.sub(r'<[^>]+>', ' ', dados.get("content","")).split())
-            if words < 100:
+            if words < 200:
                 continue
             # Completa campos faltantes
             if not dados.get("title") or len(dados["title"]) < 10:
