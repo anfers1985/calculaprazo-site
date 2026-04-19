@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 # agente_base.py — Módulo compartilhado CalculaPrazo
 #
-# VARIÁVEIS DE AMBIENTE (configure como Secrets no GitHub):
-#   GEMINI_API_KEY       -> Google AI Studio — gemini-2.0-flash (primário)
-#   GLM_API_KEY          -> Zhipu AI ChatGLM — glm-4-flash (secundário, 6M tokens/dia grátis)
-#   QWEN_API_KEY         -> Alibaba Qwen — qwen-turbo (terciário, gratuito)
-#   GROK_API_KEY         -> xAI Grok — grok-3-mini (quaternário)
-#   OPENROUTER_API_KEY   -> OpenRouter modelos :free (quinto, fallback final)
+# VARIÁVEIS DE AMBIENTE (Secrets no GitHub):
+#   GEMINI_API_KEY       -> Google AI Studio (primário)
+#   GLM_API_KEY          -> Zhipu AI ChatGLM (secundário)
+#   GROK_API_KEY         -> xAI Grok (terciário — quando conta tiver créditos)
+#   OPENROUTER_API_KEY   -> OpenRouter modelos :free (fallback)
 #   UNSPLASH_ACCESS_KEY  -> Unsplash (imagens)
+#
+# NOTA SOBRE QWEN: A QWEN_API_KEY cadastrada no GitHub está com erro 401
+# (chave inválida para o endpoint DashScope). Removida da cadeia até revalidação.
+# Para reativar: acesse https://bailian.console.aliyun.com/ e gere nova chave sk-...
 #
 import os, json, re, datetime, requests, random, time
 from slugify import slugify
@@ -16,7 +19,6 @@ HOJE = datetime.date.today()
 
 GEMINI_KEY     = os.environ.get("GEMINI_API_KEY", "")
 GLM_KEY        = os.environ.get("GLM_API_KEY", "")
-QWEN_KEY       = os.environ.get("QWEN_API_KEY", "")
 GROK_KEY       = os.environ.get("GROK_API_KEY", "")
 OPENROUTER_KEY = os.environ.get("OPENROUTER_API_KEY", "")
 UNSPLASH_KEY   = os.environ.get("UNSPLASH_ACCESS_KEY", "")
@@ -52,113 +54,133 @@ UNSPLASH_QUERY_CAT = {
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# PROVEDORES LLM — todos gratuitos
+# PROVEDORES LLM
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _gemini(prompt, max_tokens, temperature):
-    """Google AI Studio — gemini-2.0-flash.
-    CORRIGIDO: gemini-1.5-flash foi descontinuado em abr/2026.
-    Limite gratuito: 1.500 req/dia, 1M tokens/min."""
+    """Google AI Studio.
+    
+    Usa DOIS modelos com quotas independentes para maximizar disponibilidade:
+      - gemini-2.0-flash       → 1.500 req/dia
+      - gemini-2.0-flash-lite  → quota separada, mais leve
+      - gemini-1.5-flash-8b    → quota separada (modelo pequeno, muito rápido)
+    
+    CORRIGIDO: gemini-1.5-flash foi descontinuado (retornava 404).
+    """
     if not GEMINI_KEY:
         raise RuntimeError("GEMINI_API_KEY não configurada")
-    url = (
-        "https://generativelanguage.googleapis.com/v1beta/models/"
-        "gemini-2.0-flash:generateContent?key=" + GEMINI_KEY
-    )
-    r = requests.post(
-        url,
-        json={
-            "contents": [{"parts": [{"text": prompt}]}],
-            "generationConfig": {
-                "maxOutputTokens": max_tokens,
-                "temperature": temperature,
-            },
-        },
-        timeout=120,
-    )
-    if r.status_code == 200:
-        candidate = r.json().get("candidates", [{}])[0]
-        if candidate.get("finishReason") == "SAFETY":
-            raise RuntimeError("Gemini: bloqueado por segurança")
-        text = (candidate
-                .get("content", {})
-                .get("parts", [{}])[0]
-                .get("text", "").strip())
-        if text:
-            print("  LLM OK modelo=gemini-2.0-flash")
-            return text
-        raise RuntimeError("Gemini: resposta vazia")
-    elif r.status_code == 429:
-        raise RuntimeError("Gemini 429 (rate limit diário atingido)")
-    else:
-        raise RuntimeError(f"Gemini HTTP {r.status_code}: {r.text[:200]}")
+
+    modelos_gemini = [
+        "gemini-2.0-flash",
+        "gemini-2.0-flash-lite",
+        "gemini-1.5-flash-8b",
+    ]
+    last_error = None
+    for modelo in modelos_gemini:
+        try:
+            url = (
+                "https://generativelanguage.googleapis.com/v1beta/models/"
+                + modelo + ":generateContent?key=" + GEMINI_KEY
+            )
+            r = requests.post(
+                url,
+                json={
+                    "contents": [{"parts": [{"text": prompt}]}],
+                    "generationConfig": {
+                        "maxOutputTokens": max_tokens,
+                        "temperature": temperature,
+                    },
+                },
+                timeout=120,
+            )
+            if r.status_code == 200:
+                candidate = r.json().get("candidates", [{}])[0]
+                if candidate.get("finishReason") == "SAFETY":
+                    last_error = f"{modelo}: bloqueado por segurança"
+                    continue
+                text = (candidate
+                        .get("content", {})
+                        .get("parts", [{}])[0]
+                        .get("text", "").strip())
+                if text:
+                    print(f"  LLM OK modelo={modelo}")
+                    return text
+                last_error = f"{modelo}: resposta vazia"
+            elif r.status_code == 429:
+                last_error = f"{modelo}: 429 rate limit"
+                print(f"  Gemini {modelo} 429 — tentando próximo modelo...")
+            elif r.status_code == 404:
+                last_error = f"{modelo}: 404 não encontrado"
+                print(f"  Gemini {modelo} 404 — tentando próximo modelo...")
+            else:
+                last_error = f"{modelo}: HTTP {r.status_code}: {r.text[:100]}"
+                print(f"  Gemini {modelo} {r.status_code}")
+        except Exception as e:
+            last_error = str(e)
+            print(f"  Gemini {modelo} exceção: {e}")
+    raise RuntimeError("Gemini: todos os modelos falharam. Último: " + str(last_error))
 
 
 def _glm(prompt, max_tokens, temperature):
-    """Zhipu AI — glm-4-flash.
-    Generoso: 6 milhões de tokens/dia gratuitos.
-    Docs: https://open.bigmodel.cn/dev/api"""
+    """Zhipu AI — glm-4-flash-250414.
+    
+    CORRIGIDO: glm-4-flash foi descontinuado (retornava HTTP 400 código 1211).
+    Modelo atual confirmado: glm-4-flash-250414
+    Quota gratuita: muito generosa (milhões de tokens/mês).
+    """
     if not GLM_KEY:
         raise RuntimeError("GLM_API_KEY não configurada")
-    r = requests.post(
-        "https://open.bigmodel.cn/api/paas/v4/chat/completions",
-        headers={
-            "Authorization": "Bearer " + GLM_KEY,
-            "Content-Type": "application/json",
-        },
-        json={
-            "model": "glm-4-flash",
-            "messages": [{"role": "user", "content": prompt}],
-            "max_tokens": min(max_tokens, 4096),
-            "temperature": temperature,
-        },
-        timeout=120,
-    )
-    if r.status_code == 200:
-        text = r.json()["choices"][0]["message"]["content"].strip()
-        if text:
-            print("  LLM OK modelo=glm-4-flash")
-            return text
-        raise RuntimeError("GLM: resposta vazia")
-    elif r.status_code == 429:
-        raise RuntimeError("GLM 429 (rate limit)")
-    else:
-        raise RuntimeError(f"GLM HTTP {r.status_code}: {r.text[:200]}")
 
-
-def _qwen(prompt, max_tokens, temperature):
-    """Alibaba Qwen — qwen-turbo (gratuito com conta Alibaba Cloud).
-    Docs: https://help.aliyun.com/zh/model-studio/"""
-    if not QWEN_KEY:
-        raise RuntimeError("QWEN_API_KEY não configurada")
-    r = requests.post(
-        "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
-        headers={
-            "Authorization": "Bearer " + QWEN_KEY,
-            "Content-Type": "application/json",
-        },
-        json={
-            "model": "qwen-turbo",
-            "messages": [{"role": "user", "content": prompt}],
-            "max_tokens": min(max_tokens, 4096),
-            "temperature": temperature,
-        },
-        timeout=120,
-    )
-    if r.status_code == 200:
-        text = r.json()["choices"][0]["message"]["content"].strip()
-        if text:
-            print("  LLM OK modelo=qwen-turbo")
-            return text
-        raise RuntimeError("Qwen: resposta vazia")
-    elif r.status_code == 429:
-        raise RuntimeError("Qwen 429 (rate limit)")
-    else:
-        raise RuntimeError(f"Qwen HTTP {r.status_code}: {r.text[:200]}")
+    # Tenta o modelo atual e o anterior como fallback
+    modelos_glm = ["glm-4-flash-250414", "glm-4-flash", "glm-4-flash-2"]
+    last_error = None
+    for modelo in modelos_glm:
+        try:
+            r = requests.post(
+                "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+                headers={
+                    "Authorization": "Bearer " + GLM_KEY,
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "model": modelo,
+                    "messages": [{"role": "user", "content": prompt}],
+                    "max_tokens": min(max_tokens, 4096),
+                    "temperature": temperature,
+                },
+                timeout=120,
+            )
+            if r.status_code == 200:
+                text = r.json()["choices"][0]["message"]["content"].strip()
+                if text:
+                    print(f"  LLM OK modelo={modelo}")
+                    return text
+                last_error = f"{modelo}: resposta vazia"
+            elif r.status_code == 400:
+                err = r.json().get("error", {})
+                code = err.get("code", "")
+                if code == "1211":
+                    last_error = f"{modelo}: modelo não existe (1211)"
+                    print(f"  GLM {modelo} não existe — tentando próximo...")
+                else:
+                    last_error = f"{modelo}: HTTP 400: {r.text[:150]}"
+            elif r.status_code == 429:
+                last_error = f"{modelo}: 429 rate limit"
+                print(f"  GLM {modelo} 429 — tentando próximo modelo...")
+            else:
+                last_error = f"{modelo}: HTTP {r.status_code}: {r.text[:150]}"
+                print(f"  GLM {modelo} {r.status_code}")
+        except Exception as e:
+            last_error = str(e)
+            print(f"  GLM {modelo} exceção: {e}")
+    raise RuntimeError("GLM: todos os modelos falharam. Último: " + str(last_error))
 
 
 def _grok(prompt, max_tokens, temperature):
-    """xAI Grok — grok-3-mini (free tier xAI)."""
+    """xAI Grok — grok-3-mini.
+    Funciona apenas quando a conta tiver créditos ativos no console.x.ai.
+    Incluído pois a situação pode mudar a qualquer momento.
+    """
     if not GROK_KEY:
         raise RuntimeError("GROK_API_KEY não configurada")
     r = requests.post(
@@ -182,26 +204,36 @@ def _grok(prompt, max_tokens, temperature):
             return text
         raise RuntimeError("Grok: resposta vazia")
     elif r.status_code in (401, 403):
-        raise RuntimeError(f"Grok {r.status_code} (sem permissão/créditos ativos): {r.text[:150]}")
+        raise RuntimeError(f"Grok {r.status_code} (sem permissão/créditos): {r.text[:120]}")
     elif r.status_code == 429:
         raise RuntimeError("Grok 429 (rate limit)")
     else:
-        raise RuntimeError(f"Grok HTTP {r.status_code}: {r.text[:200]}")
+        raise RuntimeError(f"Grok HTTP {r.status_code}: {r.text[:150]}")
 
 
 def _openrouter_free(prompt, max_tokens, temperature):
-    """OpenRouter — modelos :free ativos (revisados abr/2026).
-    REMOVIDOS: deepseek-r1:free e mistral-7b:free (deram 404 no log).
-    MANTIDOS: llama-3.3-70b:free e gemma-3-27b:free (deram 429 = existem mas em rate limit).
-    ADICIONADOS: phi-4 e qwen3 como alternativas."""
+    """OpenRouter — modelos :free ativos (revisado abr/2026).
+    
+    REMOVIDOS do log anterior (404): phi-4-reasoning, qwen3-8b, deepseek-r1, mistral-7b
+    MANTIDOS (429 = existem, só em rate limit temporário): llama-3.3-70b, gemma-3-27b
+    ADICIONADOS (confirmados ativos abr/2026): deepseek-chat-v3, deepseek-r1-zero, devstral-small
+    
+    Estratégia: embaralha a lista a cada chamada para distribuir o rate limit.
+    """
     if not OPENROUTER_KEY:
         raise RuntimeError("OPENROUTER_API_KEY não configurada")
+
     modelos = [
         "meta-llama/llama-3.3-70b-instruct:free",
         "google/gemma-3-27b-it:free",
-        "microsoft/phi-4-reasoning:free",
-        "qwen/qwen3-8b:free",
+        "deepseek/deepseek-chat-v3-0324:free",
+        "deepseek/deepseek-r1-zero:free",
+        "mistralai/devstral-small:free",
+        "nousresearch/deephermes-3-llama-3-8b-preview:free",
     ]
+    # Embaralha para não sobrecarregar sempre o mesmo modelo
+    random.shuffle(modelos)
+
     last_error = None
     for model in modelos:
         try:
@@ -227,11 +259,11 @@ def _openrouter_free(prompt, max_tokens, temperature):
                     print("  LLM OK modelo=" + model)
                     return text
             elif r.status_code == 429:
-                last_error = f"429 rate limit: {model}"
-                print(f"  OpenRouter 429 {model} — aguardando 5s...")
-                time.sleep(5)
+                last_error = f"429: {model}"
+                print(f"  OpenRouter 429 {model} — próximo...")
+                time.sleep(2)
             elif r.status_code == 404:
-                last_error = f"404 modelo removido: {model}"
+                last_error = f"404 removido: {model}"
                 print(f"  OpenRouter 404 {model} — indisponível, próximo...")
             else:
                 last_error = f"HTTP {r.status_code} {model}: {r.text[:100]}"
@@ -239,6 +271,7 @@ def _openrouter_free(prompt, max_tokens, temperature):
         except Exception as e:
             last_error = str(e)
             print(f"  OpenRouter exceção {model}: {e}")
+
     raise RuntimeError("OpenRouter :free esgotado. Último erro: " + str(last_error))
 
 
@@ -248,17 +281,15 @@ def _openrouter_free(prompt, max_tokens, temperature):
 
 def chamar_llm(prompt, max_tokens=4000, temperature=0.2):
     """
-    Cadeia de fallback 100% gratuita — 5 provedores em ordem:
-      1. Gemini 2.0 Flash  (Google AI Studio — 1.500 req/dia)
-      2. GLM-4-Flash       (Zhipu AI — 6M tokens/dia, muito generoso)
-      3. Qwen-Turbo        (Alibaba — gratuito com conta)
-      4. Grok 3 Mini       (xAI — quando conta tiver créditos ativos)
-      5. OpenRouter :free  (fallback final, rate-limited)
+    Cadeia de fallback 100% gratuita:
+      1. Gemini   → 3 modelos com quotas independentes (2.0-flash, 2.0-flash-lite, 1.5-flash-8b)
+      2. GLM      → glm-4-flash-250414 (Zhipu AI, muito generoso)
+      3. Grok     → grok-3-mini (quando conta xAI tiver créditos)
+      4. OpenRouter → 6 modelos :free embaralhados
     """
     provedores = [
         ("Gemini",     _gemini),
         ("GLM",        _glm),
-        ("Qwen",       _qwen),
         ("Grok",       _grok),
         ("OpenRouter", _openrouter_free),
     ]

@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: '0 9 * * 1-5'   # 06h Brasília (UTC-3) dias úteis
     - cron: '0 14 * * 1-5'  # 11h Brasília — segunda execução do dia
-  workflow_dispatch:          # Permite rodar manualmente pelo botão no GitHub
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -27,60 +27,19 @@ jobs:
       - name: Instalar dependências
         run: pip install requests python-slugify urllib3
 
-      - name: Verificar secrets configuradas
+      - name: Verificar secrets
         run: |
-          echo "=== VERIFICAÇÃO DE SECRETS ==="
-          ALGUMA_LLM=""
-
-          if [ -n "$GEMINI_API_KEY" ]; then
-            echo "✅ GEMINI_API_KEY: presente (${#GEMINI_API_KEY} chars) [PRIMÁRIO]"
-            ALGUMA_LLM=1
-          else
-            echo "-- GEMINI_API_KEY: não configurada"
-          fi
-
-          if [ -n "$GLM_API_KEY" ]; then
-            echo "✅ GLM_API_KEY: presente (${#GLM_API_KEY} chars) [SECUNDÁRIO]"
-            ALGUMA_LLM=1
-          else
-            echo "-- GLM_API_KEY: não configurada"
-          fi
-
-          if [ -n "$QWEN_API_KEY" ]; then
-            echo "✅ QWEN_API_KEY: presente (${#QWEN_API_KEY} chars) [TERCIÁRIO]"
-            ALGUMA_LLM=1
-          else
-            echo "-- QWEN_API_KEY: não configurada"
-          fi
-
-          if [ -n "$GROK_API_KEY" ]; then
-            echo "✅ GROK_API_KEY: presente (${#GROK_API_KEY} chars) [QUATERNÁRIO]"
-            ALGUMA_LLM=1
-          else
-            echo "-- GROK_API_KEY: não configurada"
-          fi
-
-          if [ -n "$OPENROUTER_API_KEY" ]; then
-            echo "✅ OPENROUTER_API_KEY: presente (${#OPENROUTER_API_KEY} chars) [FALLBACK]"
-            ALGUMA_LLM=1
-          else
-            echo "-- OPENROUTER_API_KEY: não configurada"
-          fi
-
-          if [ -n "$UNSPLASH_ACCESS_KEY" ]; then
-            echo "✅ UNSPLASH_ACCESS_KEY: presente"
-          else
-            echo "⚠️  UNSPLASH_ACCESS_KEY: não configurada — imagem fallback será usada"
-          fi
-
-          if [ -z "$ALGUMA_LLM" ]; then
-            echo "❌ ERRO CRÍTICO: nenhuma API de LLM configurada"
-            exit 1
-          fi
+          echo "=== SECRETS ==="
+          ALGUMA=""
+          [ -n "$GEMINI_API_KEY" ]     && echo "✅ GEMINI_API_KEY (${#GEMINI_API_KEY} chars) [1º]"   && ALGUMA=1 || echo "-- GEMINI_API_KEY ausente"
+          [ -n "$GLM_API_KEY" ]        && echo "✅ GLM_API_KEY (${#GLM_API_KEY} chars) [2º]"         && ALGUMA=1 || echo "-- GLM_API_KEY ausente"
+          [ -n "$GROK_API_KEY" ]       && echo "✅ GROK_API_KEY (${#GROK_API_KEY} chars) [3º]"       && ALGUMA=1 || echo "-- GROK_API_KEY ausente"
+          [ -n "$OPENROUTER_API_KEY" ] && echo "✅ OPENROUTER_API_KEY (${#OPENROUTER_API_KEY} chars) [4º]" && ALGUMA=1 || echo "-- OPENROUTER_API_KEY ausente"
+          [ -n "$UNSPLASH_ACCESS_KEY" ] && echo "✅ UNSPLASH_ACCESS_KEY" || echo "⚠️  UNSPLASH_ACCESS_KEY ausente (imagem fallback)"
+          [ -z "$ALGUMA" ] && echo "❌ ERRO: nenhuma API de LLM configurada" && exit 1 || true
         env:
           GEMINI_API_KEY:      ${{ secrets.GEMINI_API_KEY }}
           GLM_API_KEY:         ${{ secrets.GLM_API_KEY }}
-          QWEN_API_KEY:        ${{ secrets.QWEN_API_KEY }}
           GROK_API_KEY:        ${{ secrets.GROK_API_KEY }}
           OPENROUTER_API_KEY:  ${{ secrets.OPENROUTER_API_KEY }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
@@ -90,7 +49,6 @@ jobs:
         env:
           GEMINI_API_KEY:      ${{ secrets.GEMINI_API_KEY }}
           GLM_API_KEY:         ${{ secrets.GLM_API_KEY }}
-          QWEN_API_KEY:        ${{ secrets.QWEN_API_KEY }}
           GROK_API_KEY:        ${{ secrets.GROK_API_KEY }}
           OPENROUTER_API_KEY:  ${{ secrets.OPENROUTER_API_KEY }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}

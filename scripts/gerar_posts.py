@@ -16,36 +16,27 @@ def main():
 
     gemini_key     = os.environ.get("GEMINI_API_KEY", "")
     glm_key        = os.environ.get("GLM_API_KEY", "")
-    qwen_key       = os.environ.get("QWEN_API_KEY", "")
     grok_key       = os.environ.get("GROK_API_KEY", "")
     openrouter_key = os.environ.get("OPENROUTER_API_KEY", "")
     unsplash_key   = os.environ.get("UNSPLASH_ACCESS_KEY", "")
 
-    # Ao menos uma API de LLM precisa estar configurada
-    if not any([gemini_key, glm_key, qwen_key, grok_key, openrouter_key]):
+    if not any([gemini_key, glm_key, grok_key, openrouter_key]):
         print("\nERRO CRÍTICO: nenhuma API de LLM configurada.")
-        print("  Configure ao menos uma das seguintes secrets no GitHub:")
-        print("  - GEMINI_API_KEY      (Google AI Studio — primário, 1.500 req/dia)")
-        print("  - GLM_API_KEY         (Zhipu AI — secundário, 6M tokens/dia)")
-        print("  - QWEN_API_KEY        (Alibaba Qwen — terciário, gratuito)")
-        print("  - GROK_API_KEY        (xAI Grok — quaternário)")
-        print("  - OPENROUTER_API_KEY  (OpenRouter :free — fallback)")
+        print("  Configure ao menos uma: GEMINI_API_KEY, GLM_API_KEY, GROK_API_KEY ou OPENROUTER_API_KEY")
         sys.exit(1)
 
     if gemini_key:
-        print(f"OK GEMINI_API_KEY configurada ({len(gemini_key)} chars) [PRIMÁRIO]")
+        print(f"OK GEMINI_API_KEY ({len(gemini_key)} chars) [1º — 3 modelos com quotas independentes]")
     if glm_key:
-        print(f"OK GLM_API_KEY configurada ({len(glm_key)} chars) [SECUNDÁRIO]")
-    if qwen_key:
-        print(f"OK QWEN_API_KEY configurada ({len(qwen_key)} chars) [TERCIÁRIO]")
+        print(f"OK GLM_API_KEY ({len(glm_key)} chars) [2º — glm-4-flash-250414]")
     if grok_key:
-        print(f"OK GROK_API_KEY configurada ({len(grok_key)} chars) [QUATERNÁRIO]")
+        print(f"OK GROK_API_KEY ({len(grok_key)} chars) [3º — grok-3-mini]")
     if openrouter_key:
-        print(f"OK OPENROUTER_API_KEY configurada ({len(openrouter_key)} chars) [FALLBACK]")
+        print(f"OK OPENROUTER_API_KEY ({len(openrouter_key)} chars) [4º — 6 modelos :free]")
     if unsplash_key:
-        print(f"OK UNSPLASH_ACCESS_KEY configurada ({len(unsplash_key)} chars)")
+        print(f"OK UNSPLASH_ACCESS_KEY ({len(unsplash_key)} chars)")
     else:
-        print("AVISO: UNSPLASH_ACCESS_KEY não configurada — imagem fallback será usada.")
+        print("AVISO: UNSPLASH_ACCESS_KEY ausente — imagem fallback será usada.")
 
     print("\n" + "=" * 70)
 
