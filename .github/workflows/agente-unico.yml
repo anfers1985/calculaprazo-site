@@ -30,38 +30,57 @@ jobs:
       - name: Verificar secrets configuradas
         run: |
           echo "=== VERIFICAÇÃO DE SECRETS ==="
+          ALGUMA_LLM=""
 
-          if [ -z "$GEMINI_API_KEY" ]; then
-            echo "❌ GEMINI_API_KEY: não configurada (primário)"
+          if [ -n "$GEMINI_API_KEY" ]; then
+            echo "✅ GEMINI_API_KEY: presente (${#GEMINI_API_KEY} chars) [PRIMÁRIO]"
+            ALGUMA_LLM=1
           else
-            echo "✅ GEMINI_API_KEY: presente (${#GEMINI_API_KEY} chars)"
+            echo "-- GEMINI_API_KEY: não configurada"
           fi
 
-          if [ -z "$GROK_API_KEY" ]; then
-            echo "⚠️  GROK_API_KEY: não configurada (secundário)"
+          if [ -n "$GLM_API_KEY" ]; then
+            echo "✅ GLM_API_KEY: presente (${#GLM_API_KEY} chars) [SECUNDÁRIO]"
+            ALGUMA_LLM=1
           else
-            echo "✅ GROK_API_KEY: presente (${#GROK_API_KEY} chars)"
+            echo "-- GLM_API_KEY: não configurada"
           fi
 
-          if [ -z "$OPENROUTER_API_KEY" ]; then
-            echo "⚠️  OPENROUTER_API_KEY: não configurada (terciário)"
+          if [ -n "$QWEN_API_KEY" ]; then
+            echo "✅ QWEN_API_KEY: presente (${#QWEN_API_KEY} chars) [TERCIÁRIO]"
+            ALGUMA_LLM=1
           else
-            echo "✅ OPENROUTER_API_KEY: presente (${#OPENROUTER_API_KEY} chars)"
+            echo "-- QWEN_API_KEY: não configurada"
           fi
 
-          if [ -z "$UNSPLASH_ACCESS_KEY" ]; then
-            echo "⚠️  UNSPLASH_ACCESS_KEY: não configurada — imagem fallback será usada"
+          if [ -n "$GROK_API_KEY" ]; then
+            echo "✅ GROK_API_KEY: presente (${#GROK_API_KEY} chars) [QUATERNÁRIO]"
+            ALGUMA_LLM=1
           else
+            echo "-- GROK_API_KEY: não configurada"
+          fi
+
+          if [ -n "$OPENROUTER_API_KEY" ]; then
+            echo "✅ OPENROUTER_API_KEY: presente (${#OPENROUTER_API_KEY} chars) [FALLBACK]"
+            ALGUMA_LLM=1
+          else
+            echo "-- OPENROUTER_API_KEY: não configurada"
+          fi
+
+          if [ -n "$UNSPLASH_ACCESS_KEY" ]; then
             echo "✅ UNSPLASH_ACCESS_KEY: presente"
+          else
+            echo "⚠️  UNSPLASH_ACCESS_KEY: não configurada — imagem fallback será usada"
           fi
 
-          # Ao menos uma API de LLM é obrigatória
-          if [ -z "$GEMINI_API_KEY" ] && [ -z "$GROK_API_KEY" ] && [ -z "$OPENROUTER_API_KEY" ]; then
-            echo "❌ ERRO CRÍTICO: nenhuma API de LLM configurada (GEMINI, GROK ou OPENROUTER)"
+          if [ -z "$ALGUMA_LLM" ]; then
+            echo "❌ ERRO CRÍTICO: nenhuma API de LLM configurada"
             exit 1
           fi
         env:
           GEMINI_API_KEY:      ${{ secrets.GEMINI_API_KEY }}
+          GLM_API_KEY:         ${{ secrets.GLM_API_KEY }}
+          QWEN_API_KEY:        ${{ secrets.QWEN_API_KEY }}
           GROK_API_KEY:        ${{ secrets.GROK_API_KEY }}
           OPENROUTER_API_KEY:  ${{ secrets.OPENROUTER_API_KEY }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
@@ -70,6 +89,8 @@ jobs:
         run: python scripts/gerar_posts.py
         env:
           GEMINI_API_KEY:      ${{ secrets.GEMINI_API_KEY }}
+          GLM_API_KEY:         ${{ secrets.GLM_API_KEY }}
+          QWEN_API_KEY:        ${{ secrets.QWEN_API_KEY }}
           GROK_API_KEY:        ${{ secrets.GROK_API_KEY }}
           OPENROUTER_API_KEY:  ${{ secrets.OPENROUTER_API_KEY }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}

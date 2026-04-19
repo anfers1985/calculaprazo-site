@@ -1,19 +1,25 @@
 # -*- coding: utf-8 -*-
-# agente_base.py - Modulo compartilhado — CalculaPrazo
+# agente_base.py — Módulo compartilhado CalculaPrazo
 #
-# VARIAVEIS DE AMBIENTE:
-#   GEMINI_API_KEY       -> chave Google Gemini
-#   GROK_API_KEY         -> chave xAI Grok
-#   UNSPLASH_ACCESS_KEY  -> chave Unsplash Access Key
+# VARIÁVEIS DE AMBIENTE (configure como Secrets no GitHub):
+#   GEMINI_API_KEY       -> Google AI Studio — gemini-2.0-flash (primário)
+#   GLM_API_KEY          -> Zhipu AI ChatGLM — glm-4-flash (secundário, 6M tokens/dia grátis)
+#   QWEN_API_KEY         -> Alibaba Qwen — qwen-turbo (terciário, gratuito)
+#   GROK_API_KEY         -> xAI Grok — grok-3-mini (quaternário)
+#   OPENROUTER_API_KEY   -> OpenRouter modelos :free (quinto, fallback final)
+#   UNSPLASH_ACCESS_KEY  -> Unsplash (imagens)
 #
-import os, json, re, datetime, requests, random
+import os, json, re, datetime, requests, random, time
 from slugify import slugify
 
 HOJE = datetime.date.today()
 
-GEMINI_KEY   = os.environ.get("GEMINI_API_KEY", "")
-GROK_KEY     = os.environ.get("GROK_API_KEY", "")
-UNSPLASH_KEY = os.environ.get("UNSPLASH_ACCESS_KEY", "")
+GEMINI_KEY     = os.environ.get("GEMINI_API_KEY", "")
+GLM_KEY        = os.environ.get("GLM_API_KEY", "")
+QWEN_KEY       = os.environ.get("QWEN_API_KEY", "")
+GROK_KEY       = os.environ.get("GROK_API_KEY", "")
+OPENROUTER_KEY = os.environ.get("OPENROUTER_API_KEY", "")
+UNSPLASH_KEY   = os.environ.get("UNSPLASH_ACCESS_KEY", "")
 
 CATEGORIAS_VALIDAS = {
     "jurisprudencia-tst":   "Jurisprudência TST",
@@ -44,71 +50,242 @@ UNSPLASH_QUERY_CAT = {
     "geral":                "law justice office professional",
 }
 
-def chamar_llm(prompt, max_tokens=4000, temperature=0.2):
-    """Chama Gemini ou Grok como fallback."""
-    
-    # 1. Tentar Gemini
-    if GEMINI_KEY:
-        try:
-            # Usando a API do Gemini via REST
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_KEY}"
-            headers = {"Content-Type": "application/json"}
-            payload = {
-                "contents": [{"parts": [{"text": prompt}]}],
-                "generationConfig": {
-                    "temperature": temperature,
-                    "maxOutputTokens": max_tokens
-                }
-            }
-            r = requests.post(url, headers=headers, json=payload, timeout=120)
-            if r.status_code == 200:
-                res = r.json()
-                text = res['candidates'][0]['content']['parts'][0]['text'].strip()
-                print("  LLM OK modelo=gemini-1.5-flash")
-                return text
-            else:
-                print(f"  LLM erro Gemini: {r.status_code} - {r.text[:100]}")
-        except Exception as e:
-            print(f"  LLM excecao Gemini: {str(e)}")
 
-    # 2. Tentar Grok (xAI)
-    if GROK_KEY:
-        try:
-            url = "https://api.x.ai/v1/chat/completions"
-            headers = {
-                "Authorization": f"Bearer {GROK_KEY}",
-                "Content-Type": "application/json"
-            }
-            payload = {
-                "model": "grok-beta", # ou o modelo atual disponível
-                "messages": [{"role": "user", "content": prompt}],
+# ─────────────────────────────────────────────────────────────────────────────
+# PROVEDORES LLM — todos gratuitos
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _gemini(prompt, max_tokens, temperature):
+    """Google AI Studio — gemini-2.0-flash.
+    CORRIGIDO: gemini-1.5-flash foi descontinuado em abr/2026.
+    Limite gratuito: 1.500 req/dia, 1M tokens/min."""
+    if not GEMINI_KEY:
+        raise RuntimeError("GEMINI_API_KEY não configurada")
+    url = (
+        "https://generativelanguage.googleapis.com/v1beta/models/"
+        "gemini-2.0-flash:generateContent?key=" + GEMINI_KEY
+    )
+    r = requests.post(
+        url,
+        json={
+            "contents": [{"parts": [{"text": prompt}]}],
+            "generationConfig": {
+                "maxOutputTokens": max_tokens,
                 "temperature": temperature,
-                "max_tokens": max_tokens
-            }
-            r = requests.post(url, headers=headers, json=payload, timeout=120)
+            },
+        },
+        timeout=120,
+    )
+    if r.status_code == 200:
+        candidate = r.json().get("candidates", [{}])[0]
+        if candidate.get("finishReason") == "SAFETY":
+            raise RuntimeError("Gemini: bloqueado por segurança")
+        text = (candidate
+                .get("content", {})
+                .get("parts", [{}])[0]
+                .get("text", "").strip())
+        if text:
+            print("  LLM OK modelo=gemini-2.0-flash")
+            return text
+        raise RuntimeError("Gemini: resposta vazia")
+    elif r.status_code == 429:
+        raise RuntimeError("Gemini 429 (rate limit diário atingido)")
+    else:
+        raise RuntimeError(f"Gemini HTTP {r.status_code}: {r.text[:200]}")
+
+
+def _glm(prompt, max_tokens, temperature):
+    """Zhipu AI — glm-4-flash.
+    Generoso: 6 milhões de tokens/dia gratuitos.
+    Docs: https://open.bigmodel.cn/dev/api"""
+    if not GLM_KEY:
+        raise RuntimeError("GLM_API_KEY não configurada")
+    r = requests.post(
+        "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+        headers={
+            "Authorization": "Bearer " + GLM_KEY,
+            "Content-Type": "application/json",
+        },
+        json={
+            "model": "glm-4-flash",
+            "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": min(max_tokens, 4096),
+            "temperature": temperature,
+        },
+        timeout=120,
+    )
+    if r.status_code == 200:
+        text = r.json()["choices"][0]["message"]["content"].strip()
+        if text:
+            print("  LLM OK modelo=glm-4-flash")
+            return text
+        raise RuntimeError("GLM: resposta vazia")
+    elif r.status_code == 429:
+        raise RuntimeError("GLM 429 (rate limit)")
+    else:
+        raise RuntimeError(f"GLM HTTP {r.status_code}: {r.text[:200]}")
+
+
+def _qwen(prompt, max_tokens, temperature):
+    """Alibaba Qwen — qwen-turbo (gratuito com conta Alibaba Cloud).
+    Docs: https://help.aliyun.com/zh/model-studio/"""
+    if not QWEN_KEY:
+        raise RuntimeError("QWEN_API_KEY não configurada")
+    r = requests.post(
+        "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+        headers={
+            "Authorization": "Bearer " + QWEN_KEY,
+            "Content-Type": "application/json",
+        },
+        json={
+            "model": "qwen-turbo",
+            "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": min(max_tokens, 4096),
+            "temperature": temperature,
+        },
+        timeout=120,
+    )
+    if r.status_code == 200:
+        text = r.json()["choices"][0]["message"]["content"].strip()
+        if text:
+            print("  LLM OK modelo=qwen-turbo")
+            return text
+        raise RuntimeError("Qwen: resposta vazia")
+    elif r.status_code == 429:
+        raise RuntimeError("Qwen 429 (rate limit)")
+    else:
+        raise RuntimeError(f"Qwen HTTP {r.status_code}: {r.text[:200]}")
+
+
+def _grok(prompt, max_tokens, temperature):
+    """xAI Grok — grok-3-mini (free tier xAI)."""
+    if not GROK_KEY:
+        raise RuntimeError("GROK_API_KEY não configurada")
+    r = requests.post(
+        "https://api.x.ai/v1/chat/completions",
+        headers={
+            "Authorization": "Bearer " + GROK_KEY,
+            "Content-Type": "application/json",
+        },
+        json={
+            "model": "grok-3-mini",
+            "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": min(max_tokens, 4096),
+            "temperature": temperature,
+        },
+        timeout=120,
+    )
+    if r.status_code == 200:
+        text = r.json()["choices"][0]["message"]["content"].strip()
+        if text:
+            print("  LLM OK modelo=grok-3-mini")
+            return text
+        raise RuntimeError("Grok: resposta vazia")
+    elif r.status_code in (401, 403):
+        raise RuntimeError(f"Grok {r.status_code} (sem permissão/créditos ativos): {r.text[:150]}")
+    elif r.status_code == 429:
+        raise RuntimeError("Grok 429 (rate limit)")
+    else:
+        raise RuntimeError(f"Grok HTTP {r.status_code}: {r.text[:200]}")
+
+
+def _openrouter_free(prompt, max_tokens, temperature):
+    """OpenRouter — modelos :free ativos (revisados abr/2026).
+    REMOVIDOS: deepseek-r1:free e mistral-7b:free (deram 404 no log).
+    MANTIDOS: llama-3.3-70b:free e gemma-3-27b:free (deram 429 = existem mas em rate limit).
+    ADICIONADOS: phi-4 e qwen3 como alternativas."""
+    if not OPENROUTER_KEY:
+        raise RuntimeError("OPENROUTER_API_KEY não configurada")
+    modelos = [
+        "meta-llama/llama-3.3-70b-instruct:free",
+        "google/gemma-3-27b-it:free",
+        "microsoft/phi-4-reasoning:free",
+        "qwen/qwen3-8b:free",
+    ]
+    last_error = None
+    for model in modelos:
+        try:
+            r = requests.post(
+                "https://openrouter.ai/api/v1/chat/completions",
+                headers={
+                    "Authorization": "Bearer " + OPENROUTER_KEY,
+                    "Content-Type": "application/json",
+                    "HTTP-Referer": "https://calculaprazo.com.br",
+                    "X-Title": "CalculaPrazo Blog Agent",
+                },
+                json={
+                    "model": model,
+                    "messages": [{"role": "user", "content": prompt}],
+                    "max_tokens": min(max_tokens, 4096),
+                    "temperature": temperature,
+                },
+                timeout=120,
+            )
             if r.status_code == 200:
                 text = r.json()["choices"][0]["message"]["content"].strip()
-                print("  LLM OK modelo=grok-beta")
-                return text
+                if text:
+                    print("  LLM OK modelo=" + model)
+                    return text
+            elif r.status_code == 429:
+                last_error = f"429 rate limit: {model}"
+                print(f"  OpenRouter 429 {model} — aguardando 5s...")
+                time.sleep(5)
+            elif r.status_code == 404:
+                last_error = f"404 modelo removido: {model}"
+                print(f"  OpenRouter 404 {model} — indisponível, próximo...")
             else:
-                print(f"  LLM erro Grok: {r.status_code} - {r.text[:100]}")
+                last_error = f"HTTP {r.status_code} {model}: {r.text[:100]}"
+                print(f"  OpenRouter {r.status_code} {model}")
         except Exception as e:
-            print(f"  LLM excecao Grok: {str(e)}")
+            last_error = str(e)
+            print(f"  OpenRouter exceção {model}: {e}")
+    raise RuntimeError("OpenRouter :free esgotado. Último erro: " + str(last_error))
 
-    raise RuntimeError("Todos os modelos (Gemini/Grok) falharam ou chaves nao configuradas.")
 
+# ─────────────────────────────────────────────────────────────────────────────
+# DISPATCHER PRINCIPAL
+# ─────────────────────────────────────────────────────────────────────────────
+
+def chamar_llm(prompt, max_tokens=4000, temperature=0.2):
+    """
+    Cadeia de fallback 100% gratuita — 5 provedores em ordem:
+      1. Gemini 2.0 Flash  (Google AI Studio — 1.500 req/dia)
+      2. GLM-4-Flash       (Zhipu AI — 6M tokens/dia, muito generoso)
+      3. Qwen-Turbo        (Alibaba — gratuito com conta)
+      4. Grok 3 Mini       (xAI — quando conta tiver créditos ativos)
+      5. OpenRouter :free  (fallback final, rate-limited)
+    """
+    provedores = [
+        ("Gemini",     _gemini),
+        ("GLM",        _glm),
+        ("Qwen",       _qwen),
+        ("Grok",       _grok),
+        ("OpenRouter", _openrouter_free),
+    ]
+    last_error = None
+    for nome, func in provedores:
+        try:
+            return func(prompt, max_tokens=max_tokens, temperature=temperature)
+        except RuntimeError as e:
+            last_error = str(e)
+            print(f"  [{nome}] falhou: {last_error[:150]}")
+    raise RuntimeError("Todas as APIs falharam. Último erro: " + str(last_error))
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# IMAGEM
+# ─────────────────────────────────────────────────────────────────────────────
 
 def obter_imagem_url(image_query, categoria):
     query    = re.sub(r'[^a-zA-Z0-9 ]', '', (image_query or "")).strip()
     fallback = "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=1200&auto=format&fit=crop"
     if len(query) < 5:
         query = UNSPLASH_QUERY_CAT.get(categoria, "law justice professional")
-    
     if not UNSPLASH_KEY:
-        return "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=1200&auto=format&fit=crop"
-
+        return fallback
     for q in [query, UNSPLASH_QUERY_CAT.get(categoria, "law")]:
-        if not q: continue
+        if not q:
+            continue
         try:
             r = requests.get(
                 "https://api.unsplash.com/photos/random",
@@ -120,14 +297,20 @@ def obter_imagem_url(image_query, categoria):
                 photos = r.json()
                 if isinstance(photos, list) and photos:
                     url = photos[0].get("urls", {}).get("regular")
-                    if url: return url
+                    if url:
+                        return url
                 elif isinstance(photos, dict):
                     url = photos.get("urls", {}).get("regular")
-                    if url: return url
+                    if url:
+                        return url
         except Exception as e:
             print("  AVISO Unsplash: " + str(e))
     return fallback
 
+
+# ─────────────────────────────────────────────────────────────────────────────
+# VALIDAÇÃO
+# ─────────────────────────────────────────────────────────────────────────────
 
 def validar_qualidade(dados, categoria):
     title   = dados.get("title", "")
@@ -137,11 +320,7 @@ def validar_qualidade(dados, categoria):
         return False, "Titulo ausente ou muito curto"
     if not excerpt or len(excerpt.strip()) < 30:
         return False, "Excerpt ausente ou muito curto"
-    
-    # Contagem de palavras aproximada removendo tags HTML
-    text_only = re.sub(r'<[^>]+>', ' ', content)
-    words = len(text_only.split())
-    
+    words = len(re.sub(r'<[^>]+>', ' ', content).split())
     if words < 300:
         return False, f"Conteudo curto: {words} palavras (min 300)"
     if '<h2' not in content.lower():
@@ -161,17 +340,13 @@ def is_duplicata(title, posts_path="data/posts.json"):
             return False
     except Exception:
         return False
-    
     title_lower = title.lower().strip()
     slug_novo   = slugify(title)[:40]
-    
     for p in posts:
         existing_slug  = p.get("id", "")
         existing_title = p.get("title", "").lower()
         if slug_novo in existing_slug or existing_slug in slug_novo:
             return True
-        
-        # Similaridade simples por palavras
         words_new = set(title_lower.split())
         words_old = set(existing_title.split())
         if len(words_new) > 3 and len(words_old) > 3:
@@ -180,6 +355,10 @@ def is_duplicata(title, posts_path="data/posts.json"):
                 return True
     return False
 
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SALVAR POST
+# ─────────────────────────────────────────────────────────────────────────────
 
 def salvar_post(dados, categoria, fonte_nome=""):
     try:
@@ -190,9 +369,9 @@ def salvar_post(dados, categoria, fonte_nome=""):
 
         template_path = "blog/POST_TEMPLATE.html"
         if not os.path.exists(template_path):
-            print(f"  ERRO: Template {template_path} nao encontrado.")
+            print(f"  ERRO: Template {template_path} não encontrado.")
             return False
-            
+
         with open(template_path, encoding="utf-8") as f:
             template = f.read()
 
@@ -208,13 +387,16 @@ def salvar_post(dados, categoria, fonte_nome=""):
         fonte_nota = ""
         if source_url:
             fonte_nota = (
-                f'\n<p style="font-size:.78rem;color:#64748B;margin-top:28px;padding-top:12px;border-top:1px solid #E2E8F0;">'
-                f'<strong>Fonte:</strong> <a href="{source_url}" target="_blank" rel="noopener noreferrer">'
+                f'\n<p style="font-size:.78rem;color:#64748B;margin-top:28px;'
+                f'padding-top:12px;border-top:1px solid #E2E8F0;">'
+                f'<strong>Fonte:</strong> '
+                f'<a href="{source_url}" target="_blank" rel="noopener noreferrer">'
                 f'{fonte_nome or source_url}</a> — acesso em {data_br}.</p>'
             )
         elif fonte_nome:
             fonte_nota = (
-                f'\n<p style="font-size:.78rem;color:#64748B;margin-top:28px;padding-top:12px;border-top:1px solid #E2E8F0;">'
+                f'\n<p style="font-size:.78rem;color:#64748B;margin-top:28px;'
+                f'padding-top:12px;border-top:1px solid #E2E8F0;">'
                 f'<strong>Fonte:</strong> {fonte_nome} — {data_br}.</p>'
             )
 
@@ -278,15 +460,17 @@ def salvar_post(dados, categoria, fonte_nome=""):
         return True
 
     except Exception as e:
+        import traceback
         print(f"  ERRO ao salvar post: {str(e)}")
+        traceback.print_exc()
         return False
 
 
 def _atualizar_sitemap(slug, data_str):
     try:
         sitemap_path = "sitemap.xml"
-        if not os.path.exists(sitemap_path): return
-        
+        if not os.path.exists(sitemap_path):
+            return
         nova_url = f"https://calculaprazo.com.br/blog/{slug}"
         with open(sitemap_path, "r", encoding="utf-8") as f:
             sc = f.read()
