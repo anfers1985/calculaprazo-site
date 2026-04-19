@@ -1,5 +1,39 @@
 [
   {
+    "id": "fgts-digital-passa-a-ser-obrigatorio-em-reclamatorias-trabal",
+    "title": "FGTS Digital passa a ser obrigatório em reclamatórias trabalhistas",
+    "category": "orientacoes-praticas",
+    "category_label": "Orientações Práticas RH",
+    "tags": [
+      "FGTS",
+      "Digital",
+      "Reclamatórias",
+      "Trabalhistas"
+    ],
+    "excerpt": "FGTS Digital se torna obrigatório em reclamatórias trabalhistas a partir de maio de 2026",
+    "image": "https://images.unsplash.com/photo-1601571047421-64e17b56cbbd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY2MzE5MDZ8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-19",
+    "source": "Contabeis — Trabalhista",
+    "source_url": "https://www.contabeis.com.br/conteudo/trabalhista/"
+  },
+  {
+    "id": "estabilidade-provisoria",
+    "title": "Estabilidade Provisória",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "tags": [
+      "Trabalho Temporário",
+      "Estabilidade Provisória",
+      "Gestante",
+      "Direito Trabalhista"
+    ],
+    "excerpt": "Gestante com trabalho temporário terá estabilidade provisória",
+    "image": "https://images.unsplash.com/photo-1753162658123-376df33e70f1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY2MzE3ODZ8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-19",
+    "source": "Senado — Dir. Trabalhistas",
+    "source_url": "https://www12.senado.leg.br/noticias/tags/Direitos%20Trabalhistas"
+  },
+  {
     "id": "trt-mg-reconhece-dispensa-discriminatria-e-manda-reintegrar-trabalhadora-com-leucemia",
     "title": "TRT-MG reconhece dispensa discriminatória e manda reintegrar trabalhadora com leucemia",
     "category": "jurisprudencia-trts",
