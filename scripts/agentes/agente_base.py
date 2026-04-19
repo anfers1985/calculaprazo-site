@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
 # agente_base.py — Módulo compartilhado CalculaPrazo
 #
-# VARIÁVEIS DE AMBIENTE (Secrets no GitHub):
-#   GEMINI_API_KEY       -> Google AI Studio (primário)
-#   GLM_API_KEY          -> Zhipu AI ChatGLM (secundário)
-#   GROK_API_KEY         -> xAI Grok (terciário — quando conta tiver créditos)
-#   OPENROUTER_API_KEY   -> OpenRouter modelos :free (fallback)
-#   UNSPLASH_ACCESS_KEY  -> Unsplash (imagens)
-#
-# NOTA SOBRE QWEN: A QWEN_API_KEY cadastrada no GitHub está com erro 401
-# (chave inválida para o endpoint DashScope). Removida da cadeia até revalidação.
-# Para reativar: acesse https://bailian.console.aliyun.com/ e gere nova chave sk-...
+# Cadeia de fallback (100% gratuita):
+#   1. Gemini  → gemini-2.0-flash / gemini-2.0-flash-lite / gemini-1.5-flash-8b
+#   2. Groq    → llama-3.3-70b-versatile / gemma2-9b-it  (GROQ_API_KEY)
+#   3. GLM     → glm-4-flash-250414  (GLM_API_KEY)
+#   4. Qwen    → qwen-turbo  (QWEN_API_KEY — recadastrar em bailian.console.aliyun.com)
+#   5. OpenRouter → modelos :free rotativos  (OPENROUTER_API_KEY)
 #
 import os, json, re, datetime, requests, random, time
 from slugify import slugify
@@ -18,7 +14,9 @@ from slugify import slugify
 HOJE = datetime.date.today()
 
 GEMINI_KEY     = os.environ.get("GEMINI_API_KEY", "")
+GROQ_KEY       = os.environ.get("GROQ_API_KEY", "")
 GLM_KEY        = os.environ.get("GLM_API_KEY", "")
+QWEN_KEY       = os.environ.get("QWEN_API_KEY", "")
 GROK_KEY       = os.environ.get("GROK_API_KEY", "")
 OPENROUTER_KEY = os.environ.get("OPENROUTER_API_KEY", "")
 UNSPLASH_KEY   = os.environ.get("UNSPLASH_ACCESS_KEY", "")
@@ -54,175 +52,172 @@ UNSPLASH_QUERY_CAT = {
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# PROVEDORES LLM
+# 1. GEMINI — 3 modelos com quotas independentes
 # ─────────────────────────────────────────────────────────────────────────────
-
 def _gemini(prompt, max_tokens, temperature):
-    """Google AI Studio.
-    
-    Usa DOIS modelos com quotas independentes para maximizar disponibilidade:
-      - gemini-2.0-flash       → 1.500 req/dia
-      - gemini-2.0-flash-lite  → quota separada, mais leve
-      - gemini-1.5-flash-8b    → quota separada (modelo pequeno, muito rápido)
-    
-    CORRIGIDO: gemini-1.5-flash foi descontinuado (retornava 404).
-    """
     if not GEMINI_KEY:
         raise RuntimeError("GEMINI_API_KEY não configurada")
-
-    modelos_gemini = [
-        "gemini-2.0-flash",
-        "gemini-2.0-flash-lite",
-        "gemini-1.5-flash-8b",
-    ]
-    last_error = None
-    for modelo in modelos_gemini:
+    for modelo in ["gemini-2.0-flash", "gemini-2.0-flash-lite", "gemini-1.5-flash-8b"]:
         try:
-            url = (
-                "https://generativelanguage.googleapis.com/v1beta/models/"
-                + modelo + ":generateContent?key=" + GEMINI_KEY
-            )
             r = requests.post(
-                url,
-                json={
-                    "contents": [{"parts": [{"text": prompt}]}],
-                    "generationConfig": {
-                        "maxOutputTokens": max_tokens,
-                        "temperature": temperature,
-                    },
-                },
+                f"https://generativelanguage.googleapis.com/v1beta/models/{modelo}:generateContent?key={GEMINI_KEY}",
+                json={"contents": [{"parts": [{"text": prompt}]}],
+                      "generationConfig": {"maxOutputTokens": max_tokens, "temperature": temperature}},
                 timeout=120,
             )
             if r.status_code == 200:
-                candidate = r.json().get("candidates", [{}])[0]
-                if candidate.get("finishReason") == "SAFETY":
-                    last_error = f"{modelo}: bloqueado por segurança"
+                c = r.json().get("candidates", [{}])[0]
+                if c.get("finishReason") == "SAFETY":
                     continue
-                text = (candidate
-                        .get("content", {})
-                        .get("parts", [{}])[0]
-                        .get("text", "").strip())
-                if text:
+                t = c.get("content", {}).get("parts", [{}])[0].get("text", "").strip()
+                if t:
                     print(f"  LLM OK modelo={modelo}")
-                    return text
-                last_error = f"{modelo}: resposta vazia"
+                    return t
             elif r.status_code == 429:
-                last_error = f"{modelo}: 429 rate limit"
-                print(f"  Gemini {modelo} 429 — tentando próximo modelo...")
+                print(f"  Gemini {modelo} 429 — próximo modelo...")
             elif r.status_code == 404:
-                last_error = f"{modelo}: 404 não encontrado"
-                print(f"  Gemini {modelo} 404 — tentando próximo modelo...")
+                print(f"  Gemini {modelo} 404 — próximo modelo...")
             else:
-                last_error = f"{modelo}: HTTP {r.status_code}: {r.text[:100]}"
-                print(f"  Gemini {modelo} {r.status_code}")
+                print(f"  Gemini {modelo} HTTP {r.status_code}")
         except Exception as e:
-            last_error = str(e)
             print(f"  Gemini {modelo} exceção: {e}")
-    raise RuntimeError("Gemini: todos os modelos falharam. Último: " + str(last_error))
+    raise RuntimeError("Gemini: todos os modelos falharam")
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# 2. GROQ — llama-3.3-70b e gemma2-9b (1.000 req/dia gratuitas)
+# ─────────────────────────────────────────────────────────────────────────────
+def _groq(prompt, max_tokens, temperature):
+    if not GROQ_KEY:
+        raise RuntimeError("GROQ_API_KEY não configurada")
+    for modelo in ["llama-3.3-70b-versatile", "gemma2-9b-it", "mixtral-8x7b-32768"]:
+        try:
+            r = requests.post(
+                "https://api.groq.com/openai/v1/chat/completions",
+                headers={"Authorization": f"Bearer {GROQ_KEY}", "Content-Type": "application/json"},
+                json={"model": modelo,
+                      "messages": [{"role": "user", "content": prompt}],
+                      "max_tokens": min(max_tokens, 8000),
+                      "temperature": temperature},
+                timeout=120,
+            )
+            if r.status_code == 200:
+                t = r.json()["choices"][0]["message"]["content"].strip()
+                if t:
+                    print(f"  LLM OK modelo=groq/{modelo}")
+                    return t
+            elif r.status_code == 429:
+                print(f"  Groq {modelo} 429 (rate limit) — próximo modelo...")
+                time.sleep(3)
+            elif r.status_code == 404:
+                print(f"  Groq {modelo} 404 — próximo modelo...")
+            else:
+                print(f"  Groq {modelo} HTTP {r.status_code}: {r.text[:100]}")
+        except Exception as e:
+            print(f"  Groq {modelo} exceção: {e}")
+    raise RuntimeError("Groq: todos os modelos falharam")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 3. GLM — glm-4-flash-250414 (Zhipu AI, quota generosa)
+# ─────────────────────────────────────────────────────────────────────────────
 def _glm(prompt, max_tokens, temperature):
-    """Zhipu AI — glm-4-flash-250414.
-    
-    CORRIGIDO: glm-4-flash foi descontinuado (retornava HTTP 400 código 1211).
-    Modelo atual confirmado: glm-4-flash-250414
-    Quota gratuita: muito generosa (milhões de tokens/mês).
-    """
     if not GLM_KEY:
         raise RuntimeError("GLM_API_KEY não configurada")
-
-    # Tenta o modelo atual e o anterior como fallback
-    modelos_glm = ["glm-4-flash-250414", "glm-4-flash", "glm-4-flash-2"]
-    last_error = None
-    for modelo in modelos_glm:
+    # CORRIGIDO: glm-4-flash foi descontinuado em mar/2026, código de erro 1211
+    for modelo in ["glm-4-flash-250414", "glm-4-flash-2", "glm-4-flash"]:
         try:
             r = requests.post(
                 "https://open.bigmodel.cn/api/paas/v4/chat/completions",
-                headers={
-                    "Authorization": "Bearer " + GLM_KEY,
-                    "Content-Type": "application/json",
-                },
-                json={
-                    "model": modelo,
-                    "messages": [{"role": "user", "content": prompt}],
-                    "max_tokens": min(max_tokens, 4096),
-                    "temperature": temperature,
-                },
+                headers={"Authorization": f"Bearer {GLM_KEY}", "Content-Type": "application/json"},
+                json={"model": modelo,
+                      "messages": [{"role": "user", "content": prompt}],
+                      "max_tokens": min(max_tokens, 4096),
+                      "temperature": temperature},
                 timeout=120,
             )
             if r.status_code == 200:
-                text = r.json()["choices"][0]["message"]["content"].strip()
-                if text:
+                t = r.json()["choices"][0]["message"]["content"].strip()
+                if t:
                     print(f"  LLM OK modelo={modelo}")
-                    return text
-                last_error = f"{modelo}: resposta vazia"
+                    return t
             elif r.status_code == 400:
-                err = r.json().get("error", {})
-                code = err.get("code", "")
+                code = r.json().get("error", {}).get("code", "")
                 if code == "1211":
-                    last_error = f"{modelo}: modelo não existe (1211)"
-                    print(f"  GLM {modelo} não existe — tentando próximo...")
+                    print(f"  GLM {modelo} não existe (1211) — próximo...")
                 else:
-                    last_error = f"{modelo}: HTTP 400: {r.text[:150]}"
+                    print(f"  GLM {modelo} HTTP 400: {r.text[:100]}")
             elif r.status_code == 429:
-                last_error = f"{modelo}: 429 rate limit"
-                print(f"  GLM {modelo} 429 — tentando próximo modelo...")
+                print(f"  GLM {modelo} 429 — próximo modelo...")
             else:
-                last_error = f"{modelo}: HTTP {r.status_code}: {r.text[:150]}"
-                print(f"  GLM {modelo} {r.status_code}")
+                print(f"  GLM {modelo} HTTP {r.status_code}: {r.text[:100]}")
         except Exception as e:
-            last_error = str(e)
             print(f"  GLM {modelo} exceção: {e}")
-    raise RuntimeError("GLM: todos os modelos falharam. Último: " + str(last_error))
+    raise RuntimeError("GLM: todos os modelos falharam")
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# 4. QWEN — qwen-turbo (recadastrar chave em bailian.console.aliyun.com)
+# ─────────────────────────────────────────────────────────────────────────────
+def _qwen(prompt, max_tokens, temperature):
+    if not QWEN_KEY:
+        raise RuntimeError("QWEN_API_KEY não configurada")
+    r = requests.post(
+        "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+        headers={"Authorization": f"Bearer {QWEN_KEY}", "Content-Type": "application/json"},
+        json={"model": "qwen-turbo",
+              "messages": [{"role": "user", "content": prompt}],
+              "max_tokens": min(max_tokens, 4096),
+              "temperature": temperature},
+        timeout=120,
+    )
+    if r.status_code == 200:
+        t = r.json()["choices"][0]["message"]["content"].strip()
+        if t:
+            print("  LLM OK modelo=qwen-turbo")
+            return t
+        raise RuntimeError("Qwen: resposta vazia")
+    elif r.status_code == 401:
+        raise RuntimeError("Qwen 401: chave inválida — recadastrar em bailian.console.aliyun.com")
+    elif r.status_code == 429:
+        raise RuntimeError("Qwen 429 (rate limit)")
+    else:
+        raise RuntimeError(f"Qwen HTTP {r.status_code}: {r.text[:150]}")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 5. GROK — grok-3-mini (quando conta xAI tiver créditos ativos)
+# ─────────────────────────────────────────────────────────────────────────────
 def _grok(prompt, max_tokens, temperature):
-    """xAI Grok — grok-3-mini.
-    Funciona apenas quando a conta tiver créditos ativos no console.x.ai.
-    Incluído pois a situação pode mudar a qualquer momento.
-    """
     if not GROK_KEY:
         raise RuntimeError("GROK_API_KEY não configurada")
     r = requests.post(
         "https://api.x.ai/v1/chat/completions",
-        headers={
-            "Authorization": "Bearer " + GROK_KEY,
-            "Content-Type": "application/json",
-        },
-        json={
-            "model": "grok-3-mini",
-            "messages": [{"role": "user", "content": prompt}],
-            "max_tokens": min(max_tokens, 4096),
-            "temperature": temperature,
-        },
+        headers={"Authorization": f"Bearer {GROK_KEY}", "Content-Type": "application/json"},
+        json={"model": "grok-3-mini",
+              "messages": [{"role": "user", "content": prompt}],
+              "max_tokens": min(max_tokens, 4096),
+              "temperature": temperature},
         timeout=120,
     )
     if r.status_code == 200:
-        text = r.json()["choices"][0]["message"]["content"].strip()
-        if text:
+        t = r.json()["choices"][0]["message"]["content"].strip()
+        if t:
             print("  LLM OK modelo=grok-3-mini")
-            return text
+            return t
         raise RuntimeError("Grok: resposta vazia")
     elif r.status_code in (401, 403):
-        raise RuntimeError(f"Grok {r.status_code} (sem permissão/créditos): {r.text[:120]}")
-    elif r.status_code == 429:
-        raise RuntimeError("Grok 429 (rate limit)")
+        raise RuntimeError(f"Grok {r.status_code} (sem créditos ativos na conta xAI)")
     else:
         raise RuntimeError(f"Grok HTTP {r.status_code}: {r.text[:150]}")
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# 6. OPENROUTER — modelos :free ativos (revisado abr/2026), lista embaralhada
+# ─────────────────────────────────────────────────────────────────────────────
 def _openrouter_free(prompt, max_tokens, temperature):
-    """OpenRouter — modelos :free ativos (revisado abr/2026).
-    
-    REMOVIDOS do log anterior (404): phi-4-reasoning, qwen3-8b, deepseek-r1, mistral-7b
-    MANTIDOS (429 = existem, só em rate limit temporário): llama-3.3-70b, gemma-3-27b
-    ADICIONADOS (confirmados ativos abr/2026): deepseek-chat-v3, deepseek-r1-zero, devstral-small
-    
-    Estratégia: embaralha a lista a cada chamada para distribuir o rate limit.
-    """
     if not OPENROUTER_KEY:
         raise RuntimeError("OPENROUTER_API_KEY não configurada")
-
     modelos = [
         "meta-llama/llama-3.3-70b-instruct:free",
         "google/gemma-3-27b-it:free",
@@ -231,33 +226,27 @@ def _openrouter_free(prompt, max_tokens, temperature):
         "mistralai/devstral-small:free",
         "nousresearch/deephermes-3-llama-3-8b-preview:free",
     ]
-    # Embaralha para não sobrecarregar sempre o mesmo modelo
-    random.shuffle(modelos)
-
+    random.shuffle(modelos)  # distribui rate limit entre os modelos
     last_error = None
     for model in modelos:
         try:
             r = requests.post(
                 "https://openrouter.ai/api/v1/chat/completions",
-                headers={
-                    "Authorization": "Bearer " + OPENROUTER_KEY,
-                    "Content-Type": "application/json",
-                    "HTTP-Referer": "https://calculaprazo.com.br",
-                    "X-Title": "CalculaPrazo Blog Agent",
-                },
-                json={
-                    "model": model,
-                    "messages": [{"role": "user", "content": prompt}],
-                    "max_tokens": min(max_tokens, 4096),
-                    "temperature": temperature,
-                },
+                headers={"Authorization": f"Bearer {OPENROUTER_KEY}",
+                         "Content-Type": "application/json",
+                         "HTTP-Referer": "https://calculaprazo.com.br",
+                         "X-Title": "CalculaPrazo Blog Agent"},
+                json={"model": model,
+                      "messages": [{"role": "user", "content": prompt}],
+                      "max_tokens": min(max_tokens, 4096),
+                      "temperature": temperature},
                 timeout=120,
             )
             if r.status_code == 200:
-                text = r.json()["choices"][0]["message"]["content"].strip()
-                if text:
-                    print("  LLM OK modelo=" + model)
-                    return text
+                t = r.json()["choices"][0]["message"]["content"].strip()
+                if t:
+                    print(f"  LLM OK modelo={model}")
+                    return t
             elif r.status_code == 429:
                 last_error = f"429: {model}"
                 print(f"  OpenRouter 429 {model} — próximo...")
@@ -270,26 +259,18 @@ def _openrouter_free(prompt, max_tokens, temperature):
                 print(f"  OpenRouter {r.status_code} {model}")
         except Exception as e:
             last_error = str(e)
-            print(f"  OpenRouter exceção {model}: {e}")
-
-    raise RuntimeError("OpenRouter :free esgotado. Último erro: " + str(last_error))
+    raise RuntimeError("OpenRouter :free esgotado. Último: " + str(last_error))
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# DISPATCHER PRINCIPAL
+# DISPATCHER — chama os provedores em ordem até um funcionar
 # ─────────────────────────────────────────────────────────────────────────────
-
 def chamar_llm(prompt, max_tokens=4000, temperature=0.2):
-    """
-    Cadeia de fallback 100% gratuita:
-      1. Gemini   → 3 modelos com quotas independentes (2.0-flash, 2.0-flash-lite, 1.5-flash-8b)
-      2. GLM      → glm-4-flash-250414 (Zhipu AI, muito generoso)
-      3. Grok     → grok-3-mini (quando conta xAI tiver créditos)
-      4. OpenRouter → 6 modelos :free embaralhados
-    """
     provedores = [
         ("Gemini",     _gemini),
+        ("Groq",       _groq),
         ("GLM",        _glm),
+        ("Qwen",       _qwen),
         ("Grok",       _grok),
         ("OpenRouter", _openrouter_free),
     ]
@@ -306,9 +287,8 @@ def chamar_llm(prompt, max_tokens=4000, temperature=0.2):
 # ─────────────────────────────────────────────────────────────────────────────
 # IMAGEM
 # ─────────────────────────────────────────────────────────────────────────────
-
 def obter_imagem_url(image_query, categoria):
-    query    = re.sub(r'[^a-zA-Z0-9 ]', '', (image_query or "")).strip()
+    query = re.sub(r'[^a-zA-Z0-9 ]', '', (image_query or "")).strip()
     fallback = "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=1200&auto=format&fit=crop"
     if len(query) < 5:
         query = UNSPLASH_QUERY_CAT.get(categoria, "law justice professional")
@@ -342,7 +322,6 @@ def obter_imagem_url(image_query, categoria):
 # ─────────────────────────────────────────────────────────────────────────────
 # VALIDAÇÃO
 # ─────────────────────────────────────────────────────────────────────────────
-
 def validar_qualidade(dados, categoria):
     title   = dados.get("title", "")
     excerpt = dados.get("excerpt", "")
@@ -390,7 +369,6 @@ def is_duplicata(title, posts_path="data/posts.json"):
 # ─────────────────────────────────────────────────────────────────────────────
 # SALVAR POST
 # ─────────────────────────────────────────────────────────────────────────────
-
 def salvar_post(dados, categoria, fonte_nome=""):
     try:
         data_str  = HOJE.strftime("%Y-%m-%d")

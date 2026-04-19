@@ -31,15 +31,19 @@ jobs:
         run: |
           echo "=== SECRETS ==="
           ALGUMA=""
-          [ -n "$GEMINI_API_KEY" ]     && echo "✅ GEMINI_API_KEY (${#GEMINI_API_KEY} chars) [1º]"   && ALGUMA=1 || echo "-- GEMINI_API_KEY ausente"
-          [ -n "$GLM_API_KEY" ]        && echo "✅ GLM_API_KEY (${#GLM_API_KEY} chars) [2º]"         && ALGUMA=1 || echo "-- GLM_API_KEY ausente"
-          [ -n "$GROK_API_KEY" ]       && echo "✅ GROK_API_KEY (${#GROK_API_KEY} chars) [3º]"       && ALGUMA=1 || echo "-- GROK_API_KEY ausente"
-          [ -n "$OPENROUTER_API_KEY" ] && echo "✅ OPENROUTER_API_KEY (${#OPENROUTER_API_KEY} chars) [4º]" && ALGUMA=1 || echo "-- OPENROUTER_API_KEY ausente"
+          [ -n "$GEMINI_API_KEY" ]     && echo "✅ GEMINI_API_KEY (${#GEMINI_API_KEY} chars) [1º]"        && ALGUMA=1 || echo "-- GEMINI_API_KEY ausente"
+          [ -n "$GROQ_API_KEY" ]       && echo "✅ GROQ_API_KEY (${#GROQ_API_KEY} chars) [2º — NOVO]"     && ALGUMA=1 || echo "-- GROQ_API_KEY ausente (cadastrar em console.groq.com)"
+          [ -n "$GLM_API_KEY" ]        && echo "✅ GLM_API_KEY (${#GLM_API_KEY} chars) [3º]"              && ALGUMA=1 || echo "-- GLM_API_KEY ausente"
+          [ -n "$QWEN_API_KEY" ]       && echo "✅ QWEN_API_KEY (${#QWEN_API_KEY} chars) [4º]"            && ALGUMA=1 || echo "-- QWEN_API_KEY ausente (recadastrar em bailian.console.aliyun.com)"
+          [ -n "$GROK_API_KEY" ]       && echo "✅ GROK_API_KEY (${#GROK_API_KEY} chars) [5º]"            && ALGUMA=1 || echo "-- GROK_API_KEY ausente"
+          [ -n "$OPENROUTER_API_KEY" ] && echo "✅ OPENROUTER_API_KEY (${#OPENROUTER_API_KEY} chars) [6º]" && ALGUMA=1 || echo "-- OPENROUTER_API_KEY ausente"
           [ -n "$UNSPLASH_ACCESS_KEY" ] && echo "✅ UNSPLASH_ACCESS_KEY" || echo "⚠️  UNSPLASH_ACCESS_KEY ausente (imagem fallback)"
           [ -z "$ALGUMA" ] && echo "❌ ERRO: nenhuma API de LLM configurada" && exit 1 || true
         env:
           GEMINI_API_KEY:      ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY:        ${{ secrets.GROQ_API_KEY }}
           GLM_API_KEY:         ${{ secrets.GLM_API_KEY }}
+          QWEN_API_KEY:        ${{ secrets.QWEN_API_KEY }}
           GROK_API_KEY:        ${{ secrets.GROK_API_KEY }}
           OPENROUTER_API_KEY:  ${{ secrets.OPENROUTER_API_KEY }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
@@ -48,7 +52,9 @@ jobs:
         run: python scripts/gerar_posts.py
         env:
           GEMINI_API_KEY:      ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY:        ${{ secrets.GROQ_API_KEY }}
           GLM_API_KEY:         ${{ secrets.GLM_API_KEY }}
+          QWEN_API_KEY:        ${{ secrets.QWEN_API_KEY }}
           GROK_API_KEY:        ${{ secrets.GROK_API_KEY }}
           OPENROUTER_API_KEY:  ${{ secrets.OPENROUTER_API_KEY }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
