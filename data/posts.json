@@ -1,21 +1,5 @@
 [
-  {
-    "id": "resgate-trabalho-escravo",
-    "title": "Resgate Trabalho Escravo",
-    "category": "noticias-mte-mpt",
-    "category_label": "MTE e MPT",
-    "tags": [
-      "Trabalho Escravo",
-      "Direitos Trabalhistas",
-      "Justiça do Trabalho"
-    ],
-    "excerpt": "Resgate de trabalhadores em condições análogas à escravidão. Decisão judicial para proteger direitos trabalhistas.",
-    "image": "https://images.unsplash.com/photo-1764620913207-b3ceca1123a0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY2MTM5NTN8&ixlib=rb-4.1.0&q=80&w=1080",
-    "date": "2026-04-19",
-    "source": "MPT-MG (PRT-3)",
-    "source_url": "https://www.prt3.mpt.mp.br/comunicacao/noticias-do-mpt-mg"
-  },
-  {
+{
     "id": "lista-suja-trabalho-escravo-abril-2026",
     "title": "MTE atualiza “Lista Suja” do trabalho análogo à escravidão: 169 novos empregadores e mais de 2,2 mil trabalhadores resgatados",
     "category": "noticias-mte-mpt",
