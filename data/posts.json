@@ -1,5 +1,69 @@
 [
- {
+  {
+    "id": "conciliacao-trabalhista-novas-iniciativas-ampliam-acesso-a-j",
+    "title": "Conciliação Trabalhista: Novas Iniciativas Ampliam Acesso à Justiça",
+    "category": "jurisprudencia-trts",
+    "category_label": "Jurisprudencia TRTs",
+    "tags": [
+      "Conciliação",
+      "Acesso à Justiça",
+      "Direitos Trabalhistas"
+    ],
+    "excerpt": "Iniciativas recentes dos TRTs visam promover a conciliação e facilitar o acesso à justiça, especialmente para populações vulneráveis. O prazo para inscrições no 'Selo Somos Conciliadores 2026' se encerra em 30 de abril.",
+    "image": "https://images.unsplash.com/photo-1607286735675-11176b2413bb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY3MTQ4MjB8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-20",
+    "source": "CSJT — Notícias TRTs",
+    "source_url": "https://www.csjt.jus.br/web/csjt/noticias-dos-trts"
+  },
+  {
+    "id": "abril-verde-2026-seguranca-do-trabalho-em-debate-no-trt-2",
+    "title": "Abril Verde 2026: Segurança do Trabalho em Debate no TRT-2",
+    "category": "jurisprudencia-trts",
+    "category_label": "Jurisprudencia TRTs",
+    "tags": [
+      "Segurança do Trabalho",
+      "NR 01",
+      "TRT-2"
+    ],
+    "excerpt": "O evento 'Abril Verde 2026' no TRT-2 abordará a nova redação da NR 01, essencial para a segurança no trabalho. Inscrições abertas até 22 de abril para profissionais da área.",
+    "image": "https://images.unsplash.com/photo-1615990860014-99e51245218c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY3MTQ3Nzh8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-20",
+    "source": "TRT-2 (SP)",
+    "source_url": "https://ww2.trt2.jus.br/noticias/noticias"
+  },
+  {
+    "id": "governo-propoe-reducao-da-jornada-de-trabalho-o-que-muda-par",
+    "title": "Governo Propõe Redução da Jornada de Trabalho: O Que Muda para os Trabalhadores?",
+    "category": "noticias-mte-mpt",
+    "category_label": "MTE e MPT",
+    "tags": [
+      "Redução de Jornada",
+      "Trabalho",
+      "Legislação"
+    ],
+    "excerpt": "O governo brasileiro encaminhou ao Congresso um projeto para reduzir a jornada de trabalho sem diminuição salarial. Essa mudança pode impactar significativamente a vida dos trabalhadores e a dinâmica das empresas.",
+    "image": "https://images.unsplash.com/photo-1587116987776-b097456d1bbf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY3MTQ3NTF8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-20",
+    "source": "MTE — Notícias",
+    "source_url": "https://www.gov.br/trabalho-e-emprego/pt-br/noticias-e-conteudo"
+  },
+  {
+    "id": "abril-verde-uma-chamada-a-acao-pela-saude-e-seguranca-no-tra",
+    "title": "Abril Verde: Uma Chamada à Ação pela Saúde e Segurança no Trabalho",
+    "category": "jurisprudencia-trts",
+    "category_label": "Jurisprudencia TRTs",
+    "tags": [
+      "Abril Verde",
+      "Saúde do Trabalhador",
+      "Segurança no Trabalho"
+    ],
+    "excerpt": "A campanha Abril Verde destaca a importância da saúde e segurança no ambiente laboral, promovendo a conscientização sobre a saúde física e mental dos trabalhadores. Iniciativas da Justiça do Trabalho visam engajar empresas e profissionais na adoção de práticas seguras e saudáveis.",
+    "image": "https://images.unsplash.com/photo-1659353586512-bcc4c7182d01?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY3MTQ3MzR8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-20",
+    "source": "TRT-5 (BA)",
+    "source_url": "https://www.trt5.jus.br/noticias"
+  },
+  {
     "id": "trt-mg-reconhece-dispensa-discriminatria-e-manda-reintegrar-trabalhadora-com-leucemia",
     "title": "TRT-MG reconhece dispensa discriminatória e manda reintegrar trabalhadora com leucemia",
     "category": "jurisprudencia-trts",
