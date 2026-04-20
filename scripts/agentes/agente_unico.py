@@ -158,7 +158,7 @@ def gerar_artigo(conteudo, fonte, tema, tipo_conteudo):
         "}"
     )
     try:
-        raw = chamar_llm(prompt, max_tokens=4000, temperature=0.3)
+        raw = chamar_llm(prompt, max_tokens=6000, temperature=0.3)
         dados = parse_json_robusto(raw)
         if dados:
             dados["source_url"] = fonte["url"]

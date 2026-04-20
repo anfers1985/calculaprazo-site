@@ -77,4 +77,5 @@ jobs:
           git config user.email "bot@calculaprazo.com.br"
           git add blog/ data/posts.json sitemap.xml
           git diff --staged --quiet || git commit -m "conteudo: agente-unico $(date +%d/%m/%Y-%H:%M)"
+          git pull --rebase origin main
           git push
