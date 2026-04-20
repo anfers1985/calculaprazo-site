@@ -93,9 +93,48 @@ class TextExtractor(HTMLParser):
 # simples falha nesses casos. Esta função extrai o JSON de qualquer formato.
 # ─────────────────────────────────────────────
 def parse_json_robusto(raw):
-    """Extrai JSON válido de resposta de LLM independente do formato."""
+    """Extrai JSON válido (dict) de resposta de LLM independente do formato.
+    Sempre retorna dict ou None — nunca lista, nunca outro tipo.
+    Bug fix: o parse anterior podia retornar uma lista JSON, causando AttributeError.
+    Bug fix 2: prompt grande causava HTTP 413 no llama-3.1-8b — conteúdo limitado a 3500 chars.
+    """
     if not raw:
         return None
+
+    def _valida(obj):
+        return obj if isinstance(obj, dict) else None
+
+    limpo = raw.strip()
+    limpo = __import__('re').sub(r'^```json\s*', '', limpo)
+    limpo = __import__('re').sub(r'\s*```$',     '', limpo)
+    limpo = __import__('re').sub(r'^```\s*',     '', limpo)
+    limpo = limpo.strip()
+
+    try:
+        return _valida(__import__('json').loads(limpo))
+    except Exception:
+        pass
+
+    try:
+        inicio    = limpo.index('{')
+        fim       = limpo.rindex('}')
+        resultado = _valida(__import__('json').loads(limpo[inicio:fim+1]))
+        if resultado is not None:
+            return resultado
+    except Exception:
+        pass
+
+    import re as _re
+    match = _re.search(r'\{.*\}', limpo, _re.DOTALL)
+    if match:
+        try:
+            resultado = _valida(__import__('json').loads(match.group(0)))
+            if resultado is not None:
+                return resultado
+        except Exception:
+            pass
+
+    return None
     # 1. Remove fences de markdown comuns
     raw = re.sub(r'^```json\s*', '', raw.strip())
     raw = re.sub(r'\s*```$', '', raw.strip())
@@ -218,7 +257,7 @@ def gerar_artigo(conteudo, fonte, tema, tipo_conteudo):
 
         "CONTEÚDO ORIGINAL DA FONTE:\n"
         "───────────────────────────\n"
-        f"{conteudo[:6000]}\n"
+        f"{conteudo[:3500]}\n"
         "───────────────────────────\n\n"
 
         f"{orientacao_tipo}\n\n"
@@ -261,7 +300,7 @@ def gerar_artigo(conteudo, fonte, tema, tipo_conteudo):
         '"content": "<h2>Subtítulo específico</h2><p>...</p>..."}'
     )
     try:
-        raw = chamar_llm(prompt, max_tokens=6000, temperature=0.2)
+        raw = chamar_llm(prompt, max_tokens=4000, temperature=0.2)
         dados = parse_json_robusto(raw)
         if not dados:
             print(f"  ERRO parse artigo: JSON não encontrado na resposta")
