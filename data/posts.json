@@ -1,5 +1,56 @@
 [
   {
+    "id": "trabalhadora-autonoma-podera-ter-licenca-maternidade-sem-car",
+    "title": "Trabalhadora Autônoma Poderá Ter Licença-Maternidade Sem Carência no INSS",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "tags": [
+      "Direitos Trabalhistas",
+      "Licença-Maternidade",
+      "INSS",
+      "Trabalhadora Autônoma"
+    ],
+    "excerpt": "O Senado aprovou projeto que permite a trabalhadora autônoma ter licença-maternidade sem carência no INSS, beneficiando milhares de mulheres em todo o país.",
+    "image": "https://images.unsplash.com/photo-1667694567211-b36cc6e6894f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY3ODcyNTF8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-21",
+    "source": "Senado — Dir. Trabalhistas",
+    "source_url": "https://www12.senado.leg.br/noticias/tags/Direitos%20Trabalhistas"
+  },
+  {
+    "id": "sistema-pje-ficara-indisponivel-nos-dias-18-e-19-de-abril",
+    "title": "Sistema PJe ficará indisponível nos dias 18 e 19 de abril",
+    "category": "jurisprudencia-trts",
+    "category_label": "Jurisprudência TRTs",
+    "tags": [
+      "Sistema PJe",
+      "TRT-9",
+      "Prazos processuais",
+      "Indisponibilidade"
+    ],
+    "excerpt": "O Tribunal Regional do Trabalho da 9ª Região (TRT-9) informou que o Sistema PJe ficará indisponível nos dias 18 e 19 de abril, afetando processos trabalhistas em andamento.",
+    "image": "https://images.unsplash.com/photo-1637102173777-3fc90f21d89f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY3ODcxNzF8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-21",
+    "source": "TRT-9 (PR)",
+    "source_url": "https://www.trt9.jus.br/portal/noticias.xhtml"
+  },
+  {
+    "id": "multa-a-recorrente-por-alteracao-da-clt-via-inteligencia-art",
+    "title": "Multa à Recorrente por Alteração da CLT via Inteligência Artificial",
+    "category": "jurisprudencia-trts",
+    "category_label": "Jurisprudência TRTs",
+    "tags": [
+      "Inteligência Artificial",
+      "CLT",
+      "Processo Trabalhista",
+      "Ética Jurídica"
+    ],
+    "excerpt": "O TRT-12 (SC) multou uma autora de processo trabalhista após seu recurso, gerado por inteligência artificial, apresentar uma alteração indevida em um trecho da Consolidação das Leis do Trabalho (CLT). O caso alerta para os riscos do uso inadequado da IA em peças processuais.",
+    "image": "https://images.unsplash.com/photo-1618758992779-47151c11b39c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY3ODcxNjB8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-21",
+    "source": "TRT-12 (SC)",
+    "source_url": "https://portal.trt12.jus.br/noticias"
+  },
+  {
     "id": "13-salario-como-funciona-quem-tem-direito-e-quais-sao-os-prazos",
     "title": "13º salário: como funciona, quem tem direito e quais são os prazos",
     "category": "orientacoes-praticas",
