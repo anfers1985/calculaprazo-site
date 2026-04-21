@@ -1,23 +1,21 @@
 # -*- coding: utf-8 -*-
 # agente_base.py — Módulo compartilhado CalculaPrazo
 #
-# ARQUITETURA DE CHAMADAS:
-#   chamar_llm_rapido()  → avaliação de relevância (~700 tokens total)
-#                          Groq llama-3.3-70b-versatile → Groq llama-3.1-8b-instant → OpenRouter
-#
-#   chamar_llm_longo()   → geração de artigo completo (~10.000 tokens total)
-#                          Groq llama-3.1-8b-instant (20.000 TPM!) → OpenRouter → Gemini
-#
-#   chamar_llm()         → dispatcher geral (compatibilidade com agente_unico.py)
-#                          tenta rápido primeiro, cai em longo se necessário
+# Cadeia de fallback (100% gratuita):
+#   1. Groq    → llama-3.3-70b (avaliação) / llama-3.1-8b-instant (geração)
+#   2. Gemini  → gemini-2.0-flash / gemini-2.0-flash-lite / gemini-1.5-flash-8b
+#   3. GLM     → glm-4-flash-250414
+#   4. Qwen    → qwen-turbo
+#   5. OpenRouter → modelos :free rotativos
 #
 # VARIÁVEIS DE AMBIENTE (Secrets no GitHub):
-#   GROQ_API_KEY         → Groq Cloud (principal — console.groq.com)
-#   GEMINI_API_KEY       → Google AI Studio (backup)
-#   GLM_API_KEY          → Zhipu AI (backup)
-#   QWEN_API_KEY         → Alibaba Qwen (backup — recadastrar em bailian.console.aliyun.com)
-#   OPENROUTER_API_KEY   → OpenRouter :free (fallback)
-#   UNSPLASH_ACCESS_KEY  → Unsplash (imagens)
+#   GROQ_API_KEY         → Groq Cloud (principal)
+#   GEMINI_API_KEY       → Google AI Studio
+#   GLM_API_KEY          → Zhipu AI
+#   QWEN_API_KEY         → Alibaba Qwen
+#   GROK_API_KEY         → xAI Grok (quando conta tiver créditos)
+#   OPENROUTER_API_KEY   → OpenRouter :free
+#   UNSPLASH_ACCESS_KEY  → Unsplash
 #
 import os, json, re, datetime, requests, random, time
 from slugify import slugify
@@ -63,15 +61,12 @@ UNSPLASH_QUERY_CAT = {
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# GROQ — separado por modelo segundo o limite de tokens/minuto
-#
-# Limites free tier (console.groq.com/docs/models):
-#   llama-3.3-70b-versatile → 6.000 TPM  (bom para avaliação, esgota na geração)
-#   llama-3.1-8b-instant    → 20.000 TPM (ideal para geração de artigo completo)
-#   llama3-8b-8192          → 20.000 TPM (backup do 8b)
+# 1. GROQ
+# Limites free tier:
+#   llama-3.3-70b-versatile → 6.000 TPM  (avaliação — chamadas curtas)
+#   llama-3.1-8b-instant    → 20.000 TPM (geração   — chamadas longas)
 # ─────────────────────────────────────────────────────────────────────────────
 def _groq_request(modelo, prompt, max_tokens, temperature):
-    """Faz uma chamada ao Groq com o modelo especificado."""
     if not GROQ_KEY:
         raise RuntimeError("GROQ_API_KEY não configurada")
     r = requests.post(
@@ -81,7 +76,7 @@ def _groq_request(modelo, prompt, max_tokens, temperature):
               "messages": [{"role": "user", "content": prompt}],
               "max_tokens": min(max_tokens, 8000),
               "temperature": temperature},
-        timeout=120,
+        timeout=180,
     )
     if r.status_code == 200:
         t = r.json()["choices"][0]["message"]["content"].strip()
@@ -91,6 +86,8 @@ def _groq_request(modelo, prompt, max_tokens, temperature):
         raise RuntimeError(f"Groq {modelo}: resposta vazia")
     elif r.status_code == 429:
         raise RuntimeError(f"Groq {modelo}: 429 rate limit")
+    elif r.status_code == 413:
+        raise RuntimeError(f"Groq {modelo}: 413 request too large")
     elif r.status_code == 400:
         msg = r.json().get("error", {}).get("message", r.text[:100])
         if "decommissioned" in msg.lower() or "no longer supported" in msg.lower():
@@ -101,10 +98,7 @@ def _groq_request(modelo, prompt, max_tokens, temperature):
 
 
 def _groq_avaliacao(prompt, max_tokens, temperature):
-    """
-    Groq para chamadas CURTAS (avaliação de relevância, ~700 tokens total).
-    Usa llama-3.3-70b: melhor qualidade, limite de 6.000 TPM.
-    """
+    """Chamadas curtas (~700 tokens) — usa llama-3.3-70b (qualidade)."""
     for modelo in ["llama-3.3-70b-versatile", "llama3-70b-8192"]:
         try:
             return _groq_request(modelo, prompt, max_tokens, temperature)
@@ -114,11 +108,8 @@ def _groq_avaliacao(prompt, max_tokens, temperature):
 
 
 def _groq_geracao(prompt, max_tokens, temperature):
-    """
-    Groq para chamadas LONGAS (geração de artigo, ~10.000 tokens total).
-    Usa llama-3.1-8b-instant: 20.000 TPM — aguenta múltiplas gerações por minuto.
-    """
-    for modelo in ["llama-3.1-8b-instant", "llama3-8b-8192"]:
+    """Chamadas longas (~10k tokens) — usa llama-3.1-8b-instant (20k TPM)."""
+    for modelo in ["llama-3.1-8b-instant"]:
         try:
             return _groq_request(modelo, prompt, max_tokens, temperature)
         except RuntimeError as e:
@@ -127,7 +118,7 @@ def _groq_geracao(prompt, max_tokens, temperature):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# GEMINI — 3 modelos com quotas independentes
+# 2. GEMINI — 3 modelos com quotas independentes
 # ─────────────────────────────────────────────────────────────────────────────
 def _gemini(prompt, max_tokens, temperature):
     if not GEMINI_KEY:
@@ -160,22 +151,12 @@ def _gemini(prompt, max_tokens, temperature):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# GLM — tenta lista ampla de modelos gratuitos Zhipu AI
+# 3. GLM — Zhipu AI
 # ─────────────────────────────────────────────────────────────────────────────
 def _glm(prompt, max_tokens, temperature):
     if not GLM_KEY:
         raise RuntimeError("GLM_API_KEY não configurada")
-    # Lista ampla — a Zhipu muda nomenclatura frequentemente
-    modelos_glm = [
-        "glm-4-flash-250414",  # versão com data
-        "glm-4-air",           # modelo free alternativo
-        "glm-z1-flash",        # modelo novo free
-        "glm-4-flash-x",       # variante
-        "glm-4-flash",         # original (pode ter voltado)
-        "glm-4-flash-2",       # variante
-    ]
-    last_error = None
-    for modelo in modelos_glm:
+    for modelo in ["glm-4-flash-250414", "glm-4-air", "glm-z1-flash", "glm-4-flash"]:
         try:
             r = requests.post(
                 "https://open.bigmodel.cn/api/paas/v4/chat/completions",
@@ -192,23 +173,19 @@ def _glm(prompt, max_tokens, temperature):
                     print(f"  LLM OK modelo={modelo}")
                     return t
             elif r.status_code == 400:
-                code = r.json().get("error", {}).get("code", "")
-                if str(code) == "1211":
-                    last_error = f"{modelo}: não existe (1211)"
-                    continue  # tenta próximo silenciosamente
-                last_error = f"{modelo}: HTTP 400"
+                code = str(r.json().get("error", {}).get("code", ""))
+                if code == "1211":
+                    continue  # modelo não existe, tenta próximo silenciosamente
+                print(f"  GLM {modelo} HTTP 400")
             elif r.status_code == 429:
-                last_error = f"{modelo}: 429"
                 print(f"  GLM {modelo} 429 — próximo...")
-            else:
-                last_error = f"{modelo}: HTTP {r.status_code}"
         except Exception as e:
-            last_error = str(e)
-    raise RuntimeError(f"GLM: nenhum modelo disponível. Último: {last_error}")
+            print(f"  GLM {modelo} exceção: {e}")
+    raise RuntimeError("GLM: nenhum modelo disponível")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# QWEN — qwen-turbo (recadastrar chave em bailian.console.aliyun.com)
+# 4. QWEN — Alibaba
 # ─────────────────────────────────────────────────────────────────────────────
 def _qwen(prompt, max_tokens, temperature):
     if not QWEN_KEY:
@@ -229,20 +206,44 @@ def _qwen(prompt, max_tokens, temperature):
             return t
         raise RuntimeError("Qwen: resposta vazia")
     elif r.status_code == 401:
-        raise RuntimeError("Qwen 401: chave inválida — recadastrar em bailian.console.aliyun.com")
-    elif r.status_code == 429:
-        raise RuntimeError("Qwen 429")
+        raise RuntimeError("Qwen 401: chave inválida")
     else:
         raise RuntimeError(f"Qwen HTTP {r.status_code}: {r.text[:100]}")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# OPENROUTER — modelos :free, lista revisada e embaralhada
+# 5. GROK — xAI
+# ─────────────────────────────────────────────────────────────────────────────
+def _grok(prompt, max_tokens, temperature):
+    if not GROK_KEY:
+        raise RuntimeError("GROK_API_KEY não configurada")
+    r = requests.post(
+        "https://api.x.ai/v1/chat/completions",
+        headers={"Authorization": f"Bearer {GROK_KEY}", "Content-Type": "application/json"},
+        json={"model": "grok-3-mini",
+              "messages": [{"role": "user", "content": prompt}],
+              "max_tokens": min(max_tokens, 4096),
+              "temperature": temperature},
+        timeout=120,
+    )
+    if r.status_code == 200:
+        t = r.json()["choices"][0]["message"]["content"].strip()
+        if t:
+            print("  LLM OK modelo=grok-3-mini")
+            return t
+        raise RuntimeError("Grok: resposta vazia")
+    elif r.status_code in (401, 403):
+        raise RuntimeError(f"Grok {r.status_code} (sem créditos)")
+    else:
+        raise RuntimeError(f"Grok HTTP {r.status_code}: {r.text[:100]}")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 6. OPENROUTER — modelos :free confirmados ativos
 # ─────────────────────────────────────────────────────────────────────────────
 def _openrouter_free(prompt, max_tokens, temperature):
     if not OPENROUTER_KEY:
         raise RuntimeError("OPENROUTER_API_KEY não configurada")
-    # Apenas modelos confirmados com 200 ou 429 (existem) no histórico de logs
     modelos = [
         "meta-llama/llama-3.3-70b-instruct:free",
         "google/gemma-3-27b-it:free",
@@ -270,10 +271,8 @@ def _openrouter_free(prompt, max_tokens, temperature):
                     return t
             elif r.status_code == 429:
                 last_error = f"429: {model}"
-                print(f"  OpenRouter 429 {model} — aguardando 10s...")
-                time.sleep(10)
-            elif r.status_code == 404:
-                last_error = f"404 removido: {model}"
+                print(f"  OpenRouter 429 {model} — aguardando 5s...")
+                time.sleep(5)
             else:
                 last_error = f"HTTP {r.status_code} {model}"
         except Exception as e:
@@ -282,38 +281,33 @@ def _openrouter_free(prompt, max_tokens, temperature):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# DISPATCHERS PÚBLICOS
-#
-# O agente_unico.py chama chamar_llm() para avaliação e geração.
-# Internamente roteamos para o modelo certo conforme o tamanho do prompt.
+# DISPATCHER PRINCIPAL
+# Detecta pelo max_tokens se é chamada curta (avaliação) ou longa (geração)
 # ─────────────────────────────────────────────────────────────────────────────
-
 def chamar_llm(prompt, max_tokens=4000, temperature=0.2):
-    """
-    Dispatcher geral — detecta se é chamada curta (avaliação) ou longa (geração)
-    pelo tamanho do prompt e do max_tokens solicitado, e usa o modelo adequado.
-    """
-    # Avaliação: max_tokens pequeno OU prompt relativamente curto
     eh_avaliacao = max_tokens <= 400 or len(prompt) < 2000
 
     if eh_avaliacao:
-        return _chamar_llm_rapido(prompt, max_tokens, temperature)
+        # Avaliação: prioriza qualidade (llama-3.3-70b)
+        provedores = [
+            ("Groq-70b",   lambda p,m,t: _groq_avaliacao(p,m,t)),
+            ("Gemini",     _gemini),
+            ("Groq-8b",    lambda p,m,t: _groq_geracao(p,m,t)),
+            ("GLM",        _glm),
+            ("OpenRouter", _openrouter_free),
+        ]
     else:
-        return _chamar_llm_longo(prompt, max_tokens, temperature)
+        # Geração: prioriza throughput (llama-3.1-8b-instant = 20k TPM)
+        provedores = [
+            ("Groq-8b",    lambda p,m,t: _groq_geracao(p,m,t)),
+            ("Gemini",     _gemini),
+            ("GLM",        _glm),
+            ("Qwen",       _qwen),
+            ("Grok",       _grok),
+            ("OpenRouter", _openrouter_free),
+            ("Groq-70b",   lambda p,m,t: _groq_avaliacao(p,m,t)),
+        ]
 
-
-def _chamar_llm_rapido(prompt, max_tokens, temperature):
-    """
-    Para chamadas CURTAS (avaliação de relevância, ~700 tokens total).
-    Prioriza modelos de ALTA QUALIDADE dentro do limite de tokens/min.
-    """
-    provedores = [
-        ("Groq-70b",   lambda p,m,t: _groq_avaliacao(p, m, t)),
-        ("Gemini",     _gemini),
-        ("Groq-8b",    lambda p,m,t: _groq_geracao(p, m, t)),
-        ("GLM",        _glm),
-        ("OpenRouter", _openrouter_free),
-    ]
     last_error = None
     for nome, func in provedores:
         try:
@@ -321,38 +315,10 @@ def _chamar_llm_rapido(prompt, max_tokens, temperature):
         except RuntimeError as e:
             last_error = str(e)
             if "401" not in last_error and "403" not in last_error:
-                print(f"  [{nome}] falhou: {last_error[:100]}")
+                print(f"  [{nome}] falhou: {last_error[:120]}")
             else:
                 print(f"  [{nome}] não disponível")
-    raise RuntimeError("Avaliação: todas as APIs falharam. Último: " + str(last_error))
-
-
-def _chamar_llm_longo(prompt, max_tokens, temperature):
-    """
-    Para chamadas LONGAS (geração de artigo, ~10.000 tokens total).
-    Prioriza modelos com ALTO LIMITE DE TOKENS POR MINUTO.
-    
-    llama-3.1-8b-instant → 20.000 TPM (aguenta 2 artigos completos por minuto)
-    """
-    provedores = [
-        ("Groq-8b",    lambda p,m,t: _groq_geracao(p, m, t)),
-        ("Gemini",     _gemini),
-        ("GLM",        _glm),
-        ("Qwen",       _qwen),
-        ("OpenRouter", _openrouter_free),
-        ("Groq-70b",   lambda p,m,t: _groq_avaliacao(p, m, t)),  # último recurso
-    ]
-    last_error = None
-    for nome, func in provedores:
-        try:
-            return func(prompt, max_tokens, temperature)
-        except RuntimeError as e:
-            last_error = str(e)
-            if "401" not in last_error and "403" not in last_error:
-                print(f"  [{nome}] falhou: {last_error[:100]}")
-            else:
-                print(f"  [{nome}] não disponível")
-    raise RuntimeError("Geração: todas as APIs falharam. Último: " + str(last_error))
+    raise RuntimeError("Todas as APIs falharam. Último: " + str(last_error))
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -397,8 +363,13 @@ def validar_qualidade(dados, categoria):
     title   = dados.get("title", "")
     excerpt = dados.get("excerpt", "")
     content = dados.get("content", "")
+    tags    = dados.get("tags", [])
     if not title or len(title.strip()) < 10:
         return False, "Titulo ausente ou muito curto"
+    genericos = ["novas tendencias","tendencias","atualizacao","novidades",
+                 "analise pos","novas fronteiras","perspectivas","o futuro"]
+    if any(g in title.lower() for g in genericos):
+        return False, "Titulo generico: " + title
     if not excerpt or len(excerpt.strip()) < 30:
         return False, "Excerpt ausente ou muito curto"
     words = len(re.sub(r'<[^>]+>', ' ', content).split())
@@ -406,6 +377,8 @@ def validar_qualidade(dados, categoria):
         return False, f"Conteudo curto: {words} palavras (min 300)"
     if '<h2' not in content.lower():
         return False, "Sem H2 no conteudo"
+    if not tags:
+        return False, "Sem tags"
     if categoria not in CATEGORIAS_VALIDAS:
         return False, "Categoria invalida: " + categoria
     return True, "OK"
