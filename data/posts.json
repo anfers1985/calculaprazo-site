@@ -1,5 +1,72 @@
 [
   {
+    "id": "ferias-principais-direitos-prazos-e-duvidas-dos-trabalhadores",
+    "title": "Férias: principais direitos, prazos e dúvidas dos trabalhadores",
+    "category": "orientacoes-praticas",
+    "category_label": "Orientações Práticas RH",
+    "excerpt": "Entenda como funciona o período aquisitivo e concessivo, o fracionamento das férias, o pagamento em dobro, a venda de 1/3 e o impacto das faltas injustificadas.",
+    "image": "https://images.unsplash.com/photo-1504093428647-19ae13b11ff2?q=80&w=1167&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-04-20",
+    "tags": [
+      "RH",
+      "Férias",
+      "CLT"
+    ]
+  },
+  {
+    "id": "resciso-do-contrato-de-trabalho-principais-direitos-e-prazos-para-quem-foi-desligado",
+    "title": "Rescisão do contrato de trabalho: principais direitos e prazos para quem foi desligado",
+    "category": "orientacoes-praticas",
+    "category_label": "Orientações Práticas RH",
+    "excerpt": "Entenda como funcionam o cálculo das verbas rescisórias, os prazos de pagamento, o aviso prévio e quais direitos você tem em cada tipo de desligamento.",
+    "image": "https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-04-20",
+    "tags": [
+      "RH",
+      "Rescisão",
+      "CLT"
+    ]
+  },
+  {
+    "id": "stf-refora-tese-do-tst-sobre-aplicao-imediata-da-reforma-trabalhista-a-contratos-em-curso",
+    "title": "STF reforça tese do TST sobre aplicação imediata da Reforma Trabalhista a contratos em curso",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "excerpt": "Em decisão unânime no Tema 1.448, STF nega repercussão geral e confirma a força vinculante do IRR‑23 do TST sobre a Lei 13.467/2017.",
+    "image": "https://images.unsplash.com/photo-1618771623063-6c3faa854a61?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-04-20",
+    "tags": [
+      "STF",
+      "TST"
+    ]
+  },
+  {
+    "id": "trt-sc-mantm-jornada-reduzida-de-40-horas-semanais-em-rede-varejista",
+    "title": "TRT-SC mantém jornada reduzida de 40 horas semanais em rede varejista",
+    "category": "jurisprudencia-trts",
+    "category_label": "Jurisprudência TRTs",
+    "excerpt": "1ª Turma do TRT-SC rejeita pedido de revisão e preserva cláusula de acordo coletivo que limita jornada nas Lojas Berlanda desde 2013",
+    "image": "https://plus.unsplash.com/premium_photo-1673605603709-8599cbbd1a74?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-04-20",
+    "tags": [
+      "TRT",
+      "Jurisprudência"
+    ]
+  },
+  {
+    "id": "projeto-que-acaba-com-a-escala-6x1-reduz-jornada-para-40-horas-semanais",
+    "title": "Projeto que acaba com a escala 6x1 reduz jornada para 40 horas semanais",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Projeto enviado ao Congresso reduz jornada de 44 para 40 horas, garante dois dias de descanso remunerado e proíbe redução salarial.",
+    "image": "https://images.unsplash.com/photo-1517960413843-0aee8e2b3285?q=80&w=1199&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-04-20",
+    "tags": [
+      "MTE",
+      "Legislação"
+    ]
+  },
+  {
     "id": "conciliacao-trabalhista-novas-iniciativas-ampliam-acesso-a-j",
     "title": "Conciliação Trabalhista: Novas Iniciativas Ampliam Acesso à Justiça",
     "category": "jurisprudencia-trts",
