@@ -1,5 +1,73 @@
 [
   {
+    "id": "estabilidade-provisoria",
+    "title": "Estabilidade Provisória",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "tags": [
+      "Direito do Trabalho",
+      "Estabilidade Provisória",
+      "Gestante",
+      "Trabalho Temporário"
+    ],
+    "excerpt": "Gestante com trabalho temporário terá estabilidade provisória. A medida visa proteger os direitos das trabalhadoras gestantes.",
+    "image": "https://images.unsplash.com/photo-1738566496043-2e9c97926652?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY3ODUzMDd8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-21",
+    "source": "Senado — Dir. Trabalhistas",
+    "source_url": "https://www12.senado.leg.br/noticias/tags/Direitos%20Trabalhistas"
+  },
+  {
+    "id": "penhora-de-salario-para-divida-trabalhista-4a-camara-mantem-",
+    "title": "Penhora de Salário para Dívida Trabalhista: 4ª Câmara mantém 30% do Salário",
+    "category": "jurisprudencia-trts",
+    "category_label": "Jurisprudência TRTs",
+    "tags": [
+      "Penhora de Salário",
+      "Dívida Trabalhista",
+      "TRT-15",
+      "TST"
+    ],
+    "excerpt": "A 4ª Câmara do TRT-15 manteve a penhora de 30% do salário de uma devedora para pagamento de dívida trabalhista, desde que preservado o recebimento de ao menos um salário mínimo mensal.",
+    "image": "https://images.unsplash.com/photo-1697042451039-db019246d70b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY3ODUyNzB8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-21",
+    "source": "AMATRA XV — Notícias",
+    "source_url": "https://amatraxv.org.br/noticias/noticias-juridicas"
+  },
+  {
+    "id": "bloqueio-de-bens",
+    "title": "Bloqueio de Bens",
+    "category": "noticias-mte-mpt",
+    "category_label": "MTE e MPT",
+    "tags": [
+      "Trabalho Escravo",
+      "MPT",
+      "Bloqueio de Bens",
+      "Resgate de Trabalhadores"
+    ],
+    "excerpt": "MPT obtém liminar para bloqueio de bens e resgate de trabalhadores em condições degradantes em Unaí. Sete trabalhadores foram resgatados após uma operação deflagrada pela Patrulha Rural da Polícia Militar de Minas Gerais.",
+    "image": "https://images.unsplash.com/photo-1561592390-15138c22896a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY3ODUyMzl8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-21",
+    "source": "MPT-MG (PRT-3)",
+    "source_url": "https://www.prt3.mpt.mp.br/comunicacao/noticias-do-mpt-mg"
+  },
+  {
+    "id": "adicional-de-periculosidade-para-motociclistas-e-autoaplicav",
+    "title": "Adicional de Periculosidade para Motociclistas é Autoaplicável, Decide TST",
+    "category": "jurisprudencia-tst",
+    "category_label": "Jurisprudência TST",
+    "tags": [
+      "TST",
+      "Adicional de Periculosidade",
+      "Motociclistas",
+      "Jurisprudência"
+    ],
+    "excerpt": "O Tribunal Superior do Trabalho (TST) decidiu que o dispositivo da CLT que prevê a parcela de adicional de periculosidade para motociclistas é autoaplicável, dispensando regulamentação prévia.",
+    "image": "https://images.unsplash.com/photo-1759542877976-5d870f7cd0a9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY3ODUxOTB8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-21",
+    "source": "TST — Notícias",
+    "source_url": "https://www.tst.jus.br/web/guest/noticias"
+  },
+  {
     "id": "ferias-principais-direitos-prazos-e-duvidas-dos-trabalhadores",
     "title": "Férias: principais direitos, prazos e dúvidas dos trabalhadores",
     "category": "orientacoes-praticas",
