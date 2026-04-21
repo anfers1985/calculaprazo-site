@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# agente_unico.py — Agente unificado do CalculaPrazo
+# agente_unico.py — Agente unificado do CalculaPrazo (Versão Corrigida: Jornalismo e Originalidade)
 #
 import json, re, requests, random, time, sys, os
 from html.parser import HTMLParser
@@ -58,10 +58,6 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
 }
 
-
-# ─────────────────────────────────────────────
-# EXTRATOR DE TEXTO HTML
-# ─────────────────────────────────────────────
 class TextExtractor(HTMLParser):
     def __init__(self):
         super().__init__()
@@ -85,90 +81,23 @@ class TextExtractor(HTMLParser):
     def get_text(self, max_chars=7000):
         return " ".join(self.texts)[:max_chars]
 
-
-# ─────────────────────────────────────────────
-# PARSING JSON ROBUSTO
-# CORREÇÃO CRÍTICA: modelos como llama-3.1-8b-instant frequentemente
-# retornam texto antes/depois do JSON ou com markdown. O json.loads()
-# simples falha nesses casos. Esta função extrai o JSON de qualquer formato.
-# ─────────────────────────────────────────────
 def parse_json_robusto(raw):
-    """Extrai JSON válido (dict) de resposta de LLM independente do formato.
-    Sempre retorna dict ou None — nunca lista, nunca outro tipo.
-    Bug fix: o parse anterior podia retornar uma lista JSON, causando AttributeError.
-    Bug fix 2: prompt grande causava HTTP 413 no llama-3.1-8b — conteúdo limitado a 3500 chars.
-    """
-    if not raw:
-        return None
-
-    def _valida(obj):
-        return obj if isinstance(obj, dict) else None
-
+    if not raw: return None
+    def _valida(obj): return obj if isinstance(obj, dict) else None
     limpo = raw.strip()
-    limpo = __import__('re').sub(r'^```json\s*', '', limpo)
-    limpo = __import__('re').sub(r'\s*```$',     '', limpo)
-    limpo = __import__('re').sub(r'^```\s*',     '', limpo)
+    limpo = re.sub(r'^```json\s*', '', limpo)
+    limpo = re.sub(r'\s*```$',     '', limpo)
+    limpo = re.sub(r'^```\s*',     '', limpo)
     limpo = limpo.strip()
-
+    try: return _valida(json.loads(limpo))
+    except: pass
     try:
-        return _valida(__import__('json').loads(limpo))
-    except Exception:
-        pass
-
-    try:
-        inicio    = limpo.index('{')
-        fim       = limpo.rindex('}')
-        resultado = _valida(__import__('json').loads(limpo[inicio:fim+1]))
-        if resultado is not None:
-            return resultado
-    except Exception:
-        pass
-
-    import re as _re
-    match = _re.search(r'\{.*\}', limpo, _re.DOTALL)
-    if match:
-        try:
-            resultado = _valida(__import__('json').loads(match.group(0)))
-            if resultado is not None:
-                return resultado
-        except Exception:
-            pass
-
-    return None
-    # 1. Remove fences de markdown comuns
-    raw = re.sub(r'^```json\s*', '', raw.strip())
-    raw = re.sub(r'\s*```$', '', raw.strip())
-    raw = re.sub(r'^```\s*', '', raw.strip())
-
-    # 2. Tenta parse direto
-    try:
-        return json.loads(raw)
-    except Exception:
-        pass
-
-    # 3. Extrai o bloco entre { e } mais externo
-    try:
-        inicio = raw.index('{')
-        fim    = raw.rindex('}')
-        candidato = raw[inicio:fim+1]
-        return json.loads(candidato)
-    except Exception:
-        pass
-
-    # 4. Último recurso: regex para extrair o objeto JSON
-    match = re.search(r'\{.*\}', raw, re.DOTALL)
-    if match:
-        try:
-            return json.loads(match.group(0))
-        except Exception:
-            pass
-
+        inicio = limpo.index('{')
+        fim = limpo.rindex('}')
+        return _valida(json.loads(limpo[inicio:fim+1]))
+    except: pass
     return None
 
-
-# ─────────────────────────────────────────────
-# BUSCA DE CONTEÚDO
-# ─────────────────────────────────────────────
 def buscar_conteudo(fonte):
     try:
         r = requests.get(fonte["url"], headers=HEADERS, timeout=30, verify=False)
@@ -180,236 +109,97 @@ def buscar_conteudo(fonte):
         print(f"  Erro ao buscar {fonte['nome']}: {str(e)[:80]}")
     return "", fonte["url"]
 
-
-# ─────────────────────────────────────────────
-# AVALIAÇÃO DE RELEVÂNCIA
-# ─────────────────────────────────────────────
 def avaliar_relevancia(conteudo, fonte):
-    if len(conteudo) < 200:
-        return {"relevante": False}
-
+    if len(conteudo) < 200: return {"relevante": False}
     prompt = (
         f"Analise o conteúdo abaixo da fonte {fonte['nome']}.\n"
         f"Data de hoje: {HOJE.strftime('%d/%m/%Y')}\n\n"
         f"Conteúdo:\n{conteudo[:2000]}\n\n"
-        "Existe alguma notícia ou decisão RECENTE (últimas 48 horas) relevante para o Direito do Trabalho ou RH?\n"
-        "EXCLUIR: concursos, posses, eventos sociais, homenagens, agenda institucional.\n"
-        "INCLUIR: decisões judiciais, acórdãos, portarias, normas, fiscalizações, mudanças de regra, autuações.\n\n"
-        "Responda APENAS com um objeto JSON válido, sem texto antes ou depois:\n"
-        '{"relevante": true, "tema": "Título curto do assunto", "tipo_conteudo": "JURISPRUDENCIA|INFORMATIVO|ANALISE_LEI"}'
+        "Existe alguma notícia ou decisão RECENTE relevante para o Direito do Trabalho ou RH?\n"
+        "Responda APENAS com um objeto JSON válido:\n"
+        '{"relevante": true, "tema": "Título curto", "tipo_conteudo": "JURISPRUDENCIA|INFORMATIVO|ANALISE_LEI"}'
     )
     try:
         raw = chamar_llm(prompt, max_tokens=300, temperature=0.1)
         dados = parse_json_robusto(raw)
-        if dados:
-            return dados
-        print(f"  Erro parse avaliação: resposta não era JSON válido")
-        return {"relevante": False}
-    except Exception as e:
-        print(f"  Erro avaliação: {str(e)[:80]}")
-        return {"relevante": False}
+        return dados if dados else {"relevante": False}
+    except: return {"relevante": False}
 
-
-# ─────────────────────────────────────────────
-# GERAÇÃO DE ARTIGO
-# ─────────────────────────────────────────────
 def gerar_artigo(conteudo, fonte, tema, tipo_conteudo):
-
-    # Orientação por tipo — SEM ditar subtítulos fixos.
-    # O modelo cria os h2 a partir do conteúdo real, como um redator faria.
     orientacao_tipo = {
-        "JURISPRUDENCIA": (
-            "Você está redigindo um boletim de jurisprudência trabalhista.\n"
-            "Cubra obrigatoriamente: o caso concreto (partes, fato, setor), "
-            "os fundamentos legais e súmulas aplicados, o que foi decidido e por quê, "
-            "a tese jurídica que se extrai e as consequências práticas para empresas e trabalhadores.\n"
-            "Inclua também orientações objetivas para RH e jurídico."
-        ),
-        "INFORMATIVO": (
-            "Você está redigindo um boletim informativo regulatório.\n"
-            "Cubra obrigatoriamente: o fato central (órgão, data, número da norma se disponível), "
-            "o contexto que levou a essa medida, quem é afetado e como, "
-            "as obrigações práticas geradas e os riscos de não conformidade."
-        ),
-        "ANALISE_LEI": (
-            "Você está redigindo uma análise jurídico-legislativa.\n"
-            "Cubra obrigatoriamente: o que a norma ou proposta estabelece, "
-            "o contexto legislativo, as mudanças em relação ao regime anterior, "
-            "vigência e prazos, impactos para empregadores e trabalhadores, "
-            "e medidas imediatas de adequação."
-        ),
-    }.get(tipo_conteudo,
-        "Você está redigindo um artigo técnico-jurídico trabalhista. "
-        "Cubra todos os aspectos relevantes do tema: contexto, normas aplicáveis, "
-        "impactos práticos e orientações para empresas."
-    )
+        "JURISPRUDENCIA": "Foque na decisão judicial, fundamentos legais e impacto prático para empresas.",
+        "INFORMATIVO": "Foque no fato novo, prazos, obrigações e quem é afetado.",
+        "ANALISE_LEI": "Foque nas mudanças legislativas, vigência e o que muda na prática.",
+    }.get(tipo_conteudo, "Foque nos aspectos técnicos e práticos do tema.")
 
     prompt = (
-        "Você é redator jurídico sênior do site CalculaPrazo.com.br, especializado em Direito do Trabalho.\n"
-        "Seu público são advogados trabalhistas, gestores de RH, analistas de DP e empresários.\n\n"
+        "Você é um Jornalista Jurídico Sênior e Redator Chefe do site CalculaPrazo.com.br.\n"
+        "Seu objetivo é transformar uma notícia bruta em um ARTIGO JORNALÍSTICO ORIGINAL, INFORMATIVO e PROFISSIONAL.\n\n"
+        
+        "REGRAS CRÍTICAS PARA EVITAR PLÁGIO E GARANTIR QUALIDADE:\n"
+        "1. TOM JORNALÍSTICO: Use uma linguagem clara, direta e informativa. Evite 'juridiquês' excessivo, mas mantenha a precisão técnica.\n"
+        "2. REESCRITA TOTAL: É expressamente proibido copiar frases da fonte. Você deve ler a informação, absorver o fato e escrever o texto DO ZERO com suas próprias palavras.\n"
+        "3. ESTRUTURA DE NOTÍCIA: Comece com um 'Lead' (quem, o quê, onde, quando, por quê). Desenvolva o contexto e termine com o impacto prático.\n"
+        "4. ANÁLISE PRÓPRIA: Não apenas relate o fato, mas explique o que ele significa para o advogado, o RH ou o empresário que lê o site.\n"
+        "5. SUBTÍTULOS CRIATIVOS: Crie subtítulos (<h2>) que sejam chamadas jornalísticas reais, não use 'Introdução' ou 'Conclusão'.\n\n"
 
-        "═══════════════════════════════════════════\n"
-        f"TEMA DO ARTIGO: {tema}\n"
-        f"FONTE: {fonte['nome']} — {fonte['url']}\n"
-        f"DATA: {HOJE.strftime('%d/%m/%Y')}\n"
-        f"TIPO: {tipo_conteudo}\n"
-        "═══════════════════════════════════════════\n\n"
-
-        "CONTEÚDO ORIGINAL DA FONTE:\n"
-        "───────────────────────────\n"
-        f"{conteudo[:3500]}\n"
-        "───────────────────────────\n\n"
-
+        f"TEMA: {tema}\n"
+        f"FONTE ORIGINAL (apenas para extrair os fatos): {conteudo[:3500]}\n\n"
+        
         f"{orientacao_tipo}\n\n"
 
-        "COMO ESCREVER — LEIA COM ATENÇÃO:\n\n"
-
-        "1. FIDELIDADE AOS FATOS\n"
-        "   Preserve todos os dados da fonte: números, datas, nomes de tribunais, "
-        "   números de processos, artigos de lei, valores, percentuais. "
-        "   Não invente nada que não esteja na fonte.\n\n"
-
-        "2. REESCRITA GENUÍNA (não é cópia, não é resumo)\n"
-        "   Reescreva cada parágrafo com suas próprias palavras e estrutura de frase diferente. "
-        "   O texto final deve transmitir as mesmas informações da fonte, mas em prosa original. "
-        "   Acrescente análise: o que isso significa na prática? Qual o risco concreto para a empresa?\n\n"
-
-        "3. SUBTÍTULOS LIVRES E NATURAIS\n"
-        "   Crie os subtítulos <h2> a partir do conteúdo real — não use fórmulas genéricas "
-        "   como 'O que aconteceu', 'Contexto', 'Conclusão'. "
-        "   Bons exemplos baseados no conteúdo: "
-        "   'FGTS Digital passa a ser obrigatório em reclamatórias', "
-        "   'Gestante em contrato temporário mantém estabilidade, decide TST', "
-        "   'Prazo de 30 dias para adequação dos sistemas'. "
-        "   Cada subtítulo deve ser específico e informativo por si só.\n\n"
-
-        "4. EXTENSÃO E ESTRUTURA\n"
-        "   Mínimo de 800 palavras de texto corrido (não contam as tags HTML). "
-        "   Parágrafos com no mínimo 3 frases cada. "
-        "   Use <h2> para seções principais, <h3> para subseções quando necessário, "
-        "   <ul><li> para listas de itens, <strong> para termos técnicos e dados importantes. "
-        "   Apenas HTML puro — nunca markdown (**, ##, - ).\n\n"
-
-        "5. NÃO inclua bloco de 'Fonte:' no campo content — é inserido automaticamente.\n\n"
-
-        "Responda APENAS com um objeto JSON válido, sem nenhum texto antes ou depois:\n"
-        '{"title": "Título direto e específico, máx 80 chars", '
-        '"excerpt": "1-2 frases com o fato principal, máx 160 chars", '
-        '"tags": ["Tag1", "Tag2", "Tag3", "Tag4"], '
-        '"image_query": "3-5 palavras em inglês para Unsplash", '
-        '"content": "<h2>Subtítulo específico</h2><p>...</p>..."}'
+        "FORMATO DE SAÍDA (JSON APENAS):\n"
+        "{\n"
+        '  "title": "Título jornalístico impactante e original (máx 75 chars)",\n'
+        '  "excerpt": "Resumo profissional de 2 frases para redes sociais e SEO",\n'
+        '  "tags": ["Tag1", "Tag2", "Tag3"],\n'
+        '  "image_query": "3 palavras em inglês para busca de imagem",\n'
+        '  "content": "HTML PURO (<h2>, <p>, <ul>). Mínimo 500 palavras. Texto rico, fluido e totalmente original."\n'
+        "}"
     )
     try:
-        raw = chamar_llm(prompt, max_tokens=4000, temperature=0.2)
+        raw = chamar_llm(prompt, max_tokens=6000, temperature=0.3)
         dados = parse_json_robusto(raw)
-        if not dados:
-            print(f"  ERRO parse artigo: JSON não encontrado na resposta")
-            print(f"  Resposta recebida (primeiros 200 chars): {raw[:200] if raw else 'VAZIA'}")
-            return None
-        dados.setdefault("title",       f"Atualização Trabalhista — {HOJE.strftime('%d/%m/%Y')}")
-        dados.setdefault("excerpt",     tema[:120])
-        dados.setdefault("content",     f"<h2>Análise</h2><p>{tema}</p>")
-        dados.setdefault("tags",        ["Direito Trabalhista"])
-        dados.setdefault("image_query", "law justice court gavel")
-        dados["source_url"] = fonte["url"]
+        if dados:
+            dados["source_url"] = fonte["url"]
         return dados
     except Exception as e:
         print(f"  ERRO gerar artigo: {str(e)[:120]}")
         return None
 
-
-# ─────────────────────────────────────────────
-# MAIN
-# ─────────────────────────────────────────────
 def main():
     import urllib3
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
     print(f"\nAgente CalculaPrazo — {HOJE.strftime('%d/%m/%Y')}")
-    print(f"Fontes: {len(FONTES)}")
-
-    # 5 posts por execução × 2 execuções/dia = 10 posts/dia
     meta = 5
-    print(f"Meta desta execução: {meta} posts")
-
     fontes_shuffled = list(FONTES)
     random.shuffle(fontes_shuffled)
-
-    publicados  = 0
+    publicados = 0
     temas_vistos = set()
 
     for fonte in fontes_shuffled:
-        if publicados >= meta:
-            break
-
+        if publicados >= meta: break
         print(f"\nVerificando: {fonte['nome']}")
         conteudo, _ = buscar_conteudo(fonte)
-        if not conteudo:
-            continue
-
-        # Avaliação
+        if not conteudo: continue
         av = avaliar_relevancia(conteudo, fonte)
-        if not av.get("relevante"):
-            print("  Sem novidades relevantes.")
-            continue
-
+        if not av.get("relevante"): continue
         tema = av.get("tema", "").strip()
-        if not tema:
-            print("  Avaliação sem tema definido, pulando.")
-            continue
-
-        # Deduplicação
-        tema_key = tema.lower()[:60]
-        if tema_key in temas_vistos:
-            print(f"  Tema já coberto nesta execução: {tema}")
-            continue
-        if is_duplicata(tema):
-            print(f"  Já publicado: {tema}")
-            continue
-
-        # Geração
-        print(f"  Gerando post sobre: {tema}")
+        if not tema or tema.lower()[:60] in temas_vistos or is_duplicata(tema): continue
+        
+        print(f"  Gerando post original sobre: {tema}")
         dados = gerar_artigo(conteudo, fonte, tema, av.get("tipo_conteudo", fonte["tipo"]))
-        if not dados:
-            print("  Geração falhou, pulando.")
-            continue
-
-        # Validação de qualidade
+        if not dados: continue
+        
         ok, motivo = validar_qualidade(dados, fonte["categoria"])
-        if not ok:
-            print(f"  Qualidade insuficiente: {motivo}")
-            # Tenta salvar mesmo assim se tiver conteúdo mínimo
-            words = len(re.sub(r'<[^>]+>', ' ', dados.get("content","")).split())
-            if words < 200:
-                continue
-            # Completa campos faltantes
-            if not dados.get("title") or len(dados["title"]) < 10:
-                dados["title"] = f"Atualização: {tema[:70]}"
-            if not dados.get("excerpt") or len(dados["excerpt"]) < 30:
-                dados["excerpt"] = tema[:150]
-            if not dados.get("tags"):
-                dados["tags"] = ["Direito Trabalhista", "RH"]
-            # Revalida
-            ok2, motivo2 = validar_qualidade(dados, fonte["categoria"])
-            if not ok2:
-                print(f"  Reprovado mesmo após correção: {motivo2}")
-                continue
-
-        if is_duplicata(dados["title"]):
-            print(f"  Título duplicado: {dados['title']}")
-            continue
-
-        # Salvar
-        if salvar_post(dados, fonte["categoria"], fonte["nome"]):
+        if ok and salvar_post(dados, fonte["categoria"], fonte["nome"]):
             publicados += 1
-            temas_vistos.add(tema_key)
+            temas_vistos.add(tema.lower()[:60])
             print(f"  ✅ Post {publicados}/{meta} publicado: {dados['title'][:60]}")
-            time.sleep(3)  # pausa curta entre posts
+            time.sleep(2)
 
-    print(f"\nFim da execução. Total publicado: {publicados}")
+    print(f"\nFim da execução. Total: {publicados}")
     return publicados
 
-
 if __name__ == "__main__":
-    resultado = main()
-    sys.exit(0 if resultado >= 0 else 1)
+    main()
