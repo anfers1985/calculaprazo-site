@@ -239,7 +239,7 @@ def avaliar_relevancia(conteudo, fonte):
     prompt = (
         f"Fonte: {fonte['nome']} | Data: {HOJE.strftime('%d/%m/%Y')}\n\n"
         f"Conteúdo coletado:\n{conteudo[:2500]}\n\n"
-        "Avalie se há notícia RECENTE (últimas 48h) de alto valor informativo "
+        "Avalie se há notícia RECENTE (últimas 24h) de alto valor informativo "
         "para advogados trabalhistas, gestores de RH e empresários.\n\n"
         "ACEITAR: decisões judiciais com tese definida, portarias publicadas, "
         "fiscalizações com resultado, acordos judiciais com impacto coletivo, "
