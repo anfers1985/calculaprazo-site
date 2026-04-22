@@ -1,5 +1,60 @@
 [
   {
+    "id": "camara-fim-da-escala-6x1",
+    "title": "Câmara: Fim da Escala 6x1",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "tags": [
+      "Câmara dos Deputados",
+      "Escala 6x1",
+      "Trabalho"
+    ],
+    "excerpt": "Relator é favorável ao fim da escala de trabalho 6x1, votação adiada",
+    "image": "https://images.unsplash.com/photo-1660383695620-0ac7813857cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY4NTg4MjR8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-22",
+    "source": "Câmara — CLT",
+    "source_url": "https://www.camara.leg.br/noticias/1263495-relator-e-favoravel-ao-fim-da-escala-de-trabalho-6x1-votacao-das-propostas-na-comissao-e-adiada/"
+  },
+  {
+    "id": "mpt-usa-pesquisa-de-clima-em-acao-de-assedio",
+    "title": "MPT usa pesquisa de clima em ação de assédio",
+    "category": "noticias-mte-mpt",
+    "category_label": "MTE e MPT",
+    "tags": [
+      "MPT",
+      "Assédio Moral",
+      "Pesquisa de Clima"
+    ],
+    "excerpt": "MPT obtém reconhecimento de pesquisa de clima em ação de assédio moral na Bahia",
+    "image": "https://bahianapolitica.com.br/mpt-na-bahia-divulga-resultado-final-do-concurso-para-selecao-de-estagiarios/",
+    "date": "2026-04-22",
+    "source": "MPT-BA (PRT-5)",
+    "source_url": "https://www.prt5.mpt.mp.br/informe-se/noticias-do-mpt-ba/2677-mpt-usa-pesquisa-de-clima-em-acao-de-assedio-moral-organizacional-na-bahia"
+  },
+  {
+    "id": "pl-18382026-jornada-de-40-horas-e-fim-da-escala-6x1-entram-em-debate",
+    "title": "PL 1838/2026: jornada de 40 horas e fim da escala 6x1 entram em debate",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "excerpt": "Projeto de lei enviado pelo Poder Executivo à Câmara dos Deputados reduz a jornada semanal para 40 horas, cria dois descansos semanais remunerados e, na prática, substitui a escala 6x1 pelo modelo 5x2.",
+    "image": "https://images.unsplash.com/photo-1720650154268-fa280083de8b?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-04-22",
+    "tags": []
+  },
+  {
+    "id": "escala-6x1-em-debate-o-que-dizem-os-numeros-da-cnt-sobre-a-reduo-da-jornada-no-transporte",
+    "title": "Escala 6x1 em debate: o que dizem os números da CNT sobre a redução da jornada no transporte",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "excerpt": "Estudo encomendado pela Confederação Nacional do Transporte projeta impacto bilionário, risco de demissões e desafios operacionais caso o fim da escala 6x1 seja aprovado sem transição e negociação setorial.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/Gemini_Generated_Image_56wddg56wddg56wd.png?raw=true",
+    "date": "2026-04-22",
+    "tags": [
+      "escala 6x1",
+      "CNT"
+    ]
+  },
+  {
     "id": "canpat-2026-e-nr-1-o-que-muda-na-gesto-dos-riscos-psicossociais",
     "title": "CANPAT 2026 e NR-1: o que muda na gestão dos riscos psicossociais",
     "category": "saude-seguranca",
