@@ -1265,7 +1265,17 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
         <strong>⚠️ Aviso legal:</strong> Este conteúdo tem caráter exclusivamente informativo e não constitui assessoria jurídica, contábil ou financeira. Para decisões concretas, consulte sempre um profissional habilitado. As informações refletem o estado da legislação e jurisprudência na data de publicação.
       </div>
 
-      <!-- CTA Block -->
+      <!-- Share Block -->
+      <div style="margin:28px 0 20px;padding:18px 20px;background:var(--card);border:1.5px solid var(--brd);border-radius:14px;">
+        <p style="font-size:.8rem;font-weight:700;color:var(--txt-s);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">📤 Compartilhar este artigo</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <a href="#" target="_blank" rel="noopener" onclick="this.href='https://api.whatsapp.com/send?text='+encodeURIComponent(document.title+' — '+location.href);return true;" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;font-size:.78rem;font-weight:700;text-decoration:none;background:#25D366;color:#fff;">📱 WhatsApp</a>
+          <a href="#" target="_blank" rel="noopener" onclick="this.href='https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href);return true;" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;font-size:.78rem;font-weight:700;text-decoration:none;background:#0A66C2;color:#fff;">💼 LinkedIn</a>
+          <button id="cp-share-btn" onclick="navigator.clipboard.writeText(location.href).then(function(){var b=document.getElementById('cp-share-btn');b.textContent='✅ Copiado!';setTimeout(function(){b.textContent='🔗 Copiar link'},1800)})" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;font-size:.78rem;font-weight:700;background:var(--card);color:var(--txt);border:1.5px solid var(--brd);cursor:pointer;">🔗 Copiar link</button>
+        </div>
+      </div>
+
+            <!-- CTA Block -->
       <div class="post-cta">
         <h3>🧮 Precisa calcular? Use as ferramentas gratuitas</h3>
         <p>Prazos processuais, correção monetária, salário líquido, rescisão trabalhista e muito mais — tudo em um só lugar, sem cadastro e 100% gratuito.</p>
@@ -1349,7 +1359,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--acc);margin-bottom:8px;">Pix — Chave e-mail</p>
       <div style="display:flex;align-items:center;gap:10px;">
         <div id="pix-key-display" style="font-family:var(--fh);font-size:.85rem;font-weight:700;color:var(--txt);flex:1;background:#fff;border:1.5px solid var(--brd);border-radius:var(--r);padding:10px 12px;white-space:nowrap;overflow:visible;text-align:center;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dbb8bab7b8aeb7baaba9baa1b49bb8bab7b8aeb7baaba9baa1b4f5b8b4b6f5b9a9">[email&#160;protected]</a></div>
-        <button onclick="navigator.clipboard.writeText('calculaprazo@calculaprazo.com.br').then(()=>{this.textContent='✅';setTimeout(()=>this.textContent='📋',1500)})" style="background:var(--acc);color:#fff;border:none;border-radius:var(--r);padding:10px 13px;cursor:pointer;font-size:.85rem;flex-shrink:0;">📋</button>
+        <button onclick="navigator.clipboard.writeText('contato@calculaprazo.com.br').then(()=>{this.textContent='✅';setTimeout(()=>this.textContent='📋',1500)})" style="background:var(--acc);color:#fff;border:none;border-radius:var(--r);padding:10px 13px;cursor:pointer;font-size:.85rem;flex-shrink:0;">📋</button>
       </div>
       <p style="font-size:.73rem;color:var(--txt-s);margin-top:8px;"></p>
     </div>
