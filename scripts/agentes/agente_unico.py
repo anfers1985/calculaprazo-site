@@ -274,86 +274,52 @@ def avaliar_relevancia(conteudo, fonte):
 # GERAÇÃO — fidelidade total ao conteúdo fonte
 # ─────────────────────────────────────────────
 def gerar_artigo(conteudo, fonte, tema, tipo_conteudo, url_artigo):
-    instrucao_tipo = {
-        "JURISPRUDENCIA": (
-            "É um boletim de jurisprudência. Desenvolva:\n"
-            "- O caso: partes, setor, fato gerador do conflito\n"
-            "- O julgamento: instância, órgão fracionário, relator (se disponível na fonte)\n"
-            "- A fundamentação: artigos de lei, súmulas ou OJs aplicados\n"
-            "- A tese fixada: em linguagem clara, o que vale como regra\n"
-            "- O impacto prático para empresas e trabalhadores\n"
-            "- Orientações objetivas para RH e jurídico"
-        ),
-        "INFORMATIVO": (
-            "É um boletim de notícia regulatória. Desenvolva:\n"
-            "- O fato: o que o órgão fez ou publicou, com data e número se disponíveis\n"
-            "- O contexto: por que isso está acontecendo agora\n"
-            "- Quem é afetado: empresas, setores, categorias de trabalhadores\n"
-            "- As obrigações: o que cada afetado precisa fazer\n"
-            "- Os riscos: consequências do descumprimento"
-        ),
-        "ANALISE_LEI": (
-            "É uma análise legislativa. Desenvolva:\n"
-            "- O que a norma ou proposta estabelece (se PL, use linguagem condicional)\n"
-            "- O contexto: por que surgiu, qual problema resolve\n"
-            "- As mudanças em relação ao regime atual\n"
-            "- A vigência (se em vigor) ou estágio de tramitação (se PL)\n"
-            "- O impacto para empregadores e trabalhadores"
-        ),
-    }.get(tipo_conteudo, "Desenvolva: contexto, fatos centrais, base legal, impactos e orientações.")
-
     prompt = (
-        "Você é redator jurídico sênior do CalculaPrazo.com.br.\n"
-        "Público: advogados trabalhistas, gestores de RH, analistas de DP, empresários.\n\n"
+        "Você é um jornalista jurídico. Sua tarefa é REESCREVER a notícia abaixo "
+        "com suas próprias palavras, sem alterar nenhum fato.\n\n"
 
         "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-        f"TEMA: {tema}\n"
-        f"FONTE: {fonte['nome']}\n"
-        f"URL ORIGINAL: {url_artigo}\n"
-        f"DATA: {HOJE.strftime('%d/%m/%Y')} | TIPO: {tipo_conteudo}\n"
+        f"FONTE: {fonte['nome']} | DATA: {HOJE.strftime('%d/%m/%Y')}\n"
+        f"URL: {url_artigo}\n"
         "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
 
-        "CONTEÚDO ORIGINAL (base exclusiva para o artigo):\n"
+        "NOTÍCIA ORIGINAL:\n"
         "┌─────────────────────────────\n"
-        f"{conteudo[:4000]}\n"
+        f"{conteudo[:4500]}\n"
         "└─────────────────────────────\n\n"
 
-        f"{instrucao_tipo}\n\n"
+        "COMO REESCREVER:\n\n"
 
-        "REGRAS ABSOLUTAS — leia antes de escrever:\n\n"
+        "① REPLIQUE OS FATOS — não adicione, não remova\n"
+        "   Mantenha: números de processo, nomes de partes, nomes de magistrados, "
+        "percentuais, artigos de lei, citações diretas. "
+        "Se está na fonte, deve estar no seu texto. "
+        "Se não está na fonte, NÃO invente.\n\n"
 
-        "① NUNCA INVENTE\n"
-        "   Só escreva o que está explicitamente no conteúdo acima.\n"
-        "   Se um número, nome, data ou artigo de lei não aparece na fonte: NÃO mencione.\n"
-        "   Quando a fonte for rasa, escreva com o que há — não preencha lacunas com suposições.\n\n"
+        "② REFORMULE A FORMA — não a essência\n"
+        "   Mude a estrutura das frases, use sinônimos, altere a ordem dos parágrafos. "
+        "O leitor deve obter as mesmas informações, mas em prosa diferente.\n\n"
 
-        "② REESCREVA, NÃO COPIE\n"
-        "   Reformule cada informação com suas próprias palavras e estrutura de frase.\n"
-        "   O conteúdo deve ser idêntico em fatos mas completamente diferente em forma.\n\n"
+        "③ ESTRUTURA JORNALÍSTICA — sem seções editoriais\n"
+        "   Escreva como uma notícia de jornal: parágrafos corridos, sem listas, "
+        "sem tópicos de 'o que fazer', 'impactos para RH', 'recomendações para jurídico'. "
+        "Use <h2> apenas para dividir blocos naturais da narrativa, como faz um jornal. "
+        "Mínimo de 4 parágrafos, cada um com pelo menos 3 frases.\n\n"
 
-        "③ TÍTULO OBRIGATORIAMENTE ESPECÍFICO\n"
-        "   Deve conter a entidade (TST, TRT, MPT, MTE, STF…) e o fato concreto.\n"
-        "   ERRADO: 'Estabilidade provisória' / 'Bloqueio de bens' / 'Penhora de salário'\n"
-        "   CERTO: 'TST reafirma estabilidade de gestante em contrato temporário'\n"
-        "          'MPT-MG obtém bloqueio de bens em operação contra trabalho escravo'\n"
-        "          'TRT-15 mantém penhora de 30% do salário em dívida trabalhista'\n\n"
+        "④ TÍTULO ESPECÍFICO\n"
+        "   Deve conter a entidade (TRT, TST, MPT, STF…) e o fato concreto. "
+        "Exemplo: '4ª Câmara do TRT-15 mantém penhora de 30% do salário com garantia do mínimo legal'\n\n"
 
-        "④ SUBTÍTULOS LIVRES E INFORMATIVOS\n"
-        "   <h2> que descrevam o conteúdo real da seção.\n"
-        "   Evite: 'Contexto', 'Introdução', 'Conclusão', 'O que aconteceu', 'Impactos'.\n"
-        "   Use subtítulos específicos como se fossem manchetes de seção.\n\n"
-
-        "⑤ EXTENSÃO E FORMATO\n"
-        "   Mínimo 600 palavras. HTML puro: <h2>, <h3>, <p>, <ul>, <li>, <strong>.\n"
-        "   Parágrafos com pelo menos 3 frases. Nunca markdown (**, ##, -).\n"
-        "   NÃO inclua nota de fonte no campo content.\n\n"
+        "⑤ FORMATO\n"
+        "   HTML puro: <p>, <h2>, <strong>. Nunca <ul>, <li> ou markdown. "
+        "NÃO inclua nota de fonte no campo content.\n\n"
 
         "Responda APENAS com JSON válido, sem texto antes ou depois:\n"
-        '{"title": "Entidade + fato específico, máx 85 chars", '
-        '"excerpt": "1-2 frases com os fatos centrais, máx 160 chars", '
-        '"tags": ["Tag1", "Tag2", "Tag3", "Tag4"], '
-        '"image_query": "3-5 palavras em inglês para Unsplash", '
-        '"content": "<h2>...</h2><p>...</p>..."}'
+        '{"title": "Entidade + fato específico, máx 90 chars", '
+        '"excerpt": "Lead da notícia em 1-2 frases, máx 160 chars", '
+        '"tags": ["Tag1", "Tag2", "Tag3"], '
+        '"image_query": "3-4 palavras em inglês para Unsplash", '
+        '"content": "<p>...</p><h2>...</h2><p>...</p>..."}'
     )
     try:
         raw = chamar_llm(prompt, max_tokens=6000, temperature=0.15)
