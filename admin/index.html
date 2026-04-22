@@ -202,6 +202,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
               <option value="esocial-fgts-digital">eSocial e FGTS Digital</option>
               <option value="orientacoes-praticas">Orientações Práticas RH</option>
               <option value="saude-seguranca">Saúde e Segurança</option>
+              <option value="sindical">Sindical</option>
+              <option value="jurisprudencia">Jurisprudência</option>
               <option value="modelos">Modelos</option>
               <option value="artigos">Artigos</option>
               <option value="geral">Geral</option>
@@ -256,6 +258,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
           <option value="esocial-fgts-digital">eSocial</option>
           <option value="orientacoes-praticas">RH</option>
           <option value="saude-seguranca">Saúde</option>
+          <option value="sindical">Sindical</option>
+          <option value="jurisprudencia">Jurisprudência</option>
           <option value="modelos">Modelos</option>
           <option value="artigos">Artigos</option>
           <option value="geral">Geral</option>
@@ -521,6 +525,8 @@ function catLabel(c){
     'esocial-fgts-digital': '💻 eSocial',
     'orientacoes-praticas': '👥 RH',
     'saude-seguranca': '🦺 Saúde',
+    'sindical': '🤝 Sindical',
+    'jurisprudencia': '📚 Jurisprudência',
     'modelos': '📄 Modelos',
     'artigos': '✍️ Artigos',
     'geral': '📌 Geral'
@@ -790,7 +796,7 @@ async function publicarNoSite() {
       'jurisprudencia-tst':'Jurisprudência TST','jurisprudencia-trts':'Jurisprudência TRTs',
       'noticias-mte-mpt':'MTE & MPT','legislacao-normas':'Legislação e Normas',
       'esocial-fgts-digital':'eSocial e FGTS Digital','orientacoes-praticas':'Orientações Práticas RH',
-      'saude-seguranca':'Saúde e Segurança','modelos':'Modelos','artigos':'Artigos','geral':'Geral'
+      'saude-seguranca':'Saúde e Segurança','sindical':'Sindical','jurisprudencia':'Jurisprudência','modelos':'Modelos','artigos':'Artigos','geral':'Geral'
     };
     const dateBR = new Date(post.date + 'T12:00:00').toLocaleDateString('pt-BR', {day:'numeric', month:'long', year:'numeric'});
     
@@ -899,7 +905,7 @@ async function baixarHTML() {
       'jurisprudencia-tst':'Jurisprudência TST','jurisprudencia-trts':'Jurisprudência TRTs',
       'noticias-mte-mpt':'MTE & MPT','legislacao-normas':'Legislação e Normas',
       'esocial-fgts-digital':'eSocial e FGTS Digital','orientacoes-praticas':'Orientações Práticas RH',
-      'saude-seguranca':'Saúde e Segurança','modelos':'Modelos','artigos':'Artigos','geral':'Geral'
+      'saude-seguranca':'Saúde e Segurança','sindical':'Sindical','jurisprudencia':'Jurisprudência','modelos':'Modelos','artigos':'Artigos','geral':'Geral'
     };
 
     const respTemp = await fetch('/blog/POST_TEMPLATE.html');

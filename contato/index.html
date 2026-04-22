@@ -84,18 +84,18 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
       <!-- Formulário -->
       <div class="card">
         <h2 style="font-size:1.05rem;font-weight:700;margin-bottom:20px;">Enviar mensagem</h2>
-        <form id="contact-form" action="https://formspree.io/contato@calculaprazo.com.br" method="POST" onsubmit="handleSubmit(event)">
+        <div id="contact-form">
           <div class="fg">
             <label for="name">Seu nome</label>
-            <input type="text" id="name" name="name" placeholder="Nome completo" required autocomplete="name">
+            <input type="text" id="name" placeholder="Nome completo" autocomplete="name">
           </div>
           <div class="fg">
             <label for="email">E-mail para resposta</label>
-            <input type="email" id="email" name="email" placeholder="seu@email.com" required autocomplete="email">
+            <input type="email" id="email" placeholder="seu@email.com" autocomplete="email">
           </div>
           <div class="fg">
             <label for="assunto">Assunto</label>
-            <select id="assunto" name="assunto" required>
+            <select id="assunto">
               <option value="">Selecione o assunto...</option>
               <option value="Erro numa calculadora">Erro numa calculadora</option>
               <option value="Sugestão de nova ferramenta">Sugestão de nova ferramenta</option>
@@ -107,17 +107,16 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
           </div>
           <div class="fg">
             <label for="mensagem">Mensagem</label>
-            <textarea id="mensagem" name="mensagem" placeholder="Descreva sua dúvida ou sugestão com o máximo de detalhes possível..." required minlength="20"></textarea>
+            <textarea id="mensagem" placeholder="Descreva sua dúvida ou sugestão com o máximo de detalhes possível..."></textarea>
           </div>
-          <input type="hidden" name="_subject" value="Contato CalculaPrazo">
-          <input type="text" name="_gotcha" style="display:none">
-          <button type="submit" class="btn-send" id="submit-btn">
+          <p style="font-size:.78rem;color:#64748B;margin-bottom:12px;line-height:1.5;">Ao clicar em <strong>Enviar</strong>, seu cliente de e-mail será aberto com a mensagem pronta. Basta confirmar o envio.</p>
+          <button type="button" class="btn-send" id="submit-btn" onclick="handleSubmit()">
             <span>📤</span> Enviar mensagem
           </button>
-          <div class="success-msg" id="success-msg">
-            ✅ Mensagem enviada com sucesso! Respondemos em até 5 dias úteis.
+          <div class="success-msg" id="success-msg" style="display:none;">
+            ✅ Seu cliente de e-mail foi aberto! Confirme o envio pelo seu app de e-mail.
           </div>
-        </form>
+        </div>
       </div>
 
       <!-- Info -->
@@ -174,32 +173,37 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
 </footer>
 
 <script>
-function handleSubmit(e) {
-  e.preventDefault();
+function handleSubmit() {
   const btn = document.getElementById('submit-btn');
-  const form = document.getElementById('contact-form');
   const success = document.getElementById('success-msg');
+  const name    = document.getElementById('name').value.trim();
+  const email   = document.getElementById('email').value.trim();
+  const assunto = document.getElementById('assunto').value;
+  const msg     = document.getElementById('mensagem').value.trim();
+
+  if (!name || !email || !assunto || !msg) {
+    alert('Por favor, preencha todos os campos antes de enviar.');
+    return;
+  }
+
+  const subject = encodeURIComponent('CalculaPrazo | ' + assunto);
+  const body    = encodeURIComponent(
+    'Nome: ' + name + '\n' +
+    'E-mail para resposta: ' + email + '\n' +
+    'Assunto: ' + assunto + '\n\n' +
+    msg
+  );
+
   btn.disabled = true;
-  btn.innerHTML = '<span>⏳</span> Enviando...';
-  fetch(form.action, {
-    method: 'POST',
-    body: new FormData(form),
-    headers: { 'Accept': 'application/json' }
-  }).then(r => {
-    if (r.ok) {
-      form.reset();
-      success.style.display = 'block';
-      btn.innerHTML = '✅ Enviado!';
-    } else {
-      btn.disabled = false;
-      btn.innerHTML = '<span>📤</span> Tentar novamente';
-      alert('Erro ao enviar. Tente via e-mail: contato@calculaprazo.com.br');
-    }
-  }).catch(() => {
+  btn.innerHTML = '<span>✅</span> Abrindo e-mail...';
+  success.style.display = 'block';
+
+  window.location.href = 'mailto:contato@calculaprazo.com.br?subject=' + subject + '&body=' + body;
+
+  setTimeout(function() {
     btn.disabled = false;
-    btn.innerHTML = '<span>📤</span> Tentar novamente';
-    window.location.href = 'mailto:contato@calculaprazo.com.br?subject=Contato%20CalculaPrazo';
-  });
+    btn.innerHTML = '<span>📤</span> Enviar novamente';
+  }, 3000);
 }
 </script>
 
