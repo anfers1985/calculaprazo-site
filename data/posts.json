@@ -1,5 +1,87 @@
 [
   {
+    "id": "trt-11-condena-empresas-a-indenizar-carpinteiro",
+    "title": "TRT-11 condena empresas a indenizar carpinteiro",
+    "category": "jurisprudencia-trts",
+    "category_label": "Jurisprudência TRTs",
+    "tags": [
+      "TRT-11",
+      "Acidente de Trabalho",
+      "Indenização"
+    ],
+    "excerpt": "Empreiteira e dona da obra condenadas a pagar pensão e indenização por acidente de trabalho",
+    "image": "https://images.unsplash.com/photo-1732073790105-6af059e92b8e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY5NjE2Mjd8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-23",
+    "source": "TRT-11 (AM/RR)",
+    "source_url": "https://portal.trt11.jus.br/index.php/comunicacao/noticias-lista#t3-mainbody"
+  },
+  {
+    "id": "mpt-sp-obtem-da-justica-ordem-para-biogesp-apresentar-docume",
+    "title": "MPT-SP Obtém da Justiça Ordem para BIOGESP Apresentar Documentos Trabalhistas",
+    "category": "noticias-mte-mpt",
+    "category_label": "MTE e MPT",
+    "tags": [
+      "MPT-SP",
+      "BIOGESP",
+      "Direito do Trabalho",
+      "Multa"
+    ],
+    "excerpt": "O Ministério Público do Trabalho em São Paulo (MPT-SP) obteve decisão judicial que obriga a empresa BIOGESP a fornecer documentos trabalhistas, sob pena de multa diária. A medida visa investigar denúncias de irregularidades que afetam aproximadamente 1.700 trabalhadores.",
+    "image": "https://images.unsplash.com/photo-1758518729908-d4220a678d81?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY5NjE0NzR8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-23",
+    "source": "MPT-SP (PRT-2)",
+    "source_url": "https://www.prt2.mpt.mp.br/informe-se/noticias-do-mpt-sp"
+  },
+  {
+    "id": "justica-dos-eua-brasileira-processa-mrbeast",
+    "title": "Justiça dos EUA: brasileira processa MrBeast",
+    "category": "noticias-mte-mpt",
+    "category_label": "MTE e MPT",
+    "tags": [
+      "MrBeast",
+      "assédio",
+      "Justiça dos EUA"
+    ],
+    "excerpt": "Lorrayne Mavromatis acusa empresa de assédio",
+    "image": "https://images.unsplash.com/photo-1758876019338-c190822f6ca0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY5NjE0Mzd8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-23",
+    "source": "G1 — Trabalho",
+    "source_url": "https://g1.globo.com/trabalho-e-carreira/noticia/2026/04/23/brasileira-processa-mrbeast-assedio-principais-acusacoes.ghtml"
+  },
+  {
+    "id": "trt-2-encerra-dissidio-de-greve-e-mantem-reversao-de-justa-c",
+    "title": "TRT-2 encerra dissídio de greve e mantém reversão de justa causa",
+    "category": "jurisprudencia-trts",
+    "category_label": "Jurisprudência TRTs",
+    "tags": [
+      "TRT-2",
+      "Dissídio Coletivo",
+      "Justa Causa",
+      "Greve"
+    ],
+    "excerpt": "O Tribunal Regional do Trabalho da 2ª Região (TRT-2) mediou o fim de um dissídio coletivo envolvendo a greve do setor de limpeza urbana na Baixada Santista e decidiu manter a anulação de uma dispensa por justa causa de uma gestante.",
+    "image": "https://images.unsplash.com/photo-1592509280916-d8cfbaa71cee?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY5NjEzNDB8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-23",
+    "source": "TRT-2 (SP)",
+    "source_url": "https://ww2.trt2.jus.br/noticias/noticias#main-content"
+  },
+  {
+    "id": "ir-2026-declaracao-de-renda",
+    "title": "IR 2026: Declaração de Renda",
+    "category": "noticias-mte-mpt",
+    "category_label": "MTE e MPT",
+    "tags": [
+      "Imposto de Renda",
+      "MEI",
+      "Trabalho Autônomo"
+    ],
+    "excerpt": "MEI, autônomos e informais devem declarar renda tributável",
+    "image": "https://images.unsplash.com/photo-1554168848-228452c09d60?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY5NjEzMDJ8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-23",
+    "source": "G1 — Ministério do Trabalho",
+    "source_url": "https://g1.globo.com/economia/imposto-de-renda/noticia/2026/04/17/imposto-de-renda-2026-como-declarar-renda-de-mei-autonomos-e-informais.ghtml"
+  },
+  {
     "id": "fim-escala-6x1-bolsa-brasileira-impacto",
     "title": "Possível fim da escala 6x1 pode mexer com a Bolsa e pressionar setores intensivos em mão de obra",
     "category": "legislacao-normas",
