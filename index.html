@@ -64,6 +64,17 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 /* ════════════════════════════════════════
    HEADER
 ════════════════════════════════════════ */
+/* Share FAB */
+#share-fab{position:fixed;bottom:24px;right:24px;z-index:800;display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
+#share-fab-btn{width:52px;height:52px;border-radius:50%;background:var(--acc);color:#fff;border:none;font-size:1.3rem;cursor:pointer;box-shadow:0 4px 18px rgba(37,99,235,.4);display:flex;align-items:center;justify-content:center;transition:all .2s;}
+#share-fab-btn:hover{background:var(--acc-d);transform:scale(1.08);}
+#share-fab-menu{display:none;flex-direction:column;gap:6px;align-items:flex-end;}
+#share-fab-menu.open{display:flex;}
+.share-fab-item{display:flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;font-size:.78rem;font-weight:700;text-decoration:none;color:#fff;box-shadow:0 3px 12px rgba(0,0,0,.15);white-space:nowrap;}
+.share-wpp{background:#25D366;}
+.share-li{background:#0A66C2;}
+.share-copy{background:var(--txt);cursor:pointer;border:none;font-family:var(--fh);}
+@media(max-width:600px){#share-fab{bottom:16px;right:14px;}}
 #hdr{background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--brd);position:sticky;top:0;z-index:900;}
 .hdr-inner{display:flex;align-items:center;height:52px;padding:0 14px;gap:4px;}
 .logo{font-family:var(--fh);font-weight:800;font-size:1.05rem;color:var(--acc);text-decoration:none;letter-spacing:-.5px;display:flex;align-items:center;gap:7px;flex-shrink:0;white-space:nowrap;margin-right:4px;}
@@ -4232,7 +4243,7 @@ document.addEventListener('DOMContentLoaded', function() {
      BLOG / CONTEÚDO — JavaScript
 ══════════════════════════════════════ -->
 <script>
-var BLOG_POSTS=[];var BLOG_CAT='';var BLOG_H_FILTER='';var BLOG_VIEW='grid';var blogPage=1;var BLOG_PER_PAGE=10;var BLOG_MAX_PAGES=5;
+var BLOG_POSTS=[];var BLOG_CAT='';var BLOG_H_FILTER='';var BLOG_VIEW='grid';var blogPage=1;var BLOG_PER_PAGE=25;var BLOG_MAX_PAGES=10;
 
 async function loadBlogPosts(){
   try{
@@ -4402,5 +4413,15 @@ window.addEventListener('hashchange', function() {
 
 
 
+
+<!-- Share FAB -->
+<div id="share-fab">
+  <div id="share-fab-menu">
+    <a class="share-fab-item share-wpp" href="#" target="_blank" rel="noopener" onclick="this.href='https://api.whatsapp.com/send?text='+encodeURIComponent(document.title+' — '+location.href);return true;">📱 WhatsApp</a>
+    <a class="share-fab-item share-li" href="#" target="_blank" rel="noopener" onclick="this.href='https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href);return true;">💼 LinkedIn</a>
+    <button class="share-fab-item share-copy" id="share-copy-fab" onclick="navigator.clipboard.writeText(location.href).then(function(){document.getElementById('share-copy-fab').textContent='✅ Copiado!';setTimeout(function(){document.getElementById('share-copy-fab').textContent='🔗 Copiar link'},1800)})">🔗 Copiar link</button>
+  </div>
+  <button id="share-fab-btn" title="Compartilhar" onclick="document.getElementById('share-fab-menu').classList.toggle('open')">📤</button>
+</div>
 </body>
 </html>
