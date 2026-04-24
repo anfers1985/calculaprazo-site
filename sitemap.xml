@@ -219,4 +219,22 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://calculaprazo.com.br/blog/denuncia-contra-mrbeast</loc>
+    <lastmod>2026-04-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://calculaprazo.com.br/blog/ir-2026-mei-autonomos-e-informais-devem-declarar-renda-a-rec</loc>
+    <lastmod>2026-04-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://calculaprazo.com.br/blog/mpt-ba-intensifica-combate-a-producao-ilegal-de-fogos-na-bah</loc>
+    <lastmod>2026-04-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
