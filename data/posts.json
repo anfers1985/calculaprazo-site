@@ -1,5 +1,72 @@
 [
   {
+    "id": "mpt-ba-intensifica-combate-a-producao-ilegal-de-fogos-na-bah",
+    "title": "MPT-BA intensifica combate à produção ilegal de fogos na Bahia",
+    "category": "noticias-mte-mpt",
+    "category_label": "MTE e MPT",
+    "tags": [
+      "fogos de artifício",
+      "clandestinidade",
+      "MPT-BA",
+      "fiscalização"
+    ],
+    "excerpt": "Operação Brincar com Fogo apreendeu mais de seis mil unidades de fogos clandestinos e investiga a única fábrica autorizada no estado, suspeita de irregularidades e fornecimento de insumos para o mercado ilegal.",
+    "image": "https://images.unsplash.com/photo-1774599730788-a74cd9253b56?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzcwNDI5NDN8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-24",
+    "source": "MPT-BA (PRT-5)",
+    "source_url": "https://www.prt5.mpt.mp.br/informe-se/noticias-do-mpt-ba/2683-operacao-fecha-cerco-a-producao-clandestina-de-fogos-na-bahia"
+  },
+  {
+    "id": "trt-15-mantem-penhora-de-30",
+    "title": "TRT-15 mantém penhora de 30%",
+    "category": "jurisprudencia-trts",
+    "category_label": "Jurisprudência TRTs",
+    "tags": [
+      "TRT-15",
+      "Penhora de Salário",
+      "Direito Trabalhista"
+    ],
+    "excerpt": "Decisão do TRT-15 sobre penhora de salário",
+    "image": "https://images.unsplash.com/photo-1592293354312-9160458b1a57?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzcwNDI4MzJ8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-24",
+    "source": "AMATRA XV — Notícias",
+    "source_url": "https://amatraxv.org.br/noticias/noticias-juridicas"
+  },
+  {
+    "id": "ir-2026-mei-autonomos-e-informais-devem-declarar-renda-a-rec",
+    "title": "IR 2026: MEI, autônomos e informais devem declarar renda à Receita",
+    "category": "noticias-mte-mpt",
+    "category_label": "MTE e MPT",
+    "tags": [
+      "Imposto de Renda",
+      "MEI",
+      "Autônomos",
+      "Receita Federal"
+    ],
+    "excerpt": "Microempreendedores individuais, trabalhadores autônomos e informais com rendimentos tributáveis acima do limite estabelecido deverão apresentar a declaração do Imposto de Renda 2026. O não cumprimento pode gerar multas e restrições de acesso a serviços financeiros.",
+    "image": "https://images.unsplash.com/photo-1775163024488-e88e4a71179f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzcwNDI3MDR8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-24",
+    "source": "G1 — Ministério do Trabalho",
+    "source_url": "https://g1.globo.com/economia/imposto-de-renda/noticia/2026/04/17/imposto-de-renda-2026-como-declarar-renda-de-mei-autonomos-e-informais.ghtml"
+  },
+  {
+    "id": "denuncia-contra-mrbeast",
+    "title": "Denúncia contra MrBeast",
+    "category": "noticias-mte-mpt",
+    "category_label": "MTE e MPT",
+    "tags": [
+      "MrBeast",
+      "Licença-Maternidade",
+      "EUA",
+      "Brasil"
+    ],
+    "excerpt": "Brasileira processa empresa de MrBeast por assédio e violação de licença-maternidade",
+    "image": "https://images.unsplash.com/photo-1544717305-f9c88f2897bc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzcwNDI1OTN8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-24",
+    "source": "G1 — Trabalho",
+    "source_url": "https://g1.globo.com/trabalho-e-carreira/noticia/2026/04/24/denuncia-contra-empresa-de-mrbeast-quais-as-diferencas-na-licenca-maternidade-nos-eua-e-brasil.ghtml"
+  },
+  {
     "id": "inteligncia-artificial-e-o-novo-desafio-para-o-emprego-dos-jovens",
     "title": "Inteligência artificial e o novo desafio para o emprego dos jovens",
     "category": "geral",
