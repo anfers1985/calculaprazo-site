@@ -712,7 +712,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
    Garante que "Ferramentas" não seja cortado
    em telas de até 320px
 ════════════════════════════════════════ */
-@media(max-width:640px){
+@media(max-width:640px){.ctab{padding:5px 11px;font-size:.76rem;}
   /* Linha 2 da nav: flex-wrap para evitar corte */
   .hdr-nav {
     flex-wrap: wrap !important;
@@ -2339,17 +2339,19 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
     <!-- Linha 1: busca textual + filtro de data + modo de visualização -->
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center;">
-      <div style="position:relative;flex:2;min-width:200px;">
+      <div style="position:relative;flex:1 1 100%;">
         <input type="text" id="blog-search" placeholder="🔍 Buscar artigos..." oninput="blogPage=1;renderBlogSection()" style="width:100%;padding:9px 14px;border:1.5px solid var(--brd);border-radius:999px;font-size:.85rem;font-family:var(--fh);color:var(--txt);background:var(--card);">
       </div>
-      <select id="blog-date-filter" onchange="blogPage=1;renderBlogSection()" style="padding:9px 14px;border:1.5px solid var(--brd);border-radius:999px;font-size:.83rem;font-family:var(--fh);color:var(--txt);background:var(--card);cursor:pointer;">
+      <select id="blog-date-filter" onchange="blogPage=1;renderBlogSection()" style="flex:1;padding:9px 14px;border:1.5px solid var(--brd);border-radius:999px;font-size:.83rem;font-family:var(--fh);color:var(--txt);background:var(--card);cursor:pointer;">
         <option value="">📅 Qualquer data</option>
         <option value="7">Últimos 7 dias</option>
         <option value="30">Últimos 30 dias</option>
         <option value="90">Últimos 90 dias</option>
       </select>
-      <button id="blog-view-grid" onclick="setBlogView('grid')" title="Cards" style="padding:8px 12px;border:1.5px solid var(--brd);border-radius:999px;background:var(--acc);color:#fff;cursor:pointer;font-size:.9rem;">⊞</button>
-      <button id="blog-view-list" onclick="setBlogView('list')" title="Lista compacta" style="padding:8px 12px;border:1.5px solid var(--brd);border-radius:999px;background:var(--card);color:var(--txt);cursor:pointer;font-size:.9rem;">☰</button>
+      <div style="display:flex;gap:6px;flex-shrink:0;">
+        <button id="blog-view-grid" onclick="setBlogView('grid')" title="Cards" style="padding:8px 13px;border:1.5px solid var(--brd);border-radius:999px;background:var(--acc);color:#fff;cursor:pointer;font-size:.9rem;">⊞</button>
+        <button id="blog-view-list" onclick="setBlogView('list')" title="Lista compacta" style="padding:8px 13px;border:1.5px solid var(--brd);border-radius:999px;background:var(--card);color:var(--txt);cursor:pointer;font-size:.9rem;">☰</button>
+      </div>
     </div>
 
     <!-- Linha 2: filtro por categoria -->
@@ -4289,6 +4291,16 @@ function buildPostCard(p){
 
 function buildPostListItem(p){
   var cl=p.category_label||p.category||'';
+  var isMobile=window.innerWidth<600;
+  if(isMobile){
+    return '<a href="/blog/'+(p.id||p.slug||'')+'.html" style="display:block;text-decoration:none;padding:11px 0;border-bottom:1px solid var(--brd);">'
+      +'<div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;">'
+      +'<span style="font-size:.68rem;color:var(--txt-s);white-space:nowrap;">'+formatPostDate(p.date)+'</span>'
+      +(cl?'<span style="font-size:.62rem;font-weight:700;color:var(--acc);background:var(--b50);border:1px solid var(--b100);border-radius:999px;padding:2px 7px;white-space:nowrap;">'+cl+'</span>':'')
+      +'</div>'
+      +'<span style="font-size:.88rem;font-weight:700;color:var(--txt);line-height:1.45;display:block;">'+(p.title||'')+'</span>'
+      +'</a>';
+  }
   return '<a href="/blog/'+(p.id||p.slug||'')+'.html" style="display:flex;align-items:flex-start;gap:12px;text-decoration:none;padding:12px 0;border-bottom:1px solid var(--brd);transition:background .15s;" onmouseover="this.style.background=\'var(--b50)\'" onmouseout="this.style.background=\'\'">'
     +'<span style="flex-shrink:0;font-size:.72rem;color:var(--txt-s);white-space:nowrap;min-width:84px;padding-top:2px;">'+formatPostDate(p.date)+'</span>'
     +(cl?'<span style="flex-shrink:0;font-size:.65rem;font-weight:700;color:var(--acc);background:var(--b50);border:1px solid var(--b100);border-radius:999px;padding:2px 8px;white-space:nowrap;">'+cl+'</span>':'')
