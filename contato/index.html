@@ -96,6 +96,18 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
 @media(max-width:480px){
   .topics-grid{grid-template-columns:1fr;}
 }
+
+.form-card{background:var(--card);border:1px solid var(--brd);border-radius:14px;padding:28px;margin-bottom:28px;box-shadow:var(--sh);}
+.form-title{font-size:1.05rem;font-weight:700;color:var(--txt);margin-bottom:4px;}
+.form-subtitle{font-size:.83rem;color:var(--txt-m);margin-bottom:20px;}
+.fg{margin-bottom:14px;display:flex;flex-direction:column;gap:5px;}
+.fg label{font-size:.8rem;font-weight:600;color:var(--txt);}
+.fg input,.fg select,.fg textarea{font-family:var(--fh);font-size:.88rem;color:var(--txt);background:#fff;border:1.5px solid var(--brd);border-radius:9px;padding:10px 13px;outline:none;transition:border-color .2s;width:100%;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(37,99,235,.1);}
+.fg textarea{resize:vertical;min-height:110px;}
+.submit-btn{width:100%;padding:12px;background:var(--acc);color:#fff;border:none;border-radius:10px;font-family:var(--fh);font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s;margin-top:4px;}
+.submit-btn:hover{background:var(--acc-d);}
+.submit-btn:disabled{opacity:.6;cursor:not-allowed;}
 </style>
 </head>
 <body>
@@ -114,7 +126,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
   <div class="container">
     <p class="breadcrumb"><a href="/">Início</a> › Contato</p>
     <h1>Fale com o Calcula Prazo</h1>
-    <p class="hero-sub">Dúvidas, sugestões ou erro encontrado? Envie um e-mail — lemos tudo e respondemos em até 5 dias úteis.</p>
+    <p class="hero-sub">Dúvidas, sugestões ou erro encontrado? Entre em contato pelo e-mail abaixo — todas as mensagens são lidas pessoalmente e respondidas em até 5 dias úteis.</p>
   </div>
 </div>
 
@@ -133,6 +145,47 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
         <span id="copy-icon">📋</span>
         <span id="copy-text">Copiar e-mail</span>
       </button>
+    </div>
+
+
+    <!-- Formulário de contato — Web3Forms (gratuito, sem backend) -->
+    <div class="form-card">
+      <h2 class="form-title">Enviar mensagem diretamente</h2>
+      <p class="form-subtitle">Preencha o formulário — respondemos em até 5 dias úteis.</p>
+      <form id="contact-form" onsubmit="submitForm(event)">
+        <input type="hidden" name="access_key" value="5d423bc7-4965-4375-8dfc-d57b93641332">
+        <input type="hidden" name="subject" value="Mensagem via Calcula Prazo">
+        <input type="hidden" name="from_name" value="Calcula Prazo — Formulário de Contato">
+        <input type="hidden" name="replyto" id="replyto-field">
+        <div class="fg">
+          <label for="f-nome">Seu nome</label>
+          <input type="text" id="f-nome" name="name" placeholder="Ex.: Maria Silva" required>
+        </div>
+        <div class="fg">
+          <label for="f-email">Seu e-mail</label>
+          <input type="email" id="f-email" name="email" placeholder="seu@email.com" required oninput="document.getElementById('replyto-field').value=this.value">
+        </div>
+        <div class="fg">
+          <label for="f-assunto">Assunto</label>
+          <select id="f-assunto" name="subject_type" required>
+            <option value="">Selecione o assunto</option>
+            <option value="Erro numa calculadora">🐛 Erro numa calculadora</option>
+            <option value="Sugestão de nova ferramenta">💡 Sugestão de nova ferramenta</option>
+            <option value="Erro no conteúdo do blog">📰 Erro no conteúdo do blog</option>
+            <option value="Dúvida sobre uma ferramenta">❓ Dúvida sobre uma ferramenta</option>
+            <option value="Parceria ou colaboração">🤝 Parceria ou colaboração</option>
+            <option value="Outro assunto">💬 Outro assunto</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label for="f-msg">Mensagem</label>
+          <textarea id="f-msg" name="message" rows="5" placeholder="Descreva sua dúvida, sugestão ou erro com o máximo de detalhes." required></textarea>
+        </div>
+        <!-- honeypot anti-spam -->
+        <input type="checkbox" name="botcheck" style="display:none;">
+        <button type="submit" id="submit-btn" class="submit-btn">✉️ Enviar mensagem</button>
+        <div id="form-status" style="display:none;margin-top:14px;padding:12px 16px;border-radius:10px;font-size:.85rem;font-weight:600;text-align:center;"></div>
+      </form>
     </div>
 
     <!-- Assuntos -->
@@ -210,7 +263,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
     <!-- Pix -->
     <div class="pix-block">
       <div class="pix-title">☕ Gostou do site? Considere contribuir</div>
-      <p class="pix-desc">O Calcula Prazo é 100% gratuito e sem anúncios intrusivos. Se ele te ajudou no dia a dia, qualquer valor via Pix é muito bem-vindo e ajuda a manter o site no ar.</p>
+      <p class="pix-desc">O Calcula Prazo é mantido de forma independente e oferecido gratuitamente. Se as ferramentas ou o conteúdo te ajudaram no dia a dia, considere contribuir com qualquer valor via Pix — isso ajuda a manter o site no ar, os índices atualizados e o conteúdo em constante melhoria.</p>
       <div class="pix-key-wrap">
         <span class="pix-key">contato@calculaprazo.com.br</span>
         <button class="pix-copy" id="pix-copy-btn" onclick="copyPix()">📋 Copiar chave</button>
@@ -222,9 +275,10 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
 
 <footer id="ftr">
   <div class="container ftr-inner">
-    <p class="ftr-copy">© <span id="yr"></span> Calcula Prazo. Todos os direitos reservados.</p>
+    <p class="ftr-copy">© <span id="yr"></span> Calcula Prazo — Anderson Fernandes. Todos os direitos reservados.</p>
     <div class="ftr-links">
       <a href="/">Calculadoras</a>
+      <a href="/sobre">Sobre</a>
       <a href="/privacidade">Privacidade</a>
       <a href="/termos">Termos</a>
       <a href="/contato">Contato</a>

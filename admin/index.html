@@ -377,7 +377,7 @@ function getPass(){ return localStorage.getItem(ADMIN_PASS_KEY) || DEFAULT_PASS;
 
 function doLogin(){
   const v = document.getElementById('auth-pass').value;
-  if(v === getPass() || v === DEFAULT_PASS){
+  if(v === getPass()){
     localStorage.setItem('cp_session','1');
     document.getElementById('auth-wall').style.display='none';
     document.getElementById('app').style.display='block';
