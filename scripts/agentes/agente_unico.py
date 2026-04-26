@@ -29,10 +29,19 @@ HEADERS = {
 
 # Fontes de conteúdo
 FONTES = [
-    {"nome": "TST Notícias", "url": "https://www.tst.jus.br/web/guest/noticias", "categoria": "jurisprudencia-tst"},
-    {"nome": "Portal Contábeis", "url": "https://www.contabeis.com.br/conteudo/trabalhista/", "categoria": "orientacoes-praticas"},
-    {"nome": "G1 Trabalho", "url": "https://g1.globo.com/trabalho-e-carreira/", "categoria": "noticias-mte-mpt"},
-    {"nome": "MTE Notícias", "url": "https://www.gov.br/trabalho-e-emprego/pt-br/noticias-e-conteudo", "categoria": "noticias-mte-mpt"},
+    # Fontes primárias — alta precisão temática
+    {"nome": "TST Notícias",     "url": "https://www.tst.jus.br/web/guest/noticias",                          "categoria": "jurisprudencia-tst"},
+    {"nome": "MTE Notícias",     "url": "https://www.gov.br/trabalho-e-emprego/pt-br/noticias-e-conteudo",   "categoria": "noticias-mte-mpt"},
+    {"nome": "MPT Notícias",     "url": "https://mpt.mp.br/pgt/noticias",                                    "categoria": "noticias-mte-mpt"},
+    {"nome": "TRT2 Notícias",    "url": "https://www.trt2.jus.br/noticias",                                  "categoria": "jurisprudencia-trts"},
+    {"nome": "TRT3 Notícias",    "url": "https://www.trt3.jus.br/component/k2/itemlist/tag/noticias",        "categoria": "jurisprudencia-trts"},
+    {"nome": "TRT4 Notícias",    "url": "https://www.trt4.jus.br/portais/trt4/noticias",                    "categoria": "jurisprudencia-trts"},
+    # Fontes especializadas — nicho trabalhista/contábil
+    {"nome": "Portal Contábeis Trabalhista", "url": "https://www.contabeis.com.br/conteudo/trabalhista/",   "categoria": "orientacoes-praticas"},
+    {"nome": "Guia Trabalhista", "url": "https://www.guiatrabalhista.com.br/noticias/index.htm",             "categoria": "legislacao-normas"},
+    {"nome": "Conjur Trabalhista","url": "https://www.conjur.com.br/categoria/trabalho",                    "categoria": "jurisprudencia-tst"},
+    # G1 — aceita mas com filtro rigoroso de whitelist
+    {"nome": "G1 Trabalho",      "url": "https://g1.globo.com/trabalho-e-carreira/",                        "categoria": "noticias-mte-mpt"},
 ]
 
 # Temas a excluir (baixo valor editorial)
@@ -41,6 +50,53 @@ TEMAS_EXCLUIR = [
     "palestra", "eleição", "capacitação", "curso", "treinamento",
     "agenda", "reunião", "análise estratégica", "planejamento estratégico",
     "inauguração", "aniversário", "visita", "entrega de",
+    # Títulos genéricos inválidos
+    "notícias atualizadas", "sem título", "notícias", "últimas notícias",
+    "noticias atualizadas", "página inicial", "home",
+    # Fora do nicho trabalhista
+    "currículo", "curriculo", "inteligência artificial", "ia pode", "tecnologia",
+    "startup", "empreendedor", "inovação", "bitcoin", "criptomoeda",
+    "moda", "beleza", "saúde pessoal", "dieta", "esporte", "futebol",
+    "política", "eleições", "candidato", "partido", "presidente",
+    "internacional", "guerra", "conflito", "exterior",
+    # Tech/comportamento fora do nicho
+    "inteligência artificial", "ia pode", "ia está", "machine learning",
+    "curriculo", "currículo", "linkedin", "processo seletivo", "entrevista de emprego",
+    "dicas de carreira", "networking", "soft skills", "hard skills",
+    "empreendedorismo", "startup", "inovação tecnológica",
+    # Financeiro não trabalhista
+    "bolsa de valores", "ibovespa", "bitcoin", "criptomoeda", "ação da",
+    "imposto de renda pessoa física", "declaração ir",
+    # Saúde/comportamento
+    "saúde mental", "burnout pessoal", "qualidade de vida", "bem-estar",
+    "alimentação", "exercício", "academia",
+]
+
+# Palavras-chave obrigatórias — a notícia DEVE conter ao menos uma
+# para ser considerada de direito do trabalho / RH / contabilidade trabalhista
+TEMAS_INCLUIR_OBRIGATORIO = [
+    # CLT e relações de trabalho
+    "trabalhador", "empregado", "empregador", "clt", "vínculo empregatício",
+    "contrato de trabalho", "rescisão", "demissão", "admissão",
+    # Direitos e verbas
+    "fgts", "férias", "13", "salário", "remuneração", "hora extra",
+    "adicional", "insalubridade", "periculosidade", "desvio de função",
+    "jornada", "banco de horas", "intervalo", "descanso",
+    # Processo e órgãos
+    "tst", "trt", "tribunal", "vara do trabalho", "ação trabalhista",
+    "reclamação trabalhista", "audiência", "sentença trabalhista",
+    "jurisprudência trabalhista",
+    # Legislação
+    "reforma trabalhista", "lei trabalhista", "portaria", "instrução normativa",
+    "mte", "ministério do trabalho", "mpt", "ministério público do trabalho",
+    # RH e folha
+    "rh", "recursos humanos", "folha de pagamento", "inss", "irrf",
+    "esocial", "fgts digital", "e-social", "caged", "rais",
+    # Categorias específicas
+    "terceirização", "pejotização", "teletrabalho", "home office",
+    "equiparação salarial", "acidente de trabalho", "doença ocupacional",
+    "assédio moral", "assédio sexual", "greve", "sindicato", "acordo coletivo",
+    "convenção coletiva", "negociação coletiva",
 ]
 
 # ─────────────────────────────────────────────
@@ -119,19 +175,116 @@ def extrair_links_artigo(html, base_url):
     return candidatos
 
 
-def eh_tema_valido(titulo):
-    """Verifica se o tema é válido (não está na lista de exclusão)."""
-    titulo_lower = titulo.lower()
+def eh_tema_valido(titulo, conteudo=""):
+    """
+    Verifica se a notícia é válida:
+    1. Título não é genérico (comprimento mínimo de 20 chars)
+    2. Título não contém termos da blacklist
+    3. O TÍTULO (não o conteúdo) deve conter ao menos uma palavra trabalhista
+       — conteúdo genérico com palavras trabalhistas não é suficiente
+    4. Título não é uma frase de interface (ex: "Página inicial", "Ver mais")
+    """
+    titulo_lower = titulo.lower().strip()
+
+    # Rejeitar títulos muito curtos ou muito longos (>150 chars = título de página)
+    if len(titulo_lower) < 20 or len(titulo_lower) > 150:
+        return False
+
+    # Rejeitar títulos que parecem cabeçalhos de seção/página (sem verbos)
+    titulos_interface = [
+        "notícias", "noticias", "mais notícias", "ver mais", "leia mais",
+        "destaques", "últimas", "ultimas", "conteúdo", "home", "início",
+        "página inicial", "artigos", "publicações", "atualizadas", "recentes",
+    ]
+    for ti in titulos_interface:
+        if titulo_lower == ti or titulo_lower.startswith(ti + " ") or titulo_lower.endswith(" " + ti):
+            return False
+
+    # Blacklist de termos excluídos
     for tema_excluir in TEMAS_EXCLUIR:
         if tema_excluir in titulo_lower:
             return False
-    return True
+
+    # Whitelist OBRIGATÓRIA NO TÍTULO — conteúdo não compensa
+    # Pelo menos uma palavra-chave trabalhista deve estar no título
+    for palavra in TEMAS_INCLUIR_OBRIGATORIO:
+        if palavra in titulo_lower:
+            return True
+
+    # Segunda chance: se a fonte é primária (TST/TRT/MTE/MPT), relaxar um pouco
+    # verificando também o início do conteúdo (primeiras 300 chars)
+    conteudo_inicio = conteudo.lower()[:300]
+    palavras_alta_confianca = [
+        "tst", "trt", "tribunal superior do trabalho", "vara do trabalho",
+        "mte", "mpt", "ministério do trabalho", "ministério público do trabalho",
+        "clt", "consolidação das leis do trabalho", "reclamação trabalhista",
+        "empregado", "empregador", "rescisão", "fgts", "esocial",
+    ]
+    hits = sum(1 for p in palavras_alta_confianca if p in conteudo_inicio)
+    if hits >= 3:  # pelo menos 3 termos de alta confiança no início do texto
+        return True
+
+    return False  # Não é trabalhista
 
 
 def eh_recente(data_texto):
-    """Verifica se a notícia foi publicada nas últimas 24 horas."""
-    # Implementar lógica de parsing de data conforme necessário
-    # Por enquanto, retorna True para todas as notícias
+    """
+    Verifica se a notícia foi publicada nas últimas 48 horas.
+    Tenta encontrar padrões de data no texto extraído da página.
+    Se não encontrar data, aceita (benefício da dúvida — fontes primárias
+    como TST/TRT raramente reindexam conteúdo antigo).
+    """
+    import re
+    from datetime import datetime, timedelta
+
+    agora = datetime.now()
+    limite = agora - timedelta(hours=48)
+
+    # Padrões de data em português e ISO
+    padroes = [
+        # ISO: 2026-04-25
+        r'(\d{4}-\d{2}-\d{2})',
+        # BR: 25/04/2026
+        r'(\d{2}/\d{2}/\d{4})',
+        # BR por extenso: 25 de abril de 2026
+        r'(\d{1,2})\s+de\s+(janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\s+de\s+(\d{4})',
+    ]
+
+    meses = {
+        'janeiro':1,'fevereiro':2,'março':3,'abril':4,'maio':5,'junho':6,
+        'julho':7,'agosto':8,'setembro':9,'outubro':10,'novembro':11,'dezembro':12
+    }
+
+    texto = data_texto[:3000]  # Verificar apenas o início do texto
+
+    for padrao in padroes:
+        matches = re.findall(padrao, texto, re.IGNORECASE)
+        for match in matches:
+            try:
+                if isinstance(match, tuple) and len(match) == 3:
+                    # Formato "25 de abril de 2026"
+                    dia, mes_str, ano = match
+                    mes = meses.get(mes_str.lower(), 0)
+                    if not mes:
+                        continue
+                    data = datetime(int(ano), mes, int(dia))
+                elif '-' in str(match):
+                    data = datetime.strptime(str(match), '%Y-%m-%d')
+                elif '/' in str(match):
+                    data = datetime.strptime(str(match), '%d/%m/%Y')
+                else:
+                    continue
+
+                # Aceitar se a data está dentro da janela de 48h
+                if data >= limite:
+                    return True
+                # Rejeitar explicitamente datas muito antigas (> 7 dias)
+                elif data < agora - timedelta(days=7):
+                    return False
+            except Exception:
+                continue
+
+    # Se não encontrou data, aceitar (benefício da dúvida para fontes primárias)
     return True
 
 
@@ -283,12 +436,23 @@ def monitorar_fonte(fonte):
         
         texto = extrator.get_text()
         
-        # Extrair título (simplificado)
-        titulo_match = re.search(r'<h1[^>]*>([^<]+)</h1>', artigo_html)
-        titulo = titulo_match.group(1) if titulo_match else "Sem título"
-        
-        # Validar tema
-        if not eh_tema_valido(titulo):
+        # Extrair título — tenta <h1>, depois <title>, descarta genéricos
+        titulo_match = re.search(r'<h1[^>]*>([^<]{10,})</h1>', artigo_html)
+        if titulo_match:
+            titulo = titulo_match.group(1).strip()
+        else:
+            title_match = re.search(r'<title[^>]*>([^<|–—-]{10,})', artigo_html)
+            titulo = title_match.group(1).strip() if title_match else ""
+
+        # Limpar entidades HTML básicas do título
+        titulo = titulo.replace('&amp;', '&').replace('&#8211;', '–').replace('&#8212;', '—').replace('&nbsp;', ' ').strip()
+
+        if not titulo or len(titulo) < 15:
+            print(f"  ⊘ Título inválido ou genérico — pulando")
+            continue
+
+        # Validar tema (whitelist obrigatória + blacklist)
+        if not eh_tema_valido(titulo, texto):
             print(f"  ⊘ Tema excluído: {titulo[:60]}")
             continue
         
