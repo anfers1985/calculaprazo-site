@@ -1,5 +1,17 @@
 [
   {
+    "id": "calculadora-verbas-trabalhistas-rescisorias",
+    "title": "Calculadora de Verbas Trabalhistas e Rescisórias",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Calcule verbas rescisórias com rapidez: saldo de salário, férias, 13º, FGTS, multa e aviso prévio conforme a CLT, em ferramenta gratuita.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/Gemini_Generated_Image_d7mgd7d7mgd7d7mg.png?raw=true",
+    "date": "2026-04-26",
+    "tags": [
+      "Calculadora de Verbas Trabalhistas"
+    ]
+  },
+  {
     "id": "fim-da-escala-6x1-veja-o-que-dizem-as-empresas-que-j-adotam-jornadas-reduzidas",
     "title": "Fim da escala 6x1? Veja o que dizem as empresas que já adotam jornadas reduzidas",
     "category": "geral",
