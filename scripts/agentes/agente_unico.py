@@ -306,45 +306,59 @@ Título: {titulo_original}
 Fonte: {fonte_nome}
 Resumo: {conteudo_original[:2000]}
 
-ESTRUTURA OBRIGATÓRIA DO ARTIGO (usar exatamente estas seções em HTML):
+ESTRUTURA OBRIGATÓRIA DO ARTIGO (usar exatamente estas seções em HTML, nesta ordem):
+
+<div class="resumo-rapido">
+<strong>Resumo rápido:</strong>
+<ul>
+<li>[Ponto principal 1 — 1 linha]</li>
+<li>[Ponto principal 2 — 1 linha]</li>
+<li>[Ponto principal 3 — 1 linha]</li>
+<li>[Base legal aplicável — ex: Art. 477, CLT / Súmula 331, TST]</li>
+<li>[Impacto prático — 1 linha]</li>
+</ul>
+</div>
+
 <h2>Contexto e relevância prática</h2>
-[2 parágrafos explicando o tema e por que importa para advogados e RH]
+[2 a 3 parágrafos explicando o tema, por que surgiu e por que importa para advogados, RH e contadores. Contextualizar no cenário jurídico atual.]
 
 <h2>Base legal aplicável</h2>
-[Artigos da CLT, leis, portarias, instruções normativas relevantes — com numeração exata]
+[Artigos da CLT, leis, portarias, instruções normativas e resoluções relevantes — citar com numeração exata. Mínimo 2 parágrafos.]
 
 <h2>Posição do TST e tribunais</h2>
-[Jurisprudência consolidada, súmulas, OJs relevantes — omitir esta seção se não houver]
+[Jurisprudência consolidada, súmulas, OJs e precedentes vinculantes relevantes. Citar apenas fontes que você tem certeza da existência — se não houver jurisprudência clara, omitir esta seção.]
 
 <h2>Impacto prático para empresas e trabalhadores</h2>
-[Exemplos concretos com valores ou prazos quando possível]
+[Mínimo 2 parágrafos com exemplos concretos: valores, prazos, procedimentos, riscos. Usar situações reais do dia a dia jurídico e de RH.]
 
-<h2>[Pergunta prática relevante ao tema?]</h2>
-[Resposta técnica direta — 1 ou 2 parágrafos]
+<h2>[Pergunta prática 1 relevante ao tema — formular como dúvida real de advogado ou RH?]</h2>
+[Resposta técnica direta em 2 parágrafos]
 
-<h2>[Segunda pergunta prática relevante?]</h2>
-[Resposta técnica direta]
+<h2>[Pergunta prática 2 relevante ao tema?]</h2>
+[Resposta técnica direta em 2 parágrafos]
 
-<h2>[Terceira pergunta prática relevante?]</h2>
-[Resposta técnica direta]
+<h2>[Pergunta prática 3 relevante ao tema?]</h2>
+[Resposta técnica direta em 2 parágrafos]
 
 <h2>Conclusão e orientação para profissionais</h2>
-[Recomendação prática objetiva em 1 parágrafo]
+[Recomendação prática objetiva em 1 a 2 parágrafos. Finalizar com orientação concreta.]
 
 REGRAS OBRIGATÓRIAS:
-- Extensão: 900 a 1.400 palavras no corpo do artigo
+- Extensão MÍNIMA: 1.000 palavras. Extensão máxima: 1.600 palavras. NUNCA entregue menos de 1.000 palavras.
+- Se o artigo estiver se aproximando do fim antes de 1.000 palavras, expanda as seções de "Impacto prático" e as perguntas práticas com mais detalhes e exemplos.
 - Não citar o nome da fonte ({fonte_nome}) no texto
-- Tom técnico e direto — sem frases genéricas como "é importante ressaltar" ou "vale destacar"
+- Tom técnico e direto — proibido usar: "é importante ressaltar", "vale destacar", "cumpre salientar", "nesse sentido", "por sua vez"
 - Usar <strong> para termos jurídicos e artigos de lei na primeira menção
-- Cada parágrafo deve ter entre 3 e 5 linhas
+- Cada parágrafo deve ter entre 3 e 6 linhas
 - Não repetir o título no primeiro parágrafo
-- Todo conteúdo deve ter caráter informativo — não constitui assessoria jurídica
-- Responder apenas com o HTML do artigo, sem preâmbulo, sem marcação de código
+- Não inventar súmulas, OJs ou números de lei que não existem
+- Todo conteúdo tem caráter informativo — não constitui assessoria jurídica
+- Responder APENAS com o HTML do artigo (começando em <div class="resumo-rapido"> ou <h2>), sem preâmbulo, sem marcação de código
 
-Responda APENAS com o HTML do artigo (começando em <h2> ou <p>), sem explicações, sem markdown, sem blocos de código."""
+Responda APENAS com o HTML do artigo, sem explicações, sem markdown, sem blocos de código."""
 
     try:
-        content_html = chamar_llm(prompt, max_tokens=3500, temperature=0.3)
+        content_html = chamar_llm(prompt, max_tokens=5000, temperature=0.3)
         if not content_html or len(content_html) < 400:
             raise ValueError("Conteúdo gerado muito curto")
     except Exception as e:

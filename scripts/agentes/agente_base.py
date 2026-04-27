@@ -471,8 +471,9 @@ def salvar_post(dados, categoria, fonte_nome=""):
             .replace("{{OG_IMAGE}}",         f'<meta property="og:image" content="{img}">')
             .replace("{{SCHEMA_IMAGE}}",     f',"image":"{img}"')
             .replace("{{COVER_IMAGE_HTML}}", (
-                f'<div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;">'
-                f'<img src="{img}" alt="{dados["title"]}" style="width:100%;object-fit:cover;" loading="lazy" '
+                f'<div style="margin-bottom:24px;border-radius:12px;overflow:hidden;">'
+                f'<img src="{img}" alt="{dados["title"]}" width="1200" height="630" '
+                f'style="width:100%;height:auto;object-fit:cover;display:block;" loading="lazy" '
                 f'onerror="this.parentElement.style.display=\'none\'"></div>'
             ))
         )

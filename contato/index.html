@@ -318,26 +318,48 @@ async function submitForm(e) {
   const btn = document.getElementById('submit-btn');
   const status = document.getElementById('form-status');
   btn.disabled = true;
-  btn.textContent = 'Enviando...';
+  btn.textContent = '⏳ Enviando...';
   status.style.display = 'none';
+
+  // Garantir que replyto está preenchido com o email do remetente
+  const emailVal = document.getElementById('f-email').value;
+  document.getElementById('replyto-field').value = emailVal;
+
   try {
     const data = new FormData(e.target);
-    const res = await fetch('https://api.web3forms.com/submit', {method:'POST', body: data});
+
+    // Timeout de 15 segundos
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: data,
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+
     const json = await res.json();
+    console.log('[Calcula Prazo] Web3Forms response:', json);
+
     if (json.success) {
       status.style.display = 'block';
       status.style.background = '#D1FAE5';
       status.style.color = '#065F46';
-      status.textContent = '✅ Mensagem enviada com sucesso! Responderemos em até 5 dias úteis.';
+      status.innerHTML = '✅ <strong>Mensagem enviada com sucesso!</strong> Responderemos em até 5 dias úteis no endereço informado.';
       e.target.reset();
     } else {
-      throw new Error(json.message || 'Erro no envio');
+      throw new Error(json.message || `Código de erro: ${res.status}`);
     }
   } catch(err) {
+    console.error('[Calcula Prazo] Erro ao enviar formulário:', err);
+    const isTimeout = err.name === 'AbortError';
     status.style.display = 'block';
     status.style.background = '#FEE2E2';
     status.style.color = '#991B1B';
-    status.textContent = '❌ Erro ao enviar. Tente pelo e-mail: contato@calculaprazo.com.br';
+    status.innerHTML = isTimeout
+      ? '⏱️ <strong>Tempo esgotado.</strong> Verifique sua conexão e tente novamente, ou envie diretamente para <a href="mailto:contato@calculaprazo.com.br" style="color:#991B1B;">contato@calculaprazo.com.br</a>.'
+      : `❌ <strong>Erro ao enviar.</strong> ${err.message ? '(' + err.message + ')' : ''} Tente pelo e-mail: <a href="mailto:contato@calculaprazo.com.br" style="color:#991B1B;">contato@calculaprazo.com.br</a>`;
   }
   btn.disabled = false;
   btn.textContent = '✉️ Enviar mensagem';

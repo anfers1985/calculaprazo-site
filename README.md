@@ -1,4 +1,4 @@
-# CalculaPrazo — Site Jurídico com Ferramentas Gratuitas
+# Calcula Prazo — Site Jurídico com Ferramentas Gratuitas
 
 [![Cloudflare Pages](https://img.shields.io/badge/Hospedagem-Cloudflare%20Pages-orange)](https://calculaprazo.com.br)
 [![AdSense](https://img.shields.io/badge/Monetização-Google%20AdSense-brightgreen)](https://calculaprazo.com.br)
@@ -10,7 +10,7 @@
 
 ## 📋 Visão Geral
 
-O CalculaPrazo é uma SPA (Single Page Application) em HTML/JS puro com blog estático.
+O Calcula Prazo é uma SPA (Single Page Application) em HTML/JS puro com blog estático.
 - **Frontend:** `index.html` (SPA completa) + páginas estáticas em `/privacidade`, `/termos`, `/contato`
 - **Blog:** Arquivos HTML em `/blog/` gerados pelos agentes ou manualmente
 - **Dados:** `data/posts.json` — índice de posts para o blog
@@ -120,7 +120,7 @@ Todo artigo publicado **deve** ter:
    - H2: Impacto Prático
    - H2: Recomendação Imediata
 5. **Disclaimer jurídico** ao final (inserido automaticamente pelo template)
-6. **Autoria:** "Equipe Editorial CalculaPrazo" (inserida automaticamente)
+6. **Autoria:** "Equipe Editorial Calcula Prazo" (inserida automaticamente)
 7. **Link interno** para a calculadora relevante
 
 ### ❌ Artigos que devem ser REJEITADOS no PR
@@ -193,7 +193,7 @@ python rebuild_posts_json.py
 ## 🚀 Próximos Passos (Roadmap)
 
 ### Curto Prazo (1 mês)
-- [ ] Substituir `og-image.png` por imagem real com marca visual do CalculaPrazo
+- [ ] Substituir `og-image.png` por imagem real com marca visual do Calcula Prazo
 - [ ] Publicar 15+ posts seguindo o padrão editorial
 - [ ] Substituir `SLOT_*` pelos IDs reais de slots AdSense após aprovação
 - [ ] Configurar Formspree no formulário de contato (`/contato/index.html`)
@@ -220,4 +220,4 @@ python rebuild_posts_json.py
 
 ---
 
-*© 2026 CalculaPrazo. Todos os direitos reservados.*
+*© 2026 Calcula Prazo. Todos os direitos reservados.*

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin – CalculaPrazo</title>
+<title>Admin – Calcula Prazo</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -698,7 +698,7 @@ async function githubUpsertFile(path, content, commitMsg, pat) {
     message: commitMsg,
     content: btoa(unescape(encodeURIComponent(content))),
     branch:  GITHUB_BRANCH,
-    committer: { name: 'CalculaPrazo Admin', email: 'admin@calculaprazo.com.br' }
+    committer: { name: 'Calcula Prazo Admin', email: 'admin@calculaprazo.com.br' }
   };
   if (sha) body.sha = sha;
 

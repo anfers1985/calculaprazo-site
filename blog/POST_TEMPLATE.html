@@ -17,6 +17,9 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Article","headline":"{{TITLE}}","description":"{{DESCRIPTION}}","url":"https://calculaprazo.com.br/blog/{{SLUG}}","author":{"@type":"Person","name":"Anderson Fernandes","url":"https://calculaprazo.com.br/sobre"},"publisher":{"@type":"Organization","name":"Calcula Prazo","url":"https://calculaprazo.com.br","logo":{"@type":"ImageObject","url":"https://calculaprazo.com.br/og-image.png"}},"datePublished":"{{DATE}}","dateModified":"{{DATE}}","inLanguage":"pt-BR","mainEntityOfPage":{"@type":"WebPage","@id":"https://calculaprazo.com.br/blog/{{SLUG}}"}{{SCHEMA_IMAGE}}}
 </script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Calcula Prazo","item":"https://calculaprazo.com.br"},{"@type":"ListItem","position":2,"name":"Blog — Direito do Trabalho","item":"https://calculaprazo.com.br/blog"},{"@type":"ListItem","position":3,"name":"{{TITLE}}","item":"https://calculaprazo.com.br/blog/{{SLUG}}.html"}]}
+</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3280539734623058" crossorigin="anonymous"></script>
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1069,6 +1072,16 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .post-cta-btn.sec  { background:rgba(255,255,255,.12); color:#fff; border:1px solid rgba(255,255,255,.2); }
 .post-cta-btn.sec:hover { background:rgba(255,255,255,.2); }
 
+.resumo-rapido {
+  background: var(--b50);
+  border-left: 4px solid var(--acc);
+  border-radius: 0 var(--r) var(--r) 0;
+  padding: 16px 20px;
+  margin: 0 0 32px 0;
+}
+.resumo-rapido strong { color: var(--acc); font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; display: block; margin-bottom: 10px; }
+.resumo-rapido ul { margin: 0; padding-left: 18px; }
+.resumo-rapido li { font-size: .88rem; color: var(--txt-m); line-height: 1.6; margin-bottom: 4px; }
 .related-section { margin-top:48px; }
 .related-section h3 { font-size:.95rem; font-weight:800; margin-bottom:16px; letter-spacing:-.2px; }
 .related-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; }
@@ -1355,7 +1368,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     <div style="position:absolute;top:-60px;right:-60px;width:340px;height:340px;border-radius:50%;background:rgba(255,255,255,.04);"></div>
     <div class="container" style="position:relative;z-index:1;text-align:center;">
       <div style="display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:5px 18px;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.8);margin-bottom:16px;">📚 Conteúdo técnico para profissionais</div>
-      <h1 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.8px;line-height:1.1;margin-bottom:12px;">Direito, RH e Contabilidade<br>na prática do dia a dia</h1>
+      <p style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.8px;line-height:1.1;margin-bottom:12px;">Direito, RH e Contabilidade<br>na prática do dia a dia</p>
       <p style="font-size:.95rem;color:rgba(255,255,255,.65);max-width:520px;margin:0 auto;">Artigos técnicos, orientações práticas e referências legais atualizadas para profissionais das áreas jurídica, contábil e de recursos humanos.</p>
     </div>
   </div>
@@ -1495,7 +1508,31 @@ async function loadRelated() {
     .slice(0, 3);
 
   const section = document.getElementById('related-section');
-  if (!section || !related.length) return;
+  if (!section) return;
+
+  if (!related.length) {
+    // Fallback: CTA para as ferramentas do site quando não há posts relacionados
+    section.innerHTML = `
+      <h3>Explore as ferramentas do Calcula Prazo</h3>
+      <div class="related-grid">
+        <a class="related-card" href="/">
+          <div class="r-cat">⚖️ Prazos</div>
+          <div class="r-title">Calculadora de Prazo Processual</div>
+          <div class="r-date">Dias úteis e corridos — CPC e CLT</div>
+        </a>
+        <a class="related-card" href="/calculadora-verbas-trabalhistas">
+          <div class="r-cat">💼 Trabalhista</div>
+          <div class="r-title">Calculadora de Verbas Rescisórias</div>
+          <div class="r-date">Rescisão completa com INSS e IR</div>
+        </a>
+        <a class="related-card" href="/calculadora-salario-liquido">
+          <div class="r-cat">💰 Salário</div>
+          <div class="r-title">Calculadora de Salário Líquido</div>
+          <div class="r-date">INSS + IRRF 2026 — Lei 15.270/2025</div>
+        </a>
+      </div>`;
+    return;
+  }
 
   const catLabels = { direito:'⚖️ Direito', rh:'👥 RH', contabilidade:'📊 Contabilidade', geral:'📌 Geral' };
   section.innerHTML = `
