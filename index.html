@@ -2107,7 +2107,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
         <button class="ptab on" onclick="extSetMode('num',this)">Número</button>
         <button class="ptab" onclick="extSetMode('brl',this)">Valor em Reais</button>
       </div>
-      <div class="fg"><label id="ext-lbl">Número</label><input type="number" id="ext-val" placeholder="Ex: 1234567.89" step="0.01" oninput="calcExtenso()"></div>
+      <div class="fg"><label id="ext-lbl">Número</label><input type="text" id="ext-val" inputmode="decimal" placeholder="Ex: 1.234.567,89 ou 1234567.89" autocomplete="off" oninput="calcExtenso()"></div>
       <div id="ext-res" class="res-box" style="margin-top:14px;"><div class="res-lbl">Por extenso</div><div style="font-size:1.1rem;font-weight:700;color:var(--txt);line-height:1.5;" id="ext-res-val"></div></div>
       <button class="btn btn-g" style="margin-top:12px;width:100%;" onclick="cpExt()">📋 Copiar texto</button>
         </div></div>
@@ -2836,7 +2836,7 @@ async function calcCorrecao() {
 
   rb.classList.remove('show', 'err');
 
-  const val = parseFloat(valStr);
+  const val = parseVal(valStr);
   if (!val || isNaN(val) || !iniStr || !fimStr) {
     alert('Preencha valor, data base e data final.'); return;
   }
@@ -3002,6 +3002,18 @@ function jSetPer(p, btn) {
 }
 
 const fmtBRL = n => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(n);
+// parseVal: aceita formato BR (1.234,56), US (1234.56) e inteiros — resistente a type=number no mobile
+function parseVal(s){
+  if(s===null||s===undefined)return NaN;
+  s=String(s).trim().replace(/\s/g,'');
+  if(!s)return NaN;
+  // Formato BR com ponto de milhar: 1.234,56 ou 1.234.567,89
+  if(/^-?[\d]{1,3}(\.\d{3})+(,\d{1,2})?$/.test(s)) return parseFloat(s.replace(/\./g,'').replace(',','.'));
+  // Formato com vírgula decimal: 1234,56
+  if(/^-?\d+,\d{1,2}$/.test(s)) return parseFloat(s.replace(',','.'));
+  // Formato US/padrão: 1234.56
+  return parseFloat(s);
+}
 const fmtN   = n => new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
 
 /**
@@ -3017,11 +3029,11 @@ async function calcJuros() {
   const multaStr = document.getElementById('j-multa').value.trim();
   const aporteStr = document.getElementById('j-aporte').value.trim();
 
-  const C      = parseFloat(capStr.replace(',', '.'));
-  const i      = parseFloat(taxaStr.replace(',', '.'));
+  const C      = parseVal(capStr);
+  const i      = parseVal(taxaStr);
   const n      = parseInt(perStr, 10);
-  const multa  = parseFloat(multaStr.replace(',', '.')) || 0;
-  const aporte = parseFloat(aporteStr.replace(',', '.')) || 0;
+  const multa  = parseVal(multaStr) || 0;
+  const aporte = parseVal(aporteStr) || 0;
 
   if (!capStr || isNaN(C) || C <= 0) {
     alert('⚠️ Informe um Capital válido e positivo (ex: 1000).'); return;
@@ -3282,9 +3294,9 @@ function calcRedutorAdicional(bruto, irrfBase){
 const DEP_IRRF=189.59;
 
 function calcSalario(){
-  const bruto=parseFloat(document.getElementById('sal-bruto').value)||0;
+  const bruto=parseVal(document.getElementById('sal-bruto').value)||0;
   const dep=parseInt(document.getElementById('sal-dep').value)||0;
-  const outros=parseFloat(document.getElementById('sal-outros').value)||0;
+  const outros=parseVal(document.getElementById('sal-outros').value)||0;
   if(bruto<=0){alert('Informe o salário bruto.');return;}
   // INSS progressivo
   let inss=0,base=bruto,ant=0;
@@ -3372,8 +3384,8 @@ function tTipoChange(){
 }
 
 function calcTrabalhista(){
-  const sal    = parseFloat(document.getElementById('t-sal').value)||0;
-  const medias = parseFloat(document.getElementById('t-medias').value)||0;
+  const sal    = parseVal(document.getElementById('t-sal').value)||0;
+  const medias = parseVal(document.getElementById('t-medias').value)||0;
   const admStr = document.getElementById('t-adm').value;
   const demStr = document.getElementById('t-dem').value;
   const tipo   = document.getElementById('t-tipo').value;
@@ -3705,7 +3717,19 @@ genPW();
 
 // ─── NÚMERO POR EXTENSO ────────────────────────────
 let extMode='num';
-function extSetMode(m,btn){extMode=m;document.querySelectorAll('#ext-mode .ptab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');document.getElementById('ext-lbl').textContent=m==='num'?'Número':'Valor em Reais (R$)';}
+function extSetMode(m,btn){
+  extMode=m;
+  document.querySelectorAll('#ext-mode .ptab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('ext-lbl').textContent=m==='num'?'Número':'Valor em Reais (R$)';
+  // Atualizar placeholder conforme o modo
+  const inp=document.getElementById('ext-val');
+  inp.placeholder=m==='num'?'Ex: 1234567':'Ex: 1.234,56 ou 1234.56';
+  // Recalcular com o novo modo se já houver valor digitado
+  const val=inp.value.trim();
+  if(val!=='') calcExtenso();
+  else document.getElementById('ext-res').classList.remove('show');
+}
 
 const UNID=['','um','dois','três','quatro','cinco','seis','sete','oito','nove','dez','onze','doze','treze','quatorze','quinze','dezesseis','dezessete','dezoito','dezenove'];
 const DEZ=['','','vinte','trinta','quarenta','cinquenta','sessenta','setenta','oitenta','noventa'];
@@ -3735,7 +3759,14 @@ function numExt(n){
   if(neg)s='menos '+s;return s;
 }
 function calcExtenso(){
-  const raw=document.getElementById('ext-val').value.replace(',','.');
+  // Aceita formato BR (1.234,56) e US (1234.56)
+  let raw=document.getElementById('ext-val').value.trim();
+  // Detectar formato BR: tem ponto de milhar E vírgula decimal
+  if(/^-?[\d.]+,\d{1,2}$/.test(raw.replace(/\s/g,''))) {
+    raw = raw.replace(/\./g,'').replace(',','.');  // 1.234,56 → 1234.56
+  } else {
+    raw = raw.replace(',','.');  // 1234,56 → 1234.56
+  }
   const v=parseFloat(raw);
   const res=document.getElementById('ext-res');
   if(raw===''||isNaN(v)){res.classList.remove('show');return;}
