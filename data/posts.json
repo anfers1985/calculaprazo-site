@@ -1,5 +1,69 @@
 [
   {
+    "id": "assedio-eleitoral-multa-400-mil-carmo-do-cajuru",
+    "title": "Assédio eleitoral rende multa de R$ 400 mil em MG",
+    "category": "jurisprudencia-trts",
+    "category_label": "Jurisprudência TRTs",
+    "excerpt": "Justiça condena empresa de Carmo do Cajuru a pagar R$ 400 mil por assédio eleitoral contra empregados nas eleições de 2022.",
+    "image": "https://images.unsplash.com/photo-1620809975674-10b8ff5f8e58?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-04-27",
+    "tags": [
+      "TRT",
+      "Jurisprudência"
+    ]
+  },
+  {
+    "id": "reducao-jornada-mae-crianca-tea-sem-reducao-salarial",
+    "title": "TRT-MG reconhece jornada reduzida para mãe de criança com TEA",
+    "category": "jurisprudencia-trts",
+    "category_label": "Jurisprudência TRTs",
+    "excerpt": "Justiça reconhece redução de jornada sem corte salarial para mãe de criança com TEA, com base na Constituição, em tratados e por analogia à Lei 8.112/1990.",
+    "image": "https://images.unsplash.com/photo-1776057441567-ac16f7b9dd6f?q=80&w=1339&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-04-27",
+    "tags": [
+      "TRT",
+      "Jurisprudência"
+    ]
+  },
+  {
+    "id": "trt10-pedido-demissao-rescisao-indireta",
+    "title": "TRT-10 mantém validade de pedido de demissão e afasta rescisão indireta",
+    "category": "jurisprudencia-trts",
+    "category_label": "Jurisprudência TRTs",
+    "excerpt": "TRT-10 mantém pedido de demissão e afasta rescisão indireta. Entenda por que a falta de prova de vício de vontade foi decisiva no caso.",
+    "image": "https://images.unsplash.com/photo-1562564055-71e051d33c19?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-04-27",
+    "tags": [
+      "TRT",
+      "Jurisprudência"
+    ]
+  },
+  {
+    "id": "atestados-mdicos-de-at-90-dias-no-tm-mais-percia-presencial",
+    "title": "Atestados médicos de até 90 dias não têm mais perícia presencial",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "excerpt": "INSS amplia o Atestmed e atestados médicos de até 90 dias passam a ser analisados sem perícia presencial, com pedido pelo Meu INSS.",
+    "image": "https://images.unsplash.com/photo-1516126491303-6f54240c8491?q=80&w=1065&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-04-27",
+    "tags": [
+      "INSS",
+      "Previdência"
+    ]
+  },
+  {
+    "id": "5-relatrio-de-transparncia-salarial-aponta-crescimento-da-presena-de-mulheres-no-mercado-de-trabalho",
+    "title": "5º Relatório de Transparência Salarial aponta crescimento da presença de mulheres no mercado de trabalho",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "5º Relatório de Transparência Salarial mostra avanço de 11% das mulheres no mercado e mantém em foco a diferença de remuneração no setor privado.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/Gemini_Generated_Image_n8zrz3n8zrz3n8zr.png?raw=true",
+    "date": "2026-04-27",
+    "tags": [
+      "MTE"
+    ]
+  },
+  {
     "id": "calculadora-de-prazos-processuais-tutorial-completo-para-usar-o-calculaprazocombr",
     "title": "Calculadora de prazos processuais: tutorial completo para usar o CalculaPrazo.com.br",
     "category": "geral",
