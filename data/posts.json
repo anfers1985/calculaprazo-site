@@ -1,5 +1,18 @@
 [
   {
+    "id": "gerador-de-senhas-seguras-online",
+    "title": "Gerador de Senhas Seguras Online: Crie Senhas Fortes e Aleatórias",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Proteja suas contas com senhas fortes e aleatórias. Use nosso gerador gratuito para criar combinações seguras com letras, números e símbolos instantaneamente.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/gerador-senhas.png?raw=true",
+    "date": "2026-04-29",
+    "tags": [
+      "Gerador de Senhas",
+      "Ferramentas"
+    ]
+  },
+  {
     "id": "gerador-de-qr-code-online-gratis",
     "title": "Gerador de QR Code Online Grátis: Crie Códigos para Pix, Wi-Fi e Links",
     "category": "geral",
