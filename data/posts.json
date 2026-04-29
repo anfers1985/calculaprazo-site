@@ -1,5 +1,73 @@
 [
   {
+    "id": "fgts-como-consultar-pagamento",
+    "title": "FGTS: Como Consultar Pagamento",
+    "category": "noticias-mte-mpt",
+    "category_label": "MTE e MPT",
+    "tags": [
+      "FGTS",
+      "Consulta FGTS",
+      "Pagamento FGTS",
+      "Empregado"
+    ],
+    "excerpt": "Saiba como verificar se o FGTS do empregado está sendo pago corretamente e de forma regular",
+    "image": "https://images.unsplash.com/photo-1568887271886-4c358d9a2eb3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3Nzc0Nzk2MzJ8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-29",
+    "source": "G1 Trabalho",
+    "source_url": "https://g1.globo.com/empreendedorismo/guia-do-empreendedor/noticia/2026/04/29/como-consultar-se-o-fgts-do-empregado-esta-sendo-pago.ghtml"
+  },
+  {
+    "id": "trabalho-mata-840-mil-por-ano",
+    "title": "Trabalho mata 840 mil por ano",
+    "category": "noticias-mte-mpt",
+    "category_label": "MTE e MPT",
+    "tags": [
+      "Saúde no Trabalho",
+      "Segurança Ocupacional",
+      "Estresse no Trabalho",
+      "OIT"
+    ],
+    "excerpt": "Jornadas longas, insegurança e assédio no trabalho causam mais de 840 mil mortes por ano, segundo relatório da OIT",
+    "image": "https://images.unsplash.com/photo-1588071416840-f11be6ecdf30?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3Nzc0Nzk1NDF8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-29",
+    "source": "G1 Trabalho",
+    "source_url": "https://g1.globo.com/trabalho-e-carreira/noticia/2026/04/29/mortes-no-trabalho-oit.ghtml"
+  },
+  {
+    "id": "vagas-de-emprego-em-petrolina-salgueiro-e-araripina",
+    "title": "Vagas de emprego em Petrolina, Salgueiro e Araripina",
+    "category": "noticias-mte-mpt",
+    "category_label": "MTE e MPT",
+    "tags": [
+      "Emprego",
+      "Petrolina",
+      "Salgueiro",
+      "Araripina"
+    ],
+    "excerpt": "Confira as vagas de emprego disponíveis em Petrolina, Salgueiro e Araripina, com 113 oportunidades para você",
+    "image": "https://images.unsplash.com/photo-1741707041743-534a6d3307cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3Nzc0Nzk0ODN8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-29",
+    "source": "G1 Trabalho",
+    "source_url": "https://g1.globo.com/pe/petrolina-regiao/noticia/2026/04/29/confira-as-113-vagas-de-emprego-em-petrolina-salgueiro-e-araripina.ghtml"
+  },
+  {
+    "id": "vagas-de-emprego-em-petrolina-e-regiao",
+    "title": "Vagas de Emprego em Petrolina e Região",
+    "category": "noticias-mte-mpt",
+    "category_label": "MTE e MPT",
+    "tags": [
+      "Vagas de Emprego",
+      "Petrolina",
+      "Salgueiro",
+      "Araripina"
+    ],
+    "excerpt": "Confira as 113 vagas de emprego em Petrolina, Salgueiro e Araripina, oportunidades para diversas áreas e níveis de experiência",
+    "image": "https://images.unsplash.com/photo-1728440817289-b599ac1aa55d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3Nzc0Nzk0NTl8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-29",
+    "source": "G1 Trabalho",
+    "source_url": "https://g1.globo.com/pe/petrolina-regiao/noticia/2026/04/29/confira-as-113-vagas-de-emprego-em-petrolina-salgueiro-e-araripina.ghtml"
+  },
+  {
     "id": "aviso-previo-afastamento-doenca-acidente-direitos-trabalhador",
     "title": "Aviso Prévio e Afastamento por Doença ou Acidente: o que acontece com o contrato e quais os direitos do trabalhador",
     "category": "orientacoes-praticas",
