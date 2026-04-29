@@ -1,5 +1,20 @@
 [
   {
+    "id": "aviso-previo-afastamento-doenca-acidente-direitos-trabalhador",
+    "title": "Aviso Prévio e Afastamento por Doença ou Acidente: o que acontece com o contrato e quais os direitos do trabalhador",
+    "category": "orientacoes-praticas",
+    "category_label": "Orientações Práticas RH",
+    "excerpt": "O que acontece quando o trabalhador adoece ou se acidente durante o aviso prévio? CLT, Súmulas 371 e 378 do TST e a nova Tese 125/2025 explicadas.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/Imagem%20Pessoa%20Doente.png?raw=true",
+    "date": "2026-04-29",
+    "tags": [
+      "Aviso Prévio",
+      "Afastamento",
+      "Auxílio-Doença",
+      "Estabilidade Provisória"
+    ]
+  },
+  {
     "id": "gerador-de-senhas-seguras-online",
     "title": "Gerador de Senhas Seguras Online: Crie Senhas Fortes e Aleatórias",
     "category": "geral",
