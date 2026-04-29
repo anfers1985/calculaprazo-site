@@ -1,5 +1,18 @@
 [
   {
+    "id": "calculadora-de-juros-simples-compostos-online",
+    "title": "Calculadora de Juros Simples e Compostos: Como Calcular Rendimentos e Dívidas",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Aprenda a calcular juros simples e compostos com facilidade. Entenda a diferença entre os regimes, como simular investimentos e juros de mora sobre dívidas.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/Imagem%20Crescimento%20investimento%20-%20Calculadora%20Juros%20Compostos.png?raw=true",
+    "date": "2026-04-29",
+    "tags": [
+      "Calculadora de Juros Simples e Compostos",
+      "Ferramentas"
+    ]
+  },
+  {
     "id": "calculadora-de-correcao-monetaria-online-ipca-igpm-selic",
     "title": "Calculadora de Correção Monetária Online: IPCA, IGP-M, INPC e SELIC (Guia)",
     "category": "geral",
