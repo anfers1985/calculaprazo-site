@@ -1,5 +1,268 @@
 [
   {
+    "id": "e-notariado-e-not-provas-como-usar-provas-digitais",
+    "title": "e-Notariado e e-Not Provas: como usar na prática para coletar e autenticar provas digitais",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Guia completo sobre e-Notariado e e-Not Provas: certificado gratuito, custos, passo a passo e exemplos práticos de uso em processos trabalhistas.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/e-Notariado%20e%20e-Not%20Provas.png?raw=true",
+    "date": "2026-04-29",
+    "tags": [
+      "Provas Digitais",
+      "e-Notariado",
+      "Processo do Trabalho",
+      "Tecnologia Jurídica"
+    ]
+  },
+  {
+    "id": "trabalhador-autonomo-empregado-diferenciacao-vinculo-clt-pejotizacao",
+    "title": "Trabalhador Autônomo ou Empregado? Os critérios legais, os sinais de fraude e o que o TST decide em 2025 e 2026",
+    "category": "orientacoes-praticas",
+    "category_label": "Orientações Práticas RH",
+    "excerpt": "Quando o autônomo vira empregado na prática? Os 5 requisitos do art. 3º da CLT, a pejotização e a jurisprudência atual do TST sobre vínculo empregatício.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/imagem%20pessoa%20trabalhando%20escrit%C3%B3rio.png?raw=true",
+    "date": "2026-04-29",
+    "tags": [
+      "Vínculo Empregatício",
+      "Trabalhador Autônomo",
+      "Pejotização",
+      "CLT"
+    ]
+  },
+  {
+    "id": "vale-transporte-dinheiro-vale-combustivel-lei-jurisprudencia",
+    "title": "Vale Transporte em Dinheiro ou Vale Combustível: o que a lei permite, o que a jurisprudência diz e quais os riscos",
+    "category": "orientacoes-praticas",
+    "category_label": "Orientações Práticas RH",
+    "excerpt": "Vale-transporte pode ser pago em dinheiro? E substituído por vale combustível? CLT, Lei 7.418/85 e jurisprudência consolidada do TST explicadas.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/Imagem%20pessoa%20pegando%20onibus.png?raw=true",
+    "date": "2026-04-29",
+    "tags": [
+      "Vale Transporte",
+      "Benefícios",
+      "CLT",
+      "RH"
+    ]
+  },
+  {
+    "id": "aviso-previo-afastamento-doenca-acidente-direitos-trabalhador",
+    "title": "Aviso Prévio e Afastamento por Doença ou Acidente: o que acontece com o contrato e quais os direitos do trabalhador",
+    "category": "orientacoes-praticas",
+    "category_label": "Orientações Práticas RH",
+    "excerpt": "O que acontece quando o trabalhador adoece ou se acidente durante o aviso prévio? CLT, Súmulas 371 e 378 do TST e a nova Tese 125/2025 explicadas.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/Imagem%20Pessoa%20Doente.png?raw=true",
+    "date": "2026-04-29",
+    "tags": [
+      "Aviso Prévio",
+      "Afastamento",
+      "Auxílio-Doença",
+      "Estabilidade Provisória"
+    ]
+  },
+  {
+    "id": "gerador-de-senhas-seguras-online",
+    "title": "Gerador de Senhas Seguras Online: Crie Senhas Fortes e Aleatórias",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Proteja suas contas com senhas fortes e aleatórias. Use nosso gerador gratuito para criar combinações seguras com letras, números e símbolos instantaneamente.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/gerador-senhas.png?raw=true",
+    "date": "2026-04-29",
+    "tags": [
+      "Gerador de Senhas",
+      "Ferramentas"
+    ]
+  },
+  {
+    "id": "gerador-de-qr-code-online-gratis",
+    "title": "Gerador de QR Code Online Grátis: Crie Códigos para Pix, Wi-Fi e Links",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Crie QR Codes personalizados instantaneamente. Gere códigos para links, chaves Pix, redes Wi-Fi e contatos de forma gratuita, segura e sem cadastro.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/gerador-qr-code.png?raw=true",
+    "date": "2026-04-29",
+    "tags": [
+      "Gerador de QR Code",
+      "Ferramentas"
+    ]
+  },
+  {
+    "id": "conversor-de-moedas-online-dolar-euro-real",
+    "title": "Conversor de Moedas Online: Cotação de Dólar, Euro e Real em Tempo Real",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Converta moedas internacionais instantaneamente. Acompanhe a cotação do dólar, euro, libra e outras moedas com nosso conversor gratuito e fácil de usar.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/conversor-moedas.png?raw=true",
+    "date": "2026-04-29",
+    "tags": [
+      "Conversor de Moedas",
+      "Ferramentas"
+    ]
+  },
+  {
+    "id": "calculadora-de-porcentagem-online-desconto-aumento",
+    "title": "Calculadora de Porcentagem Online: Como Calcular Descontos e Aumentos",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Aprenda a calcular porcentagem de forma rápida. Use nossa ferramenta para descobrir descontos, aumentos, variações percentuais e muito mais com exemplos práticos.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/calculadora-porcentagem.png?raw=true",
+    "date": "2026-04-29",
+    "tags": [
+      "Calculadora de Porcentagem",
+      "Ferramentas"
+    ]
+  },
+  {
+    "id": "calculadora-de-salario-liquido-inss-irrf-2026",
+    "title": "Calculadora de Salário Líquido 2026: Simule seu Holerite com INSS e IRRF",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Calcule seu salário líquido em 2026 com as novas tabelas de INSS e IRRF. Entenda os descontos de dependentes e isenções da Lei 15.270/2025 de forma simples.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/calculadora-salario-liquido.png?raw=true",
+    "date": "2026-04-29",
+    "tags": [
+      "Calculadora de Salário Líquido",
+      "Ferramentas"
+    ]
+  },
+  {
+    "id": "conversor-de-nmero-por-extenso-converta-valores-por-extenso-para-portugus-e-em-reais",
+    "title": "Conversor de Número por Extenso: Converta valores por extenso para português e em reais",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Converta números e valores monetários para extenso em português e em reais. Ideal para preenchimento de contratos e documentos com precisão.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/numero-por-extenso.png?raw=true",
+    "date": "2026-04-29",
+    "tags": [
+      "Conversor de Número por Extenso",
+      "Ferramentas"
+    ]
+  },
+  {
+    "id": "validador-de-cpf-e-cnpj-online-gratis",
+    "title": "Validador de CPF e CNPJ Online: Verifique a Validez de Documentos Gratuitamente",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Use nosso validador de CPF e CNPJ para verificar a estrutura matemática de documentos brasileiros. Ferramenta gratuita, rápida e segura para o seu dia a dia.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/imagem%20validador-cpf-cnpj.png?raw=true",
+    "date": "2026-04-29",
+    "tags": [
+      "Validador de CPF e CNPJ Online",
+      "Ferramentas"
+    ]
+  },
+  {
+    "id": "calculadora-de-juros-simples-compostos-online",
+    "title": "Calculadora de Juros Simples e Compostos: Como Calcular Rendimentos e Dívidas",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Aprenda a calcular juros simples e compostos com facilidade. Entenda a diferença entre os regimes, como simular investimentos e juros de mora sobre dívidas.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/Imagem%20Crescimento%20investimento%20-%20Calculadora%20Juros%20Compostos.png?raw=true",
+    "date": "2026-04-29",
+    "tags": [
+      "Calculadora de Juros Simples e Compostos",
+      "Ferramentas"
+    ]
+  },
+  {
+    "id": "calculadora-de-correcao-monetaria-online-ipca-igpm-selic",
+    "title": "Calculadora de Correção Monetária Online: IPCA, IGP-M, INPC e SELIC (Guia)",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Atualize valores financeiros pelos principais índices oficiais (IPCA, IGP-M, SELIC). Entenda como funciona a correção monetária com exemplos práticos e seguros.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/Imagem%20Infla%C3%A7%C3%A3o%20-%20Calculadora%20Corre%C3%A7%C3%A3o.png?raw=true",
+    "date": "2026-04-29",
+    "tags": [
+      "Calculadora de Correção Monetária",
+      "Ferramentas"
+    ]
+  },
+  {
+    "id": "calculadora-de-verbas-trabalhistas-rescisao-clt",
+    "title": "Calculadora de Verbas Trabalhistas: Como Calcular sua Rescisão CLT (Guia Completo)",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Saiba como calcular verbas trabalhistas e rescisórias com precisão. Entenda seus direitos sobre FGTS, férias, 13º e aviso prévio com exemplos práticos.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/Imagem%20Encerramento%20Contrato%20de%20Trabalho%20-%20Calculadora%20de%20Verbas.png?raw=true",
+    "date": "2026-04-29",
+    "tags": [
+      "Calculadora de Verbas Trabalhistas",
+      "Ferramentas"
+    ]
+  },
+  {
+    "id": "calculadora-de-prazos-processuais-dias-uteis-corridos",
+    "title": "Calculadora de Prazos Processuais: Como Calcular Dias Úteis e Corridos (Guia Completo)",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Aprenda a usar a calculadora de prazos processuais para contar dias úteis e corridos conforme o CPC e CLT. Evite perdas de prazos com exemplos práticos e dicas.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/Imagem%20Contagem%20de%20Prazos%20-%20Calendario.png?raw=true",
+    "date": "2026-04-29",
+    "tags": [
+      "Calculadora de Prazos",
+      "Ferramentas"
+    ]
+  },
+  {
+    "id": "modelo-pgr-riscos-psicossociais-laudo-tecnico-frprt-nr-1",
+    "title": "Modelo de PGR com Riscos Psicossociais e Laudo Técnico de FRPRT: documentos Word gratuitos conforme NR-1",
+    "category": "modelos",
+    "category_label": "Modelos",
+    "excerpt": "Baixe gratuitamente dois modelos Word prontos: Seção de Riscos Psicossociais para o PGR e Laudo Técnico de Avaliação de FRPRT, atualizados conforme a Portaria MTE nº 1.419/2024 e NR-1, com prazo até 26/05/2026.",
+    "image": "https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-04-28",
+    "tags": [
+      "Modelo de documento",
+      "PGR",
+      "NR1",
+      "FRPRT"
+    ]
+  },
+  {
+    "id": "como-adequar-pgr-riscos-psicossociais-nr-1-passo-a-passo-sst",
+    "title": "Como adequar o PGR aos riscos psicossociais da NR-1: passo a passo para profissionais de SST",
+    "category": "saude-seguranca",
+    "category_label": "Saúde e Segurança",
+    "excerpt": "Guia técnico completo para médicos do trabalho, técnicos e engenheiros de SST: 10 passos para incluir os FRPRT no PGR conforme a Portaria MTE nº 1.419/2024, com prazo de fiscalização punitiva a partir de 26/05/2026. Modelos gratuitos para download.",
+    "image": "https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-04-28",
+    "tags": [
+      "NR-1",
+      "PGR",
+      "Riscos Psicossociais",
+      "FRPRT"
+    ]
+  },
+  {
+    "id": "modelo-agravo-interno-agravo-instrumento-rr-IN40-TST",
+    "title": "Modelo de Agravo Interno e Agravo de Instrumento em RR: peças prontas para usar após a IN nº 40/TST",
+    "category": "modelo",
+    "category_label": "Modelo",
+    "excerpt": "Modelos prontos de Agravo Interno ao TRT e AIRR ao TST, com instruções de uso e checklist pré-protocolo. Atualizado conforme a IN nº 40/TST (Res. 224/2024).",
+    "image": "https://images.unsplash.com/photo-1654588834754-33346e3ee095?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-04-28",
+    "tags": [
+      "Modelos de Peças",
+      "TST",
+      "Recursos Trabalhistas",
+      "IN 40"
+    ]
+  },
+  {
+    "id": "agravo-interno-agravo-instrumento-como-elaborar-pecas-IN40-TST",
+    "title": "Agravo Interno e Agravo de Instrumento: como elaborar as peças após a IN nº 40/TST atualizada",
+    "category": "artigos",
+    "category_label": "Artigos",
+    "excerpt": "Passo a passo técnico para elaborar agravo interno e AIRR após a Resolução 224/2024 do TST. Modelos de peças prontos para download.",
+    "image": "https://images.unsplash.com/photo-1734640672449-0d65faceb323?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-04-28",
+    "tags": [
+      "TST",
+      "Recursos Trabalhistas",
+      "IN 40",
+      "Processo do Trabalho"
+    ]
+  },
+  {
     "id": "assedio-eleitoral-multa-400-mil-carmo-do-cajuru",
     "title": "Assédio eleitoral rende multa de R$ 400 mil em MG",
     "category": "jurisprudencia-trts",

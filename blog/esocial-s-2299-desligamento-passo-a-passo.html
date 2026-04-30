@@ -1253,7 +1253,24 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <br>🔗 <a href="https://www.gov.br/esocial" target="_blank" rel="noopener" style="color:#2563EB;">Portal eSocial — gov.br</a>
 </p>
 
-      </article>
+      
+  <h2>O que e o evento S-2299 e quando deve ser transmitido</h2>
+  <p>O S-2299 (Desligamento) e o evento do eSocial que formaliza o encerramento do vinculo empregaticio. Deve ser transmitido ate o dia 15 do mes seguinte ao desligamento, ou ate o dia anterior ao pagamento das verbas rescisórias — o que ocorrer primeiro. Para desligamentos com pagamento imediato na propria data (aviso previo indenizado), a transmissao deve ocorrer antes do pagamento.</p>
+  <p>O evento e obrigatorio para todos os empregadores cadastrados no eSocial e substitui a anotacao manual na CTPS para fins previdenciarios e trabalhistas. A CTPS digital ja e atualizada automaticamente com a transmissao do S-2299.</p>
+  <h2>Campos criticos do S-2299 que geram erros frequentes</h2>
+  <ul>
+    <li><strong>Motivo do desligamento:</strong> deve ser preenchido com o codigo correto (dispensa sem justa causa = 01, pedido de demissao = 03, acordo rescisório = 11, etc.). Codigo errado gera inconsistencia no FGTS Digital.</li>
+    <li><strong>Data do desligamento vs. data do aviso previo:</strong> se o aviso previo for indenizado, a data de desligamento e a data em que o empregado deixou de trabalhar, nao o fim do periodo de aviso. Se trabalhado, e o ultimo dia do aviso.</li>
+    <li><strong>Verbas rescisórias no S-5001:</strong> o S-2299 gera automaticamente o evento S-5001 (Informacoes das Contribuicoes Sociais por Evento), que calcula INSS e IRRF sobre as verbas rescisórias. Conferir os valores antes de transmitir.</li>
+  </ul>
+  <h2>Perguntas frequentes</h2>
+  <details open>
+    <summary><strong>O que acontece se o S-2299 for transmitido com motivo de desligamento errado?</strong></summary>
+    <p>O empregador deve retificar o evento transmitindo novamente o S-2299 com os dados corretos. A retificacao pode ser feita ate o fechamento da competencia no eSocial. Apos o fechamento, e necessario abertura de chamado no portal eSocial para correcao. Motivo de desligamento errado pode impactar o seguro-desemprego do trabalhador (que pode ser negado se o motivo indicar pedido de demissao em vez de dispensa sem justa causa) e a multa do FGTS (40% ou 0%).</p>
+  </details>
+  <h2>Fonte</h2><p>eSocial — Manual de Orientacao do eSocial (MOS), versao vigente 2026. Evento S-2299.</p>
+
+</article>
 
 
 
