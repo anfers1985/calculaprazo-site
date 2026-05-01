@@ -1,5 +1,19 @@
 [
   {
+    "id": "descontos-salariais-esse-desconto-e-legal",
+    "title": "Descontos salariais: esse desconto é mesmo legal?",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Entenda quais descontos no salário são legais, quais são abusivos e quando a empresa pode descontar danos causados pelo empregado.",
+    "image": "https://images.unsplash.com/photo-1626266061368-46a8f578ddd6?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-01",
+    "tags": [
+      "Salário",
+      "Descontos",
+      "CLT"
+    ]
+  },
+  {
     "id": "1-maio-estudos-ipea-vida-trabalhador-hoje",
     "title": "1º de Maio: estudos do Ipea e a vida do trabalhador hoje",
     "category": "geral",
