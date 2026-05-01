@@ -1009,8 +1009,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 
 /* ── AdSense: colapsa blocos vazios até aprovação ── */
-ins.adsbygoogle:not([data-ad-status="filled"]) { min-height: 0 !important; }
-ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !important; }
 </style>
 
 <!-- Chart.js para gráfico comparativo de juros -->
@@ -1037,35 +1035,9 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 <!-- ══════════ HEADER ══════════ -->
 
 <!-- ▸ BANNERS LATERAIS (desktop ≥1400px) -->
-<div class="ad-sidebar-wrap ad-sidebar-left" id="ad-sidebar-left">
-  <div class="ad-sidebar-slot">
-    <ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_SIDEBAR_LEFT"></ins>
-  </div>
-</div>
-<div class="ad-sidebar-wrap ad-sidebar-right" id="ad-sidebar-right">
-  <div class="ad-sidebar-slot">
-    <ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_SIDEBAR_RIGHT"></ins>
-  </div>
-</div>
-<script>
-(function() {
-  function initSidebarAds() {
-    var left  = document.getElementById('ad-sidebar-left');
-    var right = document.getElementById('ad-sidebar-right');
-    if (left && getComputedStyle(left).display !== 'none') {
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    }
-    if (right && getComputedStyle(right).display !== 'none') {
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    }
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initSidebarAds);
-  } else {
-    initSidebarAds();
-  }
-})();
-</script>
+
+
+
 
 <header id="hdr">
   <div class="hdr-inner">
@@ -1151,10 +1123,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
   <!-- ▸ ANÚNCIO: home-top -->
   <div class="ad-container" id="ad-home-top">
-    <div class="ad-placeholder">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-HOME-TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+    
   </div>
 
   <!-- SHORTCUT TOOL CARDS (estilo prazofacil) -->
@@ -1191,10 +1160,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
   <!-- ▸ ANÚNCIO: ad-home-middle (entre ferramentas e benefícios) -->
   <div class="ad-container ad-desktop-only" id="ad-home-middle">
-    <div class="ad-placeholder">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD_HOME_MIDDLE" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+    
   </div>
 
   <!-- BENEFITS -->
@@ -1239,10 +1205,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
   <!-- ▸ ANÚNCIO: prazos-top -->
   <div class="ad-container" id="ad-prazos-top">
-    <div class="ad-placeholder">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-PRAZOS-TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+    
   </div>
 
   <!-- Painel Prazos de Referência — abre pelo botão no nav -->
@@ -1391,10 +1354,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
   <!-- ▸ ANÚNCIO: ad-correcao-top -->
   <div class="ad-container" id="ad-correcao-top">
-    <div class="ad-placeholder">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-CORRECAO-TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+    
   </div>
   <div class="container" style="max-width:900px;"><div style="display:flex;flex-direction:column;gap:18px;"><div class="card"><h2>💰 Correção Monetária</h2>
       <p class="sub">Dados oficiais em tempo real via API do Banco Central do Brasil — sempre atualizados</p>
@@ -1435,8 +1395,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <!-- ▸ ANÚNCIO: sec-correcao after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-correcao-result" style="display:none;">
     <div class="ad-placeholder rect">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-CORRECAO-RESULT" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
   </div>
   
@@ -1451,10 +1409,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
   <!-- ▸ ANÚNCIO: ad-juros-top -->
   <div class="ad-container" id="ad-juros-top">
-    <div class="ad-placeholder">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-JUROS-TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+    
   </div>
   <div class="container" style="max-width:900px;">
     <div style="display:flex;flex-direction:column;gap:18px;">
@@ -1525,8 +1480,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <!-- ▸ ANÚNCIO: sec-juros after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-juros-result" style="display:none;">
     <div class="ad-placeholder rect">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-JUROS-RESULT" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
   </div>
   
@@ -1541,10 +1494,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
   <!-- ▸ ANÚNCIO: ad-salario-top -->
   <div class="ad-container" id="ad-salario-top">
-    <div class="ad-placeholder">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-SALARIO-TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+    
   </div>
   <div class="container" style="max-width:900px;"><div style="display:flex;flex-direction:column;gap:18px;">
     <div class="card">
@@ -1603,8 +1553,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <!-- ▸ ANÚNCIO: sec-salario after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-salario-result" style="display:none;">
     <div class="ad-placeholder rect">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-SALARIO-RESULT" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
   </div>
   
@@ -1619,10 +1567,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
   <!-- ▸ ANÚNCIO: ad-porcentagem-top -->
   <div class="ad-container" id="ad-porcentagem-top">
-    <div class="ad-placeholder">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-PORCENTAGEM-TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+    
   </div>
   <div class="container" style="padding:10px 0 20px;max-width:720px;">
     <div class="card">
@@ -1647,8 +1592,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <!-- ▸ ANÚNCIO: sec-porcentagem after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-porcentagem-result" style="display:none;">
     <div class="ad-placeholder rect">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-PORCENTAGEM-RESULT" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
   </div>
     
@@ -1664,10 +1607,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
   <!-- ▸ ANÚNCIO: ad-moedas-top -->
   <div class="ad-container" id="ad-moedas-top">
-    <div class="ad-placeholder">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-MOEDAS-TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+    
   </div>
   <div class="container" style="padding:10px 0 20px;max-width:720px;">
     <div class="card">
@@ -1703,8 +1643,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <!-- ▸ ANÚNCIO: sec-moedas after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-moedas-result" style="display:none;">
     <div class="ad-placeholder rect">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-MOEDAS-RESULT" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
   </div>
     </div>
@@ -1720,10 +1658,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
   <!-- ▸ ANÚNCIO: ad-trabalhista-top -->
   <div class="ad-container" id="ad-trabalhista-top">
-    <div class="ad-placeholder">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-TRABALHISTA-TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+    
   </div>
   <div class="container" style="padding:10px 0 20px;max-width:800px;">
     <div class="card">
@@ -1839,8 +1774,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <!-- ▸ ANÚNCIO: sec-trabalhista after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-trabalhista-result" style="display:none;">
     <div class="ad-placeholder rect">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-TRABALHISTA-RESULT" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
   </div>
     </div>
@@ -1856,10 +1789,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
   <!-- ▸ ANÚNCIO: ad-datas-top -->
   <div class="ad-container" id="ad-datas-top">
-    <div class="ad-placeholder">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-DATAS-TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+    
   </div>
   <div class="container" style="padding:10px 0 20px;max-width:700px;">
     <div class="card">
@@ -1882,8 +1812,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <!-- ▸ ANÚNCIO: sec-datas after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-datas-result" style="display:none;">
     <div class="ad-placeholder rect">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-DATAS-RESULT" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
   </div>
     </div>
@@ -1899,10 +1827,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
   <!-- ▸ ANÚNCIO: ad-valid-top -->
   <div class="ad-container" id="ad-valid-top">
-    <div class="ad-placeholder">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-VALID-TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+    
   </div>
   <div class="container">
   <div class="inner-2col" style="align-items:start;">
@@ -1956,8 +1881,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <!-- ▸ ANÚNCIO: sec-valid after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-valid-result" style="display:none;">
     <div class="ad-placeholder rect">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-VALID-RESULT" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
   </div>
   
@@ -1972,10 +1895,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
   <!-- ▸ ANÚNCIO: ad-qrcode-top -->
   <div class="ad-container" id="ad-qrcode-top">
-    <div class="ad-placeholder">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-QRCODE-TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+    
   </div>
   <div class="container">
   <div class="inner-side" style="padding:10px 0 20px;">
@@ -2016,8 +1936,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <!-- ▸ ANÚNCIO: sec-qrcode after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-qrcode-result" style="display:none;">
     <div class="ad-placeholder rect">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-QRCODE-RESULT" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
   </div>
   
@@ -2032,10 +1950,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
   <!-- ▸ ANÚNCIO: ad-senhas-top -->
   <div class="ad-container" id="ad-senhas-top">
-    <div class="ad-placeholder">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-SENHAS-TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+    
   </div>
   <div class="container" style="padding:10px 0 20px;max-width:640px;">
     <div class="card">
@@ -2077,8 +1992,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <!-- ▸ ANÚNCIO: sec-senhas after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-senhas-result" style="display:none;">
     <div class="ad-placeholder rect">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-SENHAS-RESULT" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
   </div>
     </div>
@@ -2094,10 +2007,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
   <!-- ▸ ANÚNCIO: ad-extenso-top -->
   <div class="ad-container" id="ad-extenso-top">
-    <div class="ad-placeholder">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-EXTENSO-TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+    
   </div>
   <div class="container" style="padding:10px 0 20px;max-width:680px;">
     <div class="card">
@@ -2115,8 +2025,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <!-- ▸ ANÚNCIO: sec-extenso after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-extenso-result" style="display:none;">
     <div class="ad-placeholder rect">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-EXTENSO-RESULT" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
   </div>
     
@@ -2132,10 +2040,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
   <!-- ▸ ANÚNCIO: ad-imc-top -->
   <div class="ad-container" id="ad-imc-top">
-    <div class="ad-placeholder">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-IMC-TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+    
   </div>
   <div class="container" style="max-width:900px;">
     <div style="display:flex;flex-direction:column;gap:18px;">
@@ -2186,8 +2091,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <!-- ▸ ANÚNCIO: sec-imc after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-imc-result" style="display:none;">
     <div class="ad-placeholder rect">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD-IMC-RESULT" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
   </div>
   
@@ -2364,10 +2267,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
   <!-- Ad: blog top -->
   <div class="ad-container" style="margin:0;">
-    <div class="ad-placeholder">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_BLOG_INDEX_TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+    
   </div>
 
   <!-- Filtros e busca -->
@@ -2427,10 +2327,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
     <!-- Ad: blog middle -->
     <div class="ad-container ad-desktop-only" style="margin-bottom:40px;">
-      <div class="ad-placeholder">
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_BLOG_INDEX_MID" data-ad-format="auto" data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-      </div>
+      
     </div>
 
     <!-- SEO content block -->
@@ -2447,10 +2344,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
 <!-- ▸ ANÚNCIO: ad-footer -->
 <div class="ad-container ad-footer" id="ad-footer">
-  <div class="ad-placeholder">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="SLOT_AD_FOOTER" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
+  
 </div>
 <footer id="ftr">
   <div class="container">

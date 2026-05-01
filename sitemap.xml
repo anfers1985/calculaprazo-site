@@ -14,11 +14,11 @@
 <url><loc>https://calculaprazo.com.br/gerador-de-senhas</loc><lastmod>2026-04-10</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
 <url><loc>https://calculaprazo.com.br/numero-por-extenso</loc><lastmod>2026-04-10</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
 <url><loc>https://calculaprazo.com.br/calculadora-imc</loc><lastmod>2026-04-10</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-<url><loc>https://calculaprazo.com.br/sobre</loc><lastmod>2026-04-10</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://calculaprazo.com.br/privacidade</loc><lastmod>2026-04-10</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
+<url><loc>https://calculaprazo.com.br/sobre</loc><lastmod>2026-04-30</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://calculaprazo.com.br/privacidade</loc><lastmod>2026-04-30</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
 <url><loc>https://calculaprazo.com.br/termos</loc><lastmod>2026-04-10</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
-<url><loc>https://calculaprazo.com.br/contato</loc><lastmod>2026-04-10</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-<url><loc>https://calculaprazo.com.br/conteudo</loc><lastmod>2026-04-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://calculaprazo.com.br/contato</loc><lastmod>2026-04-30</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+<url><loc>https://calculaprazo.com.br/conteudo</loc><lastmod>2026-04-30</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url>
     <loc>https://calculaprazo.com.br/blog/13-salario-como-funciona-quem-tem-direito-e-quais-sao-os-prazos</loc>
     <lastmod>2026-04-30</lastmod>
@@ -147,12 +147,6 @@
   </url>
   <url>
     <loc>https://calculaprazo.com.br/blog/fim-da-escala-6x1-ccj-da-camara-aprova-pec-e-debate-avanca-no-congresso</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://calculaprazo.com.br/blog/fim-da-escala-6x1-ccj-da-cmara-aprova-pec-e-debate-avana-no-congresso</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -502,30 +496,6 @@
   <url>
     <loc>https://calculaprazo.com.br/blog/fgts-como-consultar-pagamento</loc>
     <lastmod>2026-04-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://calculaprazo.com.br/blog/vagas-de-emprego-em-petrolina-e-regiao</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://calculaprazo.com.br/blog/vagas-de-emprego-em-petrolina-salgueiro-e-araripina</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://calculaprazo.com.br/blog/trabalho-mata-840-mil-por-ano</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://calculaprazo.com.br/blog/fgts-como-consultar-pagamento</loc>
-    <lastmod>2026-04-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
