@@ -1,5 +1,19 @@
 [
   {
+    "id": "beneficios-trabalhistas-empresa-e-obrigada",
+    "title": "Benefícios trabalhistas: a empresa é obrigada a pagar?",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Entenda quais benefícios são obrigatórios, quando têm natureza salarial e o que a empresa pode ou não cortar sem violar a legislação trabalhista.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/caixa%20de%20beneficios.png?raw=true",
+    "date": "2026-05-01",
+    "tags": [
+      "Benefícios",
+      "Alimentação",
+      "Transporte"
+    ]
+  },
+  {
     "id": "estabilidade-no-emprego-quem-tem-direito",
     "title": "Estabilidade no emprego: quem tem esse direito?",
     "category": "geral",
