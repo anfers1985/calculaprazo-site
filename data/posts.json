@@ -1,5 +1,20 @@
 [
   {
+    "id": "horas-extras-banco-horas-percentuais-validade-acordo-compensacao-jornada",
+    "title": "Horas Extras e Banco de Horas: percentuais, validade dos acordos, compensação e controle de jornada",
+    "category": "orientacoes-praticas",
+    "category_label": "Orientações Práticas RH",
+    "excerpt": "50% ou 100%? Banco de horas por 6 ou 12 meses? O que a CLT, a Reforma Trabalhista e a Súmula 85 do TST dizem sobre horas extras e compensação de jornada.",
+    "image": "https://images.unsplash.com/photo-1619995743614-5608bea411b3?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-01",
+    "tags": [
+      "Horas Extras",
+      "Banco de Horas",
+      "Jornada de Trabalho",
+      "CLT"
+    ]
+  },
+  {
     "id": "estabilidade-emprego-gestante-acidente-trabalho-cipa-stf-tst-normas-coletivas",
     "title": "Estabilidade no Emprego: gestante, acidentado, CIPA, dirigente sindical e as controvérsias no STF e TST",
     "category": "geral",
