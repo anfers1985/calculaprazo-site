@@ -24,7 +24,7 @@
 <meta                  property="og:locale"       content="pt_BR">
 <meta                  property="og:site_name"    content="Calcula Prazo">
 <!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card"        content="summary_large_image">
 <meta id="tw-title" name="twitter:title"       content="Calculadora de Prazo Processual Grátis | Calcula Prazo">
 <meta id="tw-desc"  name="twitter:description" content="Calculadora de prazo processual em dias úteis e corridos. Verbas trabalhistas, correção monetária, salário líquido e mais. 100% grátis.">
 <!-- Schema.org WebSite + SiteSearch -->
@@ -52,10 +52,10 @@
 ════════════════════════════════════════ */
 :root{
   --b50:#EFF6FF;--b100:#DBEAFE;--b200:#BFDBFE;--b300:#93C5FD;
-  --b500:#1E88E5;--b600:#1565C0;--b700:#0D47A1;--b800:#0D2B5A;--b900:#061E54;
-  --acc:#1E88E5;--acc-d:#1565C0;--acc-l:#42A5F5;
-  --txt:#0D2B5A;--txt-m:#3B5A8A;--txt-s:#6B84AA;
-  --bg:#F0F7FF;--card:#FFFFFF;--brd:#BAD6F0;--brd-m:#90BCE8;
+  --b500:#3B82F6;--b600:#2563EB;--b700:#1D4ED8;--b800:#1E40AF;--b900:#1E3A8A;
+  --acc:#2563EB;--acc-d:#1D4ED8;--acc-l:#3B82F6;
+  --txt:#0F172A;--txt-m:#475569;--txt-s:#94A3B8;
+  --bg:#F8FAFC;--card:#FFFFFF;--brd:#E2E8F0;--brd-m:#CBD5E1;
   --ok:#059669;--warn:#D97706;--err:#DC2626;
   --fh:'Plus Jakarta Sans',sans-serif;
   --r:12px;--rl:18px;--rx:24px;
@@ -91,11 +91,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .logo-ic{width:26px;height:26px;background:var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.78rem;}
 .logo span{color:var(--txt);}
 .hdr-nav{display:flex;align-items:center;gap:2px;flex:1;}
-@media(max-width:640px){.hdr-nav{display:none;}}
-.hdr-cta-btn{background:var(--acc);color:#fff;border:none;border-radius:9px;padding:7px 15px;
-  font-size:.78rem;font-weight:700;cursor:pointer;font-family:var(--fh);
-  box-shadow:0 3px 10px rgba(30,136,229,.28);transition:all .15s;flex-shrink:0;}
-.hdr-cta-btn:hover{background:var(--acc-d);}
 .hdr-nav a{font-size:.8rem;font-weight:600;color:var(--txt-m);text-decoration:none;padding:5px 9px;border-radius:8px;transition:all .15s;white-space:nowrap;cursor:pointer;display:flex;align-items:center;}
 .hdr-nav a:hover,.hdr-nav a.on{background:var(--b50);color:var(--acc);}
 .nav-dropdown{position:relative;}
@@ -125,65 +120,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 /* ════════════════════════════════════════
    HOME HERO
 ════════════════════════════════════════ */
-/* ════════════════════════════════════════
-   HAMBURGER & DRAWER
-════════════════════════════════════════ */
-.burger-btn{background:none;border:none;cursor:pointer;padding:6px;display:flex;flex-direction:column;gap:4px;justify-content:center;align-items:center;width:36px;height:36px;border-radius:8px;transition:background .15s;flex-shrink:0;}
-.burger-btn:hover{background:var(--bg);}
-.burger-btn span{display:block;width:18px;height:2px;background:var(--txt);border-radius:2px;transition:all .25s;}
-.burger-btn.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
-.burger-btn.open span:nth-child(2){opacity:0;}
-.burger-btn.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
-#drawer-overlay{position:fixed;inset:0;background:rgba(13,43,90,.45);z-index:1100;opacity:0;pointer-events:none;transition:opacity .25s;}
-#drawer-overlay.on{opacity:1;pointer-events:all;}
-#drawer{position:fixed;top:0;left:0;bottom:0;width:300px;max-width:88vw;background:#fff;z-index:1200;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);overflow-y:auto;display:flex;flex-direction:column;box-shadow:4px 0 32px rgba(13,43,90,.18);}
-#drawer.on{transform:translateX(0);}
-.dr-hd{background:#0D2B5A;padding:16px;display:flex;align-items:center;justify-content:space-between;border-left:4px solid #1E88E5;}
-.dr-logo{display:flex;align-items:center;gap:10px;}
-.dr-logo-ic{width:32px;height:32px;background:#1E88E5;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.9rem;flex-shrink:0;}
-.dr-logo-name{font-weight:800;font-size:.9rem;color:#fff;line-height:1.1;}
-.dr-logo-sub{font-size:.68rem;color:rgba(255,255,255,.55);margin-top:1px;}
-.dr-x{background:none;border:none;color:rgba(255,255,255,.6);font-size:1.1rem;cursor:pointer;padding:4px 8px;border-radius:6px;}
-.dr-x:hover{color:#fff;background:rgba(255,255,255,.1);}
-.dr-bd{flex:1;padding:8px 0;}
-.dr-sec{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--txt-s);padding:14px 16px 4px;}
-.dr-item{display:flex;align-items:center;gap:10px;padding:9px 16px;font-size:.83rem;font-weight:600;color:var(--txt);cursor:pointer;border-left:3px solid transparent;transition:all .15s;text-decoration:none;}
-.dr-item:hover,.dr-item.on{color:#1E88E5;background:#F0F7FF;border-left-color:#1E88E5;}
-.dr-item .ic{font-size:.85rem;width:20px;text-align:center;flex-shrink:0;}
-.dr-badge{margin-left:auto;background:#DBEEFF;color:#0D2B5A;font-size:.62rem;font-weight:800;padding:1px 7px;border-radius:999px;}
-.dr-grp{border-bottom:1px solid var(--brd);}
-.dr-grp-hd{display:flex;align-items:center;gap:10px;padding:9px 16px;font-size:.83rem;font-weight:600;color:var(--txt);cursor:pointer;border-left:3px solid transparent;transition:all .15s;}
-.dr-grp-hd:hover,.dr-grp-hd.open{color:#1E88E5;background:#F0F7FF;border-left-color:#1E88E5;}
-.dr-grp-hd .ic{font-size:.85rem;width:20px;text-align:center;flex-shrink:0;}
-.dr-grp-hd .arr{margin-left:auto;font-size:.6rem;color:var(--txt-s);transition:transform .2s;}
-.dr-grp-hd.open .arr{transform:rotate(90deg);}
-.dr-grp-bd{background:#F8FBFF;}
-.dr-sub{display:block;width:100%;padding:7px 16px 7px 46px;background:none;border:none;text-align:left;font-size:.78rem;color:var(--txt-m);cursor:pointer;font-family:var(--fh);border-left:3px solid transparent;transition:all .12s;}
-.dr-sub:hover{color:#1E88E5;background:#EFF7FF;border-left-color:#1E88E5;}
-.dr-outros{display:block;width:100%;padding:6px 16px 10px 46px;background:none;border:none;text-align:left;font-size:.73rem;color:#1E88E5;font-weight:700;cursor:pointer;font-family:var(--fh);}
-/* HOME BLOG GRID */
-.home-posts-6{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:48px;}
-@media(max-width:900px){.home-posts-6{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:560px){.home-posts-6{grid-template-columns:1fr;}}
-.hpost-card{background:var(--card);border-radius:var(--rl);border:1.5px solid var(--brd);overflow:hidden;display:flex;flex-direction:column;transition:all .2s;text-decoration:none;}
-.hpost-card:hover{transform:translateY(-3px);box-shadow:var(--sh);border-color:var(--acc);}
-.hpost-img{width:100%;height:160px;object-fit:cover;display:block;background:#DBEEFF;}
-.hpost-body{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column;}
-.hpost-cat{font-size:.62rem;font-weight:800;color:var(--acc);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;}
-.hpost-title{font-size:.88rem;font-weight:700;color:var(--txt);line-height:1.35;margin-bottom:6px;flex:1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.hpost-excerpt{font-size:.76rem;color:var(--txt-m);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:10px;}
-.hpost-footer{display:flex;align-items:center;justify-content:space-between;font-size:.67rem;color:var(--txt-s);}
-.home-top10{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:48px;}
-@media(max-width:900px){.home-top10{grid-template-columns:repeat(3,1fr);}}
-@media(max-width:560px){.home-top10{grid-template-columns:repeat(2,1fr);}}
-.htop-card{background:var(--card);border-radius:var(--r);border:1.5px solid var(--brd);overflow:hidden;text-decoration:none;display:flex;flex-direction:column;transition:all .2s;position:relative;}
-.htop-card:hover{transform:translateY(-2px);box-shadow:var(--sh);border-color:var(--acc);}
-.htop-img{width:100%;height:90px;object-fit:cover;display:block;background:#DBEEFF;}
-.htop-num{position:absolute;top:6px;left:6px;background:#0D2B5A;color:#fff;font-size:.6rem;font-weight:800;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
-.htop-body{padding:8px 10px;flex:1;}
-.htop-title{font-size:.73rem;font-weight:700;color:var(--txt);line-height:1.3;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
 .home-hero{
-  background:linear-gradient(150deg,var(--b900) 0%,#0D47A1 50%,var(--b500) 100%);
+  background:linear-gradient(135deg,var(--b900) 0%,var(--b700) 55%,var(--b500) 100%);
   padding:64px 0 72px;position:relative;overflow:hidden;
 }
 .home-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:420px;height:420px;border-radius:50%;background:rgba(255,255,255,.04);}
@@ -1070,215 +1008,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   }
 }
 
-/* ════════════════════════════════════════
-   HOME v5 — MOCKUP APROVADO
-════════════════════════════════════════ */
-/* hero */
-.h-hero{background:linear-gradient(160deg,#061E54 0%,#1A3F7A 50%,#1E88E5 100%);
-  padding:32px 0 0;position:relative;overflow:hidden;text-align:center;}
-.h-hero::before{content:'';position:absolute;width:300px;height:300px;border-radius:50%;
-  background:rgba(255,255,255,.04);top:-80px;right:-60px;}
-.h-hero::after{content:'';position:absolute;width:200px;height:200px;border-radius:50%;
-  background:rgba(255,255,255,.03);bottom:20px;left:-40px;}
-.h-hero-wave{height:32px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 32' preserveAspectRatio='none'%3E%3Cpath d='M0,16 C225,32 675,0 900,16 L900,32 L0,32 Z' fill='%23F0F7FF'/%3E%3C/svg%3E") no-repeat bottom/100%;
-  margin-top:24px;position:relative;z-index:1;}
-.h-hero-in{position:relative;z-index:1;padding:0 16px;}
-.h-hero-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.11);
-  border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:5px 16px;
-  font-size:.72rem;font-weight:700;color:rgba(255,255,255,.82);margin-bottom:16px;}
-.h-hero h1{font-size:clamp(1.5rem,4.5vw,2.2rem);font-weight:900;color:#fff;letter-spacing:-.6px;
-  line-height:1.12;margin-bottom:10px;}
-.h-hero-sub{font-size:.85rem;color:rgba(255,255,255,.58);max-width:460px;margin:0 auto 22px;line-height:1.6;}
-/* CTA Buttons no hero */
-.h-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;}
-.h-cta-btn{display:flex;align-items:center;gap:12px;padding:14px 20px;border-radius:12px;
-  border:none;cursor:pointer;font-family:var(--fh);text-align:left;transition:all .22s;min-width:195px;}
-.h-cta-btn:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.25);}
-.h-cta-primary{background:#fff;color:#0D2B5A;box-shadow:0 4px 18px rgba(0,0,0,.18);}
-.h-cta-secondary{background:rgba(255,255,255,.12);color:#fff;border:1.5px solid rgba(255,255,255,.28);}
-.h-cta-secondary:hover{background:rgba(255,255,255,.2);}
-.h-cta-ic{font-size:1.5rem;flex-shrink:0;}
-.h-cta-main{display:block;font-size:.9rem;font-weight:800;letter-spacing:-.2px;line-height:1.2;}
-.h-cta-primary .h-cta-main{color:#0D2B5A;}
-.h-cta-sub{display:block;font-size:.65rem;font-weight:500;margin-top:2px;opacity:.65;}
-.h-cta-primary .h-cta-sub{color:#3B5A8A;}
-@media(max-width:500px){.h-cta-row{flex-direction:column;align-items:stretch;}
-  .h-cta-btn{min-width:0;width:100%;}}
-.h-stats{display:flex;justify-content:center;gap:32px;flex-wrap:wrap;padding:20px 0 0;position:relative;z-index:1;}
-.h-stat-n{font-size:1.5rem;font-weight:900;color:#fff;letter-spacing:-.5px;}
-.h-stat-l{font-size:.68rem;color:rgba(255,255,255,.48);font-weight:500;margin-top:1px;}
-/* home body */
-.h-body{padding:28px 0 48px;}
-.h-sh{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;}
-.h-sh-title{font-size:1.05rem;font-weight:800;color:var(--txt);letter-spacing:-.3px;}
-.h-sh-sub{font-size:.76rem;color:var(--txt-s);margin-top:2px;}
-.h-sh-link{font-size:.76rem;font-weight:700;color:var(--acc);padding:6px 13px;
-  border:1.5px solid var(--brd);border-radius:8px;background:var(--card);cursor:pointer;
-  transition:all .15s;font-family:var(--fh);}
-.h-sh-link:hover{background:var(--bg);border-color:var(--acc);}
-.h-sl{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.h-sl-t{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--txt-s);white-space:nowrap;}
-.h-sl-l{flex:1;height:1px;background:var(--brd);}
-/* 6 últimos cards */
-.h-g6{display:grid;gap:14px;margin-bottom:32px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));}
-@media(min-width:600px){.h-g6{grid-template-columns:repeat(2,1fr);}}
-@media(min-width:800px){.h-g6{grid-template-columns:repeat(3,1fr);}}
-.h-card{background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);
-  overflow:hidden;display:block;text-decoration:none;transition:all .22s;box-shadow:var(--sh);}
-.h-card:hover{transform:translateY(-3px);box-shadow:var(--shl);border-color:var(--brd-m);}
-.h-c-img{width:100%;height:160px;overflow:hidden;display:block;flex-shrink:0;background:#DBEEFF;}
-.h-c-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s;}
-.h-card:hover .h-c-img img{transform:scale(1.04);}
-.h-c-body{padding:13px;display:flex;flex-direction:column;}
-.h-c-meta{display:flex;align-items:center;gap:7px;margin-bottom:8px;flex-wrap:wrap;}
-.h-c-cat{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;
-  color:var(--acc);padding:2px 8px;border-radius:999px;background:#DBEEFF;border:1px solid var(--brd);}
-.h-c-date{font-size:.63rem;color:var(--txt-s);}
-.h-c-title{font-size:.85rem;font-weight:800;color:var(--txt);line-height:1.3;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:6px;}
-.h-c-excerpt{font-size:.74rem;color:var(--txt-m);line-height:1.5;
-  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:8px;}
-.h-c-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:auto;}
-.h-ctag{padding:2px 8px;border-radius:999px;font-size:.62rem;font-weight:600;
-  background:var(--bg);border:1px solid var(--brd);color:var(--txt-s);cursor:pointer;transition:all .15s;}
-.h-ctag:hover{background:#DBEEFF;border-color:var(--brd);color:var(--acc);}
-/* 10 mais acessados */
-.h-g10{display:grid;gap:9px;margin-bottom:32px;grid-template-columns:repeat(2,1fr);}
-@media(min-width:500px){.h-g10{grid-template-columns:repeat(3,1fr);}}
-@media(min-width:700px){.h-g10{grid-template-columns:repeat(5,1fr);}}
-.h-mc{background:var(--card);border:1.5px solid var(--brd);border-radius:var(--r);
-  overflow:hidden;display:block;text-decoration:none;transition:all .2s;box-shadow:var(--sh);}
-.h-mc:hover{border-color:var(--brd-m);transform:translateY(-2px);box-shadow:var(--shl);}
-.h-mc-img{width:100%;height:80px;overflow:hidden;display:block;background:#DBEEFF;}
-.h-mc-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s;}
-.h-mc:hover .h-mc-img img{transform:scale(1.05);}
-.h-mc-body{padding:9px 10px;}
-.h-mc-rank{font-size:.58rem;font-weight:800;color:var(--acc);margin-bottom:4px;
-  background:#DBEEFF;border:1px solid var(--brd);border-radius:4px;
-  display:inline-block;padding:1px 5px;}
-.h-mc-title{font-size:.76rem;font-weight:700;color:var(--txt);line-height:1.3;
-  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
-.h-mc-cat{font-size:.62rem;color:var(--txt-s);margin-top:4px;}
-/* ferramentas shortcuts */
-.h-gtl{display:grid;grid-template-columns:repeat(auto-fill,minmax(94px,1fr));gap:9px;margin-bottom:32px;}
-.h-tt{background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);
-  padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s;box-shadow:var(--sh);}
-.h-tt:hover{border-color:var(--acc);transform:translateY(-2px);box-shadow:var(--shl);}
-.h-tt .ico{font-size:1.4rem;margin-bottom:6px;}
-.h-tt .nm{font-size:.72rem;font-weight:700;color:var(--txt);}
-.h-tt .ds{font-size:.62rem;color:var(--txt-s);margin-top:2px;}
-/* social strip */
-.h-social{background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);
-  padding:18px;margin-bottom:32px;box-shadow:var(--sh);}
-.h-social h3{font-size:.82rem;font-weight:800;color:var(--txt);margin-bottom:14px;
-  display:flex;align-items:center;gap:8px;}
-.h-soc-grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));}
-.h-soc-btn{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;
-  border:1.5px solid var(--brd);background:var(--bg);text-decoration:none;
-  transition:all .2s;cursor:pointer;}
-.h-soc-btn:hover{transform:translateY(-2px);box-shadow:var(--shl);}
-.h-soc-ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;
-  justify-content:center;font-size:1.1rem;flex-shrink:0;}
-.h-soc-name{font-size:.78rem;font-weight:800;color:var(--txt);}
-.h-soc-handle{font-size:.66rem;color:var(--txt-s);margin-top:1px;}
-.h-soc-yt .h-soc-ic{background:#FF0000;color:#fff;}
-.h-soc-yt:hover{border-color:#FF0000;background:#fff5f5;}
-.h-soc-li .h-soc-ic{background:#0A66C2;color:#fff;}
-.h-soc-li:hover{border-color:#0A66C2;background:#f0f7ff;}
-.h-soc-ig .h-soc-ic{background:linear-gradient(135deg,#F58529,#DD2A7B,#8134AF);color:#fff;}
-.h-soc-ig:hover{border-color:#DD2A7B;background:#fdf5ff;}
-.h-soc-x .h-soc-ic{background:#000;color:#fff;}
-.h-soc-x:hover{border-color:#000;background:#f5f5f5;}
-/* youtube section */
-.h-yt{background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);
-  padding:18px;margin-bottom:32px;box-shadow:var(--sh);}
-.h-yt h3{font-size:.82rem;font-weight:800;color:var(--txt);margin-bottom:4px;
-  display:flex;align-items:center;gap:8px;}
-.h-yt-sub{font-size:.73rem;color:var(--txt-s);margin-bottom:14px;}
-.h-yt-embed{width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;border:none;
-  display:block;background:var(--bg);}
-.h-yt-link{display:flex;align-items:center;gap:6px;margin-top:10px;font-size:.75rem;
-  font-weight:700;color:#FF0000;cursor:pointer;text-decoration:none;transition:opacity .15s;}
-.h-yt-link:hover{opacity:.75;}
-/* why section */
-.h-why{background:linear-gradient(160deg,#061E54 0%,#1A3F7A 60%,#1E88E5 100%);
-  padding:36px 0;position:relative;overflow:hidden;}
-.h-why::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;
-  border-radius:50%;background:rgba(255,255,255,.04);}
-.h-why h2{font-size:1.1rem;font-weight:900;color:#fff;text-align:center;letter-spacing:-.3px;margin-bottom:6px;}
-.h-why-sub{text-align:center;font-size:.8rem;color:rgba(255,255,255,.48);margin-bottom:24px;}
-.h-why-grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));}
-.h-wc{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:var(--rl);padding:16px;transition:all .2s;}
-.h-wc:hover{background:rgba(255,255,255,.11);}
-.h-wc-ic{font-size:1.5rem;margin-bottom:10px;}
-.h-wc h3{font-size:.84rem;font-weight:800;color:#fff;margin-bottom:6px;}
-.h-wc p{font-size:.74rem;color:rgba(255,255,255,.48);line-height:1.5;}
-/* wave decorations */
-.h-wave-top{height:28px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 28' preserveAspectRatio='none'%3E%3Cpath d='M0,14 C225,28 675,0 900,14 L900,0 L0,0 Z' fill='%23F0F7FF'/%3E%3C/svg%3E") no-repeat top/100%;}
-.h-wave-btm{height:28px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 28' preserveAspectRatio='none'%3E%3Cpath d='M0,14 C225,0 675,28 900,14 L900,28 L0,28 Z' fill='%23F0F7FF'/%3E%3C/svg%3E") no-repeat bottom/100%;}
-.h-wave-deco{height:44px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 44'%3E%3Cpath d='M0,22 C150,36 300,8 450,22 C600,36 750,8 900,22' stroke='%23BAD6F0' stroke-width='1.5' fill='none'/%3E%3Cpath d='M0,30 C150,44 300,16 450,30 C600,44 750,16 900,30' stroke='%23D4E5F7' stroke-width='1' fill='none'/%3E%3C/svg%3E") center/100% no-repeat;opacity:.7;margin-top:8px;}
-
 /* ── AdSense: colapsa blocos vazios até aprovação ── */
-<style id="drawer-css">
-/* ── DRAWER GLOBAL ── */
-#drawer-overlay{position:fixed;inset:0;background:rgba(13,43,90,.48);z-index:1100;opacity:0;pointer-events:none;transition:opacity .25s;}
-#drawer-overlay.on{opacity:1;pointer-events:all;}
-#drawer{position:fixed;top:0;left:0;bottom:0;width:296px;max-width:88vw;background:#fff;z-index:1200;
-  transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
-  overflow-y:auto;display:flex;flex-direction:column;
-  box-shadow:6px 0 40px rgba(13,43,90,.18);}
-#drawer.on{transform:translateX(0);}
-.dr-hd{background:#0D2B5A;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;
-  border-left:4px solid #1E88E5;flex-shrink:0;}
-.dr-logo{display:flex;align-items:center;gap:10px;}
-.dr-logo-ic{width:34px;height:34px;background:#1E88E5;border-radius:50%;display:flex;align-items:center;
-  justify-content:center;color:#fff;font-size:.95rem;flex-shrink:0;border:2px solid rgba(255,255,255,.2);}
-.dr-logo-name{font-weight:900;font-size:.92rem;color:#fff;line-height:1.15;letter-spacing:-.2px;}
-.dr-logo-sub{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
-  color:rgba(255,255,255,.45);margin-top:2px;}
-.dr-x{background:none;border:none;color:rgba(255,255,255,.55);font-size:1rem;cursor:pointer;
-  padding:5px 8px;border-radius:6px;line-height:1;transition:all .15s;}
-.dr-x:hover{color:#fff;background:rgba(255,255,255,.12);}
-.dr-bd{flex:1;padding:6px 0 16px;}
-.dr-sec{font-size:.6rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;
-  color:#6B84AA;padding:14px 16px 5px;margin-top:4px;}
-.dr-item{display:flex;align-items:center;gap:10px;padding:9px 16px;font-size:.82rem;font-weight:600;
-  color:#0D2B5A;cursor:pointer;border-left:3px solid transparent;transition:all .15s;
-  text-decoration:none;background:none;border-top:none;border-right:none;border-bottom:none;
-  width:100%;text-align:left;font-family:inherit;}
-.dr-item:hover,.dr-item.active{color:#1E88E5;background:#F0F7FF;border-left-color:#1E88E5;}
-.dr-item .dr-ic{font-size:.85rem;width:18px;text-align:center;flex-shrink:0;}
-.dr-badge{margin-left:auto;background:#DBEEFF;color:#0D2B5A;font-size:.6rem;font-weight:800;
-  padding:1px 7px;border-radius:999px;flex-shrink:0;}
-.dr-badge.red{background:#FF0000;color:#fff;}
-.dr-grp-hd{display:flex;align-items:center;gap:10px;padding:9px 16px;font-size:.82rem;font-weight:700;
-  color:#0D2B5A;cursor:pointer;border-left:3px solid transparent;transition:all .15s;
-  user-select:none;}
-.dr-grp-hd:hover,.dr-grp-hd.open{color:#1E88E5;background:#F0F7FF;border-left-color:#1E88E5;}
-.dr-grp-hd .dr-ic{font-size:.85rem;width:18px;text-align:center;flex-shrink:0;}
-.dr-arr{margin-left:auto;font-size:.6rem;color:#6B84AA;transition:transform .2s;flex-shrink:0;}
-.dr-grp-hd.open .dr-arr{transform:rotate(90deg);}
-.dr-grp-bd{background:#F8FBFF;border-bottom:1px solid #EBF3FD;display:none;}
-.dr-grp-bd.open{display:block;}
-.dr-sub{display:block;width:100%;padding:7px 16px 7px 44px;background:none;border:none;
-  text-align:left;font-size:.78rem;color:#3B5A8A;cursor:pointer;font-family:inherit;
-  border-left:3px solid transparent;transition:all .12s;}
-.dr-sub:hover{color:#1E88E5;background:#EFF7FF;border-left-color:#1E88E5;}
-.dr-outros{display:block;width:100%;padding:5px 16px 10px 44px;background:none;border:none;
-  text-align:left;font-size:.73rem;color:#1E88E5;font-weight:700;cursor:pointer;font-family:inherit;
-  opacity:.8;}
-.dr-outros:hover{opacity:1;}
-.dr-divider{height:1px;background:#EBF3FD;margin:4px 0;}
-/* burger button */
-.burger-btn{background:none;border:none;cursor:pointer;padding:6px;display:flex;flex-direction:column;
-  gap:5px;align-items:center;width:36px;height:36px;justify-content:center;border-radius:8px;
-  transition:background .15s;flex-shrink:0;}
-.burger-btn:hover{background:#F0F7FF;}
-.burger-btn span{display:block;width:18px;height:2px;background:#0D2B5A;border-radius:2px;transition:all .25s;}
-.burger-btn.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-.burger-btn.open span:nth-child(2){opacity:0;transform:scaleX(0);}
-.burger-btn.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-</style>
 </style>
 
 <!-- Chart.js para gráfico comparativo de juros -->
@@ -1309,276 +1039,10 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 
 
-<div>
-        <div class="dr-logo-name">Calcula Prazo</div>
-        <div class="dr-logo-sub">Ferramentas Jurídicas</div>
-      </div>
-    </div>
-    <button class="dr-x" onclick="closeDrawer()">✕</button>
-  </div>
-  <div class="dr-bd">
-    <div class="dr-item on" onclick="goTo('home');closeDrawer()"><span class="ic">🏠</span> Início</div>
-    <div class="dr-item" onclick="goTo('prazos');closeDrawer()"><span class="ic">⚡</span> Calculadora de Prazos</div>
-    <div class="dr-sec">Ferramentas</div>
-    <div class="dr-item" onclick="navGoTo('correcao');closeDrawer()"><span class="ic">💰</span> Correção Monetária</div>
-    <div class="dr-item" onclick="navGoTo('juros');closeDrawer()"><span class="ic">📈</span> Cálculo de Juros</div>
-    <div class="dr-item" onclick="navGoTo('trabalhista');closeDrawer()"><span class="ic">⚖️</span> Verbas Trabalhistas</div>
-    <div class="dr-item" onclick="navGoTo('salario');closeDrawer()"><span class="ic">💵</span> Salário Líquido</div>
-    <div class="dr-item" onclick="navGoTo('porcentagem');closeDrawer()"><span class="ic">🧮</span> Porcentagem</div>
-    <div class="dr-item" onclick="navGoTo('moedas');closeDrawer()"><span class="ic">💱</span> Conversor de Moedas</div>
-    <div class="dr-item" onclick="navGoTo('datas');closeDrawer()"><span class="ic">📅</span> Operações com Datas</div>
-    <div class="dr-item" onclick="navGoTo('valid');closeDrawer()"><span class="ic">🪪</span> Validador CPF / CNPJ</div>
-    <div class="dr-item" onclick="navGoTo('qrcode');closeDrawer()"><span class="ic">📱</span> Gerador de QR Code</div>
-    <div class="dr-item" onclick="navGoTo('senhas');closeDrawer()"><span class="ic">🔐</span> Gerador de Senhas</div>
-    <div class="dr-item" onclick="navGoTo('extenso');closeDrawer()"><span class="ic">🔢</span> Número por Extenso</div>
-    <div class="dr-item" onclick="navGoTo('imc');closeDrawer()"><span class="ic">🏃</span> Calculadora de IMC</div>
-    <div class="dr-sec">Conteúdo Jurídico</div>
-    <div class="dr-grp">
-      <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="ic">⚖️</span> Jurisprudência <span class="arr">›</span></div>
-      <div class="dr-grp-bd" style="display:none">
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">TST — Tribunal Superior do Trabalho</button>
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">STF — Supremo Tribunal Federal</button>
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">TRTs — Tribunais Regionais do Trabalho</button>
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">SDI-1 e SDI-2</button>
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">OJs e Súmulas</button>
-        <button class="dr-outros" onclick="navGoTo('blog');closeDrawer()">+ Outros temas de jurisprudência</button>
-      </div>
-    </div>
-    <div class="dr-grp">
-      <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="ic">🏛️</span> Órgãos Públicos <span class="arr">›</span></div>
-      <div class="dr-grp-bd" style="display:none">
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">MTE — Ministério do Trabalho e Emprego</button>
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">MPT — Ministério Público do Trabalho</button>
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">CSJT — Conselho Superior da JT</button>
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">ANPT — Associação Nacional do MPT</button>
-        <button class="dr-outros" onclick="navGoTo('blog');closeDrawer()">+ Outros órgãos e entidades</button>
-      </div>
-    </div>
-    <div class="dr-grp">
-      <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="ic">📋</span> Legislação e Normas <span class="arr">›</span></div>
-      <div class="dr-grp-bd" style="display:none">
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">CLT e Leis Trabalhistas</button>
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">eSocial</button>
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">FGTS Digital</button>
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">NRs — Saúde e Segurança do Trabalho</button>
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">Relações Sindicais e Negociação Coletiva</button>
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">Portarias e Instruções Normativas</button>
-        <button class="dr-outros" onclick="navGoTo('blog');closeDrawer()">+ Outras normas e regulamentos</button>
-      </div>
-    </div>
-    <div class="dr-grp">
-      <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="ic">👥</span> RH e Gestão de Pessoas <span class="arr">›</span></div>
-      <div class="dr-grp-bd" style="display:none">
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">Folha de Pagamento e INSS</button>
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">Jornada de Trabalho e Banco de Horas</button>
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">Rescisão e Verbas Trabalhistas</button>
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">Saúde e Segurança do Trabalho</button>
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">Trabalho Remoto e Regime Híbrido</button>
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">Benefícios e Remuneração</button>
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">Recrutamento, Admissão e CTPS</button>
-        <button class="dr-outros" onclick="navGoTo('blog');closeDrawer()">+ Outros temas de RH</button>
-      </div>
-    </div>
-    <div class="dr-grp">
-      <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="ic">📄</span> Recursos e Modelos <span class="arr">›</span></div>
-      <div class="dr-grp-bd" style="display:none">
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">Modelos de Petições e Peças Processuais</button>
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">Modelos de Contratos e Acordos</button>
-        <button class="dr-sub" onclick="navGoTo('blog');closeDrawer()">Artigos e Análises Jurídicas</button>
-        <button class="dr-outros" onclick="navGoTo('blog');closeDrawer()">+ Outros modelos e templates</button>
-      </div>
-    </div>
-    <div class="dr-item" onclick="navGoTo('blog');closeDrawer()"><span class="ic">📌</span> Todos os artigos <span class="dr-badge" id="dr-total-badge">—</span></div>
-    <div class="dr-sec">Site</div>
-    <div class="dr-item" onclick="goTo('sobre');closeDrawer()"><span class="ic">ℹ️</span> Sobre o Calcula Prazo</div>
-    <a class="dr-item" href="/contato"><span class="ic">✉</span> Contato</a>
-    <div class="dr-item" onclick="document.getElementById('modal-doacao').style.display='flex';closeDrawer()"><span class="ic">☕</span> Apoie via Pix</div>
-  </div>
-</div>
-
-<div>
-        <div class="dr-logo-name">Calcula Prazo</div>
-        <div class="dr-logo-sub">Ferramentas Jurídicas</div>
-      </div>
-    </div>
-    <button class="dr-x" onclick="closeDrawer()" aria-label="Fechar menu">✕</button>
-  </div>
-  <div class="dr-bd">
-    <button class="dr-item active" onclick="drNav('/')"><span class="dr-ic">🏠</span> Início</button>
-    <button class="dr-item" onclick="drNav('/#calculadora-de-prazo-processual')"><span class="dr-ic">⚡</span> Calculadora de Prazos</button>
-    <div class="dr-sec">Ferramentas</div>
-    <button class="dr-item" onclick="drNav('/#correcao')"><span class="dr-ic">💰</span> Correção Monetária</button>
-    <button class="dr-item" onclick="drNav('/#juros')"><span class="dr-ic">📈</span> Juros</button>
-    <button class="dr-item" onclick="drNav('/#trabalhista')"><span class="dr-ic">⚖️</span> Verbas Trabalhistas</button>
-    <button class="dr-item" onclick="drNav('/#salario')"><span class="dr-ic">💵</span> Salário Líquido</button>
-    <button class="dr-item" onclick="drNav('/#porcentagem')"><span class="dr-ic">🧮</span> Porcentagem</button>
-    <button class="dr-item" onclick="drNav('/#moedas')"><span class="dr-ic">💱</span> Conversor de Moedas</button>
-    <button class="dr-item" onclick="drNav('/#datas')"><span class="dr-ic">📅</span> Operações com Datas</button>
-    <button class="dr-item" onclick="drNav('/#valid')"><span class="dr-ic">🪪</span> Validador CPF/CNPJ</button>
-    <button class="dr-item" onclick="drNav('/#qrcode')"><span class="dr-ic">📱</span> Gerador de QR Code</button>
-    <button class="dr-item" onclick="drNav('/#senhas')"><span class="dr-ic">🔐</span> Gerador de Senhas</button>
-    <button class="dr-item" onclick="drNav('/#extenso')"><span class="dr-ic">🔢</span> Número por Extenso</button>
-    <button class="dr-item" onclick="drNav('/#imc')"><span class="dr-ic">🏃</span> Calculadora de IMC</button>
-    <div class="dr-sec">Conteúdo Jurídico</div>
-    <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="dr-ic">⚖️</span> Jurisprudência <span class="dr-arr">›</span></div>
-    <div class="dr-grp-bd">
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=tst')">TST — Tribunal Superior do Trabalho</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=stf')">STF — Supremo Tribunal Federal</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=trts')">TRTs — Tribunais Regionais do Trabalho</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=sdi')">SDI-1 e SDI-2</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=sumulas')">OJs e Súmulas</button>
-      <button class="dr-outros" onclick="drNav('/conteudo')">+ Outros temas de jurisprudência</button>
-    </div>
-    <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="dr-ic">🏛️</span> Órgãos Públicos <span class="dr-arr">›</span></div>
-    <div class="dr-grp-bd">
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=noticias-mte')">MTE — Ministério do Trabalho e Emprego</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=noticias-mpt')">MPT — Ministério Público do Trabalho</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=csjt')">CSJT — Conselho Superior da JT</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=anpt')">ANPT — Associação Nacional do MPT</button>
-      <button class="dr-outros" onclick="drNav('/conteudo')">+ Outros órgãos e entidades</button>
-    </div>
-    <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="dr-ic">📋</span> Legislação e Normas <span class="dr-arr">›</span></div>
-    <div class="dr-grp-bd">
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=clt')">CLT e Leis Trabalhistas</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=esocial-fgts-digital')">eSocial</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=esocial-fgts-digital')">FGTS Digital</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=nr-sst')">NRs — Saúde e Segurança do Trabalho</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=sindical')">Relações Sindicais</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=portarias')">Portarias e Instruções Normativas</button>
-      <button class="dr-outros" onclick="drNav('/conteudo')">+ Outras normas e regulamentos</button>
-    </div>
-    <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="dr-ic">👥</span> RH e Gestão de Pessoas <span class="dr-arr">›</span></div>
-    <div class="dr-grp-bd">
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=folha-pagamento')">Folha de Pagamento e INSS</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=jornada')">Jornada de Trabalho e Banco de Horas</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=rescisao')">Rescisão e Verbas Trabalhistas</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=sst')">Saúde e Segurança do Trabalho</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=home-office')">Trabalho Remoto e Regime Híbrido</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=beneficios')">Benefícios e Remuneração</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=admissao')">Recrutamento, Admissão e CTPS</button>
-      <button class="dr-outros" onclick="drNav('/conteudo')">+ Outros temas de RH</button>
-    </div>
-    <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="dr-ic">📄</span> Recursos e Modelos <span class="dr-arr">›</span></div>
-    <div class="dr-grp-bd">
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=modelos')">Modelos de Petições e Peças</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=contratos')">Contratos e Acordos</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=checklists')">Checklists e Roteiros</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=artigos')">Artigos Jurídicos</button>
-      <button class="dr-outros" onclick="drNav('/conteudo')">+ Outros modelos e templates</button>
-    </div>
-    <div class="dr-divider"></div>
-    <button class="dr-item" onclick="drNav('https://www.youtube.com/@CalculaPrazo','_blank')">
-      <span class="dr-ic">▶️</span> Canal no YouTube <span class="dr-badge red">Novo</span>
-    </button>
-    <button class="dr-item" onclick="drNav('/conteudo')">
-      <span class="dr-ic">📰</span> Todos os artigos <span class="dr-badge" id="dr-total-badge">—</span>
-    </button>
-    <div class="dr-sec">Site</div>
-    <button class="dr-item" onclick="drNav('/sobre')"><span class="dr-ic">ℹ️</span> Sobre o Calcula Prazo</button>
-    <button class="dr-item" onclick="drNav('/contato')"><span class="dr-ic">✉️</span> Contato</button>
-    <button class="dr-item" onclick="drNav('','_pix')"><span class="dr-ic">☕</span> Apoie via Pix</button>
-  </div>
-</div>
-
-<!-- DRAWER OVERLAY -->
-<div id="drawer-overlay" onclick="closeDrawer()"></div>
-<!-- DRAWER -->
-<div id="drawer">
-  <div class="dr-hd">
-    <div class="dr-logo">
-      <div class="dr-logo-ic">⚖</div>
-      <div>
-        <div class="dr-logo-name">Calcula Prazo</div>
-        <div class="dr-logo-sub">Ferramentas Jurídicas</div>
-      </div>
-    </div>
-    <button class="dr-x" onclick="closeDrawer()" aria-label="Fechar menu">✕</button>
-  </div>
-  <div class="dr-bd">
-    <button class="dr-item active" onclick="drNav('/')"><span class="dr-ic">🏠</span> Início</button>
-    <button class="dr-item" onclick="drNav('/#calculadora-de-prazo-processual')"><span class="dr-ic">⚡</span> Calculadora de Prazos</button>
-    <div class="dr-sec">Ferramentas</div>
-    <button class="dr-item" onclick="drNav('/#correcao')"><span class="dr-ic">💰</span> Correção Monetária</button>
-    <button class="dr-item" onclick="drNav('/#juros')"><span class="dr-ic">📈</span> Juros</button>
-    <button class="dr-item" onclick="drNav('/#trabalhista')"><span class="dr-ic">⚖️</span> Verbas Trabalhistas</button>
-    <button class="dr-item" onclick="drNav('/#salario')"><span class="dr-ic">💵</span> Salário Líquido</button>
-    <button class="dr-item" onclick="drNav('/#porcentagem')"><span class="dr-ic">🧮</span> Porcentagem</button>
-    <button class="dr-item" onclick="drNav('/#moedas')"><span class="dr-ic">💱</span> Conversor de Moedas</button>
-    <button class="dr-item" onclick="drNav('/#datas')"><span class="dr-ic">📅</span> Operações com Datas</button>
-    <button class="dr-item" onclick="drNav('/#valid')"><span class="dr-ic">🪪</span> Validador CPF/CNPJ</button>
-    <button class="dr-item" onclick="drNav('/#qrcode')"><span class="dr-ic">📱</span> Gerador de QR Code</button>
-    <button class="dr-item" onclick="drNav('/#senhas')"><span class="dr-ic">🔐</span> Gerador de Senhas</button>
-    <button class="dr-item" onclick="drNav('/#extenso')"><span class="dr-ic">🔢</span> Número por Extenso</button>
-    <button class="dr-item" onclick="drNav('/#imc')"><span class="dr-ic">🏃</span> Calculadora de IMC</button>
-    <div class="dr-sec">Conteúdo Jurídico</div>
-    <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="dr-ic">⚖️</span> Jurisprudência <span class="dr-arr">›</span></div>
-    <div class="dr-grp-bd">
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=tst')">TST — Tribunal Superior do Trabalho</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=stf')">STF — Supremo Tribunal Federal</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=trts')">TRTs — Tribunais Regionais do Trabalho</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=sdi')">SDI-1 e SDI-2</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=sumulas')">OJs e Súmulas</button>
-      <button class="dr-outros" onclick="drNav('/conteudo')">+ Outros temas de jurisprudência</button>
-    </div>
-    <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="dr-ic">🏛️</span> Órgãos Públicos <span class="dr-arr">›</span></div>
-    <div class="dr-grp-bd">
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=noticias-mte')">MTE — Ministério do Trabalho e Emprego</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=noticias-mpt')">MPT — Ministério Público do Trabalho</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=csjt')">CSJT — Conselho Superior da JT</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=anpt')">ANPT — Associação Nacional do MPT</button>
-      <button class="dr-outros" onclick="drNav('/conteudo')">+ Outros órgãos e entidades</button>
-    </div>
-    <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="dr-ic">📋</span> Legislação e Normas <span class="dr-arr">›</span></div>
-    <div class="dr-grp-bd">
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=clt')">CLT e Leis Trabalhistas</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=esocial-fgts-digital')">eSocial</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=esocial-fgts-digital')">FGTS Digital</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=nr-sst')">NRs — Saúde e Segurança do Trabalho</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=sindical')">Relações Sindicais</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=portarias')">Portarias e Instruções Normativas</button>
-      <button class="dr-outros" onclick="drNav('/conteudo')">+ Outras normas e regulamentos</button>
-    </div>
-    <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="dr-ic">👥</span> RH e Gestão de Pessoas <span class="dr-arr">›</span></div>
-    <div class="dr-grp-bd">
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=folha-pagamento')">Folha de Pagamento e INSS</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=jornada')">Jornada de Trabalho e Banco de Horas</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=rescisao')">Rescisão e Verbas Trabalhistas</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=sst')">Saúde e Segurança do Trabalho</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=home-office')">Trabalho Remoto e Regime Híbrido</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=beneficios')">Benefícios e Remuneração</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=admissao')">Recrutamento, Admissão e CTPS</button>
-      <button class="dr-outros" onclick="drNav('/conteudo')">+ Outros temas de RH</button>
-    </div>
-    <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="dr-ic">📄</span> Recursos e Modelos <span class="dr-arr">›</span></div>
-    <div class="dr-grp-bd">
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=modelos')">Modelos de Petições e Peças</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=contratos')">Contratos e Acordos</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=checklists')">Checklists e Roteiros</button>
-      <button class="dr-sub" onclick="drNav('/conteudo?cat=artigos')">Artigos Jurídicos</button>
-      <button class="dr-outros" onclick="drNav('/conteudo')">+ Outros modelos e templates</button>
-    </div>
-    <div class="dr-divider"></div>
-    <button class="dr-item" onclick="drNav('https://www.youtube.com/@CalculaPrazo','_blank')">
-      <span class="dr-ic">▶️</span> Canal no YouTube <span class="dr-badge red">Novo</span>
-    </button>
-    <button class="dr-item" onclick="drNav('/conteudo')">
-      <span class="dr-ic">📰</span> Todos os artigos <span class="dr-badge" id="dr-total-badge">—</span>
-    </button>
-    <div class="dr-sec">Site</div>
-    <button class="dr-item" onclick="drNav('/sobre')"><span class="dr-ic">ℹ️</span> Sobre o Calcula Prazo</button>
-    <button class="dr-item" onclick="drNav('/contato')"><span class="dr-ic">✉️</span> Contato</button>
-    <button class="dr-item" onclick="drNav('','_pix')"><span class="dr-ic">☕</span> Apoie via Pix</button>
-  </div>
-</div>
-
 <header id="hdr">
   <div class="hdr-inner">
-    <button class="burger-btn" id="burger-btn" onclick="openDrawer()" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
-    <a class="logo" onclick="goTo('home')" title="Ir para página inicial" style="flex-direction:row;align-items:center;gap:8px;">
-      <div class="logo-ic" style="width:30px;height:30px;border-radius:50%;background:var(--acc);border:2px solid var(--brd);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.82rem;flex-shrink:0;">⚖</div>
-      <div><div style="font-weight:900;font-size:.94rem;color:var(--txt);letter-spacing:-.3px;">Calcula Prazo</div><div style="font-size:.54rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--txt-s);">Ferramentas Jurídicas</div></div>
+    <a class="logo" onclick="goTo('home')" title="Ir para página inicial">
+      <div class="logo-ic">⚖</div><span class="logo-text">Calcula</span><span>Prazo</span>
     </a>
     <nav class="hdr-nav">
       <a id="nav-home" onclick="goTo('home')" style="display:flex;align-items:center;gap:4px;">🏠 Início</a>
@@ -1613,7 +1077,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
       <a href="/contato">✉ Contato</a>
       <a class="hdr-doacao" onclick="document.getElementById('modal-doacao').style.display='flex'" aria-label="Apoiar o Calcula Prazo via Pix">☕ Doação</a>
     </nav>
-    <button class="hdr-cta-btn" onclick="goTo('prazos')" style="margin-left:auto;">⚡ Calcular Prazo</button>
   </div>
 </header>
 
@@ -1622,140 +1085,116 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 ══════════════════════════════════════ -->
 <div id="sec-home" class="sec active">
 
-<!-- ═══════════ HERO ═══════════ -->
-<section class="h-hero">
-  <div class="h-hero-in container">
-    <div class="h-hero-pill">⚖️ Ferramentas gratuitas para advogados, RH e contadores</div>
-    <h1>Calcule Prazos, Verbas<br>e Correções em Segundos</h1>
-    <p class="h-hero-sub">Calculadora de prazos processuais, correção monetária, salário líquido, rescisão trabalhista e muito mais — 100% gratuito, sem cadastro.</p>
-    <!-- CTA Buttons -->
-    <div class="h-cta-row">
-      <button class="h-cta-btn h-cta-primary" onclick="goTo('prazos')">
-        <span class="h-cta-ic">⚡</span>
-        <span>
-          <span class="h-cta-main">Calculadora de Prazos</span>
-          <span class="h-cta-sub">Corridos · Úteis · CPC · CLT</span>
-        </span>
-      </button>
-      <button class="h-cta-btn h-cta-secondary" onclick="navGoTo('trabalhista')">
-        <span class="h-cta-ic">⚖️</span>
-        <span>
-          <span class="h-cta-main">Verbas Trabalhistas</span>
-          <span class="h-cta-sub">Rescisão · Férias · 13º</span>
-        </span>
-      </button>
-      <button class="h-cta-btn h-cta-secondary" onclick="navGoTo('correcao')">
-        <span class="h-cta-ic">💰</span>
-        <span>
-          <span class="h-cta-main">Correção Monetária</span>
-          <span class="h-cta-sub">SELIC · INPC · IGP-M</span>
-        </span>
-      </button>
-    </div>
-    <!-- stats -->
-    <div class="h-stats">
-      <div><div class="h-stat-n">30+</div><div class="h-stat-l">Prazos jurídicos</div></div>
-      <div><div class="h-stat-n">14+</div><div class="h-stat-l">Ferramentas</div></div>
-      <div><div class="h-stat-n">100%</div><div class="h-stat-l">Gratuito</div></div>
-    </div>
-  </div>
-  <div class="h-hero-wave"></div>
-</section>
-
-<!-- ═══════════ HOME BODY ═══════════ -->
-<div class="h-body">
-  <div class="container">
-
-    <!-- AD slot -->
-    <div class="ad-container" id="ad-home-top"></div>
-
-    <!-- 6 ÚLTIMOS -->
-    <div class="h-sh">
-      <div>
-        <div class="h-sh-title">Direito do Trabalho em Destaque</div>
-        <div class="h-sh-sub">Jurisprudência, orientações práticas e legislação atualizada</div>
-      </div>
-      <button class="h-sh-link" onclick="navGoTo('blog')">Ver todos os artigos →</button>
-    </div>
-    <div class="h-g6" id="home-posts-6-grid"></div>
-
-    <!-- 10 MAIS ACESSADOS -->
-    <div class="h-sl"><span class="h-sl-t">🔥 Mais acessados</span><div class="h-sl-l"></div></div>
-    <div class="h-g10" id="home-top10-grid"></div>
-
-    <!-- AD slot middle -->
-    <div class="ad-container ad-desktop-only" id="ad-home-middle"></div>
-
-    <!-- YOUTUBE -->
-    <div class="h-yt">
-      <h3>▶️ <span style="color:#FF0000;">YouTube</span> — Calcula Prazo</h3>
-      <div class="h-yt-sub">Vídeos explicativos sobre ferramentas, direito do trabalho e jurisprudência</div>
-      <iframe class="h-yt-embed"
-        src="https://www.youtube.com/embed?listType=user_uploads&list=UCSVEjeSqFYwQXJ-AqHeEGBg&rel=0"
-        title="Canal Calcula Prazo no YouTube"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen loading="lazy"></iframe>
-      <a class="h-yt-link" href="https://www.youtube.com/@CalculaPrazo" target="_blank">▶ Ver todos os vídeos no canal @CalculaPrazo →</a>
-    </div>
-
-    <!-- REDES SOCIAIS -->
-    <div class="h-social">
-      <h3>📡 Siga o Calcula Prazo nas redes</h3>
-      <div class="h-soc-grid">
-        <a class="h-soc-btn h-soc-yt" href="https://www.youtube.com/@CalculaPrazo" target="_blank">
-          <div class="h-soc-ic">▶</div>
-          <div><div class="h-soc-name">YouTube</div><div class="h-soc-handle">@CalculaPrazo</div></div>
-        </a>
-        <a class="h-soc-btn h-soc-li" href="https://www.linkedin.com/in/calcula-prazo-0a1736405/" target="_blank">
-          <div class="h-soc-ic" style="font-size:.75rem;font-weight:800;">in</div>
-          <div><div class="h-soc-name">LinkedIn</div><div class="h-soc-handle">Calcula Prazo</div></div>
-        </a>
-        <a class="h-soc-btn h-soc-ig" href="https://www.instagram.com/calculaprazo/" target="_blank">
-          <div class="h-soc-ic">📷</div>
-          <div><div class="h-soc-name">Instagram</div><div class="h-soc-handle">@calculaprazo</div></div>
-        </a>
-        <a class="h-soc-btn h-soc-x" href="https://x.com/CalculaPrazo" target="_blank">
-          <div class="h-soc-ic" style="font-size:.8rem;font-weight:800;">𝕏</div>
-          <div><div class="h-soc-name">X (Twitter)</div><div class="h-soc-handle">@CalculaPrazo</div></div>
-        </a>
+  <!-- HERO: Portal profissional — SEM calculadora duplicada -->
+  <div class="home-hero">
+    <div class="container">
+      <div style="position:relative;z-index:1;text-align:center;padding:8px 0 4px;">
+        <div style="display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:5px 18px;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.8);margin-bottom:18px;">
+          ⚖️ Ferramentas gratuitas para advogados, RH e contadores
+        </div>
+        <h1 style="font-size:clamp(1.8rem,4vw,2.9rem);font-weight:800;color:#fff;letter-spacing:-1px;line-height:1.1;margin-bottom:14px;">
+          Calcule Prazos, Verbas e Correções<br>em Segundos — 100% Gratuito
+        </h1>
+        <p style="font-size:.97rem;color:rgba(255,255,255,.65);max-width:520px;margin:0 auto 28px;">
+          Calculadora de prazos processuais, correção monetária, salário líquido, rescisão trabalhista, eSocial e muito mais.
+        </p>
+        <!-- Access buttons to real tools — NO duplicate calculator -->
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:32px;">
+          <button onclick="goTo('prazos')" style="display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--b800);border:none;border-radius:10px;padding:13px 24px;font-size:.95rem;font-weight:800;cursor:pointer;transition:all .2s;box-shadow:0 4px 20px rgba(0,0,0,.2);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+            ⚡ Calculadora de Prazos
+          </button>
+          <button onclick="goTo('trabalhista')" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);border-radius:10px;padding:13px 24px;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(255,255,255,.25)'" onmouseout="this.style.background='rgba(255,255,255,.15)'">
+            ⚖️ Verbas Trabalhistas
+          </button>
+          <button onclick="goTo('correcao')" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);border-radius:10px;padding:13px 24px;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(255,255,255,.25)'" onmouseout="this.style.background='rgba(255,255,255,.15)'">
+            💰 Correção Monetária
+          </button>
+        </div>
+        <!-- Stats -->
+        <div style="display:flex;justify-content:center;gap:40px;flex-wrap:wrap;">
+          <div style="text-align:center;"><div class="hs-num">30+</div><div class="hs-lbl">Prazos jurídicos</div></div>
+          <div style="text-align:center;"><div class="hs-num">14+</div><div class="hs-lbl">Ferramentas</div></div>
+          <div style="text-align:center;"><div class="hs-num">100%</div><div class="hs-lbl">Gratuito</div></div>
+        </div>
       </div>
     </div>
+  </div>
 
-    <!-- OUTRAS FERRAMENTAS -->
-    <div class="h-sl"><span class="h-sl-t">🧰 Outras ferramentas</span><div class="h-sl-l"></div></div>
-    <div class="h-gtl">
-      <div class="h-tt" onclick="navGoTo('correcao')"><div class="ico">💰</div><div class="nm">Correção</div><div class="ds">Monetária</div></div>
-      <div class="h-tt" onclick="navGoTo('juros')"><div class="ico">📈</div><div class="nm">Juros</div><div class="ds">Simples e compostos</div></div>
-      <div class="h-tt" onclick="navGoTo('trabalhista')"><div class="ico">⚖️</div><div class="nm">Verbas</div><div class="ds">Rescisão CLT</div></div>
-      <div class="h-tt" onclick="navGoTo('salario')"><div class="ico">💵</div><div class="nm">Salário Líq.</div><div class="ds">INSS + IRRF</div></div>
-      <div class="h-tt" onclick="navGoTo('porcentagem')"><div class="ico">🧮</div><div class="nm">Porcentagem</div><div class="ds">Desconto/aumento</div></div>
-      <div class="h-tt" onclick="navGoTo('moedas')"><div class="ico">💱</div><div class="nm">Moedas</div><div class="ds">Câmbio ao vivo</div></div>
-      <div class="h-tt" onclick="navGoTo('datas')"><div class="ico">📅</div><div class="nm">Datas</div><div class="ds">Calcule datas</div></div>
-      <div class="h-tt" onclick="navGoTo('valid')"><div class="ico">🪪</div><div class="nm">CPF/CNPJ</div><div class="ds">Validador</div></div>
-    </div>
 
-  </div><!-- /container -->
-</div><!-- /h-body -->
+  <!-- ▸ ANÚNCIO: home-top -->
+  <div class="ad-container" id="ad-home-top">
+    
+  </div>
 
-<!-- WHY -->
-<div class="h-wave-top"></div>
-<section class="h-why">
-  <div class="container" style="position:relative;z-index:1;">
-    <h2>Por que usar o Calcula Prazo?</h2>
-    <p class="h-why-sub">Desenvolvido para profissionais que precisam de precisão</p>
-    <div class="h-why-grid">
-      <div class="h-wc"><div class="h-wc-ic">⚡</div><h3>100% Gratuito</h3><p>Todas as ferramentas sem cadastro, sem limites e sem custos escondidos.</p></div>
-      <div class="h-wc"><div class="h-wc-ic">🔒</div><h3>Privacidade Total</h3><p>Todos os cálculos são feitos localmente. Nenhum dado é enviado a servidores.</p></div>
-      <div class="h-wc"><div class="h-wc-ic">🎯</div><h3>Feito para Profissionais</h3><p>Base legal em cada prazo jurídico. Tabelas INSS e IRRF atualizadas 2026.</p></div>
-      <div class="h-wc"><div class="h-wc-ic">📱</div><h3>Qualquer Dispositivo</h3><p>Responsivo e otimizado para celular, tablet e desktop.</p></div>
+  <!-- SHORTCUT TOOL CARDS (estilo prazofacil) -->
+  <div class="container" style="padding:44px 0 0;">
+    <h2 class="sec-title" style="text-align:center;">Outras Ferramentas</h2>
+    <p class="sec-sub" style="text-align:center;">Clique para acessar qualquer ferramenta instantaneamente</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:48px;">
+      <div onclick="goTo('correcao')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
+        <div style="font-size:1.6rem;margin-bottom:8px;">💰</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Correção</div><div style="font-size:.72rem;color:var(--txt-s);">Corrija valores.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
+      </div>
+      <div onclick="goTo('juros')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
+        <div style="font-size:1.6rem;margin-bottom:8px;">📈</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Juros</div><div style="font-size:.72rem;color:var(--txt-s);">Calcule taxas.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
+      </div>
+      <div onclick="goTo('datas')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
+        <div style="font-size:1.6rem;margin-bottom:8px;">📅</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Datas</div><div style="font-size:.72rem;color:var(--txt-s);">Calcule datas.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
+      </div>
+      <div onclick="goTo('valid')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
+        <div style="font-size:1.6rem;margin-bottom:8px;">✅</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Validadores</div><div style="font-size:.72rem;color:var(--txt-s);">Valide CPF/CNPJ.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
+      </div>
+      <div onclick="goTo('trabalhista')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
+        <div style="font-size:1.6rem;margin-bottom:8px;">⚖️</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Trabalhista</div><div style="font-size:.72rem;color:var(--txt-s);">Calcule rescisão.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
+      </div>
+      <div onclick="goTo('salario')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
+        <div style="font-size:1.6rem;margin-bottom:8px;">💵</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Salário Líquido</div><div style="font-size:.72rem;color:var(--txt-s);">INSS + IRRF.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
+      </div>
+      <div onclick="goTo('qrcode')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
+        <div style="font-size:1.6rem;margin-bottom:8px;">📱</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">QR Code</div><div style="font-size:.72rem;color:var(--txt-s);">Gere QR Codes.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
+      </div>
+      <div onclick="goTo('imc')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
+        <div style="font-size:1.6rem;margin-bottom:8px;">🏃</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">IMC</div><div style="font-size:.72rem;color:var(--txt-s);">Calculadora OMS.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
+      </div>
     </div>
   </div>
-</section>
-<div class="h-wave-btm"></div>
-<div class="h-wave-deco"></div>
 
-<!-- hidden compat -->
-<div id="home-blog-grid" style="display:none;"></div>
+  <!-- ▸ ANÚNCIO: ad-home-middle (entre ferramentas e benefícios) -->
+  <div class="ad-container ad-desktop-only" id="ad-home-middle">
+    
+  </div>
+
+  <!-- BENEFITS -->
+  <div style="background:var(--txt);padding:52px 0;">
+    <div class="container">
+      <h2 class="sec-title" style="color:#fff;text-align:center;margin-bottom:7px;">Por que usar o Calcula Prazo?</h2>
+      <p class="sec-sub" style="color:rgba(255,255,255,.5);text-align:center;">Desenvolvido para profissionais que precisam de precisão</p>
+      <div class="ben-grid">
+        <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">⚡</div><h3 style="color:#fff;">100% Gratuito</h3><p style="color:rgba(255,255,255,.5);">Todas as ferramentas sem cadastro, sem limites e sem custos escondidos.</p></div>
+        <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">🔒</div><h3 style="color:#fff;">Privacidade Total</h3><p style="color:rgba(255,255,255,.5);">Todos os cálculos são feitos localmente. Nenhum dado é enviado a servidores.</p></div>
+        <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">🎯</div><h3 style="color:#fff;">Feito para Profissionais</h3><p style="color:rgba(255,255,255,.5);">Base legal em cada prazo jurídico. Tabelas INSS e IRRF atualizadas 2025.</p></div>
+        <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">📱</div><h3 style="color:#fff;">Funciona em Qualquer Tela</h3><p style="color:rgba(255,255,255,.5);">Responsivo e otimizado para celular, tablet e desktop.</p></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- BLOG POSTS PREVIEW na home -->
+  <div style="background:var(--bg);padding:52px 0 60px;">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px;">
+        <div>
+          <h2 class="sec-title">Direito do Trabalho em Destaque</h2>
+          <p class="sec-sub" style="margin-bottom:0;">Notícias, jurisprudência, orientações práticas, eSocial e folha de pagamento</p>
+        </div>
+        <button class="btn btn-s" onclick="navGoTo('blog')" style="flex-shrink:0;">Ver todos os artigos →</button>
+      </div>
+      <!-- Category pills -->
+      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px;">
+        <button class="ctab on" id="home-blog-tab-all" style="font-size:.78rem;padding:5px 14px;">🕐 Mais Recentes</button>
+      </div>
+      <div id="home-blog-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;"></div>
+    </div>
+  </div>
 
 </div><!-- /home -->
 
@@ -2950,12 +2389,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
         <a href="/contato" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;">Contato</a>
         <a href="/termos" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;">Termos de Uso</a>
         <a href="/privacidade" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;">Privacidade & LGPD</a>
-        <span style="display:flex;gap:8px;align-items:center;">
-          <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" title="YouTube" style="width:30px;height:30px;border-radius:7px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.75rem;border:1px solid rgba(255,255,255,.1);text-decoration:none;transition:all .15s;" onmouseover="this.style.background='rgba(255,0,0,.5)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">▶</a>
-          <a href="https://www.linkedin.com/in/calcula-prazo-0a1736405/" target="_blank" title="LinkedIn" style="width:30px;height:30px;border-radius:7px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.6rem;font-weight:800;border:1px solid rgba(255,255,255,.1);text-decoration:none;transition:all .15s;" onmouseover="this.style.background='rgba(10,102,194,.5)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">in</a>
-          <a href="https://www.instagram.com/calculaprazo/" target="_blank" title="Instagram" style="width:30px;height:30px;border-radius:7px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.78rem;border:1px solid rgba(255,255,255,.1);text-decoration:none;transition:all .15s;" onmouseover="this.style.background='rgba(221,42,123,.5)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">📷</a>
-          <a href="https://x.com/CalculaPrazo" target="_blank" title="X/Twitter" style="width:30px;height:30px;border-radius:7px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.65rem;font-weight:800;border:1px solid rgba(255,255,255,.1);text-decoration:none;transition:all .15s;" onmouseover="this.style.background='rgba(255,255,255,.2)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">𝕏</a>
-        </span>
       </div>
     </div>
   </div>
@@ -4973,56 +4406,14 @@ function renderBlogSection(){
 function filterHomeBlog(tag){BLOG_H_FILTER=tag;renderHomeBlog();}
 
 function renderHomeBlog(){
-  var g6=document.getElementById('home-posts-6-grid');
-  var g10=document.getElementById('home-top10-grid');
-  var sorted=BLOG_POSTS.slice().sort(function(a,b){return(b.date||'').localeCompare(a.date||'');});
-  var last6=sorted.slice(0,6);
-  var top10=sorted.slice(0,10);
-
-  function fixImg(url){
-    var s=url||'';
-    if(s.includes('github.com')&&s.includes('/blob/')){s=s.replace('github.com','raw.githubusercontent.com').replace('/blob/','/');}
-    return s;
+  var grid=document.getElementById('home-blog-grid');if(!grid)return;
+  var posts=BLOG_POSTS.filter(function(p){return!BLOG_H_FILTER||p.category===BLOG_H_FILTER;})
+    .sort(function(a,b){return(b.date||'').localeCompare(a.date||'');}).slice(0,15);
+  if(!posts.length){
+    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;color:var(--txt-s);padding:40px 0;font-size:.88rem;">Nenhum artigo publicado ainda. Em breve!</div>';
+    return;
   }
-
-  if(g6){
-    if(!last6.length){g6.innerHTML='<div style="text-align:center;color:var(--txt-s);padding:40px 0;">Em breve!</div>';
-    }else{
-      g6.innerHTML=last6.map(function(p){
-        var href='/blog/'+(p.id||p.slug||'')+'.html';
-        var img=fixImg(p.image);
-        var cat=p.category_label||p.category||'';
-        var date=formatPostDate(p.date);
-        var tags=Array.isArray(p.tags)?p.tags:[];
-        return '<a class="h-card" href="'+href+'">'
-          +'<div class="h-c-img">'+(img?'<img src="'+img+'" alt="'+((p.title||'').replace(/"/g,"'"))+'" loading="lazy" onerror="this.parentNode.style.background='#DBEEFF';this.style.display='none'">':'')+'</div>'
-          +'<div class="h-c-body">'
-          +'<div class="h-c-meta">'+(cat?'<span class="h-c-cat">'+cat+'</span>':'')+'<span class="h-c-date">'+date+'</span></div>'
-          +'<div class="h-c-title">'+(p.title||'')+'</div>'
-          +(p.excerpt?'<div class="h-c-excerpt">'+p.excerpt+'</div>':'')
-          +(tags.length?'<div class="h-c-tags">'+tags.map(function(t){return'<span class="h-ctag" onclick="event.preventDefault()">'+t+'</span>';}).join('')+'</div>':'')
-          +'</div></a>';
-      }).join('');
-    }
-  }
-
-  if(g10){
-    if(!top10.length){g10.innerHTML='';
-    }else{
-      g10.innerHTML=top10.map(function(p,i){
-        var href='/blog/'+(p.id||p.slug||'')+'.html';
-        var img=fixImg(p.image);
-        var cat=p.category_label||p.category||'';
-        return '<a class="h-mc" href="'+href+'">'
-          +'<div class="h-mc-img">'+(img?'<img src="'+img+'" alt="'+((p.title||'').replace(/"/g,"'"))+'" loading="lazy" onerror="this.parentNode.style.background='#DBEEFF';this.style.display='none'">':'')+'</div>'
-          +'<div class="h-mc-body"><div class="h-mc-rank">#'+(i+1)+'</div><div class="h-mc-title">'+(p.title||'')+'</div><div class="h-mc-cat">'+cat+'</div></div>'
-          +'</a>';
-      }).join('');
-    }
-  }
-
-  var badge=document.getElementById('dr-total-badge');
-  if(badge)badge.textContent=BLOG_POSTS.length;
+  grid.innerHTML=posts.map(buildPostCard).join('');
 }
 
 function renderSidebarPosts(){
@@ -5077,63 +4468,6 @@ window.addEventListener('hashchange', function() {
   var h = window.location.hash;
   if (h === '#conteudo' || h === '#blog') navGoTo('blog');
 });
-
-/* ── Hero Calculator ── */
-var H_TYPE='c';
-function hSetT(t){H_TYPE=t;document.getElementById('hbtn-c').classList.toggle('on',t==='c');document.getElementById('hbtn-u').classList.toggle('on',t==='u');}
-function hccToggle(){
-  var op=document.getElementById('h-op').value;
-  var df=document.getElementById('hcc-days-f');var d2f=document.getElementById('hcc-date2-f');
-  var types=document.getElementById('hcc-types');
-  if(op==='entre'){df&&(df.style.display='none');d2f&&(d2f.style.display='');types&&(types.style.display='none');}
-  else{df&&(df.style.display='');d2f&&(d2f.style.display='none');types&&(types.style.display='');}
-}
-var H_HOL=['2026-01-01','2026-04-21','2026-05-01','2026-09-07','2026-10-12','2026-11-02','2026-11-15','2026-12-25'];
-function hIsWD(d){if(d.getDay()===0||d.getDay()===6)return false;return!H_HOL.includes(d.toISOString().slice(0,10));}
-function hAddWD(s,n,sub){var d=new Date(s+'T12:00:00'),c=0;while(c<n){d.setDate(d.getDate()+(sub?-1:1));if(hIsWD(d))c++;}return d;}
-function hFmt(d){var m=['jan.','fev.','mar.','abr.','mai.','jun.','jul.','ago.','set.','out.','nov.','dez.'];var dw=['domingo','segunda','terça','quarta','quinta','sexta','sábado'];return d.getDate()+' de '+m[d.getMonth()]+' de '+d.getFullYear()+' ('+dw[d.getDay()]+')';}
-function hCalc(){
-  var op=document.getElementById('h-op').value;
-  var dt=document.getElementById('h-date').value;
-  var r=document.getElementById('h-res');
-  if(!dt){r.innerHTML='⚠️ Informe a data inicial.';r.classList.add('on');return;}
-  if(op==='entre'){
-    var dt2=document.getElementById('h-date2')&&document.getElementById('h-date2').value;
-    if(!dt2){r.innerHTML='⚠️ Informe a data final.';r.classList.add('on');return;}
-    var d1=new Date(dt+'T12:00:00'),d2=new Date(dt2+'T12:00:00');
-    if(d2<d1){r.innerHTML='⚠️ A data final deve ser depois da data inicial.';r.classList.add('on');return;}
-    var diff=Math.round((d2-d1)/(1000*60*60*24));
-    var wd=0;var tmp=new Date(d1);while(tmp<d2){tmp.setDate(tmp.getDate()+1);if(hIsWD(tmp))wd++;}
-    r.innerHTML='✅ Total: <strong>'+diff+' dias corridos</strong> · <strong>'+wd+' dias úteis</strong>';
-  } else {
-    var dy=parseInt(document.getElementById('h-days').value)||0;
-    var sub=op==='subtrair';
-    var res=H_TYPE==='u'?hAddWD(dt,dy,sub):new Date(dt+'T12:00:00');
-    if(H_TYPE==='c')res.setDate(res.getDate()+(sub?-dy:dy));
-    r.innerHTML='✅ '+(sub?'Data resultante: ':'Prazo vence em: ')+'<strong>'+hFmt(res)+'</strong>';
-  }
-  r.classList.add('on');
-}
-
-/* ── DRAWER ── */
-function openDrawer(){
-  document.getElementById('drawer').classList.add('on');
-  document.getElementById('drawer-overlay').classList.add('on');
-  document.getElementById('burger-btn').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeDrawer(){
-  document.getElementById('drawer').classList.remove('on');
-  document.getElementById('drawer-overlay').classList.remove('on');
-  var b=document.getElementById('burger-btn');if(b)b.classList.remove('open');
-  document.body.style.overflow='';
-}
-function togDrGrp(hd){
-  var bd=hd.nextElementSibling;
-  var isOpen=hd.classList.contains('open');
-  document.querySelectorAll('.dr-grp-hd').forEach(function(h){h.classList.remove('open');h.nextElementSibling.style.display='none';});
-  if(!isOpen){hd.classList.add('open');bd.style.display='block';}
-}
 </script>
 
 
@@ -5151,45 +4485,5 @@ function togDrGrp(hd){
   </div>
   <button id="share-fab-btn" title="Compartilhar" aria-label="Compartilhar página" onclick="document.getElementById('share-fab-menu').classList.toggle('open')">📤</button>
 </div>
-
-<script>
-function openDrawer(){
-  document.getElementById('drawer').classList.add('on');
-  document.getElementById('drawer-overlay').classList.add('on');
-  var b=document.getElementById('burger-btn');if(b)b.classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeDrawer(){
-  document.getElementById('drawer').classList.remove('on');
-  document.getElementById('drawer-overlay').classList.remove('on');
-  var b=document.getElementById('burger-btn');if(b)b.classList.remove('open');
-  document.body.style.overflow='';
-}
-function togDrGrp(hd){
-  var bd=hd.nextElementSibling;
-  var isOpen=hd.classList.contains('open');
-  document.querySelectorAll('.dr-grp-hd.open').forEach(function(h){
-    h.classList.remove('open');h.nextElementSibling.classList.remove('open');
-  });
-  if(!isOpen){hd.classList.add('open');bd.classList.add('open');}
-}
-function drNav(url,target){
-  closeDrawer();
-  if(target==='_blank'){window.open(url,'_blank');return;}
-  if(target==='_pix'){
-    var m=document.getElementById('modal-doacao');
-    if(m){setTimeout(function(){m.style.display='flex';},300);}
-    return;
-  }
-  // If same-site SPA navigation
-  if(url.startsWith('/#')){
-    var sec=url.replace('/#','');
-    if(typeof navGoTo==='function'){setTimeout(function(){navGoTo(sec);},300);return;}
-  }
-  setTimeout(function(){window.location.href=url;},300);
-}
-// close on escape key
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeDrawer();});
-</script>
 </body>
 </html>
