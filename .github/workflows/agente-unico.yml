@@ -1,0 +1,93 @@
+name: Agente Único — Publicação Diária
+
+# ─────────────────────────────────────────────────────────────────────────────
+# HORÁRIOS (horário de Brasília = UTC-3)
+#   Seg a Sex: 07h e 13h  →  2 execuções × 5 posts = 10 posts/dia
+#   Sábado:    08h         →  1 execução  × 5 posts
+#   Domingo:   sem execução
+# ─────────────────────────────────────────────────────────────────────────────
+on:
+  schedule:
+    - cron: '0 10 * * 1-5'   # 07h Brasília — seg a sex
+    - cron: '0 16 * * 1-5'   # 13h Brasília — seg a sex
+    - cron: '0 11 * * 6'     # 08h Brasília — sábado
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repositório
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências
+        run: pip install requests python-slugify urllib3
+
+      - name: Verificar secrets
+        run: |
+          echo "=== SECRETS ==="
+          ALGUMA=""
+          [ -n "$GEMINI_API_KEY" ]     && echo "✅ GEMINI_API_KEY (${#GEMINI_API_KEY} chars)"     && ALGUMA=1 || echo "-- GEMINI_API_KEY ausente"
+          [ -n "$GROQ_API_KEY" ]       && echo "✅ GROQ_API_KEY (${#GROQ_API_KEY} chars)"         && ALGUMA=1 || echo "-- GROQ_API_KEY ausente"
+          [ -n "$GLM_API_KEY" ]        && echo "✅ GLM_API_KEY (${#GLM_API_KEY} chars)"           && ALGUMA=1 || echo "-- GLM_API_KEY ausente"
+          [ -n "$QWEN_API_KEY" ]       && echo "✅ QWEN_API_KEY (${#QWEN_API_KEY} chars)"         && ALGUMA=1 || echo "-- QWEN_API_KEY ausente"
+          [ -n "$GROK_API_KEY" ]       && echo "✅ GROK_API_KEY (${#GROK_API_KEY} chars)"         && ALGUMA=1 || echo "-- GROK_API_KEY ausente"
+          [ -n "$OPENROUTER_API_KEY" ] && echo "✅ OPENROUTER_API_KEY (${#OPENROUTER_API_KEY} chars)" && ALGUMA=1 || echo "-- OPENROUTER_API_KEY ausente"
+          [ -n "$UNSPLASH_ACCESS_KEY" ] && echo "✅ UNSPLASH_ACCESS_KEY" || echo "⚠️  UNSPLASH_ACCESS_KEY ausente"
+          [ -z "$ALGUMA" ] && echo "❌ ERRO: nenhuma API de LLM configurada" && exit 1 || echo "✅ APIs OK"
+        env:
+          GEMINI_API_KEY:      ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY:        ${{ secrets.GROQ_API_KEY }}
+          GLM_API_KEY:         ${{ secrets.GLM_API_KEY }}
+          QWEN_API_KEY:        ${{ secrets.QWEN_API_KEY }}
+          GROK_API_KEY:        ${{ secrets.GROK_API_KEY }}
+          OPENROUTER_API_KEY:  ${{ secrets.OPENROUTER_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+
+      - name: Rodar agente
+        run: python scripts/gerar_posts.py
+        env:
+          GEMINI_API_KEY:      ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY:        ${{ secrets.GROQ_API_KEY }}
+          GLM_API_KEY:         ${{ secrets.GLM_API_KEY }}
+          QWEN_API_KEY:        ${{ secrets.QWEN_API_KEY }}
+          GROK_API_KEY:        ${{ secrets.GROK_API_KEY }}
+          OPENROUTER_API_KEY:  ${{ secrets.OPENROUTER_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+          PYTHONPATH: scripts/agentes
+
+      - name: Commit e push
+        run: |
+          git config user.name "CalculaPrazo Bot"
+          git config user.email "bot@calculaprazo.com.br"
+
+          # Adiciona apenas os arquivos gerados pelo agente
+          git add blog/ data/posts.json sitemap.xml
+
+          # Se não houver nada novo, encerra sem erro
+          if git diff --staged --quiet; then
+            echo "Nada para commitar."
+            exit 0
+          fi
+
+          # Faz o commit
+          git commit -m "conteudo: agente-unico $(date +%d/%m/%Y-%H:%M)"
+
+          # Sincroniza com o remoto antes de empurrar
+          # --strategy-option theirs: em caso de conflito, mantém os arquivos locais (os novos posts)
+          git fetch origin main
+          git merge origin/main --no-edit --strategy-option=theirs || true
+
+          # Push final
+          git push origin main

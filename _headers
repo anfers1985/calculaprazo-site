@@ -1,0 +1,46 @@
+# Cloudflare Pages — cabeçalhos HTTP
+
+# ads.txt — servido como texto puro, sem cache longo
+/ads.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=86400
+
+# robots.txt
+/robots.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=86400
+
+# sitemap.xml
+/sitemap.xml
+  Content-Type: application/xml; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+# Segurança geral
+/*
+  X-Content-Type-Options: nosniff
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://adservice.google.com https://www.googletagservices.com https://partner.googleadservices.com https://tpc.googlesyndication.com; img-src 'self' data: https: blob:; style-src 'self' 'unsafe-inline'; connect-src 'self' https://api.bcb.gov.br https://economia.awesomeapi.com.br https://api.github.com https://www.googleapis.com https://api.web3forms.com; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com;
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# ============================================================
+# ADSTERRA — ativar APÓS aprovação do Google AdSense
+# Para ativar: descomentar as linhas abaixo e substituir o
+# Content-Security-Policy acima pelo bloco comentado.
+#
+# CSP com Adsterra (script-src adicional):
+#   https://a.adtng.com https://cdn.adtng.com https://social.adtng.com
+# frame-src adicional:
+#   https://a.adtng.com
+#
+# Placement IDs Adsterra para referência:
+#   Popunder:      29166364  (NÃO usar com AdSense)
+#   Native Banner: 29166365
+#   Smartlink:     29166366  (NÃO usar com AdSense)
+#   Social Bar:    29166367  (usar com cautela)
+#   Banner 468x60: 29166368
+#   Banner 160x300:29166369
+#   Banner 320x50: 29166370
+#   Banner 300x250:29166371
+#   Banner 160x600:29166372
+#   Banner 728x90: 29166373
+# ============================================================

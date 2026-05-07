@@ -1,0 +1,26 @@
+# Cloudflare Pages — regras de roteamento Calcula Prazo
+
+# Painel administrativo
+/admin            /admin/index.html        200
+/admin/           /admin/index.html        200
+
+# Páginas estáticas com arquivo HTML real
+/sobre            /sobre/index.html        200
+/sobre/           /sobre/index.html        200
+/privacidade      /privacidade/index.html  200
+/privacidade/     /privacidade/index.html  200
+/termos           /termos/index.html       200
+/termos/          /termos/index.html       200
+/contato          /contato/index.html      200
+/contato/         /contato/index.html      200
+/conteudo         /conteudo/index.html     200
+/conteudo/        /conteudo/index.html     200
+
+# Redirect 301 — slug duplicado corrigido (deve vir antes do fallback)
+/blog/fim-da-escala-6x1-ccj-da-cmara-aprova-pec-e-debate-avana-no-congresso /blog/fim-da-escala-6x1-ccj-da-camara-aprova-pec-e-debate-avanca-no-congresso 301
+
+# Blog posts (arquivos HTML reais)
+/blog/*           /blog/:splat             200
+
+# SPA fallback — todas as outras rotas vão para index.html
+/*                /index.html              200
