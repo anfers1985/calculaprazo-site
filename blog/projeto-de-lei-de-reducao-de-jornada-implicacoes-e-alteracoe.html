@@ -14,6 +14,8 @@
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="Calcula Prazo">
 <meta property="og:image" content="https://images.unsplash.com/photo-1637166163357-5bfe39327688?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY0Mjk0MDd8&ixlib=rb-4.1.0&q=80&w=1080">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Article","headline":"Projeto de Lei de Redução de Jornada: Implicações e Alterações","description":"O projeto de lei que visa reduzir a jornada de trabalho sem redução salarial traz mudanças significativas para o mercado de trabalho brasileiro.","url":"https://calculaprazo.com.br/blog/projeto-de-lei-de-reducao-de-jornada-implicacoes-e-alteracoe","author":{"@type":"Person","name":"Anderson Fernandes","url":"https://calculaprazo.com.br/sobre"},"publisher":{"@type":"Organization","name":"Calcula Prazo","url":"https://calculaprazo.com.br","logo":{"@type":"ImageObject","url":"https://calculaprazo.com.br/og-image.png"}},"datePublished":"2026-04-17","dateModified":"2026-04-17","inLanguage":"pt-BR","mainEntityOfPage":{"@type":"WebPage","@id":"https://calculaprazo.com.br/blog/projeto-de-lei-de-reducao-de-jornada-implicacoes-e-alteracoe"},"image":"https://images.unsplash.com/photo-1637166163357-5bfe39327688?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY0Mjk0MDd8&ixlib=rb-4.1.0&q=80&w=1080"}
 </script>
@@ -1107,6 +1109,68 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 ins.adsbygoogle:not([data-ad-status="filled"]) { min-height: 0 !important; }
 ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !important; }
 </style>
+<style id="drawer-css">
+/* ── DRAWER GLOBAL ── */
+#drawer-overlay{position:fixed;inset:0;background:rgba(13,43,90,.48);z-index:1100;opacity:0;pointer-events:none;transition:opacity .25s;}
+#drawer-overlay.on{opacity:1;pointer-events:all;}
+#drawer{position:fixed;top:0;left:0;bottom:0;width:296px;max-width:88vw;background:#fff;z-index:1200;
+  transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+  overflow-y:auto;display:flex;flex-direction:column;
+  box-shadow:6px 0 40px rgba(13,43,90,.18);}
+#drawer.on{transform:translateX(0);}
+.dr-hd{background:#0D2B5A;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;
+  border-left:4px solid #1E88E5;flex-shrink:0;}
+.dr-logo{display:flex;align-items:center;gap:10px;}
+.dr-logo-ic{width:34px;height:34px;background:#1E88E5;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;color:#fff;font-size:.95rem;flex-shrink:0;border:2px solid rgba(255,255,255,.2);}
+.dr-logo-name{font-weight:900;font-size:.92rem;color:#fff;line-height:1.15;letter-spacing:-.2px;}
+.dr-logo-sub{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+  color:rgba(255,255,255,.45);margin-top:2px;}
+.dr-x{background:none;border:none;color:rgba(255,255,255,.55);font-size:1rem;cursor:pointer;
+  padding:5px 8px;border-radius:6px;line-height:1;transition:all .15s;}
+.dr-x:hover{color:#fff;background:rgba(255,255,255,.12);}
+.dr-bd{flex:1;padding:6px 0 16px;}
+.dr-sec{font-size:.6rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;
+  color:#6B84AA;padding:14px 16px 5px;margin-top:4px;}
+.dr-item{display:flex;align-items:center;gap:10px;padding:9px 16px;font-size:.82rem;font-weight:600;
+  color:#0D2B5A;cursor:pointer;border-left:3px solid transparent;transition:all .15s;
+  text-decoration:none;background:none;border-top:none;border-right:none;border-bottom:none;
+  width:100%;text-align:left;font-family:inherit;}
+.dr-item:hover,.dr-item.active{color:#1E88E5;background:#F0F7FF;border-left-color:#1E88E5;}
+.dr-item .dr-ic{font-size:.85rem;width:18px;text-align:center;flex-shrink:0;}
+.dr-badge{margin-left:auto;background:#DBEEFF;color:#0D2B5A;font-size:.6rem;font-weight:800;
+  padding:1px 7px;border-radius:999px;flex-shrink:0;}
+.dr-badge.red{background:#FF0000;color:#fff;}
+.dr-grp-hd{display:flex;align-items:center;gap:10px;padding:9px 16px;font-size:.82rem;font-weight:700;
+  color:#0D2B5A;cursor:pointer;border-left:3px solid transparent;transition:all .15s;
+  user-select:none;}
+.dr-grp-hd:hover,.dr-grp-hd.open{color:#1E88E5;background:#F0F7FF;border-left-color:#1E88E5;}
+.dr-grp-hd .dr-ic{font-size:.85rem;width:18px;text-align:center;flex-shrink:0;}
+.dr-arr{margin-left:auto;font-size:.6rem;color:#6B84AA;transition:transform .2s;flex-shrink:0;}
+.dr-grp-hd.open .dr-arr{transform:rotate(90deg);}
+.dr-grp-bd{background:#F8FBFF;border-bottom:1px solid #EBF3FD;display:none;}
+.dr-grp-bd.open{display:block;}
+.dr-sub{display:block;width:100%;padding:7px 16px 7px 44px;background:none;border:none;
+  text-align:left;font-size:.78rem;color:#3B5A8A;cursor:pointer;font-family:inherit;
+  border-left:3px solid transparent;transition:all .12s;}
+.dr-sub:hover{color:#1E88E5;background:#EFF7FF;border-left-color:#1E88E5;}
+.dr-outros{display:block;width:100%;padding:5px 16px 10px 44px;background:none;border:none;
+  text-align:left;font-size:.73rem;color:#1E88E5;font-weight:700;cursor:pointer;font-family:inherit;
+  opacity:.8;}
+.dr-outros:hover{opacity:1;}
+.dr-divider{height:1px;background:#EBF3FD;margin:4px 0;}
+/* burger button */
+.burger-btn{background:none;border:none;cursor:pointer;padding:6px;display:flex;flex-direction:column;
+  gap:5px;align-items:center;width:36px;height:36px;justify-content:center;border-radius:8px;
+  transition:background .15s;flex-shrink:0;}
+.burger-btn:hover{background:#F0F7FF;}
+.burger-btn span{display:block;width:18px;height:2px;background:#0D2B5A;border-radius:2px;transition:all .25s;}
+.burger-btn.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.burger-btn.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.burger-btn.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+</style>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1637166163357-5bfe39327688?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY0Mjk0MDd8&ixlib=rb-4.1.0&q=80&w=1080">
 </head>
 <body>
 
@@ -1121,6 +1185,181 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   
 </div>
 
+
+<div>
+        <div class="dr-logo-name">Calcula Prazo</div>
+        <div class="dr-logo-sub">Ferramentas Jurídicas</div>
+      </div>
+    </div>
+    <button class="dr-x" onclick="closeDrawer()" aria-label="Fechar menu">✕</button>
+  </div>
+  <div class="dr-bd">
+    <button class="dr-item active" onclick="drNav('/')"><span class="dr-ic">🏠</span> Início</button>
+    <button class="dr-item" onclick="drNav('/#calculadora-de-prazo-processual')"><span class="dr-ic">⚡</span> Calculadora de Prazos</button>
+    <div class="dr-sec">Ferramentas</div>
+    <button class="dr-item" onclick="drNav('/#correcao')"><span class="dr-ic">💰</span> Correção Monetária</button>
+    <button class="dr-item" onclick="drNav('/#juros')"><span class="dr-ic">📈</span> Juros</button>
+    <button class="dr-item" onclick="drNav('/#trabalhista')"><span class="dr-ic">⚖️</span> Verbas Trabalhistas</button>
+    <button class="dr-item" onclick="drNav('/#salario')"><span class="dr-ic">💵</span> Salário Líquido</button>
+    <button class="dr-item" onclick="drNav('/#porcentagem')"><span class="dr-ic">🧮</span> Porcentagem</button>
+    <button class="dr-item" onclick="drNav('/#moedas')"><span class="dr-ic">💱</span> Conversor de Moedas</button>
+    <button class="dr-item" onclick="drNav('/#datas')"><span class="dr-ic">📅</span> Operações com Datas</button>
+    <button class="dr-item" onclick="drNav('/#valid')"><span class="dr-ic">🪪</span> Validador CPF/CNPJ</button>
+    <button class="dr-item" onclick="drNav('/#qrcode')"><span class="dr-ic">📱</span> Gerador de QR Code</button>
+    <button class="dr-item" onclick="drNav('/#senhas')"><span class="dr-ic">🔐</span> Gerador de Senhas</button>
+    <button class="dr-item" onclick="drNav('/#extenso')"><span class="dr-ic">🔢</span> Número por Extenso</button>
+    <button class="dr-item" onclick="drNav('/#imc')"><span class="dr-ic">🏃</span> Calculadora de IMC</button>
+    <div class="dr-sec">Conteúdo Jurídico</div>
+    <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="dr-ic">⚖️</span> Jurisprudência <span class="dr-arr">›</span></div>
+    <div class="dr-grp-bd">
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=tst')">TST — Tribunal Superior do Trabalho</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=stf')">STF — Supremo Tribunal Federal</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=trts')">TRTs — Tribunais Regionais do Trabalho</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=sdi')">SDI-1 e SDI-2</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=sumulas')">OJs e Súmulas</button>
+      <button class="dr-outros" onclick="drNav('/conteudo')">+ Outros temas de jurisprudência</button>
+    </div>
+    <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="dr-ic">🏛️</span> Órgãos Públicos <span class="dr-arr">›</span></div>
+    <div class="dr-grp-bd">
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=noticias-mte')">MTE — Ministério do Trabalho e Emprego</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=noticias-mpt')">MPT — Ministério Público do Trabalho</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=csjt')">CSJT — Conselho Superior da JT</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=anpt')">ANPT — Associação Nacional do MPT</button>
+      <button class="dr-outros" onclick="drNav('/conteudo')">+ Outros órgãos e entidades</button>
+    </div>
+    <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="dr-ic">📋</span> Legislação e Normas <span class="dr-arr">›</span></div>
+    <div class="dr-grp-bd">
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=clt')">CLT e Leis Trabalhistas</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=esocial-fgts-digital')">eSocial</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=esocial-fgts-digital')">FGTS Digital</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=nr-sst')">NRs — Saúde e Segurança do Trabalho</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=sindical')">Relações Sindicais</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=portarias')">Portarias e Instruções Normativas</button>
+      <button class="dr-outros" onclick="drNav('/conteudo')">+ Outras normas e regulamentos</button>
+    </div>
+    <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="dr-ic">👥</span> RH e Gestão de Pessoas <span class="dr-arr">›</span></div>
+    <div class="dr-grp-bd">
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=folha-pagamento')">Folha de Pagamento e INSS</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=jornada')">Jornada de Trabalho e Banco de Horas</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=rescisao')">Rescisão e Verbas Trabalhistas</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=sst')">Saúde e Segurança do Trabalho</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=home-office')">Trabalho Remoto e Regime Híbrido</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=beneficios')">Benefícios e Remuneração</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=admissao')">Recrutamento, Admissão e CTPS</button>
+      <button class="dr-outros" onclick="drNav('/conteudo')">+ Outros temas de RH</button>
+    </div>
+    <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="dr-ic">📄</span> Recursos e Modelos <span class="dr-arr">›</span></div>
+    <div class="dr-grp-bd">
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=modelos')">Modelos de Petições e Peças</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=contratos')">Contratos e Acordos</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=checklists')">Checklists e Roteiros</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=artigos')">Artigos Jurídicos</button>
+      <button class="dr-outros" onclick="drNav('/conteudo')">+ Outros modelos e templates</button>
+    </div>
+    <div class="dr-divider"></div>
+    <button class="dr-item" onclick="drNav('https://www.youtube.com/@CalculaPrazo','_blank')">
+      <span class="dr-ic">▶️</span> Canal no YouTube <span class="dr-badge red">Novo</span>
+    </button>
+    <button class="dr-item" onclick="drNav('/conteudo')">
+      <span class="dr-ic">📰</span> Todos os artigos <span class="dr-badge" id="dr-total-badge">—</span>
+    </button>
+    <div class="dr-sec">Site</div>
+    <button class="dr-item" onclick="drNav('/sobre')"><span class="dr-ic">ℹ️</span> Sobre o Calcula Prazo</button>
+    <button class="dr-item" onclick="drNav('/contato')"><span class="dr-ic">✉️</span> Contato</button>
+    <button class="dr-item" onclick="drNav('','_pix')"><span class="dr-ic">☕</span> Apoie via Pix</button>
+  </div>
+</div>
+
+<!-- DRAWER OVERLAY -->
+<div id="drawer-overlay" onclick="closeDrawer()"></div>
+<!-- DRAWER -->
+<div id="drawer">
+  <div class="dr-hd">
+    <div class="dr-logo">
+      <div class="dr-logo-ic">⚖</div>
+      <div>
+        <div class="dr-logo-name">Calcula Prazo</div>
+        <div class="dr-logo-sub">Ferramentas Jurídicas</div>
+      </div>
+    </div>
+    <button class="dr-x" onclick="closeDrawer()" aria-label="Fechar menu">✕</button>
+  </div>
+  <div class="dr-bd">
+    <button class="dr-item active" onclick="drNav('/')"><span class="dr-ic">🏠</span> Início</button>
+    <button class="dr-item" onclick="drNav('/#calculadora-de-prazo-processual')"><span class="dr-ic">⚡</span> Calculadora de Prazos</button>
+    <div class="dr-sec">Ferramentas</div>
+    <button class="dr-item" onclick="drNav('/#correcao')"><span class="dr-ic">💰</span> Correção Monetária</button>
+    <button class="dr-item" onclick="drNav('/#juros')"><span class="dr-ic">📈</span> Juros</button>
+    <button class="dr-item" onclick="drNav('/#trabalhista')"><span class="dr-ic">⚖️</span> Verbas Trabalhistas</button>
+    <button class="dr-item" onclick="drNav('/#salario')"><span class="dr-ic">💵</span> Salário Líquido</button>
+    <button class="dr-item" onclick="drNav('/#porcentagem')"><span class="dr-ic">🧮</span> Porcentagem</button>
+    <button class="dr-item" onclick="drNav('/#moedas')"><span class="dr-ic">💱</span> Conversor de Moedas</button>
+    <button class="dr-item" onclick="drNav('/#datas')"><span class="dr-ic">📅</span> Operações com Datas</button>
+    <button class="dr-item" onclick="drNav('/#valid')"><span class="dr-ic">🪪</span> Validador CPF/CNPJ</button>
+    <button class="dr-item" onclick="drNav('/#qrcode')"><span class="dr-ic">📱</span> Gerador de QR Code</button>
+    <button class="dr-item" onclick="drNav('/#senhas')"><span class="dr-ic">🔐</span> Gerador de Senhas</button>
+    <button class="dr-item" onclick="drNav('/#extenso')"><span class="dr-ic">🔢</span> Número por Extenso</button>
+    <button class="dr-item" onclick="drNav('/#imc')"><span class="dr-ic">🏃</span> Calculadora de IMC</button>
+    <div class="dr-sec">Conteúdo Jurídico</div>
+    <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="dr-ic">⚖️</span> Jurisprudência <span class="dr-arr">›</span></div>
+    <div class="dr-grp-bd">
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=tst')">TST — Tribunal Superior do Trabalho</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=stf')">STF — Supremo Tribunal Federal</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=trts')">TRTs — Tribunais Regionais do Trabalho</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=sdi')">SDI-1 e SDI-2</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=sumulas')">OJs e Súmulas</button>
+      <button class="dr-outros" onclick="drNav('/conteudo')">+ Outros temas de jurisprudência</button>
+    </div>
+    <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="dr-ic">🏛️</span> Órgãos Públicos <span class="dr-arr">›</span></div>
+    <div class="dr-grp-bd">
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=noticias-mte')">MTE — Ministério do Trabalho e Emprego</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=noticias-mpt')">MPT — Ministério Público do Trabalho</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=csjt')">CSJT — Conselho Superior da JT</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=anpt')">ANPT — Associação Nacional do MPT</button>
+      <button class="dr-outros" onclick="drNav('/conteudo')">+ Outros órgãos e entidades</button>
+    </div>
+    <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="dr-ic">📋</span> Legislação e Normas <span class="dr-arr">›</span></div>
+    <div class="dr-grp-bd">
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=clt')">CLT e Leis Trabalhistas</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=esocial-fgts-digital')">eSocial</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=esocial-fgts-digital')">FGTS Digital</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=nr-sst')">NRs — Saúde e Segurança do Trabalho</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=sindical')">Relações Sindicais</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=portarias')">Portarias e Instruções Normativas</button>
+      <button class="dr-outros" onclick="drNav('/conteudo')">+ Outras normas e regulamentos</button>
+    </div>
+    <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="dr-ic">👥</span> RH e Gestão de Pessoas <span class="dr-arr">›</span></div>
+    <div class="dr-grp-bd">
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=folha-pagamento')">Folha de Pagamento e INSS</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=jornada')">Jornada de Trabalho e Banco de Horas</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=rescisao')">Rescisão e Verbas Trabalhistas</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=sst')">Saúde e Segurança do Trabalho</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=home-office')">Trabalho Remoto e Regime Híbrido</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=beneficios')">Benefícios e Remuneração</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=admissao')">Recrutamento, Admissão e CTPS</button>
+      <button class="dr-outros" onclick="drNav('/conteudo')">+ Outros temas de RH</button>
+    </div>
+    <div class="dr-grp-hd" onclick="togDrGrp(this)"><span class="dr-ic">📄</span> Recursos e Modelos <span class="dr-arr">›</span></div>
+    <div class="dr-grp-bd">
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=modelos')">Modelos de Petições e Peças</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=contratos')">Contratos e Acordos</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=checklists')">Checklists e Roteiros</button>
+      <button class="dr-sub" onclick="drNav('/conteudo?cat=artigos')">Artigos Jurídicos</button>
+      <button class="dr-outros" onclick="drNav('/conteudo')">+ Outros modelos e templates</button>
+    </div>
+    <div class="dr-divider"></div>
+    <button class="dr-item" onclick="drNav('https://www.youtube.com/@CalculaPrazo','_blank')">
+      <span class="dr-ic">▶️</span> Canal no YouTube <span class="dr-badge red">Novo</span>
+    </button>
+    <button class="dr-item" onclick="drNav('/conteudo')">
+      <span class="dr-ic">📰</span> Todos os artigos <span class="dr-badge" id="dr-total-badge">—</span>
+    </button>
+    <div class="dr-sec">Site</div>
+    <button class="dr-item" onclick="drNav('/sobre')"><span class="dr-ic">ℹ️</span> Sobre o Calcula Prazo</button>
+    <button class="dr-item" onclick="drNav('/contato')"><span class="dr-ic">✉️</span> Contato</button>
+    <button class="dr-item" onclick="drNav('','_pix')"><span class="dr-ic">☕</span> Apoie via Pix</button>
+  </div>
+</div>
 
 <header id="hdr">
   <div class="hdr-inner">
@@ -1532,5 +1771,44 @@ document.addEventListener('DOMContentLoaded', function() {
 if (document.readyState !== 'loading') loadRelated();
 </script>
 
+<script>
+function openDrawer(){
+  document.getElementById('drawer').classList.add('on');
+  document.getElementById('drawer-overlay').classList.add('on');
+  var b=document.getElementById('burger-btn');if(b)b.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('on');
+  document.getElementById('drawer-overlay').classList.remove('on');
+  var b=document.getElementById('burger-btn');if(b)b.classList.remove('open');
+  document.body.style.overflow='';
+}
+function togDrGrp(hd){
+  var bd=hd.nextElementSibling;
+  var isOpen=hd.classList.contains('open');
+  document.querySelectorAll('.dr-grp-hd.open').forEach(function(h){
+    h.classList.remove('open');h.nextElementSibling.classList.remove('open');
+  });
+  if(!isOpen){hd.classList.add('open');bd.classList.add('open');}
+}
+function drNav(url,target){
+  closeDrawer();
+  if(target==='_blank'){window.open(url,'_blank');return;}
+  if(target==='_pix'){
+    var m=document.getElementById('modal-doacao');
+    if(m){setTimeout(function(){m.style.display='flex';},300);}
+    return;
+  }
+  // If same-site SPA navigation
+  if(url.startsWith('/#')){
+    var sec=url.replace('/#','');
+    if(typeof navGoTo==='function'){setTimeout(function(){navGoTo(sec);},300);return;}
+  }
+  setTimeout(function(){window.location.href=url;},300);
+}
+// close on escape key
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeDrawer();});
+</script>
 </body>
 </html>

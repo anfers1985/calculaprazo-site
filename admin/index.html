@@ -122,6 +122,13 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
   .main{margin-left:0;padding:16px;}
   .fg-row{grid-template-columns:1fr;}
 }
+
+.cat-chip{padding:5px 12px;border-radius:999px;font-size:.75rem;font-weight:700;
+  border:1.5px solid #BAD6F0;background:#F0F7FF;color:#3B5A8A;cursor:pointer;
+  transition:all .15s;font-family:inherit;}
+.cat-chip.on{background:#1E88E5;border-color:#1565C0;color:#fff;}
+.cat-chip:hover{border-color:#1E88E5;color:#1E88E5;}
+.cat-chip.on:hover{background:#1565C0;}
 </style>
 </head>
 <body>
@@ -193,21 +200,26 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
         <div class="fg-row">
           <div class="fg"><label>URL Amigável (Slug)</label><input type="text" id="f-slug" placeholder="como-calcular-prazos-processuais"></div>
           <div class="fg">
-            <label>Categoria</label>
-            <select id="f-cat">
-              <option value="jurisprudencia-tst">Jurisprudência TST</option>
-              <option value="jurisprudencia-trts">Jurisprudência TRTs</option>
-              <option value="noticias-mte-mpt">MTE & MPT</option>
-              <option value="legislacao-normas">Legislação e Normas</option>
-              <option value="esocial-fgts-digital">eSocial e FGTS Digital</option>
-              <option value="orientacoes-praticas">Orientações Práticas RH</option>
-              <option value="saude-seguranca">Saúde e Segurança</option>
-              <option value="sindical">Sindical</option>
-              <option value="jurisprudencia">Jurisprudência</option>
-              <option value="modelos">Modelos</option>
-              <option value="artigos">Artigos</option>
-              <option value="geral">Geral</option>
-            </select>
+            <label>Categorias <span style="font-size:.68rem;font-weight:500;color:#6B84AA;">(selecione uma ou mais)</span></label>
+            <input type="hidden" id="f-cat">
+            <div id="cat-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">
+              <button type="button" class="cat-chip" data-val="tst" onclick="togCatChip(this)">TST</button>
+              <button type="button" class="cat-chip" data-val="stf" onclick="togCatChip(this)">STF</button>
+              <button type="button" class="cat-chip" data-val="trts" onclick="togCatChip(this)">TRTs</button>
+              <button type="button" class="cat-chip" data-val="sdi" onclick="togCatChip(this)">SDI-1/SDI-2</button>
+              <button type="button" class="cat-chip" data-val="jurisprudencia-tst" onclick="togCatChip(this)">Jurisprudência TST</button>
+              <button type="button" class="cat-chip" data-val="clt" onclick="togCatChip(this)">CLT e Leis</button>
+              <button type="button" class="cat-chip" data-val="esocial-fgts-digital" onclick="togCatChip(this)">eSocial / FGTS Digital</button>
+              <button type="button" class="cat-chip" data-val="nr-sst" onclick="togCatChip(this)">NRs/SST</button>
+              <button type="button" class="cat-chip" data-val="sindical" onclick="togCatChip(this)">Sindical</button>
+              <button type="button" class="cat-chip" data-val="folha-pagamento" onclick="togCatChip(this)">Folha de Pagamento</button>
+              <button type="button" class="cat-chip" data-val="jornada" onclick="togCatChip(this)">Jornada</button>
+              <button type="button" class="cat-chip" data-val="rescisao" onclick="togCatChip(this)">Rescisão</button>
+              <button type="button" class="cat-chip" data-val="sst" onclick="togCatChip(this)">SST</button>
+              <button type="button" class="cat-chip" data-val="modelos" onclick="togCatChip(this)">Modelos</button>
+              <button type="button" class="cat-chip" data-val="artigos" onclick="togCatChip(this)">Artigos</button>
+              <button type="button" class="cat-chip" data-val="geral" onclick="togCatChip(this)">Geral</button>
+            </div>
           </div>
         </div>
         <div class="fg">
@@ -225,7 +237,32 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
           <p style="font-size:.72rem;color:var(--txt-s);margin-top:4px;">Aparecem como badges coloridas no post.</p>
         </div>
         <img id="img-preview-el" class="img-preview">
-        
+
+        <!-- ══ FONTES MTE & MPT (separadas) ══ -->
+        <div style="background:#EFF8FF;border:1.5px solid #BAE0FF;border-radius:12px;padding:18px;margin:16px 0;display:grid;grid-template-columns:1fr 1fr;gap:16px;" id="mte-mpt-section">
+          <div style="grid-column:1/-1;display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+            <span style="font-size:1rem;">🏛️</span>
+            <span style="font-weight:800;font-size:.88rem;color:#0D2B5A;">Fontes Oficiais — MTE e MPT</span>
+            <span style="font-size:.72rem;color:#3B5A8A;margin-left:4px;">(preencha apenas se aplicável)</span>
+          </div>
+          <div class="fg" style="margin:0;">
+            <label style="font-size:.75rem;font-weight:700;color:#1565C0;">🔵 MTE — URL da Fonte</label>
+            <input type="text" id="f-mte-url" placeholder="https://www.gov.br/trabalho/...">
+          </div>
+          <div class="fg" style="margin:0;">
+            <label style="font-size:.75rem;font-weight:700;color:#1565C0;">🔵 MTE — Título para Citação</label>
+            <input type="text" id="f-mte-title" placeholder="Ex: Portaria MTE nº 671/2021">
+          </div>
+          <div class="fg" style="margin:0;">
+            <label style="font-size:.75rem;font-weight:700;color:#0F7B3E;">🟢 MPT — URL da Fonte</label>
+            <input type="text" id="f-mpt-url" placeholder="https://mpt.mp.br/...">
+          </div>
+          <div class="fg" style="margin:0;">
+            <label style="font-size:.75rem;font-weight:700;color:#0F7B3E;">🟢 MPT — Título para Citação</label>
+            <input type="text" id="f-mpt-title" placeholder="Ex: Nota Técnica MPT 2025">
+          </div>
+        </div>
+
         <div class="fg" style="margin-top:16px;">
           <label>Conteúdo (Markdown/HTML)</label>
           <div class="editor-toolbar">
@@ -253,7 +290,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
           <option value="">Todas as categorias</option>
           <option value="jurisprudencia-tst">TST</option>
           <option value="jurisprudencia-trts">TRTs</option>
-          <option value="noticias-mte-mpt">MTE & MPT</option>
+          <option value="noticias-mte">MTE — Ministério do Trabalho</option>
+          <option value="noticias-mpt">MPT — Ministério Público do Trabalho</option>
           <option value="legislacao-normas">Legislação</option>
           <option value="esocial-fgts-digital">eSocial</option>
           <option value="orientacoes-praticas">RH</option>
@@ -541,6 +579,24 @@ function getPosts(){
   try{ return JSON.parse(localStorage.getItem(POSTS_KEY)||'[]'); }
   catch(e){ return []; }
 }
+
+function togCatChip(btn){
+  btn.classList.toggle('on');
+  // update hidden input with all selected values joined by comma
+  var sel=[];
+  document.querySelectorAll('.cat-chip.on').forEach(function(b){sel.push(b.getAttribute('data-val'));});
+  document.getElementById('f-cat').value=sel.join(',');
+}
+function setCatChips(val){
+  document.querySelectorAll('.cat-chip').forEach(function(b){b.classList.remove('on');});
+  if(!val)return;
+  var vals=val.split(',').map(function(v){return v.trim();});
+  vals.forEach(function(v){
+    var c=document.querySelector('.cat-chip[data-val="'+v+'"]');
+    if(c)c.classList.add('on');
+  });
+  document.getElementById('f-cat').value=val;
+}
 function savePosts(arr){ localStorage.setItem(POSTS_KEY, JSON.stringify(arr)); }
 
 // ════════════════════════════════════════
@@ -646,11 +702,12 @@ function resetForm(){
   document.getElementById('edit-id').value='';
   document.getElementById('f-title').value='';
   document.getElementById('f-slug').value='';
-  document.getElementById('f-cat').value='geral';
+  setCatChips('geral');
   document.getElementById('f-excerpt').value='';
   document.getElementById('f-image').value='';
   document.getElementById('f-caption').value='';
   document.getElementById('f-tags').value='';
+  ['f-mte-url','f-mte-title','f-mpt-url','f-mpt-title'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('editor-area').value='';
   document.getElementById('img-preview-el').style.display='none';
   document.getElementById('exc-count').textContent='0';
@@ -667,6 +724,10 @@ function editPost(id){
   document.getElementById('f-slug').value=p.id;
   document.getElementById('f-cat').value=p.category;
   document.getElementById('f-tags').value=Array.isArray(p.tags)?p.tags.join(', '):(p.tags||'');
+  if(document.getElementById('f-mte-url')){document.getElementById('f-mte-url').value=(p.fontesMTE&&p.fontesMTE.url)||'';}
+  if(document.getElementById('f-mte-title')){document.getElementById('f-mte-title').value=(p.fontesMTE&&p.fontesMTE.titulo)||'';}
+  if(document.getElementById('f-mpt-url')){document.getElementById('f-mpt-url').value=(p.fontesMPT&&p.fontesMPT.url)||'';}
+  if(document.getElementById('f-mpt-title')){document.getElementById('f-mpt-title').value=(p.fontesMPT&&p.fontesMPT.titulo)||'';}
   document.getElementById('f-excerpt').value=p.excerpt;
   document.getElementById('f-image').value=p.image||'';
   document.getElementById('f-caption').value=p.imageCaption||'';
@@ -783,7 +844,11 @@ async function publicarNoSite() {
     const now = new Date().toISOString().split('T')[0];
     const tagsInput = document.getElementById('f-tags') ? document.getElementById('f-tags').value.trim() : '';
   const tags = tagsInput ? tagsInput.split(',').map(t=>t.trim()).filter(Boolean).slice(0,4) : [];
-  const post = { id: slug, title, category: cat, excerpt, image, imageCaption: caption, date: now, content, tags };
+  const mteUrl = (document.getElementById('f-mte-url')||{}).value||'';
+  const mteTitle = (document.getElementById('f-mte-title')||{}).value||'';
+  const mptUrl = (document.getElementById('f-mpt-url')||{}).value||'';
+  const mptTitle = (document.getElementById('f-mpt-title')||{}).value||'';
+  const post = { id: slug, title, category: cat, excerpt, image, imageCaption: caption, date: now, content, tags, ...(mteUrl&&{fontesMTE:{url:mteUrl,titulo:mteTitle}}), ...(mptUrl&&{fontesMPT:{url:mptUrl,titulo:mptTitle}}) };
 
     // 1. Gerar HTML do post
     toast('Gerando HTML do post...', 'ok');

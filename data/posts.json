@@ -1,5 +1,219 @@
 [
   {
+    "id": "fgts-processo-trabalhista-recolhimento-fgts-digital",
+    "title": "FGTS no processo trabalhista: como recolher do jeito certo?",
+    "category": "esocial-fgts-digital",
+    "category_label": "eSocial e FGTS Digital",
+    "excerpt": "Saiba como recolher FGTS em processo trabalhista no FGTS Digital, quando usar S-2500 e quais erros mais geram autuação e retrabalho.",
+    "image": "https://images.unsplash.com/photo-1593115057322-e94b77572f20?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-05",
+    "tags": [
+      "FGTS Digital"
+    ]
+  },
+  {
+    "id": "aprendizes-em-condomnios-tst-decide-que-cota-legal-no-se-aplica",
+    "title": "Aprendizes em condomínios: TST decide que cota legal não se aplica",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Entenda por que condomínios residenciais podem ficar fora da cota de aprendizes e quais cuidados empregadores devem ter para evitar autuações",
+    "image": "https://images.unsplash.com/photo-1700126689261-1f5bdfe5adcc?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-05",
+    "tags": []
+  },
+  {
+    "id": "folga-aos-domingos-uma-vez-por-mes",
+    "title": "Folga aos domingos uma vez por mês: está certo?",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Descubra se folga aos domingos uma vez por mês está certa, quando a lei permite e o que acontece se o domingo trabalhado não for compensado",
+    "image": "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-05",
+    "tags": [
+      "Trabalho aos Domingos",
+      "Descanso",
+      "RH"
+    ]
+  },
+  {
+    "id": "intervalo-intrajornada-pausa-hora-extra-reforma-trabalhista",
+    "title": "Intervalo intrajornada: a pausa que pode virar hora extra",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Entenda se a empresa pode reduzir seu intervalo intrajornada, quando a pausa gera hora extra e o que mudou com a Reforma Trabalhista.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/pessoas%20no%20trabalho%20conversando.png?raw=true",
+    "date": "2026-05-01",
+    "tags": [
+      "Intervalo intrajornada"
+    ]
+  },
+  {
+    "id": "assedio-moral-no-trabalho-como-provar",
+    "title": "Assédio moral no trabalho: como provar e reagir",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Entenda como provar assédio moral no trabalho, quais provas ajudam na Justiça e quando a empresa pode ser condenada a indenizar.",
+    "image": "https://images.unsplash.com/photo-1630091790659-85ec55570e0b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-01",
+    "tags": [
+      "Assédio no Trabalho",
+      "CLT"
+    ]
+  },
+  {
+    "id": "beneficios-trabalhistas-empresa-e-obrigada",
+    "title": "Benefícios trabalhistas: a empresa é obrigada a pagar?",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Entenda quais benefícios são obrigatórios, quando têm natureza salarial e o que a empresa pode ou não cortar sem violar a legislação trabalhista.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/caixa%20de%20beneficios.png?raw=true",
+    "date": "2026-05-01",
+    "tags": [
+      "Benefícios",
+      "Alimentação",
+      "Transporte"
+    ]
+  },
+  {
+    "id": "estabilidade-no-emprego-quem-tem-direito",
+    "title": "Estabilidade no emprego: quem tem esse direito?",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Saiba quem tem estabilidade no emprego, quando a dispensa é irregular e quais direitos podem ser exigidos em casos de gestação, acidente e CIPA.",
+    "image": "https://images.unsplash.com/photo-1546213290-e1b492ab3eee?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-01",
+    "tags": [
+      "Estabilidade no Emprego"
+    ]
+  },
+  {
+    "id": "justa-causa-isso-justifica-demissao",
+    "title": "Justa causa: isso realmente justifica sua demissão?",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Descubra quando a justa causa é legal, quais faltas realmente a justificam, como funciona a prova na Justiça e quando a demissão pode ser revertida.",
+    "image": "https://images.unsplash.com/photo-1633613286848-e6f43bbafb8d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-01",
+    "tags": [
+      "Demissão",
+      "Justa Causa",
+      "CLT"
+    ]
+  },
+  {
+    "id": "descontos-salariais-esse-desconto-e-legal",
+    "title": "Descontos salariais: esse desconto é mesmo legal?",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Entenda quais descontos no salário são legais, quais são abusivos e quando a empresa pode descontar danos causados pelo empregado.",
+    "image": "https://images.unsplash.com/photo-1626266061368-46a8f578ddd6?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-01",
+    "tags": [
+      "Salário",
+      "Descontos",
+      "CLT"
+    ]
+  },
+  {
+    "id": "1-maio-estudos-ipea-vida-trabalhador-hoje",
+    "title": "1º de Maio: estudos do Ipea e a vida do trabalhador hoje",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "No 1º de Maio, estudos do Ipea analisam redução da jornada 6x1, financiamento do transporte coletivo e políticas que podem melhorar a vida do trabalhador.",
+    "image": "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-01",
+    "tags": [
+      "Ipea",
+      "Agência Gov"
+    ]
+  },
+  {
+    "id": "calculadora-de-imc-online-peso-ideal-oms",
+    "title": "Calculadora de IMC Online: Saiba seu Peso Ideal Segundo a OMS",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Calcule seu Índice de Massa Corporal (IMC) gratuitamente. Entenda sua classificação de peso segundo a OMS e receba dicas para manter uma vida saudável.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/calculadora-imc.png?raw=true",
+    "date": "2026-05-01",
+    "tags": [
+      "Calculadora de IMC",
+      "Ferramentas"
+    ]
+  },
+  {
+    "id": "justa-causa-condutas-art-482-clt-gradacao-penalidades-advertencia-suspensao",
+    "title": "Justa Causa: condutas autorizadas pelo art. 482 da CLT, gradação de penalidades e riscos para a empresa",
+    "category": "orientacoes-praticas",
+    "category_label": "Orientações Práticas RH",
+    "excerpt": "Quais condutas autorizam justa causa? Como aplicar advertência e suspensão antes da dispensa? O que o TST exige como prova e quais os riscos de reversão judicial.",
+    "image": "https://images.unsplash.com/photo-1551836022-8b2858c9c69b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-01",
+    "tags": [
+      "Justa Causa",
+      "Dispensa",
+      "CLT",
+      "TST"
+    ]
+  },
+  {
+    "id": "horas-extras-banco-horas-percentuais-validade-acordo-compensacao-jornada",
+    "title": "Horas Extras e Banco de Horas: percentuais, validade dos acordos, compensação e controle de jornada",
+    "category": "orientacoes-praticas",
+    "category_label": "Orientações Práticas RH",
+    "excerpt": "50% ou 100%? Banco de horas por 6 ou 12 meses? O que a CLT, a Reforma Trabalhista e a Súmula 85 do TST dizem sobre horas extras e compensação de jornada.",
+    "image": "https://images.unsplash.com/photo-1619995743614-5608bea411b3?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-01",
+    "tags": [
+      "Horas Extras",
+      "Banco de Horas",
+      "Jornada de Trabalho",
+      "CLT"
+    ]
+  },
+  {
+    "id": "estabilidade-emprego-gestante-acidente-trabalho-cipa-stf-tst-normas-coletivas",
+    "title": "Estabilidade no Emprego: gestante, acidentado, CIPA, dirigente sindical e as controvérsias no STF e TST",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Quem não pode ser dispensado e por quê? Gestante, acidentado, cipeiro e dirigente sindical: regras, prazos e as controvérsias atuais no STF e TST em 2025 e 2026.",
+    "image": "https://plus.unsplash.com/premium_photo-1663013447756-f645cdec247d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-01",
+    "tags": [
+      "Estabilidade Provisória",
+      "Gestante",
+      "CIPA",
+      "Acidente de Trabalho"
+    ]
+  },
+  {
+    "id": "fgts-depositos-mensais-multa-40-hipoteses-saque-conferencia-extrato",
+    "title": "FGTS: depósitos mensais, multa de 40%, hipóteses de saque e como conferir seu extrato",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Tudo sobre FGTS: quem tem direito, o que integra a base de cálculo, quando sacar, como conferir depósitos e o que mudou com o FGTS Digital em 2024.",
+    "image": "https://images.unsplash.com/photo-1586430156076-4f400aeebef1?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-01",
+    "tags": [
+      "FGTS",
+      "Rescisão",
+      "Direitos Trabalhistas"
+    ]
+  },
+  {
+    "id": "inss-descontos-folha-pagamento-tabela-2026-base-calculo-beneficios",
+    "title": "INSS e descontos em folha: o que pode ser deduzido, tabela progressiva 2026 e impacto nos benefícios",
+    "category": "orientacoes-praticas",
+    "category_label": "Orientações Práticas RH",
+    "excerpt": "O que pode e o que não pode ser descontado em folha? Tabela progressiva do INSS 2026, base de cálculo e como cada desconto afeta seus benefícios futuros.",
+    "image": "https://images.unsplash.com/photo-1614526261628-295d39158f96?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-01",
+    "tags": [
+      "INSS",
+      "Folha de Pagamento",
+      "Previdência"
+    ]
+  },
+  {
     "id": "e-notariado-e-not-provas-como-usar-provas-digitais",
     "title": "e-Notariado e e-Not Provas: como usar na prática para coletar e autenticar provas digitais",
     "category": "geral",
@@ -614,7 +828,7 @@
       "Legislação"
     ],
     "excerpt": "O governo brasileiro encaminhou ao Congresso um projeto para reduzir a jornada de trabalho sem diminuição salarial. Essa mudança pode impactar significativamente a vida dos trabalhadores e a dinâmica das empresas.",
-    "image": "https://images.unsplash.com/photo-1587116987776-b097456d1bbf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY3MTQ3NTF8&ixlib=rb-4.1.0&q=80&w=1080",
+    "image": "https://images.unsplash.com/photo-1552879890-3a06dd3a06c2?q=80&w=1254&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "date": "2026-04-20",
     "source": "MTE — Notícias",
     "source_url": "https://www.gov.br/trabalho-e-emprego/pt-br/noticias-e-conteudo"
@@ -693,7 +907,7 @@
       "Contribuições"
     ],
     "excerpt": "A partir de maio de 2026, os recolhimentos de FGTS em processos trabalhistas serão realizados via FGTS Digital, exigindo adequações das empresas.",
-    "image": "https://images.unsplash.com/photo-1569146060246-1aef662d993d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY0Mzc0ODZ8&ixlib=rb-4.1.0&q=80&w=1080",
+    "image": "https://images.unsplash.com/photo-1579621970795-87facc2f976d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "date": "2026-04-17",
     "source": "eSocial — Notícias",
     "source_url": "https://www.gov.br/esocial/pt-br/noticias"
@@ -849,28 +1063,6 @@
     "tags": []
   },
   {
-    "id": "novas-fronteiras-do-direito-do-trabalho-analise-pos-2026",
-    "title": "Novas Fronteiras do Direito do Trabalho: Análise Pós-2026",
-    "category": "geral",
-    "category_label": "Geral",
-    "excerpt": "Análise aprofundada das notícias e atualizações trabalhistas de abril de 2026, com foco em advogados, RH e contadores. Impactos e estratégias.",
-    "image": "",
-    "date": "2026-04-09",
-    "readingTime": "",
-    "tags": []
-  },
-  {
-    "id": "novas-tendencias-no-direito-do-trabalho-brasileiro-09-04-202",
-    "title": "Novas Tendências no Direito do Trabalho Brasileiro (09/04/2026)",
-    "category": "legislacao-normas",
-    "category_label": "Legislação e Normas",
-    "excerpt": "Análise das atualizações e tendências no cenário trabalhista brasileiro em 09/04/2026, com foco em advogados, RH e contadores.",
-    "image": "",
-    "date": "2026-04-09",
-    "readingTime": "",
-    "tags": []
-  },
-  {
     "id": "trabalho-escravo-risco-juridico-e-financeiro-em-mg",
     "title": "Trabalho Escravo em MG: MPT Atua em Novas Operações com Resgate de Trabalhadores Rurais",
     "category": "geral",
@@ -887,18 +1079,7 @@
     "category": "noticias-mte-mpt",
     "category_label": "MTE & MPT",
     "excerpt": "A PRT-4 (MPT-RS) anunciou intensificação das fiscalizações em 2026, com foco em assédio moral, condições degradantes e trabalho escravo no Rio Grande do Sul. Saiba o que está sendo investigado.",
-    "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80",
-    "date": "2026-04-08",
-    "readingTime": "",
-    "tags": []
-  },
-  {
-    "id": "mpt-ba-pesquisa-de-clima-como-prova-de-assedio-organizaciona",
-    "title": "MPT-BA Usa Pesquisa de Clima como Prova de Assédio Organizacional em ACP",
-    "category": "noticias-mte-mpt",
-    "category_label": "MTE & MPT",
-    "excerpt": "O MPT da Bahia obteve decisão reconhecendo pesquisa de clima organizacional como prova válida de assédio moral coletivo. Entenda o impacto para empresas e como se proteger.",
-    "image": "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=1200&q=80",
+    "image": "https://images.unsplash.com/photo-1605000797499-95a51c5269ae?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "date": "2026-04-08",
     "readingTime": "",
     "tags": []
@@ -953,7 +1134,7 @@
     "category": "jurisprudencia-tst",
     "category_label": "Jurisprudência TST",
     "excerpt": "A 8ª Turma do TST negou recurso de usina que não forneceu EPI adequado a trabalhador que sofreu queimaduras durante corte de cana. Empresa deve pagar indenização por dano moral e material.",
-    "image": "https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=1200&q=80",
+    "image": "https://images.unsplash.com/photo-1563514227147-6d2ff665a6a0?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "date": "2026-04-07",
     "readingTime": "",
     "tags": []
@@ -975,7 +1156,7 @@
     "category": "jurisprudencia-tst",
     "category_label": "Jurisprudência TST",
     "excerpt": "Decisão do TST sobre dimensionamento de equipe de enfermagem e responsabilidade do hospital empregador. Entenda as obrigações legais e o risco trabalhista para o setor de saúde.",
-    "image": "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=1200&q=80",
+    "image": "https://images.unsplash.com/photo-1551076805-e1869033e561?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "date": "2026-04-07",
     "readingTime": "",
     "tags": []
@@ -997,7 +1178,7 @@
     "category": "jurisprudencia-tst",
     "category_label": "Jurisprudência TST",
     "excerpt": "O TST homologou acordo extrajudicial com quitação geral firmado por gestante advogada de alta renda. A decisão esclarece quando a proteção à gestante pode ser afastada e os riscos para o empregador.",
-    "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1200&q=80",
+    "image": "https://images.unsplash.com/photo-1615766553246-9147b6d50e90?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "date": "2026-04-07",
     "readingTime": "",
     "tags": []
