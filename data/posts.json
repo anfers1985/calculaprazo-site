@@ -1,5 +1,109 @@
 [
   {
+    "id": "distancia-minima-vale-transporte-empregador-obrigado",
+    "title": "Qual a distância mínima para o empregador ser obrigado a fornecer vale-transporte?",
+    "category": "orientacoes-praticas",
+    "category_label": "Orientações Práticas RH",
+    "excerpt": "Entenda se existe distância mínima para vale-transporte, quem tem direito, desconto de 6% e o que diz a Lei 7.418/1985 e o Decreto 95.247/1987",
+    "image": "https://images.unsplash.com/photo-1690609998976-929dca8ba3de?q=80&w=1206&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-07",
+    "tags": [
+      "Vale Transporte"
+    ]
+  },
+  {
+    "id": "demissao-por-justa-causa-quantas-advertencias-e-suspensoes",
+    "title": "Demissão por justa causa: quantas advertências e suspensões são necessárias?",
+    "category": "orientacoes-praticas",
+    "category_label": "Orientações Práticas RH",
+    "excerpt": "Entenda quando a justa causa exige advertências e suspensões, o que diz o art. 482 da CLT e como evitar nulidades na rescisão",
+    "image": "https://images.unsplash.com/photo-1752808108278-51aa5e4ee353?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-07",
+    "tags": [
+      "Rescisão",
+      "Suspensão",
+      "Advertência"
+    ]
+  },
+  {
+    "id": "alterar-contrato-intermitente-para-prazo-indeterminado",
+    "title": "Empregador pode alterar o contrato intermitente para contrato por prazo indeterminado?",
+    "category": "orientacoes-praticas",
+    "category_label": "Orientações Práticas RH",
+    "excerpt": "Entenda se o empregador pode converter contrato intermitente em prazo indeterminado, como formalizar a mudança e quais cuidados a CLT exige.",
+    "image": "https://images.unsplash.com/photo-1655071516251-e50d8d1ffbf0?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-07",
+    "tags": [
+      "Trabalhador Intermitente",
+      "Contrato de Trabalho"
+    ]
+  },
+  {
+    "id": "empregado-intermitente-tem-direito-ao-seguro-desemprego",
+    "title": "Empregado intermitente tem direito ao seguro-desemprego?",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "excerpt": "Entenda se o empregado intermitente tem direito ao seguro-desemprego e quais requisitos valem hoje.",
+    "image": "https://images.unsplash.com/photo-1750810977675-57927aeccd90?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-07",
+    "tags": [
+      "Trabalhador Intermitente",
+      "Seguro Desemprego"
+    ]
+  },
+  {
+    "id": "inss-empresa-rh-sst-medicina-trabalho-lgpd",
+    "title": "INSS Empresa: o que muda a partir de 15 de maio de 2026",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "excerpt": "Entenda o que é o INSS Empresa, como acessar a plataforma e os impactos para RH, SST, LGPD, FAP, NTEP e gestão de afastamentos.",
+    "image": "https://images.unsplash.com/photo-1700050554945-393740dc6a65?q=80&w=1043&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-07",
+    "tags": [
+      "INSS Empresa"
+    ]
+  },
+  {
+    "id": "jornada-no-mundo-o-que-25-paises-mostram-sobre-trabalho",
+    "title": "Jornada no mundo: o que 25 países mostram sobre trabalho",
+    "category": "artigos",
+    "category_label": "Artigos",
+    "excerpt": "Compare a jornada de trabalho em 25 países e entenda como o debate global sobre horas, descanso e escala 6x1 pode impactar o Brasil.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/mundo%20em%20rel%C3%B3gios.png?raw=true",
+    "date": "2026-05-07",
+    "tags": [
+      "Jornada de Trabalho",
+      "Escala 6x1"
+    ]
+  },
+  {
+    "id": "tolerancia-atraso-trabalho-clt",
+    "title": "Atraso no trabalho: qual a tolerância da CLT?",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "excerpt": "Saiba qual é a tolerância para atraso no trabalho pela CLT, como funciona o limite de 10 minutos diários e quando a empresa pode descontar.",
+    "image": "https://images.unsplash.com/photo-1731963913936-d997c980181b?q=80&w=1168&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-07",
+    "tags": [
+      "Jornada de Trabalho",
+      "art. 58 da CLT"
+    ]
+  },
+  {
+    "id": "prazo-verbas-rescisorias-documentos-multa-art-477-clt",
+    "title": "Verbas rescisórias: prazo para pagar, entregar documentos e multa por atraso",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "excerpt": "Saiba o prazo da rescisão na CLT, quais documentos a empresa deve entregar e quando a multa do art. 477 é devida ao empregado",
+    "image": "https://github.com/anfers1985/imagens/blob/main/fila%20banco.png?raw=true",
+    "date": "2026-05-07",
+    "tags": [
+      "Rescisão",
+      "Pagamento",
+      "art. 477 da CLT"
+    ]
+  },
+  {
     "id": "fgts-processo-trabalhista-recolhimento-fgts-digital",
     "title": "FGTS no processo trabalhista: como recolher do jeito certo?",
     "category": "esocial-fgts-digital",

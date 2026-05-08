@@ -1101,8 +1101,111 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 ins.adsbygoogle:not([data-ad-status="filled"]) { min-height: 0 !important; }
 ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !important; }
 </style>
+  <meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://ead.sit.trabalho.gov.br/pluginfile.php/240733/course/summary/thumb%20CANPAT.PNG">
 </head>
 <body>
+
+<!-- ══════════ DRAWER ══════════ -->
+<div id="drawer" style="position:fixed;left:-320px;top:0;width:300px;height:100vh;background:#fff;box-shadow:4px 0 24px rgba(0,0,0,0.18);z-index:9999;transition:left .28s cubic-bezier(.4,0,.2,1);overflow-y:auto;overflow-x:hidden;">
+  <div style="background:#0D2B5A;color:#fff;padding:18px 16px;display:flex;align-items:center;justify-content:space-between;border-left:4px solid #1E88E5;position:sticky;top:0;z-index:1;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div style="width:38px;height:38px;background:#1E88E5;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0;">⚖</div>
+      <div>
+        <div style="font-weight:800;font-size:.95rem;letter-spacing:-.3px;">Calcula Prazo</div>
+        <div style="font-size:.62rem;opacity:.7;letter-spacing:.5px;text-transform:uppercase;margin-top:1px;">Ferramentas Jurídicas</div>
+      </div>
+    </div>
+    <button onclick="closeDrawer()" style="background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer;padding:4px 8px;opacity:.8;line-height:1;" title="Fechar menu">✕</button>
+  </div>
+  <nav style="padding:8px 0 24px;">
+    <a href="/" class="dr-item">🏠 Início</a>
+    <a href="/#sec-prazos" class="dr-item">⚡ Calculadora de Prazos</a>
+    <div class="dr-divider">FERRAMENTAS</div>
+    <a href="/#correcao" class="dr-item">💰 Correção Monetária</a>
+    <a href="/#juros" class="dr-item">📈 Juros</a>
+    <a href="/#trabalhista" class="dr-item">⚖️ Verbas Trabalhistas</a>
+    <a href="/#salario" class="dr-item">💵 Salário Líquido</a>
+    <a href="/#porcentagem" class="dr-item">🧮 Porcentagem</a>
+    <a href="/#moedas" class="dr-item">💱 Conversor de Moedas</a>
+    <a href="/#datas" class="dr-item">📅 Operações com Datas</a>
+    <a href="/#valid" class="dr-item">🪪 Validador CPF/CNPJ</a>
+    <a href="/#qrcode" class="dr-item">📱 Gerador de QR Code</a>
+    <a href="/#senhas" class="dr-item">🔐 Gerador de Senhas</a>
+    <a href="/#extenso" class="dr-item">🔢 Número por Extenso</a>
+    <a href="/#imc" class="dr-item">🏃 Calculadora de IMC</a>
+    <div class="dr-divider">CONTEÚDO JURÍDICO</div>
+    <div onclick="drToggle('jur')" class="dr-group-hdr"><span>⚖️ Jurisprudência</span><span class="dr-arrow" id="arr-jur">▸</span></div>
+    <div id="sub-jur" class="dr-sub">
+      <a href="/conteudo?cat=jurisprudencia-tst" class="dr-sub-item">TST</a>
+      <a href="/conteudo?cat=jurisprudencia-stf" class="dr-sub-item">STF</a>
+      <a href="/conteudo?cat=jurisprudencia-trts" class="dr-sub-item">TRTs</a>
+      <a href="/conteudo?cat=jurisprudencia-sdi" class="dr-sub-item">SDI-1/SDI-2</a>
+      <a href="/conteudo?cat=jurisprudencia" class="dr-sub-item">OJs e Súmulas</a>
+    </div>
+    <div onclick="drToggle('org')" class="dr-group-hdr"><span>🏛️ Órgãos Públicos</span><span class="dr-arrow" id="arr-org">▸</span></div>
+    <div id="sub-org" class="dr-sub">
+      <a href="/conteudo?cat=noticias-mte" class="dr-sub-item">MTE</a>
+      <a href="/conteudo?cat=noticias-mpt" class="dr-sub-item">MPT</a>
+      <a href="/conteudo?cat=noticias-csjt" class="dr-sub-item">CSJT</a>
+      <a href="/conteudo?cat=noticias-anpt" class="dr-sub-item">ANPT</a>
+    </div>
+    <div onclick="drToggle('leg')" class="dr-group-hdr"><span>📋 Legislação e Normas</span><span class="dr-arrow" id="arr-leg">▸</span></div>
+    <div id="sub-leg" class="dr-sub">
+      <a href="/conteudo?cat=clt-leis" class="dr-sub-item">CLT e Leis</a>
+      <a href="/conteudo?cat=esocial-fgts-digital" class="dr-sub-item">eSocial</a>
+      <a href="/conteudo?cat=fgts-digital" class="dr-sub-item">FGTS Digital</a>
+      <a href="/conteudo?cat=saude-seguranca" class="dr-sub-item">NRs/SST</a>
+      <a href="/conteudo?cat=sindical" class="dr-sub-item">Sindical</a>
+      <a href="/conteudo?cat=legislacao-normas" class="dr-sub-item">Portarias/INs</a>
+      <a href="/conteudo?cat=geral" class="dr-sub-item">Outros</a>
+    </div>
+    <div onclick="drToggle('rh')" class="dr-group-hdr"><span>👥 RH e Gestão</span><span class="dr-arrow" id="arr-rh">▸</span></div>
+    <div id="sub-rh" class="dr-sub">
+      <a href="/conteudo?cat=folha-pagamento" class="dr-sub-item">Folha de Pagamento</a>
+      <a href="/conteudo?cat=jornada" class="dr-sub-item">Jornada</a>
+      <a href="/conteudo?cat=rescisao" class="dr-sub-item">Rescisão</a>
+      <a href="/conteudo?cat=saude-seguranca" class="dr-sub-item">Saúde e Segurança</a>
+      <a href="/conteudo?cat=trabalho-remoto" class="dr-sub-item">Trabalho Remoto</a>
+      <a href="/conteudo?cat=beneficios" class="dr-sub-item">Benefícios</a>
+      <a href="/conteudo?cat=admissao" class="dr-sub-item">Admissão/CTPS</a>
+      <a href="/conteudo?cat=orientacoes-praticas" class="dr-sub-item">Outros</a>
+    </div>
+    <div onclick="drToggle('rec')" class="dr-group-hdr"><span>📄 Recursos e Modelos</span><span class="dr-arrow" id="arr-rec">▸</span></div>
+    <div id="sub-rec" class="dr-sub">
+      <a href="/conteudo?cat=modelos" class="dr-sub-item">Petições</a>
+      <a href="/conteudo?cat=modelos" class="dr-sub-item">Contratos</a>
+      <a href="/conteudo?cat=modelos" class="dr-sub-item">Checklists</a>
+      <a href="/conteudo?cat=artigos" class="dr-sub-item">Artigos</a>
+      <a href="/conteudo?cat=geral" class="dr-sub-item">Outros</a>
+    </div>
+    <div style="margin-top:8px;border-top:1px solid #E8EFF8;padding-top:8px;">
+      <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener" class="dr-item" style="display:flex;align-items:center;justify-content:space-between;"><span>▶ Canal no YouTube</span><span style="background:#DC2626;color:#fff;font-size:.6rem;font-weight:800;padding:2px 6px;border-radius:3px;">NOVO</span></a>
+      <a href="/conteudo" class="dr-item">📰 Todos os artigos</a>
+    </div>
+    <div class="dr-divider">SITE</div>
+    <a href="/sobre" class="dr-item">Sobre</a>
+    <a href="/contato" class="dr-item">Contato</a>
+    <a href="/#apoio" class="dr-item">☕ Apoie via Pix</a>
+  </nav>
+</div>
+<div id="drawer-overlay" onclick="closeDrawer()" style="position:fixed;inset:0;background:rgba(0,0,0,0);z-index:9998;pointer-events:none;transition:background .28s;"></div>
+<style>
+.dr-item{display:block;padding:10px 20px;color:#0D2B5A;text-decoration:none;font-size:.88rem;font-weight:600;border-left:3px solid transparent;transition:all .15s;cursor:pointer;}
+.dr-item:hover{border-left-color:#1E88E5;background:#EFF8FF;color:#1565C0;}
+.dr-divider{padding:10px 20px 4px;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#6B84AA;}
+.dr-group-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;font-size:.88rem;font-weight:700;color:#0D2B5A;cursor:pointer;border-left:3px solid transparent;transition:all .15s;}
+.dr-group-hdr:hover{border-left-color:#1E88E5;background:#EFF8FF;color:#1565C0;}
+.dr-arrow{font-size:.75rem;transition:transform .2s;color:#6B84AA;}
+.dr-sub{display:none;background:#F7FAFF;}
+.dr-sub-item{display:block;padding:8px 20px 8px 36px;color:#3B5A8A;text-decoration:none;font-size:.83rem;font-weight:500;border-left:3px solid transparent;transition:all .15s;}
+.dr-sub-item:hover{border-left-color:#1E88E5;background:#DBEEFF;color:#1565C0;}
+#drawer-btn{display:none;background:none;border:none;font-size:1.4rem;cursor:pointer;padding:6px 10px;color:#0D2B5A;line-height:1;order:-1;flex-shrink:0;}
+@media(max-width:900px){#drawer-btn{display:block!important;}}
+</style>
+
 
 <!-- Reading progress -->
 <div class="progress-bar" id="progress-bar"></div>
@@ -1118,6 +1221,8 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
 <header id="hdr">
   <div class="hdr-inner">
+<button id="drawer-btn" onclick="openDrawer()" title="Abrir menu">☰</button>
+
     <a class="logo" href="/">
       <div class="logo-ic">⚖</div><span class="logo-text">Calcula</span><span>Prazo</span>
     </a>
@@ -1591,5 +1696,15 @@ document.addEventListener('DOMContentLoaded', function() {
 if (document.readyState !== 'loading') loadRelated();
 </script>
 
-<!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6e5715de2d20415d90b9904cb3475c40"}'></script><!-- Cloudflare Pages Analytics --></body>
+<!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6e5715de2d20415d90b9904cb3475c40"}'></script><!-- Cloudflare Pages Analytics --><script>
+(function(){
+function openDrawer(){var d=document.getElementById('drawer'),o=document.getElementById('drawer-overlay');if(!d||!o)return;d.style.left='0';o.style.background='rgba(0,0,0,0.45)';o.style.pointerEvents='auto';document.body.style.overflow='hidden';}
+function closeDrawer(){var d=document.getElementById('drawer'),o=document.getElementById('drawer-overlay');if(!d||!o)return;d.style.left='-320px';o.style.background='rgba(0,0,0,0)';o.style.pointerEvents='none';document.body.style.overflow='';}
+function drToggle(id){var s=document.getElementById('sub-'+id),a=document.getElementById('arr-'+id);if(!s)return;var op=s.style.display==='block';s.style.display=op?'none':'block';if(a)a.style.transform=op?'':'rotate(90deg)';}
+window.openDrawer=openDrawer;window.closeDrawer=closeDrawer;window.drToggle=drToggle;
+window.addEventListener('resize',function(){if(window.innerWidth>900)closeDrawer();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeDrawer();});
+})();
+</script>
+</body>
 </html>

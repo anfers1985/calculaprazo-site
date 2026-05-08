@@ -1128,1247 +1128,371 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   </script>
 </head>
 <body>
-<nav class="hdr-nav">
-      <a href="/" style="display:flex;align-items:center;gap:4px;">🏠 Início</a>
-      <a href="/#calculadora-de-prazo-processual">Calculadora</a>
-      <div class="nav-dropdown" id="nav-dropdown-ferramentas">
-        <a id="nav-tools" onclick="toggleFerramentas(event)">Ferramentas</a>
-        <div class="nav-drop-menu" id="ferramentas-menu">
-          <a onclick="toggleRefNav();document.getElementById('nav-dropdown-ferramentas').classList.remove('open')"><span class="dm-icon">⚡</span>Prazos de Referência</a>
-          <div class="nav-drop-divider"></div>
-          <a onclick="navGoTo('correcao')"><span class="dm-icon">💰</span>Correção Monetária</a>
-          <a onclick="navGoTo('juros')"><span class="dm-icon">📈</span>Cálculo de Juros</a>
-          <a onclick="navGoTo('trabalhista')"><span class="dm-icon">⚖️</span>Calculadora de Verbas Trabalhistas</a>
-          <a onclick="navGoTo('salario')"><span class="dm-icon">💵</span>Salário Líquido</a>
-          <a onclick="navGoTo('porcentagem')"><span class="dm-icon">🧮</span>Porcentagem</a>
-          <a onclick="navGoTo('moedas')"><span class="dm-icon">💱</span>Conversor de Moedas</a>
-          <div class="nav-drop-divider"></div>
-          <a onclick="navGoTo('datas')"><span class="dm-icon">📅</span>Operações com Datas</a>
-          <a onclick="navGoTo('valid')"><span class="dm-icon">🪪</span>Validador CPF / CNPJ</a>
-          <a onclick="navGoTo('qrcode')"><span class="dm-icon">📱</span>Gerador de QR Code</a>
-          <a onclick="navGoTo('senhas')"><span class="dm-icon">🔐</span>Gerador de Senhas</a>
-          <a onclick="navGoTo('extenso')"><span class="dm-icon">🔢</span>Número por Extenso</a>
-          <a onclick="navGoTo('imc')"><span class="dm-icon">🏃</span>Calculadora de IMC</a>
-        </div>
-      </div>
-      <div class="nav-dropdown" id="nav-dropdown-conteudo">
-        <a id="nav-conteudo" onclick="toggleConteudo(event)">Conteúdo</a>
-        <div class="nav-drop-menu" id="conteudo-menu">
-          <a onclick="navGoTo('blog')"><span class="dm-icon">📰</span>Todos os Artigos</a>
-          <div class="nav-drop-divider"></div>
-          <a onclick="navGoTo('blog');filterBlog('direito')"><span class="dm-icon">⚖️</span>Direito</a>
-          <a onclick="navGoTo('blog');filterBlog('rh')"><span class="dm-icon">👥</span>Recursos Humanos</a>
-          <a onclick="navGoTo('blog');filterBlog('contabilidade')"><span class="dm-icon">📊</span>Contabilidade</a>
-          <a onclick="navGoTo('blog');filterBlog('geral')"><span class="dm-icon">📌</span>Geral</a>
-        </div>
-      </div>
-      <a href="/#sobre">Sobre</a>
-      <a href="/contato">✉ Contato</a>
-      <a class="hdr-doacao" onclick="document.getElementById('modal-doacao').style.display='flex'">☕ Doação</a>
-    </nav>
 
-<section class="hero hero-blog">
-  <div class="container">
-    <h1>Conteúdo e Artigos</h1>
-    <p>Jurisprudência, legislação trabalhista, eSocial, FGTS Digital, saúde e segurança do trabalho — atualizado com base em fontes primárias.</p>
+<!-- ══════════ DRAWER ══════════ -->
+<div id="drawer" style="position:fixed;left:-320px;top:0;width:300px;height:100vh;background:#fff;box-shadow:4px 0 24px rgba(0,0,0,0.18);z-index:9999;transition:left .28s cubic-bezier(.4,0,.2,1);overflow-y:auto;overflow-x:hidden;">
+  <div style="background:#0D2B5A;color:#fff;padding:18px 16px;display:flex;align-items:center;justify-content:space-between;border-left:4px solid #1E88E5;position:sticky;top:0;z-index:1;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div style="width:38px;height:38px;background:#1E88E5;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0;">⚖</div>
+      <div>
+        <div style="font-weight:800;font-size:.95rem;letter-spacing:-.3px;">Calcula Prazo</div>
+        <div style="font-size:.62rem;opacity:.7;letter-spacing:.5px;text-transform:uppercase;margin-top:1px;">Ferramentas Jurídicas</div>
+      </div>
+    </div>
+    <button onclick="closeDrawer()" style="background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer;padding:4px 8px;opacity:.8;line-height:1;" title="Fechar menu">✕</button>
+  </div>
+  <nav style="padding:8px 0 24px;">
+    <a href="/" class="dr-item">🏠 Início</a>
+    <a href="/#sec-prazos" class="dr-item">⚡ Calculadora de Prazos</a>
+    <div class="dr-divider">FERRAMENTAS</div>
+    <a href="/#correcao" class="dr-item">💰 Correção Monetária</a>
+    <a href="/#juros" class="dr-item">📈 Juros</a>
+    <a href="/#trabalhista" class="dr-item">⚖️ Verbas Trabalhistas</a>
+    <a href="/#salario" class="dr-item">💵 Salário Líquido</a>
+    <a href="/#porcentagem" class="dr-item">🧮 Porcentagem</a>
+    <a href="/#moedas" class="dr-item">💱 Conversor de Moedas</a>
+    <a href="/#datas" class="dr-item">📅 Operações com Datas</a>
+    <a href="/#valid" class="dr-item">🪪 Validador CPF/CNPJ</a>
+    <a href="/#qrcode" class="dr-item">📱 Gerador de QR Code</a>
+    <a href="/#senhas" class="dr-item">🔐 Gerador de Senhas</a>
+    <a href="/#extenso" class="dr-item">🔢 Número por Extenso</a>
+    <a href="/#imc" class="dr-item">🏃 Calculadora de IMC</a>
+    <div class="dr-divider">CONTEÚDO JURÍDICO</div>
+    <div onclick="drToggle('jur')" class="dr-group-hdr"><span>⚖️ Jurisprudência</span><span class="dr-arrow" id="arr-jur">▸</span></div>
+    <div id="sub-jur" class="dr-sub">
+      <a href="/conteudo?cat=jurisprudencia-tst" class="dr-sub-item">TST</a>
+      <a href="/conteudo?cat=jurisprudencia-stf" class="dr-sub-item">STF</a>
+      <a href="/conteudo?cat=jurisprudencia-trts" class="dr-sub-item">TRTs</a>
+      <a href="/conteudo?cat=jurisprudencia-sdi" class="dr-sub-item">SDI-1/SDI-2</a>
+      <a href="/conteudo?cat=jurisprudencia" class="dr-sub-item">OJs e Súmulas</a>
+    </div>
+    <div onclick="drToggle('org')" class="dr-group-hdr"><span>🏛️ Órgãos Públicos</span><span class="dr-arrow" id="arr-org">▸</span></div>
+    <div id="sub-org" class="dr-sub">
+      <a href="/conteudo?cat=noticias-mte" class="dr-sub-item">MTE</a>
+      <a href="/conteudo?cat=noticias-mpt" class="dr-sub-item">MPT</a>
+      <a href="/conteudo?cat=noticias-csjt" class="dr-sub-item">CSJT</a>
+      <a href="/conteudo?cat=noticias-anpt" class="dr-sub-item">ANPT</a>
+    </div>
+    <div onclick="drToggle('leg')" class="dr-group-hdr"><span>📋 Legislação e Normas</span><span class="dr-arrow" id="arr-leg">▸</span></div>
+    <div id="sub-leg" class="dr-sub">
+      <a href="/conteudo?cat=clt-leis" class="dr-sub-item">CLT e Leis</a>
+      <a href="/conteudo?cat=esocial-fgts-digital" class="dr-sub-item">eSocial</a>
+      <a href="/conteudo?cat=fgts-digital" class="dr-sub-item">FGTS Digital</a>
+      <a href="/conteudo?cat=saude-seguranca" class="dr-sub-item">NRs/SST</a>
+      <a href="/conteudo?cat=sindical" class="dr-sub-item">Sindical</a>
+      <a href="/conteudo?cat=legislacao-normas" class="dr-sub-item">Portarias/INs</a>
+      <a href="/conteudo?cat=geral" class="dr-sub-item">Outros</a>
+    </div>
+    <div onclick="drToggle('rh')" class="dr-group-hdr"><span>👥 RH e Gestão</span><span class="dr-arrow" id="arr-rh">▸</span></div>
+    <div id="sub-rh" class="dr-sub">
+      <a href="/conteudo?cat=folha-pagamento" class="dr-sub-item">Folha de Pagamento</a>
+      <a href="/conteudo?cat=jornada" class="dr-sub-item">Jornada</a>
+      <a href="/conteudo?cat=rescisao" class="dr-sub-item">Rescisão</a>
+      <a href="/conteudo?cat=saude-seguranca" class="dr-sub-item">Saúde e Segurança</a>
+      <a href="/conteudo?cat=trabalho-remoto" class="dr-sub-item">Trabalho Remoto</a>
+      <a href="/conteudo?cat=beneficios" class="dr-sub-item">Benefícios</a>
+      <a href="/conteudo?cat=admissao" class="dr-sub-item">Admissão/CTPS</a>
+      <a href="/conteudo?cat=orientacoes-praticas" class="dr-sub-item">Outros</a>
+    </div>
+    <div onclick="drToggle('rec')" class="dr-group-hdr"><span>📄 Recursos e Modelos</span><span class="dr-arrow" id="arr-rec">▸</span></div>
+    <div id="sub-rec" class="dr-sub">
+      <a href="/conteudo?cat=modelos" class="dr-sub-item">Petições</a>
+      <a href="/conteudo?cat=modelos" class="dr-sub-item">Contratos</a>
+      <a href="/conteudo?cat=modelos" class="dr-sub-item">Checklists</a>
+      <a href="/conteudo?cat=artigos" class="dr-sub-item">Artigos</a>
+      <a href="/conteudo?cat=geral" class="dr-sub-item">Outros</a>
+    </div>
+    <div style="margin-top:8px;border-top:1px solid #E8EFF8;padding-top:8px;">
+      <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener" class="dr-item" style="display:flex;align-items:center;justify-content:space-between;"><span>▶ Canal no YouTube</span><span style="background:#DC2626;color:#fff;font-size:.6rem;font-weight:800;padding:2px 6px;border-radius:3px;">NOVO</span></a>
+      <a href="/conteudo" class="dr-item">📰 Todos os artigos</a>
+    </div>
+    <div class="dr-divider">SITE</div>
+    <a href="/sobre" class="dr-item">Sobre</a>
+    <a href="/contato" class="dr-item">Contato</a>
+    <a href="/#apoio" class="dr-item">☕ Apoie via Pix</a>
+  </nav>
+</div>
+<div id="drawer-overlay" onclick="closeDrawer()" style="position:fixed;inset:0;background:rgba(0,0,0,0);z-index:9998;pointer-events:none;transition:background .28s;"></div>
+<style>
+.dr-item{display:block;padding:10px 20px;color:#0D2B5A;text-decoration:none;font-size:.88rem;font-weight:600;border-left:3px solid transparent;transition:all .15s;cursor:pointer;}
+.dr-item:hover{border-left-color:#1E88E5;background:#EFF8FF;color:#1565C0;}
+.dr-divider{padding:10px 20px 4px;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#6B84AA;}
+.dr-group-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;font-size:.88rem;font-weight:700;color:#0D2B5A;cursor:pointer;border-left:3px solid transparent;transition:all .15s;}
+.dr-group-hdr:hover{border-left-color:#1E88E5;background:#EFF8FF;color:#1565C0;}
+.dr-arrow{font-size:.75rem;transition:transform .2s;color:#6B84AA;}
+.dr-sub{display:none;background:#F7FAFF;}
+.dr-sub-item{display:block;padding:8px 20px 8px 36px;color:#3B5A8A;text-decoration:none;font-size:.83rem;font-weight:500;border-left:3px solid transparent;transition:all .15s;}
+.dr-sub-item:hover{border-left-color:#1E88E5;background:#DBEEFF;color:#1565C0;}
+#drawer-btn{display:none;background:none;border:none;font-size:1.4rem;cursor:pointer;padding:6px 10px;color:#0D2B5A;line-height:1;order:-1;flex-shrink:0;}
+@media(max-width:900px){#drawer-btn{display:block!important;}}
+</style>
+
+
+<!-- ══════════ HERO CONTEÚDO ══════════ -->
+<section style="background:linear-gradient(135deg,#1565C0 0%,#1E88E5 100%);color:white;padding:48px 0 40px;">
+  <div class="container" style="text-align:center;">
+    <h1 style="font-size:clamp(1.6rem,4vw,2.2rem);font-weight:800;margin-bottom:12px;letter-spacing:-.5px;">Conteúdo Jurídico</h1>
+    <p style="font-size:.95rem;opacity:.9;max-width:480px;margin:0 auto 24px;">Jurisprudência, legislação, eSocial, FGTS Digital e orientações práticas de RH</p>
+    <div style="max-width:480px;margin:0 auto;display:flex;gap:8px;">
+      <input type="text" id="conteudo-search-input" placeholder="Buscar artigos..." style="flex:1;padding:11px 16px;border:none;border-radius:8px;font-size:.9rem;font-family:inherit;outline:none;color:#0D2B5A;">
+      <button onclick="searchConteudo()" style="padding:11px 20px;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.35);color:white;border-radius:8px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;" onmouseover="this.style.background='rgba(255,255,255,.28)'" onmouseout="this.style.background='rgba(255,255,255,.18)'">🔍 Buscar</button>
+    </div>
   </div>
 </section>
 
-<main class="content">
+<!-- ══════════ FILTROS STICKY ══════════ -->
+<div style="background:white;border-bottom:2px solid #D4E5F7;padding:0;position:sticky;top:52px;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
   <div class="container">
-    <div class="blog-grid">
-      <article class="blog-card">
-        <a href="/blog/validador-de-cpf-e-cnpj-online-gratis" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://github.com/anfers1985/imagens/blob/main/imagem%20validador-cpf-cnpj.png?raw=true" alt="Validador de CPF e CNPJ Online: Verifique a Validez de Documentos Gratuitamente" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">29 abr. 2026</p>
-            <h2 class="blog-card-title">Validador de CPF e CNPJ Online: Verifique a Validez de Documentos Gratuitamente</h2>
-            <p class="blog-card-desc">Use nosso validador de CPF e CNPJ para verificar a estrutura matemática de documentos brasileiros. Ferramenta gratuita, rápida e segura para o seu dia a di</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/e-notariado-e-not-provas-como-usar-provas-digitais" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://github.com/anfers1985/imagens/blob/main/e-Notariado%20e%20e-Not%20Provas.png?raw=true" alt="e-Notariado e e-Not Provas: como usar na prática para coletar e autenticar provas digitais" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">29 abr. 2026</p>
-            <h2 class="blog-card-title">e-Notariado e e-Not Provas: como usar na prática para coletar e autenticar provas digitais</h2>
-            <p class="blog-card-desc">Guia completo sobre e-Notariado e e-Not Provas: certificado gratuito, custos, passo a passo e exemplos práticos de uso em processos trabalhistas.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/calculadora-de-porcentagem-online-desconto-aumento" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://github.com/anfers1985/imagens/blob/main/calculadora-porcentagem.png?raw=true" alt="Calculadora de Porcentagem Online: Como Calcular Descontos e Aumentos" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">29 abr. 2026</p>
-            <h2 class="blog-card-title">Calculadora de Porcentagem Online: Como Calcular Descontos e Aumentos</h2>
-            <p class="blog-card-desc">Aprenda a calcular porcentagem de forma rápida. Use nossa ferramenta para descobrir descontos, aumentos, variações percentuais e muito mais com exemplos pr</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/calculadora-de-correcao-monetaria-online-ipca-igpm-selic" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://github.com/anfers1985/imagens/blob/main/Imagem%20Infla%C3%A7%C3%A3o%20-%20Calculadora%20Corre%C3%A7%C3%A3o.png?raw=true" alt="Calculadora de Correção Monetária Online: IPCA, IGP-M, INPC e SELIC (Guia)" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">29 abr. 2026</p>
-            <h2 class="blog-card-title">Calculadora de Correção Monetária Online: IPCA, IGP-M, INPC e SELIC (Guia)</h2>
-            <p class="blog-card-desc">Atualize valores financeiros pelos principais índices oficiais (IPCA, IGP-M, SELIC). Entenda como funciona a correção monetária com exemplos práticos e seg</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/conversor-de-moedas-online-dolar-euro-real" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://github.com/anfers1985/imagens/blob/main/conversor-moedas.png?raw=true" alt="Conversor de Moedas Online: Cotação de Dólar, Euro e Real em Tempo Real" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">29 abr. 2026</p>
-            <h2 class="blog-card-title">Conversor de Moedas Online: Cotação de Dólar, Euro e Real em Tempo Real</h2>
-            <p class="blog-card-desc">Converta moedas internacionais instantaneamente. Acompanhe a cotação do dólar, euro, libra e outras moedas com nosso conversor gratuito e fácil de usar.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/trabalhador-autonomo-empregado-diferenciacao-vinculo-clt-pejotizacao" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://github.com/anfers1985/imagens/blob/main/imagem%20pessoa%20trabalhando%20escrit%C3%B3rio.png?raw=true" alt="Trabalhador Autônomo ou Empregado? Os critérios legais, os sinais de fraude e o que o TST decide em 2025 e 2026" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">29 abr. 2026</p>
-            <h2 class="blog-card-title">Trabalhador Autônomo ou Empregado? Os critérios legais, os sinais de fraude e o que o TST decide em 2025 e 2026</h2>
-            <p class="blog-card-desc">Quando o autônomo vira empregado na prática? Os 5 requisitos do art. 3º da CLT, a pejotização e a jurisprudência atual do TST sobre vínculo empregatício.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/calculadora-de-juros-simples-compostos-online" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://github.com/anfers1985/imagens/blob/main/Imagem%20Crescimento%20investimento%20-%20Calculadora%20Juros%20Compostos.png?raw=true" alt="Calculadora de Juros Simples e Compostos: Como Calcular Rendimentos e Dívidas" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">29 abr. 2026</p>
-            <h2 class="blog-card-title">Calculadora de Juros Simples e Compostos: Como Calcular Rendimentos e Dívidas</h2>
-            <p class="blog-card-desc">Aprenda a calcular juros simples e compostos com facilidade. Entenda a diferença entre os regimes, como simular investimentos e juros de mora sobre dívidas</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/conversor-de-nmero-por-extenso-converta-valores-por-extenso-para-portugus-e-em-reais" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://github.com/anfers1985/imagens/blob/main/numero-por-extenso.png?raw=true" alt="Conversor de Número por Extenso: Converta valores por extenso para português e em reais" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">29 abr. 2026</p>
-            <h2 class="blog-card-title">Conversor de Número por Extenso: Converta valores por extenso para português e em reais</h2>
-            <p class="blog-card-desc">Converta números e valores monetários para extenso em português e em reais. Ideal para preenchimento de contratos e documentos com precisão.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/calculadora-de-verbas-trabalhistas-rescisao-clt" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://github.com/anfers1985/imagens/blob/main/Imagem%20Encerramento%20Contrato%20de%20Trabalho%20-%20Calculadora%20de%20Verbas.png?raw=true" alt="Calculadora de Verbas Trabalhistas: Como Calcular sua Rescisão CLT (Guia Completo)" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">29 abr. 2026</p>
-            <h2 class="blog-card-title">Calculadora de Verbas Trabalhistas: Como Calcular sua Rescisão CLT (Guia Completo)</h2>
-            <p class="blog-card-desc">Saiba como calcular verbas trabalhistas e rescisórias com precisão. Entenda seus direitos sobre FGTS, férias, 13º e aviso prévio com exemplos práticos.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/aviso-previo-afastamento-doenca-acidente-direitos-trabalhador" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://github.com/anfers1985/imagens/blob/main/Imagem%20Pessoa%20Doente.png?raw=true" alt="Aviso Prévio e Afastamento por Doença ou Acidente: o que acontece com o contrato e quais os direitos do trabalhador" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">29 abr. 2026</p>
-            <h2 class="blog-card-title">Aviso Prévio e Afastamento por Doença ou Acidente: o que acontece com o contrato e quais os direitos do trabalhador</h2>
-            <p class="blog-card-desc">O que acontece quando o trabalhador adoece ou se acidente durante o aviso prévio? CLT, Súmulas 371 e 378 do TST e a nova Tese 125/2025 explicadas.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/calculadora-de-salario-liquido-inss-irrf-2026" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://github.com/anfers1985/imagens/blob/main/calculadora-salario-liquido.png?raw=true" alt="Calculadora de Salário Líquido 2026: Simule seu Holerite com INSS e IRRF" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">29 abr. 2026</p>
-            <h2 class="blog-card-title">Calculadora de Salário Líquido 2026: Simule seu Holerite com INSS e IRRF</h2>
-            <p class="blog-card-desc">Calcule seu salário líquido em 2026 com as novas tabelas de INSS e IRRF. Entenda os descontos de dependentes e isenções da Lei 15.270/2025 de forma simples</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/calculadora-de-prazos-processuais-dias-uteis-corridos" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://github.com/anfers1985/imagens/blob/main/Imagem%20Contagem%20de%20Prazos%20-%20Calendario.png?raw=true" alt="Calculadora de Prazos Processuais: Como Calcular Dias Úteis e Corridos (Guia Completo)" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">29 abr. 2026</p>
-            <h2 class="blog-card-title">Calculadora de Prazos Processuais: Como Calcular Dias Úteis e Corridos (Guia Completo)</h2>
-            <p class="blog-card-desc">Aprenda a usar a calculadora de prazos processuais para contar dias úteis e corridos conforme o CPC e CLT. Evite perdas de prazos com exemplos práticos e d</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/gerador-de-senhas-seguras-online" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://github.com/anfers1985/imagens/blob/main/gerador-senhas.png?raw=true" alt="Gerador de Senhas Seguras Online: Crie Senhas Fortes e Aleatórias" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">29 abr. 2026</p>
-            <h2 class="blog-card-title">Gerador de Senhas Seguras Online: Crie Senhas Fortes e Aleatórias</h2>
-            <p class="blog-card-desc">Proteja suas contas com senhas fortes e aleatórias. Use nosso gerador gratuito para criar combinações seguras com letras, números e símbolos instantaneamen</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/vale-transporte-dinheiro-vale-combustivel-lei-jurisprudencia" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://github.com/anfers1985/imagens/blob/main/Imagem%20pessoa%20pegando%20onibus.png?raw=true" alt="Vale Transporte em Dinheiro ou Vale Combustível: o que a lei permite, o que a jurisprudência diz e quais os riscos" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">29 abr. 2026</p>
-            <h2 class="blog-card-title">Vale Transporte em Dinheiro ou Vale Combustível: o que a lei permite, o que a jurisprudência diz e quais os riscos</h2>
-            <p class="blog-card-desc">Vale-transporte pode ser pago em dinheiro? E substituído por vale combustível? CLT, Lei 7.418/85 e jurisprudência consolidada do TST explicadas.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/gerador-de-qr-code-online-gratis" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://github.com/anfers1985/imagens/blob/main/gerador-qr-code.png?raw=true" alt="Gerador de QR Code Online Grátis: Crie Códigos para Pix, Wi-Fi e Links" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">29 abr. 2026</p>
-            <h2 class="blog-card-title">Gerador de QR Code Online Grátis: Crie Códigos para Pix, Wi-Fi e Links</h2>
-            <p class="blog-card-desc">Crie QR Codes personalizados instantaneamente. Gere códigos para links, chaves Pix, redes Wi-Fi e contatos de forma gratuita, segura e sem cadastro.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/como-adequar-pgr-riscos-psicossociais-nr-1-passo-a-passo-sst" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Como adequar o PGR aos riscos psicossociais da NR-1: passo a passo para profissionais de SST" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">28 abr. 2026</p>
-            <h2 class="blog-card-title">Como adequar o PGR aos riscos psicossociais da NR-1: passo a passo para profissionais de SST</h2>
-            <p class="blog-card-desc">Guia técnico completo para médicos do trabalho, técnicos e engenheiros de SST: 10 passos para incluir os FRPRT no PGR conforme a Portaria MTE nº 1.419/2024</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/modelo-pgr-riscos-psicossociais-laudo-tecnico-frprt-nr-1" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Modelo de PGR com Riscos Psicossociais e Laudo Técnico de FRPRT: documentos Word gratuitos conforme NR-1" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">28 abr. 2026</p>
-            <h2 class="blog-card-title">Modelo de PGR com Riscos Psicossociais e Laudo Técnico de FRPRT: documentos Word gratuitos conforme NR-1</h2>
-            <p class="blog-card-desc">Baixe gratuitamente dois modelos Word prontos: Seção de Riscos Psicossociais para o PGR e Laudo Técnico de Avaliação de FRPRT, atualizados conforme a Porta</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/agravo-interno-agravo-instrumento-como-elaborar-pecas-IN40-TST" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1734640672449-0d65faceb323?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Agravo Interno e Agravo de Instrumento: como elaborar as peças após a IN nº 40/TST atualizada" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">28 abr. 2026</p>
-            <h2 class="blog-card-title">Agravo Interno e Agravo de Instrumento: como elaborar as peças após a IN nº 40/TST atualizada</h2>
-            <p class="blog-card-desc">Passo a passo técnico para elaborar agravo interno e AIRR após a Resolução 224/2024 do TST. Modelos de peças prontos para download.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/modelo-agravo-interno-agravo-instrumento-rr-IN40-TST" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1654588834754-33346e3ee095?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Modelo de Agravo Interno e Agravo de Instrumento em RR: peças prontas para usar após a IN nº 40/TST" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">28 abr. 2026</p>
-            <h2 class="blog-card-title">Modelo de Agravo Interno e Agravo de Instrumento em RR: peças prontas para usar após a IN nº 40/TST</h2>
-            <p class="blog-card-desc">Modelos prontos de Agravo Interno ao TRT e AIRR ao TST, com instruções de uso e checklist pré-protocolo. Atualizado conforme a IN nº 40/TST (Res. 224/2024)</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/trt10-pedido-demissao-rescisao-indireta" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1562564055-71e051d33c19?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="TRT-10 mantém validade de pedido de demissão e afasta rescisão indireta" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">27 abr. 2026</p>
-            <h2 class="blog-card-title">TRT-10 mantém validade de pedido de demissão e afasta rescisão indireta</h2>
-            <p class="blog-card-desc">TRT-10 mantém pedido de demissão e afasta rescisão indireta. Entenda por que a falta de prova de vício de vontade foi decisiva no caso.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/atestados-mdicos-de-at-90-dias-no-tm-mais-percia-presencial" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1516126491303-6f54240c8491?q=80&w=1065&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Atestados médicos de até 90 dias não têm mais perícia presencial" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">27 abr. 2026</p>
-            <h2 class="blog-card-title">Atestados médicos de até 90 dias não têm mais perícia presencial</h2>
-            <p class="blog-card-desc">INSS amplia o Atestmed e atestados médicos de até 90 dias passam a ser analisados sem perícia presencial, com pedido pelo Meu INSS.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/reducao-jornada-mae-crianca-tea-sem-reducao-salarial" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1776057441567-ac16f7b9dd6f?q=80&w=1339&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="TRT-MG reconhece jornada reduzida para mãe de criança com TEA" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">27 abr. 2026</p>
-            <h2 class="blog-card-title">TRT-MG reconhece jornada reduzida para mãe de criança com TEA</h2>
-            <p class="blog-card-desc">Justiça reconhece redução de jornada sem corte salarial para mãe de criança com TEA, com base na Constituição, em tratados e por analogia à Lei 8.112/1990.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/assedio-eleitoral-multa-400-mil-carmo-do-cajuru" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1620809975674-10b8ff5f8e58?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Assédio eleitoral rende multa de R$ 400 mil em MG" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">27 abr. 2026</p>
-            <h2 class="blog-card-title">Assédio eleitoral rende multa de R$ 400 mil em MG</h2>
-            <p class="blog-card-desc">Justiça condena empresa de Carmo do Cajuru a pagar R$ 400 mil por assédio eleitoral contra empregados nas eleições de 2022.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/5-relatrio-de-transparncia-salarial-aponta-crescimento-da-presena-de-mulheres-no-mercado-de-trabalho" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://github.com/anfers1985/imagens/blob/main/Gemini_Generated_Image_n8zrz3n8zrz3n8zr.png?raw=true" alt="5º Relatório de Transparência Salarial aponta crescimento da presença de mulheres no mercado de trabalho" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">27 abr. 2026</p>
-            <h2 class="blog-card-title">5º Relatório de Transparência Salarial aponta crescimento da presença de mulheres no mercado de trabalho</h2>
-            <p class="blog-card-desc">5º Relatório de Transparência Salarial mostra avanço de 11% das mulheres no mercado e mantém em foco a diferença de remuneração no setor privado.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/fim-da-escala-6x1-veja-o-que-dizem-as-empresas-que-j-adotam-jornadas-reduzidas" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1461088945293-0c17689e48ac?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Fim da escala 6x1? Veja o que dizem as empresas que já adotam jornadas reduzidas" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">26 abr. 2026</p>
-            <h2 class="blog-card-title">Fim da escala 6x1? Veja o que dizem as empresas que já adotam jornadas reduzidas</h2>
-            <p class="blog-card-desc">Empresas já testam jornadas reduzidas, como 5x2 e 4x3, enquanto o debate sobre o fim da escala 6x1 avança no Congresso.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/calculadora-de-prazos-processuais-tutorial-completo-para-usar-o-calculaprazocombr" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://github.com/anfers1985/imagens/blob/main/Imagem%20Calculadora%20de%20Prazos%202.jpg?raw=true" alt="Calculadora de prazos processuais: tutorial completo para usar o CalculaPrazo.com.br" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">26 abr. 2026</p>
-            <h2 class="blog-card-title">Calculadora de prazos processuais: tutorial completo para usar o CalculaPrazo.com.br</h2>
-            <p class="blog-card-desc">Ferramenta gratuita calcula prazos trabalhistas e civis considerando feriados, tribunais e regras do Novo CPC e CLT.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/calculadora-verbas-trabalhistas-rescisorias" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://github.com/anfers1985/imagens/blob/main/Gemini_Generated_Image_d7mgd7d7mgd7d7mg.png?raw=true" alt="Calculadora de Verbas Trabalhistas e Rescisórias" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">26 abr. 2026</p>
-            <h2 class="blog-card-title">Calculadora de Verbas Trabalhistas e Rescisórias</h2>
-            <p class="blog-card-desc">Calcule verbas rescisórias com rapidez: saldo de salário, férias, 13º, FGTS, multa e aviso prévio conforme a CLT, em ferramenta gratuita.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/pedido-demissao-empregada-gestante" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1457342813143-a1ae27448a82?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Pedido de demissão da empregada gestante: validade, cuidados e efeitos jurídicos" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">25 abr. 2026</p>
-            <h2 class="blog-card-title">Pedido de demissão da empregada gestante: validade, cuidados e efeitos jurídicos</h2>
-            <p class="blog-card-desc">Pedido de demissão da empregada gestante: entenda estabilidade, artigo 500 da CLT, homologação sindical e efeitos na validade da rescisão.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/contratacao-faxineira-caixa-escolar-e-valida" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1563453392212-326f5e854473?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Contratação de faxineira por caixa escolar é válida: o que decidiu o TST e por quê isso importa" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">25 abr. 2026</p>
-            <h2 class="blog-card-title">Contratação de faxineira por caixa escolar é válida: o que decidiu o TST e por quê isso importa</h2>
-            <p class="blog-card-desc">TST valida contratação de faxineira por caixa escolar no Amapá e mantém responsabilidade subsidiária do Estado pelo adicional de insalubridade.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/operador-telemarketing-email-sexual-meta-indenizacao" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://github.com/anfers1985/imagens/blob/main/operador-telemarketing-email-sexual-meta-indenizacao.png?raw=true" alt="Operador de telemarketing que recebeu e-mail sexual como estímulo para meta consegue indenização" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">24 abr. 2026</p>
-            <h2 class="blog-card-title">Operador de telemarketing que recebeu e-mail sexual como estímulo para meta consegue indenização</h2>
-            <p class="blog-card-desc">TST manteve R$ 3 mil de indenização a operador de telemarketing que recebeu e-mail sexual como “incentivo” às metas.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/mpt-ba-intensifica-combate-a-producao-ilegal-de-fogos-na-bah" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1774599730788-a74cd9253b56?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzcwNDI5NDN8&ixlib=rb-4.1.0&q=80&w=1080" alt="MPT-BA intensifica combate à produção ilegal de fogos na Bahia" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">24 abr. 2026</p>
-            <h2 class="blog-card-title">MPT-BA intensifica combate à produção ilegal de fogos na Bahia</h2>
-            <p class="blog-card-desc">Operação Brincar com Fogo apreendeu mais de seis mil unidades de fogos clandestinos e investiga a única fábrica autorizada no estado, suspeita de irregular</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/inteligncia-artificial-e-o-novo-desafio-para-o-emprego-dos-jovens" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1516149893016-813d9a01d5d3?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Inteligência artificial e o novo desafio para o emprego dos jovens" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">24 abr. 2026</p>
-            <h2 class="blog-card-title">Inteligência artificial e o novo desafio para o emprego dos jovens</h2>
-            <p class="blog-card-desc">A inteligência artificial muda o mercado e desafia a entrada dos jovens no trabalho. Veja cursos gratuitos e caminhos para se qualificar.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/homologacao-trabalhista-regras-prazos-e-mudancas-na-lei" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1664463760781-f159dfe3af30?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Homologação trabalhista: regras, prazos e mudanças na lei" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">24 abr. 2026</p>
-            <h2 class="blog-card-title">Homologação trabalhista: regras, prazos e mudanças na lei</h2>
-            <p class="blog-card-desc">Homologação trabalhista: veja regras, prazo de 10 dias, mudanças da reforma e a importância de verificar a CCT antes da rescisão.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/ir-2026-mei-autonomos-e-informais-devem-declarar-renda-a-rec" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1775163024488-e88e4a71179f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzcwNDI3MDR8&ixlib=rb-4.1.0&q=80&w=1080" alt="IR 2026: MEI, autônomos e informais devem declarar renda à Receita" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">24 abr. 2026</p>
-            <h2 class="blog-card-title">IR 2026: MEI, autônomos e informais devem declarar renda à Receita</h2>
-            <p class="blog-card-desc">Microempreendedores individuais, trabalhadores autônomos e informais com rendimentos tributáveis acima do limite estabelecido deverão apresentar a declaraç</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/trt-15-mantem-penhora-de-30" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1592293354312-9160458b1a57?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzcwNDI4MzJ8&ixlib=rb-4.1.0&q=80&w=1080" alt="TRT-15 mantém penhora de 30%" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">24 abr. 2026</p>
-            <h2 class="blog-card-title">TRT-15 mantém penhora de 30%</h2>
-            <p class="blog-card-desc">Decisão do TRT-15 sobre penhora de salário</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/motofrete-e-responsabilidade-em-acidentes-fatais-farmacia-condenada-a-indenizar-familia-de-entregador" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1651559588677-5e7c76f468df?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Motofrete e responsabilidade em acidentes fatais: farmácia é condenada a indenizar família de entregador" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">23 abr. 2026</p>
-            <h2 class="blog-card-title">Motofrete e responsabilidade em acidentes fatais: farmácia é condenada a indenizar família de entregador</h2>
-            <p class="blog-card-desc">Oitava Turma do TST reconhece responsabilidade de farmácia por morte de entregador motociclista em acidente de trânsito e fixa indenização à mãe e irmãos c</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/tst-nega-manutencao-de-juros-reduzidos-em-financiamento-apos-demissao-de-bancaria" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://plus.unsplash.com/premium_photo-1700781723507-f19650941f65?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="TST nega manutenção de juros reduzidos em financiamento após demissão de bancária" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">23 abr. 2026</p>
-            <h2 class="blog-card-title">TST nega manutenção de juros reduzidos em financiamento após demissão de bancária</h2>
-            <p class="blog-card-desc">A 5ª Turma do TST rejeitou recurso de bancária do Itaú que queria manter juros reduzidos após dispensa. Benefício dependia do vínculo e cessou.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/fim-da-escala-6x1-ccj-da-camara-aprova-pec-e-debate-avanca-no-congresso" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1625426078245-6911839409dd?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Fim da escala 6x1: CCJ da Câmara aprova PEC e debate avança no Congresso" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">23 abr. 2026</p>
-            <h2 class="blog-card-title">Fim da escala 6x1: CCJ da Câmara aprova PEC e debate avança no Congresso</h2>
-            <p class="blog-card-desc">Admissão da PEC pela CCJ abre caminho para comissão especial discutir fim da escala 6x1, redução de jornada e medidas de compensação econômica aos setores </p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/fim-escala-6x1-bolsa-brasileira-impacto" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Possível fim da escala 6x1 pode mexer com a Bolsa e pressionar setores intensivos em mão de obra" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">23 abr. 2026</p>
-            <h2 class="blog-card-title">Possível fim da escala 6x1 pode mexer com a Bolsa e pressionar setores intensivos em mão de obra</h2>
-            <p class="blog-card-desc">A proposta em discussão no Congresso tende a produzir impacto desigual entre as companhias, com maior pressão sobre negócios intensivos em mão de obra e me</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/pl-18382026-jornada-de-40-horas-e-fim-da-escala-6x1-entram-em-debate" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1720650154268-fa280083de8b?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="PL 1838/2026: jornada de 40 horas e fim da escala 6x1 entram em debate" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">22 abr. 2026</p>
-            <h2 class="blog-card-title">PL 1838/2026: jornada de 40 horas e fim da escala 6x1 entram em debate</h2>
-            <p class="blog-card-desc">Projeto de lei enviado pelo Poder Executivo à Câmara dos Deputados reduz a jornada semanal para 40 horas, cria dois descansos semanais remunerados e, na pr</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/mpt-usa-pesquisa-de-clima-em-acao-de-assedio" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://bahianapolitica.com.br/mpt-na-bahia-divulga-resultado-final-do-concurso-para-selecao-de-estagiarios/" alt="MPT usa pesquisa de clima em ação de assédio" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">22 abr. 2026</p>
-            <h2 class="blog-card-title">MPT usa pesquisa de clima em ação de assédio</h2>
-            <p class="blog-card-desc">MPT obtém reconhecimento de pesquisa de clima em ação de assédio moral na Bahia</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/mpt-obtem-condenacao-de-r-400-mil-contra-industria-de-estofa" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1774599730788-edc1fe2489b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY4ODgxMjl8&ixlib=rb-4.1.0&q=80&w=1080" alt="MPT obtém condenação de R$ 400 mil contra indústria de estofados por assédio eleitoral em Carmo do Cajuru (MG)" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">22 abr. 2026</p>
-            <h2 class="blog-card-title">MPT obtém condenação de R$ 400 mil contra indústria de estofados por assédio eleitoral em Carmo do Cajuru (MG)</h2>
-            <p class="blog-card-desc">Ministério Público do Trabalho condena empresa por pressão psicológica em empregados durante eleições presidenciais de 2022</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/camara-fim-da-escala-6x1" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1660383695620-0ac7813857cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY4NTg4MjR8&ixlib=rb-4.1.0&q=80&w=1080" alt="Câmara: Fim da Escala 6x1" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">22 abr. 2026</p>
-            <h2 class="blog-card-title">Câmara: Fim da Escala 6x1</h2>
-            <p class="blog-card-desc">Relator é favorável ao fim da escala de trabalho 6x1, votação adiada</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/escala-6x1-em-debate-o-que-dizem-os-numeros-da-cnt-sobre-a-reduo-da-jornada-no-transporte" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://github.com/anfers1985/imagens/blob/main/Gemini_Generated_Image_56wddg56wddg56wd.png?raw=true" alt="Escala 6x1 em debate: o que dizem os números da CNT sobre a redução da jornada no transporte" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">22 abr. 2026</p>
-            <h2 class="blog-card-title">Escala 6x1 em debate: o que dizem os números da CNT sobre a redução da jornada no transporte</h2>
-            <p class="blog-card-desc">Estudo encomendado pela Confederação Nacional do Transporte projeta impacto bilionário, risco de demissões e desafios operacionais caso o fim da escala 6x1</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/in-n-40-do-tst-atualizada-quando-usar-agravo-interno-e-quando-usar-agravo-de-instrumento" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1649653084130-06638e40ca25?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="IN nº 40 do TST atualizada: quando usar agravo interno e quando usar agravo de instrumento" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">21 abr. 2026</p>
-            <h2 class="blog-card-title">IN nº 40 do TST atualizada: quando usar agravo interno e quando usar agravo de instrumento</h2>
-            <p class="blog-card-desc">Entenda, em linguagem prática para a advocacia trabalhista, como a evolução da IN nº 40 redefiniu o cabimento de AgrInt e AI após o “denego seguimento” do </p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/jurisprudencia-fake-e-uso-de-ia-quando-o-tst-aplica-multa-por-litigancia-de-ma-fe" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://github.com/anfers1985/imagens/blob/main/martelo%20sobre%20dinheiro.jpeg?raw=true" alt="Jurisprudência “fake” e uso de IA: quando o TST aplica multa por litigância de má-fé" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">21 abr. 2026</p>
-            <h2 class="blog-card-title">Jurisprudência “fake” e uso de IA: quando o TST aplica multa por litigância de má-fé</h2>
-            <p class="blog-card-desc">Casos recentes no TST e na Justiça do Trabalho mostram que o uso irresponsável de inteligência artificial em petições pode gerar multa, comunicação à OAB e</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/13-salario-como-funciona-quem-tem-direito-e-quais-sao-os-prazos" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1604594849809-dfedbc827105?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="13º salário: como funciona, quem tem direito e quais são os prazos" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">21 abr. 2026</p>
-            <h2 class="blog-card-title">13º salário: como funciona, quem tem direito e quais são os prazos</h2>
-            <p class="blog-card-desc">Saiba como é calculado o 13º salário, quando ele é proporcional, quais descontos incidem e em que datas a empresa é obrigada a pagar.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/canpat-2026-e-nr-1-o-que-muda-na-gesto-dos-riscos-psicossociais" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://ead.sit.trabalho.gov.br/pluginfile.php/240733/course/summary/thumb%20CANPAT.PNG" alt="CANPAT 2026 e NR-1: o que muda na gestão dos riscos psicossociais" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">21 abr. 2026</p>
-            <h2 class="blog-card-title">CANPAT 2026 e NR-1: o que muda na gestão dos riscos psicossociais</h2>
-            <p class="blog-card-desc">MTE lança a CANPAT 2026 com foco em riscos psicossociais e divulga manual do GRO e curso EAD da ENIT. Veja o que SST, RH e gestores precisam fazer até maio</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/projeto-que-acaba-com-a-escala-6x1-reduz-jornada-para-40-horas-semanais" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1517960413843-0aee8e2b3285?q=80&w=1199&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Projeto que acaba com a escala 6x1 reduz jornada para 40 horas semanais" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">20 abr. 2026</p>
-            <h2 class="blog-card-title">Projeto que acaba com a escala 6x1 reduz jornada para 40 horas semanais</h2>
-            <p class="blog-card-desc">Projeto enviado ao Congresso reduz jornada de 44 para 40 horas, garante dois dias de descanso remunerado e proíbe redução salarial.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/justica-reconhece-dispensa-discriminatoria-e-determina-reint" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1758598306493-99e22e718e08?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY2NTA4MTl8&ixlib=rb-4.1.0&q=80&w=1080" alt="Justiça reconhece dispensa discriminatória e determina reintegração de empregada com leucemia" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">20 abr. 2026</p>
-            <h2 class="blog-card-title">Justiça reconhece dispensa discriminatória e determina reintegração de empregada com leucemia</h2>
-            <p class="blog-card-desc">O Tribunal Regional do Trabalho da 3ª Região (TRT-MG) reconheceu a dispensa discriminatória de uma empregada com leucemia e determinou sua reintegração ao </p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/resgate-de-trabalhadores-em-condicoes-analogas-a-escravidao-" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1773844389459-110d2b5e18e2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY2OTc1ODV8&ixlib=rb-4.1.0&q=80&w=1080" alt="Resgate de Trabalhadores em Condições Análogas à Escravidão em Unaí" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">20 abr. 2026</p>
-            <h2 class="blog-card-title">Resgate de Trabalhadores em Condições Análogas à Escravidão em Unaí</h2>
-            <p class="blog-card-desc">Ministério Público do Trabalho obtém liminar para bloqueio de bens e resgate de trabalhadores em condições degradantes em Unaí, Minas Gerais.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/conciliacao-trabalhista-novas-iniciativas-ampliam-acesso-a-j" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1607286735675-11176b2413bb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY3MTQ4MjB8&ixlib=rb-4.1.0&q=80&w=1080" alt="Conciliação Trabalhista: Novas Iniciativas Ampliam Acesso à Justiça" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">20 abr. 2026</p>
-            <h2 class="blog-card-title">Conciliação Trabalhista: Novas Iniciativas Ampliam Acesso à Justiça</h2>
-            <p class="blog-card-desc">Iniciativas recentes dos TRTs visam promover a conciliação e facilitar o acesso à justiça, especialmente para populações vulneráveis. O prazo para inscriçõ</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/justica-determina-apresentacao-de-documentos" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1655151485863-5bd031271d31?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY2NTA1MTB8&ixlib=rb-4.1.0&q=80&w=1080" alt="Justiça determina apresentação de documentos" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">20 abr. 2026</p>
-            <h2 class="blog-card-title">Justiça determina apresentação de documentos</h2>
-            <p class="blog-card-desc">Empresa BIOGESP deve apresentar documentos trabalhistas ao MPT sob pena de multa diária. A empresa é acusada de violações trabalhistas que atingem cerca de</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/governo-propoe-reducao-da-jornada-de-trabalho-o-que-muda-par" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1587116987776-b097456d1bbf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY3MTQ3NTF8&ixlib=rb-4.1.0&q=80&w=1080" alt="Governo Propõe Redução da Jornada de Trabalho: O Que Muda para os Trabalhadores?" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">20 abr. 2026</p>
-            <h2 class="blog-card-title">Governo Propõe Redução da Jornada de Trabalho: O Que Muda para os Trabalhadores?</h2>
-            <p class="blog-card-desc">O governo brasileiro encaminhou ao Congresso um projeto para reduzir a jornada de trabalho sem diminuição salarial. Essa mudança pode impactar significativ</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/abril-verde-2026-seguranca-do-trabalho-em-debate-no-trt-2" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1615990860014-99e51245218c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY3MTQ3Nzh8&ixlib=rb-4.1.0&q=80&w=1080" alt="Abril Verde 2026: Segurança do Trabalho em Debate no TRT-2" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">20 abr. 2026</p>
-            <h2 class="blog-card-title">Abril Verde 2026: Segurança do Trabalho em Debate no TRT-2</h2>
-            <p class="blog-card-desc">O evento 'Abril Verde 2026' no TRT-2 abordará a nova redação da NR 01, essencial para a segurança no trabalho. Inscrições abertas até 22 de abril para prof</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/aplicacao-do-piso-nacional-para-professores-temporarios-e-de" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1658267711340-a79a85dbc168?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY2NTA4Mjd8&ixlib=rb-4.1.0&q=80&w=1080" alt="Aplicação do Piso Nacional para Professores Temporários é Destaque no STF" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">20 abr. 2026</p>
-            <h2 class="blog-card-title">Aplicação do Piso Nacional para Professores Temporários é Destaque no STF</h2>
-            <p class="blog-card-desc">O Supremo Tribunal Federal (STF) considerou inconstitucional a lei de Santa Catarina que proibia cotas raciais, e também decidiu sobre a aplicação do piso </p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/resciso-do-contrato-de-trabalho-principais-direitos-e-prazos-para-quem-foi-desligado" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Rescisão do contrato de trabalho: principais direitos e prazos para quem foi desligado" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">20 abr. 2026</p>
-            <h2 class="blog-card-title">Rescisão do contrato de trabalho: principais direitos e prazos para quem foi desligado</h2>
-            <p class="blog-card-desc">Entenda como funcionam o cálculo das verbas rescisórias, os prazos de pagamento, o aviso prévio e quais direitos você tem em cada tipo de desligamento.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/trt-sc-mantm-jornada-reduzida-de-40-horas-semanais-em-rede-varejista" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://plus.unsplash.com/premium_photo-1673605603709-8599cbbd1a74?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="TRT-SC mantém jornada reduzida de 40 horas semanais em rede varejista" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">20 abr. 2026</p>
-            <h2 class="blog-card-title">TRT-SC mantém jornada reduzida de 40 horas semanais em rede varejista</h2>
-            <p class="blog-card-desc">1ª Turma do TRT-SC rejeita pedido de revisão e preserva cláusula de acordo coletivo que limita jornada nas Lojas Berlanda desde 2013</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/stf-refora-tese-do-tst-sobre-aplicao-imediata-da-reforma-trabalhista-a-contratos-em-curso" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1618771623063-6c3faa854a61?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="STF reforça tese do TST sobre aplicação imediata da Reforma Trabalhista a contratos em curso" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">20 abr. 2026</p>
-            <h2 class="blog-card-title">STF reforça tese do TST sobre aplicação imediata da Reforma Trabalhista a contratos em curso</h2>
-            <p class="blog-card-desc">Em decisão unânime no Tema 1.448, STF nega repercussão geral e confirma a força vinculante do IRR‑23 do TST sobre a Lei 13.467/2017.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/abril-verde-uma-chamada-a-acao-pela-saude-e-seguranca-no-tra" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1659353586512-bcc4c7182d01?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY3MTQ3MzR8&ixlib=rb-4.1.0&q=80&w=1080" alt="Abril Verde: Uma Chamada à Ação pela Saúde e Segurança no Trabalho" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">20 abr. 2026</p>
-            <h2 class="blog-card-title">Abril Verde: Uma Chamada à Ação pela Saúde e Segurança no Trabalho</h2>
-            <p class="blog-card-desc">A campanha Abril Verde destaca a importância da saúde e segurança no ambiente laboral, promovendo a conscientização sobre a saúde física e mental dos traba</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/bloqueio-de-bens-e-resgate-de-trabalhadores" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1662692735672-544412d65934?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY2NTA2NTd8&ixlib=rb-4.1.0&q=80&w=1080" alt="Bloqueio de bens e resgate de trabalhadores" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">20 abr. 2026</p>
-            <h2 class="blog-card-title">Bloqueio de bens e resgate de trabalhadores</h2>
-            <p class="blog-card-desc">Sete trabalhadores resgatados em condições análogas à escravidão em Unaí. Liminar determinou bloqueio de bens e custeio do retorno às cidades de origem.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/ferias-principais-direitos-prazos-e-duvidas-dos-trabalhadores" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1504093428647-19ae13b11ff2?q=80&w=1167&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Férias: principais direitos, prazos e dúvidas dos trabalhadores" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">20 abr. 2026</p>
-            <h2 class="blog-card-title">Férias: principais direitos, prazos e dúvidas dos trabalhadores</h2>
-            <p class="blog-card-desc">Entenda como funciona o período aquisitivo e concessivo, o fracionamento das férias, o pagamento em dobro, a venda de 1/3 e o impacto das faltas injustific</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/jornada-semanal-reduzida" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1635545999375-057ee4013deb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY2NTA4MDd8&ixlib=rb-4.1.0&q=80&w=1080" alt="Jornada Semanal Reduzida" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">20 abr. 2026</p>
-            <h2 class="blog-card-title">Jornada Semanal Reduzida</h2>
-            <p class="blog-card-desc">Projeto de lei reduz jornada semanal para 40 horas e prevê dois dias de descanso remunerado. A medida afeta empresas e trabalhadores.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/resgate-trabalho-escravo" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1764620913207-b3ceca1123a0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY2MTM5NTN8&ixlib=rb-4.1.0&q=80&w=1080" alt="Resgate Trabalho Escravo" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">19 abr. 2026</p>
-            <h2 class="blog-card-title">Resgate Trabalho Escravo</h2>
-            <p class="blog-card-desc">Resgate de trabalhadores em condições análogas à escravidão. Decisão judicial para proteger direitos trabalhistas.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/pleno-do-tst-define-que-adicional-de-periculosidade-de-motociclistas-devido-sem-nova-regulamentao" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1667764808647-df44f4435f6d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Pleno do TST define que adicional de periculosidade de motociclistas é devido sem nova regulamentação" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">19 abr. 2026</p>
-            <h2 class="blog-card-title">Pleno do TST define que adicional de periculosidade de motociclistas é devido sem nova regulamentação</h2>
-            <p class="blog-card-desc">Em incidente de recursos repetitivos (Tema 101), o Tribunal Superior do Trabalho reconheceu que o adicional de periculosidade aos empregados que usam motoc</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/lista-suja-trabalho-escravo-abril-2026" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f" alt="MTE atualiza “Lista Suja” do trabalho análogo à escravidão: 169 novos empregadores e mais de 2,2 mil trabalhadores resgatados" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">19 abr. 2026</p>
-            <h2 class="blog-card-title">MTE atualiza “Lista Suja” do trabalho análogo à escravidão: 169 novos empregadores e mais de 2,2 mil trabalhadores resgatados</h2>
-            <p class="blog-card-desc">Atualização semestral do Cadastro de Empregadores inclui 169 novos nomes, amplia a lista para 613 responsáveis por trabalho análogo à escravidão e reforça </p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/trt-mg-reconhece-dispensa-discriminatria-e-manda-reintegrar-trabalhadora-com-leucemia" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1633219664572-473fd988a44f?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="TRT-MG reconhece dispensa discriminatória e manda reintegrar trabalhadora com leucemia" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">19 abr. 2026</p>
-            <h2 class="blog-card-title">TRT-MG reconhece dispensa discriminatória e manda reintegrar trabalhadora com leucemia</h2>
-            <p class="blog-card-desc">TRT-MG anula dispensa de analista com leucemia, reconhece discriminação e determina reintegração com salários e plano de saúde restabelecidos.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/fgts-digital-passa-a-ser-obrigatorio-em-reclamatorias-trabal" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1601571047421-64e17b56cbbd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY2MzE5MDZ8&ixlib=rb-4.1.0&q=80&w=1080" alt="FGTS Digital passa a ser obrigatório em reclamatórias trabalhistas" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">19 abr. 2026</p>
-            <h2 class="blog-card-title">FGTS Digital passa a ser obrigatório em reclamatórias trabalhistas</h2>
-            <p class="blog-card-desc">FGTS Digital se torna obrigatório em reclamatórias trabalhistas a partir de maio de 2026</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/pauta-classe-trabalhadora-conclat-2026-lancada-centrais-sindicais" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1598552060530-faee27321377?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Pauta da Classe Trabalhadora CONCLAT 2026 é lançada pelas Centrais Sindicais" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">18 abr. 2026</p>
-            <h2 class="blog-card-title">Pauta da Classe Trabalhadora CONCLAT 2026 é lançada pelas Centrais Sindicais</h2>
-            <p class="blog-card-desc">As centrais sindicais brasileiras lançaram a “Pauta da Classe Trabalhadora 2026–2030” durante a CONCLAT realizada em 15 de abril de 2026, em Brasília. O do</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/projeto-de-lei-de-reducao-de-jornada-implicacoes-e-alteracoe" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1637166163357-5bfe39327688?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY0Mjk0MDd8&ixlib=rb-4.1.0&q=80&w=1080" alt="Projeto de Lei de Redução de Jornada: Implicações e Alterações" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">17 abr. 2026</p>
-            <h2 class="blog-card-title">Projeto de Lei de Redução de Jornada: Implicações e Alterações</h2>
-            <p class="blog-card-desc">O projeto de lei que visa reduzir a jornada de trabalho sem redução salarial traz mudanças significativas para o mercado de trabalho brasileiro.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/stf-reafirma-direito-ao-piso-salarial-para-professores-tempo" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1758685848142-06e158cf64bc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY0MzQ5Nzh8&ixlib=rb-4.1.0&q=80&w=1080" alt="STF reafirma direito ao piso salarial para professores temporários" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">17 abr. 2026</p>
-            <h2 class="blog-card-title">STF reafirma direito ao piso salarial para professores temporários</h2>
-            <p class="blog-card-desc">Decisão do STF garante que professores temporários têm direito ao piso salarial do magistério, reforçando a proteção aos profissionais da educação.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/fgts-digital-recolhimentos-processuais-a-partir-de-maio-de-2" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1569146060246-1aef662d993d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY0Mzc0ODZ8&ixlib=rb-4.1.0&q=80&w=1080" alt="FGTS Digital: Recolhimentos Processuais a partir de Maio de 2026" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">17 abr. 2026</p>
-            <h2 class="blog-card-title">FGTS Digital: Recolhimentos Processuais a partir de Maio de 2026</h2>
-            <p class="blog-card-desc">A partir de maio de 2026, os recolhimentos de FGTS em processos trabalhistas serão realizados via FGTS Digital, exigindo adequações das empresas.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/trt-mg-e-banco-bradesco-firmam-acordo-para-ampliar-conciliac" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1758599543122-36252c317fd9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY0MzIxODF8&ixlib=rb-4.1.0&q=80&w=1080" alt="TRT-MG e Banco Bradesco firmam acordo para ampliar conciliações trabalhistas" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">17 abr. 2026</p>
-            <h2 class="blog-card-title">TRT-MG e Banco Bradesco firmam acordo para ampliar conciliações trabalhistas</h2>
-            <p class="blog-card-desc">Acordo entre TRT-MG e Banco Bradesco visa acelerar a conciliação em processos trabalhistas, promovendo soluções consensuais.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/tst-estabilidade-gestante-contrato-temporario-lei-6019" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1586102728466-46b99b3bc411?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="TST consolida estabilidade da gestante em contratos temporários e redefine risco trabalhista" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">13 abr. 2026</p>
-            <h2 class="blog-card-title">TST consolida estabilidade da gestante em contratos temporários e redefine risco trabalhista</h2>
-            <p class="blog-card-desc">TST alinha-se ao STF e reconhece estabilidade da gestante mesmo em contratos temporários, ampliando impactos para empresas e rotinas de DP.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/nova-lei-licenca-paternidade-impactos-empresas" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1609220136736-443140cffec6" alt="Nova Lei de Licença-Paternidade: impactos práticos e obrigações para empresas" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">13 abr. 2026</p>
-            <h2 class="blog-card-title">Nova Lei de Licença-Paternidade: impactos práticos e obrigações para empresas</h2>
-            <p class="blog-card-desc">Entenda as novas regras da licença-paternidade, prazos progressivos, estabilidade no emprego e os impactos diretos para RH e empresas a partir de 2027.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/nulidade-sentenca-sobrestamento-tst-tema-02-irdr" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1676181739859-08330dea8999?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Descumprimento de sobrestamento do TST gera nulidade de sentença em casos de contribuição assistencial" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">13 abr. 2026</p>
-            <h2 class="blog-card-title">Descumprimento de sobrestamento do TST gera nulidade de sentença em casos de contribuição assistencial</h2>
-            <p class="blog-card-desc">Decisões recentes reforçam que o descumprimento de suspensão determinada em IRDR do TST pode gerar nulidade processual, especialmente em ações sobre contri</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/tst-ifood-sem-responsabilidade-entregador-intermediario" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1617347454431-f49d7ff5c3b1?q=80&w=1115&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="TST afasta responsabilidade do iFood em caso de entregador vinculado a empresa intermediária" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">13 abr. 2026</p>
-            <h2 class="blog-card-title">TST afasta responsabilidade do iFood em caso de entregador vinculado a empresa intermediária</h2>
-            <p class="blog-card-desc">Decisão do TST reforça que plataformas digitais não respondem por obrigações trabalhistas de entregadores contratados por empresas terceiras, ao reconhecer</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/aposentadoria-por-pontos-inss-2026" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1633158829875-e5316a358c6f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Aposentadoria por Pontos no INSS: Regras Atualizadas, Tabela Progressiva e Cálculo do Benefício (2026)" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">13 abr. 2026</p>
-            <h2 class="blog-card-title">Aposentadoria por Pontos no INSS: Regras Atualizadas, Tabela Progressiva e Cálculo do Benefício (2026)</h2>
-            <p class="blog-card-desc">Entenda a regra de aposentadoria por pontos no INSS em 2026, veja a tabela atualizada, cálculo do benefício e como identificar a opção mais vantajosa.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/risco-de-trabalho-analogo-a-escravidao-atualizacao-e-impacto" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1589578527966-fdac0f44566c?w=1200&q=80" alt="Trabalho Análogo à Escravidão: Impacto Jurídico e Financeiro Para Empresas em 2026" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">10 abr. 2026</p>
-            <h2 class="blog-card-title">Trabalho Análogo à Escravidão: Impacto Jurídico e Financeiro Para Empresas em 2026</h2>
-            <p class="blog-card-desc">Análise completa das consequências jurídicas e financeiras para empresas autuadas ou incluídas na Lista Suja do MTE. Responsabilidade penal, civil e trabal</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/mte-atualiza-lista-suja-risco-de-trabalho-analogo-a-escravid" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&q=80" alt="MTE Atualiza Lista Suja com 169 Nomes: O Risco de Trabalho Análogo à Escravidão em 2026" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">10 abr. 2026</p>
-            <h2 class="blog-card-title">MTE Atualiza Lista Suja com 169 Nomes: O Risco de Trabalho Análogo à Escravidão em 2026</h2>
-            <p class="blog-card-desc">Análise completa da atualização do Cadastro de Empregadores pelo MTE em abril/2026. Setores mais afetados, consequências jurídicas e como realizar due dili</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/impactos-trabalhistas-dispensa-via-whatsapp-e-greve-de-servi" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=1200&q=80" alt="Dispensa por WhatsApp e Greve de Servidores: Análise dos Riscos Trabalhistas Recentes" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">9 abr. 2026</p>
-            <h2 class="blog-card-title">Dispensa por WhatsApp e Greve de Servidores: Análise dos Riscos Trabalhistas Recentes</h2>
-            <p class="blog-card-desc">TRT-SP reconhece validade da dispensa comunicada por WhatsApp em determinadas condições. Greve de servidores federais levanta questão sobre descontos e dir</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/mte-novidades-em-legislacao-e-fiscalizacao-09-04-2026" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1200&q=80" alt="MTE: Principais Atualizações de Legislação e Fiscalização Trabalhista — Abril 2026" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">9 abr. 2026</p>
-            <h2 class="blog-card-title">MTE: Principais Atualizações de Legislação e Fiscalização Trabalhista — Abril 2026</h2>
-            <p class="blog-card-desc">Resumo das principais novidades do Ministério do Trabalho e Emprego em abril de 2026: atualização da Lista Suja, orientações sobre PAT e novas fiscalizaçõe</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/novas-tendencias-no-direito-do-trabalho-brasileiro-09-04-202" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="/images/og-default.png" alt="Novas Tendências no Direito do Trabalho Brasileiro (09/04/2026)" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">9 abr. 2026</p>
-            <h2 class="blog-card-title">Novas Tendências no Direito do Trabalho Brasileiro (09/04/2026)</h2>
-            <p class="blog-card-desc">Análise das atualizações e tendências no cenário trabalhista brasileiro em 09/04/2026, com foco em advogados, RH e contadores.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/trabalho-escravo-risco-juridico-e-financeiro-em-mg" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1200&q=80" alt="Trabalho Escravo em MG: MPT Atua em Novas Operações com Resgate de Trabalhadores Rurais" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">9 abr. 2026</p>
-            <h2 class="blog-card-title">Trabalho Escravo em MG: MPT Atua em Novas Operações com Resgate de Trabalhadores Rurais</h2>
-            <p class="blog-card-desc">O MPT e o MTE realizaram operação em Minas Gerais resgatando trabalhadores em condições análogas à escravidão. Entenda o risco para toda a cadeia produtiva</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/novas-fronteiras-do-direito-do-trabalho-analise-pos-2026" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="/images/og-default.png" alt="Novas Fronteiras do Direito do Trabalho: Análise Pós-2026" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">9 abr. 2026</p>
-            <h2 class="blog-card-title">Novas Fronteiras do Direito do Trabalho: Análise Pós-2026</h2>
-            <p class="blog-card-desc">Análise aprofundada das notícias e atualizações trabalhistas de abril de 2026, com foco em advogados, RH e contadores. Impactos e estratégias.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/mpt-sp-risco-de-multa-por-nao-apresentacao-de-documentos" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1568992687947-868a62a9f521?w=1200&q=80" alt="MPT-SP: Empresa é Multada por Não Apresentar Documentos Trabalhistas à Fiscalização" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">8 abr. 2026</p>
-            <h2 class="blog-card-title">MPT-SP: Empresa é Multada por Não Apresentar Documentos Trabalhistas à Fiscalização</h2>
-            <p class="blog-card-desc">O MPT-SP obteve multa diária por descumprimento de ordem judicial de apresentação de documentos trabalhistas. Entenda o que o empregador deve ter disponíve</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/mpt-rj-independencia-arbitral-na-cbf-risco-e-conformidade" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?w=1200&q=80" alt="MPT-RJ Recomenda à CBF Independência de Câmara Arbitral para Evitar Conflito de Interesses" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">8 abr. 2026</p>
-            <h2 class="blog-card-title">MPT-RJ Recomenda à CBF Independência de Câmara Arbitral para Evitar Conflito de Interesses</h2>
-            <p class="blog-card-desc">O MPT do Rio de Janeiro expediu recomendação à CBF sobre independência funcional da câmara arbitral trabalhista do futebol. Entenda as implicações para con</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/mpt-sc-riscos-de-ingerencia-sindical-e-teletrabalho" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&q=80" alt="MPT-SC Alerta para Riscos de Ingerência Sindical e Irregularidades no Teletrabalho" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">8 abr. 2026</p>
-            <h2 class="blog-card-title">MPT-SC Alerta para Riscos de Ingerência Sindical e Irregularidades no Teletrabalho</h2>
-            <p class="blog-card-desc">A PRT-12 do MPT em Santa Catarina identificou irregularidades em contratos de teletrabalho e situações de ingerência patronal em atividade sindical. Orient</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/alerta-mpt-rs-riscos-de-assedio-condicoes-degradantes-e-anal" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80" alt="MPT-RS Intensifica Fiscalização por Assédio, Condições Degradantes e Trabalho Análogo à Escravidão" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">8 abr. 2026</p>
-            <h2 class="blog-card-title">MPT-RS Intensifica Fiscalização por Assédio, Condições Degradantes e Trabalho Análogo à Escravidão</h2>
-            <p class="blog-card-desc">A PRT-4 (MPT-RS) anunciou intensificação das fiscalizações em 2026, com foco em assédio moral, condições degradantes e trabalho escravo no Rio Grande do Su</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/mpt-ba-pesquisa-de-clima-como-prova-de-assedio-organizaciona" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=1200&q=80" alt="MPT-BA Usa Pesquisa de Clima como Prova de Assédio Organizacional em ACP" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">8 abr. 2026</p>
-            <h2 class="blog-card-title">MPT-BA Usa Pesquisa de Clima como Prova de Assédio Organizacional em ACP</h2>
-            <p class="blog-card-desc">O MPT da Bahia obteve decisão reconhecendo pesquisa de clima organizacional como prova válida de assédio moral coletivo. Entenda o impacto para empresas e </p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/aviso-previo-proporcional-como-calcular" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1506784365847-bbad939e9335?w=1200&q=80" alt="Aviso Prévio Proporcional: Como Calcular e Quais os Direitos em 2026" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">7 abr. 2026</p>
-            <h2 class="blog-card-title">Aviso Prévio Proporcional: Como Calcular e Quais os Direitos em 2026</h2>
-            <p class="blog-card-desc">Guia prático sobre o aviso prévio proporcional (Lei 12.506/2011): fórmula de cálculo, tabela por anos de serviço, impacto no FGTS e diferenças entre dispen</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/acidente-canavial-queimaduras-tst" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=1200&q=80" alt="TST Mantém Condenação de Usina por Queimaduras em Acidente no Canavial" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">7 abr. 2026</p>
-            <h2 class="blog-card-title">TST Mantém Condenação de Usina por Queimaduras em Acidente no Canavial</h2>
-            <p class="blog-card-desc">A 8ª Turma do TST negou recurso de usina que não forneceu EPI adequado a trabalhador que sofreu queimaduras durante corte de cana. Empresa deve pagar inden</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/abril-verde-protecao-da-vida-e-saude-do-trabalhador" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=1200&q=80" alt="Abril Verde 2026: O Que as Empresas Devem Fazer para Cumprir as Normas de SST" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">7 abr. 2026</p>
-            <h2 class="blog-card-title">Abril Verde 2026: O Que as Empresas Devem Fazer para Cumprir as Normas de SST</h2>
-            <p class="blog-card-desc">O Abril Verde destaca a prevenção de acidentes de trabalho. Entenda as obrigações legais de SST para 2026, incluindo o PGR (NR-1 revisada), PCMSO, CIPA e a</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/gestante-hipersuficiente-acordo-extrajudicial-tst" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1200&q=80" alt="TST Homologa Acordo Extrajudicial com Gestante Hipersuficiente: Entenda os Limites" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">7 abr. 2026</p>
-            <h2 class="blog-card-title">TST Homologa Acordo Extrajudicial com Gestante Hipersuficiente: Entenda os Limites</h2>
-            <p class="blog-card-desc">O TST homologou acordo extrajudicial com quitação geral firmado por gestante advogada de alta renda. A decisão esclarece quando a proteção à gestante pode </p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/tst-banco-de-horas-acordo-coletivo" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80" alt="TST: Banco de Horas Sem Acordo Coletivo é Nulo e Gera Horas Extras" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">7 abr. 2026</p>
-            <h2 class="blog-card-title">TST: Banco de Horas Sem Acordo Coletivo é Nulo e Gera Horas Extras</h2>
-            <p class="blog-card-desc">O TST reafirma que banco de horas por acordo individual é inválido para compensação além de 30 dias. Empresa deve pagar horas extras com adicional mínimo d</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/cofen-dimensionamento-enfermagem-tst" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=1200&q=80" alt="TST e Dimensionamento de Enfermagem: O Que a Resolução COFEN 543/2017 Impõe ao Empregador" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">7 abr. 2026</p>
-            <h2 class="blog-card-title">TST e Dimensionamento de Enfermagem: O Que a Resolução COFEN 543/2017 Impõe ao Empregador</h2>
-            <p class="blog-card-desc">Decisão do TST sobre dimensionamento de equipe de enfermagem e responsabilidade do hospital empregador. Entenda as obrigações legais e o risco trabalhista </p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/rescisao-indireta-quando-cabe" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1200&q=80" alt="Rescisão Indireta: Quando o Empregado Pode Pedir e Quais Direitos Garante" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">7 abr. 2026</p>
-            <h2 class="blog-card-title">Rescisão Indireta: Quando o Empregado Pode Pedir e Quais Direitos Garante</h2>
-            <p class="blog-card-desc">Guia completo sobre rescisão indireta (art. 483 da CLT): quando cabe, como provar, quais verbas são devidas e a posição consolidada do TST — com impacto pr</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/trabalho-hibrido-regras-mte-2025" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&q=80" alt="Teletrabalho e Trabalho Híbrido: Regras da CLT e Obrigações do Empregador em 2026" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">7 abr. 2026</p>
-            <h2 class="blog-card-title">Teletrabalho e Trabalho Híbrido: Regras da CLT e Obrigações do Empregador em 2026</h2>
-            <p class="blog-card-desc">O que a CLT exige do empregador no teletrabalho e trabalho híbrido: contrato escrito, controle de jornada, fornecimento de equipamentos, saúde e segurança.</p>
-          </div>
-        </a>
-      </article>
-      <article class="blog-card">
-        <a href="/blog/esocial-s-2299-desligamento-passo-a-passo" class="blog-card-link">
-          <div class="blog-card-img-wrap">
-            <img src="https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=1200&q=80" alt="eSocial S-2299: Guia Completo do Evento de Desligamento em 2026" class="blog-card-img" loading="lazy" width="380" height="200">
-          </div>
-          <div class="blog-card-body">
-            <p class="blog-card-date">7 abr. 2026</p>
-            <h2 class="blog-card-title">eSocial S-2299: Guia Completo do Evento de Desligamento em 2026</h2>
-            <p class="blog-card-desc">Tudo sobre o evento S-2299 (Desligamento) no eSocial: prazo de envio, campos obrigatórios, motivos de rescisão, integração com FGTS Digital e erros mais co</p>
-          </div>
-        </a>
-      </article>
-
+    <!-- Tabs principais -->
+    <div style="display:flex;gap:0;overflow-x:auto;" id="filter-tabs">
+      <button class="cp-tab active" onclick="setMainFilter('todos',this)" data-group="todos">Todos</button>
+      <button class="cp-tab" onclick="setMainFilter('jurisprudencia',this)" data-group="jurisprudencia">⚖️ Jurisprudência</button>
+      <button class="cp-tab" onclick="setMainFilter('orgaos',this)" data-group="orgaos">🏛️ Órgãos Públicos</button>
+      <button class="cp-tab" onclick="setMainFilter('legislacao',this)" data-group="legislacao">📋 Legislação</button>
+      <button class="cp-tab" onclick="setMainFilter('rh',this)" data-group="rh">👥 RH e Gestão</button>
+      <button class="cp-tab" onclick="setMainFilter('recursos',this)" data-group="recursos">📄 Recursos</button>
+    </div>
+    <!-- Sub-pills (aparecem conforme aba selecionada) -->
+    <div id="cp-subpills" style="display:none;padding:8px 0;gap:6px;flex-wrap:wrap;overflow-x:auto;">
+      <!-- preenchido por JS -->
     </div>
   </div>
-</main>
+</div>
+<style>
+.cp-tab{padding:12px 16px;border:none;border-bottom:3px solid transparent;background:none;font-size:.83rem;font-weight:700;color:#6B84AA;cursor:pointer;white-space:nowrap;font-family:inherit;transition:all .15s;}
+.cp-tab:hover{color:#1565C0;background:#EFF8FF;}
+.cp-tab.active{color:#1565C0;border-bottom-color:#1565C0;}
+.cp-subpill{padding:5px 14px;border:1.5px solid #D4E5F7;background:white;border-radius:999px;font-size:.75rem;font-weight:700;color:#3B5A8A;cursor:pointer;white-space:nowrap;transition:all .15s;font-family:inherit;}
+.cp-subpill:hover,.cp-subpill.active{border-color:#1565C0;background:#DBEEFF;color:#1565C0;}
+</style>
+
+<!-- ══════════ CONTEÚDO PRINCIPAL ══════════ -->
+<div class="container">
+  <div id="cp-layout" style="display:grid;grid-template-columns:1fr 280px;gap:30px;padding:32px 0;">
+
+    <!-- COLUNA PRINCIPAL -->
+    <div>
+      <!-- Mais Recentes: 1 hero grande + 3 cards lado -->
+      <div style="margin-bottom:36px;">
+        <h2 style="font-size:1rem;font-weight:800;margin-bottom:16px;color:#0D2B5A;display:flex;align-items:center;gap:8px;"><span style="width:4px;height:18px;background:#1E88E5;border-radius:2px;display:inline-block;"></span> Mais Recentes</h2>
+        <div id="cp-recent-grid" style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:16px;"></div>
+      </div>
+
+      <!-- Em Destaque: 4 cards médios iguais -->
+      <div style="margin-bottom:36px;">
+        <h2 style="font-size:1rem;font-weight:800;margin-bottom:16px;color:#0D2B5A;display:flex;align-items:center;gap:8px;"><span style="width:4px;height:18px;background:#1E88E5;border-radius:2px;display:inline-block;"></span> Em Destaque</h2>
+        <div id="cp-featured-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;"></div>
+      </div>
+
+      <!-- Últimas 10: thumbnail + info -->
+      <div>
+        <h2 style="font-size:1rem;font-weight:800;margin-bottom:16px;color:#0D2B5A;display:flex;align-items:center;gap:8px;"><span style="width:4px;height:18px;background:#1E88E5;border-radius:2px;display:inline-block;"></span> Últimas Publicações</h2>
+        <div id="cp-latest-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+        <button id="cp-load-more" onclick="loadMorePosts()" style="display:none;width:100%;margin-top:16px;padding:11px;background:white;border:1.5px solid #D4E5F7;border-radius:8px;font-weight:700;color:#3B5A8A;cursor:pointer;font-family:inherit;transition:all .2s;" onmouseover="this.style.borderColor='#1565C0'" onmouseout="this.style.borderColor='#D4E5F7'">Carregar mais artigos ▾</button>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside id="cp-sidebar">
+      <div style="background:white;border:1px solid #D4E5F7;border-radius:12px;padding:16px;margin-bottom:18px;">
+        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;color:#0D2B5A;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #DBEEFF;letter-spacing:.5px;">Mais Acessados</div>
+        <div id="cp-sidebar-top"></div>
+      </div>
+      <div style="background:white;border:1px solid #D4E5F7;border-radius:12px;padding:16px;margin-bottom:18px;">
+        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;color:#0D2B5A;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #DBEEFF;letter-spacing:.5px;">Tags Populares</div>
+        <div id="cp-sidebar-tags" style="display:flex;flex-wrap:wrap;gap:5px;"></div>
+      </div>
+      <div style="background:white;border:1px solid #D4E5F7;border-radius:12px;padding:16px;">
+        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;color:#0D2B5A;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #DBEEFF;letter-spacing:.5px;">Ferramentas Rápidas</div>
+        <a href="/#sec-prazos" class="dr-item" style="padding:8px 0;font-size:.83rem;">⚡ Calculadora de Prazos</a>
+        <a href="/#trabalhista" class="dr-item" style="padding:8px 0;font-size:.83rem;">⚖️ Verbas Trabalhistas</a>
+        <a href="/#correcao" class="dr-item" style="padding:8px 0;font-size:.83rem;">💰 Correção Monetária</a>
+        <a href="/#salario" class="dr-item" style="padding:8px 0;font-size:.83rem;">💵 Salário Líquido</a>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<style>
+.cp-card{background:white;border:1px solid #D4E5F7;border-radius:12px;overflow:hidden;cursor:pointer;transition:all .25s;display:flex;flex-direction:column;}
+.cp-card:hover{border-color:#1E88E5;box-shadow:0 8px 24px rgba(21,101,192,.12);transform:translateY(-3px);}
+.cp-list-item{display:flex;gap:12px;padding:12px;background:white;border:1px solid #D4E5F7;border-radius:8px;cursor:pointer;transition:all .2s;}
+.cp-list-item:hover{border-color:#1E88E5;background:#EFF8FF;}
+.sb-link{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:.83rem;color:#3B5A8A;cursor:pointer;transition:all .2s;border-bottom:1px solid #EEF4FF;text-decoration:none;}
+.sb-link:hover{color:#1565C0;padding-left:4px;}
+.sb-link:last-child{border-bottom:none;}
+@media(max-width:900px){#cp-layout{grid-template-columns:1fr!important;}#cp-sidebar{display:none!important;}}
+@media(max-width:580px){#cp-recent-grid{grid-template-columns:1fr!important;}}
+</style>
+
+<script>
+var allPosts=[],filteredPosts=[],latestOffset=0,LATEST_PAGE=10;
+var activeGroup='todos',activeSub='';
+
+var SUB_PILLS={
+  jurisprudencia:[
+    {label:'TST',cat:'jurisprudencia-tst'},
+    {label:'STF',cat:'jurisprudencia-stf'},
+    {label:'TRTs',cat:'jurisprudencia-trts'},
+    {label:'SDI-1/SDI-2',cat:'jurisprudencia-sdi'},
+    {label:'OJs e Súmulas',cat:'jurisprudencia'}
+  ],
+  orgaos:[
+    {label:'MTE',cat:'noticias-mte'},
+    {label:'MPT',cat:'noticias-mpt'},
+    {label:'CSJT',cat:'noticias-csjt'}
+  ],
+  legislacao:[
+    {label:'CLT e Leis',cat:'clt-leis'},
+    {label:'eSocial',cat:'esocial-fgts-digital'},
+    {label:'FGTS Digital',cat:'fgts-digital'},
+    {label:'NRs/SST',cat:'saude-seguranca'},
+    {label:'Sindical',cat:'sindical'},
+    {label:'Portarias/INs',cat:'legislacao-normas'}
+  ],
+  rh:[
+    {label:'Folha de Pagamento',cat:'folha-pagamento'},
+    {label:'Jornada',cat:'jornada'},
+    {label:'Rescisão',cat:'rescisao'},
+    {label:'SST',cat:'saude-seguranca'},
+    {label:'Trabalho Remoto',cat:'trabalho-remoto'},
+    {label:'Benefícios',cat:'beneficios'},
+    {label:'Admissão/CTPS',cat:'admissao'}
+  ],
+  recursos:[
+    {label:'Petições',cat:'modelos'},
+    {label:'Contratos',cat:'modelos'},
+    {label:'Checklists',cat:'modelos'},
+    {label:'Artigos',cat:'artigos'}
+  ]
+};
+
+var GROUP_CATS={
+  jurisprudencia:['jurisprudencia-tst','jurisprudencia-stf','jurisprudencia-trts','jurisprudencia-sdi','jurisprudencia'],
+  orgaos:['noticias-mte','noticias-mpt','noticias-mte-mpt','noticias-csjt'],
+  legislacao:['clt-leis','esocial-fgts-digital','fgts-digital','saude-seguranca','sindical','legislacao-normas'],
+  rh:['folha-pagamento','jornada','rescisao','orientacoes-praticas','trabalho-remoto','beneficios','admissao'],
+  recursos:['modelos','artigos','geral']
+};
+
+function setMainFilter(group,btn){
+  activeGroup=group;activeSub='';
+  document.querySelectorAll('.cp-tab').forEach(function(b){b.classList.remove('active');});
+  if(btn)btn.classList.add('active');
+  var sp=document.getElementById('cp-subpills');
+  if(group==='todos'){sp.style.display='none';sp.innerHTML='';}
+  else{
+    var pills=SUB_PILLS[group]||[];
+    sp.style.display=pills.length?'flex':'none';
+    sp.innerHTML=pills.map(function(p){return '<button class="cp-subpill" onclick="setSubFilter(''+p.cat+'',this)">'+p.label+'</button>';}).join('');
+  }
+  applyFilters();
+}
+
+function setSubFilter(cat,btn){
+  activeSub=cat;
+  document.querySelectorAll('.cp-subpill').forEach(function(b){b.classList.remove('active');});
+  if(btn)btn.classList.add('active');
+  applyFilters();
+}
+
+function applyFilters(){
+  var q=document.getElementById('conteudo-search-input').value.toLowerCase().trim();
+  filteredPosts=allPosts.filter(function(p){
+    var cat=p.category||'';
+    var cats=p.categories||[cat];
+    var matchGroup=activeGroup==='todos'||(activeSub?cats.indexOf(activeSub)>-1:(GROUP_CATS[activeGroup]||[]).some(function(gc){return cats.indexOf(gc)>-1||cat===gc;}));
+    var matchQ=!q||p.title.toLowerCase().indexOf(q)>-1||(p.excerpt||'').toLowerCase().indexOf(q)>-1||(p.tags||[]).join(' ').toLowerCase().indexOf(q)>-1;
+    return matchGroup&&matchQ;
+  });
+  latestOffset=0;
+  document.getElementById('cp-latest-list').innerHTML='';
+  renderRecent(filteredPosts.slice(0,4));
+  renderFeatured(filteredPosts.slice(4,8));
+  renderLatestBatch();
+  renderSidebarTop(allPosts.slice(0,5));
+  renderSidebarTags(allPosts);
+}
+
+function searchConteudo(){applyFilters();}
+
+function renderRecent(posts){
+  var c=document.getElementById('cp-recent-grid');
+  c.innerHTML='';
+  posts.forEach(function(p,i){
+    var el=document.createElement('div');
+    el.className='cp-card';
+    var isHero=(i===0);
+    if(isHero){el.style.gridRow='1/3';}
+    var imgH=isHero?'220px':'140px';
+    el.onclick=function(){window.location.href='/blog/'+p.id;};
+    el.innerHTML=(p.image?'<img src="'+p.image+'" alt="'+escHtml(p.title)+'" style="width:100%;height:'+imgH+';object-fit:cover;" onerror="this.src='/og-image.jpg'">':'')
+      +'<div style="padding:'+(isHero?'16px':'12px')+';flex:1;display:flex;flex-direction:column;">'
+      +'<div style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:#6B84AA;margin-bottom:6px;">'+escHtml(p.category_label||p.category||'')+'</div>'
+      +'<h3 style="font-size:'+(isHero?'.95rem':'.82rem')+';font-weight:700;color:#0D2B5A;line-height:1.35;margin-bottom:6px;">'+escHtml(p.title)+'</h3>'
+      +(isHero&&p.excerpt?'<p style="font-size:.78rem;color:#3B5A8A;line-height:1.4;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:8px;">'+escHtml(p.excerpt)+'</p>':'')
+      +(p.tags&&p.tags.length?'<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:auto;">'+p.tags.slice(0,3).map(function(t){return '<span onclick="event.stopPropagation();setSubFilter(''+escHtml(t)+'',null)" style="padding:2px 8px;background:#EFF8FF;color:#1565C0;border-radius:999px;font-size:.65rem;font-weight:700;cursor:pointer;">'+escHtml(t)+'</span>';}).join('')+'</div>':'')
+      +'<div style="font-size:.7rem;color:#6B84AA;margin-top:6px;">'+new Date(p.date+'T12:00:00').toLocaleDateString("pt-BR")+'</div>'
+      +'</div>';
+    c.appendChild(el);
+  });
+}
+
+function renderFeatured(posts){
+  var c=document.getElementById('cp-featured-grid');
+  c.innerHTML=posts.map(function(p){return '<div class="cp-card" onclick="window.location.href='/blog/'+p.id+''">'+(p.image?'<img src="'+p.image+'" alt="'+escHtml(p.title)+'" style="width:100%;height:130px;object-fit:cover;" onerror="this.src='/og-image.jpg'">':'')+'<div style="padding:12px;"><div style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:#6B84AA;margin-bottom:5px;">'+escHtml(p.category_label||p.category||'')+'</div><h3 style="font-size:.82rem;font-weight:700;color:#0D2B5A;line-height:1.3;">'+escHtml(p.title)+'</h3></div></div>';}).join('');
+}
+
+function renderLatestBatch(){
+  var c=document.getElementById('cp-latest-list');
+  var batch=filteredPosts.slice(latestOffset,latestOffset+LATEST_PAGE);
+  batch.forEach(function(p){
+    var el=document.createElement('div');
+    el.className='cp-list-item';
+    el.onclick=function(){window.location.href='/blog/'+p.id;};
+    el.innerHTML=(p.image?'<img src="'+p.image+'" alt="'+escHtml(p.title)+'" style="width:72px;height:72px;object-fit:cover;border-radius:8px;flex-shrink:0;" onerror="this.src='/og-image.jpg'">':'')
+      +'<div style="flex:1;min-width:0;">'
+      +'<div style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:#6B84AA;margin-bottom:3px;">'+escHtml(p.category_label||p.category||'')+'</div>'
+      +'<h3 style="font-size:.87rem;font-weight:700;color:#0D2B5A;line-height:1.3;margin-bottom:4px;">'+escHtml(p.title)+'</h3>'
+      +(p.tags&&p.tags.length?'<div style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:4px;">'+p.tags.slice(0,3).map(function(t){return '<span style="padding:1px 7px;background:#EFF8FF;color:#1565C0;border-radius:999px;font-size:.62rem;font-weight:700;">'+escHtml(t)+'</span>';}).join('')+'</div>':'')
+      +'<div style="font-size:.7rem;color:#6B84AA;">'+new Date(p.date+'T12:00:00').toLocaleDateString("pt-BR")+'</div>'
+      +'</div>';
+    c.appendChild(el);
+  });
+  latestOffset+=LATEST_PAGE;
+  document.getElementById('cp-load-more').style.display=latestOffset>=filteredPosts.length?'none':'block';
+}
+
+function loadMorePosts(){renderLatestBatch();}
+
+function renderSidebarTop(posts){
+  var c=document.getElementById('cp-sidebar-top');
+  c.innerHTML=posts.map(function(p,i){return '<a href="/blog/'+p.id+'" class="sb-link"><div style="background:#DBEEFF;color:#1565C0;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.72rem;flex-shrink:0;">#'+(i+1)+'</div><div style="font-size:.82rem;font-weight:600;color:#0D2B5A;line-height:1.3;">'+escHtml(p.title)+'</div></a>';}).join('');
+}
+
+function renderSidebarTags(posts){
+  var tm={};posts.forEach(function(p){(p.tags||[]).forEach(function(t){tm[t]=(tm[t]||0)+1;});});
+  var tags=Object.entries(tm).sort(function(a,b){return b[1]-a[1];}).slice(0,14).map(function(e){return e[0];});
+  var c=document.getElementById('cp-sidebar-tags');
+  c.innerHTML=tags.map(function(t){return '<span style="padding:3px 10px;background:#DBEEFF;color:#1565C0;border-radius:4px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .15s;" onmouseover="this.style.background='#1565C0';this.style.color='white'" onmouseout="this.style.background='#DBEEFF';this.style.color='#1565C0'">'+escHtml(t)+'</span>';}).join('');
+}
+
+function escHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function loadConteudoPosts(){
+  fetch('/data/posts.json').then(function(r){return r.json();}).then(function(posts){
+    allPosts=posts;filteredPosts=posts;
+    applyFilters();
+  }).catch(function(){
+    document.getElementById('cp-latest-list').innerHTML='<p style="color:#6B84AA;text-align:center;padding:20px;">Não foi possível carregar os artigos.</p>';
+  });
+}
+
+document.addEventListener('DOMContentLoaded',loadConteudoPosts);
+document.getElementById('conteudo-search-input').addEventListener('keydown',function(e){if(e.key==='Enter')searchConteudo();});
+// Read URL param on load
+(function(){var u=new URLSearchParams(window.location.search);var cat=u.get('cat');if(cat){document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){var found=false;Object.entries(SUB_PILLS).forEach(function(e){if(!found)e[1].forEach(function(p){if(p.cat===cat&&!found){var tab=document.querySelector('.cp-tab[data-group="'+e[0]+'"]');if(tab){setMainFilter(e[0],tab);setTimeout(function(){var pill=document.querySelector('.cp-subpill');document.querySelectorAll('.cp-subpill').forEach(function(b){if(b.textContent===p.label)setSubFilter(cat,b);});},50);}found=true;}});});if(!found){setMainFilter('todos',document.querySelector('.cp-tab'));}},100);});}})();
+</script>
 
 <footer id="ftr">
   <div class="container">
@@ -2408,13 +1532,31 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     </div>
     <div class="ftr-bot">
       <p class="ftr-copy">&copy; <span id="yr"></span> Calcula Prazo. Todos os direitos reservados. Ferramenta gratuita para advogados e profissionais. Os cálculos são de caráter informativo e não substituem assessoria jurídica.</p>
-      <div style="display:flex;gap:12px 16px;align-items:center;flex-wrap:wrap;justify-content:center;">
+      <div style="display:flex;gap:12px 16px;align-items:center;flex-wrap:wrap;justify-content:center;margin-bottom:16px;">
         <a onclick="document.getElementById('modal-doacao').style.display='flex'" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;cursor:pointer;">☕ Doação</a>
         <a href="/termos" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;">Termos de Uso</a>
         <a href="/privacidade" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;">Privacidade &amp; LGPD</a>
       </div>
+      <div style="display:flex;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap;padding-top:16px;border-top:1px solid rgba(255,255,255,.1);">
+        <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:rgba(255,255,255,.6);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,.9)'" onmouseout="this.style.color='rgba(255,255,255,.6)'"><span style="font-size:1rem;">▶</span> YouTube</a>
+        <a href="https://www.linkedin.com/in/calcula-prazo-0a1736405/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:rgba(255,255,255,.6);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,.9)'" onmouseout="this.style.color='rgba(255,255,255,.6)'"><span style="font-size:1rem;">in</span> LinkedIn</a>
+        <a href="https://www.instagram.com/calculaprazo/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:rgba(255,255,255,.6);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,.9)'" onmouseout="this.style.color='rgba(255,255,255,.6)'"><span style="font-size:1rem;">📷</span> Instagram</a>
+        <a href="https://x.com/CalculaPrazo" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:rgba(255,255,255,.6);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,.9)'" onmouseout="this.style.color='rgba(255,255,255,.6)'"><span style="font-size:1rem;">𝕏</span> X/Twitter</a>
+      </div>
     </div>
   </div>
 </footer>
+
+
+<script>
+(function(){
+function openDrawer(){var d=document.getElementById('drawer'),o=document.getElementById('drawer-overlay');if(!d||!o)return;d.style.left='0';o.style.background='rgba(0,0,0,0.45)';o.style.pointerEvents='auto';document.body.style.overflow='hidden';}
+function closeDrawer(){var d=document.getElementById('drawer'),o=document.getElementById('drawer-overlay');if(!d||!o)return;d.style.left='-320px';o.style.background='rgba(0,0,0,0)';o.style.pointerEvents='none';document.body.style.overflow='';}
+function drToggle(id){var s=document.getElementById('sub-'+id),a=document.getElementById('arr-'+id);if(!s)return;var op=s.style.display==='block';s.style.display=op?'none':'block';if(a)a.style.transform=op?'':'rotate(90deg)';}
+window.openDrawer=openDrawer;window.closeDrawer=closeDrawer;window.drToggle=drToggle;
+window.addEventListener('resize',function(){if(window.innerWidth>900)closeDrawer();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeDrawer();});
+})();
+</script>
 </body>
 </html>
