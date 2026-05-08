@@ -936,18 +936,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 /* Spans para controle mobile/desktop */
 .d-mob-hide { display: inline; }
 
-/* Drawer Mobile */
-@media (max-width: 768px) {
-  #drawer-btn {
-    display: block !important;
-    order: -1;
-  }
-  
-  .hdr-nav {
-    display: none !important;
-  }
-}
-
 @media (max-width: 640px) {
   /* Esconde partes longas no mobile */
   .d-mob-hide { display: none; }
@@ -1044,123 +1032,15 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 </head>
 <body>
 
-<!-- ══════════ DRAWER ══════════ -->
-<div id="drawer" style="position:fixed;left:-320px;top:0;width:300px;height:100vh;background:#fff;box-shadow:4px 0 24px rgba(0,0,0,0.18);z-index:9999;transition:left .28s cubic-bezier(.4,0,.2,1);overflow-y:auto;overflow-x:hidden;">
-  <div style="background:#0D2B5A;color:#fff;padding:18px 16px;display:flex;align-items:center;justify-content:space-between;border-left:4px solid #1E88E5;position:sticky;top:0;z-index:1;">
-    <div style="display:flex;align-items:center;gap:12px;">
-      <div style="width:38px;height:38px;background:#1E88E5;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0;">⚖</div>
-      <div>
-        <div style="font-weight:800;font-size:.95rem;letter-spacing:-.3px;">Calcula Prazo</div>
-        <div style="font-size:.62rem;opacity:.7;letter-spacing:.5px;text-transform:uppercase;margin-top:1px;">Ferramentas Jurídicas</div>
-      </div>
-    </div>
-    <button onclick="closeDrawer()" style="background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer;padding:4px 8px;opacity:.8;line-height:1;" title="Fechar menu">✕</button>
-  </div>
-  <nav style="padding:8px 0 24px;">
-    <a href="/" class="dr-item">🏠 Início</a>
-    <a href="/#sec-prazos" class="dr-item">⚡ Calculadora de Prazos</a>
-    <div class="dr-divider">FERRAMENTAS</div>
-    <a href="/#correcao" class="dr-item">💰 Correção Monetária</a>
-    <a href="/#juros" class="dr-item">📈 Juros</a>
-    <a href="/#trabalhista" class="dr-item">⚖️ Verbas Trabalhistas</a>
-    <a href="/#salario" class="dr-item">💵 Salário Líquido</a>
-    <a href="/#porcentagem" class="dr-item">🧮 Porcentagem</a>
-    <a href="/#moedas" class="dr-item">💱 Conversor de Moedas</a>
-    <a href="/#datas" class="dr-item">📅 Operações com Datas</a>
-    <a href="/#valid" class="dr-item">🪪 Validador CPF/CNPJ</a>
-    <a href="/#qrcode" class="dr-item">📱 Gerador de QR Code</a>
-    <a href="/#senhas" class="dr-item">🔐 Gerador de Senhas</a>
-    <a href="/#extenso" class="dr-item">🔢 Número por Extenso</a>
-    <a href="/#imc" class="dr-item">🏃 Calculadora de IMC</a>
-    <div class="dr-divider">CONTEÚDO JURÍDICO</div>
-    <div onclick="drToggle('jur')" class="dr-group-hdr"><span>⚖️ Jurisprudência</span><span class="dr-arrow" id="arr-jur">▸</span></div>
-    <div id="sub-jur" class="dr-sub">
-      <a href="/conteudo?cat=jurisprudencia-tst" class="dr-sub-item">TST</a>
-      <a href="/conteudo?cat=jurisprudencia-stf" class="dr-sub-item">STF</a>
-      <a href="/conteudo?cat=jurisprudencia-trts" class="dr-sub-item">TRTs</a>
-      <a href="/conteudo?cat=jurisprudencia-sdi" class="dr-sub-item">SDI-1/SDI-2</a>
-      <a href="/conteudo?cat=jurisprudencia" class="dr-sub-item">OJs e Súmulas</a>
-    </div>
-    <div onclick="drToggle('org')" class="dr-group-hdr"><span>🏛️ Órgãos Públicos</span><span class="dr-arrow" id="arr-org">▸</span></div>
-    <div id="sub-org" class="dr-sub">
-      <a href="/conteudo?cat=noticias-mte" class="dr-sub-item">MTE</a>
-      <a href="/conteudo?cat=noticias-mpt" class="dr-sub-item">MPT</a>
-      <a href="/conteudo?cat=noticias-csjt" class="dr-sub-item">CSJT</a>
-      <a href="/conteudo?cat=noticias-anpt" class="dr-sub-item">ANPT</a>
-    </div>
-    <div onclick="drToggle('leg')" class="dr-group-hdr"><span>📋 Legislação e Normas</span><span class="dr-arrow" id="arr-leg">▸</span></div>
-    <div id="sub-leg" class="dr-sub">
-      <a href="/conteudo?cat=clt-leis" class="dr-sub-item">CLT e Leis</a>
-      <a href="/conteudo?cat=esocial-fgts-digital" class="dr-sub-item">eSocial</a>
-      <a href="/conteudo?cat=fgts-digital" class="dr-sub-item">FGTS Digital</a>
-      <a href="/conteudo?cat=saude-seguranca" class="dr-sub-item">NRs/SST</a>
-      <a href="/conteudo?cat=sindical" class="dr-sub-item">Sindical</a>
-      <a href="/conteudo?cat=legislacao-normas" class="dr-sub-item">Portarias/INs</a>
-      <a href="/conteudo?cat=geral" class="dr-sub-item">Outros</a>
-    </div>
-    <div onclick="drToggle('rh')" class="dr-group-hdr"><span>👥 RH e Gestão</span><span class="dr-arrow" id="arr-rh">▸</span></div>
-    <div id="sub-rh" class="dr-sub">
-      <a href="/conteudo?cat=folha-pagamento" class="dr-sub-item">Folha de Pagamento</a>
-      <a href="/conteudo?cat=jornada" class="dr-sub-item">Jornada</a>
-      <a href="/conteudo?cat=rescisao" class="dr-sub-item">Rescisão</a>
-      <a href="/conteudo?cat=saude-seguranca" class="dr-sub-item">Saúde e Segurança</a>
-      <a href="/conteudo?cat=trabalho-remoto" class="dr-sub-item">Trabalho Remoto</a>
-      <a href="/conteudo?cat=beneficios" class="dr-sub-item">Benefícios</a>
-      <a href="/conteudo?cat=admissao" class="dr-sub-item">Admissão/CTPS</a>
-      <a href="/conteudo?cat=orientacoes-praticas" class="dr-sub-item">Outros</a>
-    </div>
-    <div onclick="drToggle('rec')" class="dr-group-hdr"><span>📄 Recursos e Modelos</span><span class="dr-arrow" id="arr-rec">▸</span></div>
-    <div id="sub-rec" class="dr-sub">
-      <a href="/conteudo?cat=modelos" class="dr-sub-item">Petições</a>
-      <a href="/conteudo?cat=modelos" class="dr-sub-item">Contratos</a>
-      <a href="/conteudo?cat=modelos" class="dr-sub-item">Checklists</a>
-      <a href="/conteudo?cat=artigos" class="dr-sub-item">Artigos</a>
-      <a href="/conteudo?cat=geral" class="dr-sub-item">Outros</a>
-    </div>
-    <div style="margin-top:8px;border-top:1px solid #E8EFF8;padding-top:8px;">
-      <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener" class="dr-item" style="display:flex;align-items:center;justify-content:space-between;"><span>▶ Canal no YouTube</span><span style="background:#DC2626;color:#fff;font-size:.6rem;font-weight:800;padding:2px 6px;border-radius:3px;">NOVO</span></a>
-      <a href="/conteudo" class="dr-item">📰 Todos os artigos</a>
-    </div>
-    <div class="dr-divider">SITE</div>
-    <a href="/sobre" class="dr-item">Sobre</a>
-    <a href="/contato" class="dr-item">Contato</a>
-    <a href="/#apoio" class="dr-item">☕ Apoie via Pix</a>
-  </nav>
-</div>
-<div id="drawer-overlay" onclick="closeDrawer()" style="position:fixed;inset:0;background:rgba(0,0,0,0);z-index:9998;pointer-events:none;transition:background .28s;"></div>
-<style>
-.dr-item{display:block;padding:10px 20px;color:#0D2B5A;text-decoration:none;font-size:.88rem;font-weight:600;border-left:3px solid transparent;transition:all .15s;cursor:pointer;}
-.dr-item:hover{border-left-color:#1E88E5;background:#EFF8FF;color:#1565C0;}
-.dr-divider{padding:10px 20px 4px;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#6B84AA;}
-.dr-group-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;font-size:.88rem;font-weight:700;color:#0D2B5A;cursor:pointer;border-left:3px solid transparent;transition:all .15s;}
-.dr-group-hdr:hover{border-left-color:#1E88E5;background:#EFF8FF;color:#1565C0;}
-.dr-arrow{font-size:.75rem;transition:transform .2s;color:#6B84AA;}
-.dr-sub{display:none;background:#F7FAFF;}
-.dr-sub-item{display:block;padding:8px 20px 8px 36px;color:#3B5A8A;text-decoration:none;font-size:.83rem;font-weight:500;border-left:3px solid transparent;transition:all .15s;}
-.dr-sub-item:hover{border-left-color:#1E88E5;background:#DBEEFF;color:#1565C0;}
-#drawer-btn{display:none;background:none;border:none;font-size:1.4rem;cursor:pointer;padding:6px 10px;color:#0D2B5A;line-height:1;order:-1;flex-shrink:0;}
-@media(max-width:900px){#drawer-btn{display:block!important;}}
-</style>
-
-
-<!-- ══════════ DRAWER (MENU HAMBÚRGUER) ══════════ -->
-<div id="drawer" style="position: fixed; left: -100%; top: 0; width: 280px; height: 100vh; background: white; box-shadow: 2px 0 8px rgba(0,0,0,0.15); z-index: 999; transition: left 0.3s ease; overflow-y: auto;">
-  <div style="background: var(--navy); color: white; padding: 20px; display: flex; align-items: center; justify-content: space-between; border-left: 4px solid var(--bluev);"><div style="display: flex; align-items: center; gap: 12px;"><div style="width: 40px; height: 40px; background: var(--bluev); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; color: white;">⚖</div><div><div style="font-weight: 800; font-size: 0.95rem;">Calcula Prazo</div><div style="font-size: 0.7rem; opacity: 0.8;">FERRAMENTAS JURÍDICAS</div></div></div><button id="drawer-close" onclick="closeDrawer()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; padding: 0;">✗</button></div>
-  <nav style="padding: 16px 0;"><a onclick="goTo('home'); closeDrawer();" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--txt); text-decoration: none; cursor: pointer; border-left: 4px solid transparent;"><span style="font-size: 1.2rem;">🏠</span> Início</a><a onclick="goTo('prazos'); closeDrawer();" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--txt); text-decoration: none; cursor: pointer; border-left: 4px solid transparent;"><span style="font-size: 1.2rem;">⚡</span> Calculadora de Prazos</a><div style="border-top: 1px solid var(--brd); margin: 12px 0;"><div onclick="toggleDrawerSection('ferramentas')" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; color: var(--txt-s); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; cursor: pointer; user-select: none;">FERRAMENTAS<span id="ferramentas-arrow" style="transition: transform 0.3s;">▾</span></div><div id="ferramentas-section" style="display: none;"><a onclick="navGoTo('correcao'); closeDrawer();" style="display: block; padding: 10px 32px; color: var(--txt-m); text-decoration: none; font-size: 0.9rem; cursor: pointer;">💰 Correção Monetária</a><a onclick="navGoTo('juros'); closeDrawer();" style="display: block; padding: 10px 32px; color: var(--txt-m); text-decoration: none; font-size: 0.9rem; cursor: pointer;">📈 Juros</a><a onclick="navGoTo('trabalhista'); closeDrawer();" style="display: block; padding: 10px 32px; color: var(--txt-m); text-decoration: none; font-size: 0.9rem; cursor: pointer;">⚖️ Verbas Trabalhistas</a><a onclick="navGoTo('salario'); closeDrawer();" style="display: block; padding: 10px 32px; color: var(--txt-m); text-decoration: none; font-size: 0.9rem; cursor: pointer;">💵 Salário Líquido</a><a onclick="navGoTo('porcentagem'); closeDrawer();" style="display: block; padding: 10px 32px; color: var(--txt-m); text-decoration: none; font-size: 0.9rem; cursor: pointer;">🧮 Porcentagem</a><a onclick="navGoTo('moedas'); closeDrawer();" style="display: block; padding: 10px 32px; color: var(--txt-m); text-decoration: none; font-size: 0.9rem; cursor: pointer;">💱 Conversor de Moedas</a><a onclick="navGoTo('datas'); closeDrawer();" style="display: block; padding: 10px 32px; color: var(--txt-m); text-decoration: none; font-size: 0.9rem; cursor: pointer;">📅 Operações com Datas</a><a onclick="navGoTo('valid'); closeDrawer();" style="display: block; padding: 10px 32px; color: var(--txt-m); text-decoration: none; font-size: 0.9rem; cursor: pointer;">🪪 Validador CPF/CNPJ</a><a onclick="navGoTo('qrcode'); closeDrawer();" style="display: block; padding: 10px 32px; color: var(--txt-m); text-decoration: none; font-size: 0.9rem; cursor: pointer;">📱 Gerador de QR Code</a><a onclick="navGoTo('senhas'); closeDrawer();" style="display: block; padding: 10px 32px; color: var(--txt-m); text-decoration: none; font-size: 0.9rem; cursor: pointer;">🔐 Gerador de Senhas</a><a onclick="navGoTo('extenso'); closeDrawer();" style="display: block; padding: 10px 32px; color: var(--txt-m); text-decoration: none; font-size: 0.9rem; cursor: pointer;">🔢 Número por Extenso</a><a onclick="navGoTo('imc'); closeDrawer();" style="display: block; padding: 10px 32px; color: var(--txt-m); text-decoration: none; font-size: 0.9rem; cursor: pointer;">🏃 Calculadora de IMC</a></div></div><a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--txt); text-decoration: none; cursor: pointer; margin-top: 12px;"><span style="font-size: 1.2rem;">▶</span> Canal YouTube <span style="background: #DC2626; color: white; font-size: 0.65rem; font-weight: 700; padding: 2px 6px; border-radius: 3px; margin-left: auto;">NOVO</span></a><a onclick="navGoTo('blog'); closeDrawer();" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--txt); text-decoration: none; cursor: pointer;"><span style="font-size: 1.2rem;">📰</span> Todos os Artigos <span style="background: var(--bluep); color: var(--blue); font-size: 0.7rem; font-weight: 700; padding: 2px 6px; border-radius: 3px; margin-left: auto;">120+</span></a><div style="border-top: 1px solid var(--brd); margin: 12px 0;"><div style="padding: 12px 16px; color: var(--txt-s); font-weight: 700; font-size: 0.8rem; text-transform: uppercase;">SITE</div><a onclick="goTo('sobre'); closeDrawer();" style="display: block; padding: 10px 16px; color: var(--txt-m); text-decoration: none; font-size: 0.9rem; cursor: pointer;">Sobre</a><a href="/contato" style="display: block; padding: 10px 16px; color: var(--txt-m); text-decoration: none; font-size: 0.9rem; cursor: pointer;">Contato</a><a onclick="document.getElementById('modal-doacao').style.display='flex'; closeDrawer();" style="display: block; padding: 10px 16px; color: var(--txt-m); text-decoration: none; font-size: 0.9rem; cursor: pointer;">☕ Apoie via Pix</a></div></nav>
-</div>
-<div id="drawer-overlay" onclick="closeDrawer()" style="position: fixed; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0); z-index: 998; transition: background 0.3s; pointer-events: none;"></div>
-
 <!-- ══════════ HEADER ══════════ -->
 
 <!-- ▸ BANNERS LATERAIS (desktop ≥1400px) -->
 
 
 
+
 <header id="hdr">
   <div class="hdr-inner">
-<button id="drawer-btn" onclick="openDrawer()" title="Abrir menu">☰</button>
-
-    <button id="drawer-btn" onclick="openDrawer()" style="display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 8px; color: var(--txt); order: -1;" title="Abrir menu">☰</button>
     <a class="logo" onclick="goTo('home')" title="Ir para página inicial">
       <div class="logo-ic">⚖</div><span class="logo-text">Calcula</span><span>Prazo</span>
     </a>
@@ -1238,12 +1118,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
         </div>
       </div>
     </div>
-    <!-- Onda decorativa -->
-    <div style="position:absolute;bottom:-1px;left:0;right:0;line-height:0;">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 64" preserveAspectRatio="none" style="width:100%;height:64px;display:block;">
-        <path d="M0,32 C240,64 480,0 720,32 C960,64 1200,0 1440,32 L1440,64 L0,64 Z" fill="#F0F7FF"/>
-      </svg>
-    </div>
   </div>
 
 
@@ -1318,110 +1192,9 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
       <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px;">
         <button class="ctab on" id="home-blog-tab-all" style="font-size:.78rem;padding:5px 14px;">🕐 Mais Recentes</button>
       </div>
-      <div id="home-blog-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;"></div>
+      <div id="home-blog-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;"></div>
     </div>
   </div>
-
-  <!-- SEÇÃO: Mais Acessados -->
-  <div style="padding:60px 0;background:var(--card);border-top:1px solid var(--brd);">
-    <div class="container">
-      <h2 class="sec-title" style="text-align:center;margin-bottom:8px;">Mais Acessados</h2>
-      <p class="sec-sub" style="text-align:center;margin-bottom:40px;">Conteúdo mais popular entre nossos usuários</p>
-      <div id="top-posts-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px;"></div>
-    </div>
-  </div>
-
-  <!-- SEÇÃO: YouTube -->
-  <div style="padding:60px 0;background:var(--bg);">
-    <div class="container">
-      <h2 class="sec-title" style="text-align:center;margin-bottom:8px;">Canal no YouTube</h2>
-      <p class="sec-sub" style="text-align:center;margin-bottom:40px;">Assista tutoriais e análises de jurisprudência</p>
-      <div style="max-width:600px;margin:0 auto;aspect-ratio:16/9;border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,0.1);">
-        <iframe width="100%" height="100%" src="https://www.youtube.com/embed?listType=user_uploads&list=CalculaPrazo&rel=0" title="Calcula Prazo - Canal no YouTube" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen style="border:none;"></iframe>
-      </div>
-      <div style="text-align:center;margin-top:24px;">
-        <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#DC2626;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700;transition:all 0.2s;" onmouseover="this.style.background='#B91C1C'" onmouseout="this.style.background='#DC2626'">▶ Inscrever-se no Canal</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- SEÇÃO: Redes Sociais -->
-  <div style="padding:60px 0;background:var(--card);border-top:1px solid var(--brd);">
-    <div class="container">
-      <h2 class="sec-title" style="text-align:center;margin-bottom:40px;">Acompanhe nas Redes Sociais</h2>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;max-width:900px;margin:0 auto;">
-        <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:12px;padding:20px;background:#DC2626;color:white;border-radius:10px;text-decoration:none;font-weight:700;transition:all 0.2s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 24px rgba(220,38,38,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''"><span style="font-size:1.5rem;">▶</span> YouTube</a>
-        <a href="https://www.linkedin.com/in/calcula-prazo-0a1736405/" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:12px;padding:20px;background:#0A66C2;color:white;border-radius:10px;text-decoration:none;font-weight:700;transition:all 0.2s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 24px rgba(10,102,194,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''"><span style="font-size:1.5rem;">in</span> LinkedIn</a>
-        <a href="https://www.instagram.com/calculaprazo/" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:12px;padding:20px;background:#E1306C;color:white;border-radius:10px;text-decoration:none;font-weight:700;transition:all 0.2s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 24px rgba(225,48,108,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''"><span style="font-size:1.5rem;">📷</span> Instagram</a>
-        <a href="https://x.com/CalculaPrazo" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:12px;padding:20px;background:#000000;color:white;border-radius:10px;text-decoration:none;font-weight:700;transition:all 0.2s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''"><span style="font-size:1.5rem;">𝕏</span> X/Twitter</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- SEÇÃO: Por Que Usar (Atualizada) -->
-  <div style="padding:80px 0;background:var(--navy);color:white;position:relative;overflow:hidden;">
-    <div class="container" style="position:relative;z-index:1;">
-      <h2 class="sec-title" style="text-align:center;color:white;margin-bottom:8px;">Por Que Usar Calcula Prazo?</h2>
-      <p style="text-align:center;color:rgba(255,255,255,0.8);font-size:1.05rem;margin-bottom:50px;max-width:600px;margin-left:auto;margin-right:auto;">Ferramentas profissionais, gratuitas e sempre atualizadas para sua prática jurídica</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:30px;">
-        <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:30px;backdrop-filter:blur(10px);">
-          <div style="font-size:2.5rem;margin-bottom:16px;">⚡</div>
-          <h3 style="font-size:1.05rem;font-weight:700;margin-bottom:12px;">Rápido e Preciso</h3>
-          <p style="color:rgba(255,255,255,0.8);line-height:1.6;font-size:0.95rem;">Cálculos instantâneos e precisos para prazos processuais, verbas trabalhistas e correção monetária.</p>
-        </div>
-        <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:30px;backdrop-filter:blur(10px);">
-          <div style="font-size:2.5rem;margin-bottom:16px;">🔒</div>
-          <h3 style="font-size:1.05rem;font-weight:700;margin-bottom:12px;">100% Seguro</h3>
-          <p style="color:rgba(255,255,255,0.8);line-height:1.6;font-size:0.95rem;">Seus dados nunca são armazenados. Tudo funciona no seu navegador, sem enviar informações para servidores.</p>
-        </div>
-        <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:30px;backdrop-filter:blur(10px);">
-          <div style="font-size:2.5rem;margin-bottom:16px;">💰</div>
-          <h3 style="font-size:1.05rem;font-weight:700;margin-bottom:12px;">Totalmente Gratuito</h3>
-          <p style="color:rgba(255,255,255,0.8);line-height:1.6;font-size:0.95rem;">Sem cadastro, sem limite de uso, sem publicidade intrusiva. Acesso completo a todas as ferramentas.</p>
-        </div>
-        <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:30px;backdrop-filter:blur(10px);">
-          <div style="font-size:2.5rem;margin-bottom:16px;">📱</div>
-          <h3 style="font-size:1.05rem;font-weight:700;margin-bottom:12px;">Funciona em Qualquer Lugar</h3>
-          <p style="color:rgba(255,255,255,0.8);line-height:1.6;font-size:0.95rem;">Desktop, tablet ou smartphone. Responsive design que se adapta a qualquer tela.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-  function loadHomeTopPosts() {
-    const topPostsData = window.CalculaPrazoAnalytics ? window.CalculaPrazoAnalytics.getTopPosts(10) : [];
-    fetch('/data/posts.json')
-      .then(r => r.json())
-      .then(posts => {
-        const topPosts = topPostsData.length > 0 
-          ? topPostsData.map(item => posts.find(p => p.id === item.postId)).filter(p => p)
-          : posts.slice(0, 10);
-        
-        const topGrid = document.getElementById('top-posts-grid');
-        if (topGrid) {
-          topGrid.innerHTML = topPosts.map((post, idx) => `
-            <div onclick="window.location.href='/blog/${post.id}'" style="background:var(--bg);border:1px solid var(--brd);border-radius:10px;overflow:hidden;cursor:pointer;transition:all 0.3s;position:relative;" onmouseover="this.style.borderColor='var(--bluev)';this.style.boxShadow='0 4px 16px rgba(21, 101, 192, 0.1)'" onmouseout="this.style.borderColor='var(--brd)';this.style.boxShadow=''">
-              <div style="position:absolute;top:8px;left:8px;background:var(--blue);color:white;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.9rem;z-index:10;">#${idx + 1}</div>
-              <img src="${post.image || '/og-image.jpg'}" alt="${post.title}" style="width:100%;height:80px;object-fit:cover;background:var(--brd);" onerror="this.src='/og-image.jpg'">
-              <div style="padding:12px;">
-                <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;color:var(--txt-s);margin-bottom:4px;">${post.category_label}</div>
-                <h3 style="font-size:0.85rem;font-weight:700;color:var(--txt);line-height:1.3;margin-bottom:4px;">${post.title}</h3>
-                <div style="font-size:0.7rem;color:var(--txt-s);">${new Date(post.date).toLocaleDateString('pt-BR')}</div>
-              </div>
-            </div>
-          `).join('');
-        }
-      })
-      .catch(err => console.error('Erro ao carregar top posts:', err));
-  }
-  
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadHomeTopPosts);
-  } else {
-    loadHomeTopPosts();
-  }
-  </script>
 
 </div><!-- /home -->
 
@@ -2611,17 +2384,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
     </div>
     <div class="ftr-bot">
       <p class="ftr-copy">&copy; <span id="yr"></span> Calcula Prazo. Todos os direitos reservados. Ferramenta gratuita para advogados e profissionais. Os cálculos são de caráter informativo e não substituem assessoria jurídica.</p>
-      <div style="display:flex;gap:12px 16px;align-items:center;flex-wrap:wrap;justify-content:center;margin-bottom:16px;">
+      <div style="display:flex;gap:12px 16px;align-items:center;flex-wrap:wrap;justify-content:center;">
         <a onclick="document.getElementById('modal-doacao').style.display='flex'" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;cursor:pointer;">☕ Doação</a>
         <a href="/contato" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;">Contato</a>
         <a href="/termos" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;">Termos de Uso</a>
         <a href="/privacidade" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;">Privacidade & LGPD</a>
-      </div>
-      <div style="display:flex;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap;padding-top:16px;border-top:1px solid rgba(255,255,255,.1);">
-        <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:rgba(255,255,255,.6);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,.9)'" onmouseout="this.style.color='rgba(255,255,255,.6)'"><span style="font-size:1rem;">▶</span> YouTube</a>
-        <a href="https://www.linkedin.com/in/calcula-prazo-0a1736405/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:rgba(255,255,255,.6);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,.9)'" onmouseout="this.style.color='rgba(255,255,255,.6)'"><span style="font-size:1rem;">in</span> LinkedIn</a>
-        <a href="https://www.instagram.com/calculaprazo/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:rgba(255,255,255,.6);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,.9)'" onmouseout="this.style.color='rgba(255,255,255,.6)'"><span style="font-size:1rem;">📷</span> Instagram</a>
-        <a href="https://x.com/CalculaPrazo" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:rgba(255,255,255,.6);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,.9)'" onmouseout="this.style.color='rgba(255,255,255,.6)'"><span style="font-size:1rem;">𝕏</span> X/Twitter</a>
       </div>
     </div>
   </div>
@@ -4566,7 +4333,7 @@ function buildPostCard(p){
     +ih+'<div style="padding:14px;"><div style="margin-bottom:8px;">'+cb+'</div>'
     +'<div style="font-size:.88rem;font-weight:700;color:var(--txt);line-height:1.35;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">'+(p.title||'')+'</div>'
     +'<div style="font-size:.76rem;color:var(--txt-m);line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">'+(p.excerpt||'')+'</div>'
-    ++(p.tags&&p.tags.length?'<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;">'+p.tags.slice(0,3).map(function(t){return '<span style="padding:2px 8px;background:var(--b50);color:var(--acc);border:1px solid var(--b100);border-radius:999px;font-size:.62rem;font-weight:700;">'+t+'</span>';}).join('')+'</div>':'')+'<div style="margin-top:8px;font-size:.75rem;color:var(--txt-s);">'+formatPostDate(p.date)+'</div></div></a>';
+    +'<div style="margin-top:10px;font-size:.75rem;color:var(--txt-s);">'+formatPostDate(p.date)+'</div></div></a>';
 }
 
 function buildPostListItem(p){
@@ -4641,7 +4408,7 @@ function filterHomeBlog(tag){BLOG_H_FILTER=tag;renderHomeBlog();}
 function renderHomeBlog(){
   var grid=document.getElementById('home-blog-grid');if(!grid)return;
   var posts=BLOG_POSTS.filter(function(p){return!BLOG_H_FILTER||p.category===BLOG_H_FILTER;})
-    .sort(function(a,b){return(b.date||'').localeCompare(a.date||'');}).slice(0,6);
+    .sort(function(a,b){return(b.date||'').localeCompare(a.date||'');}).slice(0,15);
   if(!posts.length){
     grid.innerHTML='<div style="grid-column:1/-1;text-align:center;color:var(--txt-s);padding:40px 0;font-size:.88rem;">Nenhum artigo publicado ainda. Em breve!</div>';
     return;
@@ -4689,41 +4456,6 @@ function toggleConteudo(e){
   if(opening){dd.classList.add('open');positionDropdownConteudo();}
 }
 
-// DRAWER FUNCTIONS
-function openDrawer() {
-  document.getElementById('drawer').style.left = '0';
-  document.getElementById('drawer-overlay').style.background = 'rgba(0,0,0,0.5)';
-  document.getElementById('drawer-overlay').style.pointerEvents = 'auto';
-  document.body.style.overflow = 'hidden';
-}
-
-function closeDrawer() {
-  document.getElementById('drawer').style.left = '-100%';
-  document.getElementById('drawer-overlay').style.background = 'rgba(0,0,0,0)';
-  document.getElementById('drawer-overlay').style.pointerEvents = 'none';
-  document.body.style.overflow = '';
-}
-
-function toggleDrawerSection(section) {
-  const sectionEl = document.getElementById(section + '-section');
-  const arrowEl = document.getElementById(section + '-arrow');
-  if (sectionEl && arrowEl) {
-    if (sectionEl.style.display === 'none') {
-      sectionEl.style.display = 'block';
-      arrowEl.style.transform = 'rotate(180deg)';
-    } else {
-      sectionEl.style.display = 'none';
-      arrowEl.style.transform = '';
-    }
-  }
-}
-
-window.addEventListener('resize', function() {
-  if (window.innerWidth > 768) {
-    closeDrawer();
-  }
-});
-
 (function(){
   function boot(){
     loadBlogPosts();
@@ -4753,16 +4485,5 @@ window.addEventListener('hashchange', function() {
   </div>
   <button id="share-fab-btn" title="Compartilhar" aria-label="Compartilhar página" onclick="document.getElementById('share-fab-menu').classList.toggle('open')">📤</button>
 </div>
-<script src="/js/analytics.js"></script>
-<script>
-(function(){
-function openDrawer(){var d=document.getElementById('drawer'),o=document.getElementById('drawer-overlay');if(!d||!o)return;d.style.left='0';o.style.background='rgba(0,0,0,0.45)';o.style.pointerEvents='auto';document.body.style.overflow='hidden';}
-function closeDrawer(){var d=document.getElementById('drawer'),o=document.getElementById('drawer-overlay');if(!d||!o)return;d.style.left='-320px';o.style.background='rgba(0,0,0,0)';o.style.pointerEvents='none';document.body.style.overflow='';}
-function drToggle(id){var s=document.getElementById('sub-'+id),a=document.getElementById('arr-'+id);if(!s)return;var op=s.style.display==='block';s.style.display=op?'none':'block';if(a)a.style.transform=op?'':'rotate(90deg)';}
-window.openDrawer=openDrawer;window.closeDrawer=closeDrawer;window.drToggle=drToggle;
-window.addEventListener('resize',function(){if(window.innerWidth>900)closeDrawer();});
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeDrawer();});
-})();
-</script>
 </body>
 </html>

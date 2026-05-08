@@ -122,18 +122,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
   .main{margin-left:0;padding:16px;}
   .fg-row{grid-template-columns:1fr;}
 }
-
-/* Cat chips multi-select */
-.cat-chip{display:inline-flex;align-items:center;padding:6px 14px;border:1.5px solid var(--brd);border-radius:999px;font-size:.8rem;font-weight:600;color:var(--txt-m);cursor:pointer;transition:all .15s;user-select:none;}
-.cat-chip:hover{border-color:var(--acc);color:var(--acc);}
-.cat-chip.active{background:var(--acc);color:white;border-color:var(--acc);}
-/* Tag pills */
-.tag-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;background:var(--b100);color:var(--acc);border-radius:999px;font-size:.78rem;font-weight:600;}
-.tag-pill button{background:none;border:none;color:inherit;cursor:pointer;font-size:.9rem;padding:0;line-height:1;opacity:.7;}
-.tag-pill button:hover{opacity:1;}
-/* Tag quick-picks */
-.tag-quick{display:inline-block;padding:3px 10px;background:var(--b50);border:1px solid var(--b100);color:var(--acc-d);border-radius:999px;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .15s;}
-.tag-quick:hover{background:var(--acc);color:white;border-color:var(--acc);}
 </style>
 </head>
 <body>
@@ -201,95 +189,44 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
       
       <div class="form-card">
         <input type="hidden" id="edit-id">
-
-        <div class="fg"><label>Título do Post</label><input type="text" id="f-title" placeholder="Ex: TST decide que horas extras habituais integram salário" oninput="autoSlug()"></div>
-        <div class="fg"><label>URL Amigável (Slug)</label><input type="text" id="f-slug" placeholder="tst-horas-extras-habitualidade-salario"></div>
-
-        <!-- CATEGORIAS chips multi-seleção -->
-        <div class="fg">
-          <label>Categorias <span style="font-weight:400;color:var(--txt-s);font-size:.75rem;">(selecione uma ou mais)</span></label>
-          <div id="cat-chips" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;">
-            <span class="cat-chip" data-val="jurisprudencia-tst">⚖️ TST</span>
-            <span class="cat-chip" data-val="jurisprudencia-stf">🏛️ STF</span>
-            <span class="cat-chip" data-val="jurisprudencia-trts">🏛️ TRTs</span>
-            <span class="cat-chip" data-val="jurisprudencia-sdi">📋 SDI-1/SDI-2</span>
-            <span class="cat-chip" data-val="clt-leis">📜 CLT e Leis</span>
-            <span class="cat-chip" data-val="esocial-fgts-digital">💻 eSocial</span>
-            <span class="cat-chip" data-val="fgts-digital">🏦 FGTS Digital</span>
-            <span class="cat-chip" data-val="saude-seguranca">🦺 NRs/SST</span>
-            <span class="cat-chip" data-val="sindical">🤝 Sindical</span>
-            <span class="cat-chip" data-val="folha-pagamento">💰 Folha de Pagamento</span>
-            <span class="cat-chip" data-val="jornada">🕐 Jornada</span>
-            <span class="cat-chip" data-val="rescisao">📄 Rescisão</span>
-            <span class="cat-chip" data-val="modelos">📋 Modelos</span>
-            <span class="cat-chip" data-val="artigos">✍️ Artigos</span>
-            <span class="cat-chip" data-val="geral">📌 Geral</span>
-          </div>
-          <input type="hidden" id="f-cat" value="geral">
-          <p style="font-size:.72rem;color:var(--txt-s);margin-top:6px;">A primeira categoria selecionada será a principal do post.</p>
-        </div>
-
-        <!-- FONTE MTE caixa azul -->
-        <div class="fg" style="background:#EFF8FF;border:1px solid #BAE0FF;border-radius:10px;padding:14px;">
-          <label style="color:#1565C0;font-weight:700;">📘 Fonte MTE <span style="font-weight:400;font-size:.75rem;color:#3B5A8A;">(opcional)</span></label>
-          <div class="fg-row" style="margin-top:8px;">
-            <div class="fg" style="margin:0;"><label style="font-size:.78rem;">URL da fonte</label><input type="text" id="f-mte-url" placeholder="https://www.gov.br/trabalho/..."></div>
-            <div class="fg" style="margin:0;"><label style="font-size:.78rem;">Título da fonte</label><input type="text" id="f-mte-title" placeholder="Ex: Nota Técnica MTE nº 12/2026"></div>
+        <div class="fg"><label>Título do Post</label><input type="text" id="f-title" placeholder="Ex: Como calcular prazos processuais no CPC" oninput="autoSlug()"></div>
+        <div class="fg-row">
+          <div class="fg"><label>URL Amigável (Slug)</label><input type="text" id="f-slug" placeholder="como-calcular-prazos-processuais"></div>
+          <div class="fg">
+            <label>Categoria</label>
+            <select id="f-cat">
+              <option value="jurisprudencia-tst">Jurisprudência TST</option>
+              <option value="jurisprudencia-trts">Jurisprudência TRTs</option>
+              <option value="noticias-mte-mpt">MTE & MPT</option>
+              <option value="legislacao-normas">Legislação e Normas</option>
+              <option value="esocial-fgts-digital">eSocial e FGTS Digital</option>
+              <option value="orientacoes-praticas">Orientações Práticas RH</option>
+              <option value="saude-seguranca">Saúde e Segurança</option>
+              <option value="sindical">Sindical</option>
+              <option value="jurisprudencia">Jurisprudência</option>
+              <option value="modelos">Modelos</option>
+              <option value="artigos">Artigos</option>
+              <option value="geral">Geral</option>
+            </select>
           </div>
         </div>
-
-        <!-- FONTE MPT caixa verde -->
-        <div class="fg" style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:10px;padding:14px;">
-          <label style="color:#15803D;font-weight:700;">📗 Fonte MPT <span style="font-weight:400;font-size:.75rem;color:#166534;">(opcional)</span></label>
-          <div class="fg-row" style="margin-top:8px;">
-            <div class="fg" style="margin:0;"><label style="font-size:.78rem;">URL da fonte</label><input type="text" id="f-mpt-url" placeholder="https://mpt.mp.br/..."></div>
-            <div class="fg" style="margin:0;"><label style="font-size:.78rem;">Título da fonte</label><input type="text" id="f-mpt-title" placeholder="Ex: Recomendação MPT nº 03/2026"></div>
-          </div>
-        </div>
-
-        <!-- RESUMO -->
         <div class="fg">
           <label>Resumo (SEO Description)</label>
           <textarea id="f-excerpt" placeholder="Breve descrição do post para o Google e redes sociais..." oninput="countChars(this,'exc-count',160)"></textarea>
           <div class="char-count"><span id="exc-count">0</span>/160 caracteres</div>
         </div>
-
-        <!-- IMAGEM -->
         <div class="fg-row">
           <div class="fg"><label>URL da Imagem de Capa</label><input type="text" id="f-image" placeholder="https://images.unsplash.com/..." onchange="previewImg()"></div>
           <div class="fg"><label>Legenda da Imagem</label><input type="text" id="f-caption" placeholder="Créditos ou descrição da imagem"></div>
         </div>
-        <img id="img-preview-el" class="img-preview">
-
-        <!-- TAGS pills interativas -->
         <div class="fg">
-          <label>Tags <span style="font-weight:400;color:var(--txt-s);font-size:.75rem;">(Enter ou vírgula para adicionar)</span></label>
-          <div id="tags-pills-container" style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;min-height:40px;padding:6px 10px;border:1.5px solid var(--brd);border-radius:8px;cursor:text;background:white;" onclick="document.getElementById('f-tags-input').focus()">
-            <input type="text" id="f-tags-input" placeholder="Digite uma tag..." style="border:none;outline:none;font-family:inherit;font-size:.85rem;min-width:120px;flex:1;background:transparent;" onkeydown="handleTagKeydown(event)">
-          </div>
-          <input type="hidden" id="f-tags">
-          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;">
-            <span class="tag-quick" onclick="addTagPill('TST')">TST</span>
-            <span class="tag-quick" onclick="addTagPill('STF')">STF</span>
-            <span class="tag-quick" onclick="addTagPill('CLT')">CLT</span>
-            <span class="tag-quick" onclick="addTagPill('FGTS')">FGTS</span>
-            <span class="tag-quick" onclick="addTagPill('eSocial')">eSocial</span>
-            <span class="tag-quick" onclick="addTagPill('NR-9')">NR-9</span>
-            <span class="tag-quick" onclick="addTagPill('NR-17')">NR-17</span>
-            <span class="tag-quick" onclick="addTagPill('Rescisão')">Rescisão</span>
-            <span class="tag-quick" onclick="addTagPill('Gestante')">Gestante</span>
-            <span class="tag-quick" onclick="addTagPill('Horas Extras')">Horas Extras</span>
-            <span class="tag-quick" onclick="addTagPill('13º Salário')">13º Salário</span>
-            <span class="tag-quick" onclick="addTagPill('Férias')">Férias</span>
-            <span class="tag-quick" onclick="addTagPill('Jurisprudência')">Jurisprudência</span>
-            <span class="tag-quick" onclick="addTagPill('Jornada')">Jornada</span>
-            <span class="tag-quick" onclick="addTagPill('Aviso Prévio')">Aviso Prévio</span>
-            <span class="tag-quick" onclick="addTagPill('Adicional Noturno')">Adicional Noturno</span>
-          </div>
+          <label>Tags (separadas por vírgula, máx. 4)</label>
+          <input type="text" id="f-tags" placeholder="Ex: TST, Jurisprudência, Gestante, CLT">
+          <p style="font-size:.72rem;color:var(--txt-s);margin-top:4px;">Aparecem como badges coloridas no post.</p>
         </div>
-
-        <!-- EDITOR -->
-        <div class="fg" style="margin-top:8px;">
+        <img id="img-preview-el" class="img-preview">
+        
+        <div class="fg" style="margin-top:16px;">
           <label>Conteúdo (Markdown/HTML)</label>
           <div class="editor-toolbar">
             <button class="toolbar-btn" onclick="insertTag('## ')">H2</button>
@@ -314,23 +251,18 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
         <input type="text" id="search-posts" placeholder="🔍 Buscar posts..." style="flex:1;padding:9px 13px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.86rem;font-family:var(--fh);color:var(--txt);" oninput="renderList()">
         <select id="filter-cat" style="padding:9px 13px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.86rem;font-family:var(--fh);color:var(--txt);" onchange="renderList()">
           <option value="">Todas as categorias</option>
-          <option value="jurisprudencia-tst">⚖️ TST</option>
-          <option value="jurisprudencia-stf">🏛️ STF</option>
-          <option value="jurisprudencia-trts">🏛️ TRTs</option>
-          <option value="jurisprudencia-sdi">📋 SDI-1/SDI-2</option>
-          <option value="clt-leis">📜 CLT e Leis</option>
-          <option value="esocial-fgts-digital">💻 eSocial</option>
-          <option value="fgts-digital">🏦 FGTS Digital</option>
-          <option value="saude-seguranca">🦺 NRs/SST</option>
-          <option value="sindical">🤝 Sindical</option>
-          <option value="folha-pagamento">💰 Folha de Pagamento</option>
-          <option value="jornada">🕐 Jornada</option>
-          <option value="rescisao">📄 Rescisão</option>
-          <option value="modelos">📋 Modelos</option>
-          <option value="artigos">✍️ Artigos</option>
-          <option value="geral">📌 Geral</option>
-          <option value="noticias-mte-mpt">🔎 MTE & MPT</option>
-          <option value="noticias-csjt">🏢 CSJT</option>
+          <option value="jurisprudencia-tst">TST</option>
+          <option value="jurisprudencia-trts">TRTs</option>
+          <option value="noticias-mte-mpt">MTE & MPT</option>
+          <option value="legislacao-normas">Legislação</option>
+          <option value="esocial-fgts-digital">eSocial</option>
+          <option value="orientacoes-praticas">RH</option>
+          <option value="saude-seguranca">Saúde</option>
+          <option value="sindical">Sindical</option>
+          <option value="jurisprudencia">Jurisprudência</option>
+          <option value="modelos">Modelos</option>
+          <option value="artigos">Artigos</option>
+          <option value="geral">Geral</option>
         </select>
       </div>
       <div class="posts-list" id="posts-list"></div>
@@ -586,26 +518,18 @@ function formatDate(dateStr){
 
 function catLabel(c){
   const map = {
-    'jurisprudencia-tst':'⚖️ TST',
-    'jurisprudencia-stf':'🏛️ STF',
-    'jurisprudencia-trts':'🏛️ TRTs',
-    'jurisprudencia-sdi':'📋 SDI-1/SDI-2',
-    'clt-leis':'📜 CLT e Leis',
-    'esocial-fgts-digital':'💻 eSocial',
-    'fgts-digital':'🏦 FGTS Digital',
-    'saude-seguranca':'🦺 NRs/SST',
-    'sindical':'🤝 Sindical',
-    'folha-pagamento':'💰 Folha de Pagamento',
-    'jornada':'🕐 Jornada',
-    'rescisao':'📄 Rescisão',
-    'modelos':'📋 Modelos',
-    'artigos':'✍️ Artigos',
-    'geral':'📌 Geral',
-    'noticias-mte-mpt':'🔎 MTE & MPT',
-    'noticias-csjt':'🏢 CSJT',
-    'legislacao-normas':'📋 Legislação',
-    'orientacoes-praticas':'👥 RH',
-    'jurisprudencia':'📚 Jurisprudência'
+    'jurisprudencia-tst': '⚖️ TST',
+    'jurisprudencia-trts': '🏛️ TRTs',
+    'noticias-mte-mpt': '🔎 MTE & MPT',
+    'legislacao-normas': '📋 Legislação',
+    'esocial-fgts-digital': '💻 eSocial',
+    'orientacoes-praticas': '👥 RH',
+    'saude-seguranca': '🦺 Saúde',
+    'sindical': '🤝 Sindical',
+    'jurisprudencia': '📚 Jurisprudência',
+    'modelos': '📄 Modelos',
+    'artigos': '✍️ Artigos',
+    'geral': '📌 Geral'
   };
   return map[c] || c;
 }
@@ -727,21 +651,9 @@ function resetForm(){
   document.getElementById('f-image').value='';
   document.getElementById('f-caption').value='';
   document.getElementById('f-tags').value='';
-  document.getElementById('f-mte-url').value='';
-  document.getElementById('f-mte-title').value='';
-  document.getElementById('f-mpt-url').value='';
-  document.getElementById('f-mpt-title').value='';
   document.getElementById('editor-area').value='';
   document.getElementById('img-preview-el').style.display='none';
   document.getElementById('exc-count').textContent='0';
-  // Reset category chips
-  document.querySelectorAll('.cat-chip').forEach(c=>c.classList.remove('active'));
-  document.querySelector('.cat-chip[data-val="geral"]').classList.add('active');
-  // Reset tag pills
-  const container = document.getElementById('tags-pills-container');
-  const input = document.getElementById('f-tags-input');
-  container.querySelectorAll('.tag-pill').forEach(p=>p.remove());
-  if(input) input.value='';
 }
 
 function editPost(id){
@@ -749,31 +661,18 @@ function editPost(id){
   const p = posts.find(x=>x.id===id);
   if(!p) return;
   goPage('new');
-  resetForm();
   document.getElementById('form-page-title').textContent='Editar Post';
   document.getElementById('edit-id').value=p.id;
   document.getElementById('f-title').value=p.title;
   document.getElementById('f-slug').value=p.id;
+  document.getElementById('f-cat').value=p.category;
+  document.getElementById('f-tags').value=Array.isArray(p.tags)?p.tags.join(', '):(p.tags||'');
   document.getElementById('f-excerpt').value=p.excerpt;
   document.getElementById('f-image').value=p.image||'';
   document.getElementById('f-caption').value=p.imageCaption||'';
-  document.getElementById('editor-area').value=p.content||'';
-  document.getElementById('f-mte-url').value=p.mteUrl||'';
-  document.getElementById('f-mte-title').value=p.mteTitle||'';
-  document.getElementById('f-mpt-url').value=p.mptUrl||'';
-  document.getElementById('f-mpt-title').value=p.mptTitle||'';
+  document.getElementById('editor-area').value=p.content || '';
   countChars(document.getElementById('f-excerpt'),'exc-count',160);
   previewImg();
-  // Set categories (can be array or string)
-  const cats = Array.isArray(p.categories)?p.categories:(p.category?[p.category]:[]);
-  document.querySelectorAll('.cat-chip').forEach(c=>{
-    if(cats.includes(c.dataset.val)) c.classList.add('active');
-    else c.classList.remove('active');
-  });
-  syncCatHidden();
-  // Load tags as pills
-  const tags = Array.isArray(p.tags)?p.tags:(p.tags?p.tags.split(',').map(t=>t.trim()).filter(Boolean):[]);
-  tags.forEach(t=>addTagPill(t));
 }
 
 // ════════════════════════════════════════
@@ -871,14 +770,9 @@ async function publicarNoSite() {
   const content = document.getElementById('editor-area').value.trim();
   const slug    = document.getElementById('f-slug').value.trim() || slugify(title);
   const cat     = document.getElementById('f-cat').value;
-  const catsAll = JSON.parse(document.getElementById('f-cat').dataset.all||'[]');
   const image   = document.getElementById('f-image').value.trim();
   const caption = document.getElementById('f-caption').value.trim();
-  const mteUrl  = document.getElementById('f-mte-url').value.trim();
-  const mteTitle= document.getElementById('f-mte-title').value.trim();
-  const mptUrl  = document.getElementById('f-mpt-url').value.trim();
-  const mptTitle= document.getElementById('f-mpt-title').value.trim();
-
+  
   if (!title || !excerpt || !content) { toast('Preencha título, resumo e conteúdo.', 'err'); return; }
 
   const btn = document.getElementById('btn-publicar');
@@ -888,8 +782,8 @@ async function publicarNoSite() {
   try {
     const now = new Date().toISOString().split('T')[0];
     const tagsInput = document.getElementById('f-tags') ? document.getElementById('f-tags').value.trim() : '';
-  const tags = tagsInput ? tagsInput.split(',').map(t=>t.trim()).filter(Boolean).slice(0,10) : [];
-  const post = { id: slug, title, category: cat, categories: catsAll.length?catsAll:[cat], excerpt, image, imageCaption: caption, date: now, content, tags, mteUrl, mteTitle, mptUrl, mptTitle };
+  const tags = tagsInput ? tagsInput.split(',').map(t=>t.trim()).filter(Boolean).slice(0,4) : [];
+  const post = { id: slug, title, category: cat, excerpt, image, imageCaption: caption, date: now, content, tags };
 
     // 1. Gerar HTML do post
     toast('Gerando HTML do post...', 'ok');
@@ -899,18 +793,15 @@ async function publicarNoSite() {
     else throw new Error('Template não encontrado em /blog/POST_TEMPLATE.html');
 
     const catLabelsMap = {
-      'jurisprudencia-tst':'Jurisprudência TST','jurisprudencia-stf':'Jurisprudência STF',
-      'jurisprudencia-trts':'Jurisprudência TRTs','jurisprudencia-sdi':'SDI-1/SDI-2',
-      'clt-leis':'CLT e Leis','esocial-fgts-digital':'eSocial','fgts-digital':'FGTS Digital',
-      'saude-seguranca':'NRs/SST','sindical':'Sindical','folha-pagamento':'Folha de Pagamento',
-      'jornada':'Jornada','rescisao':'Rescisão','modelos':'Modelos','artigos':'Artigos','geral':'Geral',
-      'noticias-mte-mpt':'MTE & MPT','noticias-csjt':'CSJT','legislacao-normas':'Legislação e Normas',
-      'orientacoes-praticas':'Orientações Práticas RH','jurisprudencia':'Jurisprudência'
+      'jurisprudencia-tst':'Jurisprudência TST','jurisprudencia-trts':'Jurisprudência TRTs',
+      'noticias-mte-mpt':'MTE & MPT','legislacao-normas':'Legislação e Normas',
+      'esocial-fgts-digital':'eSocial e FGTS Digital','orientacoes-praticas':'Orientações Práticas RH',
+      'saude-seguranca':'Saúde e Segurança','sindical':'Sindical','jurisprudencia':'Jurisprudência','modelos':'Modelos','artigos':'Artigos','geral':'Geral'
     };
     const dateBR = new Date(post.date + 'T12:00:00').toLocaleDateString('pt-BR', {day:'numeric', month:'long', year:'numeric'});
     
     // Montar tags_badges HTML
-    const tagsArr = Array.isArray(post.tags) ? post.tags.slice(0,8) : [];
+    const tagsArr = Array.isArray(post.tags) ? post.tags.slice(0,4) : [];
     const tagsBadgesHTML = tagsArr.map(t =>
       `<span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">${t}</span>`
     ).join('');
@@ -1008,16 +899,13 @@ async function baixarHTML() {
 
   try {
     const now = new Date().toISOString().split('T')[0];
-    const tagsArr = tagsRaw ? tagsRaw.split(',').map(t=>t.trim()).filter(Boolean).slice(0,8) : [];
+    const tagsArr = tagsRaw ? tagsRaw.split(',').map(t=>t.trim()).filter(Boolean).slice(0,4) : [];
 
     const catLabelsMap = {
-      'jurisprudencia-tst':'Jurisprudência TST','jurisprudencia-stf':'Jurisprudência STF',
-      'jurisprudencia-trts':'Jurisprudência TRTs','jurisprudencia-sdi':'SDI-1/SDI-2',
-      'clt-leis':'CLT e Leis','esocial-fgts-digital':'eSocial','fgts-digital':'FGTS Digital',
-      'saude-seguranca':'NRs/SST','sindical':'Sindical','folha-pagamento':'Folha de Pagamento',
-      'jornada':'Jornada','rescisao':'Rescisão','modelos':'Modelos','artigos':'Artigos','geral':'Geral',
-      'noticias-mte-mpt':'MTE & MPT','noticias-csjt':'CSJT','legislacao-normas':'Legislação e Normas',
-      'orientacoes-praticas':'Orientações Práticas RH','jurisprudencia':'Jurisprudência'
+      'jurisprudencia-tst':'Jurisprudência TST','jurisprudencia-trts':'Jurisprudência TRTs',
+      'noticias-mte-mpt':'MTE & MPT','legislacao-normas':'Legislação e Normas',
+      'esocial-fgts-digital':'eSocial e FGTS Digital','orientacoes-praticas':'Orientações Práticas RH',
+      'saude-seguranca':'Saúde e Segurança','sindical':'Sindical','jurisprudencia':'Jurisprudência','modelos':'Modelos','artigos':'Artigos','geral':'Geral'
     };
 
     const respTemp = await fetch('/blog/POST_TEMPLATE.html');
@@ -1116,82 +1004,6 @@ function toast(msg, type='ok'){
   t.textContent=msg; t.className='toast '+type+' show';
   setTimeout(()=>t.classList.remove('show'),3000);
 }
-
-
-
-// ════════════════════════════════════════
-// CATEGORY CHIPS
-// ════════════════════════════════════════
-function initCatChips(){
-  document.querySelectorAll('.cat-chip').forEach(chip=>{
-    chip.addEventListener('click',function(){
-      this.classList.toggle('active');
-      syncCatHidden();
-    });
-  });
-}
-function syncCatHidden(){
-  const active=document.querySelectorAll('.cat-chip.active');
-  const vals=Array.from(active).map(c=>c.dataset.val);
-  document.getElementById('f-cat').value=vals[0]||'geral';
-  // Store all selected in data attribute
-  document.getElementById('f-cat').dataset.all=JSON.stringify(vals);
-}
-
-// ════════════════════════════════════════
-// TAG PILLS
-// ════════════════════════════════════════
-function getTagPills(){
-  const container=document.getElementById('tags-pills-container');
-  return Array.from(container.querySelectorAll('.tag-pill')).map(p=>p.dataset.val);
-}
-function syncTagsHidden(){
-  document.getElementById('f-tags').value=getTagPills().join(', ');
-}
-function addTagPill(val){
-  val=val.trim();
-  if(!val) return;
-  const existing=getTagPills();
-  if(existing.map(t=>t.toLowerCase()).includes(val.toLowerCase())) return;
-  if(existing.length>=10){ toast('Máximo de 10 tags.','err'); return; }
-  const container=document.getElementById('tags-pills-container');
-  const input=document.getElementById('f-tags-input');
-  const pill=document.createElement('span');
-  pill.className='tag-pill';
-  pill.dataset.val=val;
-  pill.innerHTML=val+' <button type="button" onclick="removeTagPill(this)" title="Remover">×</button>';
-  container.insertBefore(pill,input);
-  if(input) input.value='';
-  syncTagsHidden();
-}
-function removeTagPill(btn){
-  btn.closest('.tag-pill').remove();
-  syncTagsHidden();
-}
-function handleTagKeydown(e){
-  if(e.key==='Enter'||e.key===','){
-    e.preventDefault();
-    const val=e.target.value.replace(/,/g,'').trim();
-    if(val) addTagPill(val);
-    e.target.value='';
-  } else if(e.key==='Backspace'&&!e.target.value){
-    const pills=document.querySelectorAll('#tags-pills-container .tag-pill');
-    if(pills.length) pills[pills.length-1].remove();
-    syncTagsHidden();
-  }
-}
-
-// ════════════════════════════════════════
-// INIT
-// ════════════════════════════════════════
-document.addEventListener('DOMContentLoaded',function(){
-  initCatChips();
-  // Default: select 'geral'
-  const geral=document.querySelector('.cat-chip[data-val="geral"]');
-  if(geral) geral.classList.add('active');
-  syncCatHidden();
-});
-
 </script>
 </body>
 </html>
