@@ -1,5 +1,64 @@
 [
   {
+    "id": "justa-causa-ato-improbidade-art-482-alinea-a-clt",
+    "title": "Justa causa por ato de improbidade: artigo 482, alínea a, da CLT",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "excerpt": "Entenda o que configura ato de improbidade como justa causa, quais provas são necessárias e o que dizem a CLT e a jurisprudência trabalhista sobre o tema.",
+    "image": "https://images.unsplash.com/photo-1695388474402-ed805a890d8d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-08",
+    "tags": []
+  },
+  {
+    "id": "homologacao-rescisao-contratual-reforma-trabalhista-art-477-clt",
+    "title": "Homologação da rescisão contratual após a Reforma Trabalhista",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "excerpt": "Entenda o que mudou na homologação da rescisão com a Reforma Trabalhista, quando o sindicato ainda pode exigir assistência e o que diz o TST sobre o tema.",
+    "image": "https://images.unsplash.com/photo-1565688534245-05d6b5be184a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-08",
+    "tags": [
+      "Rescisão"
+    ]
+  },
+  {
+    "id": "justa-causa-desidia-art-482-e-clt",
+    "title": "Justa causa por desídia: o que diz o art. 482, alínea e, da CLT",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "excerpt": "Entenda o que é desídia na CLT, quando ela justifica justa causa, como funciona a gradação de penalidades e o que dizem empresa e empregado.",
+    "image": "https://images.unsplash.com/photo-1698680746129-89aea8bb512d?q=80&w=1043&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-08",
+    "tags": [
+      "Rescisão"
+    ]
+  },
+  {
+    "id": "contrato-trabalho-intermitente-clt-reforma-trabalhista",
+    "title": "Contrato de trabalho intermitente: como funciona",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "excerpt": "Entenda como funciona o contrato intermitente, os direitos do trabalhador, as regras da CLT e da Portaria MTP 671/2021 e o que o STF decidiu sobre a modalidade.",
+    "image": "https://images.unsplash.com/photo-1652987086659-2662433aed85?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-08",
+    "tags": [
+      "Trabalhador Intermitente",
+      "Contrato de Trabalho"
+    ]
+  },
+  {
+    "id": "dispensa-justa-causa-mau-procedimento-art-482-b-clt",
+    "title": "Dispensa por justa causa por mau procedimento na CLT",
+    "category": "orientacoes-praticas",
+    "category_label": "Orientações Práticas RH",
+    "excerpt": "Entenda quando o mau procedimento autoriza justa causa, quais provas importam e o que empresas e empregados devem observar segundo a CLT e a jurisprudência.",
+    "image": "https://images.unsplash.com/photo-1673511402975-2a60803cf629?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-08",
+    "tags": [
+      "Rescisão"
+    ]
+  },
+  {
     "id": "distancia-minima-vale-transporte-empregador-obrigado",
     "title": "Qual a distância mínima para o empregador ser obrigado a fornecer vale-transporte?",
     "category": "orientacoes-praticas",
