@@ -55,7 +55,9 @@
   --b500:#3B82F6;--b600:#2563EB;--b700:#1D4ED8;--b800:#1E40AF;--b900:#1E3A8A;
   --acc:#2563EB;--acc-d:#1D4ED8;--acc-l:#3B82F6;
   --txt:#0F172A;--txt-m:#475569;--txt-s:#94A3B8;
-  --bg:#F8FAFC;--card:#FFFFFF;--brd:#E2E8F0;--brd-m:#CBD5E1;
+  --bg:#F0F7FF;--card:#FFFFFF;--brd:#E2E8F0;--brd-m:#CBD5E1;
+  --pale:#E8F2FF;
+  --navy:#0D2B5A;--navym:#1A3A6E;--blue:#1565C0;--bluev:#1E88E5;
   --ok:#059669;--warn:#D97706;--err:#DC2626;
   --fh:'Plus Jakarta Sans',sans-serif;
   --r:12px;--rl:18px;--rx:24px;
@@ -592,7 +594,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 /* ── FOOTER ── */
 #ftr{background:var(--txt);padding:44px 0 24px;margin-top:0;}
-.ftr-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:36px;margin-bottom:36px;}
+.ftr-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr;gap:32px;margin-bottom:32px;}
 .ftr-brand .logo{color:var(--acc-l);}
 .ftr-brand .logo-ic{background:var(--acc);}
 .ftr-brand .logo span{color:rgba(255,255,255,.5);}
@@ -650,6 +652,20 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 /* BENEFITS */
 .ben-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;}
+.home-tt{background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s;box-shadow:var(--sh);}
+.home-tt:hover{border-color:var(--acc);transform:translateY(-2px);box-shadow:var(--shl);}
+.home-tt-ico{font-size:1.4rem;margin-bottom:6px;}
+.home-tt-nm{font-size:.72rem;font-weight:700;color:var(--txt);}
+.home-tt-ds{font-size:.62rem;color:var(--txt-s);margin-top:2px;}
+/* g6 cards */
+.hg6{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));}
+@media(min-width:600px){.hg6{grid-template-columns:repeat(2,1fr);}}
+@media(min-width:800px){.hg6{grid-template-columns:repeat(3,1fr);}}
+/* g10 mais acessados */
+.hg10{display:grid;gap:9px;grid-template-columns:repeat(2,1fr);}
+@media(min-width:500px){.hg10{grid-template-columns:repeat(3,1fr);}}
+@media(min-width:700px){.hg10{grid-template-columns:repeat(5,1fr);}}
+
 .ben-card{padding:24px;border:1px solid var(--brd);border-radius:var(--rl);background:var(--card);transition:transform .2s,box-shadow .2s;}
 .ben-card:hover{transform:translateY(-3px);box-shadow:var(--sh);}
 .ben-icon{font-size:1.5rem;margin-bottom:10px;}
@@ -877,6 +893,27 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   .seo-grid { grid-template-columns: 1fr; gap: 10px; }
 }
 
+/* ════════════════════════════════════════
+   DRAWER CSS
+════════════════════════════════════════ */
+.dr-it{display:flex;align-items:center;gap:11px;padding:10px 16px;font-size:.85rem;font-weight:600;color:rgba(255,255,255,.75);cursor:pointer;border:none;background:transparent;width:100%;text-align:left;transition:all .15s;border-left:3px solid transparent;text-decoration:none;}
+.dr-it:hover{color:#fff;background:rgba(255,255,255,.1);border-left-color:#fff;}
+.dr-ic{font-size:.88rem;width:20px;text-align:center;flex-shrink:0;display:inline-block;}
+.dr-sec-lbl{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.35);padding:13px 16px 4px;display:flex;align-items:center;gap:8px;}
+.dr-sec-lbl::after{content:'';flex:1;height:1px;background:var(--brd);}
+.dr-grp{border-bottom:1px solid var(--brd);}
+.dr-grp-hd{display:flex;align-items:center;gap:9px;padding:10px 16px;cursor:pointer;font-size:.86rem;font-weight:700;color:rgba(255,255,255,.82);transition:all .15s;border-left:3px solid transparent;width:100%;background:transparent;border-top:none;border-right:none;border-bottom:none;font-family:var(--fh);text-align:left;}
+.dr-grp-hd:hover,.dr-grp-hd.open{color:var(--acc);background:var(--b50);border-left-color:var(--acc);}
+.dr-arr{margin-left:auto;font-size:.65rem;color:var(--txt-s);transition:transform .22s;}
+.dr-grp-hd.open .dr-arr{transform:rotate(90deg);}
+.dr-grp-bd{background:rgba(0,0,0,.15);border-top:1px solid rgba(255,255,255,.08);display:none;}
+.dr-sub{display:flex;align-items:center;padding:9px 16px 9px 44px;font-size:.82rem;font-weight:500;color:rgba(255,255,255,.6);cursor:pointer;border:none;background:transparent;width:100%;text-align:left;transition:all .15s;border-left:3px solid transparent;font-family:var(--fh);position:relative;}
+.dr-sub::before{content:'';width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.25);flex-shrink:0;position:absolute;left:26px;top:50%;transform:translateY(-50%);}
+.dr-sub:hover{color:rgba(255,255,255,.95);background:rgba(255,255,255,.08);border-left-color:var(--acc);}
+.dr-sub:hover::before{background:var(--acc);}
+.dr-outros{display:block;padding:7px 16px 9px 44px;font-size:.76rem;font-weight:500;color:rgba(255,255,255,.45);cursor:pointer;border:none;background:transparent;width:100%;text-align:left;font-style:italic;font-family:var(--fh);}
+.dr-outros:hover{color:var(--acc);}
+
 /* ── Banners laterais (somente desktop) ── */
 .ad-sidebar-wrap {
   position: fixed;
@@ -939,73 +976,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 @media (max-width: 640px) {
   /* Esconde partes longas no mobile */
   .d-mob-hide { display: none; }
-
-  /* Header: coluna */
-  #hdr { height: auto !important; }
-  .hdr-inner {
-    flex-direction: column !important;
-    height: auto !important;
-    padding: 6px 10px 0;
-    gap: 0;
-    align-items: stretch;
-  }
-
-  /* Linha 1: logo centralizado */
-  .logo {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin-bottom: 5px;
-    font-size: 1.1rem !important;
-  }
-
-  /* Esconde Calcular Prazo */
-  .hdr-right { display: none !important; }
-
-  /* Linha 2: botões em linha com flex-wrap para evitar corte */
-  .hdr-nav {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;      /* permite quebra se necessário */
-    width: 100%;
-    border-top: 1px solid var(--brd);
-    padding: 3px 0 4px;
-    gap: 0;
-    overflow: visible !important;
-    justify-content: space-evenly;   /* distribui espaço igualmente */
-  }
-  /* Cada item da nav: flex auto para caber o texto sem cortar */
-  .hdr-nav > a,
-  .hdr-nav > .nav-dropdown {
-    flex: 1 1 auto !important;
-    min-width: 0 !important;
-    width: auto !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: .72rem !important;    /* ligeiramente maior para legibilidade */
-    padding: 4px 5px !important;
-    text-align: center;
-    white-space: nowrap !important;  /* não quebra o texto internamente */
-    overflow: visible !important;    /* não corta o texto */
-  }
-  /* Em telas muito pequenas (320px) reduz font-size */
-  @media(max-width:360px){
-    .hdr-nav > a,
-    .hdr-nav > .nav-dropdown > a {
-      font-size: .62rem !important;
-      padding: 3px 3px !important;
-    }
-  }
-  /* O <a> dentro do dropdown também ocupa tudo */
-  .hdr-nav > .nav-dropdown > a {
-    width: 100%;
-    justify-content: center;
-  }
-  /* Dropdown: posição calculada pelo JS (positionDropdown) */
-  .nav-drop-menu {
-    min-width: 240px !important;
-  }
+  /* Header permanece sempre em linha horizontal — hamburger layout */
 }
 
 /* ── AdSense: colapsa blocos vazios até aprovação ── */
@@ -1039,44 +1010,175 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 
 
+<!-- ══ OVERLAY DO DRAWER ══ -->
+<div id="dr-ov" onclick="drClose()" style="display:none;position:fixed;inset:0;background:rgba(13,43,90,.45);z-index:2000;backdrop-filter:blur(3px);"></div>
+
+<!-- ══ DRAWER ══ -->
+<div id="dr-panel" style="position:fixed;top:0;left:0;bottom:0;width:min(320px,88vw);background:var(--navy);z-index:2001;transform:translateX(-110%);transition:transform .3s cubic-bezier(.4,0,.2,1);box-shadow:8px 0 48px rgba(13,43,90,.16);display:flex;flex-direction:column;overflow:hidden;">
+
+  <!-- Cabeçalho do drawer -->
+  <div style="background:var(--blue);padding:16px 14px;border-left:4px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+    <div style="display:flex;align-items:center;gap:9px;">
+      <div class="logo-ic" style="width:32px;height:32px;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.85rem;">⚖</div>
+      <div>
+        <div style="color:#fff;font-weight:900;font-size:.94rem;letter-spacing:-.3px;line-height:1.1;">Calcula Prazo</div>
+        <div style="color:rgba(255,255,255,.4);font-size:.54rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;">Ferramentas Jurídicas</div>
+      </div>
+    </div>
+    <button onclick="drClose()" style="background:rgba(255,255,255,.1);border:none;border-radius:8px;width:30px;height:30px;color:#fff;font-size:.95rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+  </div>
+
+  <!-- Corpo do drawer (rolável) -->
+  <div style="flex:1;overflow-y:auto;padding:6px 0 24px;">
+
+    <!-- Itens principais -->
+    <button class="dr-it" onclick="goTo('home');drClose()"><span class="dr-ic">🏠</span>Início</button>
+    <button class="dr-it" onclick="location.href='/calculadora-de-prazo-processual';drClose()"><span class="dr-ic">⚡</span>Calculadora de Prazos</button>
+
+    <!-- Ferramentas (retrátil) -->
+    <div class="dr-sec-lbl">Ferramentas</div>
+    <div class="dr-grp">
+      <button class="dr-grp-hd" onclick="drTogGrp(this)">
+        <span class="dr-ic">🧰</span>Ferramentas<span class="dr-arr">›</span>
+      </button>
+      <div class="dr-grp-bd">
+        <button class="dr-sub" onclick="navGoTo('correcao');drClose()">Correção Monetária</button>
+        <button class="dr-sub" onclick="navGoTo('juros');drClose()">Cálculo de Juros</button>
+        <button class="dr-sub" onclick="navGoTo('trabalhista');drClose()">Verbas Trabalhistas</button>
+        <button class="dr-sub" onclick="navGoTo('salario');drClose()">Salário Líquido</button>
+        <button class="dr-sub" onclick="navGoTo('porcentagem');drClose()">Porcentagem</button>
+        <button class="dr-sub" onclick="navGoTo('moedas');drClose()">Conversor de Moedas</button>
+        <button class="dr-sub" onclick="navGoTo('datas');drClose()">Operações com Datas</button>
+        <button class="dr-sub" onclick="navGoTo('valid');drClose()">Validador CPF / CNPJ</button>
+        <button class="dr-sub" onclick="navGoTo('qrcode');drClose()">Gerador de QR Code</button>
+        <button class="dr-sub" onclick="navGoTo('senhas');drClose()">Gerador de Senhas</button>
+        <button class="dr-sub" onclick="navGoTo('extenso');drClose()">Número por Extenso</button>
+        <button class="dr-sub" onclick="navGoTo('imc');drClose()">Calculadora de IMC</button>
+      </div>
+    </div>
+
+    <!-- Conteúdo Jurídico -->
+    <div class="dr-sec-lbl">Conteúdo Jurídico</div>
+
+    <!-- Jurisprudência -->
+    <div class="dr-grp">
+      <button class="dr-grp-hd" onclick="drTogGrp(this)">
+        <span class="dr-ic">⚖️</span>Jurisprudência<span class="dr-arr">›</span>
+      </button>
+      <div class="dr-grp-bd">
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">TRT</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">TST</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">STJ</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">STF</button>
+        <button class="dr-outros" onclick="navGoTo('blog');drClose()">+ Outros temas</button>
+      </div>
+    </div>
+
+    <!-- Órgãos Públicos -->
+    <div class="dr-grp">
+      <button class="dr-grp-hd" onclick="drTogGrp(this)">
+        <span class="dr-ic">🏛️</span>Órgãos Públicos<span class="dr-arr">›</span>
+      </button>
+      <div class="dr-grp-bd">
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">MTE</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">MPT</button>
+        <button class="dr-outros" onclick="navGoTo('blog');drClose()">+ Outros órgãos</button>
+      </div>
+    </div>
+
+    <!-- Legislação e Normas -->
+    <div class="dr-grp">
+      <button class="dr-grp-hd" onclick="drTogGrp(this)">
+        <span class="dr-ic">📋</span>Legislação e Normas<span class="dr-arr">›</span>
+      </button>
+      <div class="dr-grp-bd">
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">CLT</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">Constituição Federal</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">eSocial</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">FGTS</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">Previdenciário</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">Sindical</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">Portarias</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">NR</button>
+        <button class="dr-outros" onclick="navGoTo('blog');drClose()">+ Outras Legislações e Normas</button>
+      </div>
+    </div>
+
+    <!-- RH e Gestão de Pessoas -->
+    <div class="dr-grp">
+      <button class="dr-grp-hd" onclick="drTogGrp(this)">
+        <span class="dr-ic">👥</span>RH e Gestão de Pessoas<span class="dr-arr">›</span>
+      </button>
+      <div class="dr-grp-bd">
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">Folha de Pagamento</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">Jornada de Trabalho</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">Contrato de Trabalho</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">Salário</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">Rescisão Contratual</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">Saúde e Segurança do Trabalho</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">Benefícios</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">CTPS</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">Relacionamento Sindical</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">Fiscalização</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">INSS</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">Modelos</button>
+        <button class="dr-outros" onclick="navGoTo('blog');drClose()">+ Outros temas de RH</button>
+      </div>
+    </div>
+
+    <!-- Processual -->
+    <div class="dr-grp">
+      <button class="dr-grp-hd" onclick="drTogGrp(this)">
+        <span class="dr-ic">📄</span>Processual<span class="dr-arr">›</span>
+      </button>
+      <div class="dr-grp-bd">
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">Petições e Peças</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">Prática Advocatícia</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">Modelos</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">Artigos</button>
+        <button class="dr-sub" onclick="navGoTo('blog');drClose()">Análises</button>
+        <button class="dr-outros" onclick="navGoTo('blog');drClose()">+ Outros temas</button>
+      </div>
+    </div>
+
+    <!-- Todos os artigos -->
+    <button class="dr-it" onclick="navGoTo('blog');drClose()"><span class="dr-ic">📰</span>Todos os artigos</button>
+
+    <!-- Redes Sociais -->
+    <div class="dr-sec-lbl">Nossas Redes Sociais</div>
+    <a class="dr-it" href="https://www.youtube.com/@CalculaPrazo" target="_blank"><span class="dr-ic">▶️</span>YouTube</a>
+    <a class="dr-it" href="https://www.linkedin.com/in/calcula-prazo-0a1736405/" target="_blank"><span class="dr-ic" style="font-weight:900;font-size:.8rem;background:#0A66C2;color:#fff;border-radius:4px;padding:1px 5px;width:auto;">in</span>LinkedIn</a>
+    <a class="dr-it" href="https://www.instagram.com/calculaprazo/" target="_blank"><span class="dr-ic">📷</span>Instagram</a>
+    <a class="dr-it" href="https://x.com/CalculaPrazo" target="_blank"><span class="dr-ic" style="font-weight:900;">𝕏</span>X (Twitter)</a>
+
+    <!-- Site -->
+    <div class="dr-sec-lbl">Site</div>
+    <button class="dr-it" onclick="goTo('sobre');drClose()"><span class="dr-ic">ℹ️</span>Sobre o Calcula Prazo</button>
+    <a class="dr-it" href="/contato"><span class="dr-ic">✉</span>Contato</a>
+    <a class="dr-it" href="/privacidade"><span class="dr-ic">🔒</span>Privacidade & LGPD</a>
+    <a class="dr-it" href="/termos"><span class="dr-ic">📃</span>Termos de Uso</a>
+    <button class="dr-it" onclick="document.getElementById('modal-doacao').style.display='flex';drClose()"><span class="dr-ic">☕</span>Apoie via Pix</button>
+
+  </div>
+</div>
+
+<!-- ══ HEADER ══ -->
 <header id="hdr">
-  <div class="hdr-inner">
-    <a class="logo" onclick="goTo('home')" title="Ir para página inicial">
-      <div class="logo-ic">⚖</div><span class="logo-text">Calcula</span><span>Prazo</span>
+  <div class="hdr-inner" style="display:flex;align-items:center;height:52px;padding:0 14px;gap:10px;">
+    <button id="burger-btn" onclick="drOpen()" style="width:36px;height:36px;border:none;background:transparent;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4.5px;cursor:pointer;flex-shrink:0;transition:background .15s;" onmouseover="this.style.background='var(--b50)'" onmouseout="this.style.background='transparent'">
+      <span id="burg-l1" style="display:block;width:18px;height:2px;background:var(--txt);border-radius:2px;transition:.25s;"></span>
+      <span id="burg-l2" style="display:block;width:18px;height:2px;background:var(--txt);border-radius:2px;transition:.25s;"></span>
+      <span id="burg-l3" style="display:block;width:18px;height:2px;background:var(--txt);border-radius:2px;transition:.25s;"></span>
+    </button>
+    <a onclick="goTo('home')" style="display:flex;align-items:center;gap:8px;text-decoration:none;cursor:pointer;flex-shrink:0;" title="Ir para página inicial">
+      <div class="logo-ic">⚖</div>
+      <div>
+        <div style="font-weight:900;font-size:.92rem;color:var(--acc);letter-spacing:-.3px;line-height:1.1;">Calcula Prazo</div>
+        <div style="font-size:.5rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--txt-s);line-height:1;">Ferramentas Jurídicas</div>
+      </div>
     </a>
-    <nav class="hdr-nav">
-      <a id="nav-home" onclick="goTo('home')" style="display:flex;align-items:center;gap:4px;">🏠 Início</a>
-      <a id="nav-prazos" onclick="goTo('prazos')">Calculadora de Prazo</a>
-      <div class="nav-dropdown" id="nav-dropdown-ferramentas">
-        <a id="nav-tools" onclick="toggleFerramentas(event)">Ferramentas</a>
-        <div class="nav-drop-menu" id="ferramentas-menu">
-          <a onclick="toggleRefNav();document.getElementById('nav-dropdown-ferramentas').classList.remove('open')"><span class="dm-icon">⚡</span>Prazos de Referência</a>
-          <div class="nav-drop-divider"></div>
-          <a onclick="navGoTo('correcao')"><span class="dm-icon">💰</span>Correção Monetária</a>
-          <a onclick="navGoTo('juros')"><span class="dm-icon">📈</span>Cálculo de Juros</a>
-          <a onclick="navGoTo('trabalhista')"><span class="dm-icon">⚖️</span>Calculadora de Verbas Trabalhistas</a>
-          <a onclick="navGoTo('salario')"><span class="dm-icon">💵</span>Salário Líquido</a>
-          <a onclick="navGoTo('porcentagem')"><span class="dm-icon">🧮</span>Porcentagem</a>
-          <a onclick="navGoTo('moedas')"><span class="dm-icon">💱</span>Conversor de Moedas</a>
-          <div class="nav-drop-divider"></div>
-          <a onclick="navGoTo('datas')"><span class="dm-icon">📅</span>Operações com Datas</a>
-          <a onclick="navGoTo('valid')"><span class="dm-icon">🪪</span>Validador CPF / CNPJ</a>
-          <a onclick="navGoTo('qrcode')"><span class="dm-icon">📱</span>Gerador de QR Code</a>
-          <a onclick="navGoTo('senhas')"><span class="dm-icon">🔐</span>Gerador de Senhas</a>
-          <a onclick="navGoTo('extenso')"><span class="dm-icon">🔢</span>Número por Extenso</a>
-          <a onclick="navGoTo('imc')"><span class="dm-icon">🏃</span>Calculadora de IMC</a>
-        </div>
-      </div>
-      <div class="nav-dropdown" id="nav-dropdown-conteudo">
-        <a id="nav-conteudo" onclick="toggleConteudo(event)">Conteúdo</a>
-        <div class="nav-drop-menu" id="conteudo-menu">
-          <a onclick="navGoTo('blog')"><span class="dm-icon">📰</span>Todos os Artigos</a>
-        </div>
-      </div>
-      <a onclick="goTo('sobre')" style="cursor:pointer;">Sobre</a>
-      <a href="/contato">✉ Contato</a>
-      <a class="hdr-doacao" onclick="document.getElementById('modal-doacao').style.display='flex'" aria-label="Apoiar o Calcula Prazo via Pix">☕ Doação</a>
-    </nav>
+    <div style="flex:1;"></div>
+
   </div>
 </header>
 
@@ -1085,114 +1187,201 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 ══════════════════════════════════════ -->
 <div id="sec-home" class="sec active">
 
-  <!-- HERO: Portal profissional — SEM calculadora duplicada -->
+  <!-- HERO com calculadora embutida -->
   <div class="home-hero">
     <div class="container">
       <div style="position:relative;z-index:1;text-align:center;padding:8px 0 4px;">
-        <div style="display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:5px 18px;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.8);margin-bottom:18px;">
-          ⚖️ Ferramentas gratuitas para advogados, RH e contadores
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:4px 14px;font-size:.7rem;font-weight:700;color:rgba(255,255,255,.75);margin-bottom:14px;">
+          ⚖️ 100% gratuito · sem cadastro
         </div>
-        <h1 style="font-size:clamp(1.8rem,4vw,2.9rem);font-weight:800;color:#fff;letter-spacing:-1px;line-height:1.1;margin-bottom:14px;">
-          Calcule Prazos, Verbas e Correções<br>em Segundos — 100% Gratuito
+        <h1 style="font-size:clamp(1.5rem,4.5vw,2.2rem);font-weight:900;color:#fff;letter-spacing:-.6px;line-height:1.12;margin-bottom:8px;">
+          Calcule Prazos, Verbas<br>e Correções em Segundos
         </h1>
-        <p style="font-size:.97rem;color:rgba(255,255,255,.65);max-width:520px;margin:0 auto 28px;">
-          Calculadora de prazos processuais, correção monetária, salário líquido, rescisão trabalhista, eSocial e muito mais.
+        <p style="font-size:.8rem;color:rgba(255,255,255,.52);max-width:400px;margin:0 auto 20px;line-height:1.55;">
+          Ferramentas jurídicas para advogados, RH e contadores — prazos, rescisão, correção monetária e mais.
         </p>
-        <!-- Access buttons to real tools — NO duplicate calculator -->
-        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:32px;">
-          <button onclick="goTo('prazos')" style="display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--b800);border:none;border-radius:10px;padding:13px 24px;font-size:.95rem;font-weight:800;cursor:pointer;transition:all .2s;box-shadow:0 4px 20px rgba(0,0,0,.2);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
-            ⚡ Calculadora de Prazos
+
+        <!-- ✅ Calculadora de Prazos — embutida no hero, funcional -->
+        <div id="hero-calc-wrap" style="background:#fff;border-radius:16px;padding:20px 18px 18px;max-width:500px;margin:0 auto;box-shadow:0 8px 32px rgba(0,0,0,.2);">
+
+          <!-- Título -->
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--brd);">
+            <span style="font-size:1.1rem;">🗓</span>
+            <span style="font-size:.95rem;font-weight:800;color:var(--txt);">Calculadora de Prazos</span>
+          </div>
+
+          <!-- Operação -->
+          <div style="margin-bottom:12px;">
+            <label style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8888AA;display:block;margin-bottom:5px;">Operação</label>
+            <select id="h-op" onchange="heroCalcOp()" style="width:100%;padding:10px 12px;border:1.5px solid var(--brd);border-radius:8px;font-size:.88rem;font-family:var(--fh);color:var(--txt);background:#fff;cursor:pointer;">
+              <option value="somar">Somar dias a uma data</option>
+              <option value="subtrair">Subtrair dias de uma data</option>
+              <option value="entre">Contar dias entre datas</option>
+            </select>
+          </div>
+
+          <!-- Data inicial + nº de dias / data final -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+            <div>
+              <label style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8888AA;display:block;margin-bottom:5px;">Data Inicial</label>
+              <input type="date" id="h-date" style="width:100%;padding:9px 10px;border:1.5px solid var(--brd);border-radius:8px;font-size:.82rem;font-family:var(--fh);color:var(--txt);background:#fff;box-sizing:border-box;">
+            </div>
+            <div id="h-dias-wrap">
+              <label style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8888AA;display:block;margin-bottom:5px;">Nº de Dias</label>
+              <input type="number" id="h-dias" value="10" min="0" style="width:100%;padding:9px 10px;border:1.5px solid var(--brd);border-radius:8px;font-size:.82rem;font-family:var(--fh);color:var(--txt);background:#fff;box-sizing:border-box;">
+            </div>
+            <div id="h-date2-wrap" style="display:none;">
+              <label style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8888AA;display:block;margin-bottom:5px;">Data Final</label>
+              <input type="date" id="h-date2" style="width:100%;padding:9px 10px;border:1.5px solid var(--brd);border-radius:8px;font-size:.82rem;font-family:var(--fh);color:var(--txt);background:#fff;box-sizing:border-box;">
+            </div>
+          </div>
+
+          <!-- Tipo de dias -->
+          <div style="margin-bottom:10px;">
+            <label style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8888AA;display:block;margin-bottom:6px;">Tipo de Dias</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+              <label id="h-lbl-corridos" style="display:flex;align-items:center;justify-content:center;gap:7px;padding:10px;border:1.5px solid var(--brd);border-radius:8px;cursor:pointer;font-size:.83rem;font-weight:700;color:var(--txt-m);background:#fff;" onclick="document.getElementById('h-r-corridos').checked=true;heroCalcTipo()">
+                <input type="radio" id="h-r-corridos" name="h-tipo" value="corridos" checked style="display:none;"> 📅 Corridos
+              </label>
+              <label id="h-lbl-uteis" style="display:flex;align-items:center;justify-content:center;gap:7px;padding:10px;border:1.5px solid var(--brd);border-radius:8px;cursor:pointer;font-size:.83rem;font-weight:700;color:var(--txt-m);background:#fff;" onclick="document.getElementById('h-r-uteis').checked=true;heroCalcTipo()">
+                <input type="radio" id="h-r-uteis" name="h-tipo" value="uteis" style="display:none;"> 💼 Úteis
+              </label>
+            </div>
+          </div>
+
+          <!-- Seção Dias Úteis: Excluir da contagem + Feriados -->
+          <div id="h-uteis-opts" style="display:none;background:#F8FAFC;border:1px solid var(--brd);border-radius:8px;padding:11px 12px;margin-bottom:10px;">
+            <label style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8888AA;display:block;margin-bottom:8px;">Excluir da Contagem</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;">
+              <label id="h-lbl-sab" style="display:flex;align-items:center;gap:6px;padding:8px 10px;border:1.5px solid var(--acc);border-radius:8px;cursor:pointer;font-size:.78rem;font-weight:700;color:var(--acc);background:var(--b50);">
+                <input type="checkbox" id="h-sab" checked onchange="heroCalcExcluir('sab')" style="accent-color:var(--acc);"> Sábados
+              </label>
+              <label id="h-lbl-dom" style="display:flex;align-items:center;gap:6px;padding:8px 10px;border:1.5px solid var(--acc);border-radius:8px;cursor:pointer;font-size:.78rem;font-weight:700;color:var(--acc);background:var(--b50);">
+                <input type="checkbox" id="h-dom" checked onchange="heroCalcExcluir('dom')" style="accent-color:var(--acc);"> Domingos
+              </label>
+            </div>
+            <label style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8888AA;display:block;margin-bottom:5px;">Feriados (DD/MM/AAAA, separados por vírgula)</label>
+            <input type="text" id="h-feriados" placeholder="Ex: 25/12/2026, 01/01/2026" style="width:100%;padding:9px 10px;border:1.5px solid var(--brd);border-radius:8px;font-size:.78rem;font-family:var(--fh);color:var(--txt);background:#fff;box-sizing:border-box;">
+          </div>
+
+          <!-- Divider -->
+          <div style="height:1px;background:var(--brd);margin-bottom:10px;"></div>
+
+          <!-- Incluir na contagem -->
+          <div style="margin-bottom:14px;">
+            <label style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8888AA;display:block;margin-bottom:6px;">Incluir na contagem</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+              <label id="h-lbl-ini" style="display:flex;align-items:center;gap:6px;padding:8px 10px;border:1.5px solid var(--acc);border-radius:8px;cursor:pointer;font-size:.78rem;font-weight:700;color:var(--acc);background:var(--b50);">
+                <input type="checkbox" id="h-incl-ini" checked onchange="heroCalcInclui()" style="accent-color:var(--acc);"> Dia inicial
+              </label>
+              <label id="h-lbl-fim" style="display:flex;align-items:center;gap:6px;padding:8px 10px;border:1.5px solid var(--acc);border-radius:8px;cursor:pointer;font-size:.78rem;font-weight:700;color:var(--acc);background:var(--b50);">
+                <input type="checkbox" id="h-incl-fim" checked onchange="heroCalcInclui()" style="accent-color:var(--acc);"> Dia final
+              </label>
+            </div>
+          </div>
+
+          <!-- Botão Calcular -->
+          <button onclick="heroCalc()" style="width:100%;padding:13px;background:var(--acc);color:#fff;border:none;border-radius:10px;font-size:.92rem;font-weight:800;cursor:pointer;font-family:var(--fh);transition:background .18s;box-shadow:0 4px 16px rgba(37,99,235,.35);" onmouseover="this.style.background='var(--acc-d)'" onmouseout="this.style.background='var(--acc)'">
+            Calcular Prazo →
           </button>
-          <button onclick="goTo('trabalhista')" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);border-radius:10px;padding:13px 24px;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(255,255,255,.25)'" onmouseout="this.style.background='rgba(255,255,255,.15)'">
-            ⚖️ Verbas Trabalhistas
-          </button>
-          <button onclick="goTo('correcao')" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);border-radius:10px;padding:13px 24px;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(255,255,255,.25)'" onmouseout="this.style.background='rgba(255,255,255,.15)'">
-            💰 Correção Monetária
-          </button>
+
+          <!-- Resultado -->
+          <div id="h-resultado" style="display:none;margin-top:13px;background:var(--b50);border:1.5px solid var(--b200);border-radius:10px;padding:13px 14px;">
+            <div style="font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--acc);margin-bottom:4px;">Resultado</div>
+            <div id="h-res-txt" style="font-size:1.1rem;font-weight:900;color:var(--navy);"></div>
+            <div id="h-res-sub" style="font-size:.76rem;color:var(--txt-m);margin-top:3px;line-height:1.5;"></div>
+          </div>
         </div>
+        <a href="/calculadora-de-prazo-processual#prazos" style="display:block;margin-top:10px;font-size:.7rem;color:rgba(255,255,255,.48);text-align:center;cursor:pointer;text-decoration:none;transition:color .15s;" onmouseover="this.style.color='rgba(255,255,255,.9)'" onmouseout="this.style.color='rgba(255,255,255,.48)'">Ver prazos jurídicos de referência (TST, CPC, CLT, Tributário) →</a>
+
         <!-- Stats -->
-        <div style="display:flex;justify-content:center;gap:40px;flex-wrap:wrap;">
-          <div style="text-align:center;"><div class="hs-num">30+</div><div class="hs-lbl">Prazos jurídicos</div></div>
-          <div style="text-align:center;"><div class="hs-num">14+</div><div class="hs-lbl">Ferramentas</div></div>
-          <div style="text-align:center;"><div class="hs-num">100%</div><div class="hs-lbl">Gratuito</div></div>
+        <div style="display:flex;justify-content:center;gap:32px;flex-wrap:wrap;padding:20px 0 0;">
+          <a href="/calculadora-de-prazo-processual#prazos" style="text-align:center;text-decoration:none;cursor:pointer;" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">
+            <div class="hs-num">30+</div><div class="hs-lbl">Prazos jurídicos</div>
+          </a>
+          <a href="/ferramentas" style="text-align:center;text-decoration:none;cursor:pointer;" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">
+            <div class="hs-num">14+</div><div class="hs-lbl">Ferramentas</div>
+          </a>
+          <div style="text-align:center;">
+            <div class="hs-num">100%</div><div class="hs-lbl">Gratuito</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
 
   <!-- ▸ ANÚNCIO: home-top -->
-  <div class="ad-container" id="ad-home-top">
-    
-  </div>
+  <div class="ad-container" id="ad-home-top"></div>
 
-  <!-- SHORTCUT TOOL CARDS (estilo prazofacil) -->
-  <div class="container" style="padding:44px 0 0;">
-    <h2 class="sec-title" style="text-align:center;">Outras Ferramentas</h2>
-    <p class="sec-sub" style="text-align:center;">Clique para acessar qualquer ferramenta instantaneamente</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:48px;">
-      <div onclick="goTo('correcao')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-        <div style="font-size:1.6rem;margin-bottom:8px;">💰</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Correção</div><div style="font-size:.72rem;color:var(--txt-s);">Corrija valores.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-      </div>
-      <div onclick="goTo('juros')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-        <div style="font-size:1.6rem;margin-bottom:8px;">📈</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Juros</div><div style="font-size:.72rem;color:var(--txt-s);">Calcule taxas.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-      </div>
-      <div onclick="goTo('datas')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-        <div style="font-size:1.6rem;margin-bottom:8px;">📅</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Datas</div><div style="font-size:.72rem;color:var(--txt-s);">Calcule datas.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-      </div>
-      <div onclick="goTo('valid')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-        <div style="font-size:1.6rem;margin-bottom:8px;">✅</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Validadores</div><div style="font-size:.72rem;color:var(--txt-s);">Valide CPF/CNPJ.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-      </div>
-      <div onclick="goTo('trabalhista')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-        <div style="font-size:1.6rem;margin-bottom:8px;">⚖️</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Trabalhista</div><div style="font-size:.72rem;color:var(--txt-s);">Calcule rescisão.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-      </div>
-      <div onclick="goTo('salario')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-        <div style="font-size:1.6rem;margin-bottom:8px;">💵</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Salário Líquido</div><div style="font-size:.72rem;color:var(--txt-s);">INSS + IRRF.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-      </div>
-      <div onclick="goTo('qrcode')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-        <div style="font-size:1.6rem;margin-bottom:8px;">📱</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">QR Code</div><div style="font-size:.72rem;color:var(--txt-s);">Gere QR Codes.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-      </div>
-      <div onclick="goTo('imc')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-        <div style="font-size:1.6rem;margin-bottom:8px;">🏃</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">IMC</div><div style="font-size:.72rem;color:var(--txt-s);">Calculadora OMS.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ▸ ANÚNCIO: ad-home-middle (entre ferramentas e benefícios) -->
-  <div class="ad-container ad-desktop-only" id="ad-home-middle">
-    
-  </div>
-
-  <!-- BENEFITS -->
-  <div style="background:var(--txt);padding:52px 0;">
+  <!-- CORPO DA HOME -->
+  <div style="padding:28px 0 48px;">
     <div class="container">
-      <h2 class="sec-title" style="color:#fff;text-align:center;margin-bottom:7px;">Por que usar o Calcula Prazo?</h2>
-      <p class="sec-sub" style="color:rgba(255,255,255,.5);text-align:center;">Desenvolvido para profissionais que precisam de precisão</p>
-      <div class="ben-grid">
-        <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">⚡</div><h3 style="color:#fff;">100% Gratuito</h3><p style="color:rgba(255,255,255,.5);">Todas as ferramentas sem cadastro, sem limites e sem custos escondidos.</p></div>
-        <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">🔒</div><h3 style="color:#fff;">Privacidade Total</h3><p style="color:rgba(255,255,255,.5);">Todos os cálculos são feitos localmente. Nenhum dado é enviado a servidores.</p></div>
-        <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">🎯</div><h3 style="color:#fff;">Feito para Profissionais</h3><p style="color:rgba(255,255,255,.5);">Base legal em cada prazo jurídico. Tabelas INSS e IRRF atualizadas 2025.</p></div>
-        <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">📱</div><h3 style="color:#fff;">Funciona em Qualquer Tela</h3><p style="color:rgba(255,255,255,.5);">Responsivo e otimizado para celular, tablet e desktop.</p></div>
-      </div>
-    </div>
-  </div>
 
-
-  <!-- BLOG POSTS PREVIEW na home -->
-  <div style="background:var(--bg);padding:52px 0 60px;">
-    <div class="container">
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px;">
+      <!-- ══ 6 ÚLTIMOS ARTIGOS ══ -->
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;">
         <div>
-          <h2 class="sec-title">Direito do Trabalho em Destaque</h2>
-          <p class="sec-sub" style="margin-bottom:0;">Notícias, jurisprudência, orientações práticas, eSocial e folha de pagamento</p>
+          <div style="font-size:1.05rem;font-weight:800;color:var(--txt);letter-spacing:-.3px;">Direito do Trabalho em Destaque</div>
+          <div style="font-size:.76rem;color:var(--txt-s);margin-top:2px;">Jurisprudência, orientações práticas e legislação atualizada</div>
         </div>
-        <button class="btn btn-s" onclick="navGoTo('blog')" style="flex-shrink:0;">Ver todos os artigos →</button>
+        <button onclick="navGoTo('blog')" style="font-size:.76rem;font-weight:700;color:var(--acc);padding:6px 13px;border:1.5px solid var(--brd);border-radius:8px;background:var(--card);cursor:pointer;transition:all .15s;" onmouseover="this.style.background='var(--b50)';this.style.borderColor='var(--brd-m)'" onmouseout="this.style.background='var(--card)';this.style.borderColor='var(--brd)'">Ver todos os artigos →</button>
       </div>
-      <!-- Category pills -->
-      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px;">
-        <button class="ctab on" id="home-blog-tab-all" style="font-size:.78rem;padding:5px 14px;">🕐 Mais Recentes</button>
+      <div id="home-blog-grid" style="display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));margin-bottom:32px;"></div>
+
+      <!-- ══ MAIS ACESSADOS ══ -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <span style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--txt-s);white-space:nowrap;">🔥 Mais acessados</span>
+        <div style="flex:1;height:1px;background:var(--brd);"></div>
       </div>
-      <div id="home-blog-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;"></div>
+      <div id="home-top-grid" style="display:grid;gap:9px;grid-template-columns:repeat(2,1fr);margin-bottom:32px;"></div>
+
+      <!-- ══ YOUTUBE ══ -->
+      <div style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:18px;margin-bottom:32px;box-shadow:var(--sh);">
+        <h3 style="font-size:.82rem;font-weight:800;color:var(--txt);margin-bottom:4px;display:flex;align-items:center;gap:8px;">▶️ <span style="color:#FF0000;">YouTube</span> — Calcula Prazo</h3>
+        <div style="font-size:.73rem;color:var(--txt-s);margin-bottom:14px;">Vídeos explicativos sobre ferramentas, direito do trabalho e jurisprudência</div>
+        <!-- Grid vídeos dinâmicos via YouTube Data API v3 -->
+        <div id="yt-videos-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;min-height:120px;">
+          <!-- skeleton loader -->
+          <div class="yt-skel"></div>
+          <div class="yt-skel"></div>
+          <div class="yt-skel"></div>
+        </div>
+        <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:.75rem;font-weight:700;color:#FF0000;text-decoration:none;transition:opacity .15s;" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">▶ Ver todos os vídeos no canal @CalculaPrazo →</a>
+      </div>
+
+      <!-- ══ OUTRAS FERRAMENTAS ══ -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <span style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--txt-s);white-space:nowrap;">🧰 Outras ferramentas</span>
+        <div style="flex:1;height:1px;background:var(--brd);"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:9px;max-width:560px;margin:0 auto 14px;">
+        <div onclick="navGoTo('correcao')" class="home-tt"><div class="home-tt-ico">💰</div><div class="home-tt-nm">Correção</div><div class="home-tt-ds">Monetária</div></div>
+        <div onclick="navGoTo('juros')" class="home-tt"><div class="home-tt-ico">📈</div><div class="home-tt-nm">Juros</div><div class="home-tt-ds">Simples e compostos</div></div>
+        <div onclick="navGoTo('trabalhista')" class="home-tt"><div class="home-tt-ico">⚖️</div><div class="home-tt-nm">Verbas</div><div class="home-tt-ds">Rescisão CLT</div></div>
+        <div onclick="navGoTo('salario')" class="home-tt"><div class="home-tt-ico">💵</div><div class="home-tt-nm">Salário Líq.</div><div class="home-tt-ds">INSS + IRRF</div></div>
+        <div onclick="navGoTo('porcentagem')" class="home-tt"><div class="home-tt-ico">🧮</div><div class="home-tt-nm">Porcentagem</div><div class="home-tt-ds">Desconto/aumento</div></div>
+        <div onclick="navGoTo('extenso')" class="home-tt"><div class="home-tt-ico">🔢</div><div class="home-tt-nm">Nº Extenso</div><div class="home-tt-ds">Valor em texto</div></div>
+      </div>
+      <div style="text-align:center;margin-bottom:32px;">
+        <a href="/ferramentas" style="display:inline-block;font-size:.78rem;font-weight:700;color:var(--acc);text-decoration:none;border:1.5px solid var(--brd);border-radius:8px;padding:7px 18px;background:var(--card);transition:all .15s;" onmouseover="this.style.background='var(--b50)';this.style.borderColor='var(--brd-m)'" onmouseout="this.style.background='var(--card)';this.style.borderColor='var(--brd)'">Ver todas as 14+ ferramentas →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ▸ ANÚNCIO: ad-home-middle -->
+  <div class="ad-container ad-desktop-only" id="ad-home-middle"></div>
+
+  <!-- BENEFITS (Por que usar) — compacto -->
+  <div style="background:var(--txt);padding:20px 0;">
+    <div class="container">
+      <h2 style="font-size:.92rem;font-weight:900;color:#fff;text-align:center;letter-spacing:-.2px;margin-bottom:3px;">Por que usar o Calcula Prazo?</h2>
+      <p style="font-size:.72rem;color:rgba(255,255,255,.4);text-align:center;margin-bottom:14px;">Desenvolvido para profissionais que precisam de precisão</p>
+      <div style="display:grid;gap:7px;grid-template-columns:repeat(2,1fr);">
+        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:11px 12px;display:flex;align-items:flex-start;gap:10px;"><span style="font-size:1.1rem;flex-shrink:0;">⚡</span><div><div style="font-size:.78rem;font-weight:800;color:#fff;margin-bottom:2px;">100% Gratuito</div><div style="font-size:.68rem;color:rgba(255,255,255,.42);line-height:1.45;">Sem cadastro, sem limites.</div></div></div>
+        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:11px 12px;display:flex;align-items:flex-start;gap:10px;"><span style="font-size:1.1rem;flex-shrink:0;">🔒</span><div><div style="font-size:.78rem;font-weight:800;color:#fff;margin-bottom:2px;">Privacidade Total</div><div style="font-size:.68rem;color:rgba(255,255,255,.42);line-height:1.45;">Cálculos locais, sem envio de dados.</div></div></div>
+        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:11px 12px;display:flex;align-items:flex-start;gap:10px;"><span style="font-size:1.1rem;flex-shrink:0;">🎯</span><div><div style="font-size:.78rem;font-weight:800;color:#fff;margin-bottom:2px;">Feito para Profissionais</div><div style="font-size:.68rem;color:rgba(255,255,255,.42);line-height:1.45;">Base legal. INSS e IRRF 2026.</div></div></div>
+        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:11px 12px;display:flex;align-items:flex-start;gap:10px;"><span style="font-size:1.1rem;flex-shrink:0;">📱</span><div><div style="font-size:.78rem;font-weight:800;color:#fff;margin-bottom:2px;">Qualquer Dispositivo</div><div style="font-size:.68rem;color:rgba(255,255,255,.42);line-height:1.45;">Celular, tablet e desktop.</div></div></div>
+      </div>
     </div>
   </div>
 
@@ -2138,58 +2327,41 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
       <div class="seo-grid">
         <div>
-          <h2 class="seo-h2">O que é o Calcula Prazo?</h2>
-          <p class="seo-p">O <strong>Calcula Prazo</strong> é uma plataforma de ferramentas jurídicas e profissionais online, gratuita e sem cadastro, criada para advogados, profissionais de recursos humanos, contadores e qualquer pessoa que precise de cálculos confiáveis e resultados tecnicamente fundamentados. Reúne mais de 15 calculadoras especializadas, uma base editorial dedicada ao Direito do Trabalho — atualizada com base em fontes primárias como TST, STF, TRTs, MTE e MPT — e integração com índices econômicos em tempo real. Tudo em um único endereço, sem necessidade de cadastro ou pagamento.</p>
+          <h2 class="seo-h2">Calculadora de prazos processuais gratuita</h2>
+          <p class="seo-p">O <strong>Calcula Prazo</strong> é uma plataforma gratuita de ferramentas jurídicas e profissionais. Calcule <strong>prazos processuais</strong> em dias úteis ou corridos conforme CPC/2015 e CLT, com suporte a feriados nacionais e estaduais. Sem cadastro, sem limite de uso — diretamente no navegador.</p>
         </div>
         <div>
-          <h2 class="seo-h2">Para quem é indicado?</h2>
-          <p class="seo-p">O site foi concebido para atender a diferentes perfis com necessidades específicas: <strong>advogados trabalhistas e civilistas</strong> que lidam com prazos processuais, correção monetária e cálculos rescisórios; <strong>profissionais de RH</strong> que precisam apurar verbas, simular salário líquido e acompanhar a legislação vigente; <strong>contadores</strong> que trabalham com juros, porcentagens e simulações fiscais; e <strong>trabalhadores e cidadãos</strong> que querem conferir seus direitos com embasamento legal e clareza técnica. O Calcula Prazo não exige registro, não impõe limites de uso e não cobra por nenhuma funcionalidade.</p>
+          <h2 class="seo-h2">Correção monetária, rescisão e salário líquido</h2>
+          <p class="seo-p">Além dos prazos, calcule <strong>correção monetária</strong> por IPCA, SELIC, IGP-M e INPC com dados em tempo real do Banco Central, simule <strong>verbas rescisórias</strong> pela CLT e apure o <strong>salário líquido</strong> com as tabelas INSS e IRRF 2026 — tudo em um só lugar.</p>
+        </div>
+        <div>
+          <h2 class="seo-h2">Conteúdo jurídico e trabalhista atualizado</h2>
+          <p class="seo-p">O site também publica artigos sobre <strong>direito do trabalho</strong>, jurisprudência do TST, STF e TRTs, eSocial, FGTS Digital e legislação trabalhista — conteúdo técnico com base legal, produzido para advogados, profissionais de RH e contadores.</p>
         </div>
       </div>
 
-      <h2 class="seo-h2" style="margin-top:20px;">Ferramentas disponíveis</h2>
-      <p class="seo-p">O Calcula Prazo oferece calculadoras nas seguintes áreas:</p>
-      <p class="seo-p"><strong>Prazos e datas:</strong> Calculadora de Prazos Processuais (CPC/2015, CLT e tributário, com mais de 30 tipos pré-configurados) e Operações com Datas (diferença entre datas, somar/subtrair dias corridos ou úteis).</p>
-      <p class="seo-p"><strong>Financeiro e fiscal:</strong> Correção Monetária com dados reais do Banco Central (IPCA, IGP-M, INPC e SELIC), Cálculo de Juros simples e compostos com tabela de evolução mensal, e Calculadora de Porcentagem em cinco modos distintos.</p>
-      <p class="seo-p"><strong>Trabalhista e folha:</strong> Calculadora de Verbas Rescisórias conforme a CLT (saldo, férias, 13º, FGTS, aviso prévio proporcional) e Calculadora de Salário Líquido com tabelas INSS e IRRF 2026 atualizadas pela Lei 15.270/2025.</p>
-      <p class="seo-p"><strong>Utilidades:</strong> Conversor de Moedas, Validador de CPF e CNPJ pelo algoritmo oficial, Gerador de QR Code, Gerador de Senhas, Número por Extenso e Calculadora de IMC.</p>
-
-      <h2 class="seo-h2" style="margin-top:20px;">Conteúdo editorial: Direito do Trabalho em Destaque</h2>
-      <p class="seo-p">Além das ferramentas de cálculo, o Calcula Prazo mantém uma <strong>seção de conteúdo editorial</strong> dedicada ao Direito do Trabalho, atualizada continuamente com base em fontes primárias como TST, STF, TRTs, Ministério do Trabalho e Emprego (MTE) e Ministério Público do Trabalho (MPT).</p>
-      <p class="seo-p">Os artigos cobrem temas como <strong>legislação e normas</strong> (CLT, reformas trabalhistas, Instruções Normativas), <strong>jurisprudência</strong> (decisões relevantes do TST e dos TRTs), <strong>eSocial e FGTS Digital</strong>, <strong>saúde e segurança do trabalho</strong>, <strong>relações sindicais</strong> e <strong>orientações práticas</strong> para advogados, profissionais de RH e trabalhadores. O conteúdo é escrito com linguagem técnica acessível e sem omitir a base legal que sustenta cada análise. Acesse a seção de conteúdo pelo menu <strong>Conteúdo</strong> na barra de navegação.</p>
-
-      <h2 class="seo-h2" style="margin-top:20px;">Como os cálculos são feitos?</h2>
-      <p class="seo-p">Todos os cálculos são executados <strong>diretamente no navegador do usuário</strong>, sem envio de dados a servidores externos. Os índices de correção monetária (IPCA, IGP-M, INPC e SELIC) são obtidos da API pública do <a href="https://www.bcb.gov.br" target="_blank" rel="noopener" style="color:var(--acc);">Banco Central do Brasil</a>. As tabelas de INSS e IRRF são revisadas a cada atualização legislativa. As bases legais de cada ferramenta são indicadas diretamente na interface — artigos do CPC, da CLT, da CF/88 e das leis específicas — para que o usuário possa verificar a fundamentação de cada resultado.</p>
-
-      <h2 class="seo-h2" style="margin-top:20px;">Por que o site é gratuito?</h2>
-      <p class="seo-p">O Calcula Prazo é mantido por meio de anúncios exibidos pelo Google AdSense e de contribuições voluntárias de usuários que valorizam o serviço. Esse modelo permite que todas as ferramentas e todo o conteúdo editorial permaneçam gratuitos e sem restrição de acesso — sem planos pagos, sem limite de uso e sem bloqueio de funcionalidades. Os dados inseridos nas calculadoras são processados exclusivamente no navegador do próprio usuário e jamais são coletados, armazenados ou comercializados.</p>
+      <h2 class="seo-h2" style="margin-top:20px;">Como os cálculos funcionam?</h2>
+      <p class="seo-p">Todos os cálculos rodam inteiramente no navegador — nenhum dado pessoal é enviado a servidores. Os índices de correção monetária são obtidos via API pública do <a href="https://www.bcb.gov.br" target="_blank" rel="noopener" style="color:var(--acc);">Banco Central do Brasil</a>. A base legal de cada ferramenta (artigos do CPC, CLT, CF/88 e leis específicas) é indicada na própria interface.</p>
 
       <h2 class="seo-h2" style="margin-top:20px;">Perguntas frequentes</h2>
       <div class="faq-list">
         <div class="faq-item">
-          <div class="faq-q">Os resultados das calculadoras têm validade jurídica?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
-          <div class="faq-a"><div class="faq-ai">As ferramentas do Calcula Prazo têm caráter informativo e de apoio. Os resultados são estimativas baseadas nas regras legais vigentes e nos dados informados pelo próprio usuário, mas não substituem a análise de um profissional habilitado nem constituem assessoria jurídica, contábil ou financeira. Para fins processuais ou contratuais, os cálculos devem ser conferidos e formalizados por profissional competente.</div></div>
+          <div class="faq-q">Os resultados têm validade jurídica?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+          <div class="faq-a"><div class="faq-ai">As ferramentas têm caráter informativo. Os resultados são estimativas baseadas nas regras legais vigentes e não substituem a análise de profissional habilitado nem constituem assessoria jurídica, contábil ou financeira.</div></div>
         </div>
         <div class="faq-item">
-          <div class="faq-q">Com que frequência as tabelas e o conteúdo são atualizados?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
-          <div class="faq-a"><div class="faq-ai">Os índices de correção monetária (IPCA, IGP-M, INPC, SELIC) são obtidos via API do Banco Central e refletem os dados mais recentes disponíveis. As tabelas de INSS e IRRF são atualizadas sempre que ocorre alteração legislativa. Os artigos editoriais são publicados continuamente, acompanhando decisões relevantes dos tribunais trabalhistas, novas normas do MTE e mudanças na legislação. Em caso de dúvida sobre a vigência de algum valor ou informação, utilize o campo de contato.</div></div>
+          <div class="faq-q">Com que frequência as tabelas são atualizadas?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+          <div class="faq-a"><div class="faq-ai">Os índices econômicos são obtidos em tempo real via API do Banco Central. As tabelas de INSS e IRRF são atualizadas a cada alteração legislativa. O conteúdo editorial acompanha as decisões dos tribunais trabalhistas e novas normas.</div></div>
         </div>
         <div class="faq-item">
-          <div class="faq-q">Como reportar um erro ou sugerir uma nova ferramenta?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
-          <div class="faq-a"><div class="faq-ai">Entre em contato pelo e-mail <a href="mailto:contato@calculaprazo.com.br" style="color:var(--acc);">contato@calculaprazo.com.br</a>. Descreva o erro encontrado ou a ferramenta sugerida com o máximo de detalhes possível. Todas as mensagens são lidas e contribuem diretamente para a melhoria do site.</div></div>
+          <div class="faq-q">O site coleta dados pessoais?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+          <div class="faq-a"><div class="faq-ai">Não. Todos os cálculos são processados no navegador e não são enviados a servidores. O site usa cookies do Google AdSense para exibição de anúncios, conforme detalhado na Política de Privacidade.</div></div>
         </div>
         <div class="faq-item">
-          <div class="faq-q">O site coleta dados pessoais dos usuários?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
-          <div class="faq-a"><div class="faq-ai">Não. Os cálculos são processados inteiramente no navegador e não são enviados a nenhum servidor. O site utiliza cookies do Google AdSense para exibição de anúncios personalizados — esse uso é detalhado na Política de Privacidade, acessível no rodapé. O usuário pode recusar os cookies opcionais pelo banner exibido na primeira visita, sem perda de funcionalidade das calculadoras.</div></div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">O site funciona em dispositivos móveis?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
-          <div class="faq-a"><div class="faq-ai">Sim. O Calcula Prazo é totalmente responsivo e foi desenvolvido com foco em usabilidade tanto em desktop quanto em smartphones e tablets. Todas as calculadoras e os artigos editoriais funcionam normalmente em navegadores móveis modernos, sem necessidade de instalação de aplicativo. O site também está disponível como aplicativo para Android, podendo ser instalado diretamente na tela inicial do dispositivo.</div></div>
+          <div class="faq-q">Como sugerir uma ferramenta ou reportar um erro?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+          <div class="faq-a"><div class="faq-ai">Entre em contato pelo e-mail <a href="mailto:contato@calculaprazo.com.br" style="color:var(--acc);">contato@calculaprazo.com.br</a>. Todas as mensagens são lidas e contribuem para a evolução do site.</div></div>
         </div>
       </div>
-
-      <h2 class="seo-h2" style="margin-top:20px;">Contato</h2>
-      <p class="seo-p">Para dúvidas, correções ou sugestões: <a href="mailto:contato@calculaprazo.com.br" style="color:var(--acc);font-weight:600;">contato@calculaprazo.com.br</a>. As mensagens são respondidas em até 5 dias úteis.</p>
 
     </div>
   </section>
@@ -2346,37 +2518,51 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 <div class="ad-container ad-footer" id="ad-footer">
   
 </div>
+<!-- ══ BLOCO SEO ANTES DO FOOTER ══ -->
+<div style="background:#fff;border-top:1px solid var(--brd);padding:24px 0;">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px 36px;">
+      <div>
+        <h2 style="font-size:.82rem;font-weight:800;color:var(--txt);margin-bottom:6px;">Como calcular prazo online</h2>
+        <p style="font-size:.73rem;color:var(--txt-m);line-height:1.6;">No <strong>Calcula Prazo</strong>, você pode <strong>calcular prazo online</strong> em <strong>dias úteis</strong> ou <strong>dias corridos</strong> de forma rápida e prática. A ferramenta é útil para rotinas jurídicas, administrativas, financeiras e situações do dia a dia.</p>
+      </div>
+      <div>
+        <h2 style="font-size:.82rem;font-weight:800;color:var(--txt);margin-bottom:6px;">Calculadora de prazo grátis</h2>
+        <p style="font-size:.73rem;color:var(--txt-m);line-height:1.6;">Use a <strong>calculadora de prazo grátis</strong> para somar dias a uma data, conferir contagens com inclusão de dia inicial e final e obter resultados com mais segurança. O site também oferece outras calculadoras online úteis em um só lugar.</p>
+      </div>
+      <div>
+        <h2 style="font-size:.82rem;font-weight:800;color:var(--txt);margin-bottom:6px;">Conteúdo Jurídico e Trabalhista</h2>
+        <p style="font-size:.73rem;color:var(--txt-m);line-height:1.6;">Além das calculadoras, o Calcula Prazo publica artigos sobre <strong>direito do trabalho</strong>, jurisprudência do TST, CLT, eSocial e orientações práticas para RH e advogados. <a href="/conteudo" style="color:var(--acc);font-weight:700;text-decoration:none;">Acesse o conteúdo →</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer id="ftr">
   <div class="container">
     <div class="ftr-grid">
+      <!-- Col 1: Brand -->
       <div class="ftr-brand">
-        <a class="logo" onclick="window.goTo('home')"><div class="logo-ic">⚖</div><span class="logo-text">Calcula</span><span>Prazo</span></a>
+        <a class="logo" onclick="window.goTo('home')" style="display:flex;align-items:center;gap:8px;text-decoration:none;margin-bottom:10px;">
+          <div style="width:32px;height:32px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.85rem;">⚖</div>
+          <div><div style="font-weight:800;font-size:.92rem;color:#fff;letter-spacing:-.2px;">Calcula Prazo</div><div style="font-size:.52rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.4);">Ferramentas Jurídicas</div></div>
+        </a>
         <p class="ftr-desc">Ferramentas jurídicas e profissionais gratuitas para advogados, contadores e profissionais de RH.</p>
-        <p style="margin-top:12px;font-size:.8rem;color:rgba(255,255,255,.45);line-height:1.6;">✉ Dúvidas, sugestões ou elogios?<br>
-        <a href="mailto:contato@calculaprazo.com.br" style="color:rgba(255,255,255,.6);text-decoration:underline;">contato@calculaprazo.com.br</a></p>
+        <p style="margin-top:10px;font-size:.78rem;color:rgba(255,255,255,.42);line-height:1.6;">✉ <a href="mailto:contato@calculaprazo.com.br" style="color:rgba(255,255,255,.55);text-decoration:underline;">contato@calculaprazo.com.br</a></p>
       </div>
-      <div class="ftr-col"><h4>Prazos</h4><ul>
-        <li><a onclick="window.goTo('prazos')">Calculadora de Prazos</a></li>
-        <li><a onclick="window.goTo('datas')">Operações com Datas</a></li>
-      </ul></div>
+      <!-- Col 2: Calculadoras -->
       <div class="ftr-col"><h4>Calculadoras</h4><ul>
-        <li><a onclick="window.goTo('correcao')">Correção Monetária</a></li>
-        <li><a onclick="window.goTo('juros')">Juros</a></li>
-        <li><a onclick="window.goTo('trabalhista')">Trabalhista</a></li>
-        <li><a onclick="window.goTo('salario')">Salário Líquido</a></li>
-        <li><a onclick="window.goTo('porcentagem')">Porcentagem</a></li>
-        <li><a onclick="window.goTo('moedas')">Moedas</a></li>
+        <li><a href="/calculadora-de-prazo-processual">Calculadora de Prazos</a></li>
+        <li><a onclick="window.navGoTo('correcao')" style="cursor:pointer;">Correção Monetária</a></li>
+        <li><a onclick="window.navGoTo('juros')" style="cursor:pointer;">Juros</a></li>
+        <li><a onclick="window.navGoTo('trabalhista')" style="cursor:pointer;">Verbas Trabalhistas</a></li>
+        <li><a onclick="window.navGoTo('salario')" style="cursor:pointer;">Salário Líquido</a></li>
+        <li><a onclick="window.navGoTo('porcentagem')" style="cursor:pointer;">Porcentagem</a></li>
+        <li><a onclick="window.navGoTo('extenso')" style="cursor:pointer;">Número por Extenso</a></li>
       </ul></div>
-      <div class="ftr-col"><h4>Utilidades</h4><ul>
-        <li><a onclick="window.goTo('valid')">Validador CPF/CNPJ</a></li>
-        <li><a onclick="window.goTo('qrcode')">QR Code</a></li>
-        <li><a onclick="window.goTo('senhas')">Senhas</a></li>
-        <li><a onclick="window.goTo('extenso')">Número por Extenso</a></li>
-        <li><a onclick="window.goTo('imc')">IMC</a></li>
-      </ul></div>
+      <!-- Col 3: Informações -->
       <div class="ftr-col"><h4>Informações</h4><ul>
         <li><a onclick="window.goTo('sobre')" style="cursor:pointer;">Sobre o Calcula Prazo</a></li>
-        <li><a onclick="navGoTo('blog')" style="cursor:pointer;color:rgba(255,255,255,.5);">Conteúdo / Blog</a></li>
         <li><a href="/contato">Contato</a></li>
         <li><a href="/privacidade">Privacidade & LGPD</a></li>
         <li><a href="/termos">Termos de Uso</a></li>
@@ -4270,21 +4456,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 
-<!-- SEO BLOCK -->
-<section class="seo-content">
-  <div class="container" style="padding:28px 16px 10px;">
-    <div class="seo-grid">
-      <div>
-        <h2 class="seo-h2">Como calcular prazo online</h2>
-        <p class="seo-p">No <strong>Calcula Prazo</strong>, você pode <strong>calcular prazo online</strong> em <strong>dias úteis</strong> ou <strong>dias corridos</strong> de forma rápida e prática. A ferramenta é útil para rotinas jurídicas, administrativas, financeiras e para situações do dia a dia.</p>
-      </div>
-      <div>
-        <h2 class="seo-h2">Calculadora de prazo grátis</h2>
-        <p class="seo-p">Use a <strong>calculadora de prazo grátis</strong> para somar dias a uma data, conferir contagens com inclusão de dia inicial e final e obter resultados com mais segurança. O site também oferece outras calculadoras online úteis em um só lugar.</p>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- SEO block removed (conteúdo já presente no footer SEO acima) -->
 
 
 
@@ -4406,14 +4578,42 @@ function renderBlogSection(){
 function filterHomeBlog(tag){BLOG_H_FILTER=tag;renderHomeBlog();}
 
 function renderHomeBlog(){
-  var grid=document.getElementById('home-blog-grid');if(!grid)return;
-  var posts=BLOG_POSTS.filter(function(p){return!BLOG_H_FILTER||p.category===BLOG_H_FILTER;})
-    .sort(function(a,b){return(b.date||'').localeCompare(a.date||'');}).slice(0,15);
-  if(!posts.length){
-    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;color:var(--txt-s);padding:40px 0;font-size:.88rem;">Nenhum artigo publicado ainda. Em breve!</div>';
-    return;
+  var sorted=BLOG_POSTS.slice().sort(function(a,b){return(b.date||'').localeCompare(a.date||'');});
+  // 6 mais recentes
+  var grid=document.getElementById('home-blog-grid');
+  if(grid){
+    var top6=sorted.slice(0,6);
+    if(!top6.length){
+      grid.innerHTML='<div style="grid-column:1/-1;text-align:center;color:var(--txt-s);padding:40px 0;font-size:.88rem;">Nenhum artigo publicado ainda. Em breve!</div>';
+    } else {
+      grid.innerHTML=top6.map(buildPostCard).join('');
+    }
   }
-  grid.innerHTML=posts.map(buildPostCard).join('');
+  // Mais acessados: posições 7 a 17
+  var tgrid=document.getElementById('home-top-grid');
+  if(tgrid){
+    var top=sorted.slice(6,17);
+    if(!top.length){ tgrid.parentElement.style.display='none'; }
+    else {
+      tgrid.style.gridTemplateColumns='repeat(2,1fr)';
+      if(window.innerWidth>=500) tgrid.style.gridTemplateColumns='repeat(3,1fr)';
+      if(window.innerWidth>=700) tgrid.style.gridTemplateColumns='repeat(5,1fr)';
+      tgrid.innerHTML=top.map(function(p,i){
+        var rank=i+7;
+        var img=p.image||p.image_url||'';
+        var cat=p.category_label||p.category||'';
+        var slug=p.id||p.slug||'';
+        return '<a href="/blog/'+slug+'.html" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--r);overflow:hidden;display:block;text-decoration:none;transition:all .2s;box-shadow:var(--sh);" onmouseover="this.style.borderColor=\'var(--brd-m)\';this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'var(--shl)\'" onmouseout="this.style.borderColor=\'var(--brd)\';this.style.transform=\'\';this.style.boxShadow=\'var(--sh)\'">'
+          +(img
+            ?'<div style="width:100%;height:80px;overflow:hidden;"><img src="'+img+'" alt="" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.parentNode.style.background=\'var(--b50)\';this.style.display=\'none\'"></div>'
+            :'<div style="width:100%;height:80px;background:var(--b50);display:flex;align-items:center;justify-content:center;font-size:1.4rem;">⚖️</div>')
+          +'<div style="padding:9px 10px;">'
+          +'<div style="font-size:.58rem;font-weight:800;color:var(--acc);margin-bottom:4px;background:var(--b50);border:1px solid var(--b100);border-radius:4px;display:inline-block;padding:1px 5px;">#'+rank+'</div>'
+          +'<div style="font-size:.76rem;font-weight:700;color:var(--txt);line-height:1.3;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">'+( p.title||'')+'</div>'
+          +(cat?'<div style="font-size:.62rem;color:var(--txt-s);margin-top:4px;">'+cat+'</div>':'')+'</div></a>';
+      }).join('');
+    }
+  }
 }
 
 function renderSidebarPosts(){
@@ -4468,6 +4668,86 @@ window.addEventListener('hashchange', function() {
   var h = window.location.hash;
   if (h === '#conteudo' || h === '#blog') navGoTo('blog');
 });
+
+// ─── DRAWER ────────────────────────────────────
+function drOpen(){
+  document.getElementById('dr-panel').style.transform='translateX(0)';
+  document.getElementById('dr-ov').style.display='block';
+  document.body.style.overflow='hidden';
+}
+function drClose(){
+  document.getElementById('dr-panel').style.transform='translateX(-110%)';
+  document.getElementById('dr-ov').style.display='none';
+  document.body.style.overflow='';
+}
+function drTogGrp(hd){
+  var bd=hd.nextElementSibling;
+  var isOpen=hd.classList.contains('open');
+  // fechar todos
+  document.querySelectorAll('.dr-grp-hd').forEach(function(h){
+    h.classList.remove('open');
+    h.nextElementSibling.style.display='none';
+  });
+  // abrir o clicado se estava fechado
+  if(!isOpen){ hd.classList.add('open'); bd.style.display='block'; }
+}
+document.addEventListener('keydown',function(e){ if(e.key==='Escape') drClose(); });
+
+// ─── HERO CALCULATOR ────────────────────────────────────
+var hTipo='c';
+var hHL=['2026-01-01','2026-04-21','2026-05-01','2026-09-07','2026-10-12','2026-11-02','2026-11-15','2026-12-25'];
+function hOpChange(){
+  var op=document.getElementById('h-op').value;
+  var dw=document.getElementById('h-dias-wrap');
+  var fw=document.getElementById('h-fim-wrap');
+  if(dw) dw.style.display=(op==='entre'?'none':'flex');
+  if(fw) fw.style.display=(op==='entre'?'flex':'none');
+  var res=document.getElementById('h-res'); if(res) res.style.display='none';
+}
+function hSetTipo(t){
+  hTipo=t;
+  var bc=document.getElementById('h-btn-c'); var bu=document.getElementById('h-btn-u');
+  if(t==='c'){
+    bc.style.cssText=bc.style.cssText.replace('background:transparent','background:rgba(255,255,255,.17)').replace('color:rgba(255,255,255,.55)','color:#fff').replace('border:1.5px solid rgba(255,255,255,.18)','border:1.5px solid rgba(255,255,255,.38)');
+    bu.style.cssText=bu.style.cssText.replace('background:rgba(255,255,255,.17)','background:transparent').replace('color:#fff','color:rgba(255,255,255,.55)').replace('border:1.5px solid rgba(255,255,255,.38)','border:1.5px solid rgba(255,255,255,.18)');
+  } else {
+    bu.style.cssText=bu.style.cssText.replace('background:transparent','background:rgba(255,255,255,.17)').replace('color:rgba(255,255,255,.55)','color:#fff').replace('border:1.5px solid rgba(255,255,255,.18)','border:1.5px solid rgba(255,255,255,.38)');
+    bc.style.cssText=bc.style.cssText.replace('background:rgba(255,255,255,.17)','background:transparent').replace('color:#fff','color:rgba(255,255,255,.55)').replace('border:1.5px solid rgba(255,255,255,.38)','border:1.5px solid rgba(255,255,255,.18)');
+  }
+}
+function hIsWD(d){ if(d.getDay()===0||d.getDay()===6) return false; return !hHL.includes(d.toISOString().slice(0,10)); }
+function hAddWD(s,n,sub){ var d=new Date(s+'T12:00:00'),c=0; while(c<n){ d.setDate(d.getDate()+(sub?-1:1)); if(hIsWD(d)) c++; } return d; }
+function hFmt(d){ var m=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez']; var dw=['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado']; return d.getDate()+' de '+m[d.getMonth()]+'. de '+d.getFullYear()+' ('+dw[d.getDay()]+')'; }
+function hCalc(){
+  var op=document.getElementById('h-op').value;
+  var dt=document.getElementById('h-date').value;
+  var dy=parseInt(document.getElementById('h-days').value)||0;
+  var res=document.getElementById('h-res');
+  if(!dt){ res.textContent='⚠️ Informe a data inicial.'; res.style.display='block'; return; }
+  if(op==='entre'){
+    var dt2=document.getElementById('h-fim').value;
+    if(!dt2){ res.textContent='⚠️ Informe a data final.'; res.style.display='block'; return; }
+    var d1=new Date(dt+'T12:00:00'), d2=new Date(dt2+'T12:00:00');
+    if(d2<d1){ res.innerHTML='⚠️ Data final deve ser posterior à inicial.'; res.style.display='block'; return; }
+    var diff=0, cur=new Date(d1);
+    if(hTipo==='c'){ diff=Math.round((d2-d1)/(1000*60*60*24)); }
+    else { while(cur<d2){ cur.setDate(cur.getDate()+1); if(hIsWD(cur)) diff++; } }
+    res.innerHTML='✅ Diferença: <strong>'+diff+' dia'+(diff!==1?'s':'')+' '+(hTipo==='c'?'corridos':'úteis')+'</strong>';
+    res.style.display='block'; return;
+  }
+  var sub=(op==='subtrair');
+  var result= hTipo==='u' ? hAddWD(dt,dy,sub) : new Date(dt+'T12:00:00');
+  if(hTipo==='c') result.setDate(result.getDate()+(sub?-dy:dy));
+  res.innerHTML='✅ '+(sub?'Data resultante: ':'Prazo vence em: ')+'<strong>'+hFmt(result)+'</strong>';
+  res.style.display='block';
+}
+// Inicializar data de hoje no campo hero
+(function(){
+  var d=new Date(), mo=(d.getMonth()+1).toString().padStart(2,'0'), da=d.getDate().toString().padStart(2,'0');
+  var v=d.getFullYear()+'-'+mo+'-'+da;
+  var hd=document.getElementById('h-date'); if(hd) hd.value=v;
+  var hf=document.getElementById('h-fim'); if(hf) hf.value=v;
+})();
 </script>
 
 
@@ -4485,5 +4765,310 @@ window.addEventListener('hashchange', function() {
   </div>
   <button id="share-fab-btn" title="Compartilhar" aria-label="Compartilhar página" onclick="document.getElementById('share-fab-menu').classList.toggle('open')">📤</button>
 </div>
+
+<script>
+/* ── Hero Calculadora de Prazos ── */
+(function(){
+  // Preencher data de hoje
+  const today = new Date();
+  const pad = n => String(n).padStart(2,'0');
+  const todayStr = today.getFullYear()+'-'+pad(today.getMonth()+1)+'-'+pad(today.getDate());
+  const di = document.getElementById('h-date');
+  const di2 = document.getElementById('h-date2');
+  if(di) di.value = todayStr;
+  if(di2) di2.value = todayStr;
+
+  // Inicializar visual dos checkboxes "Incluir na contagem" (ambos marcados = borda acc)
+  window.heroCalcInclui = function(){
+    ['ini','fim'].forEach(function(k){
+      const chk = document.getElementById('h-incl-'+k);
+      const lbl = document.getElementById('h-lbl-'+k);
+      if(!chk||!lbl) return;
+      lbl.style.borderColor = chk.checked ? 'var(--acc)' : 'var(--brd)';
+      lbl.style.color       = chk.checked ? 'var(--acc)' : 'var(--txt-m)';
+      lbl.style.background  = chk.checked ? 'var(--b50)' : '#fff';
+    });
+  };
+  window.heroCalcInclui();
+
+  // Excluir da contagem (sáb/dom checkboxes)
+  window.heroCalcExcluir = function(which){
+    const chk = document.getElementById('h-'+which);
+    const lbl = document.getElementById('h-lbl-'+which);
+    if(!chk||!lbl) return;
+    lbl.style.borderColor = chk.checked ? 'var(--acc)' : 'var(--brd)';
+    lbl.style.color       = chk.checked ? 'var(--acc)' : 'var(--txt-m)';
+    lbl.style.background  = chk.checked ? 'var(--b50)' : '#fff';
+  };
+
+  // Trocar operação
+  window.heroCalcOp = function(){
+    const op = document.getElementById('h-op').value;
+    document.getElementById('h-dias-wrap').style.display  = (op === 'entre') ? 'none'  : 'block';
+    document.getElementById('h-date2-wrap').style.display = (op === 'entre') ? 'block' : 'none';
+    document.getElementById('h-resultado').style.display  = 'none';
+  };
+
+  // Trocar tipo de dias (Corridos / Úteis)
+  window.heroCalcTipo = function(){
+    const uteis = document.getElementById('h-r-uteis') && document.getElementById('h-r-uteis').checked;
+    const lC = document.getElementById('h-lbl-corridos');
+    const lU = document.getElementById('h-lbl-uteis');
+    const opts = document.getElementById('h-uteis-opts');
+    if(uteis){
+      lU.style.borderColor='var(--acc)'; lU.style.color='var(--acc)'; lU.style.background='var(--b50)';
+      lC.style.borderColor='var(--brd)'; lC.style.color='var(--txt-m)'; lC.style.background='#fff';
+      if(opts) opts.style.display='block';
+    } else {
+      lC.style.borderColor='var(--acc)'; lC.style.color='var(--acc)'; lC.style.background='var(--b50)';
+      lU.style.borderColor='var(--brd)'; lU.style.color='var(--txt-m)'; lU.style.background='#fff';
+      if(opts) opts.style.display='none';
+    }
+    document.getElementById('h-resultado').style.display='none';
+  };
+  // Inicializar visual (corridos selecionado por padrão)
+  window.heroCalcTipo();
+
+  // ── Helpers de data ──────────────────────────────────────────────────────
+  const DIAS_SEMANA = ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+  const MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+
+  function parseDate(str){
+    // aceita YYYY-MM-DD
+    const [y,m,d] = str.split('-').map(Number);
+    return new Date(y,m-1,d);
+  }
+  function parseFmtDate(str){
+    // aceita DD/MM/AAAA
+    const p = str.trim().split('/');
+    if(p.length!==3) return null;
+    const d=parseInt(p[0]),m=parseInt(p[1]),y=parseInt(p[2]);
+    if(isNaN(d)||isNaN(m)||isNaN(y)) return null;
+    return new Date(y,m-1,d);
+  }
+  function fmt(d){ return pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear(); }
+  function fmtKey(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+  function addDays(d, n){ const r=new Date(d); r.setDate(r.getDate()+n); return r; }
+  function isSat(d){ return d.getDay()===6; }
+  function isSun(d){ return d.getDay()===0; }
+
+  function getFeriadosSet(){
+    const raw = (document.getElementById('h-feriados')||{value:''}).value;
+    const set = new Set();
+    raw.split(',').forEach(function(s){
+      const d = parseFmtDate(s);
+      if(d) set.add(fmtKey(d));
+    });
+    return set;
+  }
+
+  function isDiaUtil(d, exclSab, exclDom, ferSet){
+    if(exclSab && isSat(d)) return false;
+    if(exclDom && isSun(d)) return false;
+    if(ferSet.has(fmtKey(d))) return false;
+    return true;
+  }
+
+  function addDiasUteis(start, n, inclIni, exclSab, exclDom, ferSet){
+    let cur = new Date(start);
+    let count = 0;
+    if(inclIni && isDiaUtil(cur, exclSab, exclDom, ferSet)) count=1;
+    while(count < n){
+      cur = addDays(cur,1);
+      if(isDiaUtil(cur, exclSab, exclDom, ferSet)) count++;
+    }
+    return cur;
+  }
+
+  function subDiasUteis(start, n, inclIni, exclSab, exclDom, ferSet){
+    let cur = new Date(start);
+    let count = 0;
+    if(inclIni && isDiaUtil(cur, exclSab, exclDom, ferSet)) count=1;
+    while(count < n){
+      cur = addDays(cur,-1);
+      if(isDiaUtil(cur, exclSab, exclDom, ferSet)) count++;
+    }
+    return cur;
+  }
+
+  function addDiasCorridos(start, n, inclIni, inclFim){
+    let offset = n;
+    if(!inclIni) offset++;
+    if(!inclFim) offset--;
+    return addDays(start, Math.max(offset,0));
+  }
+
+  function subDiasCorridos(start, n, inclIni, inclFim){
+    let offset = n;
+    if(!inclIni) offset++;
+    if(!inclFim) offset--;
+    return addDays(start, -Math.max(offset,0));
+  }
+
+  function contarEntre(d1, d2, uteis, inclIni, inclFim, exclSab, exclDom, ferSet){
+    let count = 0;
+    let cur = new Date(d1);
+    if(!inclIni) cur = addDays(cur,1);
+    const end = inclFim ? d2 : addDays(d2,-1);
+    while(cur <= end){
+      if(!uteis || isDiaUtil(cur, exclSab, exclDom, ferSet)) count++;
+      cur = addDays(cur,1);
+    }
+    return count;
+  }
+
+  // ── Calcular ─────────────────────────────────────────────────────────────
+  window.heroCalc = function(){
+    const op      = document.getElementById('h-op').value;
+    const dateStr = document.getElementById('h-date').value;
+    if(!dateStr){ alert('Informe a data inicial.'); return; }
+
+    const d1      = parseDate(dateStr);
+    const uteis   = document.getElementById('h-r-uteis') && document.getElementById('h-r-uteis').checked;
+    const inclIni = document.getElementById('h-incl-ini').checked;
+    const inclFim = document.getElementById('h-incl-fim').checked;
+    const exclSab = uteis && document.getElementById('h-sab') && document.getElementById('h-sab').checked;
+    const exclDom = uteis && document.getElementById('h-dom') && document.getElementById('h-dom').checked;
+    const ferSet  = uteis ? getFeriadosSet() : new Set();
+
+    const resTxt = document.getElementById('h-res-txt');
+    const resSub = document.getElementById('h-res-sub');
+    const resBox = document.getElementById('h-resultado');
+
+    if(op === 'entre'){
+      const date2Str = document.getElementById('h-date2').value;
+      if(!date2Str){ alert('Informe a data final.'); return; }
+      const d2    = parseDate(date2Str);
+      const total = contarEntre(d1, d2, uteis, inclIni, inclFim, exclSab, exclDom, ferSet);
+      resTxt.textContent = total + (uteis ? ' dias úteis' : ' dias corridos');
+      resSub.textContent = 'Entre ' + fmt(d1) + ' e ' + fmt(d2);
+    } else {
+      const dias = parseInt(document.getElementById('h-dias').value)||0;
+      let result;
+      if(op === 'subtrair'){
+        result = uteis
+          ? subDiasUteis(d1, dias, inclIni, exclSab, exclDom, ferSet)
+          : subDiasCorridos(d1, dias, inclIni, inclFim);
+      } else {
+        result = uteis
+          ? addDiasUteis(d1, dias, inclIni, exclSab, exclDom, ferSet)
+          : addDiasCorridos(d1, dias, inclIni, inclFim);
+      }
+      const ds = DIAS_SEMANA[result.getDay()];
+      resTxt.textContent = fmt(result);
+      resSub.textContent = ds + ', ' + result.getDate() + ' de ' + MESES[result.getMonth()] + ' de ' + result.getFullYear();
+    }
+    resBox.style.display = 'block';
+  };
+})();
+</script>
+
+
+<style>
+.yt-skel{border-radius:10px;background:linear-gradient(90deg,var(--brd) 25%,var(--bg) 50%,var(--brd) 75%);background-size:200% 100%;animation:yt-shimmer 1.4s infinite;aspect-ratio:16/9;}
+@keyframes yt-shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.yt-card{display:block;border-radius:10px;overflow:hidden;background:var(--card);border:1.5px solid var(--brd);text-decoration:none;transition:all .2s;}
+.yt-card:hover{border-color:var(--acc);transform:translateY(-2px);box-shadow:var(--sh);}
+.yt-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;}
+.yt-info{padding:9px 10px;}
+.yt-title{font-size:.76rem;font-weight:700;color:var(--txt);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.yt-meta{font-size:.62rem;color:var(--txt-s);margin-top:3px;}
+</style>
+
+<script>
+/* ── YouTube Data API v3 — 3 vídeos mais recentes ── */
+(function(){
+  const API_KEY    = 'AIzaSyBmmkCO2cFjuExLmoh1XF5Nu-LCgGllzw8';
+  const CHANNEL_ID = 'UCF8sVZ2jEHkPoEh7cGjKgcQ'; // canal @CalculaPrazo
+  const MAX        = 3;
+  const grid       = document.getElementById('yt-videos-grid');
+  if(!grid) return;
+
+  function fmtDate(iso){
+    const d = new Date(iso);
+    return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
+  }
+
+  function renderCards(items){
+    grid.innerHTML = '';
+    if(!items || !items.length){
+      grid.innerHTML = '<p style="font-size:.8rem;color:var(--txt-s);grid-column:1/-1;">Nenhum vídeo encontrado.</p>';
+      return;
+    }
+    items.forEach(function(item){
+      const id    = item.id.videoId;
+      const snip  = item.snippet;
+      const thumb = snip.thumbnails.medium
+                  ? snip.thumbnails.medium.url
+                  : snip.thumbnails.default.url;
+      const card  = document.createElement('a');
+      card.className   = 'yt-card';
+      card.href        = 'https://www.youtube.com/watch?v=' + id;
+      card.target      = '_blank';
+      card.rel         = 'noopener';
+      card.innerHTML   =
+        '<div style="position:relative;">'
+        + '<img class="yt-thumb" src="' + thumb + '" alt="' + snip.title.replace(/"/g,'') + '" loading="lazy">'
+        + '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">'
+        + '<div style="width:36px;height:36px;background:rgba(255,0,0,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;">'
+        + '<span style="color:#fff;font-size:.65rem;margin-left:3px;">▶</span></div></div></div>'
+        + '<div class="yt-info">'
+        + '<div class="yt-title">' + snip.title + '</div>'
+        + '<div class="yt-meta">' + fmtDate(snip.publishedAt) + '</div>'
+        + '</div>';
+      grid.appendChild(card);
+    });
+  }
+
+  function showFallback(){
+    grid.innerHTML = '<a href="https://www.youtube.com/@CalculaPrazo" target="_blank" '
+      + 'style="grid-column:1/-1;display:flex;align-items:center;gap:8px;padding:14px;'
+      + 'border-radius:10px;border:1.5px solid var(--brd);text-decoration:none;color:var(--txt);">'
+      + '<span style="font-size:1.4rem;">▶️</span>'
+      + '<span style="font-size:.82rem;font-weight:700;">Ver todos os vídeos no canal @CalculaPrazo →</span></a>';
+  }
+
+  function searchByChannel(channelId){
+    var url = 'https://www.googleapis.com/youtube/v3/search'
+      + '?part=snippet&channelId=' + channelId
+      + '&maxResults=' + MAX
+      + '&order=date&type=video'
+      + '&key=' + API_KEY;
+    return fetch(url).then(function(r){ return r.json(); });
+  }
+
+  function loadVideos(){
+    // 1) Resolve Channel ID pelo handle @CalculaPrazo
+    var handleUrl = 'https://www.googleapis.com/youtube/v3/channels'
+      + '?part=id&forHandle=CalculaPrazo&key=' + API_KEY;
+
+    fetch(handleUrl)
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if(data.error || !data.items || !data.items.length){
+          // fallback: usar ID fixo do canal
+          return searchByChannel('UCF8sVZ2jEHkPoEh7cGjKgcQ');
+        }
+        return searchByChannel(data.items[0].id);
+      })
+      .then(function(data){
+        if(!data || data.error || !data.items){ showFallback(); return; }
+        renderCards(data.items);
+      })
+      .catch(function(){ showFallback(); });
+  }
+
+  // Carregar quando a seção entrar na viewport (IntersectionObserver)
+  if('IntersectionObserver' in window){
+    var obs = new IntersectionObserver(function(entries, o){
+      if(entries[0].isIntersecting){ loadVideos(); o.disconnect(); }
+    }, {rootMargin:'200px'});
+    obs.observe(grid);
+  } else {
+    loadVideos();
+  }
+})();
+</script>
+
 </body>
 </html>
