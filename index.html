@@ -1042,7 +1042,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 <header id="hdr">
   <div class="hdr-inner">
     <a class="logo" onclick="goTo('home')" title="Ir para página inicial">
-      <div class="logo-ic">⚖</div><span class="logo-text">Calcula</span><span>Prazo</span>
+      <div class="logo-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 7h18"/></svg></div><span class="logo-text">Calcula</span><span>Prazo</span>
     </a>
     <nav class="hdr-nav">
       <a id="nav-home" onclick="goTo('home')" style="display:flex;align-items:center;gap:4px;">🏠 Início</a>
@@ -1090,13 +1090,13 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
     <div class="container">
       <div style="position:relative;z-index:1;text-align:center;padding:8px 0 4px;">
         <div style="display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:5px 18px;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.8);margin-bottom:18px;">
-          ⚖️ Ferramentas gratuitas para advogados, RH e contadores
+          ⚖️ Ferramentas jurídicas e conteúdo especializado para advogados, RH e contadores
         </div>
         <h1 style="font-size:clamp(1.8rem,4vw,2.9rem);font-weight:800;color:#fff;letter-spacing:-1px;line-height:1.1;margin-bottom:14px;">
-          Calcule Prazos, Verbas e Correções<br>em Segundos — 100% Gratuito
+          Direito do Trabalho e Ferramentas Jurídicas<br>em Um Só Lugar — 100% Gratuito
         </h1>
         <p style="font-size:.97rem;color:rgba(255,255,255,.65);max-width:520px;margin:0 auto 28px;">
-          Calculadora de prazos processuais, correção monetária, salário líquido, rescisão trabalhista, eSocial e muito mais.
+          Conteúdo jurídico atualizado com fontes do TST, STF e MTE. Calculadoras de prazos processuais, verbas trabalhistas, correção monetária e muito mais.
         </p>
         <!-- Access buttons to real tools — NO duplicate calculator -->
         <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:32px;">
@@ -1126,56 +1126,9 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
     
   </div>
 
-  <!-- SHORTCUT TOOL CARDS (estilo prazofacil) -->
-  <div class="container" style="padding:44px 0 0;">
-    <h2 class="sec-title" style="text-align:center;">Outras Ferramentas</h2>
-    <p class="sec-sub" style="text-align:center;">Clique para acessar qualquer ferramenta instantaneamente</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:48px;">
-      <div onclick="goTo('correcao')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-        <div style="font-size:1.6rem;margin-bottom:8px;">💰</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Correção</div><div style="font-size:.72rem;color:var(--txt-s);">Corrija valores.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-      </div>
-      <div onclick="goTo('juros')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-        <div style="font-size:1.6rem;margin-bottom:8px;">📈</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Juros</div><div style="font-size:.72rem;color:var(--txt-s);">Calcule taxas.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-      </div>
-      <div onclick="goTo('datas')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-        <div style="font-size:1.6rem;margin-bottom:8px;">📅</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Datas</div><div style="font-size:.72rem;color:var(--txt-s);">Calcule datas.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-      </div>
-      <div onclick="goTo('valid')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-        <div style="font-size:1.6rem;margin-bottom:8px;">✅</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Validadores</div><div style="font-size:.72rem;color:var(--txt-s);">Valide CPF/CNPJ.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-      </div>
-      <div onclick="goTo('trabalhista')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-        <div style="font-size:1.6rem;margin-bottom:8px;">⚖️</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Trabalhista</div><div style="font-size:.72rem;color:var(--txt-s);">Calcule rescisão.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-      </div>
-      <div onclick="goTo('salario')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-        <div style="font-size:1.6rem;margin-bottom:8px;">💵</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Salário Líquido</div><div style="font-size:.72rem;color:var(--txt-s);">INSS + IRRF.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-      </div>
-      <div onclick="goTo('qrcode')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-        <div style="font-size:1.6rem;margin-bottom:8px;">📱</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">QR Code</div><div style="font-size:.72rem;color:var(--txt-s);">Gere QR Codes.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-      </div>
-      <div onclick="goTo('imc')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-        <div style="font-size:1.6rem;margin-bottom:8px;">🏃</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">IMC</div><div style="font-size:.72rem;color:var(--txt-s);">Calculadora OMS.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-      </div>
-    </div>
-  </div>
 
-  <!-- ▸ ANÚNCIO: ad-home-middle (entre ferramentas e benefícios) -->
-  <div class="ad-container ad-desktop-only" id="ad-home-middle">
-    
-  </div>
 
-  <!-- BENEFITS -->
-  <div style="background:var(--txt);padding:52px 0;">
-    <div class="container">
-      <h2 class="sec-title" style="color:#fff;text-align:center;margin-bottom:7px;">Por que usar o Calcula Prazo?</h2>
-      <p class="sec-sub" style="color:rgba(255,255,255,.5);text-align:center;">Desenvolvido para profissionais que precisam de precisão</p>
-      <div class="ben-grid">
-        <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">⚡</div><h3 style="color:#fff;">100% Gratuito</h3><p style="color:rgba(255,255,255,.5);">Todas as ferramentas sem cadastro, sem limites e sem custos escondidos.</p></div>
-        <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">🔒</div><h3 style="color:#fff;">Privacidade Total</h3><p style="color:rgba(255,255,255,.5);">Todos os cálculos são feitos localmente. Nenhum dado é enviado a servidores.</p></div>
-        <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">🎯</div><h3 style="color:#fff;">Feito para Profissionais</h3><p style="color:rgba(255,255,255,.5);">Base legal em cada prazo jurídico. Tabelas INSS e IRRF atualizadas 2025.</p></div>
-        <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">📱</div><h3 style="color:#fff;">Funciona em Qualquer Tela</h3><p style="color:rgba(255,255,255,.5);">Responsivo e otimizado para celular, tablet e desktop.</p></div>
-      </div>
-    </div>
-  </div>
+
 
 
   <!-- BLOG POSTS PREVIEW na home -->
@@ -1197,6 +1150,50 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   </div>
 
 </div><!-- /home -->
+
+  <!-- OUTRAS FERRAMENTAS — 6 selecionadas, grid 3 colunas centralizado -->
+  <div style="background:#f8f9fc;padding:52px 0 44px;">
+    <div class="container">
+      <h2 class="sec-title" style="text-align:center;">Outras Ferramentas</h2>
+      <p class="sec-sub" style="text-align:center;">Clique para acessar qualquer ferramenta instantaneamente</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:600px;margin:0 auto 12px;">
+        <div onclick="goTo('correcao')" style="background:#fff;border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
+          <div style="font-size:1.6rem;margin-bottom:8px;">💰</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Correção Monetária</div><div style="font-size:.72rem;color:var(--txt-s);">IPCA, IGP-M, SELIC.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
+        </div>
+        <div onclick="goTo('trabalhista')" style="background:#fff;border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
+          <div style="font-size:1.6rem;margin-bottom:8px;">⚖️</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Verbas Trabalhistas</div><div style="font-size:.72rem;color:var(--txt-s);">Calcule rescisão CLT.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
+        </div>
+        <div onclick="goTo('salario')" style="background:#fff;border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
+          <div style="font-size:1.6rem;margin-bottom:8px;">💵</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Salário Líquido</div><div style="font-size:.72rem;color:var(--txt-s);">INSS + IRRF 2026.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
+        </div>
+        <div onclick="goTo('porcentagem')" style="background:#fff;border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
+          <div style="font-size:1.6rem;margin-bottom:8px;">📊</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Porcentagem</div><div style="font-size:.72rem;color:var(--txt-s);">Desconto, aumento.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
+        </div>
+        <div onclick="goTo('datas')" style="background:#fff;border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
+          <div style="font-size:1.6rem;margin-bottom:8px;">📅</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Operações com Datas</div><div style="font-size:.72rem;color:var(--txt-s);">Diferenças e somas.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
+        </div>
+        <div onclick="goTo('extenso')" style="background:#fff;border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
+          <div style="font-size:1.6rem;margin-bottom:8px;">🔤</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Número por Extenso</div><div style="font-size:.72rem;color:var(--txt-s);">Contratos e cheques.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BENEFITS -->
+  <div style="background:var(--txt);padding:44px 0;">
+    <div class="container">
+      <h2 class="sec-title" style="color:#fff;text-align:center;margin-bottom:7px;">Por que usar o Calcula Prazo?</h2>
+      <p class="sec-sub" style="color:rgba(255,255,255,.5);text-align:center;">Conteúdo jurídico e ferramentas de precisão, tudo gratuito</p>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:700px;margin:28px auto 0;">
+        <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">⚡</div><h3 style="color:#fff;">100% Gratuito</h3><p style="color:rgba(255,255,255,.5);">Ferramentas e conteúdo sem cadastro, sem limites e sem custos escondidos.</p></div>
+        <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">📰</div><h3 style="color:#fff;">Conteúdo Especializado</h3><p style="color:rgba(255,255,255,.5);">Artigos com fontes do TST, STF, TRTs, MTE e MPT. Atualizado diariamente.</p></div>
+        <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">🎯</div><h3 style="color:#fff;">Feito para Profissionais</h3><p style="color:rgba(255,255,255,.5);">Base legal em cada prazo. Tabelas INSS e IRRF atualizadas 2026.</p></div>
+        <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">🔒</div><h3 style="color:#fff;">Privacidade Total</h3><p style="color:rgba(255,255,255,.5);">Todos os cálculos são feitos localmente. Nenhum dado é enviado a servidores.</p></div>
+      </div>
+    </div>
+  </div>
+
+
 
 <!-- ══════════════════════════════════════
      PRAZOS
@@ -2350,8 +2347,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   <div class="container">
     <div class="ftr-grid">
       <div class="ftr-brand">
-        <a class="logo" onclick="window.goTo('home')"><div class="logo-ic">⚖</div><span class="logo-text">Calcula</span><span>Prazo</span></a>
-        <p class="ftr-desc">Ferramentas jurídicas e profissionais gratuitas para advogados, contadores e profissionais de RH.</p>
+        <a class="logo" onclick="window.goTo('home')"><div class="logo-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 7h18"/></svg></div><span class="logo-text">Calcula</span><span>Prazo</span></a>
+        <p class="ftr-desc">Ferramentas jurídicas gratuitas e conteúdo especializado em Direito do Trabalho para advogados, contadores e profissionais de RH.</p>
         <p style="margin-top:12px;font-size:.8rem;color:rgba(255,255,255,.45);line-height:1.6;">✉ Dúvidas, sugestões ou elogios?<br>
         <a href="mailto:contato@calculaprazo.com.br" style="color:rgba(255,255,255,.6);text-decoration:underline;">contato@calculaprazo.com.br</a></p>
       </div>
@@ -4275,12 +4272,12 @@ document.addEventListener('DOMContentLoaded', function() {
   <div class="container" style="padding:28px 16px 10px;">
     <div class="seo-grid">
       <div>
-        <h2 class="seo-h2">Como calcular prazo online</h2>
-        <p class="seo-p">No <strong>Calcula Prazo</strong>, você pode <strong>calcular prazo online</strong> em <strong>dias úteis</strong> ou <strong>dias corridos</strong> de forma rápida e prática. A ferramenta é útil para rotinas jurídicas, administrativas, financeiras e para situações do dia a dia.</p>
+        <h2 class="seo-h2">Calculadora de prazo processual online</h2>
+        <p class="seo-p">No <strong>Calcula Prazo</strong>, você pode <strong>calcular prazos processuais</strong> em <strong>dias úteis</strong> ou <strong>dias corridos</strong> conforme o CPC/2015, a CLT e o CTN. Com mais de 30 prazos pré-configurados — Recurso Ordinário, Embargos de Declaração, Agravo de Instrumento e outros — a ferramenta é ideal para advogados trabalhistas, civilistas e profissionais de RH.</p>
       </div>
       <div>
-        <h2 class="seo-h2">Calculadora de prazo grátis</h2>
-        <p class="seo-p">Use a <strong>calculadora de prazo grátis</strong> para somar dias a uma data, conferir contagens com inclusão de dia inicial e final e obter resultados com mais segurança. O site também oferece outras calculadoras online úteis em um só lugar.</p>
+        <h2 class="seo-h2">Conteúdo jurídico e ferramentas gratuitas</h2>
+        <p class="seo-p">Além das calculadoras de prazos, verbas trabalhistas, correção monetária e salário líquido, o <strong>Calcula Prazo</strong> mantém uma <strong>base editorial de Direito do Trabalho</strong> atualizada com fontes primárias do TST, STF, TRTs, MTE e MPT — artigos sobre justa causa, rescisão, eSocial, FGTS, NR-1 e muito mais, todos gratuitos e sem cadastro.</p>
       </div>
     </div>
   </div>
