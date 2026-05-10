@@ -1096,7 +1096,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
           Direito do Trabalho e Ferramentas Jurídicas<br>em Um Só Lugar — 100% Gratuito
         </h1>
         <p style="font-size:.97rem;color:rgba(255,255,255,.65);max-width:520px;margin:0 auto 28px;">
-          Conteúdo jurídico atualizado com fontes do TST, STF e MTE. Calculadoras de prazos processuais, verbas trabalhistas, correção monetária e muito mais.
+          Conteúdo jurídico atualizado com fontes do TST, STF e MTE. Calculadoras de prazos, verbas trabalhistas, correção monetária e muito mais.
         </p>
         <!-- Access buttons to real tools — NO duplicate calculator -->
         <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:32px;">
@@ -1128,9 +1128,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 
 
-
-
-
   <!-- BLOG POSTS PREVIEW na home -->
   <div style="background:var(--bg);padding:52px 0 60px;">
     <div class="container">
@@ -1149,35 +1146,37 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
     </div>
   </div>
 
-</div><!-- /home -->
-
-  <!-- OUTRAS FERRAMENTAS — 6 selecionadas, grid 3 colunas centralizado -->
-  <div style="background:#f8f9fc;padding:52px 0 44px;">
-    <div class="container">
-      <h2 class="sec-title" style="text-align:center;">Outras Ferramentas</h2>
-      <p class="sec-sub" style="text-align:center;">Clique para acessar qualquer ferramenta instantaneamente</p>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:600px;margin:0 auto 12px;">
-        <div onclick="goTo('correcao')" style="background:#fff;border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-          <div style="font-size:1.6rem;margin-bottom:8px;">💰</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Correção Monetária</div><div style="font-size:.72rem;color:var(--txt-s);">IPCA, IGP-M, SELIC.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-        </div>
-        <div onclick="goTo('trabalhista')" style="background:#fff;border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-          <div style="font-size:1.6rem;margin-bottom:8px;">⚖️</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Verbas Trabalhistas</div><div style="font-size:.72rem;color:var(--txt-s);">Calcule rescisão CLT.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-        </div>
-        <div onclick="goTo('salario')" style="background:#fff;border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-          <div style="font-size:1.6rem;margin-bottom:8px;">💵</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Salário Líquido</div><div style="font-size:.72rem;color:var(--txt-s);">INSS + IRRF 2026.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-        </div>
-        <div onclick="goTo('porcentagem')" style="background:#fff;border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-          <div style="font-size:1.6rem;margin-bottom:8px;">📊</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Porcentagem</div><div style="font-size:.72rem;color:var(--txt-s);">Desconto, aumento.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-        </div>
-        <div onclick="goTo('datas')" style="background:#fff;border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-          <div style="font-size:1.6rem;margin-bottom:8px;">📅</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Operações com Datas</div><div style="font-size:.72rem;color:var(--txt-s);">Diferenças e somas.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-        </div>
-        <div onclick="goTo('extenso')" style="background:#fff;border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-          <div style="font-size:1.6rem;margin-bottom:8px;">🔤</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Número por Extenso</div><div style="font-size:.72rem;color:var(--txt-s);">Contratos e cheques.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-        </div>
+  <!-- SHORTCUT TOOL CARDS -->
+  <div class="container" style="padding:44px 0 0;">
+    <h2 class="sec-title" style="text-align:center;">Outras Ferramentas</h2>
+    <p class="sec-sub" style="text-align:center;">Clique para acessar qualquer ferramenta instantaneamente</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:600px;margin:0 auto 48px;">
+      <div onclick="goTo('correcao')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
+        <div style="font-size:1.6rem;margin-bottom:8px;">💰</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Correção Monetária</div><div style="font-size:.72rem;color:var(--txt-s);">IPCA, IGP-M, SELIC.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
+      </div>
+      <div onclick="goTo('trabalhista')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
+        <div style="font-size:1.6rem;margin-bottom:8px;">⚖️</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Verbas Trabalhistas</div><div style="font-size:.72rem;color:var(--txt-s);">Calcule rescisão CLT.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
+      </div>
+      <div onclick="goTo('salario')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
+        <div style="font-size:1.6rem;margin-bottom:8px;">💵</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Salário Líquido</div><div style="font-size:.72rem;color:var(--txt-s);">INSS + IRRF 2026.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
+      </div>
+      <div onclick="goTo('porcentagem')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
+        <div style="font-size:1.6rem;margin-bottom:8px;">📊</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Porcentagem</div><div style="font-size:.72rem;color:var(--txt-s);">Desconto, aumento.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
+      </div>
+      <div onclick="goTo('datas')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
+        <div style="font-size:1.6rem;margin-bottom:8px;">📅</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Operações com Datas</div><div style="font-size:.72rem;color:var(--txt-s);">Diferenças e somas.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
+      </div>
+      <div onclick="goTo('extenso')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
+        <div style="font-size:1.6rem;margin-bottom:8px;">🔤</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Número por Extenso</div><div style="font-size:.72rem;color:var(--txt-s);">Contratos e cheques.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
       </div>
     </div>
   </div>
+
+  <!-- ▸ ANÚNCIO: ad-home-middle (entre ferramentas e benefícios) -->
+  <div class="ad-container ad-desktop-only" id="ad-home-middle">
+    
+  </div>
+
 
   <!-- BENEFITS -->
   <div style="background:var(--txt);padding:44px 0;">
@@ -1186,14 +1185,14 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
       <p class="sec-sub" style="color:rgba(255,255,255,.5);text-align:center;">Conteúdo jurídico e ferramentas de precisão, tudo gratuito</p>
       <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:700px;margin:28px auto 0;">
         <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">⚡</div><h3 style="color:#fff;">100% Gratuito</h3><p style="color:rgba(255,255,255,.5);">Ferramentas e conteúdo sem cadastro, sem limites e sem custos escondidos.</p></div>
-        <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">📰</div><h3 style="color:#fff;">Conteúdo Especializado</h3><p style="color:rgba(255,255,255,.5);">Artigos com fontes do TST, STF, TRTs, MTE e MPT. Atualizado diariamente.</p></div>
+        <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">📰</div><h3 style="color:#fff;">Conteúdo Especializado</h3><p style="color:rgba(255,255,255,.5);">Artigos com fontes do TST, STF, TRTs e MTE. Atualizado diariamente.</p></div>
         <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">🎯</div><h3 style="color:#fff;">Feito para Profissionais</h3><p style="color:rgba(255,255,255,.5);">Base legal em cada prazo. Tabelas INSS e IRRF atualizadas 2026.</p></div>
         <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">🔒</div><h3 style="color:#fff;">Privacidade Total</h3><p style="color:rgba(255,255,255,.5);">Todos os cálculos são feitos localmente. Nenhum dado é enviado a servidores.</p></div>
       </div>
     </div>
   </div>
 
-
+</div><!-- /home -->
 
 <!-- ══════════════════════════════════════
      PRAZOS
@@ -4277,7 +4276,7 @@ document.addEventListener('DOMContentLoaded', function() {
       </div>
       <div>
         <h2 class="seo-h2">Conteúdo jurídico e ferramentas gratuitas</h2>
-        <p class="seo-p">Além das calculadoras de prazos, verbas trabalhistas, correção monetária e salário líquido, o <strong>Calcula Prazo</strong> mantém uma <strong>base editorial de Direito do Trabalho</strong> atualizada com fontes primárias do TST, STF, TRTs, MTE e MPT — artigos sobre justa causa, rescisão, eSocial, FGTS, NR-1 e muito mais, todos gratuitos e sem cadastro.</p>
+        <p class="seo-p">Além das calculadoras, o <strong>Calcula Prazo</strong> mantém uma <strong>base editorial de Direito do Trabalho</strong> atualizada com fontes primárias do TST, STF, TRTs, MTE e MPT — artigos sobre justa causa, rescisão, eSocial, FGTS, NR-1 e muito mais, todos gratuitos e sem cadastro.</p>
       </div>
     </div>
   </div>
