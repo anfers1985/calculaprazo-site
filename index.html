@@ -1009,6 +1009,16 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 
 /* ── AdSense: colapsa blocos vazios até aprovação ── */
+
+.nm-sec{display:flex;align-items:center;gap:10px;padding:9px 14px;font-size:.84rem;font-weight:600;color:var(--txt-m);cursor:pointer;transition:color .15s;position:relative;}
+.nm-sec:hover{color:var(--acc);}
+.nm-arr{margin-left:auto;font-size:.65rem;opacity:.45;transition:transform .2s;flex-shrink:0;}
+.nm-arr.open{transform:rotate(90deg);}
+.nm-sub-wrap{display:none;background:var(--b50);border-left:3px solid var(--b200);margin:0 10px 6px 10px;border-radius:0 8px 8px 0;}
+.nm-sub-wrap.open{display:block;}
+.nm-sub{display:block;padding:7px 14px 7px 16px;font-size:.8rem;color:var(--txt-m);cursor:pointer;transition:color .15s;text-decoration:none;}
+.nm-sub:hover{color:var(--acc);}
+.nm-outros{color:var(--txt-s);font-style:italic;font-size:.76rem;}
 </style>
 
 <!-- Chart.js para gráfico comparativo de juros -->
@@ -1067,10 +1077,76 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
           <a onclick="navGoTo('imc')"><span class="dm-icon">🏃</span>Calculadora de IMC</a>
         </div>
       </div>
-      <div class="nav-dropdown" id="nav-dropdown-conteudo">
+            <div class="nav-dropdown" id="nav-dropdown-conteudo">
         <a id="nav-conteudo" onclick="toggleConteudo(event)">Conteúdo</a>
-        <div class="nav-drop-menu" id="conteudo-menu">
-          <a onclick="navGoTo('blog')"><span class="dm-icon">📰</span>Todos os Artigos</a>
+        <div class="nav-drop-menu" id="conteudo-menu" style="min-width:270px;max-height:80vh;overflow-y:auto;">
+          <a onclick="navGoTo('blog');document.getElementById('nav-dropdown-conteudo').classList.remove('open')"><span class="dm-icon">📰</span>Todos os Artigos</a>
+          <div class="nav-drop-divider"></div>
+
+          <a class="nm-sec" onclick="toggleNavSec('nms-jurisp',event)"><span class="dm-icon">⚖️</span>Jurisprudência<span class="nm-arr" id="nma-jurisp">›</span></a>
+          <div class="nm-sub-wrap" id="nms-jurisp">
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('jurisprudencia-trts','jurisprudencia');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">TRT</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('jurisprudencia-tst','jurisprudencia');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">TST</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('jurisprudencia-stj','jurisprudencia');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">STJ</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('jurisprudencia-stf','jurisprudencia');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">STF</a>
+            <a class="nm-sub nm-outros" onclick="navGoTo('blog');filterBlogSection('jurisprudencia');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outros temas</a>
+          </div>
+
+          <a class="nm-sec" onclick="toggleNavSec('nms-orgaos',event)"><span class="dm-icon">🏛️</span>Órgãos Públicos<span class="nm-arr" id="nma-orgaos">›</span></a>
+          <div class="nm-sub-wrap" id="nms-orgaos">
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('noticias-mte','orgaos-publicos');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">MTE</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('noticias-mpt','orgaos-publicos');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">MPT</a>
+            <a class="nm-sub nm-outros" onclick="navGoTo('blog');filterBlogSection('orgaos-publicos');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outros órgãos</a>
+          </div>
+
+          <a class="nm-sec" onclick="toggleNavSec('nms-leg',event)"><span class="dm-icon">📋</span>Legislação e Normas<span class="nm-arr" id="nma-leg">›</span></a>
+          <div class="nm-sub-wrap" id="nms-leg">
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('legislacao-clt','legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">CLT</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('legislacao-cf','legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Constituição Federal</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('esocial','legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">eSocial</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('fgts-digital','legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">FGTS</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('legislacao-previdenciario','legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Previdenciário</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('legislacao-sindical','legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Sindical</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('legislacao-portarias','legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Portarias</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('legislacao-nr','legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">NR</a>
+            <a class="nm-sub nm-outros" onclick="navGoTo('blog');filterBlogSection('legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outras Legislação e Normas</a>
+          </div>
+
+          <a class="nm-sec" onclick="toggleNavSec('nms-rh',event)"><span class="dm-icon">👥</span>RH e Gestão de Pessoas<span class="nm-arr" id="nma-rh">›</span></a>
+          <div class="nm-sub-wrap" id="nms-rh">
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('rh-folha','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Folha de Pagamento</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('rh-jornada','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Jornada de Trabalho</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('rh-contrato','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Contrato de Trabalho</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('rh-salario','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Salário</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('rh-rescisao','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Rescisão Contratual</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('saude-seguranca','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Saúde e Segurança do Trabalho</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('rh-beneficios','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Benefícios</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('rh-ctps','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">CTPS</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('rh-sindical','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Relacionamento Sindical</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('rh-fiscalizacao','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Fiscalização</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('rh-inss','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">INSS</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('rh-modelos','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Modelos</a>
+            <a class="nm-sub nm-outros" onclick="navGoTo('blog');filterBlogSection('rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outros temas de RH</a>
+          </div>
+
+          <a class="nm-sec" onclick="toggleNavSec('nms-proc',event)"><span class="dm-icon">📄</span>Processual<span class="nm-arr" id="nma-proc">›</span></a>
+          <div class="nm-sub-wrap" id="nms-proc">
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('processual-peticoes','processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Petições e Peças</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('processual-pratica','processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Prática Advocatícia</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('modelos','processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Modelos</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('artigos','processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Artigos</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('processual-analises','processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Análises</a>
+            <a class="nm-sub nm-outros" onclick="navGoTo('blog');filterBlogSection('processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outros temas</a>
+          </div>
+
+          <div class="nav-drop-divider"></div>
+          <a class="nm-sec" onclick="toggleNavSec('nms-ess',event)"><span class="dm-icon">⭐</span>Essenciais<span class="nm-arr" id="nma-ess">›</span></a>
+          <div class="nm-sub-wrap" id="nms-ess">
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('essenciais-livros','essenciais');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">📚 Livros Jurídicos</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('essenciais-equipamentos','essenciais');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">🖥️ Equipamentos de Escritório</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('essenciais-cursos','essenciais');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">🎓 Cursos</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('essenciais-outros','essenciais');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">📦 Outros</a>
+          </div>
         </div>
       </div>
       <div class="nav-dropdown" id="nav-dropdown-sociais">
@@ -2311,23 +2387,20 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
       </div>
     </div>
 
-    <!-- Linha 2: filtro por categoria -->
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;align-items:center;">
+    <!-- Linha 2: filtro por seção -->
+    <div id="blog-sec-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:center;">
       <button class="ctab on" id="blog-tab-all" onclick="filterBlogCat('',this)" style="white-space:nowrap;">Todos</button>
-      <button class="ctab" onclick="filterBlogCat('jurisprudencia-tst',this)">⚖️ TST</button>
-      <button class="ctab" onclick="filterBlogCat('jurisprudencia-tst',this)">🏛️ STF</button>
-      <button class="ctab" onclick="filterBlogCat('jurisprudencia-trts',this)">🏛️ TRTs</button>
-      <button class="ctab" onclick="filterBlogCat('legislacao-normas',this)">📋 Legislação</button>
-      <button class="ctab" onclick="filterBlogCat('noticias-mte-mpt',this)">🔎 MTE</button>
-      <button class="ctab" onclick="filterBlogCat('noticias-mte-mpt',this)">⚖️ MPT</button>
-      <button class="ctab" onclick="filterBlogCat('esocial-fgts-digital',this)">💻 eSocial</button>
-      <button class="ctab" onclick="filterBlogCat('orientacoes-praticas',this)">👥 RH</button>
-      <button class="ctab" onclick="filterBlogCat('saude-seguranca',this)">🦺 Saúde e Segurança</button>
-      <button class="ctab" onclick="filterBlogCat('sindical',this)">🤝 Sindical</button>
-      <button class="ctab" onclick="filterBlogCat('jurisprudencia',this)">📚 Jurisprudência</button>
-      <button class="ctab" onclick="filterBlogCat('modelos',this)">📄 Modelos</button>
-      <button class="ctab" onclick="filterBlogCat('artigos',this)">✍️ Artigos</button>
-      <button class="ctab" onclick="filterBlogCat('geral',this)">📌 Geral</button>
+      <button class="ctab" data-sec="jurisprudencia"    onclick="filterBlogSection('jurisprudencia',this)">⚖️ Jurisprudência</button>
+      <button class="ctab" data-sec="orgaos-publicos"   onclick="filterBlogSection('orgaos-publicos',this)">🏛️ Órgãos Públicos</button>
+      <button class="ctab" data-sec="legislacao-normas" onclick="filterBlogSection('legislacao-normas',this)">📋 Legislação e Normas</button>
+      <button class="ctab" data-sec="rh-gestao"         onclick="filterBlogSection('rh-gestao',this)">👥 RH e Gestão</button>
+      <button class="ctab" data-sec="processual"        onclick="filterBlogSection('processual',this)">📄 Processual</button>
+      <button class="ctab" data-sec="essenciais"        onclick="filterBlogSection('essenciais',this)">⭐ Essenciais</button>
+    </div>
+
+    <!-- Linha 3: sub-seções (aparece dinamicamente) -->
+    <div id="blog-subsec-row" style="display:none;gap:7px;flex-wrap:wrap;margin-bottom:18px;padding:10px 14px;background:var(--b50);border-radius:12px;border:1px solid var(--b100);align-items:center;">
+      <span style="font-size:.72rem;font-weight:700;color:var(--txt-s);margin-right:4px;flex-shrink:0;">Ver:</span>
     </div>
 
     <!-- Contador de resultados -->
@@ -4333,10 +4406,75 @@ function formatPostDate(d){
   return new Date(d+'T12:00:00').toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'});
 }
 
+// ── MAPA seção → categorias ──────────────────────────────────
+var BLOG_SEC_MAP={
+  'jurisprudencia':    ['jurisprudencia-tst','jurisprudencia-trts','jurisprudencia-stj','jurisprudencia-stf','jurisprudencia-outros'],
+  'orgaos-publicos':   ['noticias-mte-mpt','noticias-mte','noticias-mpt','orgaos-outros'],
+  'legislacao-normas': ['legislacao-normas','legislacao-clt','legislacao-cf','esocial-fgts-digital','esocial','fgts-digital','legislacao-previdenciario','legislacao-sindical','sindical','legislacao-portarias','legislacao-nr','legislacao-outros'],
+  'rh-gestao':         ['orientacoes-praticas','saude-seguranca','rh-folha','rh-jornada','rh-contrato','rh-salario','rh-rescisao','rh-beneficios','rh-ctps','rh-sindical','rh-fiscalizacao','rh-inss','rh-modelos','rh-outros'],
+  'processual':        ['artigos','modelos','processual-peticoes','processual-pratica','processual-analises','processual-outros'],
+  'essenciais':        ['essenciais-livros','essenciais-equipamentos','essenciais-cursos','essenciais-outros']
+};
+var BLOG_SUBSEC_MAP={
+  'jurisprudencia':    [['jurisprudencia-trts','TRT'],['jurisprudencia-tst','TST'],['jurisprudencia-stj','STJ'],['jurisprudencia-stf','STF'],['jurisprudencia','+ outros temas']],
+  'orgaos-publicos':   [['noticias-mte','MTE'],['noticias-mpt','MPT'],['orgaos-outros','+ outros órgãos']],
+  'legislacao-normas': [['legislacao-clt','CLT'],['legislacao-cf','Constituição Federal'],['esocial','eSocial'],['fgts-digital','FGTS'],['legislacao-previdenciario','Previdenciário'],['legislacao-sindical','Sindical'],['legislacao-portarias','Portarias'],['legislacao-nr','NR'],['legislacao-normas','+ outras Legislação']],
+  'rh-gestao':         [['rh-folha','Folha de Pagamento'],['rh-jornada','Jornada de Trabalho'],['rh-contrato','Contrato de Trabalho'],['rh-salario','Salário'],['rh-rescisao','Rescisão Contratual'],['saude-seguranca','Saúde e Segurança'],['rh-beneficios','Benefícios'],['rh-ctps','CTPS'],['rh-sindical','Rel. Sindical'],['rh-fiscalizacao','Fiscalização'],['rh-inss','INSS'],['rh-modelos','Modelos'],['orientacoes-praticas','+ outros temas de RH']],
+  'processual':        [['processual-peticoes','Petições e Peças'],['processual-pratica','Prática Advocatícia'],['modelos','Modelos'],['artigos','Artigos'],['processual-analises','Análises'],['processual-outros','+ outros temas']],
+  'essenciais':        [['essenciais-livros','📚 Livros'],['essenciais-equipamentos','🖥️ Equipamentos'],['essenciais-cursos','🎓 Cursos'],['essenciais-outros','📦 Outros']]
+};
+var BLOG_CUR_SEC='';// seção activa
+
+function BLOG_BLOG_SEC_MAP_CATS(sec){return BLOG_SEC_MAP[sec]||[];}
+
 function filterBlogCat(cat,btn){
-  BLOG_CAT=cat;blogPage=1;
+  BLOG_CAT=cat;BLOG_CUR_SEC='';blogPage=1;
   document.querySelectorAll('#sec-blog .ctab').forEach(function(b){b.classList.remove('on');});
   if(btn){btn.classList.add('on');}else{var ab=document.getElementById('blog-tab-all');if(ab)ab.classList.add('on');}
+  // esconder linha de sub-seções
+  var sr=document.getElementById('blog-subsec-row');if(sr){sr.style.display='none';}
+  renderBlogSection();
+}
+
+function filterBlogSection(sec,btn){
+  BLOG_CUR_SEC=sec;
+  BLOG_CAT='__sec__'+sec;// sentinela
+  blogPage=1;
+  document.querySelectorAll('#blog-sec-row .ctab').forEach(function(b){b.classList.remove('on');});
+  if(btn){btn.classList.add('on');}
+  // montar sub-seções
+  var sr=document.getElementById('blog-subsec-row');
+  if(sr&&BLOG_SUBSEC_MAP[sec]){
+    var html='<span style="font-size:.72rem;font-weight:700;color:var(--txt-s);margin-right:4px;flex-shrink:0;">Ver:</span>';
+    BLOG_SUBSEC_MAP[sec].forEach(function(sub){
+      html+='<button class="ctab" style="font-size:.78rem;padding:5px 12px;" onclick="filterBlogSub(\''+sub[0]+'\',\''+sec+'\',this)">'+sub[1]+'</button>';
+    });
+    sr.innerHTML=html;
+    sr.style.display='flex';
+  }
+  renderBlogSection();
+}
+
+
+function toggleNavSec(id,e){
+  if(e){e.stopPropagation();}
+  var wrap=document.getElementById(id);
+  if(!wrap)return;
+  var open=wrap.classList.toggle('open');
+  var arrId='nma-'+id.replace('nms-','');
+  var arr=document.getElementById(arrId);
+  if(arr){arr.classList.toggle('open',open);}
+  // fechar as outras
+  document.querySelectorAll('.nm-sub-wrap').forEach(function(w){
+    if(w.id!==id){w.classList.remove('open');var a=document.getElementById('nma-'+w.id.replace('nms-',''));if(a)a.classList.remove('open');}
+  });
+}
+function filterBlogSub(cat,sec,btn){
+  BLOG_CUR_SEC=sec;
+  BLOG_CAT=cat;
+  blogPage=1;
+  document.querySelectorAll('#blog-subsec-row .ctab').forEach(function(b){b.classList.remove('on');});
+  if(btn){btn.classList.add('on');}
   renderBlogSection();
 }
 
@@ -4407,7 +4545,11 @@ function renderBlogSection(){
   var dateDays=de?parseInt(de.value||'0'):0;
   var cutoff=dateDays>0?new Date(Date.now()-dateDays*86400000):null;
   var posts=BLOG_POSTS.filter(function(p){
-    var mc=!BLOG_CAT||p.category===BLOG_CAT;
+    var secCats=BLOG_CUR_SEC?BLOG_BLOG_SEC_MAP_CATS(BLOG_CUR_SEC):null;
+    var mc;
+    if(!BLOG_CAT){mc=true;}
+    else if(BLOG_CAT.indexOf('__sec__')===0){mc=secCats?secCats.indexOf(p.category)>=0:true;}
+    else{mc=p.category===BLOG_CAT;}
     var mt=!search||(p.title||'').toLowerCase().indexOf(search)>=0||(p.excerpt||'').toLowerCase().indexOf(search)>=0;
     var md=!cutoff||new Date((p.date||'2000-01-01')+'T12:00:00')>=cutoff;
     return mc&&mt&&md;
@@ -4479,7 +4621,7 @@ function toggleConteudo(e){
   var dd=document.getElementById('nav-dropdown-conteudo');
   var opening=!dd.classList.contains('open');
   document.querySelectorAll('.nav-dropdown').forEach(function(d){d.classList.remove('open');});
-  if(opening){dd.classList.add('open');positionDropdownConteudo();}
+  if(opening){dd.classList.add('open');positionDropdownConteudo();}else{document.querySelectorAll('.nm-sub-wrap').forEach(function(w){w.classList.remove('open');});document.querySelectorAll('.nm-arr').forEach(function(a){a.classList.remove('open');});}
 }
 
 function positionDropdownSociais(){

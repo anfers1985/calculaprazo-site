@@ -129,14 +129,12 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
 <!-- AUTH WALL -->
 <div id="auth-wall">
   <div class="auth-card">
-    <div class="auth-logo">⚖ Calcula<span>Prazo</span></div>
+    <div class="auth-logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;margin-bottom:2px;"><line x1="12" y1="3" x2="12" y2="21"/><path d="M5 21h14"/><path d="M5 8l-3 5h6l-3-5z"/><path d="M19 8l-3 5h6l-3-5z"/><line x1="5" y1="8" x2="19" y2="8"/></svg>Calcula<span>Prazo</span></div>
     <p class="auth-sub">Painel de administração — acesso restrito</p>
     <input type="password" id="auth-pass" placeholder="Senha de acesso" onkeydown="if(event.key==='Enter')doLogin()">
     <button class="auth-btn" onclick="doLogin()">Entrar</button>
     <p class="auth-err" id="auth-err">Senha incorreta. Tente novamente.</p>
-    <p style="font-size:.72rem;color:var(--txt-s);margin-top:16px;">
-      Senha padrão: <code>G@mma8090</code>
-    </p>
+
   </div>
 </div>
 
@@ -144,7 +142,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
 <div id="app">
   <!-- SIDEBAR -->
   <div class="sidebar">
-    <div class="s-logo"><div class="s-logo-ic">⚖</div>Calcula<span>Prazo</span></div>
+    <div class="s-logo"><div class="s-logo-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><path d="M5 21h14"/><path d="M5 8l-3 5h6l-3-5z"/><path d="M19 8l-3 5h6l-3-5z"/><line x1="5" y1="8" x2="19" y2="8"/></svg></div>Calcula<span>Prazo</span></div>
     <nav class="s-nav">
       <a onclick="goPage('dashboard')" id="nav-dashboard" class="on"><span class="s-icon">📊</span> Dashboard</a>
       <a onclick="goPage('new')" id="nav-new"><span class="s-icon">✏️</span> Novo Post</a>
@@ -195,17 +193,59 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
           <div class="fg">
             <label>Categoria</label>
             <select id="f-cat">
-              <option value="jurisprudencia-tst">Jurisprudência TST</option>
-              <option value="jurisprudencia-trts">Jurisprudência TRTs</option>
-              <option value="noticias-mte-mpt">MTE & MPT</option>
-              <option value="legislacao-normas">Legislação e Normas</option>
-              <option value="esocial-fgts-digital">eSocial e FGTS Digital</option>
-              <option value="orientacoes-praticas">Orientações Práticas RH</option>
-              <option value="saude-seguranca">Saúde e Segurança</option>
-              <option value="sindical">Sindical</option>
-              <option value="jurisprudencia">Jurisprudência</option>
-              <option value="modelos">Modelos</option>
-              <option value="artigos">Artigos</option>
+              <optgroup label="⚖️ Jurisprudência">
+                <option value="jurisprudencia-trts">TRT</option>
+                <option value="jurisprudencia-tst">TST</option>
+                <option value="jurisprudencia-stj">STJ</option>
+                <option value="jurisprudencia-stf">STF</option>
+                <option value="jurisprudencia">Outros temas</option>
+              </optgroup>
+              <optgroup label="🏛️ Órgãos Públicos">
+                <option value="noticias-mte">MTE</option>
+                <option value="noticias-mpt">MPT</option>
+                <option value="noticias-mte-mpt">MTE &amp; MPT</option>
+              </optgroup>
+              <optgroup label="📋 Legislação e Normas">
+                <option value="legislacao-clt">CLT</option>
+                <option value="legislacao-cf">Constituição Federal</option>
+                <option value="esocial">eSocial</option>
+                <option value="fgts-digital">FGTS</option>
+                <option value="esocial-fgts-digital">eSocial e FGTS Digital</option>
+                <option value="legislacao-previdenciario">Previdenciário</option>
+                <option value="legislacao-sindical">Sindical</option>
+                <option value="legislacao-portarias">Portarias</option>
+                <option value="legislacao-nr">NR</option>
+                <option value="legislacao-normas">Outras Legislação e Normas</option>
+              </optgroup>
+              <optgroup label="👥 RH e Gestão de Pessoas">
+                <option value="rh-folha">Folha de Pagamento</option>
+                <option value="rh-jornada">Jornada de Trabalho</option>
+                <option value="rh-contrato">Contrato de Trabalho</option>
+                <option value="rh-salario">Salário</option>
+                <option value="rh-rescisao">Rescisão Contratual</option>
+                <option value="saude-seguranca">Saúde e Segurança do Trabalho</option>
+                <option value="rh-beneficios">Benefícios</option>
+                <option value="rh-ctps">CTPS</option>
+                <option value="rh-sindical">Relacionamento Sindical</option>
+                <option value="rh-fiscalizacao">Fiscalização</option>
+                <option value="rh-inss">INSS</option>
+                <option value="rh-modelos">Modelos RH</option>
+                <option value="orientacoes-praticas">Outros temas de RH</option>
+              </optgroup>
+              <optgroup label="📄 Processual">
+                <option value="processual-peticoes">Petições e Peças</option>
+                <option value="processual-pratica">Prática Advocatícia</option>
+                <option value="modelos">Modelos</option>
+                <option value="artigos">Artigos</option>
+                <option value="processual-analises">Análises</option>
+                <option value="processual-outros">Outros temas</option>
+              </optgroup>
+              <optgroup label="⭐ Essenciais">
+                <option value="essenciais-livros">📚 Livros Jurídicos</option>
+                <option value="essenciais-equipamentos">🖥️ Equipamentos de Escritório</option>
+                <option value="essenciais-cursos">🎓 Cursos</option>
+                <option value="essenciais-outros">📦 Outros</option>
+              </optgroup>
               <option value="geral">Geral</option>
             </select>
           </div>
@@ -251,17 +291,59 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
         <input type="text" id="search-posts" placeholder="🔍 Buscar posts..." style="flex:1;padding:9px 13px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.86rem;font-family:var(--fh);color:var(--txt);" oninput="renderList()">
         <select id="filter-cat" style="padding:9px 13px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.86rem;font-family:var(--fh);color:var(--txt);" onchange="renderList()">
           <option value="">Todas as categorias</option>
-          <option value="jurisprudencia-tst">TST</option>
-          <option value="jurisprudencia-trts">TRTs</option>
-          <option value="noticias-mte-mpt">MTE & MPT</option>
-          <option value="legislacao-normas">Legislação</option>
-          <option value="esocial-fgts-digital">eSocial</option>
-          <option value="orientacoes-praticas">RH</option>
-          <option value="saude-seguranca">Saúde</option>
-          <option value="sindical">Sindical</option>
-          <option value="jurisprudencia">Jurisprudência</option>
-          <option value="modelos">Modelos</option>
-          <option value="artigos">Artigos</option>
+          <optgroup label="⚖️ Jurisprudência">
+            <option value="jurisprudencia-trts">TRT</option>
+            <option value="jurisprudencia-tst">TST</option>
+            <option value="jurisprudencia-stj">STJ</option>
+            <option value="jurisprudencia-stf">STF</option>
+            <option value="jurisprudencia">Outros</option>
+          </optgroup>
+          <optgroup label="🏛️ Órgãos Públicos">
+            <option value="noticias-mte">MTE</option>
+            <option value="noticias-mpt">MPT</option>
+            <option value="noticias-mte-mpt">MTE &amp; MPT</option>
+          </optgroup>
+          <optgroup label="📋 Legislação e Normas">
+            <option value="legislacao-clt">CLT</option>
+            <option value="legislacao-cf">Constituição Federal</option>
+            <option value="esocial">eSocial</option>
+            <option value="fgts-digital">FGTS</option>
+            <option value="esocial-fgts-digital">eSocial e FGTS</option>
+            <option value="legislacao-previdenciario">Previdenciário</option>
+            <option value="legislacao-sindical">Sindical</option>
+            <option value="legislacao-portarias">Portarias</option>
+            <option value="legislacao-nr">NR</option>
+            <option value="legislacao-normas">Outras Legislação</option>
+          </optgroup>
+          <optgroup label="👥 RH e Gestão de Pessoas">
+            <option value="rh-folha">Folha de Pagamento</option>
+            <option value="rh-jornada">Jornada de Trabalho</option>
+            <option value="rh-contrato">Contrato de Trabalho</option>
+            <option value="rh-salario">Salário</option>
+            <option value="rh-rescisao">Rescisão Contratual</option>
+            <option value="saude-seguranca">Saúde e Segurança</option>
+            <option value="rh-beneficios">Benefícios</option>
+            <option value="rh-ctps">CTPS</option>
+            <option value="rh-sindical">Rel. Sindical</option>
+            <option value="rh-fiscalizacao">Fiscalização</option>
+            <option value="rh-inss">INSS</option>
+            <option value="rh-modelos">Modelos RH</option>
+            <option value="orientacoes-praticas">Outros temas de RH</option>
+          </optgroup>
+          <optgroup label="📄 Processual">
+            <option value="processual-peticoes">Petições e Peças</option>
+            <option value="processual-pratica">Prática Advocatícia</option>
+            <option value="modelos">Modelos</option>
+            <option value="artigos">Artigos</option>
+            <option value="processual-analises">Análises</option>
+            <option value="processual-outros">Outros temas</option>
+          </optgroup>
+          <optgroup label="⭐ Essenciais">
+            <option value="essenciais-livros">📚 Livros Jurídicos</option>
+            <option value="essenciais-equipamentos">🖥️ Equipamentos</option>
+            <option value="essenciais-cursos">🎓 Cursos</option>
+            <option value="essenciais-outros">📦 Outros</option>
+          </optgroup>
           <option value="geral">Geral</option>
         </select>
       </div>
@@ -518,18 +600,24 @@ function formatDate(dateStr){
 
 function catLabel(c){
   const map = {
-    'jurisprudencia-tst': '⚖️ TST',
-    'jurisprudencia-trts': '🏛️ TRTs',
-    'noticias-mte-mpt': '🔎 MTE & MPT',
-    'legislacao-normas': '📋 Legislação',
-    'esocial-fgts-digital': '💻 eSocial',
-    'orientacoes-praticas': '👥 RH',
-    'saude-seguranca': '🦺 Saúde',
-    'sindical': '🤝 Sindical',
-    'jurisprudencia': '📚 Jurisprudência',
-    'modelos': '📄 Modelos',
-    'artigos': '✍️ Artigos',
-    'geral': '📌 Geral'
+    'jurisprudencia-trts':'⚖️ TRT','jurisprudencia-tst':'⚖️ TST',
+    'jurisprudencia-stj':'⚖️ STJ','jurisprudencia-stf':'⚖️ STF','jurisprudencia':'⚖️ Jurisprudência',
+    'noticias-mte':'🏛️ MTE','noticias-mpt':'🏛️ MPT','noticias-mte-mpt':'🏛️ MTE & MPT',
+    'legislacao-clt':'📋 CLT','legislacao-cf':'📋 CF/88',
+    'esocial':'📋 eSocial','fgts-digital':'📋 FGTS','esocial-fgts-digital':'📋 eSocial/FGTS',
+    'legislacao-previdenciario':'📋 Previdenciário','legislacao-sindical':'📋 Sindical',
+    'legislacao-portarias':'📋 Portarias','legislacao-nr':'📋 NR','legislacao-normas':'📋 Legislação',
+    'rh-folha':'👥 Folha','rh-jornada':'👥 Jornada','rh-contrato':'👥 Contrato',
+    'rh-salario':'👥 Salário','rh-rescisao':'👥 Rescisão','saude-seguranca':'👥 SST',
+    'rh-beneficios':'👥 Benefícios','rh-ctps':'👥 CTPS','rh-sindical':'👥 Sindical',
+    'rh-fiscalizacao':'👥 Fiscalização','rh-inss':'👥 INSS','rh-modelos':'👥 Modelos RH',
+    'orientacoes-praticas':'👥 RH',
+    'processual-peticoes':'📄 Petições','processual-pratica':'📄 Prática',
+    'modelos':'📄 Modelos','artigos':'📄 Artigos',
+    'processual-analises':'📄 Análises','processual-outros':'📄 Processual',
+    'essenciais-livros':'⭐ Livros','essenciais-equipamentos':'⭐ Equipamentos',
+    'essenciais-cursos':'⭐ Cursos','essenciais-outros':'⭐ Outros',
+    'geral':'📌 Geral'
   };
   return map[c] || c;
 }
@@ -793,10 +881,13 @@ async function publicarNoSite() {
     else throw new Error('Template não encontrado em /blog/POST_TEMPLATE.html');
 
     const catLabelsMap = {
-      'jurisprudencia-tst':'Jurisprudência TST','jurisprudencia-trts':'Jurisprudência TRTs',
-      'noticias-mte-mpt':'MTE & MPT','legislacao-normas':'Legislação e Normas',
-      'esocial-fgts-digital':'eSocial e FGTS Digital','orientacoes-praticas':'Orientações Práticas RH',
-      'saude-seguranca':'Saúde e Segurança','sindical':'Sindical','jurisprudencia':'Jurisprudência','modelos':'Modelos','artigos':'Artigos','geral':'Geral'
+      'jurisprudencia-trts':'TRT','jurisprudencia-tst':'TST','jurisprudencia-stj':'STJ','jurisprudencia-stf':'STF','jurisprudencia':'Jurisprudência',
+      'noticias-mte':'MTE','noticias-mpt':'MPT','noticias-mte-mpt':'MTE & MPT',
+      'legislacao-clt':'CLT','legislacao-cf':'CF/88','esocial':'eSocial','fgts-digital':'FGTS','esocial-fgts-digital':'eSocial/FGTS','legislacao-previdenciario':'Previdenciário','legislacao-sindical':'Sindical','legislacao-portarias':'Portarias','legislacao-nr':'NR','legislacao-normas':'Legislação e Normas',
+      'rh-folha':'Folha de Pagamento','rh-jornada':'Jornada','rh-contrato':'Contrato','rh-salario':'Salário','rh-rescisao':'Rescisão','saude-seguranca':'Saúde e Segurança','rh-beneficios':'Benefícios','rh-ctps':'CTPS','rh-sindical':'Rel. Sindical','rh-fiscalizacao':'Fiscalização','rh-inss':'INSS','rh-modelos':'Modelos RH','orientacoes-praticas':'Outros RH',
+      'processual-peticoes':'Petições e Peças','processual-pratica':'Prática Advocatícia','modelos':'Modelos','artigos':'Artigos','processual-analises':'Análises','processual-outros':'Outros Processual',
+      'essenciais-livros':'Livros Jurídicos','essenciais-equipamentos':'Equipamentos','essenciais-cursos':'Cursos','essenciais-outros':'Outros Essenciais',
+      'geral':'Geral'
     };
     const dateBR = new Date(post.date + 'T12:00:00').toLocaleDateString('pt-BR', {day:'numeric', month:'long', year:'numeric'});
     
@@ -902,10 +993,13 @@ async function baixarHTML() {
     const tagsArr = tagsRaw ? tagsRaw.split(',').map(t=>t.trim()).filter(Boolean).slice(0,4) : [];
 
     const catLabelsMap = {
-      'jurisprudencia-tst':'Jurisprudência TST','jurisprudencia-trts':'Jurisprudência TRTs',
-      'noticias-mte-mpt':'MTE & MPT','legislacao-normas':'Legislação e Normas',
-      'esocial-fgts-digital':'eSocial e FGTS Digital','orientacoes-praticas':'Orientações Práticas RH',
-      'saude-seguranca':'Saúde e Segurança','sindical':'Sindical','jurisprudencia':'Jurisprudência','modelos':'Modelos','artigos':'Artigos','geral':'Geral'
+      'jurisprudencia-trts':'TRT','jurisprudencia-tst':'TST','jurisprudencia-stj':'STJ','jurisprudencia-stf':'STF','jurisprudencia':'Jurisprudência',
+      'noticias-mte':'MTE','noticias-mpt':'MPT','noticias-mte-mpt':'MTE & MPT',
+      'legislacao-clt':'CLT','legislacao-cf':'CF/88','esocial':'eSocial','fgts-digital':'FGTS','esocial-fgts-digital':'eSocial/FGTS','legislacao-previdenciario':'Previdenciário','legislacao-sindical':'Sindical','legislacao-portarias':'Portarias','legislacao-nr':'NR','legislacao-normas':'Legislação e Normas',
+      'rh-folha':'Folha de Pagamento','rh-jornada':'Jornada','rh-contrato':'Contrato','rh-salario':'Salário','rh-rescisao':'Rescisão','saude-seguranca':'Saúde e Segurança','rh-beneficios':'Benefícios','rh-ctps':'CTPS','rh-sindical':'Rel. Sindical','rh-fiscalizacao':'Fiscalização','rh-inss':'INSS','rh-modelos':'Modelos RH','orientacoes-praticas':'Outros RH',
+      'processual-peticoes':'Petições e Peças','processual-pratica':'Prática Advocatícia','modelos':'Modelos','artigos':'Artigos','processual-analises':'Análises','processual-outros':'Outros Processual',
+      'essenciais-livros':'Livros Jurídicos','essenciais-equipamentos':'Equipamentos','essenciais-cursos':'Cursos','essenciais-outros':'Outros Essenciais',
+      'geral':'Geral'
     };
 
     const respTemp = await fetch('/blog/POST_TEMPLATE.html');
