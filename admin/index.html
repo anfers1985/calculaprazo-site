@@ -246,7 +246,9 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
                 <option value="essenciais-cursos">🎓 Cursos</option>
                 <option value="essenciais-outros">📦 Outros</option>
               </optgroup>
-              <option value="geral">Geral</option>
+              <optgroup label="🔧 Outros">
+                <option value="geral">Outros (Ferramentas e Utilitários)</option>
+              </optgroup>
             </select>
           </div>
         </div>
@@ -344,7 +346,9 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
             <option value="essenciais-cursos">🎓 Cursos</option>
             <option value="essenciais-outros">📦 Outros</option>
           </optgroup>
-          <option value="geral">Geral</option>
+          <optgroup label="🔧 Outros">
+            <option value="geral">Outros (Ferramentas e Utilitários)</option>
+          </optgroup>
         </select>
       </div>
       <div class="posts-list" id="posts-list"></div>
@@ -617,7 +621,7 @@ function catLabel(c){
     'processual-analises':'📄 Análises','processual-outros':'📄 Processual',
     'essenciais-livros':'⭐ Livros','essenciais-equipamentos':'⭐ Equipamentos',
     'essenciais-cursos':'⭐ Cursos','essenciais-outros':'⭐ Outros',
-    'geral':'📌 Geral'
+    'geral':'🔧 Outros'
   };
   return map[c] || c;
 }

@@ -1147,6 +1147,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
             <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('essenciais-cursos','essenciais');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">🎓 Cursos</a>
             <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('essenciais-outros','essenciais');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">📦 Outros</a>
           </div>
+          <div class="nav-drop-divider"></div>
+          <a class="nm-sec" onclick="navGoTo('blog');filterBlogSection('outros');document.getElementById('nav-dropdown-conteudo').classList.remove('open')"><span class="dm-icon">🔧</span>Outros</a>
         </div>
       </div>
       <div class="nav-dropdown" id="nav-dropdown-sociais">
@@ -2396,6 +2398,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
       <button class="ctab" data-sec="rh-gestao"         onclick="filterBlogSection('rh-gestao',this)">👥 RH e Gestão</button>
       <button class="ctab" data-sec="processual"        onclick="filterBlogSection('processual',this)">📄 Processual</button>
       <button class="ctab" data-sec="essenciais"        onclick="filterBlogSection('essenciais',this)">⭐ Essenciais</button>
+      <button class="ctab" data-sec="outros"            onclick="filterBlogSection('outros',this)">🔧 Outros</button>
     </div>
 
     <!-- Linha 3: sub-seções (aparece dinamicamente) -->
@@ -4413,7 +4416,8 @@ var BLOG_SEC_MAP={
   'legislacao-normas': ['legislacao-normas','legislacao-clt','legislacao-cf','esocial-fgts-digital','esocial','fgts-digital','legislacao-previdenciario','legislacao-sindical','sindical','legislacao-portarias','legislacao-nr','legislacao-outros'],
   'rh-gestao':         ['orientacoes-praticas','saude-seguranca','rh-folha','rh-jornada','rh-contrato','rh-salario','rh-rescisao','rh-beneficios','rh-ctps','rh-sindical','rh-fiscalizacao','rh-inss','rh-modelos','rh-outros'],
   'processual':        ['artigos','modelos','processual-peticoes','processual-pratica','processual-analises','processual-outros'],
-  'essenciais':        ['essenciais-livros','essenciais-equipamentos','essenciais-cursos','essenciais-outros']
+  'essenciais':        ['essenciais-livros','essenciais-equipamentos','essenciais-cursos','essenciais-outros'],
+  'outros':            ['geral']
 };
 var BLOG_SUBSEC_MAP={
   'jurisprudencia':    [['jurisprudencia-trts','TRT'],['jurisprudencia-tst','TST'],['jurisprudencia-stj','STJ'],['jurisprudencia-stf','STF'],['jurisprudencia','+ outros temas']],
