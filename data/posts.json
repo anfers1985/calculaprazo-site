@@ -17,7 +17,7 @@
   {
     "id": "melhor-cadeira-ergonomica-2026",
     "title": "Melhor Cadeira Ergonômica 2026: As 10 Melhores NR-17 para Quem Trabalha Sentado",
-    "category": "essenciais",
+    "category": "essenciais-equipamentos",
     "category_label": "Essenciais",
     "excerpt": "Qual a melhor cadeira ergonômica NR-17 em 2026? Ranking completo com os 10 melhores modelos para advogados, analistas de RH e profissionais que trabalham mais de 6h sentados. Prós, contras e onde comprar.",
     "image": "https://images.unsplash.com/photo-1681418659069-eef28d44aeab?q=80&w=1161&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -175,7 +175,7 @@
   {
     "id": "jornada-no-mundo-o-que-25-paises-mostram-sobre-trabalho",
     "title": "Jornada no mundo: o que 25 países mostram sobre trabalho",
-    "category": "artigos",
+    "category": "rh-jornada",
     "category_label": "Artigos",
     "excerpt": "Compare a jornada de trabalho em 25 países e entenda como o debate global sobre horas, descanso e escala 6x1 pode impactar o Brasil.",
     "image": "https://github.com/anfers1985/imagens/blob/main/mundo%20em%20rel%C3%B3gios.png?raw=true",
@@ -263,7 +263,7 @@
   {
     "id": "assedio-moral-no-trabalho-como-provar",
     "title": "Assédio moral no trabalho: como provar e reagir",
-    "category": "orientacoes-praticas",
+    "category": "rh-gestao",
     "category_label": "RH e Gestão de Pessoas",
     "excerpt": "Entenda como provar assédio moral no trabalho, quais provas ajudam na Justiça e quando a empresa pode ser condenada a indenizar.",
     "image": "https://images.unsplash.com/photo-1630091790659-85ec55570e0b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -290,7 +290,7 @@
   {
     "id": "estabilidade-no-emprego-quem-tem-direito",
     "title": "Estabilidade no emprego: quem tem esse direito?",
-    "category": "orientacoes-praticas",
+    "category": "rh-gestao",
     "category_label": "RH e Gestão de Pessoas",
     "excerpt": "Saiba quem tem estabilidade no emprego, quando a dispensa é irregular e quais direitos podem ser exigidos em casos de gestação, acidente e CIPA.",
     "image": "https://images.unsplash.com/photo-1546213290-e1b492ab3eee?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -330,7 +330,7 @@
   {
     "id": "1-maio-estudos-ipea-vida-trabalhador-hoje",
     "title": "1º de Maio: estudos do Ipea e a vida do trabalhador hoje",
-    "category": "artigos",
+    "category": "rh-gestao",
     "category_label": "Artigos",
     "excerpt": "No 1º de Maio, estudos do Ipea analisam redução da jornada 6x1, financiamento do transporte coletivo e políticas que podem melhorar a vida do trabalhador.",
     "image": "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -386,7 +386,7 @@
   {
     "id": "estabilidade-emprego-gestante-acidente-trabalho-cipa-stf-tst-normas-coletivas",
     "title": "Estabilidade no Emprego: gestante, acidentado, CIPA, dirigente sindical e as controvérsias no STF e TST",
-    "category": "orientacoes-praticas",
+    "category": "rh-gestao",
     "category_label": "RH e Gestão de Pessoas",
     "excerpt": "Quem não pode ser dispensado e por quê? Gestante, acidentado, cipeiro e dirigente sindical: regras, prazos e as controvérsias atuais no STF e TST em 2025 e 2026.",
     "image": "https://plus.unsplash.com/premium_photo-1663013447756-f645cdec247d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -593,7 +593,7 @@
   {
     "id": "calculadora-de-correcao-monetaria-online-ipca-igpm-selic",
     "title": "Calculadora de Correção Monetária Online: IPCA, IGP-M, INPC e SELIC (Guia)",
-    "category": "processual-pratica",
+    "category": "geral",
     "category_label": "Prática Advocatícia",
     "excerpt": "Atualize valores financeiros pelos principais índices oficiais (IPCA, IGP-M, SELIC). Entenda como funciona a correção monetária com exemplos práticos e seguros.",
     "image": "https://github.com/anfers1985/imagens/blob/main/Imagem%20Infla%C3%A7%C3%A3o%20-%20Calculadora%20Corre%C3%A7%C3%A3o.png?raw=true",
@@ -619,7 +619,7 @@
   {
     "id": "calculadora-de-prazos-processuais-dias-uteis-corridos",
     "title": "Calculadora de Prazos Processuais: Como Calcular Dias Úteis e Corridos (Guia Completo)",
-    "category": "processual-pratica",
+    "category": "geral",
     "category_label": "Prática Advocatícia",
     "excerpt": "Aprenda a usar a calculadora de prazos processuais para contar dias úteis e corridos conforme o CPC e CLT. Evite perdas de prazos com exemplos práticos e dicas.",
     "image": "https://github.com/anfers1985/imagens/blob/main/Imagem%20Contagem%20de%20Prazos%20-%20Calendario.png?raw=true",
@@ -677,7 +677,7 @@
   {
     "id": "agravo-interno-agravo-instrumento-como-elaborar-pecas-IN40-TST",
     "title": "Agravo Interno e Agravo de Instrumento: como elaborar as peças após a IN nº 40/TST atualizada",
-    "category": "artigos",
+    "category": "processual-pratica",
     "category_label": "Artigos",
     "excerpt": "Passo a passo técnico para elaborar agravo interno e AIRR após a Resolução 224/2024 do TST. Modelos de peças prontos para download.",
     "image": "https://images.unsplash.com/photo-1734640672449-0d65faceb323?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -744,7 +744,7 @@
   {
     "id": "5-relatrio-de-transparncia-salarial-aponta-crescimento-da-presena-de-mulheres-no-mercado-de-trabalho",
     "title": "5º Relatório de Transparência Salarial aponta crescimento da presença de mulheres no mercado de trabalho",
-    "category": "artigos",
+    "category": "rh-gestao",
     "category_label": "Artigos",
     "excerpt": "5º Relatório de Transparência Salarial mostra avanço de 11% das mulheres no mercado e mantém em foco a diferença de remuneração no setor privado.",
     "image": "https://github.com/anfers1985/imagens/blob/main/Gemini_Generated_Image_n8zrz3n8zrz3n8zr.png?raw=true",
@@ -756,7 +756,7 @@
   {
     "id": "calculadora-de-prazos-processuais-tutorial-completo-para-usar-o-calculaprazocombr",
     "title": "Calculadora de prazos processuais: tutorial completo para usar o CalculaPrazo.com.br",
-    "category": "processual-pratica",
+    "category": "geral",
     "category_label": "Prática Advocatícia",
     "excerpt": "Ferramenta gratuita calcula prazos trabalhistas e civis considerando feriados, tribunais e regras do Novo CPC e CLT.",
     "image": "https://github.com/anfers1985/imagens/blob/main/Imagem%20Calculadora%20de%20Prazos%202.jpg?raw=true",
@@ -820,7 +820,7 @@
   {
     "id": "inteligncia-artificial-e-o-novo-desafio-para-o-emprego-dos-jovens",
     "title": "Inteligência artificial e o novo desafio para o emprego dos jovens",
-    "category": "artigos",
+    "category": "rh-gestao",
     "category_label": "Artigos",
     "excerpt": "A inteligência artificial muda o mercado e desafia a entrada dos jovens no trabalho. Veja cursos gratuitos e caminhos para se qualificar.",
     "image": "https://images.unsplash.com/photo-1516149893016-813d9a01d5d3?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -1101,7 +1101,7 @@
   {
     "id": "pauta-classe-trabalhadora-conclat-2026-lancada-centrais-sindicais",
     "title": "Pauta da Classe Trabalhadora CONCLAT 2026 é lançada pelas Centrais Sindicais",
-    "category": "artigos",
+    "category": "jurisprudencia-tst",
     "category_label": "Artigos",
     "excerpt": "As centrais sindicais brasileiras lançaram a “Pauta da Classe Trabalhadora 2026–2030” durante a CONCLAT realizada em 15 de abril de 2026, em Brasília. O documento reúne prioridades para 2026 e propostas estratégicas para o período 2027–2030 em temas como jornada de trabalho, salário mínimo, negociação coletiva, plataformas digitais e direitos sociais.",
     "image": "https://images.unsplash.com/photo-1598552060530-faee27321377?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
