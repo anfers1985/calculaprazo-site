@@ -1202,7 +1202,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
           <div class="nm-sub-wrap" id="nms-proc">
             <a class="nm-sub" onclick="filterCatSec('processual-pratica','processual');closeMenu()">Prática Advocatícia</a>
             <a class="nm-sub" onclick="filterCatSec('modelos','processual');closeMenu()">Modelos</a>
-            <a class="nm-sub" onclick="filterCatSec('artigos','processual');closeMenu()">Artigos</a>
             <a class="nm-sub nm-outros" onclick="filterSec('processual');closeMenu()">+ outros temas</a>
           </div>
           <a class="nm-sec" onclick="toggleNavSec('nms-ess',event)"><span class="dm-icon">⭐</span>Essenciais<span class="nm-arr" id="nma-ess">›</span></a>
@@ -1347,10 +1346,10 @@ var SEC_MAP = {
   'jurisprudencia':    ['jurisprudencia-tst','jurisprudencia-trts','jurisprudencia-stj','jurisprudencia-stf','jurisprudencia-outros'],
   'orgaos-publicos':   ['noticias-mte','noticias-mpt','orgaos-outros'],
   'legislacao-normas': ['legislacao-clt','legislacao-cf','esocial','fgts-digital','legislacao-previdenciario','legislacao-sindical','legislacao-portarias','legislacao-nr','legislacao-normas','legislacao-outros'],
-  'rh-gestao':         ['orientacoes-praticas','saude-seguranca','rh-folha','rh-jornada','rh-contrato','rh-salario','rh-rescisao','rh-beneficios','rh-ctps','rh-sindical','rh-fiscalizacao','rh-inss','rh-modelos','rh-outros'],
-  'processual':        ['artigos','modelos','processual-peticoes','processual-pratica','processual-analises','processual-outros'],
-  'essenciais':        ['essenciais-livros','essenciais-equipamentos','essenciais-cursos','essenciais-outros'],
-  'outros':            ['geral']
+  'rh-gestao':         ['rh-gestao','orientacoes-praticas','saude-seguranca','rh-folha','rh-jornada','rh-contrato','rh-salario','rh-rescisao','rh-beneficios','rh-ctps','rh-sindical','rh-fiscalizacao','rh-inss','rh-modelos','rh-outros'],
+  'processual':        ['modelos','processual-peticoes','processual-pratica','processual-analises','processual-outros'],
+  'essenciais':        ['essenciais-livros','essenciais-equipamentos','essenciais','essenciais-cursos','essenciais-outros'],
+  'outros':            ['geral','artigos']
 };
 
 var SUBSEC_MAP = {
@@ -1358,8 +1357,8 @@ var SUBSEC_MAP = {
   'orgaos-publicos':   [['noticias-mte','MTE'],['noticias-mpt','MPT']],
   'legislacao-normas': [['legislacao-clt','CLT'],['esocial','eSocial'],['fgts-digital','FGTS Digital'],['legislacao-previdenciario','Previdenciário'],['legislacao-nr','NR']],
   'rh-gestao':         [['rh-folha','Folha'],['rh-rescisao','Rescisão'],['rh-contrato','Contrato'],['rh-jornada','Jornada'],['saude-seguranca','SST'],['rh-beneficios','Benefícios'],['rh-inss','INSS']],
-  'processual':        [['processual-pratica','Prática'],['modelos','Modelos'],['artigos','Artigos']],
-  'essenciais':        [['essenciais-livros','📚 Livros']]
+  'processual':        [['processual-pratica','Prática Advocatícia'],['modelos','Modelos'],['processual-analises','Análises']],
+  'essenciais':        [['essenciais-livros','📚 Livros Jurídicos'],['essenciais-equipamentos','🖥️ Equipamentos']]
 };
 
 // ─── Estado ──────────────────────────────────────────────────
@@ -1567,8 +1566,9 @@ function toggleFerramentas(e) {
 
 // ─── Click outside closes dropdowns ──────────────────────────
 document.addEventListener('click', function(e) {
+  var isNavSec = e.target.closest('.nm-sec') || e.target.closest('.nm-sub-wrap');
   document.querySelectorAll('.nav-dropdown').forEach(function(d){
-    if(!d.contains(e.target)) d.classList.remove('open');
+    if(!d.contains(e.target) && !isNavSec) d.classList.remove('open');
   });
 });
 
