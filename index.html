@@ -4461,7 +4461,7 @@ function filterBlogSection(sec,btn){
 
 
 function toggleNavSec(id,e){
-  if(e){e.stopPropagation();}
+  if(e){e.stopPropagation();e.preventDefault();}
   var wrap=document.getElementById(id);
   if(!wrap)return;
   var open=wrap.classList.toggle('open');
@@ -4472,6 +4472,9 @@ function toggleNavSec(id,e){
   document.querySelectorAll('.nm-sub-wrap').forEach(function(w){
     if(w.id!==id){w.classList.remove('open');var a=document.getElementById('nma-'+w.id.replace('nms-',''));if(a)a.classList.remove('open');}
   });
+  // garantir que o dropdown conteúdo permaneça aberto
+  var dd=document.getElementById('nav-dropdown-conteudo');
+  if(dd&&!dd.classList.contains('open')){dd.classList.add('open');positionDropdownConteudo();}
 }
 function filterBlogSub(cat,sec,btn){
   BLOG_CUR_SEC=sec;
