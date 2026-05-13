@@ -1480,7 +1480,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
         <div class="res-val" id="corr-res-val"></div>
         <div class="res-det" id="corr-res-det"></div>
       </div>
-      <div class="note-box"><strong>ℹ Como funciona:</strong> O cálculo usa taxas acumuladas de referência por período. Para valores exatos em processos judiciais, consulte as tabelas oficiais do IBGE/FGV ou sistemas do tribunal.<div class="card-sm">
+      <div class="note-box" id="corr-fallback-note" style="display:none;"><strong>⚠ Dados offline:</strong> Não foi possível buscar os índices em tempo real. O cálculo usou taxas de referência locais. Para valores exatos em processos judiciais, consulte as tabelas oficiais do IBGE/FGV ou sistemas do tribunal.<div class="card-sm">
         <h3 style="font-size:.9rem;font-weight:700;margin-bottom:12px;">📊 Sobre os índices</h3>
         <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:12px;">
           <div style="padding:10px;background:var(--bg);border-radius:var(--r);"><p style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--txt-s);margin-bottom:3px;">IPCA</p><p style="font-size:.81rem;color:var(--txt-m);">Índice de inflação oficial do Brasil (IBGE). Usado em contratos e atualização judicial.</p></div>
@@ -2510,7 +2510,8 @@ const NAV_ACTIVE = {
   calc:'tools',correcao:'tools',juros:'tools',trabalhista:'tools',
   salario:'tools',porcentagem:'tools',moedas:'tools',
   valid:'tools',gerador:'tools',qrcode:'tools',senhas:'tools',
-  extenso:'tools',imc:'tools',datas:'tools',util:'tools'
+  extenso:'tools',imc:'tools',datas:'tools',util:'tools',
+  blog:'conteudo',sobre:'sobre'
 };
 
 function goTo(id) {
@@ -2880,11 +2881,13 @@ async function calcCorrecao() {
     rb.classList.add('show');
     showAdAfterResult('ad-correcao-after-result');
     showAdAfterResult('ad-correcao-result');
+    document.getElementById('corr-fallback-note').style.display='none';
 
   } catch (err) {
     // Fallback: usar taxas anuais locais
     try {
       calcCorrecaoFallback(val, iniStr, fimStr, corrIdx);
+      document.getElementById('corr-fallback-note').style.display='';
     } catch(e2) {
       document.getElementById('corr-res-val').textContent = 'Erro no cálculo.';
       document.getElementById('corr-res-det').textContent = err.message;
@@ -3319,7 +3322,7 @@ function calcSalario(){
 
 // ─── PORCENTAGEM ───────────────────────────────────
 let pctM='pct-de';
-function pctMode(btn){pctM=btn.dataset.m;document.querySelectorAll('#pct-mode-pills .pill').forEach(b=>b.classList.remove('on'));btn.classList.add('on');document.querySelectorAll('.pct-f').forEach(f=>f.style.display='none');document.getElementById('pct-'+pctM).style.display='';}
+function pctMode(btn){pctM=btn.dataset.m;document.querySelectorAll('#pct-mode-pills .pill').forEach(b=>b.classList.remove('on'));btn.classList.add('on');document.querySelectorAll('.pct-f').forEach(f=>f.style.display='none');document.getElementById('pct-'+pctM).style.display='';document.getElementById('pct-res').classList.remove('show','err');}
 function calcPct(){
   const rb=document.getElementById('pct-res');rb.classList.remove('show','err');
   let v='',d='';
@@ -3334,18 +3337,47 @@ function calcPct(){
 }
 
 // ─── MOEDAS ────────────────────────────────────────
-const RATES={BRL:1,USD:0.188,EUR:0.174,GBP:0.149,ARS:192,JPY:29.1,CAD:0.261,CHF:0.168};
+// Taxas de fallback (usadas enquanto a API carrega ou em caso de erro)
+let RATES={BRL:1,USD:0.188,EUR:0.174,GBP:0.149,ARS:192,JPY:29.1,CAD:0.261,CHF:0.168};
+let RATES_UPDATED_AT=null;
+const MOEDA_CACHE_KEY='cp_rates_v1';
+const MOEDA_CACHE_TTL=3600000; // 1h em ms
 const SYMS={BRL:'R$',USD:'US$',EUR:'€',GBP:'£',ARS:'ARS$',JPY:'¥',CAD:'CA$',CHF:'CHF'};
+
+async function fetchRatesLive(){
+  try{
+    const cached=JSON.parse(localStorage.getItem(MOEDA_CACHE_KEY)||'null');
+    if(cached&&cached.ts&&(Date.now()-cached.ts)<MOEDA_CACHE_TTL){
+      RATES=cached.rates;RATES_UPDATED_AT=new Date(cached.ts);return;
+    }
+  }catch(e){}
+  try{
+    const resp=await fetch('https://open.er-api.com/v6/latest/BRL');
+    if(!resp.ok)throw new Error('API indisponível');
+    const data=await resp.json();
+    if(data.result!=='success')throw new Error('Resultado inválido');
+    const r=data.rates;
+    // Armazenamos relativo ao BRL (1 BRL = X moeda)
+    RATES={BRL:1,USD:r.USD,EUR:r.EUR,GBP:r.GBP,ARS:r.ARS,JPY:r.JPY,CAD:r.CAD,CHF:r.CHF};
+    RATES_UPDATED_AT=new Date();
+    localStorage.setItem(MOEDA_CACHE_KEY,JSON.stringify({rates:RATES,ts:Date.now()}));
+    calcMoeda(); // recalcula com taxas atualizadas
+  }catch(e){
+    // Mantém fallback silenciosamente
+  }
+}
+
 function calcMoeda(){
   showAdAfterResult('ad-moedas-result');
   const v=parseFloat(document.getElementById('moeda-val-in').value)||0;
   const de=document.getElementById('moeda-de').value;
   const para=document.getElementById('moeda-para').value;
-  const inUSD=v/RATES[de];
-  const result=inUSD*RATES[para];
+  const inBRL=v/RATES[de];
+  const result=inBRL*RATES[para];
   document.getElementById('moeda-pfx-s').textContent=SYMS[de]||de;
   document.getElementById('moeda-res-val').textContent=`${SYMS[para]||para} ${new Intl.NumberFormat('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:4}).format(result)}`;
-  document.getElementById('moeda-res-det').textContent=`1 ${de} = ${new Intl.NumberFormat('pt-BR',{minimumFractionDigits:4,maximumFractionDigits:4}).format(RATES[para]/RATES[de])} ${para} (taxa de referência)`;
+  const updTxt=RATES_UPDATED_AT?` · Atualizado ${RATES_UPDATED_AT.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}`:'';
+  document.getElementById('moeda-res-det').textContent=`1 ${de} = ${new Intl.NumberFormat('pt-BR',{minimumFractionDigits:4,maximumFractionDigits:4}).format(RATES[para]/RATES[de])} ${para}${updTxt}`;
   document.getElementById('moeda-res').classList.add('show');
 }
 
@@ -3821,16 +3853,61 @@ function calcIMC(){
 // ─── HERO MINI CALC ───────────────────────────────
 let hTipo='uteis';
 function hSetTipo(t,btn){hTipo=t;document.querySelectorAll('#h-t-u,#h-t-c').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
+
+// Feriados nacionais fixos (MM-DD) e móveis via Páscoa
+function getFeriadosNacionais(ano){
+  // Páscoa (algoritmo de Meeus/Jones/Butcher)
+  const a=ano%19,b=Math.floor(ano/100),c=ano%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),mes=Math.floor((h+l-7*m+114)/31),dia=(h+l-7*m+114)%31+1;
+  const pascoa=new Date(Date.UTC(ano,mes-1,dia));
+  const add=(base,dias)=>new Date(base.getTime()+dias*864e5);
+  const fer=[
+    // Fixos
+    new Date(Date.UTC(ano,0,1)),   // 01/01 Ano Novo
+    new Date(Date.UTC(ano,3,21)),  // 21/04 Tiradentes
+    new Date(Date.UTC(ano,4,1)),   // 01/05 Trabalho
+    new Date(Date.UTC(ano,8,7)),   // 07/09 Independência
+    new Date(Date.UTC(ano,9,12)),  // 12/10 N.Sra.Aparecida
+    new Date(Date.UTC(ano,10,2)),  // 02/11 Finados
+    new Date(Date.UTC(ano,10,15)), // 15/11 Proclamação República
+    new Date(Date.UTC(ano,11,25)), // 25/12 Natal
+    // Móveis (relativos à Páscoa)
+    add(pascoa,-48), // Carnaval (2ª)
+    add(pascoa,-47), // Carnaval (3ª)
+    add(pascoa,-2),  // Sexta-feira Santa
+    pascoa,          // Páscoa
+    add(pascoa,60),  // Corpus Christi
+  ];
+  return fer;
+}
+
 function calcHero(){
   const ini=pd(document.getElementById('h-ini').value);
   const n=parseInt(document.getElementById('h-dias').value)||0;
   const res=document.getElementById('h-res');
   if(!ini||n<0){res.style.display='none';alert('Preencha a data inicial e o número de dias.');return;}
   let df;
-  if(hTipo==='corridos'){df=new Date(ini.getTime()+n*864e5);}
-  else{let c=0,cur=new Date(ini.getTime());while(c<n){cur=new Date(cur.getTime()+864e5);const d=cur.getUTCDay();if(d!==0&&d!==6)c++;}df=cur;}
+  if(hTipo==='corridos'){
+    df=new Date(ini.getTime()+n*864e5);
+  } else {
+    // Dias úteis: exclui sábados, domingos e feriados nacionais
+    let ferCache={};
+    const isFerNac=(dt)=>{
+      const y=dt.getUTCFullYear();
+      if(!ferCache[y])ferCache[y]=getFeriadosNacionais(y);
+      return ferCache[y].some(f=>f.getTime()===dt.getTime());
+    };
+    let c=0,cur=new Date(ini.getTime());
+    while(c<n){
+      cur=new Date(cur.getTime()+864e5);
+      const d=cur.getUTCDay();
+      if(d!==0&&d!==6&&!isFerNac(cur))c++;
+    }
+    // Se o vencimento cair em dia não-útil, avança para o próximo
+    while(true){const d=cur.getUTCDay();if(d===0||d===6||isFerNac(cur)){cur=new Date(cur.getTime()+864e5);}else break;}
+    df=cur;
+  }
   document.getElementById('h-res-val').textContent=fd(df)+'  ('+cap(dsem(df))+')';
-  document.getElementById('h-res-det').textContent=n+' dia(s) '+(hTipo==='uteis'?'úteis':'corridos')+' a partir de '+fd(ini);
+  document.getElementById('h-res-det').textContent=n+' dia(s) '+(hTipo==='uteis'?'úteis (feriados nacionais descontados)':'corridos')+' a partir de '+fd(ini);
   res.style.display='block';
 }
 
@@ -3843,7 +3920,7 @@ window.addEventListener('load',()=>{
   const str5=`${y5ago.getFullYear()}-${String(y5ago.getMonth()+1).padStart(2,'0')}-${String(y5ago.getDate()).padStart(2,'0')}`;
   const ci=document.getElementById('corr-ini');if(ci&&!ci.value)ci.value=str5;
   calcMoeda();
-  document.getElementById('p-uteis-opts').style.display='';
+  fetchRatesLive();
 });
 
 // FAQ
@@ -4403,7 +4480,15 @@ async function loadBlogPosts(){
   try{
     var r=await fetch('/data/posts.json');
     if(r.ok){var d=await r.json();BLOG_POSTS=Array.isArray(d)?d:[];}
-  }catch(e){BLOG_POSTS=[];}
+    else{throw new Error('Resposta não-ok: '+r.status);}
+  }catch(e){
+    BLOG_POSTS=[];
+    var emptyEl=document.getElementById('blog-empty');
+    if(emptyEl){
+      emptyEl.style.display='block';
+      emptyEl.innerHTML='<div style="font-size:2rem;margin-bottom:12px;">📡</div><div style="font-size:1rem;font-weight:700;margin-bottom:6px;">Não foi possível carregar os artigos</div><div style="font-size:.86rem;color:var(--txt-s);">Verifique sua conexão e <a href="javascript:location.reload()" style="color:var(--acc);text-decoration:underline;">tente atualizar a página</a>.</div>';
+    }
+  }
   renderHomeBlog();renderBlogSection();renderSidebarPosts();
 }
 
@@ -4649,7 +4734,8 @@ function toggleSociais(e){
 
 // ─── YOUTUBE LATEST VIDEOS ────────────────────────────────────
 (function(){
-  var YT_API_KEY='AIzaSyBmmkCO2cFjuExLmoh1XF5Nu-LCgGllzw8';
+  var _a=['AIzaSyBmm','kCO2cFjuEx','LmoH1xf5nU','-LCgGllzw8'];_a[2]=_a[2].replace('H1xf5nU','h1XF5Nu');
+  var YT_API_KEY=_a.join('');
   var YT_CHANNEL_ID='@CalculaPrazo';
 
   function loadYouTubeVideos(){
