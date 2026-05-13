@@ -1134,6 +1134,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
             <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('processual-peticoes','processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Petições e Peças</a>
             <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('processual-pratica','processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Prática Advocatícia</a>
             <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('modelos','processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Modelos</a>
+            <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('artigos','processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Artigos</a>
             <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('processual-analises','processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Análises</a>
             <a class="nm-sub nm-outros" onclick="navGoTo('blog');filterBlogSection('processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outros temas</a>
           </div>
@@ -3883,8 +3884,7 @@ function toggleFerramentas(e){
 // navGoTo definida no bloco Blog Engine abaixo
 // Fecha ao clicar fora
 document.addEventListener('click', function(e){
-  // Fecha todos os dropdowns ao clicar fora
-  // Exceção: se o clique foi num nm-sec (seção expansível do conteúdo), não fecha
+  // Fecha dropdowns ao clicar fora — exceto ao clicar em seção expansível
   var isNavSec = e.target.closest('.nm-sec') || e.target.closest('.nm-sub-wrap');
   document.querySelectorAll('.nav-dropdown').forEach(function(d){
     if (!d.contains(e.target) && !isNavSec) d.classList.remove('open');
@@ -3899,15 +3899,17 @@ document.addEventListener('click', function(e){
     if(!isOpen) item.classList.add('open');
   }
 });
-// Fecha ao escolher opção
+// Fecha ao escolher opção (não fecha ao clicar em seção expansível nm-sec)
 document.querySelectorAll('#nav-dropdown-ferramentas .nav-drop-menu a').forEach(a=>{
   a.addEventListener('click', ()=>{
     document.getElementById('nav-dropdown-ferramentas').classList.remove('open');
   });
 });
-document.querySelectorAll('#nav-dropdown-conteudo .nav-drop-menu a').forEach(a=>{
+document.querySelectorAll('#nav-dropdown-conteudo .nav-drop-menu a:not(.nm-sec)').forEach(a=>{
   a.addEventListener('click', ()=>{
     document.getElementById('nav-dropdown-conteudo').classList.remove('open');
+    document.querySelectorAll('.nm-sub-wrap').forEach(w=>w.classList.remove('open'));
+    document.querySelectorAll('.nm-arr').forEach(ar=>ar.classList.remove('open'));
   });
 });
 
@@ -4415,18 +4417,18 @@ var BLOG_SEC_MAP={
   'jurisprudencia':    ['jurisprudencia-tst','jurisprudencia-trts','jurisprudencia-stj','jurisprudencia-stf','jurisprudencia-outros'],
   'orgaos-publicos':   ['noticias-mte-mpt','noticias-mte','noticias-mpt','orgaos-outros'],
   'legislacao-normas': ['legislacao-normas','legislacao-clt','legislacao-cf','esocial-fgts-digital','esocial','fgts-digital','legislacao-previdenciario','legislacao-sindical','sindical','legislacao-portarias','legislacao-nr','legislacao-outros'],
-  'rh-gestao':         ['rh-gestao','orientacoes-praticas','saude-seguranca','rh-folha','rh-jornada','rh-contrato','rh-salario','rh-rescisao','rh-beneficios','rh-ctps','rh-sindical','rh-fiscalizacao','rh-inss','rh-modelos','rh-outros'],
-  'processual':        ['modelos','processual-peticoes','processual-pratica','processual-analises','processual-outros'],
-  'essenciais':        ['essenciais-livros','essenciais-equipamentos','essenciais','essenciais-cursos','essenciais-outros'],
-  'outros':            ['geral','artigos']
+  'rh-gestao':         ['orientacoes-praticas','saude-seguranca','rh-folha','rh-jornada','rh-contrato','rh-salario','rh-rescisao','rh-beneficios','rh-ctps','rh-sindical','rh-fiscalizacao','rh-inss','rh-modelos','rh-outros'],
+  'processual':        ['artigos','modelos','processual-peticoes','processual-pratica','processual-analises','processual-outros'],
+  'essenciais':        ['essenciais-livros','essenciais-equipamentos','essenciais-cursos','essenciais-outros'],
+  'outros':            ['geral']
 };
 var BLOG_SUBSEC_MAP={
   'jurisprudencia':    [['jurisprudencia-trts','TRT'],['jurisprudencia-tst','TST'],['jurisprudencia-stj','STJ'],['jurisprudencia-stf','STF'],['jurisprudencia','+ outros temas']],
   'orgaos-publicos':   [['noticias-mte','MTE'],['noticias-mpt','MPT'],['orgaos-outros','+ outros órgãos']],
   'legislacao-normas': [['legislacao-clt','CLT'],['legislacao-cf','Constituição Federal'],['esocial','eSocial'],['fgts-digital','FGTS'],['legislacao-previdenciario','Previdenciário'],['legislacao-sindical','Sindical'],['legislacao-portarias','Portarias'],['legislacao-nr','NR'],['legislacao-normas','+ outras Legislação']],
-  'rh-gestao':         [['rh-folha','Folha de Pagamento'],['rh-jornada','Jornada de Trabalho'],['rh-contrato','Contrato de Trabalho'],['rh-salario','Salário'],['rh-rescisao','Rescisão Contratual'],['saude-seguranca','Saúde e Segurança'],['rh-beneficios','Benefícios'],['rh-ctps','CTPS'],['rh-sindical','Rel. Sindical'],['rh-fiscalizacao','Fiscalização'],['rh-inss','INSS'],['rh-modelos','Modelos']],
-  'processual':        [['processual-peticoes','Petições e Peças'],['processual-pratica','Prática Advocatícia'],['modelos','Modelos'],['processual-analises','Análises'],['processual-outros','+ outros temas']],
-  'essenciais':        [['essenciais-livros','📚 Livros Jurídicos'],['essenciais-equipamentos','🖥️ Equipamentos'],['essenciais-cursos','🎓 Cursos'],['essenciais-outros','📦 Outros']]
+  'rh-gestao':         [['rh-folha','Folha de Pagamento'],['rh-jornada','Jornada de Trabalho'],['rh-contrato','Contrato de Trabalho'],['rh-salario','Salário'],['rh-rescisao','Rescisão Contratual'],['saude-seguranca','Saúde e Segurança'],['rh-beneficios','Benefícios'],['rh-ctps','CTPS'],['rh-sindical','Rel. Sindical'],['rh-fiscalizacao','Fiscalização'],['rh-inss','INSS'],['rh-modelos','Modelos'],['orientacoes-praticas','+ outros temas de RH']],
+  'processual':        [['processual-peticoes','Petições e Peças'],['processual-pratica','Prática Advocatícia'],['modelos','Modelos'],['artigos','Artigos'],['processual-analises','Análises'],['processual-outros','+ outros temas']],
+  'essenciais':        [['essenciais-livros','📚 Livros'],['essenciais-equipamentos','🖥️ Equipamentos'],['essenciais-cursos','🎓 Cursos'],['essenciais-outros','📦 Outros']]
 };
 var BLOG_CUR_SEC='';// seção activa
 
