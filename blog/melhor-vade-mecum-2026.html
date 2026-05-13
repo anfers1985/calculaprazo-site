@@ -1113,6 +1113,15 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 /* ── AdSense: colapsa blocos vazios até aprovação ── */
 ins.adsbygoogle:not([data-ad-status="filled"]) { min-height: 0 !important; }
 ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !important; }
+
+.nm-sec{display:flex;align-items:center;gap:10px;padding:9px 14px;font-size:.84rem;font-weight:600;color:var(--txt-m);cursor:pointer;transition:color .15s;}
+.nm-sec:hover{color:var(--acc);}
+.nm-arr{margin-left:auto;font-size:.65rem;opacity:.45;transition:transform .2s;flex-shrink:0;}
+.nm-arr.open{transform:rotate(90deg);}
+.nm-sub-wrap{display:none;background:var(--b50);border-left:3px solid var(--b200);margin:0 10px 6px 10px;border-radius:0 8px 8px 0;}
+.nm-sub-wrap.open{display:block;}
+.nm-sub{display:block;padding:7px 14px 7px 16px;font-size:.8rem;color:var(--txt-m);cursor:pointer;transition:color .15s;text-decoration:none;}
+.nm-sub:hover{color:var(--acc);}
 </style>
 </head>
 <body>
@@ -1165,13 +1174,49 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       </div>
       <div class="nav-dropdown" id="nav-dropdown-conteudo">
         <a id="nav-conteudo" onclick="toggleConteudo(event)">Conteúdo</a>
-        <div class="nav-drop-menu" id="conteudo-menu">
-          <a onclick="navGoTo('blog')"><span class="dm-icon">📰</span>Todos os Artigos</a>
+        <div class="nav-drop-menu" id="conteudo-menu" style="min-width:270px;max-height:80vh;overflow-y:auto;">
+          <a href="/#conteudo"><span class="dm-icon">📰</span>Todos os Artigos</a>
           <div class="nav-drop-divider"></div>
-          <a onclick="navGoTo('blog');filterBlog('direito')"><span class="dm-icon">⚖️</span>Direito</a>
-          <a onclick="navGoTo('blog');filterBlog('rh')"><span class="dm-icon">👥</span>Recursos Humanos</a>
-          <a onclick="navGoTo('blog');filterBlog('contabilidade')"><span class="dm-icon">📊</span>Contabilidade</a>
-          <a onclick="navGoTo('blog');filterBlog('geral')"><span class="dm-icon">📌</span>Geral</a>
+          <a class="nm-sec" onclick="toggleNavSec('nms-jurisp',event)"><span class="dm-icon">⚖️</span>Jurisprudência<span class="nm-arr" id="nma-jurisp">›</span></a>
+          <div class="nm-sub-wrap" id="nms-jurisp">
+            <a class="nm-sub" href="/#conteudo">TRT</a>
+            <a class="nm-sub" href="/#conteudo">TST</a>
+            <a class="nm-sub" href="/#conteudo">STJ</a>
+            <a class="nm-sub" href="/#conteudo">STF</a>
+          </div>
+          <a class="nm-sec" onclick="toggleNavSec('nms-orgaos',event)"><span class="dm-icon">🏛️</span>Órgãos Públicos<span class="nm-arr" id="nma-orgaos">›</span></a>
+          <div class="nm-sub-wrap" id="nms-orgaos">
+            <a class="nm-sub" href="/#conteudo">MTE</a>
+            <a class="nm-sub" href="/#conteudo">MPT</a>
+          </div>
+          <a class="nm-sec" onclick="toggleNavSec('nms-leg',event)"><span class="dm-icon">📋</span>Legislação e Normas<span class="nm-arr" id="nma-leg">›</span></a>
+          <div class="nm-sub-wrap" id="nms-leg">
+            <a class="nm-sub" href="/#conteudo">CLT</a>
+            <a class="nm-sub" href="/#conteudo">eSocial</a>
+            <a class="nm-sub" href="/#conteudo">FGTS Digital</a>
+            <a class="nm-sub" href="/#conteudo">Previdenciário</a>
+          </div>
+          <a class="nm-sec" onclick="toggleNavSec('nms-rh',event)"><span class="dm-icon">👥</span>RH e Gestão de Pessoas<span class="nm-arr" id="nma-rh">›</span></a>
+          <div class="nm-sub-wrap" id="nms-rh">
+            <a class="nm-sub" href="/#conteudo">Folha de Pagamento</a>
+            <a class="nm-sub" href="/#conteudo">Rescisão Contratual</a>
+            <a class="nm-sub" href="/#conteudo">Contrato de Trabalho</a>
+            <a class="nm-sub" href="/#conteudo">Saúde e Segurança</a>
+            <a class="nm-sub" href="/#conteudo">Benefícios</a>
+            <a class="nm-sub" href="/#conteudo">INSS</a>
+          </div>
+          <a class="nm-sec" onclick="toggleNavSec('nms-proc',event)"><span class="dm-icon">📄</span>Processual<span class="nm-arr" id="nma-proc">›</span></a>
+          <div class="nm-sub-wrap" id="nms-proc">
+            <a class="nm-sub" href="/#conteudo">Prática Advocatícia</a>
+            <a class="nm-sub" href="/#conteudo">Modelos</a>
+          </div>
+          <a class="nm-sec" onclick="toggleNavSec('nms-ess',event)"><span class="dm-icon">⭐</span>Essenciais<span class="nm-arr" id="nma-ess">›</span></a>
+          <div class="nm-sub-wrap" id="nms-ess">
+            <a class="nm-sub" href="/#conteudo">📚 Livros Jurídicos</a>
+            <a class="nm-sub" href="/#conteudo">🖥️ Equipamentos</a>
+          </div>
+          <div class="nav-drop-divider"></div>
+          <a href="/#conteudo"><span class="dm-icon">🔧</span>Outros</a>
         </div>
       </div>
       <a href="/#sobre">Sobre</a>
