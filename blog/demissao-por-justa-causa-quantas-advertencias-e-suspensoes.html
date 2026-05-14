@@ -1113,6 +1113,16 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 /* ── AdSense: colapsa blocos vazios até aprovação ── */
 ins.adsbygoogle:not([data-ad-status="filled"]) { min-height: 0 !important; }
 ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !important; }
+
+/* ── Nav menu seções expansíveis ── */
+.nm-sec{display:flex;align-items:center;gap:10px;padding:9px 14px;font-size:.84rem;font-weight:600;color:var(--txt-m);cursor:pointer;transition:color .15s;text-decoration:none;user-select:none;}
+.nm-sec:hover{color:var(--acc);}
+.nm-arr{margin-left:auto;font-size:.7rem;opacity:.4;transition:transform .22s;flex-shrink:0;display:inline-block;}
+.nm-arr.open{transform:rotate(90deg);opacity:.7;}
+.nm-sub-wrap{display:none;background:var(--b50,#f0f4ff);border-left:3px solid var(--b200,#93b4f5);margin:0 10px 4px 10px;border-radius:0 8px 8px 0;overflow:hidden;}
+.nm-sub-wrap.open{display:block;}
+.nm-sub{display:block;padding:7px 14px 7px 16px;font-size:.8rem;color:var(--txt-m,#4a5568);cursor:pointer;transition:background .12s,color .12s;text-decoration:none;}
+.nm-sub:hover{background:rgba(99,130,255,.08);color:var(--acc,#3a5fe5);}
 </style>
 </head>
 <body>
@@ -1165,49 +1175,72 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       </div>
       <div class="nav-dropdown" id="nav-dropdown-conteudo">
         <a id="nav-conteudo" onclick="toggleConteudo(event)">Conteúdo</a>
-        <div class="nav-drop-menu" id="conteudo-menu" style="min-width:270px;max-height:80vh;overflow-y:auto;">
-          <a href="/#conteudo"><span class="dm-icon">📰</span>Todos os Artigos</a>
+        <div class="nav-drop-menu" id="conteudo-menu" style="min-width:280px;max-height:82vh;overflow-y:auto;">
+          <a href="/" onclick="goConteudo('','',event)"><span class="dm-icon">📰</span>Todos os Artigos</a>
           <div class="nav-drop-divider"></div>
+
           <a class="nm-sec" onclick="toggleNavSec('nms-jurisp',event)"><span class="dm-icon">⚖️</span>Jurisprudência<span class="nm-arr" id="nma-jurisp">›</span></a>
           <div class="nm-sub-wrap" id="nms-jurisp">
-            <a class="nm-sub" href="/#conteudo">TRT</a>
-            <a class="nm-sub" href="/#conteudo">TST</a>
-            <a class="nm-sub" href="/#conteudo">STJ</a>
-            <a class="nm-sub" href="/#conteudo">STF</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('jurisprudencia','jurisprudencia-trts',event)">TRT</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('jurisprudencia','jurisprudencia-tst',event)">TST</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('jurisprudencia','jurisprudencia-stj',event)">STJ</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('jurisprudencia','jurisprudencia-stf',event)">STF</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('jurisprudencia','',event)" style="font-style:italic;font-size:.76rem;color:var(--txt-s,#888)">+ outros temas</a>
           </div>
+
           <a class="nm-sec" onclick="toggleNavSec('nms-orgaos',event)"><span class="dm-icon">🏛️</span>Órgãos Públicos<span class="nm-arr" id="nma-orgaos">›</span></a>
           <div class="nm-sub-wrap" id="nms-orgaos">
-            <a class="nm-sub" href="/#conteudo">MTE</a>
-            <a class="nm-sub" href="/#conteudo">MPT</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('orgaos-publicos','noticias-mte',event)">MTE</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('orgaos-publicos','noticias-mpt',event)">MPT</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('orgaos-publicos','',event)" style="font-style:italic;font-size:.76rem;color:var(--txt-s,#888)">+ outros órgãos</a>
           </div>
+
           <a class="nm-sec" onclick="toggleNavSec('nms-leg',event)"><span class="dm-icon">📋</span>Legislação e Normas<span class="nm-arr" id="nma-leg">›</span></a>
           <div class="nm-sub-wrap" id="nms-leg">
-            <a class="nm-sub" href="/#conteudo">CLT</a>
-            <a class="nm-sub" href="/#conteudo">eSocial</a>
-            <a class="nm-sub" href="/#conteudo">FGTS Digital</a>
-            <a class="nm-sub" href="/#conteudo">Previdenciário</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('legislacao-normas','legislacao-clt',event)">CLT</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('legislacao-normas','legislacao-cf',event)">Constituição Federal</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('legislacao-normas','esocial',event)">eSocial</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('legislacao-normas','fgts-digital',event)">FGTS Digital</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('legislacao-normas','legislacao-previdenciario',event)">Previdenciário</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('legislacao-normas','legislacao-sindical',event)">Sindical</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('legislacao-normas','legislacao-portarias',event)">Portarias</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('legislacao-normas','legislacao-nr',event)">NR</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('legislacao-normas','',event)" style="font-style:italic;font-size:.76rem;color:var(--txt-s,#888)">+ outras Legislação</a>
           </div>
+
           <a class="nm-sec" onclick="toggleNavSec('nms-rh',event)"><span class="dm-icon">👥</span>RH e Gestão de Pessoas<span class="nm-arr" id="nma-rh">›</span></a>
           <div class="nm-sub-wrap" id="nms-rh">
-            <a class="nm-sub" href="/#conteudo">Folha de Pagamento</a>
-            <a class="nm-sub" href="/#conteudo">Rescisão Contratual</a>
-            <a class="nm-sub" href="/#conteudo">Contrato de Trabalho</a>
-            <a class="nm-sub" href="/#conteudo">Saúde e Segurança</a>
-            <a class="nm-sub" href="/#conteudo">Benefícios</a>
-            <a class="nm-sub" href="/#conteudo">INSS</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('rh-gestao','rh-folha',event)">Folha de Pagamento</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('rh-gestao','rh-jornada',event)">Jornada de Trabalho</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('rh-gestao','rh-contrato',event)">Contrato de Trabalho</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('rh-gestao','rh-salario',event)">Salário</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('rh-gestao','rh-rescisao',event)">Rescisão Contratual</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('rh-gestao','saude-seguranca',event)">Saúde e Segurança</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('rh-gestao','rh-beneficios',event)">Benefícios</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('rh-gestao','rh-ctps',event)">CTPS</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('rh-gestao','rh-inss',event)">INSS</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('rh-gestao','rh-modelos',event)">Modelos de RH</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('rh-gestao','',event)" style="font-style:italic;font-size:.76rem;color:var(--txt-s,#888)">+ outros temas de RH</a>
           </div>
+
           <a class="nm-sec" onclick="toggleNavSec('nms-proc',event)"><span class="dm-icon">📄</span>Processual<span class="nm-arr" id="nma-proc">›</span></a>
           <div class="nm-sub-wrap" id="nms-proc">
-            <a class="nm-sub" href="/#conteudo">Prática Advocatícia</a>
-            <a class="nm-sub" href="/#conteudo">Modelos</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('processual','processual-peticoes',event)">Petições e Peças</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('processual','processual-pratica',event)">Prática Advocatícia</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('processual','modelos',event)">Modelos</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('processual','processual-analises',event)">Análises</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('processual','',event)" style="font-style:italic;font-size:.76rem;color:var(--txt-s,#888)">+ outros temas</a>
           </div>
+
           <a class="nm-sec" onclick="toggleNavSec('nms-ess',event)"><span class="dm-icon">⭐</span>Essenciais<span class="nm-arr" id="nma-ess">›</span></a>
           <div class="nm-sub-wrap" id="nms-ess">
-            <a class="nm-sub" href="/#conteudo">📚 Livros Jurídicos</a>
-            <a class="nm-sub" href="/#conteudo">🖥️ Equipamentos</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('essenciais','essenciais-livros',event)">📚 Livros Jurídicos</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('essenciais','essenciais-equipamentos',event)">🖥️ Equipamentos</a>
+            <a class="nm-sub" href="/" onclick="goConteudo('essenciais','essenciais-cursos',event)">🎓 Cursos</a>
           </div>
+
           <div class="nav-drop-divider"></div>
-          <a href="/#conteudo"><span class="dm-icon">🔧</span>Outros</a>
+          <a href="/" onclick="goConteudo('outros','',event)"><span class="dm-icon">🔧</span>Outros</a>
         </div>
       </div>
       <a href="/#sobre">Sobre</a>
@@ -1624,11 +1657,11 @@ function toggleFerramentas(e) {
 }
 function toggleConteudo(e) {
   if(e){e.stopPropagation();e.preventDefault();}
-  const dd = document.getElementById('nav-dropdown-conteudo');
-  const opening = !dd.classList.contains('open');
-  document.querySelectorAll('.nav-dropdown').forEach(d=>d.classList.remove('open'));
+  var dd = document.getElementById('nav-dropdown-conteudo');
+  var opening = !dd.classList.contains('open');
+  document.querySelectorAll('.nav-dropdown').forEach(function(d){d.classList.remove('open');});
   if(opening) dd.classList.add('open');
-  else { document.querySelectorAll('.nm-sub-wrap').forEach(w=>w.classList.remove('open')); }
+  else { document.querySelectorAll('.nm-sub-wrap').forEach(function(w){w.classList.remove('open');}); }
 }
 function toggleNavSec(id,e) {
   if(e){e.stopPropagation();e.preventDefault();}
@@ -1642,11 +1675,19 @@ function toggleNavSec(id,e) {
   var dd=document.getElementById('nav-dropdown-conteudo');
   if(dd&&!dd.classList.contains('open')) dd.classList.add('open');
 }
-// Close dropdowns on outside click — não fecha ao clicar em nm-sec
+// Navega para home/conteudo gravando filtro no sessionStorage
+function goConteudo(sec, cat, e) {
+  if(e) e.preventDefault();
+  try {
+    if(sec||cat) sessionStorage.setItem('cp_nav_filter', JSON.stringify({sec:sec, cat:cat}));
+  } catch(ex){}
+  window.location.href = '/#conteudo';
+}
+// Fecha dropdowns ao clicar fora — exceto em nm-sec/nm-sub-wrap
 document.addEventListener('click', function(e) {
   var isNavSec = e.target.closest('.nm-sec') || e.target.closest('.nm-sub-wrap');
   if (!e.target.closest('.nav-dropdown') && !isNavSec) {
-    document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+    document.querySelectorAll('.nav-dropdown').forEach(function(d){d.classList.remove('open');});
   }
 });
 

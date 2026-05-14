@@ -4788,6 +4788,21 @@ function toggleSociais(e){
 window.addEventListener('hashchange', function() {
   var h = window.location.hash;
   if (h === '#conteudo' || h === '#blog') navGoTo('blog');
+  // Ler filtro de navegação vindo dos artigos (via sessionStorage)
+  try {
+    var cpFilter = sessionStorage.getItem('cp_nav_filter');
+    if (cpFilter) {
+      sessionStorage.removeItem('cp_nav_filter');
+      var f = JSON.parse(cpFilter);
+      setTimeout(function(){
+        navGoTo('blog');
+        setTimeout(function(){
+          if (f.cat && f.sec) { filterBlogSub(f.cat, f.sec); }
+          else if (f.sec) { filterBlogSection(f.sec); }
+        }, 80);
+      }, 50);
+    }
+  } catch(ex) {}
 });
 </script>
 
