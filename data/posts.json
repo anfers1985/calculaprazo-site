@@ -1,20 +1,5 @@
 [
   {
-    "id": "melhor-vade-mecum-2026",
-    "title": "Melhor Vade Mecum 2026: Os 10 Melhores para Comprar",
-    "category": "essenciais-livros",
-    "category_label": "Livros Jurídicos",
-    "excerpt": "Qual o melhor Vade Mecum 2026? Ranking completo com os 10 melhores: Saraiva, Rideel, Juspodivm e RT. Prós, contras e onde comprar mais barato. Guia atualizado para OAB, concursos e graduação.",
-    "image": "https://m.media-amazon.com/images/I/81HmyZ8mCzL._AC_UL480_QL65_.jpg",
-    "date": "2026-05-11",
-    "tags": [
-      "vade-mecum",
-      "livros-juridicos",
-      "oab",
-      "concursos"
-    ]
-  },
-  {
     "id": "melhor-cadeira-ergonomica-2026",
     "title": "Melhor Cadeira Ergonômica 2026: As 10 Melhores NR-17 para Quem Trabalha Sentado",
     "category": "essenciais-equipamentos",
@@ -27,6 +12,21 @@
       "home-office",
       "nr17",
       "essenciais"
+    ]
+  },
+  {
+    "id": "melhor-vade-mecum-2026",
+    "title": "Melhor Vade Mecum 2026: Os 10 Melhores para Comprar",
+    "category": "essenciais-livros",
+    "category_label": "Livros Jurídicos",
+    "excerpt": "Qual o melhor Vade Mecum 2026? Ranking completo com os 10 melhores: Saraiva, Rideel, Juspodivm e RT. Prós, contras e onde comprar mais barato. Guia atualizado para OAB, concursos e graduação.",
+    "image": "https://m.media-amazon.com/images/I/81HmyZ8mCzL._AC_UL480_QL65_.jpg",
+    "date": "2026-05-11",
+    "tags": [
+      "vade-mecum",
+      "livros-juridicos",
+      "oab",
+      "concursos"
     ]
   },
   {
@@ -843,6 +843,124 @@
     ]
   },
   {
+    "id": "homologacao-trabalhista-regras-prazos-e-mudancas-na-lei",
+    "title": "Homologação Trabalhista: Regras, Prazos e Mudanças na Lei",
+    "category": "rh-rescisao",
+    "category_label": "Rescisão",
+    "excerpt": "Homologação trabalhista: veja regras, prazo de 10 dias, mudanças da reforma e a importância de verificar a CCT antes da rescisão.",
+    "image": "https://images.unsplash.com/photo-1664463760781-f159dfe3af30?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-04-24",
+    "tags": [
+      "homologacao",
+      "rescisao",
+      "clt"
+    ]
+  },
+  {
+    "id": "ir-2026-mei-autonomos-e-informais-devem-declarar-renda-a-rec",
+    "title": "IR 2026: MEI, Autônomos e Informais Devem Declarar Renda à Receita",
+    "category": "geral",
+    "category_label": "Outros",
+    "excerpt": "MEI, trabalhadores autônomos e informais com rendimentos tributáveis acima do limite deverão apresentar a declaração do IR 2026. Saiba os critérios e prazos.",
+    "image": "https://images.unsplash.com/photo-1775163024488-e88e4a71179f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzcwNDI3MDR8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-24",
+    "tags": [
+      "ir-2026",
+      "mei",
+      "autonomos",
+      "receita-federal"
+    ]
+  },
+  {
+    "id": "mpt-ba-intensifica-combate-a-producao-ilegal-de-fogos-na-bah",
+    "title": "MPT-BA Intensifica Combate à Produção Ilegal de Fogos na Bahia",
+    "category": "noticias-mpt",
+    "category_label": "MPT",
+    "excerpt": "Operação Brincar com Fogo apreendeu mais de seis mil unidades de fogos clandestinos e investiga a única fábrica autorizada no estado.",
+    "image": "https://images.unsplash.com/photo-1774599730788-a74cd9253b56?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzcwNDI5NDN8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-24",
+    "tags": [
+      "mpt",
+      "fogos",
+      "operacao",
+      "bahia"
+    ]
+  },
+  {
+    "id": "trt-15-mantem-penhora-de-30",
+    "title": "TRT-15 Mantém Penhora de 30% do Salário para Satisfação de Dívida Trabalhista",
+    "category": "jurisprudencia-trts",
+    "category_label": "Jurisprudência TRTs",
+    "excerpt": "Decisão do TRT-15 mantém penhora de 30% do salário em execução trabalhista, afastando alegação de impenhorabilidade absoluta.",
+    "image": "https://images.unsplash.com/photo-1592293354312-9160458b1a57?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzcwNDI4MzJ8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-24",
+    "tags": [
+      "penhora",
+      "salario",
+      "execucao",
+      "trt-15"
+    ]
+  },
+  {
+    "id": "fim-da-escala-6x1-ccj-da-camara-aprova-pec-e-debate-avanca-no-congresso",
+    "title": "Fim da Escala 6x1: CCJ da Câmara Aprova PEC e Debate Avança no Congresso",
+    "category": "legislacao-clt",
+    "category_label": "CLT",
+    "excerpt": "Admissão da PEC pela CCJ abre caminho para comissão especial discutir fim da escala 6x1, redução de jornada e medidas de compensação econômica aos setores mais afetados.",
+    "image": "https://images.unsplash.com/photo-1625426078245-6911839409dd?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-04-23",
+    "tags": [
+      "escala-6x1",
+      "jornada",
+      "clt",
+      "congresso"
+    ]
+  },
+  {
+    "id": "fim-escala-6x1-bolsa-brasileira-impacto",
+    "title": "Possível Fim da Escala 6x1 Pode Mexer com a Bolsa e Pressionar Setores Intensivos em Mão de Obra",
+    "category": "legislacao-clt",
+    "category_label": "CLT",
+    "excerpt": "A proposta em discussão no Congresso tende a produzir impacto desigual entre as companhias, com maior pressão sobre negócios intensivos em mão de obra e menor margem.",
+    "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-04-23",
+    "tags": [
+      "escala-6x1",
+      "bolsa",
+      "impacto-economico"
+    ]
+  },
+  {
+    "id": "motofrete-e-responsabilidade-em-acidentes-fatais-farmacia-condenada-a-indenizar-familia-de-entregador",
+    "title": "Motofrete e Responsabilidade em Acidentes Fatais: Farmácia Condenada a Indenizar Família de Entregador",
+    "category": "jurisprudencia-tst",
+    "category_label": "Jurisprudência TST",
+    "excerpt": "8ª Turma do TST reconhece responsabilidade de farmácia por morte de entregador motociclista em acidente de trânsito e fixa indenização com base em atividade de risco.",
+    "image": "https://images.unsplash.com/photo-1651559588677-5e7c76f468df?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-04-23",
+    "tags": [
+      "motofrete",
+      "acidente",
+      "responsabilidade",
+      "tst"
+    ]
+  },
+  {
+    "id": "tst-nega-manutencao-de-juros-reduzidos-em-financiamento-apos-demissao-de-bancaria",
+    "title": "TST Nega Manutenção de Juros Reduzidos em Financiamento Após Demissão de Bancária",
+    "category": "jurisprudencia-tst",
+    "category_label": "Jurisprudência TST",
+    "excerpt": "A 5ª Turma do TST rejeitou recurso de bancária do Itaú que queria manter juros reduzidos após dispensa. O benefício dependia do vínculo empregatício e cessou com a demissão.",
+    "image": "https://plus.unsplash.com/premium_photo-1700781723507-f19650941f65?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-04-23",
+    "tags": [
+      "tst",
+      "bancaria",
+      "juros",
+      "financiamento"
+    ]
+  },
+  {
     "id": "camara-fim-da-escala-6x1",
     "title": "Câmara: Fim da Escala 6x1",
     "category": "legislacao-clt",
@@ -879,6 +997,35 @@
     "tags": [
       "escala 6x1",
       "CNT"
+    ]
+  },
+  {
+    "id": "mpt-obtem-condenacao-de-r-400-mil-contra-industria-de-estofa",
+    "title": "MPT Obtém Condenação de R$ 400 Mil Contra Indústria de Estofados por Assédio Eleitoral",
+    "category": "noticias-mpt",
+    "category_label": "MPT",
+    "excerpt": "Ministério Público do Trabalho condena empresa por pressão psicológica em empregados durante as eleições presidenciais de 2022.",
+    "image": "https://images.unsplash.com/photo-1774599730788-edc1fe2489b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY4ODgxMjl8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-22",
+    "tags": [
+      "mpt",
+      "assedio-eleitoral",
+      "condenacao"
+    ]
+  },
+  {
+    "id": "mpt-usa-pesquisa-de-clima-em-acao-de-assedio",
+    "title": "MPT Usa Pesquisa de Clima em Ação de Assédio Moral na Bahia",
+    "category": "noticias-mpt",
+    "category_label": "MPT",
+    "excerpt": "MPT obtém reconhecimento judicial de pesquisa de clima organizacional como prova em ação de assédio moral na Bahia.",
+    "image": "https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1170&auto=format&fit=crop",
+    "date": "2026-04-22",
+    "tags": [
+      "mpt",
+      "assedio-moral",
+      "pesquisa-clima",
+      "bahia"
     ]
   },
   {
@@ -1063,6 +1210,94 @@
     "source_url": "https://www.trt5.jus.br/noticias"
   },
   {
+    "id": "aplicacao-do-piso-nacional-para-professores-temporarios-e-de",
+    "title": "Aplicação do Piso Nacional para Professores Temporários é Destaque no STF",
+    "category": "jurisprudencia-stf",
+    "category_label": "Jurisprudência STF",
+    "excerpt": "O STF decidiu sobre a aplicação do piso nacional para professores temporários, além de considerar inconstitucional lei de SC que proibia cotas raciais.",
+    "image": "https://images.unsplash.com/photo-1658267711340-a79a85dbc168?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY2NTA4Mjd8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-20",
+    "tags": [
+      "stf",
+      "professores",
+      "piso-nacional",
+      "concursos"
+    ]
+  },
+  {
+    "id": "bloqueio-de-bens-e-resgate-de-trabalhadores",
+    "title": "Bloqueio de Bens e Resgate de Trabalhadores em Condições Análogas à Escravidão",
+    "category": "noticias-mpt",
+    "category_label": "MPT",
+    "excerpt": "Sete trabalhadores resgatados em condições análogas à escravidão em Unaí. Liminar determinou bloqueio de bens e custeio do retorno às cidades de origem.",
+    "image": "https://images.unsplash.com/photo-1662692735672-544412d65934?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY2NTA2NTd8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-20",
+    "tags": [
+      "trabalho-escravo",
+      "mpt",
+      "direitos-trabalhistas"
+    ]
+  },
+  {
+    "id": "jornada-semanal-reduzida",
+    "title": "Jornada Semanal Reduzida: Projeto de Lei Reduz para 40 Horas e Prevê Dois Dias de Descanso",
+    "category": "rh-jornada",
+    "category_label": "Artigos",
+    "excerpt": "Projeto de lei reduz jornada semanal para 40 horas e prevê dois dias de descanso remunerado. A medida afeta empresas e trabalhadores.",
+    "image": "https://images.unsplash.com/photo-1635545999375-057ee4013deb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY2NTA4MDd8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-20",
+    "tags": [
+      "jornada",
+      "40-horas",
+      "descanso",
+      "clt"
+    ]
+  },
+  {
+    "id": "justica-determina-apresentacao-de-documentos",
+    "title": "Justiça Determina Apresentação de Documentos Trabalhistas à BIOGESP sob Pena de Multa",
+    "category": "noticias-mpt",
+    "category_label": "MPT",
+    "excerpt": "Empresa BIOGESP deve apresentar documentos trabalhistas ao MPT sob pena de multa diária. A empresa é acusada de violações que atingem cerca de 1.700 empregados.",
+    "image": "https://images.unsplash.com/photo-1655151485863-5bd031271d31?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY2NTA1MTB8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-20",
+    "tags": [
+      "mpt",
+      "documentos",
+      "violacoes-trabalhistas"
+    ]
+  },
+  {
+    "id": "justica-reconhece-dispensa-discriminatoria-e-determina-reint",
+    "title": "Justiça Reconhece Dispensa Discriminatória e Determina Reintegração de Empregada com Leucemia",
+    "category": "jurisprudencia-trts",
+    "category_label": "Jurisprudência TRTs",
+    "excerpt": "TRT-MG reconhece dispensa discriminatória de empregada com leucemia e determina sua reintegração ao trabalho com pagamento de salários do período.",
+    "image": "https://images.unsplash.com/photo-1758598306493-99e22e718e08?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY2NTA4MTl8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-20",
+    "tags": [
+      "dispensa-discriminatoria",
+      "reintegracao",
+      "doenca",
+      "trt"
+    ]
+  },
+  {
+    "id": "resgate-de-trabalhadores-em-condicoes-analogas-a-escravidao-",
+    "title": "Resgate de Trabalhadores em Condições Análogas à Escravidão em Unaí (MG)",
+    "category": "noticias-mpt",
+    "category_label": "MPT",
+    "excerpt": "MPT obtém liminar para bloqueio de bens e resgate de trabalhadores em condições degradantes em Unaí, Minas Gerais.",
+    "image": "https://images.unsplash.com/photo-1773844389459-110d2b5e18e2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY2OTc1ODV8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-20",
+    "tags": [
+      "trabalho-escravo",
+      "resgate",
+      "mpt",
+      "minas-gerais"
+    ]
+  },
+  {
     "id": "trt-mg-reconhece-dispensa-discriminatria-e-manda-reintegrar-trabalhadora-com-leucemia",
     "title": "TRT-MG reconhece dispensa discriminatória e manda reintegrar trabalhadora com leucemia",
     "category": "jurisprudencia-trts",
@@ -1097,6 +1332,34 @@
     "image": "https://images.unsplash.com/photo-1589829545856-d10d557cf95f",
     "date": "2026-04-19",
     "tags": []
+  },
+  {
+    "id": "fgts-digital-passa-a-ser-obrigatorio-em-reclamatorias-trabal",
+    "title": "FGTS Digital Passa a Ser Obrigatório em Reclamatórias Trabalhistas",
+    "category": "fgts-digital",
+    "category_label": "FGTS Digital",
+    "excerpt": "FGTS Digital se torna obrigatório em reclamatórias trabalhistas a partir de maio de 2026. Entenda o impacto para advogados e empresas.",
+    "image": "https://images.unsplash.com/photo-1601571047421-64e17b56cbbd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY2MzE5MDZ8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-19",
+    "tags": [
+      "fgts-digital",
+      "reclamatorias",
+      "trabalhista"
+    ]
+  },
+  {
+    "id": "resgate-trabalho-escravo",
+    "title": "Resgate de Trabalhadores em Condições Análogas à Escravidão: Decisão Judicial Protege Direitos",
+    "category": "noticias-mpt",
+    "category_label": "MPT",
+    "excerpt": "Resgate de trabalhadores em condições análogas à escravidão. Decisão judicial determina medidas protetivas aos direitos trabalhistas.",
+    "image": "https://images.unsplash.com/photo-1764620913207-b3ceca1123a0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY2MTM5NTN8&ixlib=rb-4.1.0&q=80&w=1080",
+    "date": "2026-04-19",
+    "tags": [
+      "trabalho-escravo",
+      "resgate",
+      "direitos-trabalhistas"
+    ]
   },
   {
     "id": "pauta-classe-trabalhadora-conclat-2026-lancada-centrais-sindicais",

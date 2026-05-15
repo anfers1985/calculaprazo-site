@@ -2022,8 +2022,15 @@ function goTo(id) {
   if (id === 'blog' || id === 'conteudo') {
     window.location.href = '/#conteudo';
   } else {
-    window.location.href = '/';
+    window.location.href = '/#' + id;
   }
+}
+function goConteudo(sec, cat, e) {
+  if(e) e.preventDefault();
+  try {
+    if(sec||cat) sessionStorage.setItem('cp_nav_filter', JSON.stringify({sec:sec, cat:cat}));
+  } catch(ex){}
+  window.location.href = '/#conteudo';
 }
 function navGoTo(id) {
   goTo(id);
