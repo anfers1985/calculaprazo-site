@@ -2647,6 +2647,7 @@ function pd(s){if(!s)return null;const[y,m,d]=s.split('-').map(Number);const dt=
 function fd(dt){return`${String(dt.getUTCDate()).padStart(2,'0')}/${String(dt.getUTCMonth()+1).padStart(2,'0')}/${dt.getUTCFullYear()}`;}
 const DS=['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'];
 function dsem(dt){return DS[dt.getUTCDay()];}
+function cap(s){return s?s.charAt(0).toUpperCase()+s.slice(1):s;}
 function parseFer(str){if(!str||!str.trim())return[];return str.split(',').map(s=>{const p=s.trim().split('/');if(p.length!==3)return null;const[d,m,a]=p.map(Number);if(isNaN(d)||isNaN(m)||isNaN(a))return null;return new Date(Date.UTC(a,m-1,d));}).filter(Boolean);}
 function isFer(dt,fl){return fl.some(f=>f.getTime()===dt.getTime());}
 function isNU(dt,eS,eD,fl){const ds=dt.getUTCDay();return(eD&&ds===0)||(eS&&ds===6)||isFer(dt,fl);}
