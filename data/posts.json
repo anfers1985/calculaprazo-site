@@ -1,5 +1,148 @@
 [
   {
+    "id": "lei-igualdade-salarial-constitucional-stf-adi-7612",
+    "title": "STF declara Lei de Igualdade Salarial Constitucional",
+    "category": "jurisprudencia-stf",
+    "category_label": "STF",
+    "excerpt": "O STF declarou, por unanimidade, a Lei 14.611/2023 constitucional na ADI 7612. Entenda o que muda para empresas com mais de 100 funcionários.",
+    "image": "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=1170&auto=format&fit=crop",
+    "date": "2026-05-16",
+    "tags": [
+      "Igualdade Salarial",
+      "STF",
+      "ADI 7612",
+      "CLT"
+    ]
+  },
+  {
+    "id": "nr-18-construcao-civil-alteracoes-portaria-mte-836-2026",
+    "title": "NR-18 atualizada: mudanças na construção civil em 2026",
+    "category": "legislacao-nr",
+    "category_label": "NR",
+    "excerpt": "A Portaria MTE 836/2026 atualizou a NR-18. Novas regras sobre proteção contra queda de materiais e andaimes multidirecionais entram em vigor em 29/06/2026.",
+    "image": "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1170&auto=format&fit=crop",
+    "date": "2026-05-15",
+    "tags": [
+      "NR-18",
+      "Construção Civil",
+      "Segurança do Trabalho",
+      "Portaria MTE 836"
+    ]
+  },
+  {
+    "id": "horas-extras-controle-jornada-sumula-338-tst",
+    "title": "Sem cartão de ponto: TST condena empresa por horas extras",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "A 7ª Turma do TST condenou empresa ao pagamento de horas extras por não apresentar cartões de ponto. O julgado reafirma que o limite do art. 74 da CLT é calculado pelo total de empregados da empresa.",
+    "image": "https://images.unsplash.com/photo-1508780709619-79562169bc64?q=80&w=1170&auto=format&fit=crop",
+    "date": "2026-05-14",
+    "tags": [
+      "Horas Extras",
+      "Controle de Jornada",
+      "Súmula 338",
+      "TST",
+      "CLT"
+    ]
+  },
+  {
+    "id": "fgts-digital-emissao-guias-nlfc-notificacao-lancamento",
+    "title": "FGTS Digital: como emitir guias para débitos da NLFC",
+    "category": "fgts-digital",
+    "category_label": "FGTS Digital",
+    "excerpt": "O FGTS Digital já permite emitir guias para débitos da NLFC (Notificação de Lançamento do FGTS Confessado). Entenda como funciona e como solicitar parcelamento diretamente no sistema.",
+    "image": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1170&auto=format&fit=crop",
+    "date": "2026-05-13",
+    "tags": [
+      "FGTS Digital",
+      "NLFC",
+      "eSocial",
+      "MTE",
+      "Trabalhista"
+    ]
+  },
+  {
+    "id": "fgts-digital-manual-1-60-processos-trabalhistas-2026",
+    "title": "FGTS Digital v1.60: recolhimento em processos trabalhistas",
+    "category": "fgts-digital",
+    "category_label": "FGTS Digital",
+    "excerpt": "O FGTS Digital opera recolhimentos de processos trabalhistas desde 01/05/2026 (Edital SIT/MTE 01/2026). Entenda o evento S-2500, o totalizador S-5503 e como usar a guia obrigatória.",
+    "image": "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=1170&auto=format&fit=crop",
+    "date": "2026-05-08",
+    "tags": [
+      "FGTS Digital",
+      "Manual 1.60",
+      "S-2500",
+      "eSocial",
+      "Processo Trabalhista"
+    ]
+  },
+  {
+    "id": "trabalho-noturno-adicional-hora-reduzida-urbano-rural",
+    "title": "Trabalho noturno: adicional e diferenças entre urbano e rural",
+    "category": "rh-jornada",
+    "category_label": "Jornada",
+    "excerpt": "O adicional noturno urbano é de 20% e a hora noturna tem duração reduzida de 52'30''. No trabalho rural, os percentuais são de 25% e não há hora reduzida. Entenda as regras da CLT e da jurisprudência.",
+    "image": "https://images.unsplash.com/photo-1514565131-fce0801e6176?q=80&w=1170&auto=format&fit=crop",
+    "date": "2026-05-16",
+    "tags": [
+      "Trabalho Noturno",
+      "Adicional Noturno",
+      "Hora Noturna",
+      "CLT",
+      "Rural"
+    ]
+  },
+  {
+    "id": "empregado-soropositivo-demissao-sem-justa-causa-discriminacao",
+    "title": "Soropositivo pode ser demitido sem justa causa sem discriminação?",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "A dispensa de empregado soropositivo pode ser válida ou discriminatória, dependendo do contexto e das provas. Entenda a Súmula 443 do TST, a Lei 9.029/1995 e quando o ônus de provar recai sobre o empregador.",
+    "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=1170&auto=format&fit=crop",
+    "date": "2026-05-16",
+    "tags": [
+      "Soropositivo",
+      "HIV",
+      "Discriminação",
+      "Súmula 443",
+      "TST",
+      "Lei 9.029"
+    ]
+  },
+  {
+    "id": "gordofobia-dispensa-discriminatoria-obesidade-tst-sumula-443",
+    "title": "Gordofobia no trabalho: TST reconhece dispensa discriminatória",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "A 3ª Turma do TST reconheceu gordofobia como dispensa discriminatória no processo RR-0010629-49.2022.5.15.0089. A Súmula 443 protege trabalhadores com obesidade, que gera estigma social.",
+    "image": "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?q=80&w=1170&auto=format&fit=crop",
+    "date": "2026-05-14",
+    "tags": [
+      "Gordofobia",
+      "Obesidade",
+      "Discriminação",
+      "Súmula 443",
+      "TST"
+    ]
+  },
+  {
+    "id": "controle-jornada-empresa-nao-filial-art-74-clt-ebs-tst",
+    "title": "TST: limite do art. 74 da CLT é da empresa, não da filial",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "No processo RR-604-85.2018.5.21.0012, a 7ª Turma do TST definiu que o limite de empregados para obrigação de registro de jornada (art. 74 da CLT) considera a empresa inteira, não cada filial isoladamente.",
+    "image": "https://images.unsplash.com/photo-1565008576549-57569a49371d?q=80&w=1170&auto=format&fit=crop",
+    "date": "2026-05-14",
+    "tags": [
+      "Controle de Jornada",
+      "Art. 74 CLT",
+      "TST",
+      "Súmula 338",
+      "Filial"
+    ]
+  },
+  {
     "id": "melhor-cadeira-ergonomica-2026",
     "title": "Melhor Cadeira Ergonômica 2026: As 10 Melhores NR-17 para Quem Trabalha Sentado",
     "category": "essenciais-equipamentos",
