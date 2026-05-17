@@ -44,7 +44,7 @@
 <!-- /Schema FAQ estático -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Sora:wght@400;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 /* ════════════════════════════════════════
@@ -1019,6 +1019,358 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .nm-sub{display:block;padding:7px 14px 7px 16px;font-size:.8rem;color:var(--txt-m);cursor:pointer;transition:color .15s;text-decoration:none;}
 .nm-sub:hover{color:var(--acc);}
 .nm-outros{color:var(--txt-s);font-style:italic;font-size:.76rem;}
+
+/* ════════════════════════════════════════
+   REDESIGN HOME — prefixo .nh-
+   Adicionado ao CSS existente sem substituir
+════════════════════════════════════════ */
+
+/* ── Tipografia base NH ── */
+.nh-h1 {
+  font-family:'Sora',var(--fh),sans-serif;
+  font-size:clamp(2rem,3.8vw,3rem);
+  font-weight:800;
+  color:#fff;
+  letter-spacing:-1.5px;
+  line-height:1.08;
+  margin:0 0 18px;
+}
+.nh-h1-grad {
+  background:linear-gradient(90deg,#60A5FA,#93C5FD);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.nh-h2 {
+  font-family:'Sora',var(--fh),sans-serif;
+  font-size:clamp(1.4rem,2.5vw,1.9rem);
+  font-weight:800;
+  color:var(--txt);
+  letter-spacing:-0.5px;
+  line-height:1.15;
+  margin:6px 0 10px;
+}
+.nh-h2-light { color:#fff; }
+.nh-eyebrow {
+  display:flex;align-items:center;gap:8px;
+  font-size:.65rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.12em;
+  color:var(--acc);
+}
+.nh-eyebrow-light { color:#60A5FA; }
+.nh-eyebrow-line {
+  display:inline-block;width:20px;height:2px;
+  background:var(--acc);border-radius:2px;flex-shrink:0;
+}
+.nh-eyebrow-line-light { background:#60A5FA; }
+.nh-sec-sub { font-size:.93rem;color:var(--txt-m);line-height:1.6;margin:0; }
+.nh-ver-mais {
+  display:inline-flex;align-items:center;
+  font-size:.85rem;font-weight:600;color:var(--acc);
+  border:1.5px solid var(--b200);border-radius:8px;
+  padding:8px 16px;background:transparent;cursor:pointer;
+  text-decoration:none;white-space:nowrap;flex-shrink:0;
+  transition:all .2s;
+}
+.nh-ver-mais:hover { background:var(--b50);border-color:var(--b300); }
+.nh-sec-head {
+  display:flex;align-items:flex-end;
+  justify-content:space-between;
+  gap:16px;flex-wrap:wrap;
+  margin-bottom:32px;
+}
+.nh-btn-primary {
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--acc);color:#fff;border:none;
+  border-radius:10px;padding:14px 26px;
+  font-size:.95rem;font-weight:800;cursor:pointer;
+  transition:all .2s;
+}
+.nh-btn-primary:hover { background:var(--acc-d);transform:translateY(-2px); }
+
+/* ── HERO ── */
+.nh-hero {
+  background:linear-gradient(135deg,#0B1437 0%,#0F2057 50%,#162466 100%);
+  padding:64px 0 56px;
+}
+.nh-hero-grid {
+  display:grid;
+  grid-template-columns:1fr 380px;
+  gap:52px;
+  align-items:center;
+}
+.nh-hero-sub {
+  font-size:.97rem;font-weight:400;
+  color:rgba(255,255,255,.55);
+  max-width:440px;line-height:1.72;
+  margin:0 0 28px;
+}
+.nh-hero-ctas {
+  display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px;
+}
+.nh-btn-ghost {
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.07);
+  border:1.5px solid rgba(255,255,255,.15);
+  color:#fff;border-radius:10px;padding:13px 22px;
+  font-size:.93rem;font-weight:600;cursor:pointer;
+  transition:all .2s;
+}
+.nh-btn-ghost:hover { background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.28); }
+
+/* Stats */
+.nh-stats {
+  display:flex;align-items:center;gap:0;flex-wrap:wrap;
+}
+.nh-stat { text-align:center;padding:0 24px; }
+.nh-stat:first-child { padding-left:0; }
+.nh-stat-num {
+  font-size:1.8rem;font-weight:800;
+  color:#fff;letter-spacing:-1px;line-height:1;
+}
+.nh-stat-lbl {
+  font-size:.72rem;font-weight:500;
+  color:rgba(255,255,255,.4);margin-top:4px;
+}
+.nh-stat-sep {
+  width:1px;height:32px;
+  background:rgba(255,255,255,.08);
+}
+
+/* Card Acesso Rápido */
+.nh-quick-card {
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:16px;padding:24px;
+  backdrop-filter:blur(8px);
+}
+.nh-quick-label {
+  display:flex;align-items:center;gap:8px;
+  font-size:.65rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.1em;
+  color:#60A5FA;margin-bottom:16px;
+}
+.nh-quick-line { width:16px;height:2px;background:#60A5FA;border-radius:2px;flex-shrink:0; }
+.nh-quick-list { display:flex;flex-direction:column;gap:8px; }
+.nh-quick-btn {
+  display:flex;align-items:center;gap:12px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:10px;padding:11px 14px;
+  cursor:pointer;text-align:left;width:100%;
+  transition:all .2s;
+}
+.nh-quick-btn:hover {
+  background:rgba(37,99,235,.25);
+  border-color:rgba(96,165,250,.35);
+  transform:translateX(3px);
+}
+.nh-quick-icon {
+  width:36px;height:36px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;flex-shrink:0;
+}
+.nh-quick-text { flex:1;min-width:0; }
+.nh-quick-name {
+  font-size:.84rem;font-weight:700;
+  color:rgba(255,255,255,.9);line-height:1.2;
+}
+.nh-quick-desc {
+  font-size:.68rem;color:rgba(255,255,255,.4);
+  margin-top:2px;
+}
+.nh-quick-arr {
+  font-size:1.1rem;color:rgba(255,255,255,.3);
+  transition:color .2s;
+}
+.nh-quick-btn:hover .nh-quick-arr { color:#60A5FA; }
+
+/* ── ARTIGOS ── */
+.nh-artigos {
+  background:var(--bg);
+  padding:64px 0;
+}
+.nh-artigos-grid {
+  display:grid;
+  grid-template-columns:1fr 280px;
+  gap:40px;
+  align-items:start;
+}
+.nh-col-label {
+  display:flex;align-items:center;gap:8px;
+  font-size:.65rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.12em;
+  color:var(--acc);margin-bottom:16px;
+}
+.nh-col-line { width:16px;height:2px;background:var(--acc);border-radius:2px; }
+
+/* Card artigo recente */
+.nh-art-card {
+  display:flex;
+  background:var(--card);
+  border:1.5px solid var(--brd);
+  border-radius:var(--rl);
+  overflow:hidden;
+  cursor:pointer;
+  text-decoration:none;
+  transition:all .2s;
+  margin-bottom:12px;
+}
+.nh-art-card:hover {
+  border-color:var(--b200);
+  box-shadow:0 12px 40px rgba(15,23,42,.12);
+  transform:translateY(-2px);
+}
+.nh-art-img {
+  width:110px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--b800),var(--b900));
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.8rem;
+}
+.nh-art-body { padding:13px 15px;flex:1;min-width:0; }
+.nh-art-badge {
+  display:inline-block;
+  font-size:.6rem;font-weight:700;text-transform:uppercase;
+  color:var(--acc);background:var(--b50);
+  border:1px solid var(--b100);border-radius:999px;
+  padding:2px 9px;margin-bottom:6px;
+}
+.nh-art-title {
+  font-size:.88rem;font-weight:700;color:var(--txt);
+  line-height:1.4;margin-bottom:5px;
+  display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;
+}
+.nh-art-excerpt {
+  font-size:.76rem;color:var(--txt-m);
+  display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;
+  margin-bottom:8px;
+}
+.nh-art-meta {
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nh-art-date { font-size:.68rem;color:var(--txt-s); }
+.nh-art-ler {
+  font-size:.75rem;font-weight:700;color:var(--acc);
+}
+
+/* Top 10 */
+.nh-top10-wrap {
+  background:var(--card);
+  border:1.5px solid var(--brd);
+  border-radius:var(--rl);
+  padding:18px 16px;
+  position:sticky;top:70px;
+}
+.nh-top10-head {
+  font-size:.65rem;font-weight:700;
+  text-transform:uppercase;color:var(--txt-m);
+  border-bottom:1px solid var(--brd);
+  padding-bottom:11px;margin-bottom:13px;
+}
+.nh-top10-item {
+  display:flex;align-items:flex-start;
+  gap:9px;padding:7px 0;cursor:pointer;
+  border-bottom:1px solid var(--brd);
+  text-decoration:none;
+  transition:all .15s;
+}
+.nh-top10-item:last-child { border-bottom:none; }
+.nh-top10-item:hover .nh-top10-title { color:var(--acc); }
+.nh-top10-num {
+  font-size:.75rem;font-weight:800;
+  width:18px;flex-shrink:0;margin-top:1px;
+}
+.nh-top10-num.top { color:var(--acc); }
+.nh-top10-num.rest { color:var(--txt-s); }
+.nh-top10-info { flex:1;min-width:0; }
+.nh-top10-title {
+  font-size:.78rem;font-weight:700;color:var(--txt);
+  line-height:1.35;
+  display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;
+  transition:color .15s;
+}
+.nh-top10-cat { font-size:.62rem;color:var(--txt-s);margin-top:2px; }
+
+/* ── YOUTUBE ── */
+.nh-youtube {
+  background:#fff;
+  border-top:1px solid var(--brd);
+  padding:64px 0;
+}
+.nh-yt-grid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+}
+
+/* ── AUTORIDADE ── */
+.nh-autoridade {
+  background:linear-gradient(135deg,#0B1437 0%,#0F2057 100%);
+  padding:72px 0;
+  position:relative;overflow:hidden;
+}
+.nh-autoridade-deco {
+  position:absolute;top:-60px;right:-60px;
+  width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(37,99,235,.15),transparent 70%);
+  pointer-events:none;
+}
+.nh-autoridade-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:64px;align-items:center;
+}
+.nh-aut-left { position:relative;z-index:1; }
+.nh-aut-sub {
+  font-size:.93rem;color:rgba(255,255,255,.52);
+  line-height:1.6;margin:10px 0 24px;
+}
+.nh-ben-grid {
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:14px;position:relative;z-index:1;
+}
+.nh-ben-card {
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;padding:18px 16px;
+  transition:all .2s;
+}
+.nh-ben-card:hover {
+  background:rgba(37,99,235,.15);
+  border-color:rgba(96,165,250,.25);
+  transform:translateY(-2px);
+}
+.nh-ben-icon { font-size:1.4rem;margin-bottom:10px; }
+.nh-ben-name {
+  font-size:.84rem;font-weight:700;color:#fff;margin-bottom:5px;
+}
+.nh-ben-desc { font-size:.74rem;color:rgba(255,255,255,.42);line-height:1.55; }
+
+/* ── RESPONSIVO ── */
+@media(max-width:1100px){
+  .nh-hero-grid { grid-template-columns:1fr; }
+  .nh-quick-card { max-width:480px; }
+  .nh-artigos-grid { grid-template-columns:1fr; }
+  .nh-top10-wrap { position:static; }
+  .nh-autoridade-grid { grid-template-columns:1fr; }
+  .nh-yt-grid { grid-template-columns:repeat(2,1fr); }
+}
+@media(max-width:640px){
+  .nh-hero { padding:44px 0 40px; }
+  .nh-h1 { font-size:1.9rem; }
+  .nh-stats { gap:4px; }
+  .nh-stat { padding:0 14px; }
+  .nh-artigos,.nh-youtube,.nh-autoridade { padding:44px 0; }
+  .nh-ben-grid { grid-template-columns:1fr; }
+}
+@media(max-width:480px){
+  .nh-yt-grid { grid-template-columns:repeat(2,1fr); }
+  .nh-art-img { width:80px;font-size:1.4rem; }
+}
+
 </style>
 
 <!-- Chart.js para gráfico comparativo de juros -->
@@ -1168,134 +1520,197 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 </header>
 
 <!-- ══════════════════════════════════════
-     HOME
+     HOME — REDESIGN .nh-
 ══════════════════════════════════════ -->
 <div id="sec-home" class="sec active">
 
-  <!-- HERO: Portal profissional — SEM calculadora duplicada -->
-  <div class="home-hero">
-    <div class="container">
-      <div style="position:relative;z-index:1;text-align:center;padding:8px 0 4px;">
-        <div style="display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:5px 18px;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.8);margin-bottom:18px;">
-          ⚖️ Ferramentas jurídicas e conteúdo especializado para advogados, RH e contadores
-        </div>
-        <h1 style="font-size:clamp(1.8rem,4vw,2.9rem);font-weight:800;color:#fff;letter-spacing:-1px;line-height:1.1;margin-bottom:14px;">
-          Direito do Trabalho e Ferramentas Jurídicas<br>em Um Só Lugar — 100% Gratuito
+  <!-- ═══════════════ NH HERO ═══════════════ -->
+  <section class="nh-hero">
+    <div class="container nh-hero-grid">
+
+      <!-- Coluna esquerda -->
+      <div class="nh-hero-left">
+        <h1 class="nh-h1">
+          Calculadoras de Prazos<br>
+          <span class="nh-h1-grad">e Ferramentas Jurídicas</span><br>
+          para Profissionais
         </h1>
-        <p style="font-size:.97rem;color:rgba(255,255,255,.65);max-width:520px;margin:0 auto 28px;">
-          Conteúdo jurídico atualizado com fontes do TST, STF e MTE. Calculadoras de prazos, verbas trabalhistas, correção monetária e muito mais.
-        </p>
-        <!-- Access buttons to real tools — NO duplicate calculator -->
-        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:32px;">
-          <button onclick="goTo('prazos')" style="display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--b800);border:none;border-radius:10px;padding:13px 24px;font-size:.95rem;font-weight:800;cursor:pointer;transition:all .2s;box-shadow:0 4px 20px rgba(0,0,0,.2);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
-            ⚡ Calculadora de Prazos
-          </button>
-          <button onclick="goTo('trabalhista')" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);border-radius:10px;padding:13px 24px;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(255,255,255,.25)'" onmouseout="this.style.background='rgba(255,255,255,.15)'">
-            ⚖️ Verbas Trabalhistas
-          </button>
-          <button onclick="goTo('correcao')" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);border-radius:10px;padding:13px 24px;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(255,255,255,.25)'" onmouseout="this.style.background='rgba(255,255,255,.15)'">
-            💰 Correção Monetária
-          </button>
+        <p class="nh-hero-sub">Conteúdo jurídico atualizado com fontes do TST, STF e MTE. Calculadoras de prazos, verbas trabalhistas, correção monetária e muito mais.</p>
+        <div class="nh-hero-ctas">
+          <button class="nh-btn-primary" onclick="goTo('prazos')">⚡ Calculadora de Prazos</button>
+          <button class="nh-btn-ghost" onclick="goTo('trabalhista')">⚖️ Verbas Trabalhistas</button>
         </div>
         <!-- Stats -->
-        <div style="display:flex;justify-content:center;gap:40px;flex-wrap:wrap;">
-          <div style="text-align:center;"><div class="hs-num">30+</div><div class="hs-lbl">Prazos jurídicos</div></div>
-          <div style="text-align:center;"><div class="hs-num">14+</div><div class="hs-lbl">Ferramentas</div></div>
-          <div style="text-align:center;"><div class="hs-num">100%</div><div class="hs-lbl">Gratuito</div></div>
+        <div class="nh-stats">
+          <div class="nh-stat">
+            <div class="nh-stat-num">30+</div>
+            <div class="nh-stat-lbl">Prazos jurídicos</div>
+          </div>
+          <div class="nh-stat-sep"></div>
+          <div class="nh-stat">
+            <div class="nh-stat-num" id="nh-stat-artigos">136</div>
+            <div class="nh-stat-lbl">Artigos publicados</div>
+          </div>
+          <div class="nh-stat-sep"></div>
+          <div class="nh-stat">
+            <div class="nh-stat-num">14+</div>
+            <div class="nh-stat-lbl">Ferramentas</div>
+          </div>
+          <div class="nh-stat-sep"></div>
+          <div class="nh-stat">
+            <div class="nh-stat-num">100%</div>
+            <div class="nh-stat-lbl">Gratuito</div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
 
+      <!-- Coluna direita — Card Acesso Rápido -->
+      <div class="nh-quick-card">
+        <div class="nh-quick-label">
+          <span class="nh-quick-line"></span>
+          ACESSO RÁPIDO
+        </div>
+        <div class="nh-quick-list">
+          <button class="nh-quick-btn" onclick="goTo('prazos')">
+            <div class="nh-quick-icon" style="background:rgba(37,99,235,.25);">⏱️</div>
+            <div class="nh-quick-text">
+              <div class="nh-quick-name">Calculadora de Prazos</div>
+              <div class="nh-quick-desc">Dias úteis e corridos, CLT e CPC</div>
+            </div>
+            <span class="nh-quick-arr">›</span>
+          </button>
+          <button class="nh-quick-btn" onclick="goTo('trabalhista')">
+            <div class="nh-quick-icon" style="background:rgba(99,102,241,.25);">⚖️</div>
+            <div class="nh-quick-text">
+              <div class="nh-quick-name">Verbas Trabalhistas</div>
+              <div class="nh-quick-desc">Rescisão CLT completa</div>
+            </div>
+            <span class="nh-quick-arr">›</span>
+          </button>
+          <button class="nh-quick-btn" onclick="goTo('correcao')">
+            <div class="nh-quick-icon" style="background:rgba(16,185,129,.2);">💰</div>
+            <div class="nh-quick-text">
+              <div class="nh-quick-name">Correção Monetária</div>
+              <div class="nh-quick-desc">IPCA, IGP-M, SELIC, CDI</div>
+            </div>
+            <span class="nh-quick-arr">›</span>
+          </button>
+          <button class="nh-quick-btn" onclick="goTo('salario')">
+            <div class="nh-quick-icon" style="background:rgba(245,158,11,.2);">💵</div>
+            <div class="nh-quick-text">
+              <div class="nh-quick-name">Salário Líquido</div>
+              <div class="nh-quick-desc">INSS + IRRF 2026</div>
+            </div>
+            <span class="nh-quick-arr">›</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
 
   <!-- ▸ ANÚNCIO: home-top -->
-  <div class="ad-container" id="ad-home-top">
-    
-  </div>
+  <div class="ad-container" id="ad-home-top"></div>
 
-
-
-  <!-- BLOG POSTS PREVIEW na home -->
-  <div style="background:var(--bg);padding:52px 0 60px;">
+  <!-- ═══════════════ NH ARTIGOS ═══════════════ -->
+  <section class="nh-artigos">
     <div class="container">
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px;">
+      <!-- Cabeçalho -->
+      <div class="nh-sec-head">
         <div>
-          <h2 class="sec-title">Direito do Trabalho em Destaque</h2>
-          <p class="sec-sub" style="margin-bottom:0;">Notícias, jurisprudência, orientações práticas, eSocial e folha de pagamento</p>
+          <div class="nh-eyebrow"><span class="nh-eyebrow-line"></span>CONTEÚDO</div>
+          <h2 class="nh-h2">Direito do Trabalho em Destaque</h2>
+          <p class="nh-sec-sub">Notícias, jurisprudência, orientações práticas, eSocial e folha de pagamento</p>
         </div>
-        <button class="btn btn-s" onclick="navGoTo('blog')" style="flex-shrink:0;">Ver todos os artigos →</button>
+        <button class="nh-ver-mais" onclick="navGoTo('blog')">Ver todos os artigos →</button>
       </div>
-      <!-- Category pills -->
-      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px;">
-        <button class="ctab on" id="home-blog-tab-all" style="font-size:.78rem;padding:5px 14px;">🕐 Mais Recentes</button>
-      </div>
-      <div id="home-blog-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;"></div>
-    </div>
-  </div>
 
-  <!-- YOUTUBE VIDEOS SECTION -->
-  <div style="background:var(--bg);padding:0 0 60px;">
-    <div class="container">
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px;">
+      <!-- Grid artigos -->
+      <div class="nh-artigos-grid">
+
+        <!-- Coluna esquerda: Mais Recentes -->
         <div>
-          <h2 class="sec-title">Vídeos no YouTube</h2>
-          <p class="sec-sub" style="margin-bottom:0;">Acompanhe os últimos vídeos do canal Calcula Prazo</p>
+          <div class="nh-col-label"><span class="nh-col-line"></span>🕐 MAIS RECENTES</div>
+          <div id="nh-recentes-list"></div>
         </div>
-        <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener" class="btn btn-s" style="flex-shrink:0;">Ver canal →</a>
+
+        <!-- Coluna direita: Top 10 -->
+        <div>
+          <div class="nh-top10-wrap">
+            <div class="nh-top10-head">🔥 MAIS ACESSADOS</div>
+            <div id="nh-top10-list"></div>
+          </div>
+        </div>
+
       </div>
-      <div id="yt-videos-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
-        <!-- filled by JS -->
-      </div>
+
+      <!-- home-blog-grid mantido oculto para o JS existente -->
+      <div id="home-blog-grid" style="display:none;"></div>
     </div>
-  </div>
+  </section>
 
-  <!-- SHORTCUT TOOL CARDS -->
-  <div class="container" style="padding:44px 0 0;">
-    <h2 class="sec-title" style="text-align:center;">Outras Ferramentas</h2>
-    <p class="sec-sub" style="text-align:center;">Clique para acessar qualquer ferramenta instantaneamente</p>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:600px;margin:0 auto 48px;">
-      <div onclick="goTo('correcao')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-        <div style="font-size:1.6rem;margin-bottom:8px;">💰</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Correção Monetária</div><div style="font-size:.72rem;color:var(--txt-s);">IPCA, IGP-M, SELIC.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-      </div>
-      <div onclick="goTo('trabalhista')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-        <div style="font-size:1.6rem;margin-bottom:8px;">⚖️</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Verbas Trabalhistas</div><div style="font-size:.72rem;color:var(--txt-s);">Calcule rescisão CLT.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-      </div>
-      <div onclick="goTo('salario')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-        <div style="font-size:1.6rem;margin-bottom:8px;">💵</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Salário Líquido</div><div style="font-size:.72rem;color:var(--txt-s);">INSS + IRRF 2026.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-      </div>
-      <div onclick="goTo('porcentagem')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-        <div style="font-size:1.6rem;margin-bottom:8px;">📊</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Porcentagem</div><div style="font-size:.72rem;color:var(--txt-s);">Desconto, aumento.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-      </div>
-      <div onclick="goTo('datas')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-        <div style="font-size:1.6rem;margin-bottom:8px;">📅</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Operações com Datas</div><div style="font-size:.72rem;color:var(--txt-s);">Diferenças e somas.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-      </div>
-      <div onclick="goTo('extenso')" style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--acc)';this.style.transform='translateY(-3px)';this.style.boxShadow='var(--sh)'" onmouseout="this.style.borderColor='var(--brd)';this.style.transform='';this.style.boxShadow=''">
-        <div style="font-size:1.6rem;margin-bottom:8px;">🔤</div><div style="font-size:.8rem;font-weight:700;color:var(--txt);margin-bottom:3px;">Número por Extenso</div><div style="font-size:.72rem;color:var(--txt-s);">Contratos e cheques.</div><div style="margin-top:8px;font-size:.72rem;font-weight:700;color:var(--acc);">Veja Mais ›</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ▸ ANÚNCIO: ad-home-middle (entre ferramentas e benefícios) -->
-  <div class="ad-container ad-desktop-only" id="ad-home-middle">
-    
-  </div>
-
-
-  <!-- BENEFITS -->
-  <div style="background:var(--txt);padding:44px 0;">
+  <!-- ═══════════════ NH YOUTUBE ═══════════════ -->
+  <section class="nh-youtube">
     <div class="container">
-      <h2 class="sec-title" style="color:#fff;text-align:center;margin-bottom:7px;">Por que usar o Calcula Prazo?</h2>
-      <p class="sec-sub" style="color:rgba(255,255,255,.5);text-align:center;">Conteúdo jurídico e ferramentas de precisão, tudo gratuito</p>
-      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:700px;margin:28px auto 0;">
-        <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">⚡</div><h3 style="color:#fff;">100% Gratuito</h3><p style="color:rgba(255,255,255,.5);">Ferramentas e conteúdo sem cadastro, sem limites e sem custos escondidos.</p></div>
-        <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">📰</div><h3 style="color:#fff;">Conteúdo Especializado</h3><p style="color:rgba(255,255,255,.5);">Artigos com fontes do TST, STF, TRTs e MTE. Atualizado diariamente.</p></div>
-        <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">🎯</div><h3 style="color:#fff;">Feito para Profissionais</h3><p style="color:rgba(255,255,255,.5);">Base legal em cada prazo. Tabelas INSS e IRRF atualizadas 2026.</p></div>
-        <div class="ben-card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);"><div class="ben-icon">🔒</div><h3 style="color:#fff;">Privacidade Total</h3><p style="color:rgba(255,255,255,.5);">Todos os cálculos são feitos localmente. Nenhum dado é enviado a servidores.</p></div>
+      <div class="nh-sec-head">
+        <div>
+          <div class="nh-eyebrow"><span class="nh-eyebrow-line"></span>YOUTUBE</div>
+          <h2 class="nh-h2">Vídeos no Canal</h2>
+          <p class="nh-sec-sub">Acompanhe os últimos vídeos do canal Calcula Prazo</p>
+        </div>
+        <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener" class="nh-ver-mais">Ver canal →</a>
+      </div>
+      <div id="yt-videos-grid" class="nh-yt-grid">
+        <!-- preenchido por loadYouTubeVideos() -->
       </div>
     </div>
-  </div>
+  </section>
+
+  <!-- ▸ ANÚNCIO: ad-home-middle (desktop only) -->
+  <div class="ad-container ad-desktop-only" id="ad-home-middle"></div>
+
+  <!-- ═══════════════ NH AUTORIDADE / BENEFÍCIOS ═══════════════ -->
+  <section class="nh-autoridade">
+    <div class="nh-autoridade-deco"></div>
+    <div class="container nh-autoridade-grid">
+
+      <!-- Coluna esquerda -->
+      <div class="nh-aut-left">
+        <div class="nh-eyebrow nh-eyebrow-light"><span class="nh-eyebrow-line nh-eyebrow-line-light"></span>POR QUE USAR</div>
+        <h2 class="nh-h2 nh-h2-light">Ferramentas de precisão, totalmente gratuitas</h2>
+        <p class="nh-aut-sub">Conteúdo jurídico com base legal explícita e cálculos que respeitam sua privacidade.</p>
+        <button class="nh-btn-primary" onclick="goTo('prazos')">⚡ Começar a Calcular</button>
+      </div>
+
+      <!-- Grid de benefícios -->
+      <div class="nh-ben-grid">
+        <div class="nh-ben-card">
+          <div class="nh-ben-icon">⚡</div>
+          <div class="nh-ben-name">100% Gratuito</div>
+          <div class="nh-ben-desc">Sem cadastro, sem limites, sem planos pagos</div>
+        </div>
+        <div class="nh-ben-card">
+          <div class="nh-ben-icon">📰</div>
+          <div class="nh-ben-name">Atualizado Diariamente</div>
+          <div class="nh-ben-desc">Artigos com fontes do TST, STF, TRTs e MTE</div>
+        </div>
+        <div class="nh-ben-card">
+          <div class="nh-ben-icon">🎯</div>
+          <div class="nh-ben-name">Base Legal Explícita</div>
+          <div class="nh-ben-desc">Cada cálculo referencia o artigo de lei aplicável</div>
+        </div>
+        <div class="nh-ben-card">
+          <div class="nh-ben-icon">🔒</div>
+          <div class="nh-ben-name">Privacidade Total</div>
+          <div class="nh-ben-desc">Cálculos no navegador. Nenhum dado sai do dispositivo</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
 
 </div><!-- /home -->
+
 
 <!-- ══════════════════════════════════════
      PRAZOS
@@ -4822,5 +5237,116 @@ window.addEventListener('hashchange', function() {
   </div>
   <button id="share-fab-btn" title="Compartilhar" aria-label="Compartilhar página" onclick="document.getElementById('share-fab-menu').classList.toggle('open')">📤</button>
 </div>
+<script>
+
+/* ═══════════════════════════════════════════
+   REDESIGN HOME — funções NH
+   Adicionado antes de </body>
+═══════════════════════════════════════════ */
+
+// IDs do Top 10 — edite os slugs manualmente
+var NH_TOP10_IDS = [
+  'aviso-previo-proporcional-como-calcular',
+  'calculadora-de-verbas-trabalhistas-rescisao-clt',
+  'estabilidade-emprego-gestante-acidente-trabalho-cipa-stf-tst-normas-coletivas',
+  'assedio-moral-no-trabalho-como-provar',
+  'demissao-por-justa-causa-quantas-advertencias-e-suspensoes',
+  'contrato-trabalho-intermitente-clt-reforma-trabalhista',
+  'ferias-principais-direitos-prazos-e-duvidas-dos-trabalhadores',
+  'beneficios-trabalhistas-empresa-e-obrigada',
+  'calculadora-de-salario-liquido-inss-irrf-2026',
+  'aposentadoria-por-pontos-inss-2026'
+];
+
+// Mapa emoji por categoria
+var NH_CAT_EMOJI = {
+  'trabalhista':'⚖️','jurisprudencia':'📋','legislacao':'📜',
+  'rh':'👥','processual':'🗂️','orgaos':'🏛️','essenciais':'⭐','outros':'📄'
+};
+
+function nhFormatDate(d){
+  if(!d) return '';
+  try{
+    var p=d.split('-');
+    if(p.length<3) return d;
+    return p[2]+'/'+p[1]+'/'+p[0];
+  }catch(e){return d;}
+}
+
+function renderNhRecentes(){
+  var list = document.getElementById('nh-recentes-list');
+  if(!list) return;
+  var posts = BLOG_POSTS.slice()
+    .sort(function(a,b){return (b.date||'').localeCompare(a.date||'');})
+    .slice(0,3);
+  if(!posts.length){
+    list.innerHTML='<p style="font-size:.85rem;color:var(--txt-s);padding:16px 0;">Nenhum artigo publicado ainda.</p>';
+    return;
+  }
+  list.innerHTML = posts.map(function(p){
+    var slug = p.id || p.slug || '';
+    var cat  = p.category_label || p.category || '';
+    var emoji= NH_CAT_EMOJI[p.category] || '📄';
+    var exc  = p.excerpt || p.description || '';
+    return '<a class="nh-art-card" href="/blog/'+slug+'.html">'
+      +'<div class="nh-art-img">'+emoji+'</div>'
+      +'<div class="nh-art-body">'
+        +(cat?'<span class="nh-art-badge">'+cat+'</span>':'')
+        +'<div class="nh-art-title">'+(p.title||'')+'</div>'
+        +(exc?'<div class="nh-art-excerpt">'+exc+'</div>':'')
+        +'<div class="nh-art-meta">'
+          +'<span class="nh-art-date">'+nhFormatDate(p.date)+'</span>'
+          +'<span class="nh-art-ler">Ler →</span>'
+        +'</div>'
+      +'</div>'
+    +'</a>';
+  }).join('');
+}
+
+function renderNhTop10(){
+  var list = document.getElementById('nh-top10-list');
+  if(!list) return;
+  // Mapear slugs para posts
+  var map = {};
+  BLOG_POSTS.forEach(function(p){
+    var s = p.id || p.slug || '';
+    if(s) map[s] = p;
+  });
+  var items = NH_TOP10_IDS.map(function(slug, i){
+    var p = map[slug];
+    if(!p) return null;
+    var numCls = i < 3 ? 'top' : 'rest';
+    var cat = p.category_label || p.category || '';
+    return '<a class="nh-top10-item" href="/blog/'+slug+'.html">'
+      +'<span class="nh-top10-num '+numCls+'">'+(i+1)+'</span>'
+      +'<div class="nh-top10-info">'
+        +'<div class="nh-top10-title">'+(p.title||slug)+'</div>'
+        +(cat?'<div class="nh-top10-cat">'+cat+'</div>':'')
+      +'</div>'
+    +'</a>';
+  }).filter(Boolean);
+  if(!items.length){
+    list.innerHTML='<p style="font-size:.8rem;color:var(--txt-s);padding:8px 0;">Carregando...</p>';
+    return;
+  }
+  list.innerHTML = items.join('');
+}
+
+// Hook: chamar NH junto com renderHomeBlog
+(function(){
+  var _orig = window.renderHomeBlog;
+  window.renderHomeBlog = function(){
+    if(typeof _orig === 'function') _orig();
+    renderNhRecentes();
+    renderNhTop10();
+    // Atualizar contador de artigos no hero NH
+    var el = document.getElementById('nh-stat-artigos');
+    if(el && BLOG_POSTS && BLOG_POSTS.length > 0){
+      el.textContent = BLOG_POSTS.length;
+    }
+  };
+})();
+
+</script>
 </body>
 </html>
