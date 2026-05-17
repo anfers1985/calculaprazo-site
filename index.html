@@ -1276,26 +1276,26 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   padding-bottom:11px;margin-bottom:13px;
 }
 .nh-top10-item {
-  display:flex;align-items:flex-start;
-  gap:9px;padding:7px 0;cursor:pointer;
+  display:flex;align-items:center;
+  gap:10px;padding:8px 0;cursor:pointer;
   border-bottom:1px solid var(--brd);
   text-decoration:none;
   transition:all .15s;
 }
 .nh-top10-item:last-child { border-bottom:none; }
 .nh-top10-item:hover .nh-top10-title { color:var(--acc); }
-.nh-top10-num {
-  font-size:.75rem;font-weight:800;
-  width:18px;flex-shrink:0;margin-top:1px;
+.nh-top10-img {
+  width:64px;height:48px;flex-shrink:0;
+  border-radius:6px;overflow:hidden;
+  background:var(--b800);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;
 }
-.nh-top10-num.top { color:var(--acc); }
-.nh-top10-num.rest { color:var(--txt-s); }
+.nh-top10-img img { width:100%;height:100%;object-fit:cover;display:block; }
 .nh-top10-info { flex:1;min-width:0; }
 .nh-top10-title {
   font-size:.78rem;font-weight:700;color:var(--txt);
   line-height:1.35;
-  display:-webkit-box;-webkit-line-clamp:2;
-  -webkit-box-orient:vertical;overflow:hidden;
   transition:color .15s;
 }
 .nh-top10-cat { font-size:.62rem;color:var(--txt-s);margin-top:2px; }
@@ -5320,16 +5320,16 @@ function renderNhTop10(){
   var items = NH_TOP10_IDS.map(function(slug, i){
     var p = map[slug];
     if(!p) return null;
-    var numCls = i < 3 ? 'top' : 'rest';
     var cat = p.category_label || p.category || '';
+    var img = p.image || '';
+    var imgHtml = img ? '<img src="'+img+'" alt="">' : (NH_CAT_EMOJI[p.category]||'📄');
     return '<a class="nh-top10-item" href="/blog/'+slug+'.html">'
-      +'<span class="nh-top10-num '+numCls+'">'+(i+1)+'</span>'
+      +'<div class="nh-top10-img">'+imgHtml+'</div>'
       +'<div class="nh-top10-info">'
         +'<div class="nh-top10-title">'+(p.title||slug)+'</div>'
         +(cat?'<div class="nh-top10-cat">'+cat+'</div>':'')
       +'</div>'
     +'</a>';
-  }).filter(Boolean);
   if(!items.length){
     list.innerHTML='<p style="font-size:.8rem;color:var(--txt-s);padding:8px 0;">Carregando...</p>';
     return;
