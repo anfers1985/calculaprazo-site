@@ -1142,7 +1142,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     </a>
     <nav class="hdr-nav">
       <a href="/" style="display:flex;align-items:center;gap:4px;">🏠 Início</a>
-      <a href="/#prazos">Calculadora</a>
+      <a href="/#calculadora-de-prazo-processual">Calculadora</a>
       <div class="nav-dropdown" id="nav-dropdown-ferramentas">
         <a id="nav-tools" onclick="toggleFerramentas(event)">Ferramentas</a>
         <div class="nav-drop-menu" id="ferramentas-menu">
@@ -1165,72 +1165,13 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       </div>
       <div class="nav-dropdown" id="nav-dropdown-conteudo">
         <a id="nav-conteudo" onclick="toggleConteudo(event)">Conteúdo</a>
-        <div class="nav-drop-menu" id="conteudo-menu" style="min-width:280px;max-height:82vh;overflow-y:auto;">
-          <a href="/" onclick="goConteudo('','',event)"><span class="dm-icon">📰</span>Todos os Artigos</a>
+        <div class="nav-drop-menu" id="conteudo-menu">
+          <a onclick="navGoTo('blog')"><span class="dm-icon">📰</span>Todos os Artigos</a>
           <div class="nav-drop-divider"></div>
-
-          <a class="nm-sec" onclick="toggleNavSec('nms-jurisp',event)"><span class="dm-icon">⚖️</span>Jurisprudência<span class="nm-arr" id="nma-jurisp">›</span></a>
-          <div class="nm-sub-wrap" id="nms-jurisp">
-            <a class="nm-sub" href="/" onclick="goConteudo('jurisprudencia','jurisprudencia-trts',event)">TRT</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('jurisprudencia','jurisprudencia-tst',event)">TST</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('jurisprudencia','jurisprudencia-stj',event)">STJ</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('jurisprudencia','jurisprudencia-stf',event)">STF</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('jurisprudencia','',event)" style="font-style:italic;font-size:.76rem;color:var(--txt-s,#888)">+ outros temas</a>
-          </div>
-
-          <a class="nm-sec" onclick="toggleNavSec('nms-orgaos',event)"><span class="dm-icon">🏛️</span>Órgãos Públicos<span class="nm-arr" id="nma-orgaos">›</span></a>
-          <div class="nm-sub-wrap" id="nms-orgaos">
-            <a class="nm-sub" href="/" onclick="goConteudo('orgaos-publicos','noticias-mte',event)">MTE</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('orgaos-publicos','noticias-mpt',event)">MPT</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('orgaos-publicos','',event)" style="font-style:italic;font-size:.76rem;color:var(--txt-s,#888)">+ outros órgãos</a>
-          </div>
-
-          <a class="nm-sec" onclick="toggleNavSec('nms-leg',event)"><span class="dm-icon">📋</span>Legislação e Normas<span class="nm-arr" id="nma-leg">›</span></a>
-          <div class="nm-sub-wrap" id="nms-leg">
-            <a class="nm-sub" href="/" onclick="goConteudo('legislacao-normas','legislacao-clt',event)">CLT</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('legislacao-normas','legislacao-cf',event)">Constituição Federal</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('legislacao-normas','esocial',event)">eSocial</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('legislacao-normas','fgts-digital',event)">FGTS Digital</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('legislacao-normas','legislacao-previdenciario',event)">Previdenciário</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('legislacao-normas','legislacao-sindical',event)">Sindical</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('legislacao-normas','legislacao-portarias',event)">Portarias</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('legislacao-normas','legislacao-nr',event)">NR</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('legislacao-normas','',event)" style="font-style:italic;font-size:.76rem;color:var(--txt-s,#888)">+ outras Legislação</a>
-          </div>
-
-          <a class="nm-sec" onclick="toggleNavSec('nms-rh',event)"><span class="dm-icon">👥</span>RH e Gestão de Pessoas<span class="nm-arr" id="nma-rh">›</span></a>
-          <div class="nm-sub-wrap" id="nms-rh">
-            <a class="nm-sub" href="/" onclick="goConteudo('rh-gestao','rh-folha',event)">Folha de Pagamento</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('rh-gestao','rh-jornada',event)">Jornada de Trabalho</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('rh-gestao','rh-contrato',event)">Contrato de Trabalho</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('rh-gestao','rh-salario',event)">Salário</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('rh-gestao','rh-rescisao',event)">Rescisão Contratual</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('rh-gestao','saude-seguranca',event)">Saúde e Segurança</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('rh-gestao','rh-beneficios',event)">Benefícios</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('rh-gestao','rh-ctps',event)">CTPS</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('rh-gestao','rh-inss',event)">INSS</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('rh-gestao','rh-modelos',event)">Modelos de RH</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('rh-gestao','',event)" style="font-style:italic;font-size:.76rem;color:var(--txt-s,#888)">+ outros temas de RH</a>
-          </div>
-
-          <a class="nm-sec" onclick="toggleNavSec('nms-proc',event)"><span class="dm-icon">📄</span>Processual<span class="nm-arr" id="nma-proc">›</span></a>
-          <div class="nm-sub-wrap" id="nms-proc">
-            <a class="nm-sub" href="/" onclick="goConteudo('processual','processual-peticoes',event)">Petições e Peças</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('processual','processual-pratica',event)">Prática Advocatícia</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('processual','modelos',event)">Modelos</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('processual','processual-analises',event)">Análises</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('processual','',event)" style="font-style:italic;font-size:.76rem;color:var(--txt-s,#888)">+ outros temas</a>
-          </div>
-
-          <a class="nm-sec" onclick="toggleNavSec('nms-ess',event)"><span class="dm-icon">⭐</span>Essenciais<span class="nm-arr" id="nma-ess">›</span></a>
-          <div class="nm-sub-wrap" id="nms-ess">
-            <a class="nm-sub" href="/" onclick="goConteudo('essenciais','essenciais-livros',event)">📚 Livros Jurídicos</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('essenciais','essenciais-equipamentos',event)">🖥️ Equipamentos</a>
-            <a class="nm-sub" href="/" onclick="goConteudo('essenciais','essenciais-cursos',event)">🎓 Cursos</a>
-          </div>
-
-          <div class="nav-drop-divider"></div>
-          <a href="/" onclick="goConteudo('outros','',event)"><span class="dm-icon">🔧</span>Outros</a>
+          <a onclick="navGoTo('blog');filterBlog('direito')"><span class="dm-icon">⚖️</span>Direito</a>
+          <a onclick="navGoTo('blog');filterBlog('rh')"><span class="dm-icon">👥</span>Recursos Humanos</a>
+          <a onclick="navGoTo('blog');filterBlog('contabilidade')"><span class="dm-icon">📊</span>Contabilidade</a>
+          <a onclick="navGoTo('blog');filterBlog('geral')"><span class="dm-icon">📌</span>Geral</a>
         </div>
       </div>
       <a href="/#sobre">Sobre</a>
@@ -1511,8 +1452,20 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     </div>
   </div>
 
-  
-  <!-- Posts grid -->
+  <!-- Filter tabs -->
+  <div class="container" style="padding-top:32px;">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;align-items:center;">
+      <button class="ctab on" id="blog-tab-all"  onclick="filterBlog('')">Todos</button>
+      <button class="ctab"     id="blog-tab-dir"  onclick="filterBlog('direito')">⚖️ Direito</button>
+      <button class="ctab"     id="blog-tab-rh"   onclick="filterBlog('rh')">👥 RH</button>
+      <button class="ctab"     id="blog-tab-cont" onclick="filterBlog('contabilidade')">📊 Contabilidade</button>
+      <button class="ctab"     id="blog-tab-ger"  onclick="filterBlog('geral')">📌 Geral</button>
+      <div style="margin-left:auto;">
+        <input type="text" id="blog-search" placeholder="🔍 Buscar artigos..." oninput="renderBlogSection()" style="padding:8px 14px;border:1.5px solid var(--brd);border-radius:999px;font-size:.83rem;font-family:var(--fh);color:var(--txt);width:220px;">
+      </div>
+    </div>
+
+    <!-- Posts grid -->
     <div id="blog-posts-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;margin-bottom:40px;"></div>
 
     <!-- Empty state -->
@@ -1578,13 +1531,6 @@ function goTo(id) {
     window.location.href = '/#' + id;
   }
 }
-function goConteudo(sec, cat, e) {
-  if(e) e.preventDefault();
-  try {
-    if(sec||cat) sessionStorage.setItem('cp_nav_filter', JSON.stringify({sec:sec, cat:cat}));
-  } catch(ex){}
-  window.location.href = '/#conteudo';
-}
 function navGoTo(id) {
   goTo(id);
 }
@@ -1598,6 +1544,9 @@ function toggleConteudo(e) {
   const dd = document.getElementById('nav-dropdown-conteudo');
   dd.classList.toggle('open');
 }
+function filterBlog(cat) {
+  window.location.href = '/#conteudo';
+}
 // Close dropdowns on outside click
 document.addEventListener('click', function(e) {
   if (!e.target.closest('.nav-dropdown')) {
@@ -1606,9 +1555,9 @@ document.addEventListener('click', function(e) {
 });
 
 // ── RELATED POSTS ─────────────────────────────
-var THIS_SLUG = 'melhor-cadeira-ergonomica-2026';
-var THIS_CAT  = 'essenciais';
-var THIS_TAGS = ['ergonomia','home-office','nr17'];
+var THIS_SLUG = 'lei-igualdade-salarial-constitucional-stf-adi-7612';
+var THIS_CAT  = '{{CATEGORY}}';
+var THIS_TAGS = {{TAGS_JSON}};
 
 async function loadRelated() {
   let posts = [];
