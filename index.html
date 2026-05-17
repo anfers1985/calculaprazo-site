@@ -5193,19 +5193,21 @@ function toggleSociais(e){
   function loadYouTubeVideos(){
     var grid=document.getElementById('yt-videos-grid');
     if(!grid)return;
-    // First resolve the channel handle to a channelId
-    fetch('https://www.googleapis.com/youtube/v3/channels?part=id&forHandle=CalculaPrazo&key='+YT_API_KEY)
+    // Step 1: resolve handle → contentDetails (uploads playlist ID) — costs ~5 units
+    fetch('https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forHandle=CalculaPrazo&key='+YT_API_KEY)
       .then(function(r){return r.json();})
       .then(function(d){
-        var cid=(d.items&&d.items[0])?d.items[0].id:null;
-        if(!cid){grid.innerHTML='<p style="color:var(--txt-s);font-size:.85rem;">Não foi possível carregar os vídeos.</p>';return;}
-        return fetch('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId='+cid+'&maxResults=4&order=date&type=video&key='+YT_API_KEY);
+        var uploads=d.items&&d.items[0]&&d.items[0].contentDetails&&d.items[0].contentDetails.relatedPlaylists&&d.items[0].contentDetails.relatedPlaylists.uploads;
+        if(!uploads){grid.innerHTML='<p style="color:var(--txt-s);font-size:.85rem;">Canal não encontrado.</p>';return;}
+        // Step 2: get latest videos from uploads playlist — costs 1 unit (vs 100 for search.list)
+        return fetch('https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId='+uploads+'&maxResults=4&key='+YT_API_KEY);
       })
       .then(function(r){if(r)return r.json();})
       .then(function(d){
         if(!d||!d.items||!d.items.length){grid.innerHTML='<p style="color:var(--txt-s);font-size:.85rem;">Nenhum vídeo encontrado.</p>';return;}
         grid.innerHTML=d.items.map(function(item){
-          var vid=item.id.videoId;
+          var vid=item.snippet&&item.snippet.resourceId&&item.snippet.resourceId.videoId;
+          if(!vid)return null;
           var sn=item.snippet;
           var thumb=sn.thumbnails&&(sn.thumbnails.maxres||sn.thumbnails.high||sn.thumbnails.medium||sn.thumbnails.default);
           var thumbUrl=thumb?thumb.url:'';
@@ -5222,7 +5224,7 @@ function toggleSociais(e){
             +'<div style="font-size:.85rem;font-weight:700;color:var(--txt);line-height:1.4;flex:1;">'+sn.title+'</div>'
             +'<div style="font-size:.72rem;color:var(--txt-s);margin-top:7px;">'+dateStr+'</div>'
             +'</div></a>';
-        }).join('');
+        }).filter(Boolean).join('');
       })
       .catch(function(){
         if(grid)grid.innerHTML='<p style="color:var(--txt-s);font-size:.85rem;">Não foi possível carregar os vídeos.</p>';
