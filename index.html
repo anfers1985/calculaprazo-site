@@ -3625,8 +3625,8 @@ function calcDatas(){
   try{
     let v='',d='';
     if(dM==='diff'){const a=pd(document.getElementById('d-a1').value),b=pd(document.getElementById('d-b1').value);if(!a||!b)throw new Error('Preencha as datas.');const dias=Math.round(Math.abs(b.getTime()-a.getTime())/864e5);v=`${dias} dias`;d=`De ${fd(a)} (${cap(dsem(a))}) a ${fd(b)} (${cap(dsem(b))}). ${Math.floor(dias/365)} anos, ${Math.floor((dias%365)/30)} meses e ${dias%30} dias aprox.`;}
-    else if(dM==='add'){const a=pd(document.getElementById('d-a2').value);const n=parseInt(document.getElementById('d-b2').value)||0;if(!a)throw new Error('Preencha a data.');const r=new Date(a.getTime()+n*864e5);v=fd(r);d=`${cap(dsem(r))} · ${n} dias somados a ${fd(a)}`;}
-    else if(dM==='sub'){const a=pd(document.getElementById('d-a3').value);const n=parseInt(document.getElementById('d-b3').value)||0;if(!a)throw new Error('Preencha a data.');const r=new Date(a.getTime()-n*864e5);v=fd(r);d=`${cap(dsem(r))} · ${n} dias subtraídos de ${fd(a)}`;}
+    else if(dM==='add'){const a=pd(document.getElementById('d-a2').value);const n=parseInt(document.getElementById('d-b2').value);if(!a)throw new Error('Preencha a data base.');if(!n||n<=0)throw new Error('Informe pelo menos 1 dia para somar.');const r=new Date(a.getTime()+n*864e5);v=fd(r);d=`${cap(dsem(r))} · ${n} dia${n===1?'':'s'} somado${n===1?'':'s'} a ${fd(a)}`;}
+    else if(dM==='sub'){const a=pd(document.getElementById('d-a3').value);const n=parseInt(document.getElementById('d-b3').value);if(!a)throw new Error('Preencha a data base.');if(!n||n<=0)throw new Error('Informe pelo menos 1 dia para subtrair.');const r=new Date(a.getTime()-n*864e5);v=fd(r);d=`${cap(dsem(r))} · ${n} dia${n===1?'':'s'} subtraído${n===1?'':'s'} de ${fd(a)}`;}
     else{const a=pd(document.getElementById('d-a4').value);if(!a)throw new Error('Preencha a data.');v=cap(dsem(a));d=`${fd(a)}`;}
     document.getElementById('d-res-val').textContent=v;document.getElementById('d-res-det').textContent=d;rb.classList.add('show');showAdAfterResult('ad-datas-result');
   }catch(e){document.getElementById('d-res-val').textContent='Erro: '+e.message;rb.classList.add('show','err');}
@@ -4782,7 +4782,23 @@ function toggleSociais(e){
     loadBlogPosts();
     loadYouTubeVideos();
     var hash=window.location.hash;
-    if(hash==='#conteudo'||hash==='#blog'){setTimeout(function(){navGoTo('blog');},200);}
+    if(hash==='#conteudo'||hash==='#blog'){
+      setTimeout(function(){
+        navGoTo('blog');
+        // Aplica filtro de navegação vindo de artigos (via goConteudo nos posts)
+        try {
+          var cpFilter = sessionStorage.getItem('cp_nav_filter');
+          if(cpFilter){
+            sessionStorage.removeItem('cp_nav_filter');
+            var f = JSON.parse(cpFilter);
+            setTimeout(function(){
+              if(f.cat && f.sec){ filterBlogSub(f.cat, f.sec); }
+              else if(f.sec){ filterBlogSection(f.sec); }
+            }, 80);
+          }
+        } catch(ex){}
+      }, 200);
+    }
   }
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',bootAll);}else{bootAll();}
 })();
