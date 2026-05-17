@@ -1222,16 +1222,12 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   transform:translateY(-2px);
 }
 .nh-art-img {
-  width:130px;min-height:110px;flex-shrink:0;
+  width:130px;flex-shrink:0;align-self:stretch;
   background:linear-gradient(135deg,var(--b800),var(--b900));
   display:flex;align-items:center;justify-content:center;
   font-size:1.8rem;
   overflow:hidden;
-  align-self:stretch;
-}
-.nh-art-img img {
-  width:100%;height:100%;object-fit:cover;display:block;
-  min-height:110px;
+  background-size:cover;background-position:center;
 }
 .nh-art-body { padding:13px 15px;flex:1;min-width:0; }
 .nh-art-badge {
@@ -5290,9 +5286,9 @@ function renderNhRecentes(){
     var emoji= NH_CAT_EMOJI[p.category] || '📄';
     var exc  = p.excerpt || p.description || '';
     var imgUrl = p.image || '';
-    var imgHtml = imgUrl ? '<img src="'+imgUrl+'" alt="" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.parentElement.innerHTML=\''+emoji+'\'">' : emoji;
+    var imgStyle = imgUrl ? 'background-image:url('+imgUrl+');background-size:cover;background-position:center;' : '';
     return '<a class="nh-art-card" href="/blog/'+slug+'.html">'
-      +'<div class="nh-art-img" style="overflow:hidden;padding:0;">'+imgHtml+'</div>'
+      +'<div class="nh-art-img" style="'+imgStyle+'">'+( imgUrl ? '' : emoji )+'</div>'
       +'<div class="nh-art-body">'
         +(cat?'<span class="nh-art-badge">'+cat+'</span>':'')
         +'<div class="nh-art-title">'+(p.title||'')+'</div>'
