@@ -1207,6 +1207,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 /* Card artigo recente */
 .nh-art-card {
   display:flex;
+  flex-direction:row;
+  height:130px;
   background:var(--card);
   border:1.5px solid var(--brd);
   border-radius:var(--rl);
@@ -1222,10 +1224,14 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   transform:translateY(-2px);
 }
 .nh-art-img {
-  width:110px;flex-shrink:0;
-  background:linear-gradient(135deg,var(--b800),var(--b900));
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.8rem;
+  width:160px;flex-shrink:0;
+  overflow:hidden;
+}
+.nh-art-img img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
 }
 .nh-art-body { padding:13px 15px;flex:1;min-width:0; }
 .nh-art-badge {
@@ -1236,16 +1242,16 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   padding:2px 9px;margin-bottom:6px;
 }
 .nh-art-title {
-  font-size:.88rem;font-weight:700;color:var(--txt);
-  line-height:1.4;margin-bottom:5px;
+  font-size:.84rem;font-weight:700;color:var(--txt);
+  line-height:1.3;margin-bottom:4px;
   display:-webkit-box;-webkit-line-clamp:2;
   -webkit-box-orient:vertical;overflow:hidden;
 }
 .nh-art-excerpt {
-  font-size:.76rem;color:var(--txt-m);
+  font-size:.74rem;color:var(--txt-m);
   display:-webkit-box;-webkit-line-clamp:2;
   -webkit-box-orient:vertical;overflow:hidden;
-  margin-bottom:8px;
+  margin-bottom:6px;line-height:1.4;
 }
 .nh-art-meta {
   display:flex;align-items:center;justify-content:space-between;
@@ -1270,26 +1276,26 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   padding-bottom:11px;margin-bottom:13px;
 }
 .nh-top10-item {
-  display:flex;align-items:center;
-  gap:10px;padding:8px 0;cursor:pointer;
+  display:flex;align-items:flex-start;
+  gap:9px;padding:7px 0;cursor:pointer;
   border-bottom:1px solid var(--brd);
   text-decoration:none;
   transition:all .15s;
 }
 .nh-top10-item:last-child { border-bottom:none; }
 .nh-top10-item:hover .nh-top10-title { color:var(--acc); }
-.nh-top10-img {
-  width:64px;height:48px;flex-shrink:0;
-  border-radius:6px;overflow:hidden;
-  background:var(--b800);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.2rem;
+.nh-top10-num {
+  font-size:.75rem;font-weight:800;
+  width:18px;flex-shrink:0;margin-top:1px;
 }
-.nh-top10-img img { width:100%;height:100%;object-fit:cover;display:block; }
+.nh-top10-num.top { color:var(--acc); }
+.nh-top10-num.rest { color:var(--txt-s); }
 .nh-top10-info { flex:1;min-width:0; }
 .nh-top10-title {
   font-size:.78rem;font-weight:700;color:var(--txt);
   line-height:1.35;
+  display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;
   transition:color .15s;
 }
 .nh-top10-cat { font-size:.62rem;color:var(--txt-s);margin-top:2px; }
@@ -5285,11 +5291,11 @@ function renderNhRecentes(){
     var exc  = p.excerpt || p.description || '';
     var imgUrl = p.image || '';
     var imgPart = imgUrl
-    var imgPart = imgUrl
-      ? '<img src="'+imgUrl+'" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">'
-      : '<span style="font-size:1.8rem;">'+emoji+'</span>';
+      ? '<img src="'+imgUrl+'" alt="" style="width:100%;display:block;">'
+      : '<span style="font-size:2rem;">'+emoji+'</span>';
     return '<a class="nh-art-card" href="/blog/'+slug+'.html">'
-      +'<div class="nh-art-img" style="height:auto;min-height:110px;overflow:hidden;padding:0;">'+imgPart+'</div>'
+      +'<div class="nh-art-img">'+imgPart+'</div>'
+      +'<div class="nh-art-body">'
         +(cat?'<span class="nh-art-badge">'+cat+'</span>':'')
         +'<div class="nh-art-title">'+(p.title||'')+'</div>'
         +(exc?'<div class="nh-art-excerpt">'+exc+'</div>':'')
@@ -5314,16 +5320,16 @@ function renderNhTop10(){
   var items = NH_TOP10_IDS.map(function(slug, i){
     var p = map[slug];
     if(!p) return null;
+    var numCls = i < 3 ? 'top' : 'rest';
     var cat = p.category_label || p.category || '';
-    var img = p.image || '';
-    var imgHtml = img ? '<img src="'+img+'" alt="">' : (NH_CAT_EMOJI[p.category]||'📄');
     return '<a class="nh-top10-item" href="/blog/'+slug+'.html">'
-      +'<div class="nh-top10-img">'+imgHtml+'</div>'
+      +'<span class="nh-top10-num '+numCls+'">'+(i+1)+'</span>'
       +'<div class="nh-top10-info">'
         +'<div class="nh-top10-title">'+(p.title||slug)+'</div>'
         +(cat?'<div class="nh-top10-cat">'+cat+'</div>':'')
       +'</div>'
     +'</a>';
+  }).filter(Boolean);
   if(!items.length){
     list.innerHTML='<p style="font-size:.8rem;color:var(--txt-s);padding:8px 0;">Carregando...</p>';
     return;
