@@ -1192,7 +1192,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 .nh-artigos-grid {
   display:grid;
-  grid-template-columns:1fr 280px;
+  grid-template-columns:1fr 320px;
   gap:40px;
   align-items:start;
 }
@@ -1208,7 +1208,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .nh-art-card {
   display:flex;
   flex-direction:row;
-  min-height:130px;
+  align-items:stretch;
   background:var(--card);
   border:1.5px solid var(--brd);
   border-radius:var(--rl);
@@ -1224,45 +1224,57 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   transform:translateY(-2px);
 }
 .nh-art-img {
-  width:190px;flex-shrink:0;
+  width:160px;
+  min-height:118px;
+  flex-shrink:0;
   overflow:hidden;
-  align-self:stretch;
   position:relative;
+  background:var(--b50);
 }
 .nh-art-img img {
+  position:absolute;
+  top:0;left:0;
   width:100%;
   height:100%;
   object-fit:cover;
   display:block;
-  position:absolute;
-  top:0;left:0;
 }
-.nh-art-body { padding:12px 14px;flex:1;min-width:0;display:flex;flex-direction:column;justify-content:space-between; }
+.nh-art-img-emoji {
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-size:2rem;
+}
+.nh-art-body {
+  padding:12px 14px;
+  flex:1;min-width:0;
+  display:flex;flex-direction:column;
+}
 .nh-art-badge {
   display:inline-block;
   font-size:.6rem;font-weight:700;text-transform:uppercase;
   color:var(--acc);background:var(--b50);
   border:1px solid var(--b100);border-radius:999px;
   padding:2px 9px;margin-bottom:6px;
+  align-self:flex-start;
 }
 .nh-art-title {
-  font-size:.86rem;font-weight:700;color:var(--txt);
+  font-size:.84rem;font-weight:700;color:var(--txt);
   line-height:1.35;margin-bottom:5px;
 }
 .nh-art-excerpt {
-  font-size:.74rem;color:var(--txt-m);
+  font-size:.73rem;color:var(--txt-m);
   display:-webkit-box;-webkit-line-clamp:2;
   -webkit-box-orient:vertical;overflow:hidden;
-  margin-bottom:8px;line-height:1.45;
+  line-height:1.45;
   flex:1;
 }
 .nh-art-meta {
   display:flex;align-items:center;justify-content:space-between;
-  margin-top:auto;
+  margin-top:8px;
 }
-.nh-art-date { font-size:.68rem;color:var(--txt-s); }
+.nh-art-date { font-size:.67rem;color:var(--txt-s); }
 .nh-art-ler {
-  font-size:.75rem;font-weight:700;color:var(--acc);
+  font-size:.74rem;font-weight:700;color:var(--acc);
 }
 
 /* Top 10 */
@@ -1277,11 +1289,15 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   font-size:.65rem;font-weight:700;
   text-transform:uppercase;color:var(--txt-m);
   border-bottom:1px solid var(--brd);
-  padding-bottom:11px;margin-bottom:13px;
+  padding-bottom:11px;margin-bottom:11px;
 }
 .nh-top10-item {
-  display:flex;align-items:flex-start;
-  gap:9px;padding:8px 0;cursor:pointer;
+  display:grid;
+  grid-template-columns:20px 80px 1fr;
+  align-items:center;
+  gap:8px;
+  padding:8px 0;
+  cursor:pointer;
   border-bottom:1px solid var(--brd);
   text-decoration:none;
   transition:all .15s;
@@ -1289,13 +1305,13 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .nh-top10-item:last-child { border-bottom:none; }
 .nh-top10-item:hover .nh-top10-title { color:var(--acc); }
 .nh-top10-num {
-  font-size:.75rem;font-weight:800;
-  width:18px;flex-shrink:0;margin-top:2px;
+  font-size:.72rem;font-weight:800;
+  text-align:center;
 }
 .nh-top10-num.top { color:var(--acc); }
 .nh-top10-num.rest { color:var(--txt-s); }
 .nh-top10-thumb {
-  width:56px;height:56px;flex-shrink:0;
+  width:80px;height:56px;flex-shrink:0;
   border-radius:6px;overflow:hidden;
   background:var(--b50);
   position:relative;
@@ -1305,13 +1321,13 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   object-fit:cover;
   display:block;
 }
-.nh-top10-info { flex:1;min-width:0; }
+.nh-top10-info { min-width:0; }
 .nh-top10-title {
-  font-size:.78rem;font-weight:700;color:var(--txt);
-  line-height:1.35;
+  font-size:.75rem;font-weight:700;color:var(--txt);
+  line-height:1.3;
   transition:color .15s;
 }
-.nh-top10-cat { font-size:.62rem;color:var(--txt-s);margin-top:3px; }
+.nh-top10-cat { font-size:.6rem;color:var(--txt-s);margin-top:3px; }
 
 /* ── YOUTUBE ── */
 .nh-youtube {
@@ -1384,12 +1400,16 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   .nh-stat { padding:0 14px; }
   .nh-artigos,.nh-youtube,.nh-autoridade { padding:44px 0; }
   .nh-ben-grid { grid-template-columns:1fr; }
+  .nh-art-img { width:130px; min-height:100px; }
+  .nh-top10-item { grid-template-columns:20px 64px 1fr; }
+  .nh-top10-thumb { width:64px; height:45px; }
 }
 @media(max-width:480px){
-  .nh-yt-grid { grid-template-columns:repeat(2,1fr); }
-  .nh-art-img { width:110px; }
+  .nh-yt-grid { grid-template-columns:1fr; }
+  .nh-art-img { width:110px; min-height:90px; }
   .nh-art-title { font-size:.8rem; }
-  .nh-top10-thumb { width:48px;height:48px; }
+  .nh-top10-item { grid-template-columns:18px 56px 1fr; gap:6px; }
+  .nh-top10-thumb { width:56px; height:40px; }
 }
 
 </style>
@@ -5187,20 +5207,20 @@ function toggleSociais(e){
         grid.innerHTML=d.items.map(function(item){
           var vid=item.id.videoId;
           var sn=item.snippet;
-          var thumb=sn.thumbnails&&(sn.thumbnails.medium||sn.thumbnails.high||sn.thumbnails.default);
+          var thumb=sn.thumbnails&&(sn.thumbnails.maxres||sn.thumbnails.high||sn.thumbnails.medium||sn.thumbnails.default);
           var thumbUrl=thumb?thumb.url:'';
           var publishedDate=new Date(sn.publishedAt);
           var dateStr=publishedDate.toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'});
-          return '<a href="https://www.youtube.com/watch?v='+vid+'" target="_blank" rel="noopener" style="display:block;background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);overflow:hidden;text-decoration:none;transition:all .2s;box-shadow:var(--sh);" onmouseover="this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'var(--shl)\'" onmouseout="this.style.transform=\'\';this.style.boxShadow=\'var(--sh)\'">'
-            +'<div style="position:relative;overflow:hidden;aspect-ratio:16/9;background:#000;">'
-            +'<img src="'+thumbUrl+'" alt="'+sn.title+'" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">'
+          return '<a href="https://www.youtube.com/watch?v='+vid+'" target="_blank" rel="noopener" style="display:flex;flex-direction:column;background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);overflow:hidden;text-decoration:none;transition:all .2s;box-shadow:var(--sh);" onmouseover="this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'var(--shl)\'" onmouseout="this.style.transform=\'\';this.style.boxShadow=\'var(--sh)\'">'
+            +'<div style="position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#111;flex-shrink:0;">'
+            +'<img src="'+thumbUrl+'" alt="'+sn.title+'" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display=\'none\'">'
             +'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">'
-            +'<div style="width:44px;height:44px;background:rgba(255,0,0,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;">'
-            +'<svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>'
-            +'<div style="padding:14px 16px 16px;">'
-            +'<span style="display:inline-flex;align-items:center;gap:5px;font-size:.62rem;font-weight:700;color:#FF0000;background:#FFF0F0;border:1px solid #FFCCCC;border-radius:999px;padding:2px 8px;margin-bottom:8px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>YouTube</span>'
-            +'<div style="font-size:.88rem;font-weight:700;color:var(--txt);line-height:1.4;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">'+sn.title+'</div>'
-            +'<div style="font-size:.75rem;color:var(--txt-s);">'+dateStr+'</div>'
+            +'<div style="width:44px;height:44px;background:rgba(255,0,0,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,.4);">'
+            +'<svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><polygon points="6,3 20,12 6,21"/></svg></div></div></div>'
+            +'<div style="padding:12px 14px 14px;flex:1;display:flex;flex-direction:column;">'
+            +'<span style="display:inline-flex;align-items:center;gap:5px;font-size:.6rem;font-weight:700;color:#FF0000;background:#FFF0F0;border:1px solid #FFCCCC;border-radius:999px;padding:2px 8px;margin-bottom:7px;align-self:flex-start;"><svg width="11" height="11" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>YouTube</span>'
+            +'<div style="font-size:.85rem;font-weight:700;color:var(--txt);line-height:1.4;flex:1;">'+sn.title+'</div>'
+            +'<div style="font-size:.72rem;color:var(--txt-s);margin-top:7px;">'+dateStr+'</div>'
             +'</div></a>';
         }).join('');
       })
@@ -5307,7 +5327,7 @@ function renderNhRecentes(){
     var imgUrl = p.image || '';
     var imgPart = imgUrl
       ? '<img src="'+imgUrl+'" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.parentElement.style.background=\'var(--b50)\'">'
-      : '<span style="font-size:2rem;display:flex;align-items:center;justify-content:center;height:100%;">'+emoji+'</span>';
+      : '<span class="nh-art-img-emoji">'+emoji+'</span>';
     return '<a class="nh-art-card" href="/blog/'+slug+'.html">'
       +'<div class="nh-art-img">'+imgPart+'</div>'
       +'<div class="nh-art-body">'
