@@ -1431,7 +1431,7 @@ function buildCard(p) {
   var cl = p.category_label || p.category || '';
   var iu = p.image || '';
   var ih = iu
-    ? '<div style="aspect-ratio:16/9;overflow:hidden;border-radius:10px 10px 0 0;margin:-1px -1px 0;"><img src="'+iu+'" alt="" style="width:100%;height:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display=\'none\'"></div>'
+    ? '<div style="height:150px;overflow:hidden;border-radius:10px 10px 0 0;margin:-1px -1px 0;"><img src="'+iu+'" alt="" style="width:100%;height:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display=\'none\'"></div>'
     : '<div style="height:72px;background:linear-gradient(135deg,var(--b50),#fff);border-radius:10px 10px 0 0;margin:-1px -1px 0;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">📰</div>';
   var cb = cl ? '<span style="display:inline-block;padding:2px 8px;border-radius:999px;font-size:.65rem;font-weight:700;background:var(--b50);color:var(--acc);border:1px solid var(--b100);margin-right:3px;">'+cl+'</span>' : '';
   return '<a href="/blog/'+(p.id||p.slug||'')+'.html" style="display:block;text-decoration:none;background:var(--card);border:1.5px solid var(--brd);border-radius:12px;overflow:hidden;transition:all .2s;box-shadow:var(--sh);" onmouseover="this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'var(--shl)\';this.style.borderColor=\'var(--b200)\'" onmouseout="this.style.transform=\'\';this.style.boxShadow=\'var(--sh)\';this.style.borderColor=\'var(--brd)\'">'
