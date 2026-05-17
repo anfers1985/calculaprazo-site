@@ -1159,7 +1159,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   border-radius:10px;padding:11px 14px;
   cursor:pointer;text-align:left;width:100%;
   transition:all .2s;
-  text-decoration:none;color:inherit;
+}
 .nh-quick-btn:hover {
   background:rgba(37,99,235,.25);
   border-color:rgba(96,165,250,.35);
@@ -1359,15 +1359,10 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   .nh-yt-grid { grid-template-columns:repeat(2,1fr); }
 }
 @media(max-width:640px){
-  .nh-hero { padding:36px 0 36px; }
-  .nh-h1 { font-size:1.75rem; line-height:1.15; }
-  .nh-hero-sub { font-size:.9rem; }
-  .nh-hero-ctas { flex-direction:column; gap:10px; }
-  .nh-btn-primary,.nh-btn-ghost { width:100%; justify-content:center; }
-  .nh-quick-card { max-width:100%; }
-  .nh-stats { gap:0; flex-wrap:nowrap; overflow-x:auto; padding-bottom:4px; }
-  .nh-stat { padding:0 12px; flex-shrink:0; }
-  .nh-stat-num { font-size:1.4rem; }
+  .nh-hero { padding:44px 0 40px; }
+  .nh-h1 { font-size:1.9rem; }
+  .nh-stats { gap:4px; }
+  .nh-stat { padding:0 14px; }
   .nh-artigos,.nh-youtube,.nh-autoridade { padding:44px 0; }
   .nh-ben-grid { grid-template-columns:1fr; }
 }
@@ -1571,7 +1566,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
           ACESSO RÁPIDO
         </div>
         <div class="nh-quick-list">
-          <a class="nh-quick-btn" href="https://calculaprazo.com.br/calculadora-de-prazo-processual">
+          <a class="nh-quick-btn" href="https://calculaprazo.com.br/calculadora-de-prazo-processual" style="text-decoration:none;">
             <div class="nh-quick-icon" style="background:rgba(37,99,235,.25);">⏱️</div>
             <div class="nh-quick-text">
               <div class="nh-quick-name">Calculadora de Prazos</div>
@@ -5278,7 +5273,7 @@ function renderNhRecentes(){
   if(!list) return;
   var posts = BLOG_POSTS.slice()
     .sort(function(a,b){return (b.date||'').localeCompare(a.date||'');})
-    .slice(0,3);
+    .slice(0,4);
   if(!posts.length){
     list.innerHTML='<p style="font-size:.85rem;color:var(--txt-s);padding:16px 0;">Nenhum artigo publicado ainda.</p>';
     return;
@@ -5288,8 +5283,10 @@ function renderNhRecentes(){
     var cat  = p.category_label || p.category || '';
     var emoji= NH_CAT_EMOJI[p.category] || '📄';
     var exc  = p.excerpt || p.description || '';
+    var imgUrl = p.image || '';
+    var imgHtml = imgUrl ? '<img src="'+imgUrl+'" alt="" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.parentElement.innerHTML=\''+emoji+'\'">' : emoji;
     return '<a class="nh-art-card" href="/blog/'+slug+'.html">'
-      +'<div class="nh-art-img">'+emoji+'</div>'
+      +'<div class="nh-art-img" style="overflow:hidden;padding:0;">'+imgHtml+'</div>'
       +'<div class="nh-art-body">'
         +(cat?'<span class="nh-art-badge">'+cat+'</span>':'')
         +'<div class="nh-art-title">'+(p.title||'')+'</div>'
