@@ -1159,7 +1159,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   border-radius:10px;padding:11px 14px;
   cursor:pointer;text-align:left;width:100%;
   transition:all .2s;
-}
+  text-decoration:none;color:inherit;
 .nh-quick-btn:hover {
   background:rgba(37,99,235,.25);
   border-color:rgba(96,165,250,.35);
@@ -1359,10 +1359,15 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   .nh-yt-grid { grid-template-columns:repeat(2,1fr); }
 }
 @media(max-width:640px){
-  .nh-hero { padding:44px 0 40px; }
-  .nh-h1 { font-size:1.9rem; }
-  .nh-stats { gap:4px; }
-  .nh-stat { padding:0 14px; }
+  .nh-hero { padding:36px 0 36px; }
+  .nh-h1 { font-size:1.75rem; line-height:1.15; }
+  .nh-hero-sub { font-size:.9rem; }
+  .nh-hero-ctas { flex-direction:column; gap:10px; }
+  .nh-btn-primary,.nh-btn-ghost { width:100%; justify-content:center; }
+  .nh-quick-card { max-width:100%; }
+  .nh-stats { gap:0; flex-wrap:nowrap; overflow-x:auto; padding-bottom:4px; }
+  .nh-stat { padding:0 12px; flex-shrink:0; }
+  .nh-stat-num { font-size:1.4rem; }
   .nh-artigos,.nh-youtube,.nh-autoridade { padding:44px 0; }
   .nh-ben-grid { grid-template-columns:1fr; }
 }
@@ -1548,11 +1553,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
           </div>
           <div class="nh-stat-sep"></div>
           <div class="nh-stat">
-            <div class="nh-stat-num" id="nh-stat-artigos">136</div>
-            <div class="nh-stat-lbl">Artigos publicados</div>
-          </div>
-          <div class="nh-stat-sep"></div>
-          <div class="nh-stat">
             <div class="nh-stat-num">14+</div>
             <div class="nh-stat-lbl">Ferramentas</div>
           </div>
@@ -1571,14 +1571,14 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
           ACESSO RÁPIDO
         </div>
         <div class="nh-quick-list">
-          <button class="nh-quick-btn" onclick="goTo('prazos')">
+          <a class="nh-quick-btn" href="https://calculaprazo.com.br/calculadora-de-prazo-processual">
             <div class="nh-quick-icon" style="background:rgba(37,99,235,.25);">⏱️</div>
             <div class="nh-quick-text">
               <div class="nh-quick-name">Calculadora de Prazos</div>
               <div class="nh-quick-desc">Dias úteis e corridos, CLT e CPC</div>
             </div>
             <span class="nh-quick-arr">›</span>
-          </button>
+          </a>
           <button class="nh-quick-btn" onclick="goTo('trabalhista')">
             <div class="nh-quick-icon" style="background:rgba(99,102,241,.25);">⚖️</div>
             <div class="nh-quick-text">
