@@ -1192,7 +1192,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 .nh-artigos-grid {
   display:grid;
-  grid-template-columns:1fr 320px;
+  grid-template-columns:1fr 280px;
   gap:40px;
   align-items:start;
 }
@@ -1222,16 +1222,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   transform:translateY(-2px);
 }
 .nh-art-img {
-  width:120px;height:100%;min-height:90px;flex-shrink:0;
+  width:110px;flex-shrink:0;
   background:linear-gradient(135deg,var(--b800),var(--b900));
   display:flex;align-items:center;justify-content:center;
-  font-size:1.8rem;overflow:hidden;
+  font-size:1.8rem;
 }
-.nh-art-img img {
-  width:100%;height:100%;object-fit:cover;display:block;
-  transition:transform .3s;
-}
-.nh-art-card:hover .nh-art-img img { transform:scale(1.05); }
 .nh-art-body { padding:13px 15px;flex:1;min-width:0; }
 .nh-art-badge {
   display:inline-block;
@@ -1275,50 +1270,29 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   padding-bottom:11px;margin-bottom:13px;
 }
 .nh-top10-item {
-  display:flex;align-items:center;
-  gap:10px;padding:8px 0;cursor:pointer;
+  display:flex;align-items:flex-start;
+  gap:9px;padding:7px 0;cursor:pointer;
   border-bottom:1px solid var(--brd);
   text-decoration:none;
-  transition:all .18s;
+  transition:all .15s;
 }
 .nh-top10-item:last-child { border-bottom:none; }
-.nh-top10-item:hover { background:var(--b50);margin:0 -8px;padding:8px 8px;border-radius:8px;border-color:transparent; }
 .nh-top10-item:hover .nh-top10-title { color:var(--acc); }
 .nh-top10-num {
-  font-size:.72rem;font-weight:800;
-  width:16px;flex-shrink:0;text-align:center;
+  font-size:.75rem;font-weight:800;
+  width:18px;flex-shrink:0;margin-top:1px;
 }
 .nh-top10-num.top { color:var(--acc); }
 .nh-top10-num.rest { color:var(--txt-s); }
-/* Thumbnail do top10 */
-.nh-top10-thumb {
-  width:52px;height:52px;flex-shrink:0;
-  border-radius:8px;overflow:hidden;
-  background:linear-gradient(135deg,var(--b800),var(--b900));
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.1rem;
-}
-.nh-top10-thumb img {
-  width:100%;height:100%;object-fit:cover;display:block;
-  transition:transform .25s;
-}
-.nh-top10-item:hover .nh-top10-thumb img { transform:scale(1.08); }
 .nh-top10-info { flex:1;min-width:0; }
 .nh-top10-title {
   font-size:.78rem;font-weight:700;color:var(--txt);
-  line-height:1.35;margin-bottom:4px;
+  line-height:1.35;
+  display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;
   transition:color .15s;
 }
-.nh-top10-breadcrumb {
-  display:flex;align-items:center;gap:4px;flex-wrap:wrap;
-}
-.nh-top10-sec {
-  font-size:.6rem;font-weight:700;color:var(--acc);
-  background:var(--b50);border:1px solid var(--b100);
-  border-radius:999px;padding:1px 7px;white-space:nowrap;
-}
-.nh-top10-sep { font-size:.55rem;color:var(--txt-s); }
-.nh-top10-sub { font-size:.6rem;color:var(--txt-s);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.nh-top10-cat { font-size:.62rem;color:var(--txt-s);margin-top:2px; }
 
 /* ── YOUTUBE ── */
 .nh-youtube {
@@ -1377,61 +1351,24 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 /* ── RESPONSIVO ── */
 @media(max-width:1100px){
-  .nh-hero-grid { grid-template-columns:1fr; gap:32px; }
-  .nh-quick-card { max-width:100%; }
+  .nh-hero-grid { grid-template-columns:1fr; }
+  .nh-quick-card { max-width:480px; }
   .nh-artigos-grid { grid-template-columns:1fr; }
   .nh-top10-wrap { position:static; }
   .nh-autoridade-grid { grid-template-columns:1fr; }
   .nh-yt-grid { grid-template-columns:repeat(2,1fr); }
 }
-@media(max-width:768px){
-  /* Hero */
-  .nh-hero { padding:36px 0 40px; }
-  .nh-hero-grid { gap:28px; }
-  .nh-h1 { font-size:clamp(1.7rem,6vw,2.2rem); letter-spacing:-1px; }
-  .nh-hero-sub { font-size:.9rem; margin-bottom:22px; }
-  .nh-hero-ctas { gap:10px; }
-  .nh-btn-primary, .nh-btn-ghost {
-    width:100%; justify-content:center;
-    padding:13px 20px;
-  }
-  /* Stats — 2 colunas no mobile */
-  .nh-stats {
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:0;
-    background:rgba(255,255,255,.06);
-    border:1px solid rgba(255,255,255,.1);
-    border-radius:12px;
-    overflow:hidden;
-    margin-top:28px;
-  }
-  .nh-stat {
-    padding:16px 12px;
-    text-align:center;
-    border-right:1px solid rgba(255,255,255,.08);
-    border-bottom:1px solid rgba(255,255,255,.08);
-  }
-  .nh-stat:nth-child(even) { border-right:none; }
-  .nh-stat:nth-last-child(-n+2) { border-bottom:none; }
-  .nh-stat-num { font-size:1.5rem; }
-  .nh-stat-lbl { font-size:.68rem; }
-  /* Esconder separadores verticais originais no mobile */
-  .nh-stat-sep { display:none; }
-  /* Quick card */
-  .nh-quick-card { padding:18px 16px; border-radius:12px; }
-  .nh-quick-btn { padding:10px 12px; }
-  .nh-quick-name { font-size:.82rem; }
-}
 @media(max-width:640px){
+  .nh-hero { padding:44px 0 40px; }
+  .nh-h1 { font-size:1.9rem; }
+  .nh-stats { gap:4px; }
+  .nh-stat { padding:0 14px; }
   .nh-artigos,.nh-youtube,.nh-autoridade { padding:44px 0; }
   .nh-ben-grid { grid-template-columns:1fr; }
 }
 @media(max-width:480px){
   .nh-yt-grid { grid-template-columns:repeat(2,1fr); }
   .nh-art-img { width:80px;font-size:1.4rem; }
-  .nh-h1 { font-size:1.6rem; }
-  .nh-hero { padding:28px 0 36px; }
 }
 
 </style>
@@ -5341,7 +5278,7 @@ function renderNhRecentes(){
   if(!list) return;
   var posts = BLOG_POSTS.slice()
     .sort(function(a,b){return (b.date||'').localeCompare(a.date||'');})
-    .slice(0,4);
+    .slice(0,3);
   if(!posts.length){
     list.innerHTML='<p style="font-size:.85rem;color:var(--txt-s);padding:16px 0;">Nenhum artigo publicado ainda.</p>';
     return;
@@ -5349,17 +5286,10 @@ function renderNhRecentes(){
   list.innerHTML = posts.map(function(p){
     var slug = p.id || p.slug || '';
     var cat  = p.category_label || p.category || '';
+    var emoji= NH_CAT_EMOJI[p.category] || '📄';
     var exc  = p.excerpt || p.description || '';
-    var img  = p.image || '';
-    var imgHtml = img
-      ? '<div class="nh-art-img" style="background:linear-gradient(135deg,var(--b800),var(--b900));overflow:hidden;">'
-          + '<img src="'+img+'" alt="'+((p.title||'').replace(/"/g,"'"))+'" loading="lazy" '
-          + 'style="width:100%;height:100%;object-fit:cover;display:block;" '
-          + 'onerror="this.parentNode.innerHTML='📄'">'
-          + '</div>'
-      : '<div class="nh-art-img" style="background:linear-gradient(135deg,var(--b800),var(--b900));display:flex;align-items:center;justify-content:center;">📄</div>';
     return '<a class="nh-art-card" href="/blog/'+slug+'.html">'
-      + imgHtml
+      +'<div class="nh-art-img">'+emoji+'</div>'
       +'<div class="nh-art-body">'
         +(cat?'<span class="nh-art-badge">'+cat+'</span>':'')
         +'<div class="nh-art-title">'+(p.title||'')+'</div>'
@@ -5373,38 +5303,10 @@ function renderNhRecentes(){
   }).join('');
 }
 
-// Mapa de categoria -> [seção, subseção]
-var NH_SEC_MAP = {
-  'jurisprudencia-stf':        ['Jurisprudência','STF'],
-  'jurisprudencia-trts':       ['Jurisprudência','TRTs'],
-  'jurisprudencia-tst':        ['Jurisprudência','TST'],
-  'noticias-mpt':              ['Órgãos Públicos','MPT'],
-  'noticias-mte':              ['Órgãos Públicos','MTE'],
-  'legislacao-clt':            ['Legislação e Normas','CLT'],
-  'legislacao-nr':             ['Legislação e Normas','NRs'],
-  'legislacao-previdenciario': ['Legislação e Normas','Previdenciário'],
-  'esocial':                   ['Legislação e Normas','eSocial'],
-  'fgts-digital':              ['Legislação e Normas','FGTS Digital'],
-  'rh-rescisao':               ['RH e Gestão','Rescisão Contratual'],
-  'rh-contrato':               ['RH e Gestão','Contratos de Trabalho'],
-  'rh-beneficios':             ['RH e Gestão','Benefícios'],
-  'rh-folha':                  ['RH e Gestão','Folha de Pagamento'],
-  'rh-gestao':                 ['RH e Gestão','Gestão de Pessoas'],
-  'rh-inss':                   ['RH e Gestão','INSS'],
-  'rh-jornada':                ['RH e Gestão','Jornada de Trabalho'],
-  'rh-modelos':                ['RH e Gestão','Modelos'],
-  'rh-salario':                ['RH e Gestão','Salário'],
-  'processual-pratica':        ['Processual','Prática Processual'],
-  'modelos':                   ['Processual','Modelos de Peças'],
-  'saude-seguranca':           ['RH e Gestão','Saúde e Segurança'],
-  'essenciais-equipamentos':   ['Essenciais','Equipamentos'],
-  'essenciais-livros':         ['Essenciais','Livros e Vade Mécuns'],
-  'geral':                     ['Outros','Geral']
-};
-
 function renderNhTop10(){
   var list = document.getElementById('nh-top10-list');
   if(!list) return;
+  // Mapear slugs para posts
   var map = {};
   BLOG_POSTS.forEach(function(p){
     var s = p.id || p.slug || '';
@@ -5414,22 +5316,12 @@ function renderNhTop10(){
     var p = map[slug];
     if(!p) return null;
     var numCls = i < 3 ? 'top' : 'rest';
-    var img = p.image || '';
-    var secArr = NH_SEC_MAP[p.category] || ['Conteúdo', p.category_label || p.category || ''];
-    var sec = secArr[0]; var sub = secArr[1];
-    var thumbHtml = img
-      ? '<div class="nh-top10-thumb"><img src="'+img+'" alt="'+((p.title||'').replace(/"/g,"'"))+'" loading="lazy" onerror="this.parentNode.innerHTML='📄'"></div>'
-      : '<div class="nh-top10-thumb">📄</div>';
+    var cat = p.category_label || p.category || '';
     return '<a class="nh-top10-item" href="/blog/'+slug+'.html">'
       +'<span class="nh-top10-num '+numCls+'">'+(i+1)+'</span>'
-      + thumbHtml
       +'<div class="nh-top10-info">'
         +'<div class="nh-top10-title">'+(p.title||slug)+'</div>'
-        +'<div class="nh-top10-breadcrumb">'
-          +'<span class="nh-top10-sec">'+sec+'</span>'
-          +'<span class="nh-top10-sep">›</span>'
-          +'<span class="nh-top10-sub">'+sub+'</span>'
-        +'</div>'
+        +(cat?'<div class="nh-top10-cat">'+cat+'</div>':'')
       +'</div>'
     +'</a>';
   }).filter(Boolean);
