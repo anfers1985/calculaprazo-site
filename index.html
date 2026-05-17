@@ -1207,6 +1207,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 /* Card artigo recente */
 .nh-art-card {
   display:flex;
+  flex-direction:row;
   background:var(--card);
   border:1.5px solid var(--brd);
   border-radius:var(--rl);
@@ -1222,12 +1223,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   transform:translateY(-2px);
 }
 .nh-art-img {
-  width:130px;flex-shrink:0;align-self:stretch;
+  width:140px;height:130px;flex-shrink:0;
   background-color:var(--b800);
-  background-size:cover;background-position:center;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.8rem;
   overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;
 }
 .nh-art-body { padding:13px 15px;flex:1;min-width:0; }
 .nh-art-badge {
@@ -5286,9 +5286,11 @@ function renderNhRecentes(){
     var emoji= NH_CAT_EMOJI[p.category] || '📄';
     var exc  = p.excerpt || p.description || '';
     var imgUrl = p.image || '';
-    var imgStyle = imgUrl ? 'background-image:url('+imgUrl+');background-size:cover;background-position:center;' : '';
+    var imgPart = imgUrl
+      ? '<img src="'+imgUrl+'" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">'
+      : '<span style="font-size:2rem;">'+emoji+'</span>';
     return '<a class="nh-art-card" href="/blog/'+slug+'.html">'
-      +'<div class="nh-art-img" style="'+imgStyle+'">'+( imgUrl ? '' : emoji )+'</div>'
+      +'<div class="nh-art-img">'+imgPart+'</div>'
       +'<div class="nh-art-body">'
         +(cat?'<span class="nh-art-badge">'+cat+'</span>':'')
         +'<div class="nh-art-title">'+(p.title||'')+'</div>'
