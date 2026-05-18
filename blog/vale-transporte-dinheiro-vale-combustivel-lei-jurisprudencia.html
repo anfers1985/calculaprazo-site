@@ -189,7 +189,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 /* result box */
 .res-box{background:linear-gradient(135deg,var(--b50),#fff);border:1.5px solid var(--b200);border-radius:var(--rl);padding:11px;display:none;}
 .res-box.show{display:block;}
-.res-box.err{background:#FFF5F5;border-color:#FCA5A5;}
+.res-box.err{background:#FFF5F5;border-color:rgba(220,38,38,.35);}
 .res-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--acc);margin-bottom:3px;}
 .res-val{font-size:1.2rem;font-weight:800;color:var(--txt);letter-spacing:-.5px;line-height:1.2;margin-bottom:3px;}
 .res-box.err .res-val{font-size:.9rem;color:var(--err);font-weight:600;}
@@ -256,9 +256,9 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   top: 56px;
 }
 #p-calc-card h2 {
-  font-size: .85rem; font-weight: 700; color: #1A1A2E;
+  font-size: .85rem; font-weight: 700; color: var(--txt);
   margin-bottom: 10px; padding-bottom: 8px;
-  border-bottom: 1px solid #E4E4EE;
+  border-bottom: 1px solid var(--brd);
   display: flex; align-items: center; gap: 8px;
 }
 
@@ -267,7 +267,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .pfg label {
   display: block; font-size: .62rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: .06em;
-  color: #8888AA; margin-bottom: 3px;
+  color: var(--txt-s); margin-bottom: 3px;
 }
 .pfg input[type="date"],
 .pfg input[type="number"],
@@ -275,7 +275,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .pfg select {
   width: 100%; padding: 6px 9px;
   border: 1.5px solid #E4E4EE; border-radius: 7px;
-  font-size: .82rem; font-family: var(--fh); color: #1A1A2E;
+  font-size: .82rem; font-family: var(--fh); color: var(--txt);
   background: #F5F5F2;
   transition: border-color .2s, box-shadow .2s;
   appearance: none; -webkit-appearance: none;
@@ -369,11 +369,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   letter-spacing: .07em; color: var(--acc); margin-bottom: 2px;
 }
 #p-res-txt {
-  font-size: 1.25rem; font-weight: 800; color: #1A1A2E;
+  font-size: 1.25rem; font-weight: 800; color: var(--txt);
   letter-spacing: -.5px; line-height: 1.2; margin-bottom: 3px;
 }
 #p-resultado.err #p-res-txt { font-size: .85rem; color: #B00; font-weight: 600; }
-#p-res-resumo { font-size: .74rem; color: #8888AA; line-height: 1.4; }
+#p-res-resumo { font-size: .74rem; color: var(--txt-s); line-height: 1.4; }
 #p-res-feriados {
   margin-top: 6px; padding: 6px 9px;
   background: rgba(11,122,78,.08); border-radius: 6px;
@@ -392,11 +392,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 #p-prazos-hd { padding: 11px 14px 0; }
 #p-prazos-hd h2 {
-  font-size: .84rem; font-weight: 700; color: #1A1A2E; margin-bottom: 8px;
+  font-size: .84rem; font-weight: 700; color: var(--txt); margin-bottom: 8px;
 }
 .p-area-tabs {
   display: flex; gap: 5px; flex-wrap: wrap;
-  padding: 0 14px 8px; border-bottom: 1px solid #E4E4EE;
+  padding: 0 14px 8px; border-bottom: 1px solid var(--brd);
 }
 .patab {
   padding: 4px 10px; border: 1.5px solid #E4E4EE; border-radius: 999px;
@@ -435,11 +435,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .ppc-badge .pn { font-size: .88rem; }
 .ppc-body { flex: 1; min-width: 0; }
 .ppc-nome {
-  font-size: .7rem; font-weight: 700; color: #1A1A2E;
+  font-size: .7rem; font-weight: 700; color: var(--txt);
   line-height: 1.2; white-space: nowrap;
   overflow: hidden; text-overflow: ellipsis; font-family: var(--fh);
 }
-.ppc-lei { font-size: .62rem; color: #8888AA; }
+.ppc-lei { font-size: .62rem; color: var(--txt-s); }
 
 /* Como card */
 #p-como-card {
@@ -448,7 +448,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   padding: 12px 14px;
 }
 #p-como-card h2 {
-  font-size: .84rem; font-weight: 700; color: #1A1A2E; margin-bottom: 8px;
+  font-size: .84rem; font-weight: 700; color: var(--txt); margin-bottom: 8px;
 }
 .p-como-steps { display: flex; flex-direction: column; gap: 6px; }
 .p-como-step { display: flex; align-items: flex-start; gap: 8px; }
@@ -459,7 +459,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   display: flex; align-items: center; justify-content: center; margin-top: 1px;
 }
 .p-como-step p { font-size: .76rem; color: #4A4A6A; line-height: 1.4; }
-.p-como-step strong { color: #1A1A2E; font-weight: 600; }
+.p-como-step strong { color: var(--txt); font-weight: 600; }
 
 /* Modal de prazo */
 #p-modal-overlay {
@@ -494,7 +494,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   font-family: var(--fh);
 }
 .pm-title {
-  font-size: 1.2rem; font-weight: 800; color: #1A1A2E;
+  font-size: 1.2rem; font-weight: 800; color: var(--txt);
   margin-bottom: 10px; line-height: 1.25; font-family: var(--fh);
 }
 .pm-dias {
@@ -502,11 +502,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   letter-spacing: -1px; line-height: 1; margin-bottom: 3px; font-family: var(--fh);
 }
 .pm-dias span { font-size: .88rem; font-weight: 500; color: #4A4A6A; letter-spacing: 0; }
-.pm-tipo { font-size: .8rem; color: #8888AA; margin-bottom: 14px; }
+.pm-tipo { font-size: .8rem; color: var(--txt-s); margin-bottom: 14px; }
 .pm-row { display: flex; gap: 8px; padding: 10px 0; border-top: 1px solid #E4E4EE; }
 .pm-lbl {
   font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
-  color: #8888AA; min-width: 80px; padding-top: 1px; flex-shrink: 0; font-family: var(--fh);
+  color: var(--txt-s); min-width: 80px; padding-top: 1px; flex-shrink: 0; font-family: var(--fh);
 }
 .pm-val { font-size: .85rem; color: #4A4A6A; line-height: 1.5; }
 .pm-obs {
@@ -1616,6 +1616,11 @@ function toggleConteudo(e) {
   document.querySelectorAll('.nav-dropdown').forEach(function(d){d.classList.remove('open');});
   if(opening) dd.classList.add('open');
   else { document.querySelectorAll('.nm-sub-wrap').forEach(function(w){w.classList.remove('open');}); }
+}
+function toggleRefNav() {
+  // Sinaliza para o index.html abrir o painel de Prazos de Referência
+  try { sessionStorage.setItem('cp_open_refbar', '1'); } catch(ex) {}
+  window.location.href = '/#calculadora-de-prazo-processual';
 }
 function toggleNavSec(id,e) {
   if(e){e.stopPropagation();e.preventDefault();}

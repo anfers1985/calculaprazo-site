@@ -29,7 +29,7 @@
 <meta id="tw-desc"  name="twitter:description" content="Calculadora de prazo processual em dias úteis e corridos. Verbas trabalhistas, correção monetária, salário líquido e mais. 100% grátis.">
 <!-- Schema.org WebSite + SiteSearch -->
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","name":"Calcula Prazo","url":"https://calculaprazo.com.br","description":"Ferramentas jurídicas e profissionais gratuitas","potentialAction":{"@type":"SearchAction","target":"https://calculaprazo.com.br/?q={search_term_string}","query-input":"required name=search_term_string"}}
+{"@context":"https://schema.org","@type":"WebSite","name":"Calcula Prazo","url":"https://calculaprazo.com.br","description":"Ferramentas trabalhistas e jurídicas gratuitas para advogados, RH e trabalhadores","potentialAction":{"@type":"SearchAction","target":"https://calculaprazo.com.br/?q={search_term_string}","query-input":"required name=search_term_string"}}
 </script>
 <!-- Schema.org Organization -->
 <script type="application/ld+json">
@@ -44,7 +44,7 @@
 <!-- /Schema FAQ estático -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Sora:wght@400;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 /* ════════════════════════════════════════
@@ -722,34 +722,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
    Garante que "Ferramentas" não seja cortado
    em telas de até 320px
 ════════════════════════════════════════ */
-@media(max-width:640px){.ctab{padding:5px 11px;font-size:.76rem;}
-  /* Linha 2 da nav: flex-wrap para evitar corte */
-  .hdr-nav {
-    flex-wrap: wrap !important;
-    justify-content: center !important;
-    gap: 2px !important;
-  }
-  /* Cada item da nav: tamanho flex mínimo para caber o texto */
-  .hdr-nav > a,
-  .hdr-nav > .nav-dropdown {
-    flex: 1 1 auto !important;
-    min-width: 0 !important;
-    width: auto !important;
-    font-size: .72rem !important;
-    padding: 4px 6px !important;
-    white-space: nowrap !important;
-    overflow: visible !important;
-    text-overflow: clip !important;
-  }
-  /* Em telas muito pequenas (320px), reduz mais o font-size */
-  @media(max-width:360px){
-    .hdr-nav > a,
-    .hdr-nav > .nav-dropdown > a {
-      font-size: .65rem !important;
-      padding: 3px 4px !important;
-    }
-  }
-}
+@media(max-width:640px){.ctab{padding:5px 11px;font-size:.76rem;}}
 
 /* Override: calculadora centralizada, sem grid lateral */
 #p-main-grid { display: block !important; }
@@ -791,6 +764,12 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   min-height: 0;           /* colapsa quando sem anuncio */
   box-sizing: border-box;
 }
+.ad-container:empty {
+  display: none !important;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
 .ad-container.ad-rect {
   min-height: 280px;       /* para formatos retângulo */
   border: none;
@@ -830,8 +809,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 /* mobile: uma coluna, sem anúncios empilhados */
 @media (max-width: 768px) {
-  .ad-container { min-height: 60px; }
-  .ad-container.ad-rect { min-height: 60px; }
+  .ad-container { min-height: 0; }
+  .ad-container.ad-rect { min-height: 0; }
   .ad-placeholder { min-height: 0; }
   .ad-placeholder.rect { min-height: 0; max-width: 100%; }
   .ad-desktop-only { display: none !important; }  /* oculta ad extra no mobile */
@@ -962,39 +941,41 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   /* Esconde Calcular Prazo */
   .hdr-right { display: none !important; }
 
-  /* Linha 2: botões em linha com flex-wrap para evitar corte */
+  /* Linha 2: navegação horizontal com scroll — sem quebra de linha */
   .hdr-nav {
     display: flex !important;
     flex-direction: row !important;
-    flex-wrap: wrap !important;      /* permite quebra se necessário */
+    flex-wrap: nowrap !important;
     width: 100%;
     border-top: 1px solid var(--brd);
-    padding: 3px 0 4px;
+    padding: 2px 4px 3px;
     gap: 0;
-    overflow: visible !important;
-    justify-content: space-evenly;   /* distribui espaço igualmente */
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    justify-content: flex-start;
   }
-  /* Cada item da nav: flex auto para caber o texto sem cortar */
+  .hdr-nav::-webkit-scrollbar { display: none; }
+  /* Cada item: tamanho fixo, não encolhe */
   .hdr-nav > a,
   .hdr-nav > .nav-dropdown {
-    flex: 1 1 auto !important;
+    flex: 0 0 auto !important;
     min-width: 0 !important;
-    width: auto !important;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: .72rem !important;    /* ligeiramente maior para legibilidade */
-    padding: 4px 5px !important;
+    font-size: .71rem !important;
+    padding: 4px 8px !important;
     text-align: center;
-    white-space: nowrap !important;  /* não quebra o texto internamente */
-    overflow: visible !important;    /* não corta o texto */
+    white-space: nowrap !important;
   }
-  /* Em telas muito pequenas (320px) reduz font-size */
+  /* Em telas muito pequenas (360px) reduz levemente */
   @media(max-width:360px){
     .hdr-nav > a,
     .hdr-nav > .nav-dropdown > a {
-      font-size: .62rem !important;
-      padding: 3px 3px !important;
+      font-size: .65rem !important;
+      padding: 3px 6px !important;
     }
   }
   /* O <a> dentro do dropdown também ocupa tudo */
@@ -1027,7 +1008,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 /* ── Tipografia base NH ── */
 .nh-h1 {
-  font-family:'Sora',var(--fh),sans-serif;
+  font-family:var(--fh);
   font-size:clamp(2rem,3.8vw,3rem);
   font-weight:800;
   color:#fff;
@@ -1042,7 +1023,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   background-clip:text;
 }
 .nh-h2 {
-  font-family:'Sora',var(--fh),sans-serif;
+  font-family:var(--fh);
   font-size:clamp(1.4rem,2.5vw,1.9rem);
   font-weight:800;
   color:var(--txt);
@@ -1080,7 +1061,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   margin-bottom:32px;
 }
 .nh-btn-primary {
-  display:inline-flex;align-items:center;gap:8px;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
   background:var(--acc);color:#fff;border:none;
   border-radius:10px;padding:14px 26px;
   font-size:.95rem;font-weight:800;cursor:pointer;
@@ -1109,11 +1090,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px;
 }
 .nh-btn-ghost {
-  display:inline-flex;align-items:center;gap:8px;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
   background:rgba(255,255,255,.07);
   border:1.5px solid rgba(255,255,255,.15);
-  color:#fff;border-radius:10px;padding:13px 22px;
-  font-size:.93rem;font-weight:600;cursor:pointer;
+  color:#fff;border-radius:10px;padding:14px 26px;
+  font-size:.95rem;font-weight:700;cursor:pointer;
   transition:all .2s;
 }
 .nh-btn-ghost:hover { background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.28); }
@@ -1192,8 +1173,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 .nh-artigos-grid {
   display:grid;
-  grid-template-columns:1fr 320px;
-  gap:40px;
+  grid-template-columns:1fr 380px;
+  gap:32px;
   align-items:start;
 }
 .nh-col-label {
@@ -1206,8 +1187,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 /* Card artigo recente */
 .nh-art-card {
-  display:flex;
-  flex-direction:row;
+  display:grid;
+  grid-template-columns:180px 1fr;
   align-items:stretch;
   background:var(--card);
   border:1.5px solid var(--brd);
@@ -1217,6 +1198,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   text-decoration:none;
   transition:all .2s;
   margin-bottom:12px;
+  min-height:130px;
 }
 .nh-art-card:hover {
   border-color:var(--b200);
@@ -1224,8 +1206,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   transform:translateY(-2px);
 }
 .nh-art-img {
-  width:160px;
-  min-height:118px;
+  width:180px;
   flex-shrink:0;
   overflow:hidden;
   position:relative;
@@ -1282,21 +1263,22 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   background:var(--card);
   border:1.5px solid var(--brd);
   border-radius:var(--rl);
-  padding:18px 16px;
+  padding:20px 18px;
   position:sticky;top:70px;
 }
 .nh-top10-head {
   font-size:.65rem;font-weight:700;
   text-transform:uppercase;color:var(--txt-m);
   border-bottom:1px solid var(--brd);
-  padding-bottom:11px;margin-bottom:11px;
+  padding-bottom:12px;margin-bottom:12px;
+  letter-spacing:.1em;
 }
 .nh-top10-item {
   display:grid;
-  grid-template-columns:20px 80px 1fr;
+  grid-template-columns:22px 96px 1fr;
   align-items:center;
-  gap:8px;
-  padding:8px 0;
+  gap:10px;
+  padding:10px 0;
   cursor:pointer;
   border-bottom:1px solid var(--brd);
   text-decoration:none;
@@ -1305,14 +1287,14 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .nh-top10-item:last-child { border-bottom:none; }
 .nh-top10-item:hover .nh-top10-title { color:var(--acc); }
 .nh-top10-num {
-  font-size:.72rem;font-weight:800;
+  font-size:.75rem;font-weight:800;
   text-align:center;
 }
 .nh-top10-num.top { color:var(--acc); }
 .nh-top10-num.rest { color:var(--txt-s); }
 .nh-top10-thumb {
-  width:80px;height:56px;flex-shrink:0;
-  border-radius:6px;overflow:hidden;
+  width:96px;height:68px;flex-shrink:0;
+  border-radius:7px;overflow:hidden;
   background:var(--b50);
   position:relative;
 }
@@ -1323,11 +1305,12 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 .nh-top10-info { min-width:0; }
 .nh-top10-title {
-  font-size:.75rem;font-weight:700;color:var(--txt);
-  line-height:1.3;
+  font-size:.78rem;font-weight:700;color:var(--txt);
+  line-height:1.35;
   transition:color .15s;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
 }
-.nh-top10-cat { font-size:.6rem;color:var(--txt-s);margin-top:3px; }
+.nh-top10-cat { font-size:.62rem;color:var(--txt-s);margin-top:3px; }
 
 /* ── YOUTUBE ── */
 .nh-youtube {
@@ -1388,28 +1371,45 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 @media(max-width:1100px){
   .nh-hero-grid { grid-template-columns:1fr; }
   .nh-quick-card { max-width:480px; }
-  .nh-artigos-grid { grid-template-columns:1fr; }
-  .nh-top10-wrap { position:static; }
+  .nh-artigos-grid { grid-template-columns:1fr 340px; }
   .nh-autoridade-grid { grid-template-columns:1fr; }
   .nh-yt-grid { grid-template-columns:repeat(2,1fr); }
+}
+@media(max-width:860px){
+  .nh-artigos-grid { grid-template-columns:1fr; }
+  .nh-top10-wrap { position:static; }
 }
 @media(max-width:640px){
   .nh-hero { padding:44px 0 40px; }
   .nh-h1 { font-size:1.9rem; }
   .nh-stats { gap:4px; }
   .nh-stat { padding:0 14px; }
-  .nh-artigos,.nh-youtube,.nh-autoridade { padding:44px 0; }
-  .nh-ben-grid { grid-template-columns:1fr; }
-  .nh-art-img { width:130px; min-height:100px; }
-  .nh-top10-item { grid-template-columns:20px 64px 1fr; }
-  .nh-top10-thumb { width:64px; height:45px; }
+  .nh-artigos,.nh-youtube,.nh-autoridade { padding:36px 0; }
+  /* Hero: botões empilhados e com largura igual */
+  .nh-hero-ctas { flex-direction:column; gap:10px; }
+  .nh-btn-primary, .nh-btn-ghost { width:100%; font-size:.92rem; padding:13px 20px; }
+  /* ben-grid: 2 colunas compactas no mobile */
+  .nh-ben-grid { grid-template-columns:1fr 1fr; gap:10px; }
+  .nh-aut-mob-hide { display:none !important; }
+  .nh-autoridade-grid { grid-template-columns:1fr !important; }
+  .nh-ben-card { padding:14px 12px; }
+  .nh-ben-icon { font-size:1.2rem; margin-bottom:7px; }
+  .nh-ben-name { font-size:.78rem; }
+  .nh-ben-desc { font-size:.68rem; }
+  /* art-card: imagem com largura e altura explícitas */
+  .nh-art-card { grid-template-columns:120px 1fr; min-height:0; }
+  .nh-art-img { width:120px; height:120px; flex-shrink:0; }
+  .nh-top10-item { grid-template-columns:20px 72px 1fr; }
+  .nh-top10-thumb { width:72px; height:52px; }
 }
 @media(max-width:480px){
   .nh-yt-grid { grid-template-columns:1fr; }
-  .nh-art-img { width:110px; min-height:90px; }
+  .nh-art-card { grid-template-columns:105px 1fr; }
+  .nh-art-img { width:105px; height:105px; }
   .nh-art-title { font-size:.8rem; }
-  .nh-top10-item { grid-template-columns:18px 56px 1fr; gap:6px; }
-  .nh-top10-thumb { width:56px; height:40px; }
+  .nh-art-excerpt { -webkit-line-clamp:2; }
+  .nh-top10-item { grid-template-columns:18px 64px 1fr; gap:8px; }
+  .nh-top10-thumb { width:64px; height:46px; }
 }
 
 </style>
@@ -1572,11 +1572,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
       <!-- Coluna esquerda -->
       <div class="nh-hero-left">
         <h1 class="nh-h1">
-          Calculadoras de Prazos<br>
-          <span class="nh-h1-grad">e Ferramentas Jurídicas</span><br>
-          para Profissionais
+          Ferramentas para o<br>
+          <span class="nh-h1-grad">Direito do Trabalho</span><br>
+          Gratuitas e Sem Cadastro
         </h1>
-        <p class="nh-hero-sub">Conteúdo jurídico atualizado com fontes do TST, STF e MTE. Calculadoras de prazos, verbas trabalhistas, correção monetária e muito mais.</p>
+        <p class="nh-hero-sub">Calculadoras de prazos processuais (CLT/CPC), verbas rescisórias, salário líquido, correção monetária e muito mais. Fundamentadas na legislação vigente, para advogados, RH e trabalhadores.</p>
         <div class="nh-hero-ctas">
           <button class="nh-btn-primary" onclick="goTo('prazos')">⚡ Calculadora de Prazos</button>
           <button class="nh-btn-ghost" onclick="goTo('trabalhista')">⚖️ Verbas Trabalhistas</button>
@@ -1711,7 +1711,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
     <div class="container nh-autoridade-grid">
 
       <!-- Coluna esquerda -->
-      <div class="nh-aut-left">
+      <div class="nh-aut-left nh-aut-mob-hide">
         <div class="nh-eyebrow nh-eyebrow-light"><span class="nh-eyebrow-line nh-eyebrow-line-light"></span>POR QUE USAR</div>
         <h2 class="nh-h2 nh-h2-light">Ferramentas de precisão, totalmente gratuitas</h2>
         <p class="nh-aut-sub">Conteúdo jurídico com base legal explícita e cálculos que respeitam sua privacidade.</p>
@@ -4070,7 +4070,21 @@ function calcTrabalhista(){
 
 // ─── DATAS ─────────────────────────────────────────
 let dM='diff';
-function dMode(btn){dM=btn.dataset.dm;document.querySelectorAll('#d-mode-pills .pill').forEach(b=>b.classList.remove('on'));btn.classList.add('on');['diff','add','sub','diaSem'].forEach(m=>document.getElementById('d-'+m).style.display=m===dM?'':'none');}
+function dMode(btn){
+  dM = btn.dataset.dm;
+  // Limpa resultado anterior ao trocar de modo — evita dado obsoleto visível
+  var rb = document.getElementById('d-res');
+  if (rb) {
+    rb.classList.remove('show', 'err');
+    document.getElementById('d-res-val').textContent = '';
+    document.getElementById('d-res-det').textContent = '';
+  }
+  document.querySelectorAll('#d-mode-pills .pill').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  ['diff','add','sub','diaSem'].forEach(m =>
+    document.getElementById('d-'+m).style.display = m === dM ? '' : 'none'
+  );
+}
 function calcDatas(){
   const rb=document.getElementById('d-res');rb.classList.remove('show','err');
   try{
@@ -4629,10 +4643,10 @@ const SEO = {
   },
   home: {
     slug: '',
-    title: 'Calcula Prazo — Calculadoras Jurídicas e Trabalhistas Gratuitas',
-    desc:  'Calculadora de prazos processuais, juros, correção monetária, salário líquido, IMC, validador CPF/CNPJ e muito mais. 100% gratuito, sem cadastro.',
-    h1:    'Ferramentas Profissionais Gratuitas',
-    kw:    'calculadora de prazos, ferramentas jurídicas, calculadora online, ferramentas profissionais gratuitas',
+    title: 'Calcula Prazo — Ferramentas para o Direito do Trabalho, Gratuitas e Sem Cadastro',
+    desc:  'Ferramentas trabalhistas e jurídicas gratuitas: calculadora de prazos processuais (CLT/CPC), verbas rescisórias, salário líquido, correção monetária e muito mais. Para advogados, RH e trabalhadores.',
+    h1:    'Ferramentas para o Direito do Trabalho — Gratuitas e Sem Cadastro',
+    kw:    'calculadora de prazo processual, ferramentas trabalhistas, verbas rescisórias, salário líquido CLT, ferramentas jurídicas gratuitas',
     schemaType: null,
   },
   sobre: {
@@ -4699,6 +4713,11 @@ Object.entries(SEO).forEach(([id, data]) => {
 
 // Resolve o ID a partir da URL atual
 function resolveIdFromURL() {
+  // Lê o hash (#ferramenta) gerado pelos artigos via navGoTo('id')
+  const hash = location.hash.replace('#', '');
+  if (hash && (SLUG_TO_ID[hash] || NAV_MAP[hash])) {
+    return SLUG_TO_ID[hash] || hash;
+  }
   const path = location.pathname.replace(/\/$/, '') || '/';
   return SLUG_TO_ID[path] || SLUG_TO_ID[path.slice(1)] || 'prazos';
 }
@@ -5190,58 +5209,113 @@ function toggleSociais(e){
   var YT_API_KEY=_a.join('');
   var YT_CHANNEL_ID='@CalculaPrazo';
 
-  function loadYouTubeVideos(){
-    var grid=document.getElementById('yt-videos-grid');
-    if(!grid)return;
-    // Step 1: resolve handle → contentDetails (uploads playlist ID) — costs ~5 units
-    fetch('https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forHandle=CalculaPrazo&key='+YT_API_KEY)
+  // Fallback: carrega via RSS (sem API key, via allorigins proxy)
+  function loadYouTubeViaRSS(grid){
+    var rssUrl='https://www.youtube.com/feeds/videos.xml?channel_id=UCq_ZRZh3xI0LoiXzDmXSNsQ';
+    var proxy='https://api.allorigins.win/get?url='+encodeURIComponent(rssUrl);
+    fetch(proxy)
       .then(function(r){return r.json();})
-      .then(function(d){
-        var uploads=d.items&&d.items[0]&&d.items[0].contentDetails&&d.items[0].contentDetails.relatedPlaylists&&d.items[0].contentDetails.relatedPlaylists.uploads;
-        if(!uploads){grid.innerHTML='<p style="color:var(--txt-s);font-size:.85rem;">Canal não encontrado.</p>';return;}
-        // Step 2: get latest videos from uploads playlist — costs 1 unit (vs 100 for search.list)
-        return fetch('https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId='+uploads+'&maxResults=4&key='+YT_API_KEY);
-      })
-      .then(function(r){if(r)return r.json();})
-      .then(function(d){
-        if(!d||!d.items||!d.items.length){grid.innerHTML='<p style="color:var(--txt-s);font-size:.85rem;">Nenhum vídeo encontrado.</p>';return;}
-        grid.innerHTML=d.items.map(function(item){
-          var vid=item.snippet&&item.snippet.resourceId&&item.snippet.resourceId.videoId;
-          if(!vid)return null;
-          var sn=item.snippet;
-          var thumb=sn.thumbnails&&(sn.thumbnails.maxres||sn.thumbnails.high||sn.thumbnails.medium||sn.thumbnails.default);
-          var thumbUrl=thumb?thumb.url:'';
-          var publishedDate=new Date(sn.publishedAt);
-          var dateStr=publishedDate.toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'});
-          return '<a href="https://www.youtube.com/watch?v='+vid+'" target="_blank" rel="noopener" style="display:flex;flex-direction:column;background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);overflow:hidden;text-decoration:none;transition:all .2s;box-shadow:var(--sh);" onmouseover="this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'var(--shl)\'" onmouseout="this.style.transform=\'\';this.style.boxShadow=\'var(--sh)\'">'
-            +'<div style="position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#111;flex-shrink:0;">'
-            +'<img src="'+thumbUrl+'" alt="'+sn.title+'" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display=\'none\'">'
-            +'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">'
-            +'<div style="width:44px;height:44px;background:rgba(255,0,0,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,.4);">'
-            +'<svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><polygon points="6,3 20,12 6,21"/></svg></div></div></div>'
-            +'<div style="padding:12px 14px 14px;flex:1;display:flex;flex-direction:column;">'
-            +'<span style="display:inline-flex;align-items:center;gap:5px;font-size:.6rem;font-weight:700;color:#FF0000;background:#FFF0F0;border:1px solid #FFCCCC;border-radius:999px;padding:2px 8px;margin-bottom:7px;align-self:flex-start;"><svg width="11" height="11" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>YouTube</span>'
-            +'<div style="font-size:.85rem;font-weight:700;color:var(--txt);line-height:1.4;flex:1;">'+sn.title+'</div>'
-            +'<div style="font-size:.72rem;color:var(--txt-s);margin-top:7px;">'+dateStr+'</div>'
-            +'</div></a>';
+      .then(function(j){
+        var parser=new DOMParser();
+        var doc=parser.parseFromString(j.contents,'text/xml');
+        var entries=Array.from(doc.querySelectorAll('entry')).slice(0,4);
+        if(!entries.length){grid.innerHTML='<p style="color:var(--txt-s);font-size:.85rem;">Nenhum vídeo encontrado.</p>';return;}
+        grid.innerHTML=entries.map(function(e){
+          var vid=e.querySelector('videoId')&&e.querySelector('videoId').textContent;
+          var title=e.querySelector('title')&&e.querySelector('title').textContent;
+          var published=e.querySelector('published')&&e.querySelector('published').textContent;
+          if(!vid)return '';
+          var thumbUrl='https://i.ytimg.com/vi/'+vid+'/hqdefault.jpg';
+          var dateStr=published?new Date(published).toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'}):'';
+          return renderYTCard(vid,title,thumbUrl,dateStr);
         }).filter(Boolean).join('');
       })
       .catch(function(){
-        if(grid)grid.innerHTML='<p style="color:var(--txt-s);font-size:.85rem;">Não foi possível carregar os vídeos.</p>';
+        grid.innerHTML='<p style="color:var(--txt-s);font-size:.85rem;">Não foi possível carregar os vídeos. <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener" style="color:var(--acc);">Ver canal →</a></p>';
+      });
+  }
+
+  function renderYTCard(vid,title,thumbUrl,dateStr){
+    return '<a href="https://www.youtube.com/watch?v='+vid+'" target="_blank" rel="noopener" style="display:flex;flex-direction:column;background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);overflow:hidden;text-decoration:none;transition:all .2s;box-shadow:var(--sh);" onmouseover="this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'var(--shl)\'" onmouseout="this.style.transform=\'\';this.style.boxShadow=\'var(--sh)\'" >'
+      +'<div style="position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#111;flex-shrink:0;">'
+      +'<img src="'+thumbUrl+'" alt="'+title+'" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;">'
+      +'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">'
+      +'<div style="width:44px;height:44px;background:rgba(255,0,0,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,.4);">'
+      +'<svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><polygon points="6,3 20,12 6,21"/></svg></div></div></div>'
+      +'<div style="padding:12px 14px 14px;flex:1;display:flex;flex-direction:column;">'
+      +'<span style="display:inline-flex;align-items:center;gap:5px;font-size:.6rem;font-weight:700;color:#FF0000;background:#FFF0F0;border:1px solid #FFCCCC;border-radius:999px;padding:2px 8px;margin-bottom:7px;align-self:flex-start;"><svg width="11" height="11" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>YouTube</span>'
+      +'<div style="font-size:.85rem;font-weight:700;color:var(--txt);line-height:1.4;flex:1;">'+title+'</div>'
+      +(dateStr?'<div style="font-size:.72rem;color:var(--txt-s);margin-top:7px;">'+dateStr+'</div>':'')
+      +'</div></a>';
+  }
+
+  function loadYouTubeVideos(){
+    var grid=document.getElementById('yt-videos-grid');
+    if(!grid)return;
+    // Step 1: resolve handle → channelId (versão que funcionava)
+    fetch('https://www.googleapis.com/youtube/v3/channels?part=id&forHandle=CalculaPrazo&key='+YT_API_KEY)
+      .then(function(r){return r.json();})
+      .then(function(d){
+        var cid=(d.items&&d.items[0])?d.items[0].id:null;
+        if(!cid){loadYouTubeViaRSS(grid);return;}
+        // Step 2: busca os 4 últimos vídeos via search.list
+        return fetch('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId='+cid+'&maxResults=4&order=date&type=video&key='+YT_API_KEY);
+      })
+      .then(function(r){if(r)return r.json();})
+      .then(function(d){
+        if(!d||!d.items||!d.items.length){loadYouTubeViaRSS(grid);return;}
+        grid.innerHTML=d.items.map(function(item){
+          var vid=item.id.videoId;
+          var sn=item.snippet;
+          var thumb=sn.thumbnails&&(sn.thumbnails.medium||sn.thumbnails.high||sn.thumbnails.default);
+          var thumbUrl=thumb?thumb.url:'';
+          var dateStr=new Date(sn.publishedAt).toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'});
+          return renderYTCard(vid,sn.title,thumbUrl,dateStr);
+        }).join('');
+      })
+      .catch(function(){
+        loadYouTubeViaRSS(grid);
       });
   }
 
   function bootAll(){
     loadBlogPosts();
     loadYouTubeVideos();
-    var hash=window.location.hash;
-    if(hash==='#conteudo'||hash==='#blog'){setTimeout(function(){navGoTo('blog');},200);}
+    var hash = window.location.hash.replace('#', '');
+    if (hash === 'conteudo' || hash === 'blog') {
+      // Artigo redirecionou para /#conteudo ou /#blog
+      setTimeout(function(){ navGoTo('blog'); }, 200);
+    } else if (hash && (SLUG_TO_ID[hash] || NAV_MAP[hash])) {
+      // Artigo redirecionou para uma ferramenta — ex: /#correcao, /#datas, /#salario
+      var targetId = SLUG_TO_ID[hash] || hash;
+      setTimeout(function(){ navGoTo(targetId); }, 100);
+    }
+    // Abre painel Prazos de Referência se artigo pediu via toggleRefNav()
+    try {
+      if (sessionStorage.getItem('cp_open_refbar') === '1') {
+        sessionStorage.removeItem('cp_open_refbar');
+        setTimeout(function(){
+          navGoTo('prazos');
+          setTimeout(function(){
+            var bar = document.getElementById('p-ref-bar');
+            if (bar) { bar.style.display = ''; bar.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+          }, 120);
+        }, 100);
+      }
+    } catch(ex) {}
   }
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',bootAll);}else{bootAll();}
 })();
 window.addEventListener('hashchange', function() {
   var h = window.location.hash;
-  if (h === '#conteudo' || h === '#blog') navGoTo('blog');
+  var hId = h.replace('#', '');
+  if (h === '#conteudo' || h === '#blog') {
+    navGoTo('blog');
+  } else if (hId && (SLUG_TO_ID[hId] || NAV_MAP[hId])) {
+    // Navega para ferramenta indicada no hash (ex: vindo de artigo)
+    navGoTo(SLUG_TO_ID[hId] || hId);
+    return;
+  }
   // Ler filtro de navegação vindo dos artigos (via sessionStorage)
   try {
     var cpFilter = sessionStorage.getItem('cp_nav_filter');
@@ -5316,7 +5390,7 @@ function renderNhRecentes(){
   if(!list) return;
   var posts = BLOG_POSTS.slice()
     .sort(function(a,b){return (b.date||'').localeCompare(a.date||'');})
-    .slice(0,4);
+    .slice(0,5);
   if(!posts.length){
     list.innerHTML='<p style="font-size:.85rem;color:var(--txt-s);padding:16px 0;">Nenhum artigo publicado ainda.</p>';
     return;
