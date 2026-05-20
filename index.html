@@ -29,7 +29,7 @@
 <meta id="tw-desc"  name="twitter:description" content="Calculadora de prazo processual em dias úteis e corridos. Verbas trabalhistas, correção monetária, salário líquido e mais. 100% grátis.">
 <!-- Schema.org WebSite + SiteSearch -->
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","name":"Calcula Prazo","url":"https://calculaprazo.com.br","description":"Ferramentas jurídicas e profissionais gratuitas","potentialAction":{"@type":"SearchAction","target":"https://calculaprazo.com.br/?q={search_term_string}","query-input":"required name=search_term_string"}}
+{"@context":"https://schema.org","@type":"WebSite","name":"Calcula Prazo","url":"https://calculaprazo.com.br","description":"Ferramentas jurídico-trabalhistas gratuitas e acervo editorial sobre CLT, TST e legislação trabalhista. Para advogados, RH e trabalhadores.","potentialAction":{"@type":"SearchAction","target":"https://calculaprazo.com.br/?q={search_term_string}","query-input":"required name=search_term_string"}}
 </script>
 <!-- Schema.org Organization -->
 <script type="application/ld+json">
@@ -44,7 +44,7 @@
 <!-- /Schema FAQ estático -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Sora:wght@400;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 /* ════════════════════════════════════════
@@ -114,8 +114,19 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 /* ════════════════════════════════════════
    SECTIONS (SPA navigation)
 ════════════════════════════════════════ */
-.sec{display:none;}
-.sec.active{display:block;}
+.sec{
+  display:none;
+  opacity:0;
+  transform:translateY(6px);
+  transition:opacity .22s ease, transform .22s ease;
+}
+.sec.active{
+  display:block;
+}
+.sec.sec-visible{
+  opacity:1;
+  transform:translateY(0);
+}
 
 /* ════════════════════════════════════════
    HOME HERO
@@ -1008,7 +1019,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 /* ── Tipografia base NH ── */
 .nh-h1 {
-  font-family:'Sora',var(--fh),sans-serif;
+  font-family:var(--fh);
   font-size:clamp(2rem,3.8vw,3rem);
   font-weight:800;
   color:#fff;
@@ -1023,7 +1034,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   background-clip:text;
 }
 .nh-h2 {
-  font-family:'Sora',var(--fh),sans-serif;
+  font-family:var(--fh);
   font-size:clamp(1.4rem,2.5vw,1.9rem);
   font-weight:800;
   color:var(--txt);
@@ -1563,7 +1574,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 <!-- ══════════════════════════════════════
      HOME — REDESIGN .nh-
 ══════════════════════════════════════ -->
-<div id="sec-home" class="sec active">
+<div id="sec-home" class="sec active sec-visible">
 
   <!-- ═══════════════ NH HERO ═══════════════ -->
   <section class="nh-hero">
@@ -1572,11 +1583,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
       <!-- Coluna esquerda -->
       <div class="nh-hero-left">
         <h1 class="nh-h1">
-          Calculadoras de Prazos<br>
-          <span class="nh-h1-grad">e Ferramentas Jurídicas</span><br>
-          para Profissionais
+          Ferramentas e Conteúdo para o<br>
+          <span class="nh-h1-grad">Direito do Trabalho</span><br>
+          Gratuitos e Sem Cadastro
         </h1>
-        <p class="nh-hero-sub">Conteúdo jurídico atualizado com fontes do TST, STF e MTE. Calculadoras de prazos, verbas trabalhistas, correção monetária e muito mais.</p>
+        <p class="nh-hero-sub">Calculadoras de prazos (CLT/CPC), verbas rescisórias, salário líquido e correção monetária — mais um acervo com centenas de artigos sobre legislação trabalhista, jurisprudência do TST e orientações práticas. Para advogados, RH e trabalhadores.</p>
         <div class="nh-hero-ctas">
           <button class="nh-btn-primary" onclick="goTo('prazos')">⚡ Calculadora de Prazos</button>
           <button class="nh-btn-ghost" onclick="goTo('trabalhista')">⚖️ Verbas Trabalhistas</button>
@@ -1584,12 +1595,12 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
         <!-- Stats -->
         <div class="nh-stats">
           <div class="nh-stat">
-            <div class="nh-stat-num">30+</div>
-            <div class="nh-stat-lbl">Prazos jurídicos</div>
+            <div class="nh-stat-num">137+</div>
+            <div class="nh-stat-lbl">Artigos</div>
           </div>
           <div class="nh-stat-sep"></div>
           <div class="nh-stat">
-            <div class="nh-stat-num">14+</div>
+            <div class="nh-stat-num">15+</div>
             <div class="nh-stat-lbl">Ferramentas</div>
           </div>
           <div class="nh-stat-sep"></div>
@@ -1607,14 +1618,14 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
           ACESSO RÁPIDO
         </div>
         <div class="nh-quick-list">
-          <a class="nh-quick-btn" href="https://calculaprazo.com.br/calculadora-de-prazo-processual" style="text-decoration:none;">
+          <button class="nh-quick-btn" onclick="goTo('prazos')">
             <div class="nh-quick-icon" style="background:rgba(37,99,235,.25);">⏱️</div>
             <div class="nh-quick-text">
               <div class="nh-quick-name">Calculadora de Prazos</div>
               <div class="nh-quick-desc">Dias úteis e corridos, CLT e CPC</div>
             </div>
             <span class="nh-quick-arr">›</span>
-          </a>
+          </button>
           <button class="nh-quick-btn" onclick="goTo('trabalhista')">
             <div class="nh-quick-icon" style="background:rgba(99,102,241,.25);">⚖️</div>
             <div class="nh-quick-text">
@@ -1713,8 +1724,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
       <!-- Coluna esquerda -->
       <div class="nh-aut-left nh-aut-mob-hide">
         <div class="nh-eyebrow nh-eyebrow-light"><span class="nh-eyebrow-line nh-eyebrow-line-light"></span>POR QUE USAR</div>
-        <h2 class="nh-h2 nh-h2-light">Ferramentas de precisão, totalmente gratuitas</h2>
-        <p class="nh-aut-sub">Conteúdo jurídico com base legal explícita e cálculos que respeitam sua privacidade.</p>
+        <h2 class="nh-h2 nh-h2-light">Ferramentas e conteúdo que o seu trabalho exige</h2>
+        <p class="nh-aut-sub">Calculadoras fundamentadas na legislação vigente e conteúdo editorial com curadoria técnica — tudo gratuito, sem cadastro e com privacidade total.</p>
         <button class="nh-btn-primary" onclick="goTo('prazos')">⚡ Começar a Calcular</button>
       </div>
 
@@ -1723,22 +1734,22 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
         <div class="nh-ben-card">
           <div class="nh-ben-icon">⚡</div>
           <div class="nh-ben-name">100% Gratuito</div>
-          <div class="nh-ben-desc">Sem cadastro, sem limites, sem planos pagos</div>
+          <div class="nh-ben-desc">Ferramentas e conteúdo sem cadastro, sem limites, sem planos pagos</div>
+        </div>
+        <div class="nh-ben-card">
+          <div class="nh-ben-icon">⚖️</div>
+          <div class="nh-ben-name">Base Legal Explícita</div>
+          <div class="nh-ben-desc">Cada cálculo referencia o artigo de lei aplicável (CLT, CPC, INs e Portarias)</div>
         </div>
         <div class="nh-ben-card">
           <div class="nh-ben-icon">📰</div>
-          <div class="nh-ben-name">Atualizado Diariamente</div>
-          <div class="nh-ben-desc">Artigos com fontes do TST, STF, TRTs e MTE</div>
-        </div>
-        <div class="nh-ben-card">
-          <div class="nh-ben-icon">🎯</div>
-          <div class="nh-ben-name">Base Legal Explícita</div>
-          <div class="nh-ben-desc">Cada cálculo referencia o artigo de lei aplicável</div>
+          <div class="nh-ben-name">Curadoria Editorial</div>
+          <div class="nh-ben-desc">Artigos com fontes primárias do TST, STF, TRTs, MTE e MPT</div>
         </div>
         <div class="nh-ben-card">
           <div class="nh-ben-icon">🔒</div>
           <div class="nh-ben-name">Privacidade Total</div>
-          <div class="nh-ben-desc">Cálculos no navegador. Nenhum dado sai do dispositivo</div>
+          <div class="nh-ben-desc">Cálculos no navegador. Nenhum dado é enviado ou armazenado</div>
         </div>
       </div>
 
@@ -2809,9 +2820,9 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   <div style="background:linear-gradient(135deg,var(--b900) 0%,var(--b700) 60%,var(--b500) 100%);padding:48px 0 56px;position:relative;overflow:hidden;">
     <div style="position:absolute;top:-60px;right:-60px;width:340px;height:340px;border-radius:50%;background:rgba(255,255,255,.04);"></div>
     <div class="container" style="position:relative;z-index:1;text-align:center;">
-      <div style="display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:5px 18px;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.8);margin-bottom:16px;">⚖️ Direito do Trabalho na prática</div>
-      <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.8px;line-height:1.1;margin-bottom:12px;">Notícias, Jurisprudência e Orientações<br>para Advogados, RH e Contadores</h2>
-      <p style="font-size:.95rem;color:rgba(255,255,255,.65);max-width:560px;margin:0 auto;">Decisões do TST e TRTs, atualização legislativa, eSocial, FGTS Digital, rescisões, folha de pagamento e tudo que move o universo trabalhista.</p>
+      <div style="display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:5px 18px;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.8);margin-bottom:16px;">⚖️ Conteúdo Jurídico-Trabalhista</div>
+      <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.8px;line-height:1.1;margin-bottom:12px;">Legislação, Jurisprudência e Orientações<br>para Advogados, RH e Trabalhadores</h2>
+      <p style="font-size:.95rem;color:rgba(255,255,255,.65);max-width:560px;margin:0 auto;">Legislação trabalhista atualizada, jurisprudência do TST e TRTs, orientações práticas de CLT, eSocial, folha de pagamento e relações trabalhistas — com curadoria técnica e fontes primárias.</p>
     </div>
   </div>
 
@@ -2899,7 +2910,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
     <div class="ftr-grid">
       <div class="ftr-brand">
         <a class="logo" onclick="window.goTo('home')"><div class="logo-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 7h18"/></svg></div><span class="logo-text">Calcula</span><span>Prazo</span></a>
-        <p class="ftr-desc">Ferramentas jurídicas gratuitas e conteúdo especializado em Direito do Trabalho para advogados, contadores e profissionais de RH.</p>
+        <p class="ftr-desc">Ferramentas jurídico-trabalhistas gratuitas e acervo editorial sobre CLT, TST e legislação trabalhista vigente. Para advogados, profissionais de RH, contadores e trabalhadores.</p>
         <p style="margin-top:12px;font-size:.8rem;color:rgba(255,255,255,.45);line-height:1.6;">✉ Dúvidas, sugestões ou elogios?<br>
         <a href="mailto:contato@calculaprazo.com.br" style="color:rgba(255,255,255,.6);text-decoration:underline;">contato@calculaprazo.com.br</a></p>
       </div>
@@ -2931,7 +2942,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
       </ul></div>
     </div>
     <div class="ftr-bot">
-      <p class="ftr-copy">&copy; <span id="yr"></span> Calcula Prazo. Todos os direitos reservados. Ferramenta gratuita para advogados e profissionais. Os cálculos são de caráter informativo e não substituem assessoria jurídica.</p>
+      <p class="ftr-copy">&copy; <span id="yr"></span> Calcula Prazo. Todos os direitos reservados. Ferramentas e conteúdo gratuitos para advogados, RH e trabalhadores. Os cálculos e artigos têm caráter informativo e não substituem assessoria jurídica profissional.</p>
       <div style="display:flex;gap:12px 16px;align-items:center;flex-wrap:wrap;justify-content:center;">
         <a onclick="document.getElementById('modal-doacao').style.display='flex'" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;cursor:pointer;">☕ Doação</a>
         <a href="/contato" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;">Contato</a>
@@ -2966,11 +2977,16 @@ const NAV_ACTIVE = {
 };
 
 function goTo(id) {
-  document.querySelectorAll('.sec').forEach(s => s.classList.remove('active'));
+  // Remove active + visible de todas as seções (reseta animação)
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('active', 'sec-visible'));
   // Atualiza URL sem recarregar
   try { history.replaceState(null, '', id === 'home' ? '/' : '#' + id); } catch(e) {}
   const sec = document.getElementById('sec-' + (NAV_MAP[id] || id));
-  if (sec) sec.classList.add('active');
+  if (sec) {
+    sec.classList.add('active');
+    // Delay mínimo para o display:block ser processado antes da transition CSS
+    setTimeout(function(){ sec.classList.add('sec-visible'); }, 10);
+  }
   document.querySelectorAll('#hdr .hdr-nav>a, #hdr .nav-dropdown>a').forEach(a => a.classList.remove('on'));
   const activeNav = NAV_ACTIVE[id] || 'home';
   const navEl = document.getElementById('nav-' + activeNav);
@@ -3828,7 +3844,7 @@ function calcMoeda(){
   const result=inBRL*RATES[para];
   document.getElementById('moeda-pfx-s').textContent=SYMS[de]||de;
   document.getElementById('moeda-res-val').textContent=`${SYMS[para]||para} ${new Intl.NumberFormat('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:4}).format(result)}`;
-  const updTxt=RATES_UPDATED_AT?` · Atualizado ${RATES_UPDATED_AT.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}`:'';
+  const updTxt=RATES_UPDATED_AT?` · Atualizado ${RATES_UPDATED_AT.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}`:' · ⚠️ Taxas de referência (sem conexão com API)';
   document.getElementById('moeda-res-det').textContent=`1 ${de} = ${new Intl.NumberFormat('pt-BR',{minimumFractionDigits:4,maximumFractionDigits:4}).format(RATES[para]/RATES[de])} ${para}${updTxt}`;
   document.getElementById('moeda-res').classList.add('show');
 }
@@ -4070,7 +4086,27 @@ function calcTrabalhista(){
 
 // ─── DATAS ─────────────────────────────────────────
 let dM='diff';
-function dMode(btn){dM=btn.dataset.dm;document.querySelectorAll('#d-mode-pills .pill').forEach(b=>b.classList.remove('on'));btn.classList.add('on');['diff','add','sub','diaSem'].forEach(m=>document.getElementById('d-'+m).style.display=m===dM?'':'none');}
+function dMode(btn){
+  dM = btn.dataset.dm;
+  // Limpa resultado anterior ao trocar de modo — evita dado obsoleto visível
+  var rb = document.getElementById('d-res');
+  if (rb) {
+    rb.classList.remove('show', 'err');
+    document.getElementById('d-res-val').textContent = '';
+    document.getElementById('d-res-det').textContent = '';
+  }
+  document.querySelectorAll('#d-mode-pills .pill').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  ['diff','add','sub','diaSem'].forEach(m =>
+    document.getElementById('d-'+m).style.display = m === dM ? '' : 'none'
+  );
+  // Se os campos do novo modo já têm valores, recalcula automaticamente
+  var fieldMap = {diff:'d-a1', add:'d-a2', sub:'d-a3', diaSem:'d-a4'};
+  var fId = fieldMap[dM];
+  if (fId && document.getElementById(fId) && document.getElementById(fId).value) {
+    calcDatas();
+  }
+}
 function calcDatas(){
   const rb=document.getElementById('d-res');rb.classList.remove('show','err');
   try{
@@ -4629,18 +4665,26 @@ const SEO = {
   },
   home: {
     slug: '',
-    title: 'Calcula Prazo — Calculadoras Jurídicas e Trabalhistas Gratuitas',
-    desc:  'Calculadora de prazos processuais, juros, correção monetária, salário líquido, IMC, validador CPF/CNPJ e muito mais. 100% gratuito, sem cadastro.',
-    h1:    'Ferramentas Profissionais Gratuitas',
-    kw:    'calculadora de prazos, ferramentas jurídicas, calculadora online, ferramentas profissionais gratuitas',
+    title: 'Calcula Prazo — Ferramentas e Conteúdo para o Direito do Trabalho',
+    desc:  'Calculadoras trabalhistas e jurídicas gratuitas (prazos processuais CLT/CPC, verbas rescisórias, salário líquido) e acervo com 137+ artigos sobre legislação trabalhista, TST e eSocial. Para advogados, RH e trabalhadores.',
+    h1:    'Ferramentas e Conteúdo para o Direito do Trabalho — Gratuitos e Sem Cadastro',
+    kw:    'calculadora de prazo processual, ferramentas trabalhistas, direito do trabalho, CLT, jurisprudência TST, verbas rescisórias, salário líquido, advocacia trabalhista',
     schemaType: null,
   },
   sobre: {
     slug: 'sobre',
-    title: 'Sobre o Calcula Prazo – Ferramentas Jurídicas Gratuitas para Advogados',
-    desc:  'Conheça o Calcula Prazo: quem somos, nossa missão e como ajudamos advogados, contadores e profissionais de RH com calculadoras gratuitas e confiáveis.',
+    title: 'Sobre o Calcula Prazo – Ferramentas e Conteúdo Trabalhistas por Anderson Fernandes (OAB/SC)',
+    desc:  'O Calcula Prazo é criado por Anderson Fernandes (OAB/SC 44.858), advogado trabalhista. Reúne ferramentas jurídico-trabalhistas gratuitas e acervo editorial sobre CLT, TST e legislação vigente.',
     h1:    'Sobre o Calcula Prazo',
-    kw:    'calcula prazo, ferramentas jurídicas, calculadoras gratuitas, advogados, RH',
+    kw:    'calcula prazo, Anderson Fernandes, OAB SC, ferramentas trabalhistas, calculadoras jurídicas gratuitas, advogados, RH',
+    schemaType: null,
+  },
+  blog: {
+    slug: 'conteudo',
+    title: 'Conteúdo Trabalhista — Artigos, Jurisprudência e Legislação · Calcula Prazo',
+    desc:  'Artigos sobre CLT, jurisprudência do TST e TRTs, eSocial, FGTS Digital, rescisões, folha de pagamento e legislação trabalhista atualizada. Curadoria técnica com fontes primárias.',
+    h1:    'Conteúdo Jurídico-Trabalhista',
+    kw:    'direito do trabalho, jurisprudência TST, CLT, eSocial, folha de pagamento, rescisão, legislação trabalhista, FGTS Digital',
     schemaType: null,
   },
 };
@@ -4699,6 +4743,11 @@ Object.entries(SEO).forEach(([id, data]) => {
 
 // Resolve o ID a partir da URL atual
 function resolveIdFromURL() {
+  // Lê o hash (#ferramenta) gerado pelos artigos via navGoTo('id')
+  const hash = location.hash.replace('#', '');
+  if (hash && (SLUG_TO_ID[hash] || NAV_MAP[hash])) {
+    return SLUG_TO_ID[hash] || hash;
+  }
   const path = location.pathname.replace(/\/$/, '') || '/';
   return SLUG_TO_ID[path] || SLUG_TO_ID[path.slice(1)] || 'prazos';
 }
@@ -5262,14 +5311,41 @@ function toggleSociais(e){
   function bootAll(){
     loadBlogPosts();
     loadYouTubeVideos();
-    var hash=window.location.hash;
-    if(hash==='#conteudo'||hash==='#blog'){setTimeout(function(){navGoTo('blog');},200);}
+    var hash = window.location.hash.replace('#', '');
+    if (hash === 'conteudo' || hash === 'blog') {
+      // Artigo redirecionou para /#conteudo ou /#blog
+      setTimeout(function(){ navGoTo('blog'); }, 200);
+    } else if (hash && (SLUG_TO_ID[hash] || NAV_MAP[hash])) {
+      // Artigo redirecionou para uma ferramenta — ex: /#correcao, /#datas, /#salario
+      var targetId = SLUG_TO_ID[hash] || hash;
+      setTimeout(function(){ navGoTo(targetId); }, 100);
+    }
+    // Abre painel Prazos de Referência se artigo pediu via toggleRefNav()
+    try {
+      if (sessionStorage.getItem('cp_open_refbar') === '1') {
+        sessionStorage.removeItem('cp_open_refbar');
+        setTimeout(function(){
+          navGoTo('prazos');
+          setTimeout(function(){
+            var bar = document.getElementById('p-ref-bar');
+            if (bar) { bar.style.display = ''; bar.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+          }, 120);
+        }, 100);
+      }
+    } catch(ex) {}
   }
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',bootAll);}else{bootAll();}
 })();
 window.addEventListener('hashchange', function() {
   var h = window.location.hash;
-  if (h === '#conteudo' || h === '#blog') navGoTo('blog');
+  var hId = h.replace('#', '');
+  if (h === '#conteudo' || h === '#blog') {
+    navGoTo('blog');
+  } else if (hId && (SLUG_TO_ID[hId] || NAV_MAP[hId])) {
+    // Navega para ferramenta indicada no hash (ex: vindo de artigo)
+    navGoTo(SLUG_TO_ID[hId] || hId);
+    return;
+  }
   // Ler filtro de navegação vindo dos artigos (via sessionStorage)
   try {
     var cpFilter = sessionStorage.getItem('cp_nav_filter');
