@@ -1,5 +1,15 @@
 [
   {
+    "id": "cota-aprendiz-calculo-obrigacao-empresa",
+    "title": "Cota de aprendiz: quem é obrigado e como calcular",
+    "category": "rh-fiscalizacao",
+    "category_label": "Fiscalização",
+    "excerpt": "Saiba quais empresas são obrigadas a contratar aprendizes, como calcular a cota corretamente e as multas por descumprimento da Lei 10.097/2000.",
+    "image": "https://images.unsplash.com/photo-1522202757859-7472b0973c69?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-20",
+    "tags": []
+  },
+  {
     "id": "ltcat-laudo-tecnico-condicoes-trabalho-empresa",
     "title": "LTCAT: quando é obrigatório e como manter atualizado",
     "category": "saude-seguranca",
@@ -66,16 +76,6 @@
     "category_label": "Salário",
     "excerpt": "Entenda os graus de insalubridade (10%, 20% e 40%), a base de cálculo após decisão do STF em 2025 e como eliminar com laudo técnico conforme NR-15.",
     "image": "https://images.unsplash.com/photo-1555963966-b7ae5404b6ed?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "date": "2026-05-18",
-    "tags": []
-  },
-  {
-    "id": "cota-aprendiz-calculo-obrigacao-empresa",
-    "title": "Cota de aprendiz: quem é obrigado e como calcular",
-    "category": "rh-fiscalizacao",
-    "category_label": "Fiscalização",
-    "excerpt": "Saiba quais empresas são obrigadas a contratar aprendizes, como calcular a cota corretamente e as multas por descumprimento da Lei 10.097/2000.",
-    "image": "https://images.unsplash.com/photo-1522202757859-7472b0973c69?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "date": "2026-05-18",
     "tags": []
   },
