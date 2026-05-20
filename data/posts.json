@@ -1,5 +1,105 @@
 [
   {
+    "id": "ltcat-laudo-tecnico-condicoes-trabalho-empresa",
+    "title": "LTCAT: quando é obrigatório e como manter atualizado",
+    "category": "saude-seguranca",
+    "category_label": "Saúde e Segurança",
+    "excerpt": "Saiba o que é o Laudo Técnico das Condições Ambientais do Trabalho, quem deve elaborar, quando atualizar e as consequências para INSS e eSocial.",
+    "image": "https://plus.unsplash.com/premium_photo-1681823098176-5fc40b0659be?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-18",
+    "tags": []
+  },
+  {
+    "id": "contribuicao-assistencial-desconto-salario-empresa",
+    "title": "Contribuição assistencial: empresa pode descontar?",
+    "category": "rh-sindical",
+    "category_label": "Rel. Sindical",
+    "excerpt": "Entenda quando a contribuição assistencial pode ser descontada do salário, quem é obrigado a pagar e o que o STF decidiu no Tema 935 em 2025.",
+    "image": "https://images.unsplash.com/photo-1624953901718-e24ee7200b85?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-18",
+    "tags": []
+  },
+  {
+    "id": "trabalho-em-feriado-como-pagar-corretamente",
+    "title": "Trabalho em feriado: como pagar corretamente",
+    "category": "rh-jornada",
+    "category_label": "Jornada",
+    "excerpt": "Saiba quando o trabalho no feriado é permitido, quanto deve ser pago e o que o TST exige para que acordos de compensação sejam válidos.",
+    "image": "https://images.unsplash.com/photo-1556745750-68295fefafc5?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-18",
+    "tags": []
+  },
+  {
+    "id": "pgr-nr-1-obrigacoes-empresa-prazo-atualizacao",
+    "title": "PGR: quem precisa elaborar e como atualizar",
+    "category": "legislacao-nr",
+    "category_label": "NR",
+    "excerpt": "Entenda o que é o PGR (NR-1), quais empresas são obrigadas, o que ele substituiu o PPRA e os prazos de atualização exigidos pelo MTE.",
+    "image": "https://images.unsplash.com/photo-1587582423116-ec07293f0395?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-18",
+    "tags": []
+  },
+  {
+    "id": "pcmso-nr-7-obrigacoes-empresa-fiscalizacao",
+    "title": "PCMSO: o que é, quem precisa e o que fiscaliza o MTE",
+    "category": "legislacao-nr",
+    "category_label": "NR",
+    "excerpt": "Saiba o que é o PCMSO (NR-7), quais empresas são obrigadas, o que deve conter o programa e as autuações mais comuns da fiscalização do trabalho.",
+    "image": "https://plus.unsplash.com/premium_photo-1681690860636-3d96ea7a593b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-18",
+    "tags": []
+  },
+  {
+    "id": "contrato-prazo-determinado-art-443-clt-empresa",
+    "title": "Contrato por prazo determinado: regras e riscos para a empresa",
+    "category": "rh-contrato",
+    "category_label": "Contrato",
+    "excerpt": "Quando é válido o contrato a prazo? Entenda o art. 443 da CLT, os limites de renovação e o risco de conversão em contrato por prazo indeterminado.",
+    "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-18",
+    "tags": []
+  },
+  {
+    "id": "adicional-insalubridade-graus-base-calculo-empresa",
+    "title": "Adicional de insalubridade: graus, base de cálculo e eliminação",
+    "category": "rh-salario",
+    "category_label": "Salário",
+    "excerpt": "Entenda os graus de insalubridade (10%, 20% e 40%), a base de cálculo após decisão do STF em 2025 e como eliminar com laudo técnico conforme NR-15.",
+    "image": "https://images.unsplash.com/photo-1555963966-b7ae5404b6ed?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-18",
+    "tags": []
+  },
+  {
+    "id": "cota-aprendiz-calculo-obrigacao-empresa",
+    "title": "Cota de aprendiz: quem é obrigado e como calcular",
+    "category": "rh-fiscalizacao",
+    "category_label": "Fiscalização",
+    "excerpt": "Saiba quais empresas são obrigadas a contratar aprendizes, como calcular a cota corretamente e as multas por descumprimento da Lei 10.097/2000.",
+    "image": "https://images.unsplash.com/photo-1522202757859-7472b0973c69?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-18",
+    "tags": []
+  },
+  {
+    "id": "teletrabalho-contrato-controle-custos-clt",
+    "title": "Teletrabalho: contrato, controle e custos obrigatórios",
+    "category": "rh-contrato",
+    "category_label": "Contrato",
+    "excerpt": "Quais obrigações a CLT impõe no teletrabalho? Entenda o contrato escrito, reembolso de custos e o que o TST já decidiu sobre jornada e controle.",
+    "image": "https://images.unsplash.com/photo-1773332585698-cba3c91b73e4?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-18",
+    "tags": []
+  },
+  {
+    "id": "equiparacao-salarial-art-461-clt-empresa",
+    "title": "Equiparação salarial: quando a empresa é obrigada a pagar?",
+    "category": "rh-salario",
+    "category_label": "Salário",
+    "excerpt": "Entenda quando a CLT exige equiparação salarial, os requisitos do art. 461 e como a empresa se defende com critérios objetivos e plano de cargos.",
+    "image": "https://images.unsplash.com/photo-1568992687947-868a62a9f521?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-18",
+    "tags": []
+  },
+  {
     "id": "lei-igualdade-salarial-constitucional-stf-adi-7612",
     "title": "STF declara Lei de Igualdade Salarial Constitucional",
     "category": "jurisprudencia-stf",
