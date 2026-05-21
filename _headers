@@ -18,7 +18,7 @@
 # Segurança geral
 /*
   X-Content-Type-Options: nosniff
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://adservice.google.com https://www.googletagservices.com https://partner.googleadservices.com https://tpc.googlesyndication.com; img-src 'self' data: https: blob:; style-src 'self' 'unsafe-inline'; connect-src 'self' https://api.bcb.gov.br https://open.er-api.com https://economia.awesomeapi.com.br https://api.github.com https://www.googleapis.com https://api.web3forms.com; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com;
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://adservice.google.com https://www.googletagservices.com https://partner.googleadservices.com https://tpc.googlesyndication.com; img-src 'self' data: https: blob:; style-src 'self' 'unsafe-inline'; connect-src 'self' https://api.bcb.gov.br https://open.er-api.com https://economia.awesomeapi.com.br https://api.github.com https://www.googleapis.com https://api.web3forms.com https://googleads.g.doubleclick.net https://adservice.google.com; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com;
   X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
 
