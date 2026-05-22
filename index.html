@@ -1453,7 +1453,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
       <div class="nav-dropdown" id="nav-dropdown-ferramentas">
         <a id="nav-tools" onclick="toggleFerramentas(event)">Ferramentas</a>
         <div class="nav-drop-menu" id="ferramentas-menu">
-          <a onclick="toggleRefNav();document.getElementById('nav-dropdown-ferramentas').classList.remove('open')"><span class="dm-icon">⚡</span>Prazos de Referência</a>
           <div class="nav-drop-divider"></div>
           <a onclick="navGoTo('correcao')"><span class="dm-icon">💰</span>Correção Monetária</a>
           <a onclick="navGoTo('juros')"><span class="dm-icon">📈</span>Cálculo de Juros</a>
@@ -1589,7 +1588,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
           </div>
           <div class="nh-stat-sep"></div>
           <div class="nh-stat">
-            <div class="nh-stat-num">14+</div>
+            <div class="nh-stat-num">13+</div>
             <div class="nh-stat-lbl">Ferramentas</div>
           </div>
           <div class="nh-stat-sep"></div>
@@ -1607,14 +1606,14 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
           ACESSO RÁPIDO
         </div>
         <div class="nh-quick-list">
-          <a class="nh-quick-btn" href="https://calculaprazo.com.br/calculadora-de-prazo-processual" style="text-decoration:none;">
+          <button class="nh-quick-btn" onclick="goTo('prazos')">
             <div class="nh-quick-icon" style="background:rgba(37,99,235,.25);">⏱️</div>
             <div class="nh-quick-text">
               <div class="nh-quick-name">Calculadora de Prazos</div>
               <div class="nh-quick-desc">Dias úteis e corridos, CLT e CPC</div>
             </div>
             <span class="nh-quick-arr">›</span>
-          </a>
+          </button>
           <button class="nh-quick-btn" onclick="goTo('trabalhista')">
             <div class="nh-quick-icon" style="background:rgba(99,102,241,.25);">⚖️</div>
             <div class="nh-quick-text">
@@ -1765,24 +1764,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
-  <!-- Painel Prazos de Referência — abre pelo botão no nav -->
-  <div id="p-ref-bar" style="background:#fff;border-bottom:2px solid #E4E4EE;display:none;">
-    <div class="container">
-      <div id="p-ref-panel" style="padding:16px 0;">
-        <div class="p-area-tabs" style="margin-bottom:12px;">
-          <button class="patab active" data-area="trabalho">⚖️ Trabalho</button>
-          <button class="patab" data-area="civil">📋 Civil / CPC</button>
-          <button class="patab" data-area="tributario">💰 Tributário</button>
-          <button class="patab" data-area="rh">👥 RH / CLT</button>
-        </div>
-        <div class="p-area-panel active" id="pp-trabalho"><div class="p-prazo-grid" id="pcards-trabalho"></div></div>
-        <div class="p-area-panel" id="pp-civil"><div class="p-prazo-grid" id="pcards-civil"></div></div>
-        <div class="p-area-panel" id="pp-tributario"><div class="p-prazo-grid" id="pcards-tributario"></div></div>
-        <div class="p-area-panel" id="pp-rh"><div class="p-prazo-grid" id="pcards-rh"></div></div>
-      </div>
-    </div>
-  </div>
-
   <!-- ══ CALCULADORA CENTRALIZADA ══ -->
   <div class="container" style="padding:32px 0 48px;">
     <div style="max-width:520px;margin:0 auto;">
@@ -1843,6 +1824,21 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
         </div>
 
         <button id="p-btn-calc">Calcular Prazo →</button>
+
+        <!-- ── Prazos de Referência (acordeão) ── -->
+        <div id="p-prazos-ref" style="margin-top:14px;border-top:1px solid var(--brd);padding-top:12px;">
+          <div style="font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8888AA;margin-bottom:8px;">⚡ Prazos de Referência</div>
+          <div class="p-area-tabs" style="margin-bottom:0;">
+            <button class="patab" data-area="trabalho">⚖️ Trabalho</button>
+            <button class="patab" data-area="civil">📋 Civil / CPC</button>
+            <button class="patab" data-area="tributario">💰 Tributário</button>
+            <button class="patab" data-area="rh">👥 RH / CLT</button>
+          </div>
+          <div class="p-area-panel" id="pp-trabalho"><div class="p-prazo-grid" id="pcards-trabalho"></div></div>
+          <div class="p-area-panel" id="pp-civil"><div class="p-prazo-grid" id="pcards-civil"></div></div>
+          <div class="p-area-panel" id="pp-tributario"><div class="p-prazo-grid" id="pcards-tributario"></div></div>
+          <div class="p-area-panel" id="pp-rh"><div class="p-prazo-grid" id="pcards-rh"></div></div>
+        </div>
         </div>
 
         <div id="p-resultado">
@@ -2999,8 +2995,6 @@ function goTo(id) {
   const activeNav = NAV_ACTIVE[id] || 'home';
   const navEl = document.getElementById('nav-' + activeNav);
   if (navEl) navEl.classList.add('on');
-  const refBar = document.getElementById('p-ref-bar');
-  if (refBar) refBar.style.display = 'none';
   window.scrollTo(0, 0);
 }
 
@@ -3087,13 +3081,16 @@ function renderPCards(area){
 }
 ['trabalho','civil','tributario','rh'].forEach(renderPCards);
 
-// Area tabs
+// Area tabs — toggle (clique abre/fecha, nenhuma ativa por padrão)
 document.querySelectorAll('.patab').forEach(tab => {
   tab.addEventListener('click', () => {
+    const isActive = tab.classList.contains('active');
     document.querySelectorAll('.patab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.p-area-panel').forEach(p => p.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById(`pp-${tab.dataset.area}`).classList.add('active');
+    if (!isActive) {
+      tab.classList.add('active');
+      document.getElementById(`pp-${tab.dataset.area}`).classList.add('active');
+    }
   });
 });
 
@@ -4402,19 +4399,6 @@ window.addEventListener('load',()=>{
 // FAQ
 // FAQ accordion handled in dropdown listener above
 
-// ─── PRAZOS REF BAR TOGGLE ─────────────────────────
-function toggleRefBar(){
-  const panel   = document.getElementById('p-ref-panel');
-  const chevron = document.getElementById('p-ref-chevron');
-  const hint    = document.querySelector('#p-ref-toggle span:nth-child(2) + span');
-  const open    = panel.style.display === 'none';
-  panel.style.display = open ? '' : 'none';
-  chevron.style.transform = open ? 'rotate(180deg)' : '';
-  // update hint text
-  const hintEl = document.querySelector('#p-ref-toggle .ref-hint');
-  if(hintEl) hintEl.textContent = open ? '— clique para fechar' : '— clique para expandir';
-}
-
 // ─── DROPDOWN FERRAMENTAS (clique) ──────────────────
 // Position dropdown menu under the Ferramentas button
 function positionDropdown(){
@@ -4467,22 +4451,6 @@ document.querySelectorAll('#nav-dropdown-conteudo .nav-drop-menu a:not(.nm-sec)'
 });
 
 // ─── PRAZOS DE REFERÊNCIA — botão no nav ────────────
-function toggleRefNav(){
-  const sec = document.getElementById('sec-prazos');
-  if(!sec.classList.contains('active')){
-    goTo('prazos');
-    setTimeout(()=>_openRefBar(), 80);
-    return;
-  }
-  _openRefBar();
-}
-function _openRefBar(){
-  const bar = document.getElementById('p-ref-bar');
-  const isOpen = bar.style.display !== 'none';
-  bar.style.display = isOpen ? 'none' : '';
-  if(!isOpen) setTimeout(()=>bar.scrollIntoView({behavior:'smooth', block:'nearest'}), 30);
-}
-
 // ─── COOKIES ───────────────────────────────────────
 function cookieChoice(accept){
   localStorage.setItem('cp_cookies', accept ? 'accepted' : 'declined');
@@ -5368,7 +5336,7 @@ function renderNhRecentes(){
   if(!list) return;
   var posts = BLOG_POSTS.slice()
     .sort(function(a,b){return (b.date||'').localeCompare(a.date||'');})
-    .slice(0,5);
+    .slice(0,6);
   if(!posts.length){
     list.innerHTML='<p style="font-size:.85rem;color:var(--txt-s);padding:16px 0;">Nenhum artigo publicado ainda.</p>';
     return;
