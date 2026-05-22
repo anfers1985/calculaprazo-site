@@ -1,5 +1,85 @@
 [
   {
+    "id": "acidente-trabalho-cat-estabilidade-obrigacoes-empresa",
+    "title": "Acidente de trabalho: CAT, estabilidade e obrigações da empresa",
+    "category": "saude-seguranca",
+    "category_label": "Saúde e Segurança",
+    "excerpt": "Saiba os prazos para emitir a CAT, quando nasce a estabilidade de 12 meses do acidentado, o que o INSS exige e como o TST interpreta a Súmula 378.",
+    "image": "https://images.unsplash.com/photo-1633158832532-f71e9c7ac6d6?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-22",
+    "tags": []
+  },
+  {
+    "id": "plr-participacao-lucros-resultados-empresa-lei-10101",
+    "title": "PLR: como instituir, o que o acordo deve conter e riscos fiscais",
+    "category": "rh-beneficios",
+    "category_label": "Benefícios",
+    "excerpt": "A PLR é obrigatória? Quando ela é isenta de INSS e IR? Entenda a Lei 10.101/2000, o que o acordo deve conter e os reflexos trabalhistas.",
+    "image": "https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-22",
+    "tags": []
+  },
+  {
+    "id": "terceirizacao-responsabilidade-tomador-stf-clt",
+    "title": "Terceirização: responsabilidade da empresa tomadora na prática",
+    "category": "orientacoes-praticas",
+    "category_label": "Outros RH",
+    "excerpt": "Entenda quando o tomador responde subsidiariamente pelas verbas do terceirizado, o que o STF autorizou e como a empresa contratante se protege.",
+    "image": "https://plus.unsplash.com/premium_photo-1663011218145-c1d0c3ba3542?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-22",
+    "tags": []
+  },
+  {
+    "id": "adicional-periculosidade-calculo-atividades-empresa",
+    "title": "Adicional de periculosidade: quem tem direito e como calcular",
+    "category": "saude-seguranca",
+    "category_label": "Saúde e Segurança",
+    "excerpt": "Saiba quem tem direito ao adicional de periculosidade (30% sobre o salário), quais atividades as NRs enquadram e a decisão do TST sobre motociclistas em 2026.",
+    "image": "https://images.unsplash.com/photo-1555963966-b7ae5404b6ed?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-22",
+    "tags": []
+  },
+  {
+    "id": "contrato-experiencia-prazo-prorrogacao-clt",
+    "title": "Contrato de experiência: prazos, prorrogação e armadilhas",
+    "category": "rh-jornada",
+    "category_label": "Jornada",
+    "excerpt": "Entenda o prazo máximo de 90 dias, a regra da prorrogação única, quando o contrato vira prazo indeterminado e o que a Súmula 188 do TST consolida.",
+    "image": "https://plus.unsplash.com/premium_photo-1664474834472-6c7d1e3198e2?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-22",
+    "tags": []
+  },
+  {
+    "id": "dispensa-coletiva-o-que-a-empresa-precisa-fazer-antes-de-demitir",
+    "title": "Dispensa coletiva: o que a empresa precisa fazer antes de demitir",
+    "category": "rh-rescisao",
+    "category_label": "Rescisão",
+    "excerpt": "O STF decidiu que a intervenção sindical prévia é obrigatória na dispensa coletiva (Tema 638). Saiba o que isso significa na prática e como agir.",
+    "image": "https://images.unsplash.com/photo-1577412647305-991150c7d163?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-22",
+    "tags": []
+  },
+  {
+    "id": "banco-de-horas-acordo-individual-reforma-trabalhista",
+    "title": "Banco de horas: como funciona e como não gera passivo",
+    "category": "rh-jornada",
+    "category_label": "Jornada",
+    "excerpt": "Entenda as regras do banco de horas após a Reforma Trabalhista, o que mudou com o acordo individual escrito e como o TST trata horas extras habituais.",
+    "image": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-22",
+    "tags": []
+  },
+  {
+    "id": "gorjeta-remuneracao-reflexos-art-457-clt",
+    "title": "Gorjeta não é salário, mas gera reflexos: entenda as regras",
+    "category": "rh-salario",
+    "category_label": "Salário",
+    "excerpt": "Gorjeta integra a remuneração, não o salário. Saiba quais parcelas ela reflete — férias, 13º, FGTS — e o que o TST consolidou em 2025 sobre o art. 457 da CLT.",
+    "image": "https://images.unsplash.com/photo-1556742393-d75f468bfcb0?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-22",
+    "tags": []
+  },
+  {
     "id": "cota-aprendiz-calculo-obrigacao-empresa",
     "title": "Cota de aprendiz: quem é obrigado e como calcular",
     "category": "rh-fiscalizacao",
@@ -75,7 +155,7 @@
     "category": "rh-salario",
     "category_label": "Salário",
     "excerpt": "Entenda os graus de insalubridade (10%, 20% e 40%), a base de cálculo após decisão do STF em 2025 e como eliminar com laudo técnico conforme NR-15.",
-    "image": "https://images.unsplash.com/photo-1555963966-b7ae5404b6ed?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "image": "https://images.unsplash.com/photo-1669101602124-f5b78895d91c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "date": "2026-05-18",
     "tags": []
   },

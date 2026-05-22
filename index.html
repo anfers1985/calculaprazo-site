@@ -592,7 +592,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 /* ── FOOTER ── */
 #ftr{background:var(--txt);padding:44px 0 24px;margin-top:0;}
-.ftr-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:36px;margin-bottom:36px;}
+.ftr-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:36px;margin-bottom:36px;}
 .ftr-brand .logo{color:var(--acc-l);}
 .ftr-brand .logo-ic{background:var(--acc);}
 .ftr-brand .logo span{color:rgba(255,255,255,.5);}
@@ -1084,7 +1084,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   font-size:.97rem;font-weight:400;
   color:rgba(255,255,255,.55);
   max-width:440px;line-height:1.72;
-  margin:0 0 28px;
+  margin:0 0 20px;
 }
 .nh-hero-ctas {
   display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px;
@@ -1571,15 +1571,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
       <!-- Coluna esquerda -->
       <div class="nh-hero-left">
         <h1 class="nh-h1">
-          Calculadoras de Prazos<br>
-          <span class="nh-h1-grad">e Ferramentas Jurídicas</span><br>
+          Calculadoras Jurídicas<br>
+          <span class="nh-h1-grad">e Conteúdo Trabalhista</span><br>
           para Profissionais
         </h1>
-        <p class="nh-hero-sub">Conteúdo jurídico atualizado com fontes do TST, STF e MTE. Calculadoras de prazos, verbas trabalhistas, correção monetária e muito mais.</p>
-        <div class="nh-hero-ctas">
-          <button class="nh-btn-primary" onclick="goTo('prazos')">⚡ Calculadora de Prazos</button>
-          <button class="nh-btn-ghost" onclick="goTo('trabalhista')">⚖️ Verbas Trabalhistas</button>
-        </div>
+        <p class="nh-hero-sub">Prazos processuais, verbas rescisórias, correção monetária e salário líquido — com conteúdo baseado em fontes oficiais e entendimentos atualizados.</p>
         <!-- Stats -->
         <div class="nh-stats">
           <div class="nh-stat">
@@ -1710,45 +1706,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
-  <!-- ═══════════════ NH AUTORIDADE / BENEFÍCIOS ═══════════════ -->
-  <section class="nh-autoridade">
-    <div class="nh-autoridade-deco"></div>
-    <div class="container nh-autoridade-grid">
-
-      <!-- Coluna esquerda -->
-      <div class="nh-aut-left nh-aut-mob-hide">
-        <div class="nh-eyebrow nh-eyebrow-light"><span class="nh-eyebrow-line nh-eyebrow-line-light"></span>POR QUE USAR</div>
-        <h2 class="nh-h2 nh-h2-light">Ferramentas de precisão, totalmente gratuitas</h2>
-        <p class="nh-aut-sub">Conteúdo jurídico com base legal explícita e cálculos que respeitam sua privacidade.</p>
-        <button class="nh-btn-primary" onclick="goTo('prazos')">⚡ Começar a Calcular</button>
-      </div>
-
-      <!-- Grid de benefícios -->
-      <div class="nh-ben-grid">
-        <div class="nh-ben-card">
-          <div class="nh-ben-icon">⚡</div>
-          <div class="nh-ben-name">100% Gratuito</div>
-          <div class="nh-ben-desc">Sem cadastro, sem limites, sem planos pagos</div>
-        </div>
-        <div class="nh-ben-card">
-          <div class="nh-ben-icon">📰</div>
-          <div class="nh-ben-name">Atualizado Diariamente</div>
-          <div class="nh-ben-desc">Artigos com fontes do TST, STF, TRTs e MTE</div>
-        </div>
-        <div class="nh-ben-card">
-          <div class="nh-ben-icon">🎯</div>
-          <div class="nh-ben-name">Base Legal Explícita</div>
-          <div class="nh-ben-desc">Cada cálculo referencia o artigo de lei aplicável</div>
-        </div>
-        <div class="nh-ben-card">
-          <div class="nh-ben-icon">🔒</div>
-          <div class="nh-ben-name">Privacidade Total</div>
-          <div class="nh-ben-desc">Cálculos no navegador. Nenhum dado sai do dispositivo</div>
-        </div>
-      </div>
-
-    </div>
-  </section>
 
 </div><!-- /home -->
 
@@ -1770,6 +1727,21 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
       <div id="p-calc-card">
         <h2>🗓 Calculadora de Prazos</h2>
+
+        <!-- ── Prazos de Referência (acordeão) ── -->
+        <div id="p-prazos-ref" style="margin-bottom:14px;border-bottom:1px solid var(--brd);padding-bottom:12px;">
+          <div style="font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8888AA;margin-bottom:8px;text-align:center;">⚡ Prazos de Referência</div>
+          <div class="p-area-tabs" style="margin-bottom:0;justify-content:center;">
+            <button class="patab" data-area="trabalho">⚖️ Trabalho</button>
+            <button class="patab" data-area="civil">📋 Civil / CPC</button>
+            <button class="patab" data-area="tributario">💰 Tributário</button>
+            <button class="patab" data-area="rh">👥 RH / CLT</button>
+          </div>
+          <div class="p-area-panel" id="pp-trabalho"><div class="p-prazo-grid" id="pcards-trabalho"></div></div>
+          <div class="p-area-panel" id="pp-civil"><div class="p-prazo-grid" id="pcards-civil"></div></div>
+          <div class="p-area-panel" id="pp-tributario"><div class="p-prazo-grid" id="pcards-tributario"></div></div>
+          <div class="p-area-panel" id="pp-rh"><div class="p-prazo-grid" id="pcards-rh"></div></div>
+        </div>
 
         <div class="pfg">
           <label for="p-tipo-contagem">Operação</label>
@@ -1824,21 +1796,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
         </div>
 
         <button id="p-btn-calc">Calcular Prazo →</button>
-
-        <!-- ── Prazos de Referência (acordeão) ── -->
-        <div id="p-prazos-ref" style="margin-top:14px;border-top:1px solid var(--brd);padding-top:12px;">
-          <div style="font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8888AA;margin-bottom:8px;">⚡ Prazos de Referência</div>
-          <div class="p-area-tabs" style="margin-bottom:0;">
-            <button class="patab" data-area="trabalho">⚖️ Trabalho</button>
-            <button class="patab" data-area="civil">📋 Civil / CPC</button>
-            <button class="patab" data-area="tributario">💰 Tributário</button>
-            <button class="patab" data-area="rh">👥 RH / CLT</button>
-          </div>
-          <div class="p-area-panel" id="pp-trabalho"><div class="p-prazo-grid" id="pcards-trabalho"></div></div>
-          <div class="p-area-panel" id="pp-civil"><div class="p-prazo-grid" id="pcards-civil"></div></div>
-          <div class="p-area-panel" id="pp-tributario"><div class="p-prazo-grid" id="pcards-tributario"></div></div>
-          <div class="p-area-panel" id="pp-rh"><div class="p-prazo-grid" id="pcards-rh"></div></div>
-        </div>
         </div>
 
         <div id="p-resultado">
