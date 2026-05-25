@@ -1,5 +1,35 @@
 [
   {
+    "id": "dispensa-coletiva-o-que-a-empresa-precisa-fazer-antes-de-demitir",
+    "title": "Dispensa coletiva: o que a empresa precisa fazer antes de demitir",
+    "category": "rh-rescisao",
+    "category_label": "Rescisão",
+    "excerpt": "O STF decidiu que a intervenção sindical prévia é obrigatória na dispensa coletiva (Tema 638). Saiba o que isso significa na prática e como agir.",
+    "image": "https://images.unsplash.com/photo-1577412647305-991150c7d163?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-25",
+    "tags": []
+  },
+  {
+    "id": "banco-de-horas-acordo-individual-reforma-trabalhista",
+    "title": "Banco de horas: como funciona e como não gera passivo",
+    "category": "rh-jornada",
+    "category_label": "Jornada",
+    "excerpt": "Entenda as regras do banco de horas após a Reforma Trabalhista, o que mudou com o acordo individual escrito e como o TST trata horas extras habituais.",
+    "image": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-25",
+    "tags": []
+  },
+  {
+    "id": "gorjeta-remuneracao-reflexos-art-457-clt",
+    "title": "Gorjeta não é salário, mas gera reflexos: entenda as regras",
+    "category": "rh-salario",
+    "category_label": "Salário",
+    "excerpt": "Gorjeta integra a remuneração, não o salário. Saiba quais parcelas ela reflete — férias, 13º, FGTS — e o que o TST consolidou em 2025 sobre o art. 457 da CLT.",
+    "image": "https://images.unsplash.com/photo-1556742393-d75f468bfcb0?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-05-25",
+    "tags": []
+  },
+  {
     "id": "acidente-trabalho-cat-estabilidade-obrigacoes-empresa",
     "title": "Acidente de trabalho: CAT, estabilidade e obrigações da empresa",
     "category": "saude-seguranca",
@@ -46,36 +76,6 @@
     "category_label": "Jornada",
     "excerpt": "Entenda o prazo máximo de 90 dias, a regra da prorrogação única, quando o contrato vira prazo indeterminado e o que a Súmula 188 do TST consolida.",
     "image": "https://plus.unsplash.com/premium_photo-1664474834472-6c7d1e3198e2?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "date": "2026-05-22",
-    "tags": []
-  },
-  {
-    "id": "dispensa-coletiva-o-que-a-empresa-precisa-fazer-antes-de-demitir",
-    "title": "Dispensa coletiva: o que a empresa precisa fazer antes de demitir",
-    "category": "rh-rescisao",
-    "category_label": "Rescisão",
-    "excerpt": "O STF decidiu que a intervenção sindical prévia é obrigatória na dispensa coletiva (Tema 638). Saiba o que isso significa na prática e como agir.",
-    "image": "https://images.unsplash.com/photo-1577412647305-991150c7d163?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "date": "2026-05-22",
-    "tags": []
-  },
-  {
-    "id": "banco-de-horas-acordo-individual-reforma-trabalhista",
-    "title": "Banco de horas: como funciona e como não gera passivo",
-    "category": "rh-jornada",
-    "category_label": "Jornada",
-    "excerpt": "Entenda as regras do banco de horas após a Reforma Trabalhista, o que mudou com o acordo individual escrito e como o TST trata horas extras habituais.",
-    "image": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "date": "2026-05-22",
-    "tags": []
-  },
-  {
-    "id": "gorjeta-remuneracao-reflexos-art-457-clt",
-    "title": "Gorjeta não é salário, mas gera reflexos: entenda as regras",
-    "category": "rh-salario",
-    "category_label": "Salário",
-    "excerpt": "Gorjeta integra a remuneração, não o salário. Saiba quais parcelas ela reflete — férias, 13º, FGTS — e o que o TST consolidou em 2025 sobre o art. 457 da CLT.",
-    "image": "https://images.unsplash.com/photo-1556742393-d75f468bfcb0?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "date": "2026-05-22",
     "tags": []
   },
