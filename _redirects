@@ -26,5 +26,8 @@
 # Blog posts (arquivos HTML reais)
 /blog/*           /blog/:splat             200
 
+# Página 404 explícita
+/404              /404.html                200
+
 # SPA fallback — todas as outras rotas vão para index.html
 /*                /index.html              200
