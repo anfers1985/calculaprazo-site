@@ -2990,7 +2990,8 @@ const NAV_ACTIVE = {
 
 function goTo(id) {
   document.querySelectorAll('.sec').forEach(s => s.classList.remove('active'));
-  // URL é gerenciada pelo window.goTo (pushState com slug limpo)
+  // Atualiza URL sem recarregar
+  try { history.replaceState(null, '', id === 'home' ? '/' : '#' + id); } catch(e) {}
   const sec = document.getElementById('sec-' + (NAV_MAP[id] || id));
   if (sec) sec.classList.add('active');
   document.querySelectorAll('#hdr .hdr-nav>a, #hdr .nav-dropdown>a').forEach(a => a.classList.remove('on'));
@@ -4784,7 +4785,16 @@ window.addEventListener('popstate', function(e) {
 });
 
 // ── Inicialização — lê a URL ao carregar ────────────────
-// Navegação por URL gerenciada pelo bootAll (com setTimeout para garantir ordem de execução)
+document.addEventListener('DOMContentLoaded', function() {
+  var id = resolveIdFromURL();
+  if (location.pathname === '/' || location.pathname === '' || !id) {
+    _navOriginal('home');
+    updateSEO('home');
+  } else {
+    _navOriginal(id);
+    updateSEO(id);
+  }
+});
 
 
 </script>
@@ -5247,17 +5257,8 @@ function toggleSociais(e){
   function bootAll(){
     loadBlogPosts();
     loadYouTubeVideos();
-    // Resolve navegação pela URL após todos os outros listeners terem executado
-    setTimeout(function(){
-      var hash = window.location.hash;
-      var pathname = location.pathname.replace(/\/$/, '') || '/';
-      if (hash === '#conteudo' || hash === '#blog') {
-        navGoTo('blog');
-      } else if (pathname !== '/' && pathname !== '') {
-        var id = (typeof SLUG_TO_ID !== 'undefined') ? (SLUG_TO_ID[pathname] || SLUG_TO_ID[pathname.slice(1)]) : null;
-        if (id && id !== 'home') { _navOriginal(id); updateSEO(id); }
-      }
-    }, 50);
+    var hash=window.location.hash;
+    if(hash==='#conteudo'||hash==='#blog'){setTimeout(function(){navGoTo('blog');},200);}
   }
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',bootAll);}else{bootAll();}
 })();
