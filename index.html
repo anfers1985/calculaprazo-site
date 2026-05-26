@@ -2990,8 +2990,7 @@ const NAV_ACTIVE = {
 
 function goTo(id) {
   document.querySelectorAll('.sec').forEach(s => s.classList.remove('active'));
-  // Atualiza URL sem recarregar
-  try { history.replaceState(null, '', id === 'home' ? '/' : '#' + id); } catch(e) {}
+  // URL gerenciada pelo window.goTo (pushState com slug limpo)
   const sec = document.getElementById('sec-' + (NAV_MAP[id] || id));
   if (sec) sec.classList.add('active');
   document.querySelectorAll('#hdr .hdr-nav>a, #hdr .nav-dropdown>a').forEach(a => a.classList.remove('on'));
@@ -5207,7 +5206,28 @@ function toggleSociais(e){
         }).filter(Boolean).join('');
       })
       .catch(function(){
-        grid.innerHTML='<p style="color:var(--txt-s);font-size:.85rem;">Não foi possível carregar os vídeos. <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener" style="color:var(--acc);">Ver canal →</a></p>';
+        // Fallback 2: corsproxy.io
+        var proxy2='https://corsproxy.io/?'+encodeURIComponent(rssUrl);
+        fetch(proxy2)
+          .then(function(r){return r.text();})
+          .then(function(t){
+            var parser=new DOMParser();
+            var doc=parser.parseFromString(t,'text/xml');
+            var entries=Array.from(doc.querySelectorAll('entry')).slice(0,4);
+            if(!entries.length){grid.innerHTML='<p style="color:var(--txt-s);font-size:.85rem;">Nenhum vídeo encontrado.</p>';return;}
+            grid.innerHTML=entries.map(function(e){
+              var vid=e.querySelector('videoId')&&e.querySelector('videoId').textContent;
+              var title=e.querySelector('title')&&e.querySelector('title').textContent;
+              var published=e.querySelector('published')&&e.querySelector('published').textContent;
+              if(!vid)return '';
+              var thumbUrl='https://i.ytimg.com/vi/'+vid+'/hqdefault.jpg';
+              var dateStr=published?new Date(published).toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'}):'';
+              return renderYTCard(vid,title,thumbUrl,dateStr);
+            }).filter(Boolean).join('');
+          })
+          .catch(function(){
+            grid.innerHTML='<p style="color:var(--txt-s);font-size:.85rem;">Não foi possível carregar os vídeos. <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener" style="color:var(--acc);">Ver canal →</a></p>';
+          });
       });
   }
 
