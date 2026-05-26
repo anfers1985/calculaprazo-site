@@ -1146,7 +1146,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       <div class="nav-dropdown" id="nav-dropdown-ferramentas">
         <a id="nav-tools" onclick="toggleFerramentas(event)">Ferramentas</a>
         <div class="nav-drop-menu" id="ferramentas-menu">
-          <a onclick="toggleRefNav();document.getElementById('nav-dropdown-ferramentas').classList.remove('open')"><span class="dm-icon">⚡</span>Prazos de Referência</a>
           <div class="nav-drop-divider"></div>
           <a onclick="navGoTo('correcao')"><span class="dm-icon">💰</span>Correção Monetária</a>
           <a onclick="navGoTo('juros')"><span class="dm-icon">📈</span>Cálculo de Juros</a>
@@ -1165,15 +1164,76 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       </div>
       <div class="nav-dropdown" id="nav-dropdown-conteudo">
         <a id="nav-conteudo" onclick="toggleConteudo(event)">Conteúdo</a>
-        <div class="nav-drop-menu" id="conteudo-menu">
+        <div class="nav-drop-menu" id="conteudo-menu" style="min-width:270px;max-height:80vh;overflow-y:auto;">
           <a href="/conteudo"><span class="dm-icon">📰</span>Todos os Artigos</a>
           <div class="nav-drop-divider"></div>
-          <a href="/conteudo"><span class="dm-icon">⚖️</span>Jurisprudência</a>
-          <a href="/conteudo"><span class="dm-icon">🏛️</span>Órgãos Públicos</a>
-          <a href="/conteudo"><span class="dm-icon">📜</span>Legislação e Normas</a>
-          <a href="/conteudo"><span class="dm-icon">👥</span>RH e Gestão</a>
-          <a href="/conteudo"><span class="dm-icon">⚖️</span>Processual</a>
-          <a href="/conteudo"><span class="dm-icon">⭐</span>Essenciais</a>
+
+          <a class="nm-sec" onclick="toggleNavSec('nms-jurisp',event)"><span class="dm-icon">⚖️</span>Jurisprudência<span class="nm-arr" id="nma-jurisp">›</span></a>
+          <div class="nm-sub-wrap" id="nms-jurisp">
+            <a class="nm-sub" href="/conteudo">TRT</a>
+            <a class="nm-sub" href="/conteudo">TST</a>
+            <a class="nm-sub" href="/conteudo">STJ</a>
+            <a class="nm-sub" href="/conteudo">STF</a>
+            <a class="nm-sub nm-outros" href="/conteudo">+ outros temas</a>
+          </div>
+
+          <a class="nm-sec" onclick="toggleNavSec('nms-orgaos',event)"><span class="dm-icon">🏛️</span>Órgãos Públicos<span class="nm-arr" id="nma-orgaos">›</span></a>
+          <div class="nm-sub-wrap" id="nms-orgaos">
+            <a class="nm-sub" href="/conteudo">MTE</a>
+            <a class="nm-sub" href="/conteudo">MPT</a>
+            <a class="nm-sub nm-outros" href="/conteudo">+ outros órgãos</a>
+          </div>
+
+          <a class="nm-sec" onclick="toggleNavSec('nms-leg',event)"><span class="dm-icon">📋</span>Legislação e Normas<span class="nm-arr" id="nma-leg">›</span></a>
+          <div class="nm-sub-wrap" id="nms-leg">
+            <a class="nm-sub" href="/conteudo">CLT</a>
+            <a class="nm-sub" href="/conteudo">Constituição Federal</a>
+            <a class="nm-sub" href="/conteudo">eSocial</a>
+            <a class="nm-sub" href="/conteudo">FGTS</a>
+            <a class="nm-sub" href="/conteudo">Previdenciário</a>
+            <a class="nm-sub" href="/conteudo">Sindical</a>
+            <a class="nm-sub" href="/conteudo">Portarias</a>
+            <a class="nm-sub" href="/conteudo">NR</a>
+            <a class="nm-sub nm-outros" href="/conteudo">+ outras Legislação e Normas</a>
+          </div>
+
+          <a class="nm-sec" onclick="toggleNavSec('nms-rh',event)"><span class="dm-icon">👥</span>RH e Gestão de Pessoas<span class="nm-arr" id="nma-rh">›</span></a>
+          <div class="nm-sub-wrap" id="nms-rh">
+            <a class="nm-sub" href="/conteudo">Folha de Pagamento</a>
+            <a class="nm-sub" href="/conteudo">Jornada de Trabalho</a>
+            <a class="nm-sub" href="/conteudo">Contrato de Trabalho</a>
+            <a class="nm-sub" href="/conteudo">Salário</a>
+            <a class="nm-sub" href="/conteudo">Rescisão Contratual</a>
+            <a class="nm-sub" href="/conteudo">Saúde e Segurança do Trabalho</a>
+            <a class="nm-sub" href="/conteudo">Benefícios</a>
+            <a class="nm-sub" href="/conteudo">CTPS</a>
+            <a class="nm-sub" href="/conteudo">Relacionamento Sindical</a>
+            <a class="nm-sub" href="/conteudo">Fiscalização</a>
+            <a class="nm-sub" href="/conteudo">INSS</a>
+            <a class="nm-sub" href="/conteudo">Modelos</a>
+            <a class="nm-sub nm-outros" href="/conteudo">+ outros temas de RH</a>
+          </div>
+
+          <a class="nm-sec" onclick="toggleNavSec('nms-proc',event)"><span class="dm-icon">📄</span>Processual<span class="nm-arr" id="nma-proc">›</span></a>
+          <div class="nm-sub-wrap" id="nms-proc">
+            <a class="nm-sub" href="/conteudo">Petições e Peças</a>
+            <a class="nm-sub" href="/conteudo">Prática Advocatícia</a>
+            <a class="nm-sub" href="/conteudo">Modelos</a>
+            <a class="nm-sub" href="/conteudo">Artigos</a>
+            <a class="nm-sub" href="/conteudo">Análises</a>
+            <a class="nm-sub nm-outros" href="/conteudo">+ outros temas</a>
+          </div>
+
+          <div class="nav-drop-divider"></div>
+          <a class="nm-sec" onclick="toggleNavSec('nms-ess',event)"><span class="dm-icon">⭐</span>Essenciais<span class="nm-arr" id="nma-ess">›</span></a>
+          <div class="nm-sub-wrap" id="nms-ess">
+            <a class="nm-sub" href="/conteudo">📚 Livros Jurídicos</a>
+            <a class="nm-sub" href="/conteudo">🖥️ Equipamentos de Escritório</a>
+            <a class="nm-sub" href="/conteudo">🎓 Cursos</a>
+            <a class="nm-sub" href="/conteudo">📦 Outros</a>
+          </div>
+          <div class="nav-drop-divider"></div>
+          <a class="nm-sec" href="/conteudo"><span class="dm-icon">🔧</span>Outros</a>
         </div>
       </div>
       <a href="/sobre">Sobre</a>
@@ -1551,10 +1611,19 @@ function toggleConteudo(e) {
   const dd = document.getElementById('nav-dropdown-conteudo');
   dd.classList.toggle('open');
 }
-function toggleRefNav() {
-  // Sinaliza para o index.html abrir o painel de Prazos de Referência
-  try { sessionStorage.setItem('cp_open_refbar', '1'); } catch(ex) {}
-  window.location.href = '/#calculadora-de-prazo-processual';
+function toggleNavSec(id, e) {
+  if (e) e.stopPropagation();
+  var wrap = document.getElementById(id);
+  if (!wrap) return;
+  var isOpen = wrap.classList.contains('open');
+  document.querySelectorAll('.nm-sub-wrap').forEach(function(w){ w.classList.remove('open'); });
+  document.querySelectorAll('.nm-arr').forEach(function(a){ a.style.transform=''; });
+  if (!isOpen) {
+    wrap.classList.add('open');
+    var arrId = id.replace('nms-','nma-');
+    var arr = document.getElementById(arrId);
+    if (arr) arr.style.transform = 'rotate(90deg)';
+  }
 }
 function filterBlog(cat) {
   window.location.href = '/conteudo';

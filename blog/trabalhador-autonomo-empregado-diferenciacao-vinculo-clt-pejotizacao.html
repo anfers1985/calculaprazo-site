@@ -1172,7 +1172,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       <div class="nav-dropdown" id="nav-dropdown-ferramentas">
         <a id="nav-tools" onclick="toggleFerramentas(event)">Ferramentas</a>
         <div class="nav-drop-menu" id="ferramentas-menu">
-          <a onclick="toggleRefNav();document.getElementById('nav-dropdown-ferramentas').classList.remove('open')"><span class="dm-icon">⚡</span>Prazos de Referência</a>
           <div class="nav-drop-divider"></div>
           <a onclick="navGoTo('correcao')"><span class="dm-icon">💰</span>Correção Monetária</a>
           <a onclick="navGoTo('juros')"><span class="dm-icon">📈</span>Cálculo de Juros</a>
@@ -1634,10 +1633,19 @@ function toggleConteudo(e) {
   if(opening) dd.classList.add('open');
   else { document.querySelectorAll('.nm-sub-wrap').forEach(function(w){w.classList.remove('open');}); }
 }
-function toggleRefNav() {
-  // Sinaliza para o index.html abrir o painel de Prazos de Referência
-  try { sessionStorage.setItem('cp_open_refbar', '1'); } catch(ex) {}
-  window.location.href = '/#calculadora-de-prazo-processual';
+function toggleNavSec(id, e) {
+  if (e) e.stopPropagation();
+  var wrap = document.getElementById(id);
+  if (!wrap) return;
+  var isOpen = wrap.classList.contains('open');
+  document.querySelectorAll('.nm-sub-wrap').forEach(function(w){ w.classList.remove('open'); });
+  document.querySelectorAll('.nm-arr').forEach(function(a){ a.style.transform=''; });
+  if (!isOpen) {
+    wrap.classList.add('open');
+    var arrId = id.replace('nms-','nma-');
+    var arr = document.getElementById(arrId);
+    if (arr) arr.style.transform = 'rotate(90deg)';
+  }
 }
 function toggleNavSec(id,e) {
   if(e){e.stopPropagation();e.preventDefault();}
