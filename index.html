@@ -5281,8 +5281,11 @@ function toggleSociais(e){
     if(hash==='#conteudo'||hash==='#blog'){
       setTimeout(function(){navGoTo('blog');},200);
     } else if(hash && hash.length > 1) {
-      var hid = hash.slice(1);
-      setTimeout(function(){if(typeof goTo==='function') goTo(hid);},200);
+      var hslug = hash.slice(1);
+      setTimeout(function(){
+        var hid = (typeof SLUG_TO_ID !== 'undefined') ? (SLUG_TO_ID['/'+hslug] || SLUG_TO_ID[hslug] || hslug) : hslug;
+        if(typeof goTo==='function') goTo(hid);
+      },200);
     }
   }
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',bootAll);}else{bootAll();}
