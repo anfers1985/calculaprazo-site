@@ -2990,8 +2990,7 @@ const NAV_ACTIVE = {
 
 function goTo(id) {
   document.querySelectorAll('.sec').forEach(s => s.classList.remove('active'));
-  // Atualiza URL sem recarregar
-  try { history.replaceState(null, '', id === 'home' ? '/' : '#' + id); } catch(e) {}
+  // URL é gerenciada pelo window.goTo (pushState com slug limpo)
   const sec = document.getElementById('sec-' + (NAV_MAP[id] || id));
   if (sec) sec.classList.add('active');
   document.querySelectorAll('#hdr .hdr-nav>a, #hdr .nav-dropdown>a').forEach(a => a.classList.remove('on'));
