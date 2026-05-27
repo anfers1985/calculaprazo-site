@@ -2,12 +2,23 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- SEO: título e descrição dinâmicos via JS (ver função updateSEO) -->
 <title id="page-title">Calcula Prazo — Calculadoras e Conteúdo Trabalhista</title>
 <meta id="meta-desc" name="description" content="Calculadoras práticas (prazos, verbas rescisórias, salário líquido, correção monetária) + conteúdo especializado em Direito do Trabalho. Gratuito para advogados, RH, contadores e trabalhadores.">
 <meta name="robots" content="index, follow">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3280539734623058" crossorigin="anonymous"></script>
+<!-- Google Analytics GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JX50BS8SSX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-JX50BS8SSX');
+</script>
 <meta name="author" content="Anderson Fernandes — Calcula Prazo">
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 <link id="canonical" rel="canonical" href="https://calculaprazo.com.br/">
@@ -1490,35 +1501,35 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 <header id="hdr">
   <div class="hdr-inner">
-    <a class="logo" onclick="goTo('home')" title="Ir para página inicial">
+    <a class="logo" href="/" onclick="event.preventDefault();goTo('home')" title="Ir para página inicial">
       <div class="logo-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 7h18"/></svg></div><span class="logo-text">Calcula</span><span>Prazo</span>
     </a>
     <nav class="hdr-nav">
-      <a id="nav-home" onclick="goTo('home')" style="display:flex;align-items:center;gap:4px;">🏠 Início</a>
-      <a id="nav-prazos" onclick="goTo('prazos')">Calculadora de Prazo</a>
+      <a href="/" id="nav-home" onclick="event.preventDefault();goTo('home')" style="display:flex;align-items:center;gap:4px;">🏠 Início</a>
+      <a href="/calculadora-de-prazo-processual" id="nav-prazos" onclick="event.preventDefault();goTo('prazos')">Calculadora de Prazo</a>
       <div class="nav-dropdown" id="nav-dropdown-ferramentas">
         <a id="nav-tools" onclick="toggleFerramentas(event)">Ferramentas</a>
         <div class="nav-drop-menu" id="ferramentas-menu">
           <div class="nav-drop-divider"></div>
-          <a onclick="navGoTo('correcao')"><span class="dm-icon">💰</span>Correção Monetária</a>
-          <a onclick="navGoTo('juros')"><span class="dm-icon">📈</span>Cálculo de Juros</a>
-          <a onclick="navGoTo('trabalhista')"><span class="dm-icon">⚖️</span>Calculadora de Verbas Trabalhistas</a>
-          <a onclick="navGoTo('salario')"><span class="dm-icon">💵</span>Salário Líquido</a>
-          <a onclick="navGoTo('porcentagem')"><span class="dm-icon">🧮</span>Porcentagem</a>
-          <a onclick="navGoTo('moedas')"><span class="dm-icon">💱</span>Conversor de Moedas</a>
+          <a href="/correcao-monetaria" onclick="event.preventDefault();navGoTo('correcao')"><span class="dm-icon">💰</span>Correção Monetária</a>
+          <a href="/calculadora-de-juros" onclick="event.preventDefault();navGoTo('juros')"><span class="dm-icon">📈</span>Cálculo de Juros</a>
+          <a href="/calculadora-verbas-trabalhistas" onclick="event.preventDefault();navGoTo('trabalhista')"><span class="dm-icon">⚖️</span>Calculadora de Verbas Trabalhistas</a>
+          <a href="/calculadora-salario-liquido" onclick="event.preventDefault();navGoTo('salario')"><span class="dm-icon">💵</span>Salário Líquido</a>
+          <a href="/calculadora-de-porcentagem" onclick="event.preventDefault();navGoTo('porcentagem')"><span class="dm-icon">🧮</span>Porcentagem</a>
+          <a href="/conversor-de-moedas" onclick="event.preventDefault();navGoTo('moedas')"><span class="dm-icon">💱</span>Conversor de Moedas</a>
           <div class="nav-drop-divider"></div>
-          <a onclick="navGoTo('datas')"><span class="dm-icon">📅</span>Operações com Datas</a>
-          <a onclick="navGoTo('valid')"><span class="dm-icon">🪪</span>Validador CPF / CNPJ</a>
-          <a onclick="navGoTo('qrcode')"><span class="dm-icon">📱</span>Gerador de QR Code</a>
-          <a onclick="navGoTo('senhas')"><span class="dm-icon">🔐</span>Gerador de Senhas</a>
-          <a onclick="navGoTo('extenso')"><span class="dm-icon">🔢</span>Número por Extenso</a>
-          <a onclick="navGoTo('imc')"><span class="dm-icon">🏃</span>Calculadora de IMC</a>
+          <a href="/calculadora-de-datas" onclick="event.preventDefault();navGoTo('datas')"><span class="dm-icon">📅</span>Operações com Datas</a>
+          <a href="/validador-cpf-cnpj" onclick="event.preventDefault();navGoTo('valid')"><span class="dm-icon">🪪</span>Validador CPF / CNPJ</a>
+          <a href="/gerador-de-qr-code" onclick="event.preventDefault();navGoTo('qrcode')"><span class="dm-icon">📱</span>Gerador de QR Code</a>
+          <a href="/gerador-de-senhas" onclick="event.preventDefault();navGoTo('senhas')"><span class="dm-icon">🔐</span>Gerador de Senhas</a>
+          <a href="/numero-por-extenso" onclick="event.preventDefault();navGoTo('extenso')"><span class="dm-icon">🔢</span>Número por Extenso</a>
+          <a href="/calculadora-imc" onclick="event.preventDefault();navGoTo('imc')"><span class="dm-icon">🏃</span>Calculadora de IMC</a>
         </div>
       </div>
             <div class="nav-dropdown" id="nav-dropdown-conteudo">
         <a id="nav-conteudo" onclick="toggleConteudo(event)">Conteúdo</a>
         <div class="nav-drop-menu" id="conteudo-menu" style="min-width:270px;max-height:80vh;overflow-y:auto;">
-          <a onclick="navGoTo('blog');document.getElementById('nav-dropdown-conteudo').classList.remove('open')"><span class="dm-icon">📰</span>Todos os Artigos</a>
+          <a href="/conteudo" onclick="event.preventDefault();navGoTo('blog');document.getElementById('nav-dropdown-conteudo').classList.remove('open')"><span class="dm-icon">📰</span>Todos os Artigos</a>
           <div class="nav-drop-divider"></div>
 
           <a class="nm-sec" onclick="toggleNavSec('nms-jurisp',event)"><span class="dm-icon">⚖️</span>Jurisprudência<span class="nm-arr" id="nma-jurisp">›</span></a>
@@ -1527,14 +1538,14 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
             <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('jurisprudencia-tst','jurisprudencia');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">TST</a>
             <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('jurisprudencia-stj','jurisprudencia');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">STJ</a>
             <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('jurisprudencia-stf','jurisprudencia');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">STF</a>
-            <a class="nm-sub nm-outros" onclick="navGoTo('blog');filterBlogSection('jurisprudencia');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outros temas</a>
+            <a href="/conteudo" class="nm-sub nm-outros" onclick="event.preventDefault();navGoTo('blog');filterBlogSection('jurisprudencia');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outros temas</a>
           </div>
 
           <a class="nm-sec" onclick="toggleNavSec('nms-orgaos',event)"><span class="dm-icon">🏛️</span>Órgãos Públicos<span class="nm-arr" id="nma-orgaos">›</span></a>
           <div class="nm-sub-wrap" id="nms-orgaos">
             <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('noticias-mte','orgaos-publicos');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">MTE</a>
             <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('noticias-mpt','orgaos-publicos');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">MPT</a>
-            <a class="nm-sub nm-outros" onclick="navGoTo('blog');filterBlogSection('orgaos-publicos');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outros órgãos</a>
+            <a href="/conteudo" class="nm-sub nm-outros" onclick="event.preventDefault();navGoTo('blog');filterBlogSection('orgaos-publicos');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outros órgãos</a>
           </div>
 
           <a class="nm-sec" onclick="toggleNavSec('nms-leg',event)"><span class="dm-icon">📋</span>Legislação e Normas<span class="nm-arr" id="nma-leg">›</span></a>
@@ -1547,7 +1558,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
             <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('legislacao-sindical','legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Sindical</a>
             <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('legislacao-portarias','legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Portarias</a>
             <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('legislacao-nr','legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">NR</a>
-            <a class="nm-sub nm-outros" onclick="navGoTo('blog');filterBlogSection('legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outras Legislação e Normas</a>
+            <a href="/conteudo" class="nm-sub nm-outros" onclick="event.preventDefault();navGoTo('blog');filterBlogSection('legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outras Legislação e Normas</a>
           </div>
 
           <a class="nm-sec" onclick="toggleNavSec('nms-rh',event)"><span class="dm-icon">👥</span>RH e Gestão de Pessoas<span class="nm-arr" id="nma-rh">›</span></a>
@@ -1564,7 +1575,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
             <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('rh-fiscalizacao','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Fiscalização</a>
             <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('rh-inss','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">INSS</a>
             <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('rh-modelos','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Modelos</a>
-            <a class="nm-sub nm-outros" onclick="navGoTo('blog');filterBlogSection('rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outros temas de RH</a>
+            <a href="/conteudo" class="nm-sub nm-outros" onclick="event.preventDefault();navGoTo('blog');filterBlogSection('rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outros temas de RH</a>
           </div>
 
           <a class="nm-sec" onclick="toggleNavSec('nms-proc',event)"><span class="dm-icon">📄</span>Processual<span class="nm-arr" id="nma-proc">›</span></a>
@@ -1574,7 +1585,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
             <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('modelos','processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Modelos</a>
             <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('artigos','processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Artigos</a>
             <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('processual-analises','processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Análises</a>
-            <a class="nm-sub nm-outros" onclick="navGoTo('blog');filterBlogSection('processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outros temas</a>
+            <a href="/conteudo" class="nm-sub nm-outros" onclick="event.preventDefault();navGoTo('blog');filterBlogSection('processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outros temas</a>
           </div>
 
           <div class="nav-drop-divider"></div>
@@ -1586,7 +1597,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
             <a class="nm-sub" onclick="navGoTo('blog');filterBlogSub('essenciais-outros','essenciais');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">📦 Outros</a>
           </div>
           <div class="nav-drop-divider"></div>
-          <a class="nm-sec" onclick="navGoTo('blog');filterBlogSection('outros');document.getElementById('nav-dropdown-conteudo').classList.remove('open')"><span class="dm-icon">🔧</span>Outros</a>
+          <a href="/conteudo" class="nm-sec" onclick="event.preventDefault();navGoTo('blog');filterBlogSection('outros');document.getElementById('nav-dropdown-conteudo').classList.remove('open')"><span class="dm-icon">🔧</span>Outros</a>
         </div>
       </div>
       <div class="nav-dropdown" id="nav-dropdown-sociais">
@@ -1598,7 +1609,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
           <a href="https://x.com/CalculaPrazo" target="_blank" rel="noopener"><span class="dm-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>X</a>
         </div>
       </div>
-      <a onclick="goTo('sobre')" style="cursor:pointer;">Sobre</a>
+      <a href="/sobre" onclick="event.preventDefault();goTo('sobre')">Sobre</a>
       <a href="/contato">✉ Contato</a>
       <a class="hdr-doacao" onclick="document.getElementById('modal-doacao').style.display='flex'" aria-label="Apoiar o Calcula Prazo via Pix">☕ Doação</a>
     </nav>
@@ -1688,7 +1699,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
   <!-- ▸ ANÚNCIO: home-top -->
   <div class="ad-container" id="ad-home-top">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="1111111111" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="8588616230" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
@@ -1746,11 +1757,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
     </div>
   </section>
 
-  <!-- ▸ ANÚNCIO: ad-home-middle (desktop only) -->
-  <div class="ad-container ad-desktop-only" id="ad-home-middle">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="2222222222" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
 
 
 </div><!-- /home -->
@@ -1763,7 +1769,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
   <!-- ▸ ANÚNCIO: prazos-top -->
   <div class="ad-container" id="ad-prazos-top">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="3333333333" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="8588616230" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
@@ -1910,7 +1916,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
   <!-- ▸ ANÚNCIO: ad-correcao-top -->
   <div class="ad-container" id="ad-correcao-top">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="4444444444" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="8588616230" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
   <div class="container" style="max-width:900px;"><div style="display:flex;flex-direction:column;gap:18px;"><div class="card"><h2>💰 Correção Monetária</h2>
@@ -1951,7 +1957,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
   <!-- ▸ ANÚNCIO: sec-correcao after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-correcao-result" style="display:none;">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="5555555555" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="8588616230" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
   
@@ -1964,11 +1970,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 <div id="sec-juros" class="sec">
 
-  <!-- ▸ ANÚNCIO: ad-juros-top -->
-  <div class="ad-container" id="ad-juros-top">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="6666666666" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
   <div class="container" style="max-width:900px;">
     <div style="display:flex;flex-direction:column;gap:18px;">
       <!-- Formulário da Calculadora -->
@@ -2037,7 +2038,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
   <!-- ▸ ANÚNCIO: sec-juros after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-juros-result" style="display:none;">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="7777777777" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="8588616230" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
   
@@ -2050,11 +2051,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 <div id="sec-salario" class="sec">
 
-  <!-- ▸ ANÚNCIO: ad-salario-top -->
-  <div class="ad-container" id="ad-salario-top">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="8888888888" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
   <div class="container" style="max-width:900px;"><div style="display:flex;flex-direction:column;gap:18px;">
     <div class="card">
       <h2>💵 Salário Líquido 2026</h2>
@@ -2111,7 +2107,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
   <!-- ▸ ANÚNCIO: sec-salario after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-salario-result" style="display:none;">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="9999999999" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="8588616230" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
   
@@ -2124,11 +2120,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 <div id="sec-porcentagem" class="sec">
 
-  <!-- ▸ ANÚNCIO: ad-porcentagem-top -->
-  <div class="ad-container" id="ad-porcentagem-top">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="1010101010" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
   <div class="container" style="padding:10px 0 20px;max-width:720px;">
     <div class="card">
       <h2>🧮 Porcentagem</h2>
@@ -2151,7 +2142,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
   <!-- ▸ ANÚNCIO: sec-porcentagem after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-porcentagem-result" style="display:none;">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="1212121212" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="8588616230" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
     
@@ -2165,11 +2156,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 <div id="sec-moedas" class="sec">
 
-  <!-- ▸ ANÚNCIO: ad-moedas-top -->
-  <div class="ad-container" id="ad-moedas-top">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="1313131313" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
   <div class="container" style="padding:10px 0 20px;max-width:720px;">
     <div class="card">
       <h2>💱 Conversor de Moedas</h2>
@@ -2203,7 +2189,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
   <!-- ▸ ANÚNCIO: sec-moedas after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-moedas-result" style="display:none;">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="1414141414" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="8588616230" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
     </div>
@@ -2219,7 +2205,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
   <!-- ▸ ANÚNCIO: ad-trabalhista-top -->
   <div class="ad-container" id="ad-trabalhista-top">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="2929292929" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="8588616230" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
   <div class="container" style="padding:10px 0 20px;max-width:800px;">
@@ -2335,7 +2321,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
   <!-- ▸ ANÚNCIO: sec-trabalhista after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-trabalhista-result" style="display:none;">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="1515151515" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="8588616230" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
     </div>
@@ -2349,11 +2335,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 <div id="sec-datas" class="sec">
 
-  <!-- ▸ ANÚNCIO: ad-datas-top -->
-  <div class="ad-container" id="ad-datas-top">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="1616161616" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
   <div class="container" style="padding:10px 0 20px;max-width:700px;">
     <div class="card">
       <h2>📅 Operações com Datas</h2>
@@ -2374,7 +2355,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
   <!-- ▸ ANÚNCIO: sec-datas after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-datas-result" style="display:none;">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="1717171717" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="8588616230" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
     </div>
@@ -2388,11 +2369,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 <div id="sec-valid" class="sec">
 
-  <!-- ▸ ANÚNCIO: ad-valid-top -->
-  <div class="ad-container" id="ad-valid-top">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="1818181818" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
   <div class="container">
   <div class="inner-2col" style="align-items:start;">
     <div style="display:flex;flex-direction:column;gap:18px;">
@@ -2444,7 +2420,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
   <!-- ▸ ANÚNCIO: sec-valid after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-valid-result" style="display:none;">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="1919191919" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="8588616230" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
   
@@ -2457,11 +2433,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 <div id="sec-qrcode" class="sec">
 
-  <!-- ▸ ANÚNCIO: ad-qrcode-top -->
-  <div class="ad-container" id="ad-qrcode-top">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="2020202020" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
   <div class="container">
   <div class="inner-side" style="padding:10px 0 20px;">
     <div class="card">
@@ -2500,7 +2471,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
   <!-- ▸ ANÚNCIO: sec-qrcode after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-qrcode-result" style="display:none;">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="2121212121" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="8588616230" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
   
@@ -2513,11 +2484,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 <div id="sec-senhas" class="sec">
 
-  <!-- ▸ ANÚNCIO: ad-senhas-top -->
-  <div class="ad-container" id="ad-senhas-top">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="2222222223" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
   <div class="container" style="padding:10px 0 20px;max-width:640px;">
     <div class="card">
       <h2>🔐 Configurar Senha</h2>
@@ -2557,7 +2523,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
   <!-- ▸ ANÚNCIO: sec-senhas after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-senhas-result" style="display:none;">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="2323232323" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="8588616230" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
     </div>
@@ -2571,11 +2537,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 <div id="sec-extenso" class="sec">
 
-  <!-- ▸ ANÚNCIO: ad-extenso-top -->
-  <div class="ad-container" id="ad-extenso-top">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="2424242424" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
   <div class="container" style="padding:10px 0 20px;max-width:680px;">
     <div class="card">
       <h2>🔢 Converter para Extenso</h2>
@@ -2591,7 +2552,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
   <!-- ▸ ANÚNCIO: sec-extenso after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-extenso-result" style="display:none;">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="2525252525" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="8588616230" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
     
@@ -2605,11 +2566,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 <div id="sec-imc" class="sec">
 
-  <!-- ▸ ANÚNCIO: ad-imc-top -->
-  <div class="ad-container" id="ad-imc-top">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="2626262626" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
   <div class="container" style="max-width:900px;">
     <div style="display:flex;flex-direction:column;gap:18px;">
       <div class="card">
@@ -2658,7 +2614,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
   <!-- ▸ ANÚNCIO: sec-imc after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-imc-result" style="display:none;">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="2727272727" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="8588616230" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
   
@@ -2701,68 +2657,149 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   </div>
 
   <!-- bloco SEO principal — mesma estrutura de todas as seções -->
+  
+  
   <section class="seo-content">
-    <div class="container" style="max-width:800px;padding:28px 16px 10px;">
+    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
+      <h2>O que é o Calcula Prazo?</h2>
+    <p>O <strong>Calcula Prazo</strong> (calculaprazo.com.br) é uma plataforma de ferramentas jurídicas e profissionais online, gratuita e sem cadastro, criada para advogados, profissionais de recursos humanos, contadores e qualquer pessoa que precise de cálculos confiáveis e resultados tecnicamente fundamentados. Reúne 13 ferramentas de cálculo especializadas, uma base editorial dedicada ao Direito do Trabalho — atualizada com base em fontes primárias como TST, STF, TRTs, MTE e MPT — e integração com índices econômicos em tempo real. Tudo em um único endereço, sem necessidade de cadastro ou pagamento.</p>
 
-      <div class="seo-grid">
-        <div>
-          <h2 class="seo-h2">O que é o Calcula Prazo?</h2>
-          <p class="seo-p">O <strong>Calcula Prazo</strong> é uma plataforma de ferramentas jurídicas e profissionais online, gratuita e sem cadastro, criada para advogados, profissionais de recursos humanos, contadores e qualquer pessoa que precise de cálculos confiáveis e resultados tecnicamente fundamentados. Reúne 13 ferramentas de cálculo especializadas, uma base editorial dedicada ao Direito do Trabalho — atualizada com base em fontes primárias como TST, STF, TRTs, MTE e MPT — e integração com índices econômicos em tempo real. Tudo em um único endereço, sem necessidade de cadastro ou pagamento.</p>
-        </div>
-        <div>
-          <h2 class="seo-h2">Para quem é indicado?</h2>
-          <p class="seo-p">O site foi concebido para atender a diferentes perfis com necessidades específicas: <strong>advogados trabalhistas e civilistas</strong> que lidam com prazos processuais, correção monetária e cálculos rescisórios; <strong>profissionais de RH</strong> que precisam apurar verbas, simular salário líquido e acompanhar a legislação vigente; <strong>contadores</strong> que trabalham com juros, porcentagens e simulações fiscais; e <strong>trabalhadores e cidadãos</strong> que querem conferir seus direitos com embasamento legal e clareza técnica. O Calcula Prazo não exige registro, não impõe limites de uso e não cobra por nenhuma funcionalidade.</p>
-        </div>
+    <p>O site foi desenvolvido e é mantido por <strong>Anderson Fernandes</strong> (OAB/SC 44.858), advogado trabalhista com atuação em consultoria de relações trabalhistas e advocacia preventiva. O projeto nasceu da necessidade prática de reunir, em uma única plataforma de fácil acesso, as ferramentas de cálculo mais utilizadas no dia a dia jurídico e de RH — com rigor técnico, atualização constante e total gratuidade.</p>
+      <p>Todo o conteúdo editorial passa por curadoria técnica baseada em fontes primárias — TST, STF, TRTs, MTE e MPT. As tabelas de INSS, IRRF e índices de correção monetária são atualizadas conforme a legislação vigente. O Calcula Prazo não substitui assessoria jurídica profissional — os resultados são informativos e devem ser conferidos com o profissional responsável pelo caso concreto.</p>
+    </div>
+  </section>
+
+  <section class="seo-content">
+    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
+      <h2>Para quem é indicado?</h2>
+    <div class="card-grid">
+      <div class="card-item"><div class="ci-icon">⚖️</div><div class="ci-title">Advogados</div><div class="ci-desc">Prazos processuais, correção monetária, verbas rescisórias com fundamento na CLT e jurisprudência do TST.</div></div>
+      <div class="card-item"><div class="ci-icon">👥</div><div class="ci-title">Profissionais de RH</div><div class="ci-desc">Salário líquido, rescisão, eSocial, licenças e legislação trabalhista atualizada.</div></div>
+      <div class="card-item"><div class="ci-icon">📊</div><div class="ci-title">Contadores</div><div class="ci-desc">Juros, porcentagens, correção monetária com IPCA/IGP-M/SELIC e cálculos de folha.</div></div>
+      <div class="card-item"><div class="ci-icon">🧑‍💼</div><div class="ci-title">Trabalhadores</div><div class="ci-desc">Conferir verbas rescisórias, entender direitos e acompanhar novidades jurídicas com linguagem acessível.</div></div>
+    </div>
+    </div>
+  </section>
+
+  <section class="seo-content">
+    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
+      <h2>Ferramentas disponíveis</h2>
+    <p><strong>Trabalhista e folha:</strong> Calculadora de Verbas Rescisórias (CLT) e Calculadora de Salário Líquido com tabelas INSS e IRRF 2026 atualizadas.</p>
+            <p><strong>Prazos e datas:</strong> Calculadora de Prazo Processual (CLT/CPC/2015, dias úteis e corridos, com mais de 30 tipos pré-configurados) e Calculadora de Datas (diferença, soma e subtração de dias).</p>
+            <p><strong>Financeiro:</strong> Correção Monetária com dados reais do Banco Central (IPCA, IGP-M, INPC e SELIC), Calculadora de Juros simples e compostos e Calculadora de Porcentagem.</p>
+            <p><strong>Utilidades:</strong> Validador de CPF e CNPJ, Conversor de Moedas, Número por Extenso, Gerador de QR Code, Gerador de Senhas e Calculadora de IMC.</p>
+            <p><a href="/">→ Acessar todas as ferramentas gratuitamente</a></a></p>
+    </div>
+  </section>
+
+  <section class="seo-content">
+    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
+      <h2>Como os cálculos são feitos?</h2>
+    <p>Todos os cálculos são executados <strong>diretamente no navegador do usuário</strong>, sem envio de dados a servidores externos. Os índices de correção monetária (IPCA, IGP-M, INPC e SELIC) são obtidos da API pública do Banco Central do Brasil. As tabelas de INSS e IRRF são revisadas a cada atualização legislativa. As bases legais de cada ferramenta são indicadas diretamente na interface — artigos do CPC, da CLT, da CF/88 e das leis específicas — para que o usuário possa verificar a fundamentação de cada resultado.</p>
+    </div>
+  </section>
+
+  <section class="seo-content">
+    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
+      <h2>Conteúdo editorial</h2>
+    <p>Além das ferramentas, o Calcula Prazo mantém uma seção de conteúdo dedicada ao Direito do Trabalho, atualizada continuamente com base em fontes primárias como TST, STF, TRTs, MTE e MPT. Os artigos cobrem jurisprudência, legislação, eSocial, FGTS Digital, saúde e segurança do trabalho e orientações práticas para advogados, RH e contadores. Todo o conteúdo tem caráter informativo e não constitui assessoria jurídica.</p>
+    </div>
+  </section>
+
+  <section class="seo-content">
+    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
+      <h2>Por que é gratuito?</h2>
+    <p>O Calcula Prazo é financiado por anúncios exibidos via Google AdSense e por contribuições voluntárias de usuários. Esse modelo permite manter todas as funcionalidades gratuitas e sem restrição de acesso — sem planos pagos, sem limites de uso e sem bloqueio de ferramentas. Nenhum dado inserido nas calculadoras é coletado ou comercializado.</p>
+    </div>
+  </section>
+
+  <section class="seo-content">
+    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
+      <h2>Perguntas frequentes</h2>
+    <div id="faq-sobre">
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">Os resultados têm validade jurídica? <span>＋</span></div>
+        <div class="faq-a">As ferramentas têm caráter informativo e de apoio. Os resultados são estimativas baseadas nas regras legais vigentes e nos dados informados pelo usuário, mas não substituem a análise de profissional habilitado nem constituem assessoria jurídica, contábil ou financeira.</div>
       </div>
-
-      <h2 class="seo-h2" style="margin-top:20px;">Ferramentas disponíveis</h2>
-      <p class="seo-p">O Calcula Prazo oferece calculadoras nas seguintes áreas:</p>
-      <p class="seo-p"><strong>Prazos e datas:</strong> Calculadora de Prazos Processuais (CPC/2015, CLT e tributário, com mais de 30 tipos pré-configurados) e Operações com Datas (diferença entre datas, somar/subtrair dias corridos ou úteis).</p>
-      <p class="seo-p"><strong>Financeiro e fiscal:</strong> Correção Monetária com dados reais do Banco Central (IPCA, IGP-M, INPC e SELIC), Cálculo de Juros simples e compostos com tabela de evolução mensal, e Calculadora de Porcentagem em cinco modos distintos.</p>
-      <p class="seo-p"><strong>Trabalhista e folha:</strong> Calculadora de Verbas Rescisórias conforme a CLT (saldo, férias, 13º, FGTS, aviso prévio proporcional) e Calculadora de Salário Líquido com tabelas INSS e IRRF 2026 atualizadas pela Lei 15.270/2025.</p>
-      <p class="seo-p"><strong>Utilidades:</strong> Conversor de Moedas, Validador de CPF e CNPJ pelo algoritmo oficial, Gerador de QR Code, Gerador de Senhas, Número por Extenso e Calculadora de IMC.</p>
-
-      <h2 class="seo-h2" style="margin-top:20px;">Conteúdo editorial: Direito do Trabalho em Destaque</h2>
-      <p class="seo-p">Além das ferramentas de cálculo, o Calcula Prazo mantém uma <strong>seção de conteúdo editorial</strong> dedicada ao Direito do Trabalho, atualizada continuamente com base em fontes primárias como TST, STF, TRTs, Ministério do Trabalho e Emprego (MTE) e Ministério Público do Trabalho (MPT).</p>
-      <p class="seo-p">Os artigos cobrem temas como <strong>legislação e normas</strong> (CLT, reformas trabalhistas, Instruções Normativas), <strong>jurisprudência</strong> (decisões relevantes do TST e dos TRTs), <strong>eSocial e FGTS Digital</strong>, <strong>saúde e segurança do trabalho</strong>, <strong>relações sindicais</strong> e <strong>orientações práticas</strong> para advogados, profissionais de RH e trabalhadores. O conteúdo é escrito com linguagem técnica acessível e sem omitir a base legal que sustenta cada análise. Acesse a seção de conteúdo pelo menu <strong>Conteúdo</strong> na barra de navegação.</p>
-
-      <h2 class="seo-h2" style="margin-top:20px;">Como os cálculos são feitos?</h2>
-      <p class="seo-p">Todos os cálculos são executados <strong>diretamente no navegador do usuário</strong>, sem envio de dados a servidores externos. Os índices de correção monetária (IPCA, IGP-M, INPC e SELIC) são obtidos da API pública do <a href="https://www.bcb.gov.br" target="_blank" rel="noopener" style="color:var(--acc);">Banco Central do Brasil</a>. As tabelas de INSS e IRRF são revisadas a cada atualização legislativa. As bases legais de cada ferramenta são indicadas diretamente na interface — artigos do CPC, da CLT, da CF/88 e das leis específicas — para que o usuário possa verificar a fundamentação de cada resultado.</p>
-
-      <h2 class="seo-h2" style="margin-top:20px;">Por que o site é gratuito?</h2>
-      <p class="seo-p">O Calcula Prazo é mantido por meio de anúncios exibidos pelo Google AdSense e de contribuições voluntárias de usuários que valorizam o serviço. Esse modelo permite que todas as ferramentas e todo o conteúdo editorial permaneçam gratuitos e sem restrição de acesso — sem planos pagos, sem limite de uso e sem bloqueio de funcionalidades. Os dados inseridos nas calculadoras são processados exclusivamente no navegador do próprio usuário e jamais são coletados, armazenados ou comercializados.</p>
-
-      <h2 class="seo-h2" style="margin-top:20px;">Perguntas frequentes</h2>
-      <div class="faq-list">
-        <div class="faq-item">
-          <div class="faq-q">Os resultados das calculadoras têm validade jurídica?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
-          <div class="faq-a"><div class="faq-ai">As ferramentas do Calcula Prazo têm caráter informativo e de apoio. Os resultados são estimativas baseadas nas regras legais vigentes e nos dados informados pelo próprio usuário, mas não substituem a análise de um profissional habilitado nem constituem assessoria jurídica, contábil ou financeira. Para fins processuais ou contratuais, os cálculos devem ser conferidos e formalizados por profissional competente.</div></div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">Com que frequência as tabelas e o conteúdo são atualizados?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
-          <div class="faq-a"><div class="faq-ai">Os índices de correção monetária (IPCA, IGP-M, INPC, SELIC) são obtidos via API do Banco Central e refletem os dados mais recentes disponíveis. As tabelas de INSS e IRRF são atualizadas sempre que ocorre alteração legislativa. Os artigos editoriais são publicados continuamente, acompanhando decisões relevantes dos tribunais trabalhistas, novas normas do MTE e mudanças na legislação. Em caso de dúvida sobre a vigência de algum valor ou informação, utilize o campo de contato.</div></div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">Como reportar um erro ou sugerir uma nova ferramenta?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
-          <div class="faq-a"><div class="faq-ai">Entre em contato pelo e-mail <a href="mailto:contato@calculaprazo.com.br" style="color:var(--acc);">contato@calculaprazo.com.br</a>. Descreva o erro encontrado ou a ferramenta sugerida com o máximo de detalhes possível. Todas as mensagens são lidas e contribuem diretamente para a melhoria do site.</div></div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">O site coleta dados pessoais dos usuários?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
-          <div class="faq-a"><div class="faq-ai">Não. Os cálculos são processados inteiramente no navegador e não são enviados a nenhum servidor. O site utiliza cookies do Google AdSense para exibição de anúncios personalizados — esse uso é detalhado na Política de Privacidade, acessível no rodapé. O usuário pode recusar os cookies opcionais pelo banner exibido na primeira visita, sem perda de funcionalidade das calculadoras.</div></div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">O site funciona em dispositivos móveis?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
-          <div class="faq-a"><div class="faq-ai">Sim. O Calcula Prazo é totalmente responsivo e foi desenvolvido com foco em usabilidade tanto em desktop quanto em smartphones e tablets. Todas as calculadoras e os artigos editoriais funcionam normalmente em navegadores móveis modernos, sem necessidade de instalação de aplicativo. O site também está disponível como aplicativo para Android, podendo ser instalado diretamente na tela inicial do dispositivo.</div></div>
-        </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">Com que frequência os índices são atualizados? <span>＋</span></div>
+        <div class="faq-a">Os índices de correção monetária (IPCA, IGP-M, INPC, SELIC) são obtidos via API do Banco Central e refletem os dados mais recentes disponíveis. As tabelas de INSS e IRRF são atualizadas sempre que há alteração legislativa.</div>
       </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">O site coleta dados dos usuários? <span>＋</span></div>
+        <div class="faq-a">Não. Os cálculos são processados inteiramente no navegador e não são enviados a nenhum servidor. O site usa cookies do Google AdSense para anúncios personalizados, conforme detalhado na Política de Privacidade.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">Como reportar um erro ou sugerir uma ferramenta? <span>＋</span></div>
+        <div class="faq-a">Entre em contato pelo e-mail <a href="mailto:contato@calculaprazo.com.br">contato@calculaprazo.com.br</a> ou pela <a href="/contato">página de contato</a>. Todas as mensagens são lidas pessoalmente e respondidas em até 5 dias úteis.</div>
+      </div>
+    </div>
+    </div>
+  </section>
 
-      <h2 class="seo-h2" style="margin-top:20px;">Contato</h2>
-      <p class="seo-p">Para dúvidas, correções ou sugestões: <a href="mailto:contato@calculaprazo.com.br" style="color:var(--acc);font-weight:600;">contato@calculaprazo.com.br</a>. As mensagens são respondidas em até 5 dias úteis.</p>
+  <section class="seo-content">
+    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
+      <h2>Quem mantém o Calcula Prazo</h2>
+    <p>O Calcula Prazo é desenvolvido e mantido por <strong>Anderson Fernandes</strong>, advogado trabalhista inscrito na OAB/SC sob o número 44.858, com atuação em consultoria de relações trabalhistas, análise de instrumentos normativos coletivos (CCT/ACT) e advocacia preventiva empresarial.</p>
+    <p>A atuação profissional abrange assessoria jurídica a empresas de médio e grande porte em temas como: gestão de jornada de trabalho, banco de horas, escalas de revezamento, eSocial e FGTS Digital, saúde e segurança do trabalho, representação sindical e negociação coletiva, além de análise de conformidade com o Direito Individual e Coletivo do Trabalho.</p>
+    <p>O projeto Calcula Prazo nasceu da demanda prática diária: reunir em um único endereço as ferramentas de cálculo mais utilizadas no exercício da advocacia trabalhista e na gestão de RH, com rigor técnico, atualização constante e acesso completamente gratuito.</p>
+    </div>
+  </section>
 
+  <section class="seo-content">
+    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
+      <h2>Metodologia e fontes</h2>
+    <p>Todo o conteúdo editorial do Calcula Prazo é produzido com base em fontes primárias do ordenamento jurídico brasileiro. As principais fontes utilizadas são:</p>
+    <ul>
+      <li><strong>Legislação:</strong> Consolidação das Leis do Trabalho (CLT), Constituição Federal de 1988, Código Civil, Código de Processo Civil (CPC/2015), leis extravagantes de Direito do Trabalho e Previdenciário.</li>
+      <li><strong>Jurisprudência:</strong> Decisões e Súmulas do Tribunal Superior do Trabalho (TST), do Supremo Tribunal Federal (STF), dos Tribunais Regionais do Trabalho (TRTs) e do Superior Tribunal de Justiça (STJ) quando aplicável.</li>
+      <li><strong>Normas administrativas:</strong> Portarias e Notas Técnicas do Ministério do Trabalho e Emprego (MTE), Resoluções do COFEN, Notas de Orientação do eSocial e Instruções Normativas da Receita Federal.</li>
+      <li><strong>Dados econômicos:</strong> API pública do Banco Central do Brasil (BCB/SGS) para índices de correção monetária (IPCA, IPCA-E, IGP-M, INPC e SELIC).</li>
+    </ul>
+    <p>Os artigos do blog são revisados periodicamente para refletir alterações legislativas, novas súmulas do TST e decisões vinculantes do STF. Quando uma decisão ou norma nova impacta o conteúdo publicado, o artigo é atualizado com indicação da data de revisão.</p>
+    </div>
+  </section>
+
+  <section class="seo-content">
+    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
+      <h2>Como as ferramentas são construídas e validadas</h2>
+    <p>Cada calculadora do Calcula Prazo segue um processo de desenvolvimento em três etapas:</p>
+    <ol>
+      <li><strong>Especificação técnica:</strong> mapeamento da base legal aplicável, identificação das variáveis necessárias e das exceções relevantes (ex.: categorias com jornada especial, tabelas progressivas de INSS, regras de proporcionalidade).</li>
+      <li><strong>Implementação e testes:</strong> desenvolvimento da lógica de cálculo com casos de teste baseados em exemplos reais e em decisões judiciais conhecidas. Cada ferramenta é verificada contra o resultado esperado para pelo menos dez cenários distintos antes de publicação.</li>
+      <li><strong>Atualização contínua:</strong> monitoramento de alterações na legislação e nas tabelas oficiais (INSS, IRRF, salário mínimo, piso salarial) para garantir que os resultados permaneçam precisos ao longo do tempo.</li>
+    </ol>
+    <p>Todas as ferramentas executam os cálculos inteiramente no navegador do usuário — nenhum dado inserido é transmitido a servidores externos. A privacidade dos dados do usuário é preservada por design.</p>
+    </div>
+  </section>
+
+  <section class="seo-content">
+    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
+      <h2>Limitações e disclaimer</h2>
+    <p>O Calcula Prazo é uma ferramenta de apoio — não substitui a assessoria de advogado, contador ou profissional de RH habilitado. Os resultados têm caráter informativo e são estimativas baseadas nas informações fornecidas pelo usuário e nas regras gerais da legislação vigente. Situações específicas — como cláusulas de convenção coletiva que afastem as regras gerais, enquadramentos especiais de categoria ou decisões judiciais transitadas em julgado — podem gerar resultados diferentes dos calculados pela ferramenta.</p>
+    <p>Em processos judiciais, os cálculos devem ser elaborados ou revisados pelo advogado responsável pela causa, que tem acesso ao conjunto completo de fatos e documentos do caso concreto.</p>
+    </div>
+  </section>
+
+  <section class="seo-content">
+    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
+      <h2>Histórico e evolução da plataforma</h2>
+    <p>O Calcula Prazo foi lançado em 2024 com foco inicial em prazos processuais trabalhistas. Ao longo de 2025 e 2026, a plataforma foi expandida para incluir as calculadoras financeiras (correção monetária, juros), as calculadoras trabalhistas (verbas rescisórias, salário líquido) e ferramentas de apoio ao trabalho jurídico e de RH. A seção de conteúdo editorial foi iniciada em 2025 e conta hoje com mais de 100 artigos dedicados ao Direito do Trabalho.</p>
+    <p>O projeto está em desenvolvimento ativo. Novas ferramentas são adicionadas conforme a demanda dos usuários e as necessidades identificadas na prática profissional. Sugestões de ferramentas ou temas para artigos podem ser enviadas pelo e-mail <a href="mailto:contato@calculaprazo.com.br">contato@calculaprazo.com.br</a>.</p>
+    </div>
+  </section>
+
+  <section class="seo-content">
+    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
+      <h2>Contato</h2>
+    <p>Para dúvidas, correções ou sugestões: <a href="mailto:contato@calculaprazo.com.br"><strong>contato@calculaprazo.com.br</strong></a> — ou acesse a <a href="/contato">página de contato</a>. Respondemos em até 5 dias úteis.</p>
+
+  </div>
     </div>
   </section>
 
 </div>
+
 </div>
 
 <!-- ══════════════════════════════════════
@@ -2836,7 +2873,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   <!-- Ad: blog top -->
   <div class="ad-container" style="margin:0;">
     
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="3030303030" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="8588616230" data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       </div>
 
@@ -2896,7 +2933,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
     <!-- Ad: blog middle -->
     <div class="ad-container ad-desktop-only" style="margin-bottom:40px;">
       
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="3131313131" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="8588616230" data-ad-format="auto" data-full-width-responsive="true"></ins>
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
           </div>
 
@@ -2914,7 +2951,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 <!-- ▸ ANÚNCIO: ad-footer -->
 <div class="ad-container ad-footer" id="ad-footer">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="2828282828" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="8588616230" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 <footer id="ftr">
@@ -2946,7 +2983,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
         <li><a onclick="window.goTo('imc')">IMC</a></li>
       </ul></div>
       <div class="ftr-col"><h4>Informações</h4><ul>
-        <li><a onclick="window.goTo('sobre')" style="cursor:pointer;">Sobre o Calcula Prazo</a></li>
+        <li><a href="/sobre" onclick="event.preventDefault();window.goTo('sobre')">Sobre o Calcula Prazo</a></li>
         <li><a onclick="navGoTo('blog')" style="cursor:pointer;color:rgba(255,255,255,.5);">Conteúdo / Blog</a></li>
         <li><a href="/contato">Contato</a></li>
         <li><a href="/privacidade">Privacidade & LGPD</a></li>
@@ -2957,9 +2994,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
       <p class="ftr-copy">&copy; <span id="yr"></span> Calcula Prazo. Todos os direitos reservados. Calculadoras jurídicas gratuita para advogados, contadores, profissionais de RH e trabalhadores. Os cálculos e o conteúdo são de caráter informativo e não substituem assessoria especializada.</p>
       <div style="display:flex;gap:12px 16px;align-items:center;flex-wrap:wrap;justify-content:center;">
         <a onclick="document.getElementById('modal-doacao').style.display='flex'" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;cursor:pointer;">☕ Doação</a>
-        <a href="/contato" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;">Contato</a>
-        <a href="/termos" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;">Termos de Uso</a>
-        <a href="/privacidade" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;">Privacidade & LGPD</a>
         <span style="color:rgba(255,255,255,.2);">|</span>
         <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>Youtube</a>
         <a href="https://www.linkedin.com/in/calcula-prazo-0a1736405" target="_blank" rel="noopener" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>Linkedin</a>

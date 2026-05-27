@@ -22,6 +22,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3280539734623058" crossorigin="anonymous"></script>
+<!-- Google Analytics GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JX50BS8SSX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-JX50BS8SSX');
+</script>
 <style>
 :root{--acc:#2563EB;--acc-d:#1D4ED8;--txt:#0F172A;--txt-m:#475569;--txt-s:#94A3B8;--bg:#F8FAFC;--card:#FFFFFF;--brd:#E2E8F0;--b50:#EFF6FF;--b100:#DBEAFE;--b700:#1D4ED8;--b900:#1E3A8A;--fh:'Plus Jakarta Sans',sans-serif;--r:12px;--sh:0 4px 16px rgba(15,23,42,.08);}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
@@ -65,21 +73,64 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
 .ftr-links a:hover{color:#fff;}
 .ftr-copy{font-size:.73rem;color:rgba(255,255,255,.22);margin-top:14px;}
 </style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "name": "FAQ — Sobre o Calcula Prazo",
+  "url": "https://calculaprazo.com.br/sobre",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Os resultados têm validade jurídica?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "As ferramentas têm caráter informativo e de apoio. Os resultados são estimativas baseadas nas regras legais vigentes e nos dados informados pelo usuário, mas não substituem a análise de profissional habilitado nem constituem assessoria jurídica, contábil ou financeira."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Com que frequência os índices são atualizados?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Os índices de correção monetária (IPCA, IGP-M, INPC, SELIC) são obtidos via API do Banco Central e refletem os dados mais recentes disponíveis. As tabelas de INSS e IRRF são atualizadas sempre que há alteração legislativa."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "O site coleta dados dos usuários?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Não. Os cálculos são processados inteiramente no navegador e não são enviados a nenhum servidor. O site usa cookies do Google AdSense para anúncios personalizados, conforme detalhado na Política de Privacidade."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Como reportar um erro ou sugerir uma ferramenta?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Entre em contato pelo e-mail contato@calculaprazo.com.br ou pela página de contato. Todas as mensagens são lidas pessoalmente e respondidas em até 5 dias úteis."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
 <header id="hdr">
   <div class="container hdr-inner">
     <a href="/" class="logo" aria-label="Calcula Prazo — Página inicial">
-      <div class="logo-ic">⚖</div>
-      <span>Calcula</span>Prazo
+      <div class="logo-ic">⚖</div><span class="logo-text">Calcula</span><span>Prazo</span>
     </a>
-    <a href="/" class="back-btn">← Ferramentas</a>
+    <a href="/" class="back-btn">← Voltar ao site</a>
   </div>
 </header>
 
 <section class="hero">
   <div class="container">
+    <p class="breadcrumb"><a href="/">Início</a> › Sobre</p>
     <h1>Sobre o Calcula Prazo</h1>
     <p>Ferramentas jurídicas e trabalhistas gratuitas para advogados, profissionais de RH, contadores e trabalhadores.</p>
   </div>
