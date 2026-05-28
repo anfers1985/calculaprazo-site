@@ -72,6 +72,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
 .ftr-links a{font-size:.8rem;color:rgba(255,255,255,.45);text-decoration:none;}
 .ftr-links a:hover{color:#fff;}
 .ftr-copy{font-size:.73rem;color:rgba(255,255,255,.22);margin-top:14px;}
+
+
+.hdr-doacao{font-size:.78rem;font-weight:600;color:var(--txt-m);cursor:pointer;padding:5px 8px;border-radius:8px;white-space:nowrap;}
+
+.hdr-doacao:hover{background:var(--b50);color:var(--acc);}
 </style>
 
 <script type="application/ld+json">
@@ -125,7 +130,9 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
       <div class="logo-ic">⚖</div><span class="logo-text">Calcula</span><span>Prazo</span>
     </a>
     <a href="/" class="back-btn">← Voltar ao site</a>
-  </div>
+  
+      <a class="hdr-doacao" onclick="document.getElementById('modal-doacao').style.display='flex'" aria-label="Apoiar o Calcula Prazo via Pix">☕ Doação</a>
+    </div>
 </header>
 
 <section class="hero">
@@ -252,5 +259,38 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
 <script>
 document.getElementById('yr').textContent = new Date().getFullYear();
 </script>
+<div id="modal-doacao" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this)this.style.display='none'">
+    <div style="background:#fff;border-radius:var(--rx);padding:36px;max-width:480px;width:100%;box-shadow:var(--shxl);position:relative;">
+    <button onclick="document.getElementById('modal-doacao').style.display='none'" style="position:absolute;top:16px;right:16px;background:var(--bg);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--txt-s);">✕</button>
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:2.5rem;margin-bottom:8px;">☕</div>
+      <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:6px;">Apoie o Calcula Prazo</h2>
+      <p style="font-size:.88rem;color:var(--txt-m);line-height:1.6;">Este site é 100% gratuito e feito com dedicação. Se ele te ajudou, considere contribuir com qualquer valor para mantê-lo no ar e em constante melhoria.</p>
+    </div>
+    <div style="background:var(--b50);border:1.5px solid var(--b200);border-radius:var(--rl);padding:18px;margin-bottom:20px;">
+      <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--acc);margin-bottom:8px;">Pix — Chave e-mail</p>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div id="pix-key-display" style="font-family:var(--fh);font-size:.85rem;font-weight:700;color:var(--txt);flex:1;background:#fff;border:1.5px solid var(--brd);border-radius:var(--r);padding:10px 12px;white-space:nowrap;overflow:visible;text-align:center;">contato@calculaprazo.com.br</div>
+        <button onclick="navigator.clipboard.writeText('contato@calculaprazo.com.br').then(()=>{this.textContent='✅';setTimeout(()=>this.textContent='📋',1500)})" style="background:var(--acc);color:#fff;border:none;border-radius:var(--r);padding:10px 13px;cursor:pointer;font-size:.85rem;flex-shrink:0;">📋</button>
+      </div>
+      <p style="font-size:.73rem;color:var(--txt-s);margin-top:8px;"></p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+      <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd);border-radius:var(--r);cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''">
+        <div style="font-size:.85rem;font-weight:800;color:var(--acc);">R$ 1</div><div style="font-size:.68rem;color:var(--txt-s);">🤝 Simbólico</div>
+      </div>
+      <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd);border-radius:var(--r);cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''">
+        <div style="font-size:.85rem;font-weight:800;color:var(--acc);">R$ 5</div><div style="font-size:.68rem;color:var(--txt-s);">☕ Um café</div>
+      </div>
+      <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd);border-radius:var(--r);cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''">
+        <div style="font-size:.85rem;font-weight:800;color:var(--acc);">R$ 15</div><div style="font-size:.68rem;color:var(--txt-s);">⭐ Apoiador</div>
+      </div>
+      <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd);border-radius:var(--r);cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''">
+        <div style="font-size:.85rem;font-weight:800;color:var(--acc);">R$ 30</div><div style="font-size:.68rem;color:var(--txt-s);">🚀 Apoiador</div>
+      </div>
+    </div>
+      <p style="text-align:center;font-size:.8rem;color:var(--txt-s);">A partir de R$ 1 — qualquer valor faz diferença. Obrigado!</p>
+  </div>
+</div>
 </body>
 </html>
