@@ -10,6 +10,10 @@
   <meta property="og:url"          content="https://calculaprazo.com.br/contato">
   <meta property="og:locale"       content="pt_BR">
   <meta property="og:site_name"    content="Calcula Prazo">
+  <meta property="og:image"        content="https://calculaprazo.com.br/og-image.jpg">
+  <meta property="og:image:width"  content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type"   content="image/jpeg">
 <meta name="description" content="Entre em contato com o Calcula Prazo. Dúvidas, sugestões ou erros encontrados — respondemos em até 5 dias úteis.">
 <link rel="canonical" href="https://calculaprazo.com.br/contato">
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
@@ -122,6 +126,12 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
 .submit-btn{width:100%;padding:12px;background:var(--acc);color:#fff;border:none;border-radius:10px;font-family:var(--fh);font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s;margin-top:4px;}
 .submit-btn:hover{background:var(--acc-d);}
 .submit-btn:disabled{opacity:.6;cursor:not-allowed;}
+
+  .hdr-nav-links{display:flex;align-items:center;gap:2px;margin-left:auto;flex-wrap:wrap;}
+  .hdr-nav-links a{font-size:.8rem;font-weight:500;color:var(--txt-m);text-decoration:none;padding:5px 10px;border-radius:6px;white-space:nowrap;}
+  .hdr-nav-links a:hover{background:var(--b50);color:var(--acc);}
+  .hdr-nav-links a.active{color:var(--acc);font-weight:700;}
+  @media(max-width:600px){.hdr-nav-links a{padding:4px 7px;font-size:.75rem;}}
 </style>
 
 <script type="application/ld+json">
@@ -186,13 +196,21 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
 <body>
 
 <header id="hdr">
-  <div class="container hdr-inner">
-    <a href="/" class="logo">
-      <div class="logo-ic">⚖</div>
-      <span class="logo-text">Calcula</span><span>Prazo</span>
+  <div class="container hdr-inner" style="flex-wrap:wrap;gap:8px;">
+    <a href="/" class="logo" aria-label="Calcula Prazo — Página inicial">
+      <div class="logo-ic">⚖</div><span class="logo-text">Calcula</span><span>Prazo</span>
     </a>
-    <a href="/" class="back-btn">← Voltar ao site</a>
-  </div>
+    <div class="hdr-nav-links">
+      <a href="/">🏠 Início</a>
+      <a href="/">Calculadoras</a>
+      <a href="/conteudo">Conteúdo</a>
+      <a href="/sobre">Sobre</a>
+      <a href="/privacidade">Privacidade</a>
+      <a href="/termos">Termos</a>
+      <a href="/contato" class="active">Contato</a>
+    </div>
+      <a class="hdr-doacao" onclick="document.getElementById('modal-doacao').style.display='flex'" aria-label="Apoiar o Calcula Prazo via Pix">☕ Doação</a>
+    </div>
 </header>
 
 <div class="hero">

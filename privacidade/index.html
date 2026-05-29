@@ -10,6 +10,10 @@
   <meta property="og:url"          content="https://calculaprazo.com.br/privacidade">
   <meta property="og:locale"       content="pt_BR">
   <meta property="og:site_name"    content="Calcula Prazo">
+  <meta property="og:image"        content="https://calculaprazo.com.br/og-image.jpg">
+  <meta property="og:image:width"  content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type"   content="image/jpeg">
 <meta name="description" content="Política de Privacidade do Calcula Prazo. Entenda como tratamos seus dados, uso de cookies e seus direitos pela LGPD (Lei 13.709/2018).">
 <link rel="canonical" href="https://calculaprazo.com.br/privacidade">
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
@@ -68,15 +72,30 @@ strong{color:var(--txt);font-weight:700;}
 .hdr-doacao{font-size:.78rem;font-weight:600;color:var(--txt-m);cursor:pointer;padding:5px 8px;border-radius:8px;white-space:nowrap;}
 
 .hdr-doacao:hover{background:var(--b50);color:var(--acc);}
+
+  .hdr-nav-links{display:flex;align-items:center;gap:2px;margin-left:auto;flex-wrap:wrap;}
+  .hdr-nav-links a{font-size:.8rem;font-weight:500;color:var(--txt-m);text-decoration:none;padding:5px 10px;border-radius:6px;white-space:nowrap;}
+  .hdr-nav-links a:hover{background:var(--b50);color:var(--acc);}
+  .hdr-nav-links a.active{color:var(--acc);font-weight:700;}
+  @media(max-width:600px){.hdr-nav-links a{padding:4px 7px;font-size:.75rem;}}
 </style>
 </head>
 <body>
 
 <header id="hdr">
-  <div class="container hdr-inner">
-    <a href="/" class="logo"><div class="logo-ic">⚖</div><span class="logo-text">Calcula</span><span>Prazo</span></a>
-    <a href="/" class="back-btn">← Voltar ao site</a>
-  
+  <div class="container hdr-inner" style="flex-wrap:wrap;gap:8px;">
+    <a href="/" class="logo" aria-label="Calcula Prazo — Página inicial">
+      <div class="logo-ic">⚖</div><span class="logo-text">Calcula</span><span>Prazo</span>
+    </a>
+    <div class="hdr-nav-links">
+      <a href="/">🏠 Início</a>
+      <a href="/">Calculadoras</a>
+      <a href="/conteudo">Conteúdo</a>
+      <a href="/sobre">Sobre</a>
+      <a href="/privacidade" class="active">Privacidade</a>
+      <a href="/termos">Termos</a>
+      <a href="/contato">Contato</a>
+    </div>
       <a class="hdr-doacao" onclick="document.getElementById('modal-doacao').style.display='flex'" aria-label="Apoiar o Calcula Prazo via Pix">☕ Doação</a>
     </div>
 </header>
@@ -84,7 +103,7 @@ strong{color:var(--txt);font-weight:700;}
 <div class="hero">
   <div class="container">
     <p class="breadcrumb"><a href="/">Início</a> › Política de Privacidade</p>
-    <h1>🔒 Política de Privacidade e LGPD</h1>
+    <h1>Política de Privacidade e LGPD</h1>
     <p class="subtitle">Última atualização: 10 de abril de 2026</p>
   </div>
 </div>

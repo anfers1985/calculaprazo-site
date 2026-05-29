@@ -12,6 +12,10 @@
 <meta property="og:description" content="Plataforma de ferramentas jurídicas e trabalhistas gratuitas para advogados, RH e contadores.">
 <meta property="og:url" content="https://calculaprazo.com.br/sobre">
 <meta property="og:type" content="website">
+  <meta property="og:image"        content="https://calculaprazo.com.br/og-image.jpg">
+  <meta property="og:image:width"  content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type"   content="image/jpeg">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"AboutPage","name":"Sobre o Calcula Prazo","url":"https://calculaprazo.com.br/sobre","description":"O Calcula Prazo é uma plataforma de ferramentas jurídico-trabalhistas gratuitas e conteúdo editorial sobre Direito do Trabalho, desenvolvida por Anderson Fernandes (OAB/SC 44.858), advogado trabalhista.","publisher":{"@type":"Organization","name":"Calcula Prazo","url":"https://calculaprazo.com.br","contactPoint":{"@type":"ContactPoint","email":"contato@calculaprazo.com.br","contactType":"customer support"}},"author":{"@type":"Person","name":"Anderson Fernandes","url":"https://calculaprazo.com.br/sobre"}}
 </script>
@@ -77,6 +81,12 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
 .hdr-doacao{font-size:.78rem;font-weight:600;color:var(--txt-m);cursor:pointer;padding:5px 8px;border-radius:8px;white-space:nowrap;}
 
 .hdr-doacao:hover{background:var(--b50);color:var(--acc);}
+
+  .hdr-nav-links{display:flex;align-items:center;gap:2px;margin-left:auto;flex-wrap:wrap;}
+  .hdr-nav-links a{font-size:.8rem;font-weight:500;color:var(--txt-m);text-decoration:none;padding:5px 10px;border-radius:6px;white-space:nowrap;}
+  .hdr-nav-links a:hover{background:var(--b50);color:var(--acc);}
+  .hdr-nav-links a.active{color:var(--acc);font-weight:700;}
+  @media(max-width:600px){.hdr-nav-links a{padding:4px 7px;font-size:.75rem;}}
 </style>
 
 <script type="application/ld+json">
@@ -125,12 +135,19 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
 <body>
 
 <header id="hdr">
-  <div class="container hdr-inner">
+  <div class="container hdr-inner" style="flex-wrap:wrap;gap:8px;">
     <a href="/" class="logo" aria-label="Calcula Prazo — Página inicial">
       <div class="logo-ic">⚖</div><span class="logo-text">Calcula</span><span>Prazo</span>
     </a>
-    <a href="/" class="back-btn">← Voltar ao site</a>
-  
+    <div class="hdr-nav-links">
+      <a href="/">🏠 Início</a>
+      <a href="/">Calculadoras</a>
+      <a href="/conteudo">Conteúdo</a>
+      <a href="/sobre" class="active">Sobre</a>
+      <a href="/privacidade">Privacidade</a>
+      <a href="/termos">Termos</a>
+      <a href="/contato">Contato</a>
+    </div>
       <a class="hdr-doacao" onclick="document.getElementById('modal-doacao').style.display='flex'" aria-label="Apoiar o Calcula Prazo via Pix">☕ Doação</a>
     </div>
 </header>
