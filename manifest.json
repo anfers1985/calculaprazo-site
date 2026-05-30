@@ -1,0 +1,31 @@
+{
+  "name": "Calcula Prazo",
+  "short_name": "CalculaPrazo",
+  "description": "Calculadoras jurídicas e trabalhistas gratuitas: prazos processuais, correção monetária, verbas trabalhistas e mais.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8FAFC",
+  "theme_color": "#2563EB",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["productivity", "business"],
+  "screenshots": [
+    {
+      "src": "/og-image.jpg",
+      "sizes": "1200x630",
+      "type": "image/jpeg",
+      "label": "Calcula Prazo — Calculadoras Jurídicas"
+    }
+  ]
+}

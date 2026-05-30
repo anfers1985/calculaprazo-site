@@ -19,3 +19,6 @@ Sitemap: https://calculaprazo.com.br/sitemap.xml
 
 # Crawl delay (em segundos)
 Crawl-delay: 1
+
+# Template de desenvolvimento — não indexar
+Disallow: /blog/POST_TEMPLATE.html

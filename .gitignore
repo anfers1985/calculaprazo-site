@@ -1,0 +1,13 @@
+# Artefatos de ambiente de desenvolvimento — NUNCA commitar
+/mnt/
+/home/
+og-image.png
+
+# Backups e arquivos temporários
+*.bak
+*.tmp
+*~
+
+# OS
+.DS_Store
+Thumbs.db

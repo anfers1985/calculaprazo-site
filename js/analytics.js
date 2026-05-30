@@ -1,3 +1,6 @@
+/* DEPRECATED — Usar GA4 Events. Este arquivo não gera dados úteis pois
+   usa localStorage que nunca chega ao servidor. Pode ser removido. */
+
 /**
  * analytics.js — Sistema de rastreamento de visualizações para Calcula Prazo
  * Usa localStorage para contar acessos aos posts do blog
