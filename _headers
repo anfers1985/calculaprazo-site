@@ -4,6 +4,33 @@
 
 # Cloudflare Pages — cabeçalhos HTTP
 
+# ── Assets estáticos com cache longo (1 ano) ──────────────
+# CSS e JS externos — cache agressivo (invalidado ao mudar o arquivo)
+/styles.css
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: text/css; charset=utf-8
+
+/app.js
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: application/javascript; charset=utf-8
+
+/blog.js
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: application/javascript; charset=utf-8
+
+# Ícones PWA
+/icon-192.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/icon-512.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/apple-touch-icon.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/favicon-32x32.png
+  Cache-Control: public, max-age=31536000, immutable
+
 # ads.txt — servido como texto puro, sem cache longo
 /ads.txt
   Content-Type: text/plain; charset=utf-8

@@ -907,7 +907,8 @@ async function publicarNoSite() {
     const coverHTML = post.image
       ? `<div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;"><img src="${post.image}" alt="${post.title}" style="width:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>`
       : '';
-    const ogImageTag  = post.image ? `<meta property="og:image" content="${post.image}">` : '';
+    const ogImageUrl  = post.image || 'https://calculaprazo.com.br/og-image.jpg';
+    const ogImageTag  = `<meta property="og:image" content="${ogImageUrl}">`;
     const schemaImage = post.image ? `,"image":"${post.image}"` : '';
 
     const postHTML = template
@@ -1019,6 +1020,7 @@ async function baixarHTML() {
     const coverHTML = image
       ? `<div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;"><img src="${image}" alt="${title}" style="width:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display=\'none\'"></div>`
       : '';
+    const ogImageUrlLocal = image || 'https://calculaprazo.com.br/og-image.jpg';
 
     const postHTML = template
       .replace(/\{\{TITLE\}\}/g,          title)
@@ -1031,7 +1033,7 @@ async function baixarHTML() {
       .replace(/\{\{CONTENT\}\}/g,        content)
       .replace(/\{\{TAGS_BADGES\}\}/g,    tagsBadgesHTML)
       .replace(/\{\{TAGS_JSON\}\}/g,      JSON.stringify(tagsArr))
-      .replace(/\{\{OG_IMAGE\}\}/g,       image ? `<meta property="og:image" content="${image}">` : '')
+      .replace(/\{\{OG_IMAGE\}\}/g,       `<meta property="og:image" content="${ogImageUrlLocal}">`)
       .replace(/\{\{SCHEMA_IMAGE\}\}/g,   image ? `,"image":"${image}"` : '')
       .replace(/\{\{COVER_IMAGE_HTML\}\}/g, coverHTML);
 
