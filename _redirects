@@ -44,5 +44,8 @@
 # Página 404 explícita
 /404              /404.html                200
 
+# Arquivos de dados estáticos — devem ser servidos diretamente, antes do fallback SPA
+/data/*           /data/:splat             200
+
 # SPA fallback — todas as outras rotas vão para index.html
 /*                /index.html              200

@@ -3,6 +3,7 @@
    DESIGN TOKENS
 ════════════════════════════════════════ */
 :root{
+  color-scheme: light; /* Força light mode — desativa dark mode automático do browser */
   --b50:#EFF6FF;--b100:#DBEAFE;--b200:#BFDBFE;--b300:#93C5FD;
   --b500:#3B82F6;--b600:#2563EB;--b700:#1D4ED8;--b800:#1E40AF;--b900:#1E3A8A;
   --acc:#2563EB;--acc-d:#1D4ED8;--acc-l:#3B82F6;
