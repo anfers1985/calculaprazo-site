@@ -1,0 +1,77 @@
+name: Minificar JS
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'app.js'
+      - 'blog.js'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  minificar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Instalar esbuild
+        run: npm install -g esbuild@0.21.5
+
+      - name: Minificar app.js
+        run: |
+          esbuild app.js \
+            --bundle=false \
+            --minify \
+            --legal-comments=none \
+            --target=es2018 \
+            --outfile=app.min.js
+          echo "app.js:     $(wc -c < app.js) bytes"
+          echo "app.min.js: $(wc -c < app.min.js) bytes"
+
+      - name: Minificar blog.js
+        run: |
+          esbuild blog.js \
+            --bundle=false \
+            --minify \
+            --legal-comments=none \
+            --target=es2018 \
+            --outfile=blog.min.js
+          echo "blog.js:     $(wc -c < blog.js) bytes"
+          echo "blog.min.js: $(wc -c < blog.min.js) bytes"
+
+      - name: Commit dos arquivos minificados
+        run: |
+          git config user.name "CalculaPrazo Bot"
+          git config user.email "bot@calculaprazo.com.br"
+
+          git add app.min.js blog.min.js
+
+          if git diff --staged --quiet; then
+            echo "Nada mudou — pulando commit."
+            exit 0
+          fi
+
+          git commit -m "build: minificar app.js e blog.js [skip ci]"
+          git fetch origin main
+          git rebase origin/main
+          git push origin main
+
+      - name: Resumo
+        run: |
+          echo "## Minificação" >> $GITHUB_STEP_SUMMARY
+          echo "| Arquivo | Original | Minificado | Redução |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|---|---|" >> $GITHUB_STEP_SUMMARY
+          OA=$(wc -c < app.js); MA=$(wc -c < app.min.js)
+          OB=$(wc -c < blog.js); MB=$(wc -c < blog.min.js)
+          RA=$(python3 -c "print(f'{(1-$MA/$OA)*100:.1f}%')")
+          RB=$(python3 -c "print(f'{(1-$MB/$OB)*100:.1f}%')")
+          echo "| app.js  | ${OA} B | ${MA} B | ${RA} |" >> $GITHUB_STEP_SUMMARY
+          echo "| blog.js | ${OB} B | ${MB} B | ${RB} |" >> $GITHUB_STEP_SUMMARY
