@@ -725,7 +725,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   border-top: 1px solid var(--brd);
   border-bottom: 1px solid var(--brd);
   padding: 8px 0;
-  min-height: 0;           /* colapsa quando sem anuncio */
   box-sizing: border-box;
 }
 .ad-container:empty {
@@ -773,8 +772,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 /* mobile: uma coluna, sem anúncios empilhados */
 @media (max-width: 768px) {
-  .ad-container { min-height: 0; }
-  .ad-container.ad-rect { min-height: 0; }
+  .ad-container { min-height: 50px; } /* mantém reserva mínima em mobile */
+  .ad-container.ad-rect { min-height: 50px; }
   .ad-placeholder { min-height: 0; }
   .ad-placeholder.rect { min-height: 0; max-width: 100%; }
   .ad-desktop-only { display: none !important; }  /* oculta ad extra no mobile */

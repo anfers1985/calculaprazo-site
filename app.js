@@ -1818,7 +1818,7 @@ window.goTo = function(id) {
   try {
     const path = ID_TO_SLUG[id] || '/';
     if (location.protocol !== 'file:' && location.pathname !== path) {
-      history.pushState({ id }, '', path);
+      history.pushState({ id, scrollY: window.scrollY }, '', path);
     }
   } catch(e) { /* silencioso */ }
   // 3. Atualiza meta tags SEO
@@ -1830,6 +1830,9 @@ window.addEventListener('popstate', function(e) {
   const id = e.state && e.state.id ? e.state.id : resolveIdFromURL();
   _navOriginal(id);
   updateSEO(id);
+  // Restaura posição de scroll salva no pushState
+  const savedY = (e.state && e.state.scrollY != null) ? e.state.scrollY : 0;
+  setTimeout(function() { window.scrollTo(0, savedY); }, 50);
 });
 
 // ── Inicialização — lê a URL ao carregar ────────────────
