@@ -123,16 +123,11 @@
 
 
 
-<div id="mob-overlay" onclick="closeMobMenu()" aria-hidden="true"></div>
 <header id="hdr">
   <div class="hdr-inner">
     <a class="logo" href="/" onclick="event.preventDefault();goTo('home')" title="Ir para página inicial">
       <div class="logo-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 7h18"/></svg></div><span class="logo-text">Calcula</span><span>Prazo</span>
     </a>
-    <!-- Hamburger: visível só em mobile -->
-    <button class="hdr-burger" id="hdr-burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="mob-drawer" onclick="toggleMobMenu()">
-      <span></span><span></span><span></span>
-    </button>
     <nav class="hdr-nav">
       <a href="/" id="nav-home" onclick="event.preventDefault();goTo('home')" style="display:flex;align-items:center;gap:4px;">🏠 Início</a>
       <a href="/calculadora-de-prazo-processual" id="nav-prazos" onclick="event.preventDefault();goTo('prazos')">Calculadora de Prazo</a>
@@ -244,61 +239,6 @@
     </nav>
   </div>
 </header>
-
-<!-- Drawer mobile (position:fixed, fora do header) -->
-<!-- Drawer mobile -->
-    <nav id="mob-drawer" class="mob-drawer" aria-label="Menu principal mobile">
-      <div class="mob-drawer-header">
-        <span class="mob-drawer-title">Menu</span>
-        <button class="mob-drawer-close" onclick="closeMobMenu()" aria-label="Fechar menu">✕</button>
-      </div>
-      <div class="mob-drawer-body">
-        <a class="mob-nav-link" href="/" onclick="event.preventDefault();goTo('home');closeMobMenu()">🏠 Início</a>
-        <a class="mob-nav-link mob-nav-highlight" href="/calculadora-de-prazo-processual" onclick="event.preventDefault();goTo('prazos');closeMobMenu()">⚖️ Calculadora de Prazo</a>
-        <div class="mob-nav-group">
-          <button class="mob-nav-group-toggle" onclick="toggleMobGroup(this)" aria-expanded="false">🔧 Ferramentas <span class="mob-arr">›</span></button>
-          <div class="mob-nav-group-body">
-            <a href="/correcao-monetaria" onclick="event.preventDefault();navGoTo('correcao');closeMobMenu()">💰 Correção Monetária</a>
-            <a href="/calculadora-de-juros" onclick="event.preventDefault();navGoTo('juros');closeMobMenu()">📈 Cálculo de Juros</a>
-            <a href="/calculadora-verbas-trabalhistas" onclick="event.preventDefault();navGoTo('trabalhista');closeMobMenu()">⚖️ Verbas Trabalhistas</a>
-            <a href="/calculadora-salario-liquido" onclick="event.preventDefault();navGoTo('salario');closeMobMenu()">💵 Salário Líquido</a>
-            <a href="/calculadora-de-porcentagem" onclick="event.preventDefault();navGoTo('porcentagem');closeMobMenu()">🧮 Porcentagem</a>
-            <a href="/conversor-de-moedas" onclick="event.preventDefault();navGoTo('moedas');closeMobMenu()">💱 Conversor de Moedas</a>
-            <a href="/calculadora-de-datas" onclick="event.preventDefault();navGoTo('datas');closeMobMenu()">📅 Operações com Datas</a>
-            <a href="/validador-cpf-cnpj" onclick="event.preventDefault();navGoTo('valid');closeMobMenu()">🪪 Validador CPF / CNPJ</a>
-            <a href="/gerador-de-qr-code" onclick="event.preventDefault();navGoTo('qrcode');closeMobMenu()">📱 Gerador de QR Code</a>
-            <a href="/gerador-de-senhas" onclick="event.preventDefault();navGoTo('senhas');closeMobMenu()">🔐 Gerador de Senhas</a>
-            <a href="/numero-por-extenso" onclick="event.preventDefault();navGoTo('extenso');closeMobMenu()">🔢 Número por Extenso</a>
-            <a href="/calculadora-imc" onclick="event.preventDefault();navGoTo('imc');closeMobMenu()">🏃 Calculadora de IMC</a>
-          </div>
-        </div>
-        <div class="mob-nav-group">
-          <button class="mob-nav-group-toggle" onclick="toggleMobGroup(this)" aria-expanded="false">📰 Conteúdo <span class="mob-arr">›</span></button>
-          <div class="mob-nav-group-body">
-            <a href="/conteudo" onclick="event.preventDefault();navGoTo('blog');closeMobMenu()">📰 Todos os Artigos</a>
-            <a onclick="navGoTo('blog');filterBlogSection('jurisprudencia');closeMobMenu()">⚖️ Jurisprudência</a>
-            <a onclick="navGoTo('blog');filterBlogSection('orgaos-publicos');closeMobMenu()">🏛️ Órgãos Públicos</a>
-            <a onclick="navGoTo('blog');filterBlogSection('legislacao-normas');closeMobMenu()">📋 Legislação e Normas</a>
-            <a onclick="navGoTo('blog');filterBlogSection('rh-gestao');closeMobMenu()">👥 RH e Gestão de Pessoas</a>
-            <a onclick="navGoTo('blog');filterBlogSection('processual');closeMobMenu()">📄 Processual</a>
-            <a onclick="navGoTo('blog');filterBlogSection('essenciais');closeMobMenu()">⭐ Essenciais</a>
-          </div>
-        </div>
-        <div class="mob-nav-group">
-          <button class="mob-nav-group-toggle" onclick="toggleMobGroup(this)" aria-expanded="false">📣 Redes Sociais <span class="mob-arr">›</span></button>
-          <div class="mob-nav-group-body">
-            <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener noreferrer">▶️ YouTube</a>
-            <a href="https://www.linkedin.com/in/calcula-prazo-0a1736405" target="_blank" rel="noopener noreferrer">💼 LinkedIn</a>
-            <a href="https://www.instagram.com/calculaprazo/" target="_blank" rel="noopener noreferrer">📸 Instagram</a>
-            <a href="https://x.com/CalculaPrazo" target="_blank" rel="noopener noreferrer">𝕏 X (Twitter)</a>
-          </div>
-        </div>
-        <a class="mob-nav-link" href="/sobre" onclick="event.preventDefault();goTo('sobre');closeMobMenu()">Sobre</a>
-        <a class="mob-nav-link" href="/contato">✉ Contato</a>
-        <button class="mob-nav-link mob-nav-doacao" onclick="document.getElementById('modal-doacao').style.display='flex';closeMobMenu()">☕ Fazer Doação</button>
-      </div>
-    </nav>
-
 
 <!-- ══════════════════════════════════════
      HOME — REDESIGN .nh-
@@ -1856,39 +1796,5 @@
   <button id="share-fab-btn" title="Compartilhar" aria-label="Compartilhar página" aria-expanded="false" aria-controls="share-fab-menu" onclick="this.setAttribute('aria-expanded', document.getElementById('share-fab-menu').classList.toggle('open'));">📤</button>
 </div>
 <!-- nh-functions incluído em app.js -->
-<script>
-// ── Hamburger / Drawer mobile ────────────────────────────
-function toggleMobMenu(){
-  var drawer  = document.getElementById('mob-drawer');
-  var overlay = document.getElementById('mob-overlay');
-  var burger  = document.getElementById('hdr-burger');
-  var open    = drawer.classList.contains('open');
-  if(open){ closeMobMenu(); }
-  else {
-    drawer.classList.add('open');
-    overlay.classList.add('open');
-    burger.setAttribute('aria-expanded','true');
-    document.body.classList.add('mob-menu-open');
-  }
-}
-function closeMobMenu(){
-  document.getElementById('mob-drawer').classList.remove('open');
-  document.getElementById('mob-overlay').classList.remove('open');
-  document.getElementById('hdr-burger').setAttribute('aria-expanded','false');
-  document.body.classList.remove('mob-menu-open');
-}
-function toggleMobGroup(btn){
-  var body = btn.nextElementSibling;
-  var open = body.classList.contains('open');
-  body.classList.toggle('open', !open);
-  btn.setAttribute('aria-expanded', String(!open));
-  var arr = btn.querySelector('.mob-arr');
-  if(arr) arr.style.transform = open ? '' : 'rotate(90deg)';
-}
-// Fechar drawer no Escape
-document.addEventListener('keydown', function(e){
-  if(e.key === 'Escape') closeMobMenu();
-});
-</script>
 </body>
 </html>
