@@ -823,8 +823,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 /* mobile: uma coluna, sem anúncios empilhados */
 @media (max-width: 768px) {
-  .ad-container { min-height: 100px; } /* previne CLS */
-  .ad-container.ad-rect { min-height: 100px; }
+  .ad-container { min-height: 0; }
+  .ad-container.ad-rect { min-height: 0; }
   .ad-placeholder { min-height: 0; }
   .ad-placeholder.rect { min-height: 0; max-width: 100%; }
   .ad-desktop-only { display: none !important; }  /* oculta ad extra no mobile */
@@ -1265,7 +1265,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     <div class="article-wrap">
 
       <!-- Cover image -->
-      <div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;"><img width="1200" height="630" src="https://raw.githubusercontent.com/anfers1985/imagens/main/imagem%20validador-cpf-cnpj.png" alt="Validador de CPF e CNPJ Online: Verifique a Validez de Documentos Gratuitamente" style="width:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+      <div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;"><img src="https://raw.githubusercontent.com/anfers1985/imagens/main/imagem%20validador-cpf-cnpj.png" alt="Validador de CPF e CNPJ Online: Verifique a Validez de Documentos Gratuitamente" style="width:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
 
       <!-- Ad: topo do artigo (mostra apenas quando AdSense aprovado) -->
       

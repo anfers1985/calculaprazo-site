@@ -816,8 +816,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 /* mobile: uma coluna, sem anúncios empilhados */
 @media (max-width: 768px) {
-  .ad-container { min-height: 100px; } /* previne CLS */
-  .ad-container.ad-rect { min-height: 100px; }
+  .ad-container { min-height: 0; }
+  .ad-container.ad-rect { min-height: 0; }
   .ad-placeholder { min-height: 0; }
   .ad-placeholder.rect { min-height: 0; max-width: 100%; }
   .ad-desktop-only { display: none !important; }  /* oculta ad extra no mobile */
@@ -1301,11 +1301,11 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     </div>
 
     <!-- ▸ ANÚNCIO: conteudo/index — acima do grid de posts -->
-    <div class="ad-container" style="margin:12px 0 18px;text-align:center;min-height:100px;">
+    <div class="ad-container" style="margin:12px 0 18px;text-align:center;min-height:90px;">
       <ins class="adsbygoogle"
            style="display:block"
            data-ad-client="ca-pub-3280539734623058"
-           data-ad-slot="5261026571"
+           data-ad-slot="auto"
            data-ad-format="auto"
            data-full-width-responsive="true"></ins>
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -1323,17 +1323,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
     <!-- Paginação -->
     <div id="posts-pagination" style="display:flex;justify-content:center;flex-wrap:wrap;gap:5px;margin-top:28px;"></div>
-
-    <!-- ▸ ANÚNCIO: conteudo/index — abaixo da paginação -->
-    <div class="ad-container" style="margin:28px 0 8px;text-align:center;min-height:100px;">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-3280539734623058"
-           data-ad-slot="4989563836"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
 
   </div>
 </main>

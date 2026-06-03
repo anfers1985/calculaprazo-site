@@ -15,10 +15,6 @@
   --sh:0 4px 16px rgba(15,23,42,.08);
   --shl:0 12px 40px rgba(15,23,42,.12);
   --shxl:0 24px 64px rgba(15,23,42,.16);
-  /* ── Tokens adicionais — padronizacao v2 ── */
-  --mw:1200px;--mw-narrow:860px;--mw-article:800px;
-  --lh:1.65;
-  --bg-alt:#F5F5F2;--brd-alt:#E4E4EE;--txt-dim:#8888AA;--ink:#1A1A2E;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
@@ -264,21 +260,20 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 
 /* Form group */
-/* .pfg herda de .fg — apenas sobrescreve background da secao de prazos */
 .pfg { margin-bottom: 8px; }
 .pfg label {
   display: block; font-size: .62rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: .06em;
-  color: var(--txt-dim); margin-bottom: 3px;
+  color: #8888AA; margin-bottom: 3px;
 }
 .pfg input[type="date"],
 .pfg input[type="number"],
 .pfg input[type="text"],
 .pfg select {
   width: 100%; padding: 6px 9px;
-  border: 1.5px solid var(--brd-alt); border-radius: 7px;
-  font-size: .82rem; font-family: var(--fh); color: var(--ink);
-  background: var(--bg-alt);
+  border: 1.5px solid #E4E4EE; border-radius: 7px;
+  font-size: .82rem; font-family: var(--fh); color: #1A1A2E;
+  background: #F5F5F2;
   transition: border-color .2s, box-shadow .2s;
   appearance: none; -webkit-appearance: none;
 }
@@ -777,8 +772,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 /* mobile: uma coluna, sem anúncios empilhados */
 @media (max-width: 768px) {
-  .ad-container { min-height: 100px; } /* mínimo 100px → previne CLS (banner 320×50 ou 320×100) */
-  .ad-container.ad-rect { min-height: 100px; }
+  .ad-container { min-height: 50px; } /* mantém reserva mínima em mobile */
+  .ad-container.ad-rect { min-height: 50px; }
   .ad-placeholder { min-height: 0; }
   .ad-placeholder.rect { min-height: 0; max-width: 100%; }
   .ad-desktop-only { display: none !important; }  /* oculta ad extra no mobile */

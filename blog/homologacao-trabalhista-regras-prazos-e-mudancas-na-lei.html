@@ -878,8 +878,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 /* mobile: uma coluna, sem anúncios empilhados */
 @media (max-width: 768px) {
-  .ad-container { min-height: 100px; } /* previne CLS */
-  .ad-container.ad-rect { min-height: 100px; }
+  .ad-container { min-height: 0; }
+  .ad-container.ad-rect { min-height: 0; }
   .ad-placeholder { min-height: 0; }
   .ad-placeholder.rect { min-height: 0; max-width: 100%; }
   .ad-desktop-only { display: none !important; }  /* oculta ad extra no mobile */
