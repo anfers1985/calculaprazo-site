@@ -811,8 +811,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 /* mobile: uma coluna, sem anúncios empilhados */
 @media (max-width: 768px) {
-  .ad-container { min-height: 0; }
-  .ad-container.ad-rect { min-height: 0; }
+  .ad-container { min-height: 100px; } /* previne CLS */
+  .ad-container.ad-rect { min-height: 100px; }
   .ad-placeholder { min-height: 0; }
   .ad-placeholder.rect { min-height: 0; max-width: 100%; }
   .ad-desktop-only { display: none !important; }  /* oculta ad extra no mobile */
@@ -1226,7 +1226,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     <div class="article-wrap">
 
       <!-- Cover image -->
-      <div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;"><img src="https://www.camara.leg.br/midias/image/2026/05/img20260527183422167-768x473.jpg" alt="PEC da jornada de 40 horas: os impactos jurídicos que vão muito além do fim da escala 6x1" style="width:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+      <div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;"><img width="1200" height="630" src="https://www.camara.leg.br/midias/image/2026/05/img20260527183422167-768x473.jpg" alt="PEC da jornada de 40 horas: os impactos jurídicos que vão muito além do fim da escala 6x1" style="width:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
 
       <!-- Ad: topo do artigo (mostra apenas quando AdSense aprovado) -->
       <div class="ad-block" id="ad-blog-top" style="overflow:hidden;">

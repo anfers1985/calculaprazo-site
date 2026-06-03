@@ -811,8 +811,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 /* mobile: uma coluna, sem anúncios empilhados */
 @media (max-width: 768px) {
-  .ad-container { min-height: 0; }
-  .ad-container.ad-rect { min-height: 0; }
+  .ad-container { min-height: 100px; } /* previne CLS */
+  .ad-container.ad-rect { min-height: 100px; }
   .ad-placeholder { min-height: 0; }
   .ad-placeholder.rect { min-height: 0; max-width: 100%; }
   .ad-desktop-only { display: none !important; }  /* oculta ad extra no mobile */
@@ -1226,7 +1226,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     <div class="article-wrap">
 
       <!-- Cover image -->
-      <div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;"><img src="https://www.gov.br/trabalho-e-emprego/pt-br/noticias-e-conteudo/2023/novembro/documento-alcanca-mais-de-1-6-bilhao-de-acessos-em-4-anos-de-lancamento/carteira-digital.png/@@images/270ced27-4676-4ad6-bb19-d22e5cc7e56f.png" alt="CTPS Digital: Prazo de Anotação e Regras da CLT" style="width:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+      <div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;"><img width="1200" height="630" src="https://www.gov.br/trabalho-e-emprego/pt-br/noticias-e-conteudo/2023/novembro/documento-alcanca-mais-de-1-6-bilhao-de-acessos-em-4-anos-de-lancamento/carteira-digital.png/@@images/270ced27-4676-4ad6-bb19-d22e5cc7e56f.png" alt="CTPS Digital: Prazo de Anotação e Regras da CLT" style="width:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
 
       <!-- Ad: topo do artigo (mostra apenas quando AdSense aprovado) -->
       <div class="ad-block" id="ad-blog-top" style="overflow:hidden;">

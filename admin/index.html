@@ -5,9 +5,23 @@
 <meta name="description" content="Área administrativa do Calcula Prazo.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin – Calcula Prazo</title>
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script>
+// Proteção básica de acesso — impede acesso casual não autorizado
+(function(){
+  var key = sessionStorage.getItem('cp_admin_auth');
+  if(key !== 'calculaprazo_admin_2026'){
+    var pw = prompt('🔒 Acesso restrito. Digite a senha de administrador:');
+    if(pw !== 'calculaprazo_admin_2026'){
+      document.documentElement.innerHTML = '<body style="font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;background:#0f172a;color:#fff;font-size:1.1rem;">⛔ Acesso negado. <a href="/" style="color:#60a5fa;margin-left:8px;">Voltar ao site</a></body>';
+      throw new Error('Acesso negado');
+    }
+    sessionStorage.setItem('cp_admin_auth','calculaprazo_admin_2026');
+  }
+})();
+</script>
 <style>
 :root{
   --acc:#2563EB;--acc-d:#1D4ED8;--b50:#EFF6FF;--b100:#DBEAFE;--b200:#BFDBFE;

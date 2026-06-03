@@ -823,8 +823,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 /* mobile: uma coluna, sem anúncios empilhados */
 @media (max-width: 768px) {
-  .ad-container { min-height: 0; }
-  .ad-container.ad-rect { min-height: 0; }
+  .ad-container { min-height: 100px; } /* previne CLS */
+  .ad-container.ad-rect { min-height: 100px; }
   .ad-placeholder { min-height: 0; }
   .ad-placeholder.rect { min-height: 0; max-width: 100%; }
   .ad-desktop-only { display: none !important; }  /* oculta ad extra no mobile */
@@ -1271,7 +1271,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     <div class="article-wrap">
 
       <!-- Cover image -->
-      <div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;"><img src="https://images.unsplash.com/photo-1593115057322-e94b77572f20?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="FGTS no processo trabalhista: como recolher do jeito certo?" style="width:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+      <div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;"><img width="1200" height="630" src="https://images.unsplash.com/photo-1593115057322-e94b77572f20?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="FGTS no processo trabalhista: como recolher do jeito certo?" style="width:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
 
       <!-- Ad: topo do artigo -->
       <div class="ad-block" id="ad-blog-top" style="overflow:hidden;">

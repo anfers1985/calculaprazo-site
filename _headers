@@ -87,3 +87,8 @@
 # POST_TEMPLATE — impede indexação pelo Google
 /blog/POST_TEMPLATE.html
   X-Robots-Tag: noindex, nofollow
+
+# Admin — impede indexação e caching
+/admin/index.html
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store, no-cache, must-revalidate

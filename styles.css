@@ -15,6 +15,10 @@
   --sh:0 4px 16px rgba(15,23,42,.08);
   --shl:0 12px 40px rgba(15,23,42,.12);
   --shxl:0 24px 64px rgba(15,23,42,.16);
+  /* ── Tokens adicionais — padronizacao v2 ── */
+  --mw:1200px;--mw-narrow:860px;--mw-article:800px;
+  --lh:1.65;
+  --bg-alt:#F5F5F2;--brd-alt:#E4E4EE;--txt-dim:#8888AA;--ink:#1A1A2E;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
@@ -260,20 +264,21 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 
 /* Form group */
+/* .pfg herda de .fg — apenas sobrescreve background da secao de prazos */
 .pfg { margin-bottom: 8px; }
 .pfg label {
   display: block; font-size: .62rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: .06em;
-  color: #8888AA; margin-bottom: 3px;
+  color: var(--txt-dim); margin-bottom: 3px;
 }
 .pfg input[type="date"],
 .pfg input[type="number"],
 .pfg input[type="text"],
 .pfg select {
   width: 100%; padding: 6px 9px;
-  border: 1.5px solid #E4E4EE; border-radius: 7px;
-  font-size: .82rem; font-family: var(--fh); color: #1A1A2E;
-  background: #F5F5F2;
+  border: 1.5px solid var(--brd-alt); border-radius: 7px;
+  font-size: .82rem; font-family: var(--fh); color: var(--ink);
+  background: var(--bg-alt);
   transition: border-color .2s, box-shadow .2s;
   appearance: none; -webkit-appearance: none;
 }
@@ -772,8 +777,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 /* mobile: uma coluna, sem anúncios empilhados */
 @media (max-width: 768px) {
-  .ad-container { min-height: 50px; } /* mantém reserva mínima em mobile */
-  .ad-container.ad-rect { min-height: 50px; }
+  .ad-container { min-height: 100px; } /* mínimo 100px → previne CLS (banner 320×50 ou 320×100) */
+  .ad-container.ad-rect { min-height: 100px; }
   .ad-placeholder { min-height: 0; }
   .ad-placeholder.rect { min-height: 0; max-width: 100%; }
   .ad-desktop-only { display: none !important; }  /* oculta ad extra no mobile */
@@ -853,6 +858,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 
 
+  .nav-full{display:none;}
+  /* Remove pseudo-element trick anterior */
+  #nav-ref{font-size:.65rem;}
+  #nav-ref::before{display:none;}
+}
+
+
 
 
 
@@ -875,11 +887,74 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   /* Esconde partes longas no mobile */
   .d-mob-hide { display: none; }
 
-  /* Header — controlado pelo CSS do drawer */
+  /* Header: coluna */
   #hdr { height: auto !important; }
+  .hdr-inner {
+    flex-direction: column !important;
+    height: auto !important;
+    padding: 6px 10px 0;
+    gap: 0;
+    align-items: stretch;
+  }
+
+  /* Linha 1: logo centralizado */
+  .logo {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 5px;
+    font-size: 1.1rem !important;
+  }
 
   /* Esconde Calcular Prazo */
   .hdr-right { display: none !important; }
+
+  /* Linha 2: navegação horizontal com scroll — sem quebra de linha */
+  .hdr-nav {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    width: 100%;
+    border-top: 1px solid var(--brd);
+    padding: 2px 4px 3px;
+    gap: 0;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    justify-content: flex-start;
+  }
+  .hdr-nav::-webkit-scrollbar { display: none; }
+  /* Cada item: tamanho fixo, não encolhe */
+  .hdr-nav > a,
+  .hdr-nav > .nav-dropdown {
+    flex: 0 0 auto !important;
+    min-width: 0 !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: .71rem !important;
+    padding: 4px 8px !important;
+    text-align: center;
+    white-space: nowrap !important;
+  }
+  /* Em telas muito pequenas (360px) reduz levemente */
+  @media(max-width:360px){
+    .hdr-nav > a,
+    .hdr-nav > .nav-dropdown > a {
+      font-size: .65rem !important;
+      padding: 3px 6px !important;
+    }
+  }
+  /* O <a> dentro do dropdown também ocupa tudo */
+  .hdr-nav > .nav-dropdown > a {
+    width: 100%;
+    justify-content: center;
+  }
+  /* Dropdown: posição calculada pelo JS (positionDropdown) */
+  .nav-drop-menu {
+    min-width: 240px !important;
+  }
 }
 
 /* ── AdSense: colapsa blocos vazios até aprovação ── */
@@ -1309,278 +1384,78 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
    PRINT STYLES — @media print
    ═══════════════════════════════════════ */
 @media print {
-  /* ── Ocultar chrome do site ── */
+  /* Ocultar elementos desnecessários */
   #hdr, #ftr,
-  .skip-link,
-  .hdr-burger, #mob-drawer, #mob-overlay,
-  .ad-container, .ad-placeholder, ins.adsbygoogle,
-  [class*="ad-"], [id*="ad-"],
+  .navbar, .nav-full, .nav-mobile,
+  .nav-drop-menu, .nav-tools-btn,
+  .ad-container, .ad-placeholder,
+  ins.adsbygoogle,
+  .seo-content,
+  .faq-list,
+  .nh-section,
   .share-btn, .share-bar,
-  .nav-drop-menu,
-  /* ── Ocultar sub-seções de conteúdo da home (artigos + YouTube) ── */
-  .nh-artigos, .nh-youtube,
-  #nh-recentes-list, #nh-top10-list,
-  #home-blog-grid, #yt-videos-grid,
-  /* ── Seção FAQ e SEO ── */
-  .seo-content, .faq-list,
-  /* ── Ocultar todas as seções SPA inativas ── */
-  .sec { display: none !important; }
+  .sec-nav, .calc-nav,
+  #sec-conteudo,
+  .skip-link,
+  [class*="ad-"],
+  [id*="ad-"] { display: none !important; }
 
-  /* ── Mostrar APENAS a seção ativa ── */
-  .sec.active { display: block !important; }
+  /* Layout de impressão */
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt;
+  }
 
-  /* ── Dentro da seção ativa: ocultar também sub-seções de conteúdo ── */
-  .sec.active .nh-artigos,
-  .sec.active .nh-youtube { display: none !important; }
+  /* Mostrar todas as seções (SPA oculta com display:none) */
+  .sec { display: block !important; }
 
-  /* Layout */
-  body { background: #fff !important; color: #000 !important; font-size: 11pt; }
-  * { box-shadow: none !important; text-shadow: none !important; }
+  /* Resultado da calculadora — destaque */
+  .res-box {
+    display: block !important;
+    border: 1.5pt solid #000;
+    padding: 12pt;
+    margin: 12pt 0;
+    page-break-inside: avoid;
+  }
+  .res-val {
+    font-size: 18pt !important;
+    font-weight: 700;
+    color: #000 !important;
+  }
+  .res-lbl {
+    font-size: 9pt;
+    color: #333 !important;
+  }
 
-  /* Hero da home: fundo branco na impressão */
-  .nh-hero { background: #fff !important; color: #000 !important; }
-  .nh-h1, .nh-h1-grad { color: #000 !important; }
-  .nh-hero-sub { color: #333 !important; }
-  .nh-stat-num { color: #000 !important; }
-
-  /* Resultado de calculadora */
-  .res-box { display: block !important; border: 1.5pt solid #000; padding: 12pt; margin: 12pt 0; page-break-inside: avoid; }
-  .res-val { font-size: 18pt !important; font-weight: 700; color: #000 !important; }
-
-  /* Tabelas */
+  /* Tabelas de resultado */
   table { border-collapse: collapse; width: 100%; }
-  table th, table td { border: 0.5pt solid #999; padding: 4pt 6pt; font-size: 9pt; }
+  table th, table td {
+    border: 0.5pt solid #999;
+    padding: 4pt 6pt;
+    font-size: 9pt;
+  }
   table th { background: #eee !important; color: #000 !important; }
 
-  /* Gráfico */
+  /* Cards */
+  .card {
+    border: 0.5pt solid #ccc;
+    page-break-inside: avoid;
+  }
+
+  /* Ocultar gráfico (não imprime bem) */
   #j-chart-box, canvas { display: none !important; }
 
-  /* Rodapé */
+  /* Rodapé de impressão com URL */
   body::after {
-    content: "calculaprazo.com.br";
-    display: block; text-align: center;
-    font-size: 8pt; color: #666;
-    margin-top: 24pt; border-top: 0.5pt solid #ccc; padding-top: 6pt;
+    content: "calculaprazo.com.br — " attr(data-page);
+    display: block;
+    text-align: center;
+    font-size: 8pt;
+    color: #666;
+    margin-top: 24pt;
+    border-top: 0.5pt solid #ccc;
+    padding-top: 6pt;
   }
 }
 
-
-/* ══════════════════════════════════════════════════════════
-   HAMBURGER MENU + DRAWER MOBILE
-   ══════════════════════════════════════════════════════════ */
-
-/* Botão hambúrguer — oculto em desktop */
-.hdr-burger {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  width: 44px;
-  height: 44px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 8px;
-  flex-shrink: 0;
-  -webkit-tap-highlight-color: transparent;
-}
-.hdr-burger:hover { background: var(--bg2); }
-.hdr-burger span {
-  display: block;
-  width: 22px;
-  height: 2px;
-  background: var(--txt-m);
-  border-radius: 2px;
-  transition: transform .25s, opacity .2s;
-}
-
-/* Overlay escuro atrás do drawer */
-#mob-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.45);
-  z-index: 1099;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .25s;
-  /* Sempre no DOM, invisível e não-clicável por padrão */
-}
-#mob-overlay.open {
-  opacity: 1;
-  pointer-events: all;
-}
-
-/* Drawer lateral */
-.mob-drawer {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: min(320px, 88vw);
-  height: 100dvh;
-  background: var(--card);
-  z-index: 1100;
-  transform: translateX(100%);
-  visibility: hidden;
-  transition: transform .28s cubic-bezier(.4,0,.2,1), visibility 0s linear .28s;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  box-shadow: -4px 0 24px rgba(0,0,0,.15);
-}
-.mob-drawer.open {
-  transform: translateX(0);
-  visibility: visible;
-  transition: transform .28s cubic-bezier(.4,0,.2,1), visibility 0s linear 0s;
-}
-
-/* Cabeçalho do drawer */
-.mob-drawer-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--brd);
-  flex-shrink: 0;
-}
-.mob-drawer-title {
-  font-size: .95rem;
-  font-weight: 700;
-  color: var(--txt-h);
-}
-.mob-drawer-close {
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.1rem;
-  color: var(--txt-m);
-  border-radius: 8px;
-}
-.mob-drawer-close:hover { background: var(--bg2); }
-
-/* Corpo do drawer com scroll */
-.mob-drawer-body {
-  flex: 1;
-  overflow-y: auto;
-  padding: 8px 0 24px;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Links diretos no drawer */
-.mob-nav-link {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 13px 20px;
-  font-size: .93rem;
-  color: var(--txt-m);
-  text-decoration: none;
-  background: none;
-  border: none;
-  text-align: left;
-  cursor: pointer;
-  transition: background .15s;
-  -webkit-tap-highlight-color: transparent;
-}
-.mob-nav-link:hover,
-.mob-nav-link:active { background: var(--bg2); }
-.mob-nav-highlight {
-  color: var(--acc);
-  font-weight: 600;
-}
-.mob-nav-doacao {
-  color: var(--acc);
-  font-weight: 600;
-  margin: 8px 12px 0;
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--acc) 10%, transparent);
-  justify-content: center;
-  padding: 13px 20px;
-  width: calc(100% - 24px);
-}
-.mob-nav-doacao:hover { background: color-mix(in srgb, var(--acc) 18%, transparent); }
-
-/* Grupos com accordion */
-.mob-nav-group { border-bottom: 1px solid var(--brd); }
-.mob-nav-group-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 13px 20px;
-  font-size: .93rem;
-  font-weight: 600;
-  color: var(--txt-h);
-  background: none;
-  border: none;
-  cursor: pointer;
-  text-align: left;
-  -webkit-tap-highlight-color: transparent;
-}
-.mob-nav-group-toggle:hover { background: var(--bg2); }
-.mob-arr {
-  font-size: 1rem;
-  color: var(--txt-s);
-  transition: transform .2s;
-  flex-shrink: 0;
-}
-.mob-nav-group-body {
-  display: none;
-  flex-direction: column;
-  background: var(--bg2);
-  padding: 4px 0 8px;
-}
-.mob-nav-group-body.open { display: flex; }
-.mob-nav-group-body a {
-  padding: 11px 20px 11px 28px;
-  font-size: .88rem;
-  color: var(--txt-m);
-  text-decoration: none;
-  transition: background .15s;
-  -webkit-tap-highlight-color: transparent;
-}
-.mob-nav-group-body a:hover,
-.mob-nav-group-body a:active { background: color-mix(in srgb, var(--brd) 60%, transparent); }
-
-/* Previne scroll do body quando drawer aberto */
-body.mob-menu-open { overflow: hidden; }
-
-/* ── Ativar em mobile, desativar nav scroll ── */
-@media (max-width: 768px) {
-  .hdr-burger { display: flex !important; }
-
-  /* Esconder a nav horizontal em mobile */
-  .hdr-nav {
-    display: none !important;
-  }
-
-  /* Header vira flex-row simples: logo + burger */
-  .hdr-inner {
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    height: 56px !important;
-    padding: 0 12px !important;
-  }
-
-  /* Logo volta ao tamanho normal */
-  .logo {
-    font-size: 1rem !important;
-    width: auto !important;
-    margin-bottom: 0 !important;
-    justify-content: flex-start !important;
-  }
-}
-
-/* Em desktop: garantir que drawer e overlay fiquem ocultos */
-@media (min-width: 769px) {
-  .hdr-burger { display: none !important; }
-  #mob-overlay { display: none !important; }
-  .mob-drawer { display: none !important; }
-}
