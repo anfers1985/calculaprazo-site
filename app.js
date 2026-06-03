@@ -1848,17 +1848,20 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ── Impressão: garantir que só a seção ativa apareça ────
-// O Chrome às vezes ignora display:none do @media print em SPAs.
-// Solução: aplicar style inline antes de imprimir e remover depois.
 window.addEventListener('beforeprint', function() {
-  // Ocultar seções inativas
+  // 1. Ocultar todas as seções SPA inativas
   document.querySelectorAll('.sec').forEach(function(s) {
     if (!s.classList.contains('active')) {
       s.setAttribute('data-print-hidden', '1');
       s.style.setProperty('display', 'none', 'important');
     }
   });
-  // Ocultar header, footer, drawer e overlay
+  // 2. Ocultar sub-seções de conteúdo da home (artigos + YouTube)
+  document.querySelectorAll('.nh-artigos, .nh-youtube, #nh-recentes-list, #nh-top10-list, #home-blog-grid, #yt-videos-grid').forEach(function(el) {
+    el.setAttribute('data-print-hidden', '1');
+    el.style.setProperty('display', 'none', 'important');
+  });
+  // 3. Ocultar header, footer, drawer e overlay
   ['hdr', 'ftr', 'mob-drawer', 'mob-overlay'].forEach(function(id) {
     var el = document.getElementById(id);
     if (el) { el.setAttribute('data-print-hidden', '1'); el.style.setProperty('display', 'none', 'important'); }

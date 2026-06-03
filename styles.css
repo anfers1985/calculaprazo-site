@@ -1309,104 +1309,58 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
    PRINT STYLES — @media print
    ═══════════════════════════════════════ */
 @media print {
-  /* Ocultar tudo que não é conteúdo de impressão */
+  /* ── Ocultar chrome do site ── */
   #hdr, #ftr,
-  .navbar, .nav-full, .nav-mobile,
-  .nav-drop-menu, .nav-tools-btn,
-  .ad-container, .ad-placeholder,
-  ins.adsbygoogle,
-  .seo-content,
-  .faq-list,
-  .nh-section,
-  .share-btn, .share-bar,
-  .sec-nav, .calc-nav,
-  #sec-conteudo,
   .skip-link,
-  [class*="ad-"],
-  [id*="ad-"],
-  /* Drawer mobile */
-  #mob-overlay, .mob-drawer, .hdr-burger,
-  /* YouTube e feeds externos */
-  .yt-feed, .yt-grid, [id*="yt-"],
-  /* Banners e hero da home */
-  .nh-hero, .nh-quick, .nh-stats,
-  /* Seção de posts/blog */
-  #sec-blog, .blog-grid { display: none !important; }
+  .hdr-burger, #mob-drawer, #mob-overlay,
+  .ad-container, .ad-placeholder, ins.adsbygoogle,
+  [class*="ad-"], [id*="ad-"],
+  .share-btn, .share-bar,
+  .nav-drop-menu,
+  /* ── Ocultar sub-seções de conteúdo da home (artigos + YouTube) ── */
+  .nh-artigos, .nh-youtube,
+  #nh-recentes-list, #nh-top10-list,
+  #home-blog-grid, #yt-videos-grid,
+  /* ── Seção FAQ e SEO ── */
+  .seo-content, .faq-list,
+  /* ── Ocultar todas as seções SPA inativas ── */
+  .sec { display: none !important; }
 
-  /* CRÍTICO: ocultar TODAS as seções SPA por padrão */
-  /* Usar múltiplas propriedades para garantir que o Chrome respeite */
-  .sec {
-    display: none !important;
-    visibility: hidden !important;
-    height: 0 !important;
-    overflow: hidden !important;
-    position: absolute !important;
-    left: -9999px !important;
-  }
+  /* ── Mostrar APENAS a seção ativa ── */
+  .sec.active { display: block !important; }
 
-  /* Mostrar APENAS a seção ativa */
-  .sec.active {
-    display: block !important;
-    visibility: visible !important;
-    height: auto !important;
-    overflow: visible !important;
-    position: static !important;
-    left: auto !important;
-  }
+  /* ── Dentro da seção ativa: ocultar também sub-seções de conteúdo ── */
+  .sec.active .nh-artigos,
+  .sec.active .nh-youtube { display: none !important; }
 
-  /* Layout de impressão */
-  body {
-    background: #fff !important;
-    color: #000 !important;
-    font-size: 11pt;
-  }
+  /* Layout */
+  body { background: #fff !important; color: #000 !important; font-size: 11pt; }
+  * { box-shadow: none !important; text-shadow: none !important; }
 
-  /* Resultado da calculadora — destaque */
-  .res-box {
-    display: block !important;
-    border: 1.5pt solid #000;
-    padding: 12pt;
-    margin: 12pt 0;
-    page-break-inside: avoid;
-  }
-  .res-val {
-    font-size: 18pt !important;
-    font-weight: 700;
-    color: #000 !important;
-  }
-  .res-lbl {
-    font-size: 9pt;
-    color: #333 !important;
-  }
+  /* Hero da home: fundo branco na impressão */
+  .nh-hero { background: #fff !important; color: #000 !important; }
+  .nh-h1, .nh-h1-grad { color: #000 !important; }
+  .nh-hero-sub { color: #333 !important; }
+  .nh-stat-num { color: #000 !important; }
 
-  /* Tabelas de resultado */
+  /* Resultado de calculadora */
+  .res-box { display: block !important; border: 1.5pt solid #000; padding: 12pt; margin: 12pt 0; page-break-inside: avoid; }
+  .res-val { font-size: 18pt !important; font-weight: 700; color: #000 !important; }
+
+  /* Tabelas */
   table { border-collapse: collapse; width: 100%; }
-  table th, table td {
-    border: 0.5pt solid #999;
-    padding: 4pt 6pt;
-    font-size: 9pt;
-  }
+  table th, table td { border: 0.5pt solid #999; padding: 4pt 6pt; font-size: 9pt; }
   table th { background: #eee !important; color: #000 !important; }
 
-  /* Cards */
-  .card {
-    border: 0.5pt solid #ccc;
-    page-break-inside: avoid;
-  }
-
-  /* Ocultar gráfico (não imprime bem) */
+  /* Gráfico */
   #j-chart-box, canvas { display: none !important; }
 
-  /* Rodapé de impressão com URL */
+  /* Rodapé */
   body::after {
     content: "calculaprazo.com.br";
-    display: block;
-    text-align: center;
-    font-size: 8pt;
-    color: #666;
-    margin-top: 24pt;
-    border-top: 0.5pt solid #ccc;
-    padding-top: 6pt;
+    display: block; text-align: center;
+    font-size: 8pt; color: #666;
+    margin-top: 24pt; border-top: 0.5pt solid #ccc; padding-top: 6pt;
   }
 }
 
