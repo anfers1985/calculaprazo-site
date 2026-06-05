@@ -128,6 +128,14 @@
     <a class="logo" href="/" onclick="event.preventDefault();goTo('home')" title="Ir para página inicial">
       <div class="logo-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 7h18"/></svg></div><span class="logo-text">Calcula</span><span>Prazo</span>
     </a>
+    <button id="hdr-burger" class="hdr-burger" aria-label="Abrir menu" aria-expanded="false" onclick="
+      var nav=document.querySelector('.hdr-nav');
+      var open=nav.classList.toggle('mob-open');
+      this.setAttribute('aria-expanded',open);
+      this.classList.toggle('is-open',open);
+    ">
+      <span></span><span></span><span></span>
+    </button>
     <nav class="hdr-nav">
       <a href="/" id="nav-home" onclick="event.preventDefault();goTo('home')" style="display:flex;align-items:center;gap:4px;">🏠 Início</a>
       <a href="/calculadora-de-prazo-processual" id="nav-prazos" onclick="event.preventDefault();goTo('prazos')">Calculadora de Prazo</a>
