@@ -44,10 +44,22 @@
   gtag('config', 'G-JX50BS8SSX', {'anonymize_ip': true});
 </script>
 <style>
-:root{--acc:#2563EB;--acc-d:#1D4ED8;--txt:#0F172A;--txt-m:#475569;--txt-s:#94A3B8;--bg:#F8FAFC;--card:#FFFFFF;--brd:#E2E8F0;--b50:#EFF6FF;--b100:#DBEAFE;--b700:#1D4ED8;--b900:#1E3A8A;--fh:'Plus Jakarta Sans',sans-serif;--r:12px;--sh:0 4px 16px rgba(15,23,42,.08);}
+:root{
+  --b50:#EFF6FF;--b100:#DBEAFE;--b200:#BFDBFE;--b300:#93C5FD;
+  --b500:#3B82F6;--b600:#2563EB;--b700:#1D4ED8;--b800:#1E40AF;--b900:#1E3A8A;
+  --acc:#2563EB;--acc-d:#1D4ED8;--acc-l:#3B82F6;
+  --txt:#0F172A;--txt-m:#475569;--txt-s:#94A3B8;
+  --bg:#F8FAFC;--card:#FFFFFF;--brd:#E2E8F0;--brd-m:#CBD5E1;
+  --ok:#059669;--warn:#D97706;--err:#DC2626;
+  --fh:'Plus Jakarta Sans',sans-serif;
+  --r:12px;--rl:18px;--rx:24px;
+  --sh:0 4px 16px rgba(15,23,42,.08);
+  --shl:0 12px 40px rgba(15,23,42,.12);
+  --shxl:0 24px 64px rgba(15,23,42,.16);
+}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7;-webkit-font-smoothing:antialiased;}
-.container{width:92%;max-width:860px;margin:0 auto;padding:0 16px;}
+.container{width:92%;max-width:1200px;margin:0 auto;padding:0 16px;}
 
 
 
@@ -71,12 +83,12 @@ a{color:var(--acc);text-decoration:none;}
 a:hover{text-decoration:underline;}
 strong{color:var(--txt);font-weight:700;}
 .badge{display:inline-block;background:var(--b50);color:var(--acc);border:1.5px solid var(--b100);font-size:.72rem;font-weight:700;padding:4px 14px;border-radius:999px;margin-bottom:24px;}
-#ftr{background:var(--txt);padding:28px 0;margin-top:0;}
-.ftr-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
-.ftr-copy{font-size:.76rem;color:rgba(255,255,255,.3);}
-.ftr-links{display:flex;gap:16px;}
-.ftr-links a{font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;}
-.ftr-links a:hover{color:#fff;}
+
+
+
+
+
+
 
 
 
@@ -136,6 +148,54 @@ strong{color:var(--txt);font-weight:700;}
   .nav-dropdown.open .nav-drop-menu{display:block;padding-left:12px;border-left:2px solid var(--b100);margin:4px 0 4px 8px;}
   .nm-sub-wrap{margin:2px 0 4px 24px;}
 }
+
+/* ── FOOTER (identical to article) ── */
+#ftr{background:var(--txt);padding:44px 0 24px;margin-top:0;}
+.ftr-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:36px;margin-bottom:36px;}
+.ftr-brand .logo{color:var(--acc-l, #3B82F6);}
+.ftr-brand .logo-ic{background:var(--acc);}
+.ftr-brand .logo span{color:rgba(255,255,255,.5);}
+.ftr-desc{font-size:.83rem;color:rgba(255,255,255,.4);margin-top:10px;line-height:1.6;}
+.ftr-col h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.3);margin-bottom:12px;}
+.ftr-col ul{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.ftr-col a{font-size:.83rem;color:rgba(255,255,255,.5);text-decoration:none;cursor:pointer;transition:color .2s;}
+.ftr-col a:hover{color:#fff;}
+.ftr-bot{border-top:1px solid rgba(255,255,255,.07);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.ftr-copy{font-size:.76rem;color:rgba(255,255,255,.22);}
+@media(max-width:900px){.ftr-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.ftr-grid{grid-template-columns:1fr;gap:22px;}.ftr-bot{flex-direction:column;gap:8px;text-align:center;}}
+
+
+/* ── ARTICLE LAYOUT (igual ao artigo do blog) ── */
+.article-wrap{max-width:800px;margin:0 auto;}
+.post-hero{background:linear-gradient(135deg,var(--b900) 0%,var(--b700) 55%,var(--b500) 100%);padding:44px 0 52px;position:relative;overflow:hidden;}
+.post-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,.04);}
+.post-hero::after{content:'';position:absolute;bottom:-50px;left:5%;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.03);}
+.post-hero-inner{position:relative;z-index:1;}
+.post-breadcrumb{font-size:.78rem;color:rgba(255,255,255,.5);margin-bottom:16px;}
+.post-breadcrumb a{color:rgba(255,255,255,.6);text-decoration:none;}
+.post-breadcrumb a:hover{color:#fff;}
+.post-breadcrumb span{color:rgba(255,255,255,.3);margin:0 6px;}
+.post-hero h1{font-size:2rem;font-weight:900;color:#fff;line-height:1.2;margin-bottom:14px;letter-spacing:-.5px;}
+.post-hero-meta{font-size:.82rem;color:rgba(255,255,255,.5);}
+.post-hero-meta strong{color:rgba(255,255,255,.75);}
+.post-body-wrap{padding:36px 0 60px;}
+.article-body h2{font-size:1.15rem;font-weight:800;margin:36px 0 12px;color:var(--txt);letter-spacing:-.3px;padding-top:8px;border-top:1px solid var(--brd);}
+.article-body h3{font-size:.97rem;font-weight:700;margin:24px 0 10px;color:var(--txt);}
+.article-body p{font-size:.92rem;color:var(--txt-m);line-height:1.85;margin-bottom:16px;}
+.article-body ul,.article-body ol{font-size:.92rem;color:var(--txt-m);line-height:1.8;margin:0 0 16px 22px;}
+.article-body li{margin-bottom:6px;}
+.article-body strong{color:var(--txt);font-weight:700;}
+.article-body a{color:var(--acc);text-decoration:underline;}
+.article-body a:hover{color:var(--b700);}
+.article-body blockquote{border-left:3px solid var(--acc);padding:14px 20px;background:var(--b50);border-radius:0 var(--r) var(--r) 0;margin:20px 0;color:var(--txt-m);font-style:italic;}
+.article-body hr{border:none;border-top:1px solid var(--brd);margin:28px 0;}
+.article-body table{width:100%;border-collapse:collapse;font-size:.88rem;margin-bottom:16px;}
+.article-body table th{background:var(--b900);color:#fff;padding:9px 12px;text-align:left;font-weight:700;}
+.article-body table td{padding:8px 12px;border-bottom:1px solid var(--brd);}
+.article-body table tr:nth-child(even) td{background:var(--b50);}
+@media(max-width:600px){.post-hero{padding:32px 0 40px;}.post-hero h1{font-size:1.5rem;}}
+
 </style>
 </head>
 <body>
@@ -259,123 +319,124 @@ strong{color:var(--txt);font-weight:700;}
   </div>
 </header>
 
-<div class="hero">
-  <div class="container">
-    <p class="breadcrumb"><a href="/">Início</a> › Política de Privacidade</p>
-    <h1>Política de Privacidade e LGPD</h1>
-    <p class="subtitle">Última atualização: 10 de abril de 2026</p>
+<section class="post-hero">
+  <div class="container post-hero-inner">
+    <div class="article-wrap">
+      <nav class="post-breadcrumb">
+        <a href="/">Início</a><span>›</span><span style="color:rgba(255,255,255,.75);">Privacidade &amp; LGPD</span>
+      </nav>
+      <h1>Política de Privacidade e LGPD</h1>
+      <div class="post-hero-meta"><strong>Última atualização:</strong> 10 de abril de 2026 &nbsp;·&nbsp; <span style="color:rgba(255,255,255,.4);font-size:.78rem;">Lei Geral de Proteção de Dados — Lei 13.709/2018</span></div>
+    </div>
   </div>
-</div>
+</section>
 
-<div class="content-wrap">
+<div class="post-body-wrap">
   <div class="container">
-    <div class="card">
-      <div class="badge">⚖️ Lei Geral de Proteção de Dados — Lei 13.709/2018</div>
+    <div class="article-wrap">
+      <article class="article-body">
 
-      <h2>1. Quem somos</h2>
-      <p>O <strong>Calcula Prazo</strong> (calculaprazo.com.br) é uma plataforma de ferramentas jurídicas e profissionais gratuitas, desenvolvida e mantida por Anderson Fernandes, especialista em consultoria trabalhista com atuação no Brasil. O site oferece calculadoras de prazos processuais, correção monetária, verbas rescisórias, salário líquido, juros e outras ferramentas de apoio a advogados, profissionais de RH, contadores e trabalhadores. Contato: <a href="mailto:contato@calculaprazo.com.br">contato@calculaprazo.com.br</a>.</p>
+        <h2>1. Quem somos</h2>
+        <p>O <strong>Calcula Prazo</strong> (calculaprazo.com.br) é uma plataforma de ferramentas jurídicas e profissionais gratuitas, desenvolvida e mantida por Anderson Fernandes, especialista em consultoria trabalhista com atuação no Brasil. Contato: <a href="mailto:contato@calculaprazo.com.br">contato@calculaprazo.com.br</a>.</p>
 
-      <h2>2. Dados que coletamos</h2>
-      <p>O Calcula Prazo <strong>não coleta dados pessoais identificáveis</strong>. Todos os cálculos são processados inteiramente no seu navegador e não são transmitidos a servidores. De forma não pessoal, podemos coletar:</p>
-      <ul>
-        <li><strong>Dados de navegação anônimos</strong> via Google Analytics: tipo de dispositivo, páginas visitadas, duração da sessão — sem identificação do usuário.</li>
-        <li><strong>Cookies do Google AdSense</strong> para personalização de anúncios, com base no seu consentimento explícito.</li>
-        <li><strong>Preferência de cookies</strong> armazenada localmente no seu dispositivo (localStorage) para lembrar sua escolha entre visitas.</li>
-      </ul>
+        <h2>2. Dados que coletamos</h2>
+        <p>O Calcula Prazo <strong>não coleta dados pessoais identificáveis</strong>. Todos os cálculos são processados inteiramente no seu navegador e não são transmitidos a servidores. De forma não pessoal, podemos coletar:</p>
+        <ul>
+          <li><strong>Dados de navegação anônimos</strong> via Google Analytics: tipo de dispositivo, páginas visitadas, duração da sessão — sem identificação do usuário.</li>
+          <li><strong>Cookies do Google AdSense</strong> para personalização de anúncios, com base no seu consentimento explícito.</li>
+          <li><strong>Preferência de cookies</strong> armazenada localmente no seu dispositivo (localStorage).</li>
+        </ul>
 
-      <h2>3. Uso de cookies e publicidade</h2>
-      <p>Utilizamos o <strong>Google AdSense</strong> para exibir anúncios e manter o serviço gratuito. O Google usa cookies para personalizar anúncios com base em visitas anteriores a este e a outros sites. Você pode gerenciar e desativar esses cookies em <a href="https://adssettings.google.com" target="_blank" rel="noopener">adssettings.google.com</a>.</p>
-      <p>Também utilizamos o <strong>Google Analytics</strong> com anonimização de IP. Os dados são agregados e não permitem identificação individual. Consulte a <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Política de Privacidade do Google</a> para detalhes.</p>
+        <h2>3. Uso de cookies e publicidade</h2>
+        <p>Utilizamos o <strong>Google AdSense</strong> para exibir anúncios e manter o serviço gratuito. O Google usa cookies para personalizar anúncios com base em visitas anteriores a este e a outros sites. Você pode gerenciar e desativar esses cookies em <a href="https://adssettings.google.com" target="_blank" rel="noopener">adssettings.google.com</a>.</p>
+        <p>Também utilizamos o <strong>Google Analytics</strong> com anonimização de IP. Os dados são agregados e não permitem identificação individual. Consulte a <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Política de Privacidade do Google</a> para detalhes.</p>
 
-      <h2>4. Base legal do tratamento (LGPD)</h2>
-      <p>O tratamento de dados no Calcula Prazo se baseia nas seguintes hipóteses legais da Lei 13.709/2018:</p>
-      <ul>
-        <li><strong>Legítimo interesse</strong> (art. 7º, IX): análise anônima de tráfego para melhoria contínua do serviço.</li>
-        <li><strong>Consentimento</strong> (art. 7º, I): cookies de personalização de anúncios, obtido via banner de cookies ao primeiro acesso.</li>
-      </ul>
+        <h2>4. Base legal do tratamento (LGPD)</h2>
+        <p>O tratamento de dados no Calcula Prazo se baseia nas seguintes hipóteses legais da Lei 13.709/2018:</p>
+        <ul>
+          <li><strong>Legítimo interesse</strong> (art. 7º, IX): análise anônima de tráfego para melhoria contínua do serviço.</li>
+          <li><strong>Consentimento</strong> (art. 7º, I): cookies de personalização de anúncios, obtido via banner de cookies ao primeiro acesso.</li>
+        </ul>
 
-      <h2>5. Compartilhamento de dados</h2>
-      <p>Não vendemos, trocamos ou transferimos dados pessoais identificáveis a terceiros. Dados agregados e anônimos são compartilhados com o Google para fins de análise (Google Analytics) e publicidade (Google AdSense), conforme os termos desses serviços.</p>
+        <h2>5. Compartilhamento de dados</h2>
+        <p>Não vendemos, trocamos ou transferimos dados pessoais identificáveis a terceiros. Dados agregados e anônimos são compartilhados com o Google para fins de análise (Google Analytics) e publicidade (Google AdSense), conforme os termos desses serviços.</p>
 
-      <h2>6. Seus direitos como titular (LGPD)</h2>
-      <p>Conforme a Lei 13.709/2018, você tem direito a:</p>
-      <ul>
-        <li>Confirmar se realizamos o tratamento dos seus dados pessoais;</li>
-        <li>Solicitar acesso aos dados tratados;</li>
-        <li>Solicitar correção de dados incompletos, inexatos ou desatualizados;</li>
-        <li>Solicitar a exclusão de dados desnecessários ou tratados em desconformidade com a LGPD;</li>
-        <li>Revogar o consentimento a qualquer momento;</li>
-        <li>Opor-se ao tratamento realizado com fundamento em outras hipóteses legais;</li>
-        <li>Solicitar a portabilidade dos dados.</li>
-      </ul>
-      <p>Para exercer seus direitos, entre em contato: <a href="mailto:contato@calculaprazo.com.br">contato@calculaprazo.com.br</a>. Respondemos em até 5 dias úteis.</p>
+        <h2>6. Seus direitos como titular (LGPD)</h2>
+        <p>Conforme a Lei 13.709/2018, você tem direito a confirmar o tratamento dos seus dados, acessá-los, solicitar correção ou exclusão, revogar o consentimento a qualquer momento, opor-se ao tratamento e solicitar a portabilidade dos dados.</p>
+        <p>Para exercer seus direitos: <a href="mailto:contato@calculaprazo.com.br">contato@calculaprazo.com.br</a>. Respondemos em até 5 dias úteis.</p>
 
-      <h2>7. Retenção e segurança</h2>
-      <p>Dados de navegação anônimos são retidos por até 14 meses no Google Analytics. O site opera integralmente em HTTPS com certificado SSL/TLS. Nenhum dado de cálculo é armazenado em servidores — todo o processamento ocorre localmente no seu navegador.</p>
+        <h2>7. Retenção e segurança</h2>
+        <p>Dados de navegação anônimos são retidos por até 14 meses no Google Analytics. O site opera integralmente em HTTPS com certificado SSL/TLS. Nenhum dado de cálculo é armazenado em servidores — todo o processamento ocorre localmente no seu navegador.</p>
 
-      <h2>8. Gerenciamento de cookies</h2>
-      <p>Você pode recusar cookies opcionais pelo banner exibido na primeira visita, ou a qualquer momento nas configurações do seu navegador. A recusa de cookies de publicidade não afeta o funcionamento das calculadoras do Calcula Prazo.</p>
+        <h2>8. Gerenciamento de cookies</h2>
+        <p>Você pode recusar cookies opcionais pelo banner exibido na primeira visita, ou a qualquer momento nas configurações do seu navegador. A recusa de cookies de publicidade não afeta o funcionamento das calculadoras do Calcula Prazo.</p>
 
-      <h2>9. Alterações a esta política</h2>
-      <p>Esta política pode ser atualizada periodicamente. Quaisquer alterações serão publicadas nesta página com a data de atualização revisada. O uso continuado do site após alterações implica aceitação das novas condições.</p>
+        <h2>9. Alterações a esta política</h2>
+        <p>Esta política pode ser atualizada periodicamente. Quaisquer alterações serão publicadas nesta página com a data de atualização revisada. O uso continuado do site após alterações implica aceitação das novas condições.</p>
 
-      <h2>10. Contato (DPO)</h2>
-      <p>Para dúvidas, solicitações ou reclamações relacionadas ao tratamento de dados pessoais:<br>
-      📧 <a href="mailto:contato@calculaprazo.com.br">contato@calculaprazo.com.br</a></p>
+        <h2>10. Contato (DPO)</h2>
+        <p>Para dúvidas, solicitações ou reclamações relacionadas ao tratamento de dados pessoais:<br>
+        📧 <a href="mailto:contato@calculaprazo.com.br">contato@calculaprazo.com.br</a></p>
+
+      </article>
     </div>
   </div>
 </div>
 
 <footer id="ftr">
-  <div class="container ftr-inner">
-    <p class="ftr-copy">© <span id="yr2"></span> Calcula Prazo. Todos os direitos reservados.</p>
-    <div class="ftr-links">
-      <a href="/">Calculadoras</a>
-      <a href="/sobre">Sobre</a>
-      <a href="/privacidade">Privacidade</a>
-      <a href="/termos">Termos</a>
-      <a href="/contato">Contato</a>
+  <div class="container">
+    <div class="ftr-grid">
+      <div class="ftr-brand">
+        <a class="logo" href="/"><div class="logo-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 7h18"/></svg></div><span class="logo-text">Calcula</span><span>Prazo</span></a>
+        <p class="ftr-desc">Calculadoras jurídicas gratuitas e conteúdo especializado em Direito do Trabalho para advogados, contadores, profissionais de RH e trabalhadores.</p>
+        <p style="margin-top:12px;font-size:.8rem;color:rgba(255,255,255,.45);line-height:1.6;">✉ Dúvidas, sugestões ou elogios?<br><a href="mailto:contato@calculaprazo.com.br" style="color:rgba(255,255,255,.6);text-decoration:underline;">contato@calculaprazo.com.br</a></p>
+      </div>
+      <div class="ftr-col"><h4>Prazos</h4><ul>
+        <li><a href="/#calculadora-de-prazo-processual">Calculadora de Prazos</a></li>
+        <li><a href="/#datas">Operações com Datas</a></li>
+      </ul></div>
+      <div class="ftr-col"><h4>Calculadoras</h4><ul>
+        <li><a href="/#correcao">Correção Monetária</a></li>
+        <li><a href="/#juros">Juros</a></li>
+        <li><a href="/#trabalhista">Trabalhista</a></li>
+        <li><a href="/#salario">Salário Líquido</a></li>
+        <li><a href="/#porcentagem">Porcentagem</a></li>
+        <li><a href="/#moedas">Moedas</a></li>
+      </ul></div>
+      <div class="ftr-col"><h4>Utilidades</h4><ul>
+        <li><a href="/#valid">Validador CPF/CNPJ</a></li>
+        <li><a href="/#qrcode">QR Code</a></li>
+        <li><a href="/#senhas">Senhas</a></li>
+        <li><a href="/#extenso">Número por Extenso</a></li>
+        <li><a href="/#imc">IMC</a></li>
+      </ul></div>
+      <div class="ftr-col"><h4>Informações</h4><ul>
+        <li><a href="/sobre">Sobre o Calcula Prazo</a></li>
+        <li><a href="/conteudo">Conteúdo / Blog</a></li>
+        <li><a href="/contato">Contato</a></li>
+        <li><a href="/privacidade">Privacidade &amp; LGPD</a></li>
+        <li><a href="/termos">Termos de Uso</a></li>
+      </ul></div>
     </div>
-    <div class="ftr-links" style="margin-top:6px;">
-      <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>Youtube</a>
-      <a href="https://www.linkedin.com/in/calcula-prazo-0a1736405" target="_blank" rel="noopener" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>Linkedin</a>
-      <a href="https://www.instagram.com/calculaprazo/" target="_blank" rel="noopener" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#C13584"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>Instagram</a>
-      <a href="https://x.com/CalculaPrazo" target="_blank" rel="noopener" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="rgba(255,255,255,.5)"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>X</a>
+    <div class="ftr-bot">
+      <p class="ftr-copy">&copy; <span id="yr"></span> Calcula Prazo. Todos os direitos reservados. Calculadoras jurídicas gratuitas para advogados, contadores, profissionais de RH e trabalhadores. Os cálculos e o conteúdo são de caráter informativo e não substituem assessoria especializada.</p>
+      <div style="display:flex;gap:12px 16px;align-items:center;flex-wrap:wrap;justify-content:center;">
+        <a onclick="document.getElementById('modal-doacao').style.display='flex'" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;cursor:pointer;">☕ Doação</a>
+        <a href="/contato" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;">Contato</a>
+        <a href="/termos" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;">Termos de Uso</a>
+        <a href="/privacidade" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;">Privacidade &amp; LGPD</a>
+        <span style="color:rgba(255,255,255,.2);">|</span>
+        <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>Youtube</a>
+        <a href="https://www.linkedin.com/in/calcula-prazo-0a1736405" target="_blank" rel="noopener" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>Linkedin</a>
+        <a href="https://www.instagram.com/calculaprazo/" target="_blank" rel="noopener" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="url(#ig-grad-ftr)"><defs><linearGradient id="ig-grad-ftr" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FFDC80"/><stop offset="25%" stop-color="#FCAF45"/><stop offset="50%" stop-color="#F77737"/><stop offset="75%" stop-color="#C13584"/><stop offset="100%" stop-color="#833AB4"/></linearGradient></defs><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>Instagram</a>
+        <a href="https://x.com/CalculaPrazo" target="_blank" rel="noopener" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="rgba(255,255,255,.5)"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>X</a>
+      </div>
     </div>
   </div>
 </footer>
 
-<script>document.getElementById("yr2").textContent=new Date().getFullYear();</script>
-<div id="modal-doacao" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this)this.style.display='none'">
-    <div style="background:#fff;border-radius:var(--rx);padding:36px;max-width:480px;width:100%;box-shadow:var(--shxl);position:relative;">
-    <button onclick="document.getElementById('modal-doacao').style.display='none'" style="position:absolute;top:16px;right:16px;background:var(--bg);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--txt-s);">✕</button>
-    <div style="text-align:center;margin-bottom:20px;">
-      <div style="font-size:2.5rem;margin-bottom:8px;">☕</div>
-      <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:6px;">Apoie o Calcula Prazo</h2>
-      <p style="font-size:.88rem;color:var(--txt-m);line-height:1.6;">Este site é 100% gratuito e feito com dedicação. Se ele te ajudou, considere contribuir com qualquer valor para mantê-lo no ar e em constante melhoria.</p>
-    </div>
-    <div style="background:var(--b50);border:1.5px solid var(--b200);border-radius:var(--rl);padding:18px;margin-bottom:20px;">
-      <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--acc);margin-bottom:8px;">Pix — Chave e-mail</p>
-      <div style="display:flex;align-items:center;gap:10px;">
-        <div id="pix-key-display" style="font-family:var(--fh);font-size:.85rem;font-weight:700;color:var(--txt);flex:1;background:#fff;border:1.5px solid var(--brd);border-radius:var(--r);padding:10px 12px;white-space:nowrap;overflow:visible;text-align:center;">contato@calculaprazo.com.br</div>
-        <button onclick="navigator.clipboard.writeText('contato@calculaprazo.com.br').then(()=>{this.textContent='✅';setTimeout(()=>this.textContent='📋',1500)})" style="background:var(--acc);color:#fff;border:none;border-radius:var(--r);padding:10px 13px;cursor:pointer;font-size:.85rem;flex-shrink:0;">📋</button>
-      </div>
-      <p style="font-size:.73rem;color:var(--txt-s);margin-top:8px;"></p>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
-      <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd);border-radius:var(--r);cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''">
-        <div style="font-size:.85rem;font-weight:800;color:var(--acc);">R$ 1</div><div style="font-size:.68rem;color:var(--txt-s);">🤝 Simbólico</div>
-      </div>
-      <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd);border-radius:var(--r);cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''">
-        <div style="font-size:.85rem;font-weight:800;color:var(--acc);">R$ 5</div><div style="font-size:.68rem;color:var(--txt-s);">☕ Um café</div>
-      </div>
-      <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd);border-radius:var(--r);cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''">
-        <div style="font-size:.85rem;font-weight:800;color:var(--acc);">R$ 15</div><div style="font-size:.68rem;color:var(--txt-s);">⭐ Apoiador</div>
-      </div>
-      <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd);border-radius:var(--r);cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''">
-        <div style="font-size:.85rem;font-weight:800;color:var(--acc);">R$ 30</div><div style="font-size:.68rem;color:var(--txt-s);">🚀 Apoiador</div>
-      </div>
-    </div>
+
+
       <p style="text-align:center;font-size:.8rem;color:var(--txt-s);">A partir de R$ 1 — qualquer valor faz diferença. Obrigado!</p>
   </div>
 </div>
@@ -422,5 +483,30 @@ document.addEventListener('click', function(e) {
   }
 });
 </script>
+<div id="modal-doacao" role="dialog" aria-modal="true" aria-label="Apoie o Calcula Prazo" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this)this.style.display='none'">
+  <div style="background:#fff;border-radius:var(--rx,16px);padding:36px;max-width:480px;width:100%;box-shadow:0 24px 64px rgba(15,23,42,.16);position:relative;">
+    <button onclick="document.getElementById('modal-doacao').style.display='none'" style="position:absolute;top:16px;right:16px;background:var(--bg,#F8FAFC);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--txt-s,#94A3B8);">✕</button>
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:2.5rem;margin-bottom:8px;">☕</div>
+      <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:6px;">Apoie o Calcula Prazo</h2>
+      <p style="font-size:.88rem;color:var(--txt-m,#475569);line-height:1.6;">Este site é 100% gratuito e feito com dedicação. Se ele te ajudou, considere contribuir com qualquer valor para mantê-lo no ar e em constante melhoria.</p>
+    </div>
+    <div style="background:var(--b50,#EFF6FF);border:1.5px solid var(--b200,#BFDBFE);border-radius:var(--rl,18px);padding:18px;margin-bottom:20px;">
+      <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--acc,#2563EB);margin-bottom:8px;">Pix — Chave e-mail</p>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="font-family:var(--fh);font-size:.85rem;font-weight:700;color:var(--txt,#0F172A);flex:1;background:#fff;border:1.5px solid var(--brd,#E2E8F0);border-radius:var(--r,12px);padding:10px 12px;text-align:center;">contato@calculaprazo.com.br</div>
+        <button onclick="navigator.clipboard.writeText('contato@calculaprazo.com.br').then(()=>{this.textContent='✅';setTimeout(()=>this.textContent='📋',1500)})" style="background:var(--acc,#2563EB);color:#fff;border:none;border-radius:var(--r,12px);padding:10px 13px;cursor:pointer;font-size:.85rem;flex-shrink:0;">📋</button>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+      <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd,#E2E8F0);border-radius:var(--r,12px);cursor:pointer;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''"><div style="font-size:.85rem;font-weight:800;color:var(--acc,#2563EB);">R$ 1</div><div style="font-size:.68rem;color:var(--txt-s,#94A3B8);">🤝 Simbólico</div></div>
+      <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd,#E2E8F0);border-radius:var(--r,12px);cursor:pointer;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''"><div style="font-size:.85rem;font-weight:800;color:var(--acc,#2563EB);">R$ 5</div><div style="font-size:.68rem;color:var(--txt-s,#94A3B8);">☕ Um café</div></div>
+      <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd,#E2E8F0);border-radius:var(--r,12px);cursor:pointer;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''"><div style="font-size:.85rem;font-weight:800;color:var(--acc,#2563EB);">R$ 15</div><div style="font-size:.68rem;color:var(--txt-s,#94A3B8);">⭐ Apoiador</div></div>
+      <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd,#E2E8F0);border-radius:var(--r,12px);cursor:pointer;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''"><div style="font-size:.85rem;font-weight:800;color:var(--acc,#2563EB);">R$ 30</div><div style="font-size:.68rem;color:var(--txt-s,#94A3B8);">🚀 Apoiador</div></div>
+    </div>
+    <p style="text-align:center;font-size:.8rem;color:var(--txt-s,#94A3B8);">A partir de R$ 1 — qualquer valor faz diferença. Obrigado!</p>
+  </div>
+</div>
+<script>document.getElementById("yr").textContent=new Date().getFullYear();</script>
 </body>
 </html>

@@ -45,10 +45,22 @@
   gtag('config', 'G-JX50BS8SSX', {'anonymize_ip': true});
 </script>
 <style>
-:root{--acc:#2563EB;--acc-d:#1D4ED8;--txt:#0F172A;--txt-m:#475569;--txt-s:#94A3B8;--bg:#F8FAFC;--card:#FFFFFF;--brd:#E2E8F0;--b50:#EFF6FF;--b100:#DBEAFE;--b700:#1D4ED8;--b900:#1E3A8A;--fh:'Plus Jakarta Sans',sans-serif;--r:12px;--sh:0 4px 16px rgba(15,23,42,.08);}
+:root{
+  --b50:#EFF6FF;--b100:#DBEAFE;--b200:#BFDBFE;--b300:#93C5FD;
+  --b500:#3B82F6;--b600:#2563EB;--b700:#1D4ED8;--b800:#1E40AF;--b900:#1E3A8A;
+  --acc:#2563EB;--acc-d:#1D4ED8;--acc-l:#3B82F6;
+  --txt:#0F172A;--txt-m:#475569;--txt-s:#94A3B8;
+  --bg:#F8FAFC;--card:#FFFFFF;--brd:#E2E8F0;--brd-m:#CBD5E1;
+  --ok:#059669;--warn:#D97706;--err:#DC2626;
+  --fh:'Plus Jakarta Sans',sans-serif;
+  --r:12px;--rl:18px;--rx:24px;
+  --sh:0 4px 16px rgba(15,23,42,.08);
+  --shl:0 12px 40px rgba(15,23,42,.12);
+  --shxl:0 24px 64px rgba(15,23,42,.16);
+}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7;-webkit-font-smoothing:antialiased;}
-.container{width:92%;max-width:860px;margin:0 auto;padding:0 16px;}
+.container{width:92%;max-width:1200px;margin:0 auto;padding:0 16px;}
 
 
 
@@ -77,15 +89,15 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
 .faq-q:hover{background:var(--bg);}
 .faq-a{display:none;padding:0 18px 14px;font-size:.85rem;color:var(--txt-m);line-height:1.65;}
 .faq-item.open .faq-a{display:block;}
-#ftr{background:var(--txt);padding:32px 0 20px;margin-top:0;}
-.ftr-inner{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;}
-.ftr-logo{font-weight:800;color:var(--acc);font-size:1rem;text-decoration:none;display:flex;align-items:center;gap:8px;}
-.ftr-logo-ic{width:22px;height:22px;background:var(--acc);border-radius:5px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;}
-.ftr-logo span{color:rgba(255,255,255,.5);}
-.ftr-links{display:flex;flex-wrap:wrap;gap:12px;}
-.ftr-links a{font-size:.8rem;color:rgba(255,255,255,.45);text-decoration:none;}
-.ftr-links a:hover{color:#fff;}
-.ftr-copy{font-size:.73rem;color:rgba(255,255,255,.22);margin-top:14px;}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -145,6 +157,54 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
   .nav-dropdown.open .nav-drop-menu{display:block;padding-left:12px;border-left:2px solid var(--b100);margin:4px 0 4px 8px;}
   .nm-sub-wrap{margin:2px 0 4px 24px;}
 }
+
+/* ── FOOTER (identical to article) ── */
+#ftr{background:var(--txt);padding:44px 0 24px;margin-top:0;}
+.ftr-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:36px;margin-bottom:36px;}
+.ftr-brand .logo{color:var(--acc-l, #3B82F6);}
+.ftr-brand .logo-ic{background:var(--acc);}
+.ftr-brand .logo span{color:rgba(255,255,255,.5);}
+.ftr-desc{font-size:.83rem;color:rgba(255,255,255,.4);margin-top:10px;line-height:1.6;}
+.ftr-col h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.3);margin-bottom:12px;}
+.ftr-col ul{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.ftr-col a{font-size:.83rem;color:rgba(255,255,255,.5);text-decoration:none;cursor:pointer;transition:color .2s;}
+.ftr-col a:hover{color:#fff;}
+.ftr-bot{border-top:1px solid rgba(255,255,255,.07);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.ftr-copy{font-size:.76rem;color:rgba(255,255,255,.22);}
+@media(max-width:900px){.ftr-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.ftr-grid{grid-template-columns:1fr;gap:22px;}.ftr-bot{flex-direction:column;gap:8px;text-align:center;}}
+
+
+/* ── ARTICLE LAYOUT (igual ao artigo do blog) ── */
+.article-wrap{max-width:800px;margin:0 auto;}
+.post-hero{background:linear-gradient(135deg,var(--b900) 0%,var(--b700) 55%,var(--b500) 100%);padding:44px 0 52px;position:relative;overflow:hidden;}
+.post-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,.04);}
+.post-hero::after{content:'';position:absolute;bottom:-50px;left:5%;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.03);}
+.post-hero-inner{position:relative;z-index:1;}
+.post-breadcrumb{font-size:.78rem;color:rgba(255,255,255,.5);margin-bottom:16px;}
+.post-breadcrumb a{color:rgba(255,255,255,.6);text-decoration:none;}
+.post-breadcrumb a:hover{color:#fff;}
+.post-breadcrumb span{color:rgba(255,255,255,.3);margin:0 6px;}
+.post-hero h1{font-size:2rem;font-weight:900;color:#fff;line-height:1.2;margin-bottom:14px;letter-spacing:-.5px;}
+.post-hero-meta{font-size:.82rem;color:rgba(255,255,255,.5);}
+.post-hero-meta strong{color:rgba(255,255,255,.75);}
+.post-body-wrap{padding:36px 0 60px;}
+.article-body h2{font-size:1.15rem;font-weight:800;margin:36px 0 12px;color:var(--txt);letter-spacing:-.3px;padding-top:8px;border-top:1px solid var(--brd);}
+.article-body h3{font-size:.97rem;font-weight:700;margin:24px 0 10px;color:var(--txt);}
+.article-body p{font-size:.92rem;color:var(--txt-m);line-height:1.85;margin-bottom:16px;}
+.article-body ul,.article-body ol{font-size:.92rem;color:var(--txt-m);line-height:1.8;margin:0 0 16px 22px;}
+.article-body li{margin-bottom:6px;}
+.article-body strong{color:var(--txt);font-weight:700;}
+.article-body a{color:var(--acc);text-decoration:underline;}
+.article-body a:hover{color:var(--b700);}
+.article-body blockquote{border-left:3px solid var(--acc);padding:14px 20px;background:var(--b50);border-radius:0 var(--r) var(--r) 0;margin:20px 0;color:var(--txt-m);font-style:italic;}
+.article-body hr{border:none;border-top:1px solid var(--brd);margin:28px 0;}
+.article-body table{width:100%;border-collapse:collapse;font-size:.88rem;margin-bottom:16px;}
+.article-body table th{background:var(--b900);color:#fff;padding:9px 12px;text-align:left;font-weight:700;}
+.article-body table td{padding:8px 12px;border-bottom:1px solid var(--brd);}
+.article-body table tr:nth-child(even) td{background:var(--b50);}
+@media(max-width:600px){.post-hero{padding:32px 0 40px;}.post-hero h1{font-size:1.5rem;}}
+
 </style>
 
 <script type="application/ld+json">
@@ -311,160 +371,130 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
   </div>
 </header>
 
-<section class="hero">
-  <div class="container">
-    <p class="breadcrumb"><a href="/">Início</a> › Sobre</p>
-    <h1>Sobre o Calcula Prazo</h1>
-    <p>Ferramentas jurídicas e trabalhistas gratuitas para advogados, profissionais de RH, contadores e trabalhadores.</p>
+<section class="post-hero">
+  <div class="container post-hero-inner">
+    <div class="article-wrap">
+      <nav class="post-breadcrumb">
+        <a href="/">Início</a><span>›</span><span style="color:rgba(255,255,255,.75);">Sobre</span>
+      </nav>
+      <h1>Sobre o Calcula Prazo</h1>
+      <div class="post-hero-meta">Ferramentas jurídicas e trabalhistas gratuitas para advogados, profissionais de RH, contadores e trabalhadores.</div>
+    </div>
   </div>
 </section>
 
-<main class="content">
+<div class="post-body-wrap">
   <div class="container">
+    <div class="article-wrap">
+      <article class="article-body">
 
-    <h2>O que é o Calcula Prazo?</h2>
-    <p>O <strong>Calcula Prazo</strong> (calculaprazo.com.br) é uma plataforma de ferramentas jurídicas e profissionais online, gratuita e sem cadastro, criada para advogados, profissionais de recursos humanos, contadores e qualquer pessoa que precise de cálculos confiáveis e resultados tecnicamente fundamentados. Reúne 13 ferramentas de cálculo especializadas, uma base editorial dedicada ao Direito do Trabalho — atualizada com base em fontes primárias como TST, STF, TRTs, MTE e MPT — e integração com índices econômicos em tempo real. Tudo em um único endereço, sem necessidade de cadastro ou pagamento.</p>
+        <h2>O que é o Calcula Prazo?</h2>
+        <p>O <strong>Calcula Prazo</strong> (calculaprazo.com.br) é uma plataforma de ferramentas jurídicas e profissionais online, gratuita e sem cadastro, criada para advogados, profissionais de recursos humanos, contadores e qualquer pessoa que precise de cálculos confiáveis e resultados tecnicamente fundamentados. Reúne 13 ferramentas de cálculo especializadas, uma base editorial dedicada ao Direito do Trabalho — atualizada com base em fontes primárias como TST, STF, TRTs, MTE e MPT — e integração com índices econômicos em tempo real. Tudo em um único endereço, sem necessidade de cadastro ou pagamento.</p>
+        <p>O site foi desenvolvido e é mantido por <strong>Anderson Fernandes</strong> (OAB/SC 44.858), advogado trabalhista com atuação em consultoria de relações trabalhistas e advocacia preventiva. O projeto nasceu da necessidade prática de reunir, em uma única plataforma de fácil acesso, as ferramentas de cálculo mais utilizadas no dia a dia jurídico e de RH — com rigor técnico, atualização constante e total gratuidade.</p>
+        <p>Todo o conteúdo editorial passa por curadoria técnica baseada em fontes primárias — TST, STF, TRTs, MTE e MPT. As tabelas de INSS, IRRF e índices de correção monetária são atualizadas conforme a legislação vigente. O Calcula Prazo não substitui assessoria jurídica profissional — os resultados são informativos e devem ser conferidos com o profissional responsável pelo caso concreto.</p>
 
-    <p>O site foi desenvolvido e é mantido por <strong>Anderson Fernandes</strong> (OAB/SC 44.858), advogado trabalhista com atuação em consultoria de relações trabalhistas e advocacia preventiva. O projeto nasceu da necessidade prática de reunir, em uma única plataforma de fácil acesso, as ferramentas de cálculo mais utilizadas no dia a dia jurídico e de RH — com rigor técnico, atualização constante e total gratuidade.</p>
-      <p>Todo o conteúdo editorial passa por curadoria técnica baseada em fontes primárias — TST, STF, TRTs, MTE e MPT. As tabelas de INSS, IRRF e índices de correção monetária são atualizadas conforme a legislação vigente. O Calcula Prazo não substitui assessoria jurídica profissional — os resultados são informativos e devem ser conferidos com o profissional responsável pelo caso concreto.</p>
+        <h2>Para quem é indicado?</h2>
+        <ul>
+          <li><strong>Advogados:</strong> Prazos processuais, correção monetária, verbas rescisórias com fundamento na CLT e jurisprudência do TST.</li>
+          <li><strong>Profissionais de RH:</strong> Salário líquido, rescisão, eSocial, licenças e legislação trabalhista atualizada.</li>
+          <li><strong>Contadores:</strong> Juros, porcentagens, correção monetária com IPCA/IGP-M/SELIC e cálculos de folha.</li>
+          <li><strong>Trabalhadores:</strong> Conferir verbas rescisórias, entender direitos e acompanhar novidades jurídicas com linguagem acessível.</li>
+        </ul>
 
-    <h2>Para quem é indicado?</h2>
-    <div class="card-grid">
-      <div class="card-item"><div class="ci-icon">⚖️</div><div class="ci-title">Advogados</div><div class="ci-desc">Prazos processuais, correção monetária, verbas rescisórias com fundamento na CLT e jurisprudência do TST.</div></div>
-      <div class="card-item"><div class="ci-icon">👥</div><div class="ci-title">Profissionais de RH</div><div class="ci-desc">Salário líquido, rescisão, eSocial, licenças e legislação trabalhista atualizada.</div></div>
-      <div class="card-item"><div class="ci-icon">📊</div><div class="ci-title">Contadores</div><div class="ci-desc">Juros, porcentagens, correção monetária com IPCA/IGP-M/SELIC e cálculos de folha.</div></div>
-      <div class="card-item"><div class="ci-icon">🧑‍💼</div><div class="ci-title">Trabalhadores</div><div class="ci-desc">Conferir verbas rescisórias, entender direitos e acompanhar novidades jurídicas com linguagem acessível.</div></div>
+        <h2>Ferramentas disponíveis</h2>
+        <p><strong>Trabalhista e folha:</strong> Calculadora de Verbas Rescisórias (CLT) e Calculadora de Salário Líquido com tabelas INSS e IRRF 2026 atualizadas.</p>
+        <p><strong>Prazos e datas:</strong> Calculadora de Prazo Processual (CLT/CPC/2015, dias úteis e corridos, com mais de 30 tipos pré-configurados) e Calculadora de Datas (diferença, soma e subtração de dias).</p>
+        <p><strong>Financeiro:</strong> Correção Monetária com dados reais do Banco Central (IPCA, IGP-M, INPC e SELIC), Calculadora de Juros simples e compostos e Calculadora de Porcentagem.</p>
+        <p><strong>Utilidades:</strong> Validador de CPF e CNPJ, Conversor de Moedas, Número por Extenso, Gerador de QR Code, Gerador de Senhas e Calculadora de IMC.</p>
+        <p><a href="/">→ Acessar todas as ferramentas gratuitamente</a></p>
+
+        <h2>Como os cálculos são feitos?</h2>
+        <p>Todos os cálculos são executados <strong>diretamente no navegador do usuário</strong>, sem envio de dados a servidores externos. Os índices de correção monetária (IPCA, IGP-M, INPC e SELIC) são obtidos da API pública do Banco Central do Brasil. As tabelas de INSS e IRRF são revisadas a cada atualização legislativa. As bases legais de cada ferramenta são indicadas diretamente na interface — artigos do CPC, da CLT, da CF/88 e das leis específicas — para que o usuário possa verificar a fundamentação de cada resultado.</p>
+
+        <h2>Conteúdo editorial</h2>
+        <p>Além das ferramentas, o Calcula Prazo mantém uma seção de conteúdo dedicada ao Direito do Trabalho, atualizada continuamente com base em fontes primárias como TST, STF, TRTs, MTE e MPT. Os artigos cobrem jurisprudência, legislação, eSocial, FGTS Digital, saúde e segurança do trabalho e orientações práticas para advogados, RH e contadores. Todo o conteúdo tem caráter informativo e não constitui assessoria jurídica.</p>
+
+        <h2>Por que é gratuito?</h2>
+        <p>O Calcula Prazo é financiado por anúncios exibidos via Google AdSense e por contribuições voluntárias de usuários. Esse modelo permite manter todas as funcionalidades gratuitas e sem restrição de acesso — sem planos pagos, sem limites de uso e sem bloqueio de ferramentas. Nenhum dado inserido nas calculadoras é coletado ou comercializado.</p>
+
+        <h2>Quem mantém o Calcula Prazo</h2>
+        <p>O Calcula Prazo é desenvolvido e mantido por <strong>Anderson Fernandes</strong>, advogado trabalhista inscrito na OAB/SC sob o número 44.858, com atuação em consultoria de relações trabalhistas, análise de instrumentos normativos coletivos (CCT/ACT) e advocacia preventiva empresarial.</p>
+        <p>A atuação profissional abrange assessoria jurídica a empresas de médio e grande porte em temas como: gestão de jornada de trabalho, banco de horas, escalas de revezamento, eSocial e FGTS Digital, saúde e segurança do trabalho, representação sindical e negociação coletiva, além de análise de conformidade com o Direito Individual e Coletivo do Trabalho.</p>
+
+        <h2>Metodologia e fontes</h2>
+        <p>Todo o conteúdo editorial do Calcula Prazo é produzido com base em fontes primárias do ordenamento jurídico brasileiro:</p>
+        <ul>
+          <li><strong>Legislação:</strong> CLT, Constituição Federal de 1988, CPC/2015, leis extravagantes de Direito do Trabalho e Previdenciário.</li>
+          <li><strong>Jurisprudência:</strong> Decisões e Súmulas do TST, STF, TRTs e STJ quando aplicável.</li>
+          <li><strong>Normas administrativas:</strong> Portarias e Notas Técnicas do MTE, Resoluções do COFEN, Instruções Normativas da Receita Federal.</li>
+          <li><strong>Dados econômicos:</strong> API pública do Banco Central do Brasil (BCB/SGS) para índices de correção monetária.</li>
+        </ul>
+
+        <h2>Limitações e disclaimer</h2>
+        <p>O Calcula Prazo é uma ferramenta de apoio — não substitui a assessoria de advogado, contador ou profissional de RH habilitado. Os resultados têm caráter informativo e são estimativas baseadas nas informações fornecidas pelo usuário e nas regras gerais da legislação vigente.</p>
+
+        <h2>Contato</h2>
+        <p>Para dúvidas, correções ou sugestões: <a href="mailto:contato@calculaprazo.com.br"><strong>contato@calculaprazo.com.br</strong></a> — ou acesse a <a href="/contato">página de contato</a>. Respondemos em até 5 dias úteis.</p>
+
+      </article>
     </div>
-
-    <h2>Ferramentas disponíveis</h2>
-    <p><strong>Trabalhista e folha:</strong> Calculadora de Verbas Rescisórias (CLT) e Calculadora de Salário Líquido com tabelas INSS e IRRF 2026 atualizadas.</p>
-            <p><strong>Prazos e datas:</strong> Calculadora de Prazo Processual (CLT/CPC/2015, dias úteis e corridos, com mais de 30 tipos pré-configurados) e Calculadora de Datas (diferença, soma e subtração de dias).</p>
-            <p><strong>Financeiro:</strong> Correção Monetária com dados reais do Banco Central (IPCA, IGP-M, INPC e SELIC), Calculadora de Juros simples e compostos e Calculadora de Porcentagem.</p>
-            <p><strong>Utilidades:</strong> Validador de CPF e CNPJ, Conversor de Moedas, Número por Extenso, Gerador de QR Code, Gerador de Senhas e Calculadora de IMC.</p>
-            <p><a href="/">→ Acessar todas as ferramentas gratuitamente</a></a></p>
-
-    <h2>Como os cálculos são feitos?</h2>
-    <p>Todos os cálculos são executados <strong>diretamente no navegador do usuário</strong>, sem envio de dados a servidores externos. Os índices de correção monetária (IPCA, IGP-M, INPC e SELIC) são obtidos da API pública do Banco Central do Brasil. As tabelas de INSS e IRRF são revisadas a cada atualização legislativa. As bases legais de cada ferramenta são indicadas diretamente na interface — artigos do CPC, da CLT, da CF/88 e das leis específicas — para que o usuário possa verificar a fundamentação de cada resultado.</p>
-
-    <h2>Conteúdo editorial</h2>
-    <p>Além das ferramentas, o Calcula Prazo mantém uma seção de conteúdo dedicada ao Direito do Trabalho, atualizada continuamente com base em fontes primárias como TST, STF, TRTs, MTE e MPT. Os artigos cobrem jurisprudência, legislação, eSocial, FGTS Digital, saúde e segurança do trabalho e orientações práticas para advogados, RH e contadores. Todo o conteúdo tem caráter informativo e não constitui assessoria jurídica.</p>
-
-    <h2>Por que é gratuito?</h2>
-    <p>O Calcula Prazo é financiado por anúncios exibidos via Google AdSense e por contribuições voluntárias de usuários. Esse modelo permite manter todas as funcionalidades gratuitas e sem restrição de acesso — sem planos pagos, sem limites de uso e sem bloqueio de ferramentas. Nenhum dado inserido nas calculadoras é coletado ou comercializado.</p>
-
-    <h2>Perguntas frequentes</h2>
-    <div id="faq-sobre">
-      <div class="faq-item" onclick="this.classList.toggle('open')">
-        <div class="faq-q">Os resultados têm validade jurídica? <span>＋</span></div>
-        <div class="faq-a">As ferramentas têm caráter informativo e de apoio. Os resultados são estimativas baseadas nas regras legais vigentes e nos dados informados pelo usuário, mas não substituem a análise de profissional habilitado nem constituem assessoria jurídica, contábil ou financeira.</div>
-      </div>
-      <div class="faq-item" onclick="this.classList.toggle('open')">
-        <div class="faq-q">Com que frequência os índices são atualizados? <span>＋</span></div>
-        <div class="faq-a">Os índices de correção monetária (IPCA, IGP-M, INPC, SELIC) são obtidos via API do Banco Central e refletem os dados mais recentes disponíveis. As tabelas de INSS e IRRF são atualizadas sempre que há alteração legislativa.</div>
-      </div>
-      <div class="faq-item" onclick="this.classList.toggle('open')">
-        <div class="faq-q">O site coleta dados dos usuários? <span>＋</span></div>
-        <div class="faq-a">Não. Os cálculos são processados inteiramente no navegador e não são enviados a nenhum servidor. O site usa cookies do Google AdSense para anúncios personalizados, conforme detalhado na Política de Privacidade.</div>
-      </div>
-      <div class="faq-item" onclick="this.classList.toggle('open')">
-        <div class="faq-q">Como reportar um erro ou sugerir uma ferramenta? <span>＋</span></div>
-        <div class="faq-a">Entre em contato pelo e-mail <a href="mailto:contato@calculaprazo.com.br">contato@calculaprazo.com.br</a> ou pela <a href="/contato">página de contato</a>. Todas as mensagens são lidas pessoalmente e respondidas em até 5 dias úteis.</div>
-      </div>
-    </div>
-
-    <h2>Quem mantém o Calcula Prazo</h2>
-    <p>O Calcula Prazo é desenvolvido e mantido por <strong>Anderson Fernandes</strong>, advogado trabalhista inscrito na OAB/SC sob o número 44.858, com atuação em consultoria de relações trabalhistas, análise de instrumentos normativos coletivos (CCT/ACT) e advocacia preventiva empresarial.</p>
-    <p>A atuação profissional abrange assessoria jurídica a empresas de médio e grande porte em temas como: gestão de jornada de trabalho, banco de horas, escalas de revezamento, eSocial e FGTS Digital, saúde e segurança do trabalho, representação sindical e negociação coletiva, além de análise de conformidade com o Direito Individual e Coletivo do Trabalho.</p>
-    <p>O projeto Calcula Prazo nasceu da demanda prática diária: reunir em um único endereço as ferramentas de cálculo mais utilizadas no exercício da advocacia trabalhista e na gestão de RH, com rigor técnico, atualização constante e acesso completamente gratuito.</p>
-
-    <h2>Metodologia e fontes</h2>
-    <p>Todo o conteúdo editorial do Calcula Prazo é produzido com base em fontes primárias do ordenamento jurídico brasileiro. As principais fontes utilizadas são:</p>
-    <ul>
-      <li><strong>Legislação:</strong> Consolidação das Leis do Trabalho (CLT), Constituição Federal de 1988, Código Civil, Código de Processo Civil (CPC/2015), leis extravagantes de Direito do Trabalho e Previdenciário.</li>
-      <li><strong>Jurisprudência:</strong> Decisões e Súmulas do Tribunal Superior do Trabalho (TST), do Supremo Tribunal Federal (STF), dos Tribunais Regionais do Trabalho (TRTs) e do Superior Tribunal de Justiça (STJ) quando aplicável.</li>
-      <li><strong>Normas administrativas:</strong> Portarias e Notas Técnicas do Ministério do Trabalho e Emprego (MTE), Resoluções do COFEN, Notas de Orientação do eSocial e Instruções Normativas da Receita Federal.</li>
-      <li><strong>Dados econômicos:</strong> API pública do Banco Central do Brasil (BCB/SGS) para índices de correção monetária (IPCA, IPCA-E, IGP-M, INPC e SELIC).</li>
-    </ul>
-    <p>Os artigos do blog são revisados periodicamente para refletir alterações legislativas, novas súmulas do TST e decisões vinculantes do STF. Quando uma decisão ou norma nova impacta o conteúdo publicado, o artigo é atualizado com indicação da data de revisão.</p>
-
-    <h2>Como as ferramentas são construídas e validadas</h2>
-    <p>Cada calculadora do Calcula Prazo segue um processo de desenvolvimento em três etapas:</p>
-    <ol>
-      <li><strong>Especificação técnica:</strong> mapeamento da base legal aplicável, identificação das variáveis necessárias e das exceções relevantes (ex.: categorias com jornada especial, tabelas progressivas de INSS, regras de proporcionalidade).</li>
-      <li><strong>Implementação e testes:</strong> desenvolvimento da lógica de cálculo com casos de teste baseados em exemplos reais e em decisões judiciais conhecidas. Cada ferramenta é verificada contra o resultado esperado para pelo menos dez cenários distintos antes de publicação.</li>
-      <li><strong>Atualização contínua:</strong> monitoramento de alterações na legislação e nas tabelas oficiais (INSS, IRRF, salário mínimo, piso salarial) para garantir que os resultados permaneçam precisos ao longo do tempo.</li>
-    </ol>
-    <p>Todas as ferramentas executam os cálculos inteiramente no navegador do usuário — nenhum dado inserido é transmitido a servidores externos. A privacidade dos dados do usuário é preservada por design.</p>
-
-    <h2>Limitações e disclaimer</h2>
-    <p>O Calcula Prazo é uma ferramenta de apoio — não substitui a assessoria de advogado, contador ou profissional de RH habilitado. Os resultados têm caráter informativo e são estimativas baseadas nas informações fornecidas pelo usuário e nas regras gerais da legislação vigente. Situações específicas — como cláusulas de convenção coletiva que afastem as regras gerais, enquadramentos especiais de categoria ou decisões judiciais transitadas em julgado — podem gerar resultados diferentes dos calculados pela ferramenta.</p>
-    <p>Em processos judiciais, os cálculos devem ser elaborados ou revisados pelo advogado responsável pela causa, que tem acesso ao conjunto completo de fatos e documentos do caso concreto.</p>
-
-    <h2>Histórico e evolução da plataforma</h2>
-    <p>O Calcula Prazo foi lançado em 2024 com foco inicial em prazos processuais trabalhistas. Ao longo de 2025 e 2026, a plataforma foi expandida para incluir as calculadoras financeiras (correção monetária, juros), as calculadoras trabalhistas (verbas rescisórias, salário líquido) e ferramentas de apoio ao trabalho jurídico e de RH. A seção de conteúdo editorial foi iniciada em 2025 e conta hoje com mais de 100 artigos dedicados ao Direito do Trabalho.</p>
-    <p>O projeto está em desenvolvimento ativo. Novas ferramentas são adicionadas conforme a demanda dos usuários e as necessidades identificadas na prática profissional. Sugestões de ferramentas ou temas para artigos podem ser enviadas pelo e-mail <a href="mailto:contato@calculaprazo.com.br">contato@calculaprazo.com.br</a>.</p>
-
-    <h2>Contato</h2>
-    <p>Para dúvidas, correções ou sugestões: <a href="mailto:contato@calculaprazo.com.br"><strong>contato@calculaprazo.com.br</strong></a> — ou acesse a <a href="/contato">página de contato</a>. Respondemos em até 5 dias úteis.</p>
-
   </div>
-</main>
+</div>
 
 <footer id="ftr">
   <div class="container">
-    <div class="ftr-inner">
-      <a href="/" class="ftr-logo"><div class="ftr-logo-ic">⚖</div><span>Calcula</span>Prazo</a>
-      <nav class="ftr-links" aria-label="Links do rodapé">
-        <a href="/">Ferramentas</a>
-        <a href="/sobre">Sobre</a>
-        <a href="/privacidade">Privacidade</a>
-        <a href="/termos">Termos</a>
-        <a href="/contato">Contato</a>
-      </nav>
+    <div class="ftr-grid">
+      <div class="ftr-brand">
+        <a class="logo" href="/"><div class="logo-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 7h18"/></svg></div><span class="logo-text">Calcula</span><span>Prazo</span></a>
+        <p class="ftr-desc">Calculadoras jurídicas gratuitas e conteúdo especializado em Direito do Trabalho para advogados, contadores, profissionais de RH e trabalhadores.</p>
+        <p style="margin-top:12px;font-size:.8rem;color:rgba(255,255,255,.45);line-height:1.6;">✉ Dúvidas, sugestões ou elogios?<br><a href="mailto:contato@calculaprazo.com.br" style="color:rgba(255,255,255,.6);text-decoration:underline;">contato@calculaprazo.com.br</a></p>
+      </div>
+      <div class="ftr-col"><h4>Prazos</h4><ul>
+        <li><a href="/#calculadora-de-prazo-processual">Calculadora de Prazos</a></li>
+        <li><a href="/#datas">Operações com Datas</a></li>
+      </ul></div>
+      <div class="ftr-col"><h4>Calculadoras</h4><ul>
+        <li><a href="/#correcao">Correção Monetária</a></li>
+        <li><a href="/#juros">Juros</a></li>
+        <li><a href="/#trabalhista">Trabalhista</a></li>
+        <li><a href="/#salario">Salário Líquido</a></li>
+        <li><a href="/#porcentagem">Porcentagem</a></li>
+        <li><a href="/#moedas">Moedas</a></li>
+      </ul></div>
+      <div class="ftr-col"><h4>Utilidades</h4><ul>
+        <li><a href="/#valid">Validador CPF/CNPJ</a></li>
+        <li><a href="/#qrcode">QR Code</a></li>
+        <li><a href="/#senhas">Senhas</a></li>
+        <li><a href="/#extenso">Número por Extenso</a></li>
+        <li><a href="/#imc">IMC</a></li>
+      </ul></div>
+      <div class="ftr-col"><h4>Informações</h4><ul>
+        <li><a href="/sobre">Sobre o Calcula Prazo</a></li>
+        <li><a href="/conteudo">Conteúdo / Blog</a></li>
+        <li><a href="/contato">Contato</a></li>
+        <li><a href="/privacidade">Privacidade &amp; LGPD</a></li>
+        <li><a href="/termos">Termos de Uso</a></li>
+      </ul></div>
     </div>
-    <div class="ftr-links" style="margin-top:6px;">
-      <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>Youtube</a>
-      <a href="https://www.linkedin.com/in/calcula-prazo-0a1736405" target="_blank" rel="noopener" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>Linkedin</a>
-      <a href="https://www.instagram.com/calculaprazo/" target="_blank" rel="noopener" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#C13584"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>Instagram</a>
-      <a href="https://x.com/CalculaPrazo" target="_blank" rel="noopener" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="rgba(255,255,255,.5)"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>X</a>
+    <div class="ftr-bot">
+      <p class="ftr-copy">&copy; <span id="yr"></span> Calcula Prazo. Todos os direitos reservados. Calculadoras jurídicas gratuitas para advogados, contadores, profissionais de RH e trabalhadores. Os cálculos e o conteúdo são de caráter informativo e não substituem assessoria especializada.</p>
+      <div style="display:flex;gap:12px 16px;align-items:center;flex-wrap:wrap;justify-content:center;">
+        <a onclick="document.getElementById('modal-doacao').style.display='flex'" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;cursor:pointer;">☕ Doação</a>
+        <a href="/contato" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;">Contato</a>
+        <a href="/termos" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;">Termos de Uso</a>
+        <a href="/privacidade" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;">Privacidade &amp; LGPD</a>
+        <span style="color:rgba(255,255,255,.2);">|</span>
+        <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>Youtube</a>
+        <a href="https://www.linkedin.com/in/calcula-prazo-0a1736405" target="_blank" rel="noopener" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>Linkedin</a>
+        <a href="https://www.instagram.com/calculaprazo/" target="_blank" rel="noopener" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="url(#ig-grad-ftr)"><defs><linearGradient id="ig-grad-ftr" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FFDC80"/><stop offset="25%" stop-color="#FCAF45"/><stop offset="50%" stop-color="#F77737"/><stop offset="75%" stop-color="#C13584"/><stop offset="100%" stop-color="#833AB4"/></linearGradient></defs><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>Instagram</a>
+        <a href="https://x.com/CalculaPrazo" target="_blank" rel="noopener" style="font-size:.78rem;color:rgba(255,255,255,.5);text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="rgba(255,255,255,.5)"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>X</a>
+      </div>
     </div>
-    <p class="ftr-copy">© <span id="yr"></span> Calcula Prazo — Anderson Fernandes. Todos os direitos reservados. Conteúdo informativo — não constitui assessoria jurídica.</p>
   </div>
 </footer>
 
-<script>
-document.getElementById('yr').textContent = new Date().getFullYear();
-</script>
-<div id="modal-doacao" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this)this.style.display='none'">
-    <div style="background:#fff;border-radius:var(--rx);padding:36px;max-width:480px;width:100%;box-shadow:var(--shxl);position:relative;">
-    <button onclick="document.getElementById('modal-doacao').style.display='none'" style="position:absolute;top:16px;right:16px;background:var(--bg);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--txt-s);">✕</button>
-    <div style="text-align:center;margin-bottom:20px;">
-      <div style="font-size:2.5rem;margin-bottom:8px;">☕</div>
-      <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:6px;">Apoie o Calcula Prazo</h2>
-      <p style="font-size:.88rem;color:var(--txt-m);line-height:1.6;">Este site é 100% gratuito e feito com dedicação. Se ele te ajudou, considere contribuir com qualquer valor para mantê-lo no ar e em constante melhoria.</p>
-    </div>
-    <div style="background:var(--b50);border:1.5px solid var(--b200);border-radius:var(--rl);padding:18px;margin-bottom:20px;">
-      <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--acc);margin-bottom:8px;">Pix — Chave e-mail</p>
-      <div style="display:flex;align-items:center;gap:10px;">
-        <div id="pix-key-display" style="font-family:var(--fh);font-size:.85rem;font-weight:700;color:var(--txt);flex:1;background:#fff;border:1.5px solid var(--brd);border-radius:var(--r);padding:10px 12px;white-space:nowrap;overflow:visible;text-align:center;">contato@calculaprazo.com.br</div>
-        <button onclick="navigator.clipboard.writeText('contato@calculaprazo.com.br').then(()=>{this.textContent='✅';setTimeout(()=>this.textContent='📋',1500)})" style="background:var(--acc);color:#fff;border:none;border-radius:var(--r);padding:10px 13px;cursor:pointer;font-size:.85rem;flex-shrink:0;">📋</button>
-      </div>
-      <p style="font-size:.73rem;color:var(--txt-s);margin-top:8px;"></p>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
-      <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd);border-radius:var(--r);cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''">
-        <div style="font-size:.85rem;font-weight:800;color:var(--acc);">R$ 1</div><div style="font-size:.68rem;color:var(--txt-s);">🤝 Simbólico</div>
-      </div>
-      <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd);border-radius:var(--r);cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''">
-        <div style="font-size:.85rem;font-weight:800;color:var(--acc);">R$ 5</div><div style="font-size:.68rem;color:var(--txt-s);">☕ Um café</div>
-      </div>
-      <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd);border-radius:var(--r);cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''">
-        <div style="font-size:.85rem;font-weight:800;color:var(--acc);">R$ 15</div><div style="font-size:.68rem;color:var(--txt-s);">⭐ Apoiador</div>
-      </div>
-      <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd);border-radius:var(--r);cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''">
-        <div style="font-size:.85rem;font-weight:800;color:var(--acc);">R$ 30</div><div style="font-size:.68rem;color:var(--txt-s);">🚀 Apoiador</div>
-      </div>
-    </div>
+
+
       <p style="text-align:center;font-size:.8rem;color:var(--txt-s);">A partir de R$ 1 — qualquer valor faz diferença. Obrigado!</p>
   </div>
 </div>
@@ -511,5 +541,30 @@ document.addEventListener('click', function(e) {
   }
 });
 </script>
+<div id="modal-doacao" role="dialog" aria-modal="true" aria-label="Apoie o Calcula Prazo" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this)this.style.display='none'">
+  <div style="background:#fff;border-radius:var(--rx,16px);padding:36px;max-width:480px;width:100%;box-shadow:0 24px 64px rgba(15,23,42,.16);position:relative;">
+    <button onclick="document.getElementById('modal-doacao').style.display='none'" style="position:absolute;top:16px;right:16px;background:var(--bg,#F8FAFC);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--txt-s,#94A3B8);">✕</button>
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:2.5rem;margin-bottom:8px;">☕</div>
+      <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:6px;">Apoie o Calcula Prazo</h2>
+      <p style="font-size:.88rem;color:var(--txt-m,#475569);line-height:1.6;">Este site é 100% gratuito e feito com dedicação. Se ele te ajudou, considere contribuir com qualquer valor para mantê-lo no ar e em constante melhoria.</p>
+    </div>
+    <div style="background:var(--b50,#EFF6FF);border:1.5px solid var(--b200,#BFDBFE);border-radius:var(--rl,18px);padding:18px;margin-bottom:20px;">
+      <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--acc,#2563EB);margin-bottom:8px;">Pix — Chave e-mail</p>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="font-family:var(--fh);font-size:.85rem;font-weight:700;color:var(--txt,#0F172A);flex:1;background:#fff;border:1.5px solid var(--brd,#E2E8F0);border-radius:var(--r,12px);padding:10px 12px;text-align:center;">contato@calculaprazo.com.br</div>
+        <button onclick="navigator.clipboard.writeText('contato@calculaprazo.com.br').then(()=>{this.textContent='✅';setTimeout(()=>this.textContent='📋',1500)})" style="background:var(--acc,#2563EB);color:#fff;border:none;border-radius:var(--r,12px);padding:10px 13px;cursor:pointer;font-size:.85rem;flex-shrink:0;">📋</button>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+      <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd,#E2E8F0);border-radius:var(--r,12px);cursor:pointer;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''"><div style="font-size:.85rem;font-weight:800;color:var(--acc,#2563EB);">R$ 1</div><div style="font-size:.68rem;color:var(--txt-s,#94A3B8);">🤝 Simbólico</div></div>
+      <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd,#E2E8F0);border-radius:var(--r,12px);cursor:pointer;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''"><div style="font-size:.85rem;font-weight:800;color:var(--acc,#2563EB);">R$ 5</div><div style="font-size:.68rem;color:var(--txt-s,#94A3B8);">☕ Um café</div></div>
+      <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd,#E2E8F0);border-radius:var(--r,12px);cursor:pointer;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''"><div style="font-size:.85rem;font-weight:800;color:var(--acc,#2563EB);">R$ 15</div><div style="font-size:.68rem;color:var(--txt-s,#94A3B8);">⭐ Apoiador</div></div>
+      <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd,#E2E8F0);border-radius:var(--r,12px);cursor:pointer;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''"><div style="font-size:.85rem;font-weight:800;color:var(--acc,#2563EB);">R$ 30</div><div style="font-size:.68rem;color:var(--txt-s,#94A3B8);">🚀 Apoiador</div></div>
+    </div>
+    <p style="text-align:center;font-size:.8rem;color:var(--txt-s,#94A3B8);">A partir de R$ 1 — qualquer valor faz diferença. Obrigado!</p>
+  </div>
+</div>
+<script>document.getElementById("yr").textContent=new Date().getFullYear();</script>
 </body>
 </html>
