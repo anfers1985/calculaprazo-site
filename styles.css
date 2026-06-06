@@ -937,7 +937,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   .hdr-nav.mob-open {
     display: flex !important;
   }
-  /* Links dentro do nav aberto */
   .hdr-nav > a,
   .hdr-nav > .nav-dropdown {
     width: 100% !important;
@@ -947,26 +946,56 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   }
   .hdr-nav > a {
     font-size: .93rem !important;
-    padding: 11px 20px !important;
+    padding: 13px 20px !important;
     border-bottom: 1px solid var(--brd) !important;
+    display: flex !important;
+    align-items: center !important;
   }
   .hdr-nav > .nav-dropdown > a {
     font-size: .93rem !important;
-    padding: 11px 20px !important;
+    padding: 13px 20px !important;
     width: 100% !important;
+    display: flex !important;
     justify-content: space-between !important;
+    align-items: center !important;
     border-bottom: 1px solid var(--brd) !important;
   }
-  /* Dropdown aberto dentro do nav mobile */
-  .nav-drop-menu {
+  /* Dropdown vira accordion: sem position absolute, sem altura/largura fixa */
+  .hdr-nav .nav-drop-menu {
     position: static !important;
     box-shadow: none !important;
     border: none !important;
     border-radius: 0 !important;
     background: var(--bg2) !important;
-    padding: 4px 0 8px 16px !important;
+    padding: 4px 0 8px 0 !important;
     min-width: 0 !important;
     max-height: none !important;
+    width: 100% !important;
+    overflow: visible !important;
+    /* Oculto por padrão no mobile — só abre com .open */
+    display: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  .hdr-nav .nav-dropdown.open .nav-drop-menu {
+    display: block !important;
+  }
+  .hdr-nav .nav-drop-menu a {
+    padding: 11px 20px 11px 28px !important;
+    font-size: .88rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    border-bottom: none !important;
+  }
+  /* Sub-menus de conteúdo */
+  .hdr-nav .nm-sub-wrap {
+    padding-left: 16px !important;
+  }
+  .hdr-nav .nm-sub {
+    padding: 9px 20px 9px 32px !important;
+    font-size: .85rem !important;
   }
 }
 
@@ -1472,3 +1501,5 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   }
 }
 
+
+/* build: 20260606145327 */
