@@ -514,7 +514,7 @@ function renderNhTop10(){
     .then(function(r){ return r.ok ? r.json() : null; })
     .then(function(d){
       var slugs = d && d.top && d.top.length >= 5
-        ? d.top.map(function(item){ return item.slug || item; })
+        ? d.top.map(function(item){ return item.slug || item.postId || item; })
         : NH_TOP10_IDS;
       renderSlugs(slugs);
     })
