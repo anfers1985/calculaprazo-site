@@ -262,6 +262,13 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
           <div class="fg"><label>URL da Imagem de Capa</label><input type="text" id="f-image" placeholder="https://images.unsplash.com/..." onchange="previewImg()"></div>
           <div class="fg"><label>Legenda da Imagem</label><input type="text" id="f-caption" placeholder="Créditos ou descrição da imagem"></div>
         </div>
+        <div class="fg-row">
+          <div class="fg">
+            <label>Data de Atualização <span style="font-size:.72rem;font-weight:400;color:var(--txt-s);">(opcional — preencher ao repostar conteúdo)</span></label>
+            <input type="date" id="f-updated" placeholder="AAAA-MM-DD">
+            <p style="font-size:.72rem;color:var(--txt-s);margin-top:4px;">Se preenchida, exibe "Atualizado em..." no artigo e atualiza o <code>dateModified</code> do Schema.org.</p>
+          </div>
+        </div>
         <div class="fg">
           <label>Tags (separadas por vírgula, máx. 4)</label>
           <input type="text" id="f-tags" placeholder="Ex: TST, Jurisprudência, Gestante, CLT">
@@ -744,6 +751,7 @@ function resetForm(){
   document.getElementById('f-image').value='';
   document.getElementById('f-caption').value='';
   document.getElementById('f-tags').value='';
+  if(document.getElementById('f-updated')) document.getElementById('f-updated').value='';
   document.getElementById('editor-area').value='';
   document.getElementById('img-preview-el').style.display='none';
   document.getElementById('exc-count').textContent='0';
@@ -763,6 +771,7 @@ function editPost(id){
   document.getElementById('f-excerpt').value=p.excerpt;
   document.getElementById('f-image').value=p.image||'';
   document.getElementById('f-caption').value=p.imageCaption||'';
+  if(document.getElementById('f-updated')) document.getElementById('f-updated').value=p.updatedAt||'';
   document.getElementById('editor-area').value=p.content || '';
   countChars(document.getElementById('f-excerpt'),'exc-count',160);
   previewImg();
@@ -876,7 +885,9 @@ async function publicarNoSite() {
     const now = new Date().toISOString().split('T')[0];
     const tagsInput = document.getElementById('f-tags') ? document.getElementById('f-tags').value.trim() : '';
   const tags = tagsInput ? tagsInput.split(',').map(t=>t.trim()).filter(Boolean).slice(0,4) : [];
-  const post = { id: slug, title, category: cat, excerpt, image, imageCaption: caption, date: now, content, tags };
+  const updatedInput = document.getElementById('f-updated') ? document.getElementById('f-updated').value.trim() : '';
+  const updatedAt = updatedInput || now;
+  const post = { id: slug, title, category: cat, excerpt, image, imageCaption: caption, date: now, updatedAt, content, tags };
 
     // 1. Gerar HTML do post
     toast('Gerando HTML do post...', 'ok');
@@ -919,6 +930,13 @@ async function publicarNoSite() {
       .replace(/\{\{CATEGORY_LABEL\}\}/g, catLabelsMap[post.category] || post.category)
       .replace(/\{\{DATE\}\}/g,           post.date)
       .replace(/\{\{DATE_BR\}\}/g,        dateBR)
+      .replace(/\{\{UPDATED_DATE\}\}/g,   post.updatedAt || post.date)
+      .replace(/\{\{UPDATED_DATE_BR\}\}/g, post.updatedAt && post.updatedAt !== post.date
+        ? new Date(post.updatedAt + 'T12:00:00').toLocaleDateString('pt-BR', {day:'numeric', month:'long', year:'numeric'})
+        : '')
+      .replace(/\{\{UPDATED_LINE\}\}/g,   post.updatedAt && post.updatedAt !== post.date
+        ? `<div style="margin-top:4px;font-size:.78rem;color:rgba(255,255,255,.55);">📝 <strong>Atualizado em:</strong> ${new Date(post.updatedAt + 'T12:00:00').toLocaleDateString('pt-BR', {day:'numeric', month:'long', year:'numeric'})}</div>`
+        : '')
       .replace(/\{\{CONTENT\}\}/g,        post.content)
       .replace(/\{\{TAGS_BADGES\}\}/g,    tagsBadgesHTML)
       .replace(/\{\{TAGS_JSON\}\}/g,      tagsJSON)
@@ -953,6 +971,7 @@ async function publicarNoSite() {
       excerpt: post.excerpt,
       image: post.image || '',
       date: post.date,
+      updatedAt: post.updatedAt || post.date,
       tags: post.tags || []
     });
 
@@ -996,6 +1015,7 @@ async function baixarHTML() {
 
   try {
     const now = new Date().toISOString().split('T')[0];
+    const updatedAtRepost = now; // repostagem sempre usa hoje como data de atualização
     const tagsArr = tagsRaw ? tagsRaw.split(',').map(t=>t.trim()).filter(Boolean).slice(0,4) : [];
 
     const catLabelsMap = {
@@ -1030,6 +1050,9 @@ async function baixarHTML() {
       .replace(/\{\{CATEGORY_LABEL\}\}/g, catLabelsMap[cat] || cat)
       .replace(/\{\{DATE\}\}/g,           now)
       .replace(/\{\{DATE_BR\}\}/g,        dateBR)
+      .replace(/\{\{UPDATED_DATE\}\}/g,   updatedAtRepost)
+      .replace(/\{\{UPDATED_DATE_BR\}\}/g, new Date(updatedAtRepost+'T12:00:00').toLocaleDateString('pt-BR',{day:'numeric',month:'long',year:'numeric'}))
+      .replace(/\{\{UPDATED_LINE\}\}/g,   '<div style="margin-top:4px;font-size:.78rem;color:rgba(255,255,255,.55);">\ud83d\udcdd <strong>Atualizado em:</strong> '+new Date(updatedAtRepost+'T12:00:00').toLocaleDateString('pt-BR',{day:'numeric',month:'long',year:'numeric'})+'</div>')
       .replace(/\{\{CONTENT\}\}/g,        content)
       .replace(/\{\{TAGS_BADGES\}\}/g,    tagsBadgesHTML)
       .replace(/\{\{TAGS_JSON\}\}/g,      JSON.stringify(tagsArr))

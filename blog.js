@@ -470,35 +470,58 @@ function renderNhRecentes(){
 function renderNhTop10(){
   var list = document.getElementById('nh-top10-list');
   if(!list) return;
-  // Mapear slugs para posts
+
+  // Mapa slug → post
   var map = {};
   BLOG_POSTS.forEach(function(p){
     var s = p.id || p.slug || '';
     if(s) map[s] = p;
   });
-  var items = NH_TOP10_IDS.map(function(slug, i){
-    var p = map[slug];
-    if(!p) return null;
-    var numCls = i < 3 ? 'top' : 'rest';
-    var cat = p.category_label || p.category || '';
-    var imgUrl = p.image || '';
-    var thumbPart = imgUrl
-      ? '<div class="nh-top10-thumb"><img src="'+imgUrl+'" alt="" loading="lazy" onerror="this.parentElement.style.display=\'none\'"></div>'
-      : '';
-    return '<a class="nh-top10-item" href="/blog/'+slug+'.html">'
-      +'<span class="nh-top10-num '+numCls+'">'+(i+1)+'</span>'
-      +thumbPart
-      +'<div class="nh-top10-info">'
-        +'<div class="nh-top10-title">'+(p.title||slug)+'</div>'
-        +(cat?'<div class="nh-top10-cat">'+cat+'</div>':'')
-      +'</div>'
-    +'</a>';
-  }).filter(Boolean);
-  if(!items.length){
-    list.innerHTML='<p style="font-size:.8rem;color:var(--txt-s);padding:8px 0;">Carregando...</p>';
-    return;
+
+  function buildItems(slugs) {
+    return slugs.map(function(slug, i){
+      var p = map[slug];
+      if(!p) return null;
+      var numCls = i < 3 ? 'top' : 'rest';
+      var cat = p.category_label || p.category || '';
+      var imgUrl = p.image || '';
+      var thumbPart = imgUrl
+        ? '<div class="nh-top10-thumb"><img src="'+imgUrl+'" alt="" loading="lazy" onerror="this.parentElement.style.display=\'none\'"></div>'
+        : '';
+      return '<a class="nh-top10-item" href="/blog/'+slug+'.html">'
+        +'<span class="nh-top10-num '+numCls+'">'+(i+1)+'</span>'
+        +thumbPart
+        +'<div class="nh-top10-info">'
+          +'<div class="nh-top10-title">'+(p.title||slug)+'</div>'
+          +(cat?'<div class="nh-top10-cat">'+cat+'</div>':'')
+        +'</div>'
+      +'</a>';
+    }).filter(Boolean);
   }
-  list.innerHTML = items.join('');
+
+  function renderSlugs(slugs) {
+    var items = buildItems(slugs);
+    if(!items.length){
+      list.innerHTML='<p style="font-size:.8rem;color:var(--txt-s);padding:8px 0;">Carregando...</p>';
+      return;
+    }
+    list.innerHTML = items.join('');
+  }
+
+  // Tentar carregar do Worker KV (Top 10 real)
+  var workerUrl = 'https://calculaprazo-views-api.andersonfernand3s.workers.dev';
+  fetch(workerUrl + '/top/10')
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(d){
+      var slugs = d && d.top && d.top.length >= 5
+        ? d.top.map(function(item){ return item.slug || item; })
+        : NH_TOP10_IDS;
+      renderSlugs(slugs);
+    })
+    .catch(function(){
+      // Fallback para lista hardcoded se Worker indisponível
+      renderSlugs(NH_TOP10_IDS);
+    });
 }
 
 // NH chamado diretamente em loadBlogPosts
