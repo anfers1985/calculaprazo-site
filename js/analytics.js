@@ -7,16 +7,16 @@
 
   var WORKER_URL  = 'https://calculaprazo-views-api.andersonfernand3s.workers.dev';
   var TRACKED_KEY = 'cp_tracked_';
-  var VIEW_DELAY  = 8000; // 8s antes de contar (filtra bots e bounces rápidos)
+  var VIEW_DELAY  = 8000; // 8s antes de contar
 
-  /* ── Extrair slug da URL atual ───────────────────────────── */
+  /* ── Extrair slug da URL ─────────────────────────────────── */
   function slugFromPath(path) {
-    // /blog/meu-artigo  ou  /blog/meu-artigo.html
-    var m = path.match(/^\/blog\/([^/?#]+?)(?:\.html)?(?:[/?#]|$)/);
+    // Aceita: /blog/meu-artigo  /blog/meu-artigo.html  /blog/meu-artigo/
+    var m = path.match(/^\/blog\/([^/?#]+?)(?:\.html)?(?:\/)?(?:[?#]|$)/);
     return m ? m[1] : null;
   }
 
-  /* ── Registrar view ──────────────────────────────────────── */
+  /* ── Registrar view (POST) ───────────────────────────────── */
   function trackView(slug) {
     if (!slug) return;
     try {
@@ -33,7 +33,7 @@
     }, VIEW_DELAY);
   }
 
-  /* ── Buscar views de um slug ─────────────────────────────── */
+  /* ── Buscar views (GET) ──────────────────────────────────── */
   function getViews(slug, callback) {
     if (!slug) { callback(0); return; }
     fetch(WORKER_URL + '/view/' + encodeURIComponent(slug), { mode: 'cors' })
@@ -42,7 +42,7 @@
       .catch(function()  { callback(0); });
   }
 
-  /* ── Buscar Top N por views ──────────────────────────────── */
+  /* ── Buscar Top N ────────────────────────────────────────── */
   function getTop(limit, callback) {
     limit = limit || 10;
     fetch(WORKER_URL + '/top/' + limit, { mode: 'cors' })
@@ -71,16 +71,19 @@
     render:    renderViewCount
   };
 
-  /* ── Auto-track nos artigos do blog ─────────────────────── */
+  /* ── Auto-track: roda imediatamente (sem esperar DOMContentLoaded) ── */
   var currentSlug = slugFromPath(window.location.pathname);
   if (currentSlug) {
+    // Track imediato (o setTimeout interno já tem delay de 8s)
     trackView(currentSlug);
+
+    // Renderizar contagem: aguardar DOM se necessário
+    function doRender() { renderViewCount(currentSlug); }
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function() {
-        renderViewCount(currentSlug);
-      });
+      document.addEventListener('DOMContentLoaded', doRender);
     } else {
-      renderViewCount(currentSlug);
+      // DOM já disponível (script carregado com defer após parse)
+      doRender();
     }
   }
 
