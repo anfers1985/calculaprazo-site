@@ -26,10 +26,14 @@
 
     setTimeout(function() {
       fetch(WORKER_URL + '/view/' + encodeURIComponent(slug), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        mode: 'cors'
-      }).catch(function() {});
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  mode: 'cors'
+})
+.then(function() {
+  renderViewCount(slug);
+})
+.catch(function() {});
     }, VIEW_DELAY);
   }
 
