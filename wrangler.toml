@@ -1,0 +1,9 @@
+name = "calculaprazo-views-api"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+[[kv_namespaces]]
+binding = "VIEWS"
+# Substitua pelo ID real do namespace KV no dashboard do Cloudflare
+# Dashboard → Workers & Pages → KV → calculaprazo-views → copie o ID
+id = "SEU_KV_NAMESPACE_ID_AQUI"
