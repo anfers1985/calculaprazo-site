@@ -14,7 +14,7 @@ async function loadFallback(){
 
 async function loadBlogPosts(){
   try{
-    var r=await fetch('/data/posts.json?v='+Date.now());
+    var r=await fetch('/data/posts.json?v=3');
     if(r.ok){var d=await r.json();BLOG_POSTS=Array.isArray(d)&&d.length?d:await loadFallback();}
     else{throw new Error('status '+r.status);}
   }catch(e){

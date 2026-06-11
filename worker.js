@@ -75,7 +75,8 @@ export default {
       const key = 'v:' + slug;
       const val = await env.VIEWS.get(key);
       const views = (val ? parseInt(val, 10) : 0) + 1;
-      await env.VIEWS.put(key, String(views));
+      // Store count both as value AND as metadata — /top uses metadata to avoid N extra GETs
+      await env.VIEWS.put(key, String(views), { metadata: { views } });
       return json({ slug, views }, 200, origin);
     }
 
@@ -84,13 +85,11 @@ export default {
       const limit  = Math.min(parseInt(path.slice(5), 10) || 10, 50);
       const listed = await env.VIEWS.list({ prefix: 'v:' });
 
-      // Resolve all view counts in parallel
-      const entries = await Promise.all(
-        listed.keys.map(async ({ name }) => {
-          const val = await env.VIEWS.get(name);
-          return { slug: name.slice(2), views: val ? parseInt(val, 10) : 0 };
-        })
-      );
+      // Use metadata (stored on each PUT) to avoid N extra KV.get() calls
+      const entries = listed.keys.map(({ name, metadata }) => ({
+        slug:  name.slice(2),
+        views: metadata?.views ?? 0
+      }));
 
       entries.sort((a, b) => b.views - a.views);
       const top = entries.slice(0, limit);
