@@ -25,22 +25,15 @@
     } catch(e) {}
 
     setTimeout(function() {
-      var ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
-      var tid  = ctrl ? setTimeout(function(){ ctrl.abort(); }, 5000) : null;
       fetch(WORKER_URL + '/view/' + encodeURIComponent(slug), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        mode: 'cors',
-        signal: ctrl ? ctrl.signal : undefined
-      })
-      .then(function(r) {
-        if (tid) clearTimeout(tid);
-        if (r.ok) renderViewCount(slug);
-      })
-      .catch(function(e) {
-        if (tid) clearTimeout(tid);
-        if (e && e.name !== 'AbortError') console.warn('[CPViews] track error:', e.message);
-      });
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  mode: 'cors'
+})
+.then(function() {
+  renderViewCount(slug);
+})
+.catch(function() {});
     }, VIEW_DELAY);
   }
 
