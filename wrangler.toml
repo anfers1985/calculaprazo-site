@@ -6,6 +6,4 @@ compatibility_date = "2024-01-01"
 binding = "VIEWS"
 # Substitua pelo ID real do namespace KV no dashboard do Cloudflare
 # Dashboard → Workers & Pages → KV → calculaprazo-views → copie o ID
-# ⚠️  IMPORTANTE: Substitua o placeholder abaixo pelo ID real ANTES de executar wrangler deploy
-# ⚠️  O ID real está no Cloudflare Dashboard — NÃO commitar o ID real no repositório público
 id = "SEU_KV_NAMESPACE_ID_AQUI"
