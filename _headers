@@ -8,7 +8,7 @@
 # Dados JSON — Content-Type explícito para evitar ser interceptado pelo SPA fallback
 /data/posts.json
   Content-Type: application/json; charset=utf-8
-  Cache-Control: public, max-age=300, must-revalidate
+  Cache-Control: public, max-age=3600, must-revalidate
   Access-Control-Allow-Origin: *
 
 # CSS e JS externos — cache com revalidação (permite updates ao mudar ?v=N no link)
@@ -37,10 +37,10 @@
 /favicon-32x32.png
   Cache-Control: public, max-age=31536000, immutable
 
-# ads.txt — servido como texto puro, sem cache longo
+# ads.txt — servido como texto puro, cache curto para revalidação rápida pelo Google
 /ads.txt
   Content-Type: text/plain; charset=utf-8
-  Cache-Control: public, max-age=86400
+  Cache-Control: public, max-age=3600, must-revalidate
 
 # robots.txt
 /robots.txt
@@ -55,7 +55,7 @@
 # Segurança geral
 /*
   X-Content-Type-Options: nosniff
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://adservice.google.com https://www.googletagservices.com https://partner.googleadservices.com https://tpc.googlesyndication.com https://www.googletagmanager.com https://static.cloudflareinsights.com; img-src 'self' data: https: blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://api.bcb.gov.br https://open.er-api.com https://economia.awesomeapi.com.br https://api.github.com https://www.googleapis.com https://api.web3forms.com https://googleads.g.doubleclick.net https://adservice.google.com https://calculaprazo-views-api.andersonfernand3s.workers.dev; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://pagead2.googlesyndication.com;
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://adservice.google.com https://www.googletagservices.com https://partner.googleadservices.com https://tpc.googlesyndication.com https://www.googletagmanager.com https://static.cloudflareinsights.com; img-src 'self' data: https: blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://stats.g.doubleclick.net https://cloudflareinsights.com https://api.bcb.gov.br https://open.er-api.com https://economia.awesomeapi.com.br https://api.github.com https://www.googleapis.com https://api.web3forms.com https://googleads.g.doubleclick.net https://adservice.google.com https://calculaprazo-views-api.andersonfernand3s.workers.dev; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://pagead2.googlesyndication.com; frame-ancestors 'self'; worker-src 'self' blob:; object-src 'none';
   X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
