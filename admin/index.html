@@ -458,7 +458,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
 // CONFIG
 // ════════════════════════════════════════
 const ADMIN_PASS_KEY = 'cp_admin_pass';
-const DEFAULT_PASS   = 'admin2026';
 const POSTS_KEY      = 'cp_posts';
 const GH_PAT_KEY     = 'cp_gh_pat';
 
@@ -469,7 +468,7 @@ const GITHUB_BRANCH = 'main';
 // ════════════════════════════════════════
 // AUTH
 // ════════════════════════════════════════
-function getPass(){ return localStorage.getItem(ADMIN_PASS_KEY) || DEFAULT_PASS; }
+function getPass(){ return localStorage.getItem(ADMIN_PASS_KEY) || ''; }
 
 function doLogin(){
   const v = document.getElementById('auth-pass').value;
