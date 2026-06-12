@@ -1742,6 +1742,9 @@ Object.entries(SEO).forEach(([id, data]) => {
 
 // Resolve o ID a partir da URL atual
 function resolveIdFromURL() {
+  // Verifica hash primeiro — ex: /#conteudo → 'blog'
+  const hash = location.hash;
+  if (hash === '#conteudo' || hash === '#blog') return 'blog';
   const path = location.pathname.replace(/\/$/, '') || '/';
   return SLUG_TO_ID[path] || SLUG_TO_ID[path.slice(1)] || 'prazos';
 }

@@ -368,7 +368,7 @@ function toggleSociais(e){
     loadYouTubeVideos();
     var hash=window.location.hash;
     if(hash==='#conteudo'||hash==='#blog'){
-      setTimeout(function(){navGoTo('blog');},200);
+      navGoTo('blog');
     } else if(hash && hash.length > 1) {
       var hslug = hash.slice(1);
       var hid = (typeof SLUG_TO_ID !== 'undefined') ? (SLUG_TO_ID['/'+hslug] || SLUG_TO_ID[hslug] || hslug) : hslug;
