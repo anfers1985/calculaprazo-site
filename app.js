@@ -1734,9 +1734,17 @@ Object.entries(SEO).forEach(([id, data]) => {
 
 // Resolve o ID a partir da URL atual
 function resolveIdFromURL() {
-  // Verifica hash primeiro — ex: /#conteudo → 'blog'
   const hash = location.hash;
-  if (hash === '#conteudo' || hash === '#blog') return 'blog';
+  if (hash && hash.length > 1) {
+    const hslug = hash.slice(1); // ex: 'conteudo', 'correcao', 'calculadora-de-prazo-processual'
+    // Verificar se é um ID direto do NAV_MAP
+    if (NAV_MAP[hslug]) return NAV_MAP[hslug];
+    // Verificar se é um slug do SLUG_TO_ID (ex: calculadora-de-prazo-processual → prazos)
+    if (SLUG_TO_ID['/' + hslug]) return SLUG_TO_ID['/' + hslug];
+    if (SLUG_TO_ID[hslug]) return SLUG_TO_ID[hslug];
+    // Aliases especiais
+    if (hslug === 'conteudo' || hslug === 'blog') return 'blog';
+  }
   const path = location.pathname.replace(/\/$/, '') || '/';
   return SLUG_TO_ID[path] || SLUG_TO_ID[path.slice(1)] || 'prazos';
 }
