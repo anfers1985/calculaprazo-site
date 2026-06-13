@@ -236,7 +236,7 @@
           <a href="https://x.com/CalculaPrazo" target="_blank" rel="noopener noreferrer"><span class="dm-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>X</a>
         </div>
       </div>
-      <a href="/sobre" onclick="event.preventDefault();closeMobNav();goTo('sobre')">Sobre</a>
+      <a href="/sobre" onclick="closeMobNav()">Sobre</a>
       <a href="/contato">✉ Contato</a>
       <a class="hdr-doacao" onclick="document.getElementById('modal-doacao').style.display='flex'" aria-label="Apoiar o Calcula Prazo via Pix">☕ Doação</a>
     </nav>
@@ -1271,168 +1271,6 @@
 </div>
 
 
-<!-- ══════════════════════════════════════
-     SOBRE
-══════════════════════════════════════ -->
-<div id="sec-sobre" class="sec">
-<h2 class="sr-only">Sobre o Calcula Prazo</h2>
-
-  <!-- breadcrumb igual ao das outras seções -->
-  <div style="background:var(--b900);padding:14px 0;">
-    <div class="container">
-      <div style="font-size:.78rem;color:rgba(255,255,255,.5);">
-        <span onclick="goTo('home')" style="cursor:pointer;color:rgba(255,255,255,.6);">Início</span>
-        <span class="bsep"> › </span>
-        <span style="color:#fff;font-weight:600;">Sobre o Calcula Prazo</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- bloco SEO principal — mesma estrutura de todas as seções -->
-  
-  
-  <section class="seo-content">
-    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
-      <h2>O que é o Calcula Prazo?</h2>
-    <p>O <strong>Calcula Prazo</strong> (calculaprazo.com.br) é uma plataforma de ferramentas jurídicas e profissionais online, gratuita e sem cadastro, criada para advogados, profissionais de recursos humanos, contadores e qualquer pessoa que precise de cálculos confiáveis e resultados tecnicamente fundamentados. Reúne 13 ferramentas de cálculo especializadas, uma base editorial dedicada ao Direito do Trabalho — atualizada com base em fontes primárias como TST, STF, TRTs, MTE e MPT — e integração com índices econômicos em tempo real. Tudo em um único endereço, sem necessidade de cadastro ou pagamento.</p>
-
-    <p>O site foi desenvolvido e é mantido por <strong>Anderson Fernandes</strong> (OAB/SC 44.858), advogado trabalhista com atuação em consultoria de relações trabalhistas e advocacia preventiva. O projeto nasceu da necessidade prática de reunir, em uma única plataforma de fácil acesso, as ferramentas de cálculo mais utilizadas no dia a dia jurídico e de RH — com rigor técnico, atualização constante e total gratuidade.</p>
-      <p>Todo o conteúdo editorial passa por curadoria técnica baseada em fontes primárias — TST, STF, TRTs, MTE e MPT. As tabelas de INSS, IRRF e índices de correção monetária são atualizadas conforme a legislação vigente. O Calcula Prazo não substitui assessoria jurídica profissional — os resultados são informativos e devem ser conferidos com o profissional responsável pelo caso concreto.</p>
-    </div>
-  </section>
-
-  <section class="seo-content">
-    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
-      <h2>Para quem é indicado?</h2>
-    <div class="card-grid">
-      <div class="card-item"><div class="ci-icon">⚖️</div><div class="ci-title">Advogados</div><div class="ci-desc">Prazos processuais, correção monetária, verbas rescisórias com fundamento na CLT e jurisprudência do TST.</div></div>
-      <div class="card-item"><div class="ci-icon">👥</div><div class="ci-title">Profissionais de RH</div><div class="ci-desc">Salário líquido, rescisão, eSocial, licenças e legislação trabalhista atualizada.</div></div>
-      <div class="card-item"><div class="ci-icon">📊</div><div class="ci-title">Contadores</div><div class="ci-desc">Juros, porcentagens, correção monetária com IPCA/IGP-M/SELIC e cálculos de folha.</div></div>
-      <div class="card-item"><div class="ci-icon">🧑‍💼</div><div class="ci-title">Trabalhadores</div><div class="ci-desc">Conferir verbas rescisórias, entender direitos e acompanhar novidades jurídicas com linguagem acessível.</div></div>
-    </div>
-    </div>
-  </section>
-
-  <section class="seo-content">
-    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
-      <h2>Ferramentas disponíveis</h2>
-    <p><strong>Trabalhista e folha:</strong> Calculadora de Verbas Rescisórias (CLT) e Calculadora de Salário Líquido com tabelas INSS e IRRF 2026 atualizadas.</p>
-            <p><strong>Prazos e datas:</strong> Calculadora de Prazo Processual (CLT/CPC/2015, dias úteis e corridos, com mais de 30 tipos pré-configurados) e Calculadora de Datas (diferença, soma e subtração de dias).</p>
-            <p><strong>Financeiro:</strong> Correção Monetária com dados reais do Banco Central (IPCA, IGP-M, INPC e SELIC), Calculadora de Juros simples e compostos e Calculadora de Porcentagem.</p>
-            <p><strong>Utilidades:</strong> Validador de CPF e CNPJ, Conversor de Moedas, Número por Extenso, Gerador de QR Code, Gerador de Senhas e Calculadora de IMC.</p>
-            <p><a href="/">→ Acessar todas as ferramentas gratuitamente</a></a></p>
-    </div>
-  </section>
-
-  <section class="seo-content">
-    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
-      <h2>Como os cálculos são feitos?</h2>
-    <p>Todos os cálculos são executados <strong>diretamente no navegador do usuário</strong>, sem envio de dados a servidores externos. Os índices de correção monetária (IPCA, IGP-M, INPC e SELIC) são obtidos da API pública do Banco Central do Brasil. As tabelas de INSS e IRRF são revisadas a cada atualização legislativa. As bases legais de cada ferramenta são indicadas diretamente na interface — artigos do CPC, da CLT, da CF/88 e das leis específicas — para que o usuário possa verificar a fundamentação de cada resultado.</p>
-    </div>
-  </section>
-
-  <section class="seo-content">
-    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
-      <h2>Conteúdo editorial</h2>
-    <p>Além das ferramentas, o Calcula Prazo mantém uma seção de conteúdo dedicada ao Direito do Trabalho, atualizada continuamente com base em fontes primárias como TST, STF, TRTs, MTE e MPT. Os artigos cobrem jurisprudência, legislação, eSocial, FGTS Digital, saúde e segurança do trabalho e orientações práticas para advogados, RH e contadores. Todo o conteúdo tem caráter informativo e não constitui assessoria jurídica.</p>
-    </div>
-  </section>
-
-  <section class="seo-content">
-    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
-      <h2>Por que é gratuito?</h2>
-    <p>O Calcula Prazo é financiado por anúncios exibidos via Google AdSense e por contribuições voluntárias de usuários. Esse modelo permite manter todas as funcionalidades gratuitas e sem restrição de acesso — sem planos pagos, sem limites de uso e sem bloqueio de ferramentas. Nenhum dado inserido nas calculadoras é coletado ou comercializado.</p>
-    </div>
-  </section>
-
-  <section class="seo-content">
-    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
-      <h2>Perguntas frequentes</h2>
-    <div id="faq-sobre">
-      <div class="faq-item" onclick="this.classList.toggle('open')">
-        <div class="faq-q">Os resultados têm validade jurídica? <span>＋</span></div>
-        <div class="faq-a">As ferramentas têm caráter informativo e de apoio. Os resultados são estimativas baseadas nas regras legais vigentes e nos dados informados pelo usuário, mas não substituem a análise de profissional habilitado nem constituem assessoria jurídica, contábil ou financeira.</div>
-      </div>
-      <div class="faq-item" onclick="this.classList.toggle('open')">
-        <div class="faq-q">Com que frequência os índices são atualizados? <span>＋</span></div>
-        <div class="faq-a">Os índices de correção monetária (IPCA, IGP-M, INPC, SELIC) são obtidos via API do Banco Central e refletem os dados mais recentes disponíveis. As tabelas de INSS e IRRF são atualizadas sempre que há alteração legislativa.</div>
-      </div>
-      <div class="faq-item" onclick="this.classList.toggle('open')">
-        <div class="faq-q">O site coleta dados dos usuários? <span>＋</span></div>
-        <div class="faq-a">Não. Os cálculos são processados inteiramente no navegador e não são enviados a nenhum servidor. O site usa cookies do Google AdSense para anúncios personalizados, conforme detalhado na Política de Privacidade.</div>
-      </div>
-      <div class="faq-item" onclick="this.classList.toggle('open')">
-        <div class="faq-q">Como reportar um erro ou sugerir uma ferramenta? <span>＋</span></div>
-        <div class="faq-a">Entre em contato pelo e-mail <a href="mailto:contato@calculaprazo.com.br">contato@calculaprazo.com.br</a> ou pela <a href="/contato">página de contato</a>. Todas as mensagens são lidas pessoalmente e respondidas em até 5 dias úteis.</div>
-      </div>
-    </div>
-    </div>
-  </section>
-
-  <section class="seo-content">
-    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
-      <h2>Quem mantém o Calcula Prazo</h2>
-    <p>O Calcula Prazo é desenvolvido e mantido por <strong>Anderson Fernandes</strong>, advogado trabalhista inscrito na OAB/SC sob o número 44.858, com atuação em consultoria de relações trabalhistas, análise de instrumentos normativos coletivos (CCT/ACT) e advocacia preventiva empresarial.</p>
-    <p>A atuação profissional abrange assessoria jurídica a empresas de médio e grande porte em temas como: gestão de jornada de trabalho, banco de horas, escalas de revezamento, eSocial e FGTS Digital, saúde e segurança do trabalho, representação sindical e negociação coletiva, além de análise de conformidade com o Direito Individual e Coletivo do Trabalho.</p>
-    <p>O projeto Calcula Prazo nasceu da demanda prática diária: reunir em um único endereço as ferramentas de cálculo mais utilizadas no exercício da advocacia trabalhista e na gestão de RH, com rigor técnico, atualização constante e acesso completamente gratuito.</p>
-    </div>
-  </section>
-
-  <section class="seo-content">
-    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
-      <h2>Metodologia e fontes</h2>
-    <p>Todo o conteúdo editorial do Calcula Prazo é produzido com base em fontes primárias do ordenamento jurídico brasileiro. As principais fontes utilizadas são:</p>
-    <ul>
-      <li><strong>Legislação:</strong> Consolidação das Leis do Trabalho (CLT), Constituição Federal de 1988, Código Civil, Código de Processo Civil (CPC/2015), leis extravagantes de Direito do Trabalho e Previdenciário.</li>
-      <li><strong>Jurisprudência:</strong> Decisões e Súmulas do Tribunal Superior do Trabalho (TST), do Supremo Tribunal Federal (STF), dos Tribunais Regionais do Trabalho (TRTs) e do Superior Tribunal de Justiça (STJ) quando aplicável.</li>
-      <li><strong>Normas administrativas:</strong> Portarias e Notas Técnicas do Ministério do Trabalho e Emprego (MTE), Resoluções do COFEN, Notas de Orientação do eSocial e Instruções Normativas da Receita Federal.</li>
-      <li><strong>Dados econômicos:</strong> API pública do Banco Central do Brasil (BCB/SGS) para índices de correção monetária (IPCA, IPCA-E, IGP-M, INPC e SELIC).</li>
-    </ul>
-    <p>Os artigos do blog são revisados periodicamente para refletir alterações legislativas, novas súmulas do TST e decisões vinculantes do STF. Quando uma decisão ou norma nova impacta o conteúdo publicado, o artigo é atualizado com indicação da data de revisão.</p>
-    </div>
-  </section>
-
-  <section class="seo-content">
-    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
-      <h2>Como as ferramentas são construídas e validadas</h2>
-    <p>Cada calculadora do Calcula Prazo segue um processo de desenvolvimento em três etapas:</p>
-    <ol>
-      <li><strong>Especificação técnica:</strong> mapeamento da base legal aplicável, identificação das variáveis necessárias e das exceções relevantes (ex.: categorias com jornada especial, tabelas progressivas de INSS, regras de proporcionalidade).</li>
-      <li><strong>Implementação e testes:</strong> desenvolvimento da lógica de cálculo com casos de teste baseados em exemplos reais e em decisões judiciais conhecidas. Cada ferramenta é verificada contra o resultado esperado para pelo menos dez cenários distintos antes de publicação.</li>
-      <li><strong>Atualização contínua:</strong> monitoramento de alterações na legislação e nas tabelas oficiais (INSS, IRRF, salário mínimo, piso salarial) para garantir que os resultados permaneçam precisos ao longo do tempo.</li>
-    </ol>
-    <p>Todas as ferramentas executam os cálculos inteiramente no navegador do usuário — nenhum dado inserido é transmitido a servidores externos. A privacidade dos dados do usuário é preservada por design.</p>
-    </div>
-  </section>
-
-  <section class="seo-content">
-    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
-      <h2>Limitações e disclaimer</h2>
-    <p>O Calcula Prazo é uma ferramenta de apoio — não substitui a assessoria de advogado, contador ou profissional de RH habilitado. Os resultados têm caráter informativo e são estimativas baseadas nas informações fornecidas pelo usuário e nas regras gerais da legislação vigente. Situações específicas — como cláusulas de convenção coletiva que afastem as regras gerais, enquadramentos especiais de categoria ou decisões judiciais transitadas em julgado — podem gerar resultados diferentes dos calculados pela ferramenta.</p>
-    <p>Em processos judiciais, os cálculos devem ser elaborados ou revisados pelo advogado responsável pela causa, que tem acesso ao conjunto completo de fatos e documentos do caso concreto.</p>
-    </div>
-  </section>
-
-  <section class="seo-content">
-    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
-      <h2>Histórico e evolução da plataforma</h2>
-    <p>O Calcula Prazo foi lançado em 2024 com foco inicial em prazos processuais trabalhistas. Ao longo de 2025 e 2026, a plataforma foi expandida para incluir as calculadoras financeiras (correção monetária, juros), as calculadoras trabalhistas (verbas rescisórias, salário líquido) e ferramentas de apoio ao trabalho jurídico e de RH. A seção de conteúdo editorial foi iniciada em 2025 e conta hoje com mais de 100 artigos dedicados ao Direito do Trabalho.</p>
-    <p>O projeto está em desenvolvimento ativo. Novas ferramentas são adicionadas conforme a demanda dos usuários e as necessidades identificadas na prática profissional. Sugestões de ferramentas ou temas para artigos podem ser enviadas pelo e-mail <a href="mailto:contato@calculaprazo.com.br">contato@calculaprazo.com.br</a>.</p>
-    </div>
-  </section>
-
-  <section class="seo-content">
-    <div class="container" style="max-width:800px;padding:48px 20px 32px;">
-      <h2>Contato</h2>
-    <p>Para dúvidas, correções ou sugestões: <a href="mailto:contato@calculaprazo.com.br"><strong>contato@calculaprazo.com.br</strong></a> — ou acesse a <a href="/contato">página de contato</a>. Respondemos em até 5 dias úteis.</p>
-
-  </div>
-    </div>
-  </section>
-
-</div>
-
-</div>
 
 <!-- ══════════════════════════════════════
      FOOTER
@@ -1615,7 +1453,7 @@
         <li><a href="#" onclick="event.preventDefault(); goTo('imc')">IMC</a></li>
       </ul></div>
       <div class="ftr-col"><h4>Informações</h4><ul>
-        <li><a href="/sobre" onclick="event.preventDefault();window.goTo('sobre')">Sobre o Calcula Prazo</a></li>
+        <li><a href="/sobre">Sobre o Calcula Prazo</a></li>
         <li><a href="/#conteudo" onclick="navGoTo('blog')" style="cursor:pointer;color:rgba(255,255,255,.5);">Conteúdo / Blog</a></li>
         <li><a href="/contato">Contato</a></li>
         <li><a href="/privacidade">Privacidade & LGPD</a></li>

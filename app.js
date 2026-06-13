@@ -4,7 +4,7 @@ const NAV_MAP = {
   home:'home',prazos:'prazos',blog:'blog',calc:'calc',correcao:'correcao',juros:'juros',
   trabalhista:'trabalhista',salario:'salario',porcentagem:'porcentagem',
   moedas:'moedas',valid:'valid',qrcode:'qrcode',senhas:'senhas',
-  extenso:'extenso',imc:'imc',datas:'datas',util:'util',gerador:'valid',sobre:'sobre'
+  extenso:'extenso',imc:'imc',datas:'datas',util:'util',gerador:'valid'
 };
 const NAV_ACTIVE = {
   home:'home',prazos:'prazos',
@@ -12,7 +12,7 @@ const NAV_ACTIVE = {
   salario:'tools',porcentagem:'tools',moedas:'tools',
   valid:'tools',gerador:'tools',qrcode:'tools',senhas:'tools',
   extenso:'tools',imc:'tools',datas:'tools',util:'tools',
-  blog:'conteudo',sobre:'sobre'
+  blog:'conteudo'
 };
 
 function goTo(id) {
@@ -1676,14 +1676,6 @@ const SEO = {
     desc:  'Calculadoras de prazos processuais (CLT/CPC), verbas rescisórias, salário líquido (INSS/IRRF 2026) e correção monetária — além de acervo editorial sobre Direito do Trabalho. Para advogados, RH e contadores. Grátis, sem cadastro.',
     h1:    'Calculadoras Jurídicas e Conteúdo Trabalhista',
     kw:    'calculadora de prazos processuais CLT, verbas rescisórias, salário líquido INSS IRRF 2026, correção monetária IPCA SELIC, calculadora trabalhista grátis, prazo processual CPC TST',
-    schemaType: null,
-  },
-  sobre: {
-    slug: 'sobre',
-    title: 'Sobre o Calcula Prazo – Ferramentas Jurídicas Gratuitas para Advogados',
-    desc:  'Conheça o Calcula Prazo: quem somos, nossa missão e como ajudamos advogados, contadores e profissionais de RH com calculadoras gratuitas e confiáveis.',
-    h1:    'Sobre o Calcula Prazo',
-    kw:    'calcula prazo, ferramentas jurídicas, calculadoras gratuitas, advogados, RH',
     schemaType: null,
   },
 };
