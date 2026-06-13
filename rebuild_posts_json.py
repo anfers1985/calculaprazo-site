@@ -49,7 +49,7 @@ def extract_meta(filepath):
         m = re.search(pattern, html)
         return m.group(1).strip() if m else default
 
-    title    = get(r'<title>(.+?) \| CalculaPrazo', "")
+    title    = get(r'<title>(.+?) \| Calcula Prazo', "")
     desc     = get(r'<meta name="description" content="([^"]+)"', "")
     slug     = get(r'<link[^>]+canonical[^>]+href="https://calculaprazo\.com\.br/blog/([^"]+)"', "")
     date_pub = get(r'"datePublished":"([^"]+)"', "")
