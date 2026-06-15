@@ -1841,7 +1841,11 @@ window.addEventListener('popstate', function(e) {
 // ── Inicialização — lê a URL ao carregar ────────────────
 document.addEventListener('DOMContentLoaded', function() {
   var id = resolveIdFromURL();
-  if (location.pathname === '/' || location.pathname === '' || !id) {
+  // Se há hash na URL (ex: /#conteudo), usa o id resolvido mesmo na raiz
+  if (id && id !== 'prazos') {
+    _navOriginal(id);
+    updateSEO(id);
+  } else if (location.pathname === '/' || location.pathname === '' || !id) {
     _navOriginal('home');
     updateSEO('home');
   } else {
