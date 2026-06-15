@@ -1,5 +1,16 @@
 [
   {
+    "id": "mte-alerta-notificacoes-det-pendencias-fgts",
+    "title": "MTE alerta empresas sobre notificações no DET",
+    "category": "noticias-mte",
+    "category_label": "MTE",
+    "excerpt": "Secretaria de Inspeção do Trabalho reforça a importância de acompanhar o DET para regularizar pendências de FGTS antes do lançamento definitivo.",
+    "image": "https://det.sit.trabalho.gov.br/manual/_images/figuraMensagemDeEntrada.png",
+    "date": "2026-06-15",
+    "updatedAt": "2026-06-15",
+    "tags": []
+  },
+  {
     "id": "tst-mantm-ao-de-criana-no-foro-de-residncia",
     "title": "TST mantém ação de criança no foro de residência",
     "category": "jurisprudencia-tst",
