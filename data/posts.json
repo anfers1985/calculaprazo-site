@@ -1,5 +1,16 @@
 [
   {
+    "id": "stf-invalida-idade-minima-aposentadoria-especial",
+    "title": "STF derruba idade mínima da aposentadoria especial",
+    "category": "jurisprudencia-stf",
+    "category_label": "STF",
+    "excerpt": "STF declara inconstitucional idade mínima para aposentadoria especial de trabalhadores expostos a agentes nocivos à saúde.",
+    "image": "https://noticias-stf-wp-prd.s3.sa-east-1.amazonaws.com/wp-content/uploads/wpallimport/uploads/2026/04/23210716/7-Antonio-Augusto-e1776990669570.jpg",
+    "date": "2026-06-15",
+    "updatedAt": "2026-06-15",
+    "tags": []
+  },
+  {
     "id": "tst-insalubridade-ruido-protetor-auricular",
     "title": "TST garante insalubridade por exposição a ruído",
     "category": "jurisprudencia-tst",
