@@ -714,33 +714,14 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
    Garante que "Ferramentas" não seja cortado
    em telas de até 320px
 ════════════════════════════════════════ */
-@media(max-width:640px){
-  /* Linha 2 da nav: flex-wrap para evitar corte */
-  .hdr-nav {
-    flex-wrap: wrap !important;
-    justify-content: center !important;
-    gap: 2px !important;
-  }
-  /* Cada item da nav: tamanho flex mínimo para caber o texto */
-  .hdr-nav > a,
-  .hdr-nav > .nav-dropdown {
-    flex: 1 1 auto !important;
-    min-width: 0 !important;
-    width: auto !important;
-    font-size: .72rem !important;
-    padding: 4px 6px !important;
-    white-space: nowrap !important;
-    overflow: visible !important;
-    text-overflow: clip !important;
-  }
-  /* Em telas muito pequenas (320px), reduz mais o font-size */
-  @media(max-width:360px){
-    .hdr-nav > a,
-    .hdr-nav > .nav-dropdown > a {
-      font-size: .65rem !important;
-      padding: 3px 4px !important;
-    }
-  }
+@media(max-width:768px){
+  .hdr-burger{display:flex !important;}
+  .hdr-right{display:none !important;}
+  #hdr{height:auto !important;}
+  .hdr-inner{flex-direction:row !important;height:52px !important;padding:0 12px !important;align-items:center !important;}
+  .hdr-nav{display:none !important;position:fixed;top:52px;left:0;right:0;background:var(--card,#fff);border-bottom:2px solid var(--acc,#2563eb);padding:8px 0 12px;flex-direction:column;align-items:stretch;gap:0;z-index:899;box-shadow:0 8px 24px rgba(15,23,42,.12);max-height:calc(100vh - 52px);overflow-y:auto;}
+  .hdr-nav.mob-open{display:flex !important;}
+  .hdr-nav a{width:100%;padding:13px 20px;font-size:.93rem;border-bottom:1px solid var(--brd,#e2e8f0);white-space:normal;}
 }
 
 /* Override: calculadora centralizada, sem grid lateral */
@@ -928,77 +909,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 /* Spans para controle mobile/desktop */
 .d-mob-hide { display: inline; }
 
-@media (max-width: 640px) {
-  /* Esconde partes longas no mobile */
-  .d-mob-hide { display: none; }
 
-  /* Header: coluna */
-  #hdr { height: auto !important; }
-  .hdr-inner {
-    flex-direction: column !important;
-    height: auto !important;
-    padding: 6px 10px 0;
-    gap: 0;
-    align-items: stretch;
-  }
-
-  /* Linha 1: logo centralizado */
-  .logo {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin-bottom: 5px;
-    font-size: 1.1rem !important;
-  }
-
-  /* Esconde Calcular Prazo */
-  .hdr-right { display: none !important; }
-
-  /* Linha 2: botões em linha com flex-wrap para evitar corte */
-  .hdr-nav {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;      /* permite quebra se necessário */
-    width: 100%;
-    border-top: 1px solid var(--brd);
-    padding: 3px 0 4px;
-    gap: 0;
-    overflow: visible !important;
-    justify-content: space-evenly;   /* distribui espaço igualmente */
-  }
-  /* Cada item da nav: flex auto para caber o texto sem cortar */
-  .hdr-nav > a,
-  .hdr-nav > .nav-dropdown {
-    flex: 1 1 auto !important;
-    min-width: 0 !important;
-    width: auto !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: .72rem !important;    /* ligeiramente maior para legibilidade */
-    padding: 4px 5px !important;
-    text-align: center;
-    white-space: nowrap !important;  /* não quebra o texto internamente */
-    overflow: visible !important;    /* não corta o texto */
-  }
-  /* Em telas muito pequenas (320px) reduz font-size */
-  @media(max-width:360px){
-    .hdr-nav > a,
-    .hdr-nav > .nav-dropdown > a {
-      font-size: .62rem !important;
-      padding: 3px 3px !important;
-    }
-  }
-  /* O <a> dentro do dropdown também ocupa tudo */
-  .hdr-nav > .nav-dropdown > a {
-    width: 100%;
-    justify-content: center;
-  }
-  /* Dropdown: posição calculada pelo JS (positionDropdown) */
-  .nav-drop-menu {
-    min-width: 240px !important;
-  }
-}
 
 
 /* ── BLOG POST OVERRIDES ── */
@@ -1139,6 +1050,17 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 /* ── AdSense: colapsa blocos vazios até aprovação ── */
 ins.adsbygoogle:not([data-ad-status="filled"]) { min-height: 0 !important; }
 ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !important; }
+.hdr-burger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:44px;height:44px;background:none;border:none;cursor:pointer;padding:8px;border-radius:8px;flex-shrink:0;margin-left:auto;}
+.hdr-burger span{display:block;width:22px;height:2px;background:var(--txt-m,#64748b);border-radius:2px;transition:transform .22s,opacity .18s;}
+.hdr-burger.is-open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hdr-burger.is-open span:nth-child(2){opacity:0;}
+.hdr-burger.is-open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+@media(max-width:768px){
+  .hdr-burger{display:flex !important;}
+  .hdr-nav{display:none !important;position:fixed;top:52px;left:0;right:0;background:var(--card,#fff);border-bottom:2px solid var(--acc,#2563eb);padding:8px 0 12px;flex-direction:column;align-items:stretch;gap:0;z-index:899;box-shadow:0 8px 24px rgba(15,23,42,.12);max-height:calc(100vh - 52px);overflow-y:auto;}
+  .hdr-nav.mob-open{display:flex !important;}
+  .hdr-nav a{width:100%;padding:13px 20px;font-size:.93rem;border-bottom:1px solid var(--brd,#e2e8f0);white-space:normal;}
+}
 </style>
 </head>
 <body>
@@ -1396,7 +1318,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
         <a class="logo" href="/"><div class="logo-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 7h18"/></svg></div><span class="logo-text">Calcula</span><span>Prazo</span></a>
         <p class="ftr-desc">Calculadoras jurídicas gratuitas e conteúdo especializado em Direito do Trabalho para advogados, contadores, profissionais de RH e trabalhadores.</p>
         <p style="margin-top:12px;font-size:.8rem;color:rgba(255,255,255,.45);line-height:1.6;">✉ Dúvidas, sugestões ou elogios?<br>
-        <a href="/cdn-cgi/l/email-protection#b4d7dbdac0d5c0dbf4d7d5d8d7c1d8d5c4c6d5cedb9ad7dbd99ad6c6" style="color:rgba(255,255,255,.6);text-decoration:underline;"><span class="__cf_email__" data-cfemail="8fece0e1fbeefbe0cfeceee3ecfae3eefffdeef5e0a1ece0e2a1edfd">[email&#160;protected]</span></a></p>
+        <a href="/cdn-cgi/l/email-protection#61020e0f1500150e2102000d02140d001113001b0e4f020e0c4f0313" style="color:rgba(255,255,255,.6);text-decoration:underline;"><span class="__cf_email__" data-cfemail="22414d4c5643564d6241434e41574e43525043584d0c414d4f0c4050">[email&#160;protected]</span></a></p>
       </div>
       <div class="ftr-col"><h4>Prazos</h4><ul>
         <li><a href="/#calculadora-de-prazo-processual">Calculadora de Prazos</a></li>
@@ -1453,7 +1375,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     <div style="background:var(--b50);border:1.5px solid var(--b200);border-radius:var(--rl);padding:18px;margin-bottom:20px;">
       <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--acc);margin-bottom:8px;">Pix — Chave e-mail</p>
       <div style="display:flex;align-items:center;gap:10px;">
-        <div id="pix-key-display" style="font-family:var(--fh);font-size:.85rem;font-weight:700;color:var(--txt);flex:1;background:#fff;border:1.5px solid var(--brd);border-radius:var(--r);padding:10px 12px;white-space:nowrap;overflow:visible;text-align:center;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="482b27263c293c27082b29242b3d2429383a293227662b2725662a3a">[email&#160;protected]</a></div>
+        <div id="pix-key-display" style="font-family:var(--fh);font-size:.85rem;font-weight:700;color:var(--txt);flex:1;background:#fff;border:1.5px solid var(--brd);border-radius:var(--r);padding:10px 12px;white-space:nowrap;overflow:visible;text-align:center;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="90f3fffee4f1e4ffd0f3f1fcf3e5fcf1e0e2f1eaffbef3fffdbef2e2">[email&#160;protected]</a></div>
         <button onclick="navigator.clipboard.writeText('contato@calculaprazo.com.br').then(()=>{this.textContent='✅';setTimeout(()=>this.textContent='📋',1500)})" style="background:var(--acc);color:#fff;border:none;border-radius:var(--r);padding:10px 13px;cursor:pointer;font-size:.85rem;flex-shrink:0;">📋</button>
       </div>
       <p style="font-size:.73rem;color:var(--txt-s);margin-top:8px;"></p>
