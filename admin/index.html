@@ -204,7 +204,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
               <optgroup label="🏛️ Órgãos Públicos">
                 <option value="noticias-mte">MTE</option>
                 <option value="noticias-mpt">MPT</option>
-                <option value="noticias-mte-mpt">MTE &amp; MPT</option>
+                <option value="noticias-mte-mpt">Outros órgãos</option>
               </optgroup>
               <optgroup label="📋 Legislação e Normas">
                 <option value="legislacao-clt">CLT</option>
@@ -313,7 +313,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
           <optgroup label="🏛️ Órgãos Públicos">
             <option value="noticias-mte">MTE</option>
             <option value="noticias-mpt">MPT</option>
-            <option value="noticias-mte-mpt">MTE &amp; MPT</option>
+            <option value="noticias-mte-mpt">Outros órgãos</option>
           </optgroup>
           <optgroup label="📋 Legislação e Normas">
             <option value="legislacao-clt">CLT</option>
@@ -615,7 +615,7 @@ function catLabel(c){
   const map = {
     'jurisprudencia-trts':'⚖️ TRT','jurisprudencia-tst':'⚖️ TST',
     'jurisprudencia-stj':'⚖️ STJ','jurisprudencia-stf':'⚖️ STF','jurisprudencia':'⚖️ Jurisprudência',
-    'noticias-mte':'🏛️ MTE','noticias-mpt':'🏛️ MPT','noticias-mte-mpt':'🏛️ MTE & MPT',
+    'noticias-mte':'🏛️ MTE','noticias-mpt':'🏛️ MPT','noticias-mte-mpt':'🏛️ Outros órgãos',
     'legislacao-clt':'📋 CLT','legislacao-cf':'📋 CF/88',
     'esocial':'📋 eSocial','fgts-digital':'📋 FGTS','esocial-fgts-digital':'📋 eSocial/FGTS',
     'legislacao-previdenciario':'📋 Previdenciário','legislacao-sindical':'📋 Sindical',
@@ -905,7 +905,7 @@ async function publicarNoSite() {
 
     const catLabelsMap = {
       'jurisprudencia-trts':'TRT','jurisprudencia-tst':'TST','jurisprudencia-stj':'STJ','jurisprudencia-stf':'STF','jurisprudencia':'Jurisprudência',
-      'noticias-mte':'MTE','noticias-mpt':'MPT','noticias-mte-mpt':'MTE & MPT',
+      'noticias-mte':'MTE','noticias-mpt':'MPT','noticias-mte-mpt':'Outros órgãos',
       'legislacao-clt':'CLT','legislacao-cf':'CF/88','esocial':'eSocial','fgts-digital':'FGTS','esocial-fgts-digital':'eSocial/FGTS','legislacao-previdenciario':'Previdenciário','legislacao-sindical':'Sindical','legislacao-portarias':'Portarias','legislacao-nr':'NR','legislacao-normas':'Legislação e Normas',
       'rh-folha':'Folha de Pagamento','rh-jornada':'Jornada','rh-contrato':'Contrato','rh-salario':'Salário','rh-rescisao':'Rescisão','saude-seguranca':'Saúde e Segurança','rh-beneficios':'Benefícios','rh-ctps':'CTPS','rh-sindical':'Rel. Sindical','rh-fiscalizacao':'Fiscalização','rh-inss':'INSS','rh-modelos':'Modelos RH','orientacoes-praticas':'Outros RH',
       'processual-peticoes':'Petições e Peças','processual-pratica':'Prática Advocatícia','modelos':'Modelos','artigos':'Artigos','processual-analises':'Análises','processual-outros':'Outros Processual',
@@ -1032,7 +1032,7 @@ async function baixarHTML() {
 
     const catLabelsMap = {
       'jurisprudencia-trts':'TRT','jurisprudencia-tst':'TST','jurisprudencia-stj':'STJ','jurisprudencia-stf':'STF','jurisprudencia':'Jurisprudência',
-      'noticias-mte':'MTE','noticias-mpt':'MPT','noticias-mte-mpt':'MTE & MPT',
+      'noticias-mte':'MTE','noticias-mpt':'MPT','noticias-mte-mpt':'Outros órgãos',
       'legislacao-clt':'CLT','legislacao-cf':'CF/88','esocial':'eSocial','fgts-digital':'FGTS','esocial-fgts-digital':'eSocial/FGTS','legislacao-previdenciario':'Previdenciário','legislacao-sindical':'Sindical','legislacao-portarias':'Portarias','legislacao-nr':'NR','legislacao-normas':'Legislação e Normas',
       'rh-folha':'Folha de Pagamento','rh-jornada':'Jornada','rh-contrato':'Contrato','rh-salario':'Salário','rh-rescisao':'Rescisão','saude-seguranca':'Saúde e Segurança','rh-beneficios':'Benefícios','rh-ctps':'CTPS','rh-sindical':'Rel. Sindical','rh-fiscalizacao':'Fiscalização','rh-inss':'INSS','rh-modelos':'Modelos RH','orientacoes-praticas':'Outros RH',
       'processual-peticoes':'Petições e Peças','processual-pratica':'Prática Advocatícia','modelos':'Modelos','artigos':'Artigos','processual-analises':'Análises','processual-outros':'Outros Processual',
