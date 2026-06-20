@@ -123,24 +123,22 @@ export default {
       if (!env.INDEXNOW_KEY) return json({ error: 'INDEXNOW_KEY não configurado no Worker' }, 500, origin);
 
       try {
-        // Usa o formato GET (mais simples, um parâmetro por vez) em vez do POST em lote,
-        // para reduzir pontos de falha durante o diagnóstico inicial.
-        const results = [];
-        for (const u of urls) {
-          const qs = new URLSearchParams({
-            url: u,
+        const resp = await fetch('https://api.indexnow.org/indexnow', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json; charset=utf-8' },
+          body: JSON.stringify({
+            host: 'calculaprazo.com.br',
             key: env.INDEXNOW_KEY,
-            keyLocation: `https://calculaprazo.com.br/${env.INDEXNOW_KEY}.txt`
-          });
-          const resp = await fetch(`https://api.indexnow.org/indexnow?${qs.toString()}`, { method: 'GET' });
-          let detail = '';
-          if (resp.status !== 200 && resp.status !== 202) {
-            try { detail = await resp.text(); } catch (e2) { detail = '(sem corpo)'; }
-          }
-          results.push({ url: u, status: resp.status, detail: detail.slice(0, 300) });
+            keyLocation: `https://calculaprazo.com.br/${env.INDEXNOW_KEY}.txt`,
+            urlList: urls
+          })
+        });
+        const ok = resp.status === 200 || resp.status === 202;
+        let detail = '';
+        if (!ok) {
+          try { detail = await resp.text(); } catch (e2) { detail = '(sem corpo de resposta)'; }
         }
-        const allOk = results.every(r => r.status === 200 || r.status === 202);
-        return json({ ok: allOk, status: results[0]?.status, sent: urls.length, results }, allOk ? 200 : 502, origin);
+        return json({ ok, status: resp.status, sent: urls.length, detail: detail.slice(0, 500) }, ok ? 200 : 502, origin);
       } catch (e) {
         const errMsg = (e && (e.message || e.toString())) || 'erro desconhecido (sem mensagem)';
         const errName = (e && e.name) || 'Error';
