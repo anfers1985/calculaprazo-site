@@ -123,20 +123,28 @@ export default {
       if (!env.INDEXNOW_KEY) return json({ error: 'INDEXNOW_KEY não configurado no Worker' }, 500, origin);
 
       try {
-        const resp = await fetch('https://api.indexnow.org/indexnow', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json; charset=utf-8' },
-          body: JSON.stringify({
-            host: 'calculaprazo.com.br',
+        // Usa o formato GET (mais simples, um parâmetro por vez) em vez do POST em lote,
+        // para reduzir pontos de falha durante o diagnóstico inicial.
+        const results = [];
+        for (const u of urls) {
+          const qs = new URLSearchParams({
+            url: u,
             key: env.INDEXNOW_KEY,
-            keyLocation: `https://calculaprazo.com.br/${env.INDEXNOW_KEY}.txt`,
-            urlList: urls
-          })
-        });
-        const ok = resp.status === 200 || resp.status === 202;
-        return json({ ok, status: resp.status, sent: urls.length }, ok ? 200 : 502, origin);
+            keyLocation: `https://calculaprazo.com.br/${env.INDEXNOW_KEY}.txt`
+          });
+          const resp = await fetch(`https://api.indexnow.org/indexnow?${qs.toString()}`, { method: 'GET' });
+          let detail = '';
+          if (resp.status !== 200 && resp.status !== 202) {
+            try { detail = await resp.text(); } catch (e2) { detail = '(sem corpo)'; }
+          }
+          results.push({ url: u, status: resp.status, detail: detail.slice(0, 300) });
+        }
+        const allOk = results.every(r => r.status === 200 || r.status === 202);
+        return json({ ok: allOk, status: results[0]?.status, sent: urls.length, results }, allOk ? 200 : 502, origin);
       } catch (e) {
-        return json({ error: 'Falha ao chamar IndexNow: ' + e.message }, 502, origin);
+        const errMsg = (e && (e.message || e.toString())) || 'erro desconhecido (sem mensagem)';
+        const errName = (e && e.name) || 'Error';
+        return json({ error: `Falha ao chamar IndexNow [${errName}]: ${errMsg}` }, 502, origin);
       }
     }
 
