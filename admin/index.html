@@ -150,6 +150,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
       <a onclick="goPage('list')" id="nav-list"><span class="s-icon">📄</span> Gerenciar Posts</a>
       <div class="s-sep"></div>
       <a onclick="goPage('automation')" id="nav-automation"><span class="s-icon">🤖</span> Automação</a>
+      <a onclick="goPage('studio')" id="nav-studio"><span class="s-icon">🚀</span> IA Content Studio</a>
       <a onclick="goPage('export')" id="nav-export"><span class="s-icon">📦</span> Exportar Dados</a>
       <a onclick="goPage('settings')" id="nav-settings"><span class="s-icon">⚙️</span> Configurações</a>
     </nav>
@@ -385,6 +386,44 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
       </div>
     </div>
 
+    <!-- IA CONTENT STUDIO -->
+    <div class="page" id="page-studio">
+      <div class="page-header">
+        <div><div class="page-title">🚀 IA Content Studio</div><div class="page-sub">Gere prompts e textos prontos a partir de um artigo já publicado</div></div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <div style="font-size:.9rem;font-weight:700;margin-bottom:14px;">1. Selecione o artigo</div>
+        <div class="fg">
+          <input type="text" id="studio-search" placeholder="🔍 Buscar por título..." oninput="studioRenderArticleList()">
+        </div>
+        <div id="studio-article-list" style="max-height:220px;overflow-y:auto;border:1px solid var(--brd);border-radius:8px;"></div>
+        <div id="studio-selected-article" style="display:none;margin-top:14px;padding:12px 14px;background:var(--b50);border:1px solid var(--b200);border-radius:8px;">
+          <div style="font-size:.78rem;color:var(--txt-s);margin-bottom:2px;">Artigo selecionado:</div>
+          <div id="studio-selected-title" style="font-size:.88rem;font-weight:700;color:var(--txt);"></div>
+          <div id="studio-selected-url" style="font-size:.76rem;color:var(--acc);margin-top:2px;"></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <div style="font-size:.9rem;font-weight:700;margin-bottom:14px;">2. Gere o conteúdo</div>
+        <p style="font-size:.8rem;color:var(--txt-s);margin-bottom:14px;">Cada bloco usa o provedor de IA configurado em Configurações → Provedores de IA. As imagens não são geradas aqui — copie o prompt de imagem e cole no Grok/ChatGPT/Gemini como você já faz.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+          <button class="btn btn-p" id="btn-gerar-tudo" onclick="studioGerarTudo()">⚡ Gerar Tudo</button>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-g" onclick="studioGerarUm('infografico')">🖼️ Infográfico</button>
+          <button class="btn btn-g" onclick="studioGerarUm('redes_sociais')">📱 Redes Sociais</button>
+          <button class="btn btn-g" onclick="studioGerarUm('youtube_comunidade')">▶️ Post Comunidade YouTube</button>
+          <button class="btn btn-g" onclick="studioGerarUm('resumo_executivo')">📧 Resumo Executivo</button>
+          <button class="btn btn-g" onclick="studioGerarUm('thread_x')">🧵 Thread X</button>
+          <button class="btn btn-g" onclick="studioGerarUm('carrossel')">🎠 Carrossel</button>
+        </div>
+      </div>
+
+      <div id="studio-results"></div>
+    </div>
+
     <!-- EXPORT -->
     <div class="page" id="page-export">
       <div class="page-header">
@@ -419,7 +458,38 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
           <button class="btn btn-g" onclick="testGitHubPAT()">🔍 Testar Token</button>
         </div>
         <div id="pat-test-result" style="margin-top:10px;font-size:.82rem;padding:10px 14px;border-radius:8px;display:none;"></div>
-        
+
+        <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--brd);">
+          <div style="font-size:.9rem;font-weight:700;margin-bottom:6px;">🔎 Indexação Automática + Content Studio</div>
+          <p style="font-size:.78rem;color:var(--txt-s);margin-bottom:12px;">Este secret autoriza o painel a usar o Worker <code>calculaprazo-views-api</code> para: (1) atualizar o <code>sitemap.xml</code> e notificar Google/Bing automaticamente ao publicar, e (2) gerar conteúdo no IA Content Studio. Configure o mesmo valor da variável <code>ADMIN_SECRET</code> no Worker.</p>
+          <div class="fg">
+            <label>Worker Admin Secret</label>
+            <input type="password" id="worker-secret-input" placeholder="mesmo valor de ADMIN_SECRET no Worker">
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+            <button class="btn btn-p" onclick="saveWorkerSecret()">💾 Salvar Secret</button>
+            <button class="btn btn-g" onclick="testIndexingSetup()">🔍 Testar Indexação</button>
+          </div>
+          <div id="indexing-test-result" style="margin-top:10px;font-size:.82rem;padding:10px 14px;border-radius:8px;display:none;"></div>
+        </div>
+
+        <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--brd);">
+          <div style="font-size:.9rem;font-weight:700;margin-bottom:6px;">🤖 Provedores de IA (Content Studio)</div>
+          <p style="font-size:.78rem;color:var(--txt-s);margin-bottom:12px;">Cole a chave de cada provedor que for usar (nenhuma é obrigatória). As chaves ficam só no seu navegador e são enviadas ao Worker apenas no momento da geração. O nome do modelo já vem preenchido com uma opção atual e barata/gratuita — troque se quiser usar outro.</p>
+          <div class="fg"><label>Gemini API Key (Google AI Studio)</label><input type="password" id="ai-key-gemini" placeholder="AIza..."></div>
+          <div class="fg"><label>Modelo Gemini</label><input type="text" id="ai-model-gemini" placeholder="gemini-2.5-flash" value="gemini-2.5-flash"></div>
+          <div class="fg"><label>OpenAI API Key</label><input type="password" id="ai-key-openai" placeholder="sk-..."></div>
+          <div class="fg"><label>Modelo OpenAI</label><input type="text" id="ai-model-openai" placeholder="gpt-5.4-mini" value="gpt-5.4-mini"></div>
+          <div class="fg"><label>Grok (xAI) API Key</label><input type="password" id="ai-key-grok" placeholder="xai-..."></div>
+          <div class="fg"><label>Modelo Grok</label><input type="text" id="ai-model-grok" placeholder="grok-4.3" value="grok-4.3"></div>
+          <div class="fg"><label>DeepSeek API Key</label><input type="password" id="ai-key-deepseek" placeholder="sk-..."></div>
+          <div class="fg"><label>Modelo DeepSeek</label><input type="text" id="ai-model-deepseek" placeholder="deepseek-v4-flash" value="deepseek-v4-flash"></div>
+          <div class="fg"><label>Claude (Anthropic) API Key</label><input type="password" id="ai-key-claude" placeholder="sk-ant-..."></div>
+          <div class="fg"><label>Modelo Claude</label><input type="text" id="ai-model-claude" placeholder="claude-sonnet-4-6" value="claude-sonnet-4-6"></div>
+          <button class="btn btn-p" onclick="saveAIKeys()">💾 Salvar Chaves</button>
+          <div id="ai-keys-saved-msg" style="margin-top:10px;font-size:.82rem;display:none;"></div>
+        </div>
+
         <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--brd);">
           <div style="font-size:.9rem;font-weight:700;margin-bottom:16px;">🔒 Alterar Senha do Painel</div>
           <div class="fg"><label>Nova senha</label><input type="password" id="new-pass" placeholder="Mínimo 8 caracteres"></div>
@@ -459,11 +529,37 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
 // ════════════════════════════════════════
 const ADMIN_PASS_KEY = 'cp_admin_pass';
 const POSTS_KEY      = 'cp_posts';
-const GH_PAT_KEY     = 'cp_gh_pat';
+const GH_PAT_KEY      = 'cp_gh_pat';
+const WORKER_SECRET_KEY = 'cp_worker_secret';
 
 const GITHUB_OWNER = 'anfers1985';
 const GITHUB_REPO  = 'calculaprazo-site';
 const GITHUB_BRANCH = 'main';
+
+const WORKER_URL    = 'https://calculaprazo-views-api.andersonfernand3s.workers.dev';
+const SITE_BASE_URL = 'https://calculaprazo.com.br';
+const AI_KEYS_KEY    = 'cp_ai_keys';
+const STUDIO_HISTORY_KEY = 'cp_studio_history';
+
+// Páginas estáticas fixas do sitemap (fora do blog) — mantidas em sincronia manual
+const SITEMAP_STATIC_PAGES = [
+  { loc: '/',                                  changefreq: 'daily',   priority: '1.0' },
+  { loc: '/calculadora-de-prazo-processual',    changefreq: 'monthly', priority: '0.9' },
+  { loc: '/calculadora-verbas-trabalhistas',    changefreq: 'monthly', priority: '0.9' },
+  { loc: '/correcao-monetaria',                 changefreq: 'monthly', priority: '0.8' },
+  { loc: '/calculadora-salario-liquido',        changefreq: 'monthly', priority: '0.8' },
+  { loc: '/calculadora-de-juros',               changefreq: 'monthly', priority: '0.5' },
+  { loc: '/calculadora-de-porcentagem',         changefreq: 'monthly', priority: '0.3' },
+  { loc: '/calculadora-de-datas',               changefreq: 'monthly', priority: '0.3' },
+  { loc: '/conversor-de-moedas',                changefreq: 'monthly', priority: '0.3' },
+  { loc: '/validador-cpf-cnpj',                 changefreq: 'monthly', priority: '0.3' },
+  { loc: '/numero-por-extenso',                 changefreq: 'monthly', priority: '0.3' },
+  { loc: '/calculadora-imc',                    changefreq: 'monthly', priority: '0.3' },
+  { loc: '/sobre',                              changefreq: 'monthly', priority: '0.6' },
+  { loc: '/contato',                            changefreq: 'monthly', priority: '0.5' },
+  { loc: '/privacidade',                        changefreq: 'yearly',  priority: '0.3' },
+  { loc: '/termos',                             changefreq: 'yearly',  priority: '0.3' }
+];
 
 // ════════════════════════════════════════
 // AUTH
@@ -507,6 +603,53 @@ function saveGitHubSettings(){
   }
   localStorage.setItem(GH_PAT_KEY, pat);
   toast('Token salvo! Clique em Testar Token para verificar.','ok');
+}
+
+function saveWorkerSecret(){
+  const secret = document.getElementById('worker-secret-input').value.trim();
+  if(!secret){ toast('Informe o secret','err'); return; }
+  localStorage.setItem(WORKER_SECRET_KEY, secret);
+  toast('Secret salvo! Clique em Testar Indexação para verificar.','ok');
+}
+
+async function testIndexingSetup(){
+  const secret = localStorage.getItem(WORKER_SECRET_KEY) || document.getElementById('worker-secret-input').value.trim();
+  const div = document.getElementById('indexing-test-result');
+  if(!secret){ toast('Salve o secret primeiro.','err'); return; }
+  div.style.display='block'; div.style.background='#FFFBEB';
+  div.innerHTML='<span style="color:#D97706;">⏳ Testando IndexNow e Google Indexing API...</span>';
+
+  const testUrl = SITE_BASE_URL + '/';
+  const results = [];
+
+  try {
+    const rIN = await fetch(`${WORKER_URL}/index-now`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Admin-Secret': secret },
+      body: JSON.stringify({ urls: [testUrl] })
+    });
+    const dIN = await rIN.json().catch(()=>({}));
+    results.push(rIN.ok ? `✅ IndexNow: ok (status ${dIN.status||rIN.status})` : `❌ IndexNow: ${dIN.error || 'erro ' + rIN.status}`);
+  } catch(e) {
+    results.push('❌ IndexNow: erro de rede — ' + e.message);
+  }
+
+  try {
+    const rG = await fetch(`${WORKER_URL}/index-google`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Admin-Secret': secret },
+      body: JSON.stringify({ urls: [testUrl] })
+    });
+    const dG = await rG.json().catch(()=>({}));
+    if(rG.ok) results.push('✅ Google Indexing API: ok');
+    else results.push(`❌ Google Indexing API: ${dG.error || JSON.stringify(dG.results||dG)}`);
+  } catch(e) {
+    results.push('❌ Google Indexing API: erro de rede — ' + e.message);
+  }
+
+  const anyErr = results.some(r => r.startsWith('❌'));
+  div.style.background = anyErr ? '#FFF5F5' : '#F0FDF4';
+  div.innerHTML = results.join('<br>');
 }
 
 async function testGitHubPAT(){
@@ -555,6 +698,15 @@ window.onload = function(){
   const savedPat = localStorage.getItem(GH_PAT_KEY);
   if(savedPat && document.getElementById('github-pat-input')){
     document.getElementById('github-pat-input').value = savedPat;
+  }
+  // Carregar Worker Secret salvo se houver
+  const savedSecret = localStorage.getItem(WORKER_SECRET_KEY);
+  if(savedSecret && document.getElementById('worker-secret-input')){
+    document.getElementById('worker-secret-input').value = savedSecret;
+  }
+  // Carregar chaves de IA salvas, se houver (Content Studio)
+  if(document.getElementById('ai-key-gemini')){
+    loadAIKeysIntoInputs();
   }
 };
 
@@ -656,6 +808,7 @@ function goPage(id){
   if(id==='dashboard') renderDashboard();
   if(id==='list') renderList();
   if(id==='export') renderExport();
+  if(id==='studio') studioInit();
   if(id==='new'){ resetForm(); document.getElementById('form-page-title').textContent='Novo Conteúdo'; }
 }
 
@@ -831,6 +984,464 @@ async function githubUpsertFile(path, content, commitMsg, pat) {
   return await r.json();
 }
 
+// ════════════════════════════════════════
+// SITEMAP — geração automática
+// ════════════════════════════════════════
+function xmlEscape(str){
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;');
+}
+
+// Recebe a lista completa de posts (já com o novo/editado incluído) e devolve o XML do sitemap
+function buildSitemapXML(posts){
+  const todayStr = new Date().toISOString().split('T')[0];
+  const lines = [];
+  lines.push("<?xml version='1.0' encoding='UTF-8'?>");
+  lines.push('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
+
+  SITEMAP_STATIC_PAGES.forEach(p => {
+    const lastmod = p.loc === '/' ? todayStr : (p.lastmod || todayStr);
+    lines.push(`  <url><loc>${SITE_BASE_URL}${p.loc}</loc><lastmod>${lastmod}</lastmod><changefreq>${p.changefreq}</changefreq><priority>${p.priority}</priority></url>`);
+  });
+
+  const sortedPosts = [...posts].sort((a,b) => (a.date||'') < (b.date||'') ? 1 : -1);
+  sortedPosts.forEach(p => {
+    if(!p.id) return;
+    const lastmod = p.updatedAt || p.date || todayStr;
+    lines.push(`  <url><loc>${SITE_BASE_URL}/blog/${xmlEscape(p.id)}</loc><lastmod>${xmlEscape(lastmod)}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>`);
+  });
+
+  lines.push('</urlset>');
+  return lines.join('\n');
+}
+
+// ════════════════════════════════════════
+// INDEXAÇÃO AUTOMÁTICA — IndexNow + Google Indexing API
+// (via Worker calculaprazo-views-api, que guarda as credenciais com segurança)
+// ════════════════════════════════════════
+async function notifyIndexing(urls){
+  const secret = localStorage.getItem(WORKER_SECRET_KEY);
+  if(!secret){
+    toast('⚠️ Worker Secret não configurado — pulei a notificação de indexação. Configure em Configurações.', 'err');
+    return;
+  }
+  if(!urls || !urls.length) return;
+
+  // Dispara as duas chamadas em paralelo, sem travar o fluxo de publicação em caso de falha
+  const [rIN, rG] = await Promise.allSettled([
+    fetch(`${WORKER_URL}/index-now`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Admin-Secret': secret },
+      body: JSON.stringify({ urls })
+    }),
+    fetch(`${WORKER_URL}/index-google`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Admin-Secret': secret },
+      body: JSON.stringify({ urls })
+    })
+  ]);
+
+  const okIN = rIN.status === 'fulfilled' && rIN.value.ok;
+  const okG  = rG.status  === 'fulfilled' && rG.value.ok;
+
+  if(okIN && okG) toast('🔎 Indexação solicitada ao Google e Bing/Yandex.', 'ok');
+  else if(okIN || okG) toast(`🔎 Indexação parcial — ${okIN?'Bing/Yandex ok':'Bing/Yandex falhou'}, ${okG?'Google ok':'Google falhou'}.`, 'err');
+  else toast('⚠️ Indexação automática falhou (sitemap foi atualizado normalmente). Veja Configurações.', 'err');
+}
+
+// ════════════════════════════════════════
+// IA CONTENT STUDIO
+// ════════════════════════════════════════
+
+// Cada template usa {{titulo}} {{url}} {{resumo}} {{conteudo}} como variáveis.
+// "provider" é o padrão sugerido (igual à spec original), mas o usuário pode trocar
+// no momento da geração se preferir outro provedor configurado.
+const STUDIO_TEMPLATES = {
+  infografico: {
+    label: 'Infográfico 1:1',
+    provider: 'grok',
+    systemPrompt: 'Você é um assistente especializado em criar prompts para infográficos do Calcula Prazo. Sua única função é, a partir do artigo fornecido, devolver o PROMPT completo e otimizado para gerar a imagem em outra IA (nunca gerar a imagem você mesmo). Responda apenas com o prompt preenchido, pronto para copiar e colar.',
+    userPrompt: `Crie um infográfico educacional premium em formato quadrado 1:1 (1080x1080 pixels) sobre {{titulo}}.
+
+O conteúdo completo, fatos, requisitos legais, explicações e dicas práticas devem ser extraídos diretamente do artigo abaixo.
+
+Branding Calcula Prazo (OBRIGATÓRIO):
+- Logo oficial: balança da justiça branca dentro de um quadrado azul arredondado com leve glow.
+- Texto "Calcula Prazo" em tipografia moderna ao lado do logo no topo.
+- No rodapé: "Calcula Prazo | calculaprazo.com.br"
+- Frase: (Conteúdo informativo – não substitui consultoria jurídica)
+
+Estilo Visual Exato:
+- Fundo branco principal com leve gradiente azul claro suave nas laterais.
+- Design minimalista, moderno, editorial premium e jurídico.
+- Iluminação clara e uniforme, sombras extremamente suaves, alto contraste e excelente legibilidade.
+- Composição muito arejada e equilibrada para formato quadrado.
+
+Elemento Principal: no centro superior, composição clean com balança da justiça moderna (tons azul escuro e dourado), livro de lei, martelo judicial e elementos temáticos leves relacionados ao assunto.
+
+Estrutura Obrigatória (Otimizada para 1:1):
+TOPO: Logo + Título grande em caixa alta (azul escuro + amarelo/ouro). Subtítulo em azul: resumo direto de 1 linha.
+PAINÉIS EDUCACIONAIS: 6 painéis organizados em grid de 2 colunas (3 linhas). Cada painel com número em círculo azul, ícone minimalista, título em negrito e texto conciso em português do Brasil.
+RODAPÉ: Calcula Prazo | calculaprazo.com.br — (Conteúdo informativo – não substitui consultoria jurídica)
+
+Paleta: Branco + azul claro, azul escuro para títulos, amarelo/ouro para destaques. Qualidade 8K, tipografia moderna, máxima legibilidade. Todo texto em português do Brasil. EVITAR: fundo escuro, elementos próximos das bordas, poluição visual.
+
+Gere o prompt já preenchido com o título correto, subtítulo e o conteúdo extraído do artigo abaixo. Mantenha o texto dos painéis claro, profissional e fiel ao artigo. Responda apenas com "✅ Prompt 1:1 pronto:" seguido do prompt completo.
+
+ARTIGO:
+Título: {{titulo}}
+URL: {{url}}
+Resumo: {{resumo}}
+Conteúdo: {{conteudo}}`
+  },
+
+  redes_sociais: {
+    label: 'Redes Sociais Completo',
+    provider: 'grok',
+    systemPrompt: 'Você é especialista em conteúdo para redes sociais do Calcula Prazo. Gere conteúdo completo, profissional e fiel ao artigo fornecido.',
+    userPrompt: `Com base no artigo abaixo, crie:
+
+1. PROMPT PARA IMAGEM (1080x1080): imagem quadrada profissional, moderna, clean, identidade visual Calcula Prazo. Fundo degradê azul escuro para azul médio com leve grid sutil. Logo no topo (quadrado arredondado azul claro com balança da justiça branca + texto "Calcula Prazo" + "FERRAMENTAS JURÍDICAS"). Título principal grande em branco com destaque dourado. Subtítulo chamativo. Informação principal em destaque (números ou pontos-chave em dourado). Texto explicativo curto sem revelar todo o conteúdo. Rodapé: CalculaPrazo.com.br. Elementos sutis (calendários/ícones do tema + balança discreta). Cores: azul escuro, azul médio, branco, dourado suave.
+
+2. LEGENDA COMPLETA para Instagram e LinkedIn: chamativa e profissional, emojis com moderação, destaque os pontos principais sem revelar tudo (crie curiosidade), chamada clara para clicar no link, termine com pergunta de engajamento, 8 a 12 hashtags relevantes no final.
+
+3. TEXTO PARA FACEBOOK: tom direto, informativo, com call-to-action para o link.
+
+4. TEXTO PARA X (Twitter): máximo 140 caracteres, comece com a informação mais impactante, inclua número ou regra principal logo no início, link perto do final.
+
+5. HASHTAGS: lista separada de 8 a 12 hashtags relevantes para advogados, RH e trabalhadores.
+
+Tom sempre profissional, confiável e útil. Separe claramente cada seção com um título em maiúsculas.
+
+ARTIGO:
+Título: {{titulo}}
+URL: {{url}}
+Resumo: {{resumo}}
+Conteúdo: {{conteudo}}`
+  },
+
+  youtube_comunidade: {
+    label: 'Post Comunidade YouTube',
+    provider: 'gemini',
+    systemPrompt: 'Você cria posts para a aba Comunidade do YouTube do canal Calcula Prazo, com tom direto e que gera cliques/comentários.',
+    userPrompt: `Com base no artigo abaixo, crie um post para a Comunidade do YouTube com:
+- Título atrativo (1 linha, gera curiosidade sem ser clickbait enganoso)
+- Texto do post (3 a 5 linhas, linguagem direta, tom de conversa)
+- Uma pergunta de engajamento no final, convidando comentários
+- Um CTA claro para o vídeo/artigo relacionado
+- 5 a 8 hashtags relevantes
+
+Responda já formatado, pronto para colar na Comunidade do YouTube.
+
+ARTIGO:
+Título: {{titulo}}
+URL: {{url}}
+Resumo: {{resumo}}
+Conteúdo: {{conteudo}}`
+  },
+
+  resumo_executivo: {
+    label: 'Resumo Executivo (Newsletter)',
+    provider: 'gemini',
+    systemPrompt: 'Você escreve resumos executivos curtos para uma newsletter jurídica voltada a advogados, RH e gestores.',
+    userPrompt: `Resuma o artigo abaixo em um RESUMO EXECUTIVO curto para newsletter, com no máximo 3 a 5 linhas corridas (sem bullet points), tom direto e profissional, indicando claramente o que mudou/o que é relevante e para quem importa (advogados, RH, trabalhadores). Termine com uma frase curta convidando a ler o artigo completo, sem inserir o link (o link será adicionado manualmente depois).
+
+ARTIGO:
+Título: {{titulo}}
+URL: {{url}}
+Resumo: {{resumo}}
+Conteúdo: {{conteudo}}`
+  },
+
+  thread_x: {
+    label: 'Thread X',
+    provider: 'grok',
+    systemPrompt: 'Você escreve threads para X (Twitter) no estilo Calcula Prazo: direto, didático, sem enrolação, voltado a advogados, RH e trabalhadores.',
+    userPrompt: `Transforme o artigo abaixo em uma THREAD para X (Twitter) com 4 a 6 tweets numerados (1/, 2/, 3/...), cada um com no máximo 270 caracteres. O primeiro tweet precisa prender atenção com o fato mais impactante. Os tweets do meio explicam o ponto principal do artigo de forma simples. O último tweet deve ter uma chamada para ação e espaço para o link (escreva "[LINK]" onde o link deve entrar). Tom direto, profissional, sem emojis em excesso.
+
+ARTIGO:
+Título: {{titulo}}
+URL: {{url}}
+Resumo: {{resumo}}
+Conteúdo: {{conteudo}}`
+  },
+
+  carrossel: {
+    label: 'Carrossel Instagram (5 slides)',
+    provider: 'gemini',
+    systemPrompt: 'Você transforma artigos jurídicos em carrosséis de Instagram simples e didáticos para o Calcula Prazo.',
+    userPrompt: `Transforme o artigo abaixo em um CARROSSEL de Instagram com exatamente 5 slides. Para cada slide, entregue um título curto (até 8 palavras) e o texto de apoio (até 2 linhas), seguindo esta estrutura:
+- Slide 1 (capa): título de impacto que gera curiosidade, sem entregar a resposta
+- Slide 2: contexto — o que está acontecendo / o que mudou
+- Slide 3: ponto principal — a informação mais importante do artigo
+- Slide 4: implicação prática — o que isso muda no dia a dia de quem lê
+- Slide 5 (fechamento): resumo + CTA para ler o artigo completo no link da bio
+
+Formate como "SLIDE 1:", "SLIDE 2:" etc, cada um com Título e Texto separados.
+
+ARTIGO:
+Título: {{titulo}}
+URL: {{url}}
+Resumo: {{resumo}}
+Conteúdo: {{conteudo}}`
+  }
+};
+
+const AI_PROVIDER_LABELS = {
+  gemini: 'Gemini', openai: 'OpenAI', grok: 'Grok (xAI)', deepseek: 'DeepSeek', claude: 'Claude'
+};
+
+function getAIKeys(){
+  try { return JSON.parse(localStorage.getItem(AI_KEYS_KEY) || '{}'); }
+  catch(e){ return {}; }
+}
+
+function saveAIKeys(){
+  const providers = ['gemini','openai','grok','deepseek','claude'];
+  const keys = {};
+  providers.forEach(p=>{
+    keys[p] = {
+      apiKey: document.getElementById('ai-key-'+p).value.trim(),
+      model:  document.getElementById('ai-model-'+p).value.trim()
+    };
+  });
+  localStorage.setItem(AI_KEYS_KEY, JSON.stringify(keys));
+  const msg = document.getElementById('ai-keys-saved-msg');
+  msg.style.display = 'block';
+  msg.style.color = '#059669';
+  msg.textContent = '✅ Chaves salvas neste navegador.';
+  toast('Chaves de IA salvas!','ok');
+}
+
+function loadAIKeysIntoInputs(){
+  const keys = getAIKeys();
+  ['gemini','openai','grok','deepseek','claude'].forEach(p=>{
+    const keyEl = document.getElementById('ai-key-'+p);
+    const modelEl = document.getElementById('ai-model-'+p);
+    if(keyEl && keys[p] && keys[p].apiKey) keyEl.value = keys[p].apiKey;
+    if(modelEl && keys[p] && keys[p].model) modelEl.value = keys[p].model;
+  });
+}
+
+// Preenche um template substituindo as variáveis pelo conteúdo real do artigo
+function fillTemplate(str, article){
+  return str
+    .replace(/\{\{titulo\}\}/g, article.title || '')
+    .replace(/\{\{url\}\}/g, article.url || '')
+    .replace(/\{\{resumo\}\}/g, article.excerpt || '')
+    .replace(/\{\{conteudo\}\}/g, article.contentText || '');
+}
+
+// Remove tags HTML do conteúdo do post para enviar como texto puro à IA
+function stripHTML(html){
+  const div = document.createElement('div');
+  div.innerHTML = html || '';
+  return (div.textContent || div.innerText || '').replace(/\s+/g,' ').trim();
+}
+
+let studioSelectedArticle = null;
+
+function studioInit(){
+  loadAIKeysIntoInputs();
+  studioSelectedArticle = null;
+  document.getElementById('studio-selected-article').style.display = 'none';
+  document.getElementById('studio-results').innerHTML = '';
+  studioRenderArticleList();
+}
+
+function studioGetArticles(){
+  // Usa o posts.json local salvo (mesma fonte da lista "Gerenciar Posts")
+  return getPosts().sort((a,b)=> (a.date||'') < (b.date||'') ? 1 : -1);
+}
+
+function studioRenderArticleList(){
+  const q = (document.getElementById('studio-search').value || '').toLowerCase();
+  const posts = studioGetArticles().filter(p => !q || p.title.toLowerCase().includes(q));
+  const box = document.getElementById('studio-article-list');
+  if(!posts.length){
+    box.innerHTML = '<div style="padding:14px;font-size:.84rem;color:var(--txt-s);">Nenhum artigo encontrado. Publique um post primeiro ou ajuste a busca.</div>';
+    return;
+  }
+  box.innerHTML = posts.slice(0,50).map(p => `
+    <div onclick='studioSelectArticle(${JSON.stringify(p.id)})' style="padding:10px 14px;border-bottom:1px solid var(--brd);cursor:pointer;font-size:.84rem;" onmouseover="this.style.background='var(--b50)'" onmouseout="this.style.background='transparent'">
+      <div style="font-weight:600;color:var(--txt);">${escapeHtmlStudio(p.title)}</div>
+      <div style="font-size:.74rem;color:var(--txt-s);">${formatDate(p.date)} · ${escapeHtmlStudio(p.category_label||'')}</div>
+    </div>
+  `).join('');
+}
+
+function escapeHtmlStudio(str){
+  const div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+
+async function studioSelectArticle(id){
+  const post = getPosts().find(p => p.id === id);
+  if(!post){ toast('Artigo não encontrado localmente.','err'); return; }
+
+  let contentText = stripHTML(post.content || '');
+  // Se o conteúdo completo não estiver salvo localmente, busca o HTML publicado no site
+  if(!contentText){
+    try {
+      const r = await fetch(`${SITE_BASE_URL}/blog/${post.id}`);
+      if(r.ok){
+        const html = await r.text();
+        const div = document.createElement('div');
+        div.innerHTML = html;
+        const article = div.querySelector('article') || div.querySelector('main') || div.body;
+        contentText = (article ? article.textContent : div.textContent || '').replace(/\s+/g,' ').trim();
+      }
+    } catch(e) { /* segue só com o resumo se falhar */ }
+  }
+
+  studioSelectedArticle = {
+    id: post.id,
+    title: post.title,
+    excerpt: post.excerpt,
+    url: `${SITE_BASE_URL}/blog/${post.id}`,
+    contentText: contentText.slice(0, 6000) // limite de segurança para não estourar tokens
+  };
+
+  document.getElementById('studio-selected-article').style.display = 'block';
+  document.getElementById('studio-selected-title').textContent = post.title;
+  document.getElementById('studio-selected-url').textContent = studioSelectedArticle.url;
+  document.getElementById('studio-results').innerHTML = '';
+  toast('Artigo carregado!','ok');
+}
+
+function studioResultCardId(key){ return 'studio-card-' + key; }
+
+function studioProviderSelectHTML(key, currentProvider){
+  const providers = Object.keys(AI_PROVIDER_LABELS);
+  const options = providers.map(p => `<option value="${p}" ${p===currentProvider?'selected':''}>${AI_PROVIDER_LABELS[p]}</option>`).join('');
+  return `<select id="studio-provider-${key}" style="font-size:.76rem;padding:4px 8px;border:1px solid var(--brd);border-radius:6px;font-family:var(--fh);">${options}</select>`;
+}
+
+function studioRenderPendingCard(key, provider){
+  const tpl = STUDIO_TEMPLATES[key];
+  const useProvider = provider || tpl.provider;
+  const box = document.getElementById('studio-results');
+  let card = document.getElementById(studioResultCardId(key));
+  if(!card){
+    card = document.createElement('div');
+    card.className = 'card';
+    card.id = studioResultCardId(key);
+    card.style.marginBottom = '16px';
+    box.appendChild(card);
+  }
+  card.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div style="font-size:.9rem;font-weight:700;">${tpl.label}</div>
+      <span style="font-size:.74rem;color:var(--txt-s);">⏳ Gerando via ${AI_PROVIDER_LABELS[useProvider]}...</span>
+    </div>
+    <div style="font-size:.84rem;color:var(--txt-s);">Aguarde...</div>
+  `;
+}
+
+function studioRenderResultCard(key, text, providerUsed, error){
+  const tpl = STUDIO_TEMPLATES[key];
+  const card = document.getElementById(studioResultCardId(key));
+  if(!card) return;
+  if(error){
+    card.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+        <div style="font-size:.9rem;font-weight:700;">${tpl.label}</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          ${studioProviderSelectHTML(key, providerUsed)}
+          <button class="btn btn-g" onclick="studioGerarUm('${key}')">🔄 Tentar de novo</button>
+        </div>
+      </div>
+      <div style="font-size:.84rem;color:var(--err);background:#FFF5F5;padding:10px 14px;border-radius:8px;">❌ ${escapeHtmlStudio(error)}</div>
+    `;
+    return;
+  }
+  const textareaId = 'studio-text-' + key;
+  card.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+      <div style="font-size:.9rem;font-weight:700;">${tpl.label} <span style="font-weight:400;color:var(--txt-s);font-size:.74rem;">via ${AI_PROVIDER_LABELS[providerUsed]}</span></div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        ${studioProviderSelectHTML(key, providerUsed)}
+        <button class="btn btn-g" onclick="studioCopyResult('${textareaId}')">📋 Copiar</button>
+        <button class="btn btn-g" onclick="studioGerarUm('${key}')">🔄 Regerar</button>
+      </div>
+    </div>
+    <textarea id="${textareaId}" style="width:100%;min-height:160px;padding:10px 12px;border:1px solid var(--brd);border-radius:8px;font-family:var(--fh);font-size:.82rem;color:var(--txt);resize:vertical;">${escapeHtmlStudio(text)}</textarea>
+  `;
+}
+
+function studioCopyResult(textareaId){
+  const el = document.getElementById(textareaId);
+  el.select();
+  navigator.clipboard.writeText(el.value).then(()=> toast('Copiado!','ok')).catch(()=>{
+    document.execCommand('copy');
+    toast('Copiado!','ok');
+  });
+}
+
+// Chama o Worker, que repassa para o provedor de IA escolhido
+async function studioCallAI(provider, systemPrompt, userPrompt){
+  const keys = getAIKeys();
+  const cfg = keys[provider];
+  if(!cfg || !cfg.apiKey) throw new Error(`Chave de API do provedor "${AI_PROVIDER_LABELS[provider]}" não configurada. Vá em Configurações → Provedores de IA.`);
+  const workerSecret = localStorage.getItem(WORKER_SECRET_KEY);
+  if(!workerSecret) throw new Error('Worker Secret não configurado. Vá em Configurações → Indexação Automática e salve o mesmo valor de ADMIN_SECRET do Worker.');
+
+  const r = await fetch(`${WORKER_URL}/ai-generate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Admin-Secret': workerSecret },
+    body: JSON.stringify({ provider, apiKey: cfg.apiKey, model: cfg.model, systemPrompt, userPrompt })
+  });
+  const data = await r.json().catch(()=>({}));
+  if(!r.ok || !data.text) throw new Error(data.error || `Erro ${r.status} ao chamar ${AI_PROVIDER_LABELS[provider]}`);
+  return data.text;
+}
+
+async function studioGerarUm(key){
+  if(!studioSelectedArticle){ toast('Selecione um artigo primeiro.','err'); return; }
+  const tpl = STUDIO_TEMPLATES[key];
+  // Se já existe um seletor de provedor no card (de uma geração anterior), respeita a escolha do usuário
+  const providerSelect = document.getElementById('studio-provider-' + key);
+  const provider = (providerSelect && providerSelect.value) ? providerSelect.value : tpl.provider;
+  studioRenderPendingCard(key, provider);
+  try {
+    const systemPrompt = tpl.systemPrompt;
+    const userPrompt = fillTemplate(tpl.userPrompt, studioSelectedArticle);
+    const text = await studioCallAI(provider, systemPrompt, userPrompt);
+    studioRenderResultCard(key, text, provider, null);
+    studioSaveHistory(key, provider, text);
+  } catch(e) {
+    studioRenderResultCard(key, '', provider, e.message);
+  }
+}
+
+async function studioGerarTudo(){
+  if(!studioSelectedArticle){ toast('Selecione um artigo primeiro.','err'); return; }
+  const btn = document.getElementById('btn-gerar-tudo');
+  btn.disabled = true; btn.textContent = '⏳ Gerando tudo...';
+  const keys = Object.keys(STUDIO_TEMPLATES);
+  for(const key of keys){
+    await studioGerarUm(key); // sequencial, evita estourar rate-limit dos free tiers
+  }
+  btn.disabled = false; btn.textContent = '⚡ Gerar Tudo';
+  toast('Geração concluída!','ok');
+}
+
+function studioSaveHistory(key, provider, text){
+  try {
+    const hist = JSON.parse(localStorage.getItem(STUDIO_HISTORY_KEY) || '[]');
+    hist.unshift({
+      ts: Date.now(),
+      articleId: studioSelectedArticle.id,
+      articleTitle: studioSelectedArticle.title,
+      templateKey: key,
+      templateLabel: STUDIO_TEMPLATES[key].label,
+      provider,
+      text
+    });
+    localStorage.setItem(STUDIO_HISTORY_KEY, JSON.stringify(hist.slice(0, 200))); // mantém só os 200 mais recentes
+  } catch(e) { /* falha silenciosa de histórico não deve travar a geração */ }
+}
+
 async function triggerGitHubAction() {
   const pat = localStorage.getItem(GH_PAT_KEY);
   if(!pat){ toast('Configure o GitHub PAT nas Configurações primeiro.','err'); goPage('settings'); return; }
@@ -984,7 +1595,16 @@ async function publicarNoSite() {
 
     await githubUpsertFile('data/posts.json', JSON.stringify(postsAtuais, null, 2), 'atualizacao: posts.json', pat);
 
-    // 4. Salvar localmente
+    // 4. Reconstruir e enviar sitemap.xml
+    toast('Atualizando sitemap.xml...', 'ok');
+    const sitemapXML = buildSitemapXML(postsAtuais);
+    await githubUpsertFile('sitemap.xml', sitemapXML, `sitemap: ${post.title}`, pat);
+
+    // 5. Notificar Google (Indexing API) e Bing/Yandex (IndexNow)
+    toast('Solicitando indexação...', 'ok');
+    notifyIndexing([`${SITE_BASE_URL}/blog/${post.id}`]); // não bloqueia o restante do fluxo
+
+    // 6. Salvar localmente
     const localPosts = getPosts();
     const idx = localPosts.findIndex(p=>p.id===post.id);
     if(idx>=0) localPosts[idx]=post; else localPosts.push(post);

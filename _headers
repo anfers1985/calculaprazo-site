@@ -47,6 +47,11 @@
   Content-Type: text/plain; charset=utf-8
   Cache-Control: public, max-age=86400
 
+# IndexNow — arquivo de verificação de chave
+/58d04cd087698b567332e2735dbce4e7.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=86400
+
 # sitemap.xml
 /sitemap.xml
   Content-Type: application/xml; charset=utf-8
