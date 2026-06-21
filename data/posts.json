@@ -1,13 +1,90 @@
 [
   {
-    "id": "camara-aprova-atestado-acompanhar-crianca-doente",
-    "title": "Câmara aprova atestado para acompanhar criança doente",
-    "category": "legislacao-normas",
-    "category_label": "Legislação e Normas",
-    "excerpt": "Projeto aprovado pela Câmara prevê atestado e licença para responsáveis que precisem acompanhar crianças doentes. Texto segue ao Senado.",
-    "image": "https://imagens.ebc.com.br/ytmuhqZofWSqk67gsieToNcmplQ=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/eleicoes-camara_mcamgo_abr_010220211818.jpg?itok=DE95o82x",
-    "date": "2026-06-17",
-    "updatedAt": "2026-06-19",
+    "id": "credito-trabalhador-fgts-garantia-verbas-rescisorias",
+    "title": "Crédito do Trabalhador libera FGTS como garantia",
+    "category": "fgts-digital",
+    "category_label": "FGTS",
+    "excerpt": "Crédito do Trabalhador passa a permitir uso de FGTS e verbas rescisórias como garantia a partir de 23/06 via CTPS Digital e bancos.",
+    "image": "https://imagens.ebc.com.br/sW9i4pnQIdJsqvhaAh3quzhI1u0=/770x0/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/fachada-ministerio_mcamgo_abr_100420231818-11.jpg?itok=T-NWkSaW",
+    "date": "2026-06-21",
+    "updatedAt": "2026-06-21",
+    "tags": []
+  },
+  {
+    "id": "stf-retomada-acoes-pejotizacao-processos-trts",
+    "title": "STF autoriza retomada de ações sobre pejotização",
+    "category": "jurisprudencia-stf",
+    "category_label": "STF",
+    "excerpt": "Ministro Gilmar Mendes determina retomada de processos sobre pejotização na 1ª instância e TRTs; julgamento final do STF ainda definirá tese vinculante.",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNdpzydCxz-eDwwlGct6iEAu00s4DOHsIthZ8AqC65dw&s=10",
+    "date": "2026-06-21",
+    "updatedAt": "2026-06-21",
+    "tags": []
+  },
+  {
+    "id": "escalas-6x1-5x2-4x3-diferencas-impactos-jornada-trabalho",
+    "title": "Escalas 6x1, 5x2 e 4x3: diferenças e impactos no trabalho",
+    "category": "rh-jornada",
+    "category_label": "Jornada",
+    "excerpt": "Entenda como funcionam as escalas 6x1, 5x2 e 4x3, suas diferenças na jornada de trabalho, impactos na rotina e efeitos no salário dos trabalhadores.",
+    "image": "https://images.unsplash.com/photo-1606674556490-c2bbb4ee05e5?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-06-21",
+    "updatedAt": "2026-06-21",
+    "tags": []
+  },
+  {
+    "id": "tst-banco-ranking-produtividade-dano-moral-itau",
+    "title": "Banco é condenado por ranking de produtividade no trabalho",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "6ª Turma do TST reconhece dano moral a gerente do Itaú por divulgação de ranking de produtividade, considerada abusiva e constrangedora.",
+    "image": "https://images.unsplash.com/flagged/photo-1578928534298-9747fc52ec97?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-06-21",
+    "updatedAt": "2026-06-21",
+    "tags": []
+  },
+  {
+    "id": "tst-cuidadora-direitos-convencao-coletiva-domestica",
+    "title": "TST reconhece direitos de convenção coletiva a cuidadora",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "Segunda Turma do TST garantiu a cuidadora doméstica direitos previstos em convenção coletiva, em decisão que diverge de outros julgados.",
+    "image": "https://images.unsplash.com/photo-1543333995-a78aea2eee50?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-06-21",
+    "updatedAt": "2026-06-21",
+    "tags": []
+  },
+  {
+    "id": "tst-afasta-incorporacao-gratificacao-funcao-bancario",
+    "title": "TST afasta incorporação de gratificação de bancário",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "TST decidiu que bancário não tem direito à incorporação da gratificação de função por ter completado 10 anos no cargo após a Reforma Trabalhista.",
+    "image": "https://images.unsplash.com/photo-1614260938313-a7fc1a7ad0d2?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-06-21",
+    "updatedAt": "2026-06-21",
+    "tags": []
+  },
+  {
+    "id": "tst-competencia-cadastro-restritivo-motoristas-autonomos",
+    "title": "TST define competência sobre cadastro restritivo de motoristas",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "TST decidiu que a Justiça do Trabalho deve julgar ação de motorista que teve restrições em cadastro usado por transportadoras.",
+    "image": "https://images.unsplash.com/photo-1521410843026-323be9ead002?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-06-21",
+    "updatedAt": "2026-06-21",
+    "tags": []
+  },
+  {
+    "id": "nova-nr-10-aprovada-seguranca-instalacoes-eletricas-2027",
+    "title": "Nova NR-10 é aprovada e entra em vigor em 2027",
+    "category": "legislacao-nr",
+    "category_label": "NR",
+    "excerpt": "MTE publica nova redação da NR-10, atualizando regras de segurança em instalações elétricas e serviços com eletricidade a partir de 2027.",
+    "image": "https://images.unsplash.com/photo-1758101755915-462eddc23f57?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-06-15",
+    "updatedAt": "2026-06-15",
     "tags": []
   },
   {
@@ -19,6 +96,17 @@
     "image": "https://images.unsplash.com/photo-1672380135241-c024f7fbfa13?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "date": "2026-06-16",
     "updatedAt": "2026-06-16",
+    "tags": []
+  },
+  {
+    "id": "camara-aprova-atestado-acompanhar-crianca-doente",
+    "title": "Câmara aprova atestado para acompanhar criança doente",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "excerpt": "Projeto aprovado pela Câmara prevê atestado e licença para responsáveis que precisem acompanhar crianças doentes. Texto segue ao Senado.",
+    "image": "https://imagens.ebc.com.br/ytmuhqZofWSqk67gsieToNcmplQ=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/eleicoes-camara_mcamgo_abr_010220211818.jpg?itok=DE95o82x",
+    "date": "2026-06-17",
+    "updatedAt": "2026-06-21",
     "tags": []
   },
   {
@@ -193,17 +281,6 @@
     "category_label": "TST",
     "excerpt": "TST mantém indenização a empregados que perderam a oportunidade de obter patente após empresa deixar arquivar pedido no INPI.",
     "image": "https://images.unsplash.com/photo-1589391886645-d51941baf7fb?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "date": "2026-06-15",
-    "updatedAt": "2026-06-15",
-    "tags": []
-  },
-  {
-    "id": "nova-nr-10-aprovada-seguranca-instalacoes-eletricas-2027",
-    "title": "Nova NR-10 é aprovada e entra em vigor em 2027",
-    "category": "legislacao-nr",
-    "category_label": "NR",
-    "excerpt": "MTE publica nova redação da NR-10, atualizando regras de segurança em instalações elétricas e serviços com eletricidade a partir de 2027.",
-    "image": "https://images.unsplash.com/photo-1758101755915-462eddc23f57?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "date": "2026-06-15",
     "updatedAt": "2026-06-15",
     "tags": []
