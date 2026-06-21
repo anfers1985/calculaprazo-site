@@ -1749,12 +1749,8 @@ async function publicarNoSite() {
       .replace(/\{\{SCHEMA_IMAGE\}\}/g,   schemaImage)
       .replace(/\{\{COVER_IMAGE_HTML\}\}/g, coverHTML);
 
-    // 2. Enviar HTML
-    toast('Enviando arquivo HTML...', 'ok');
-    await githubUpsertFile(`blog/${post.id}.html`, postHTML, `publicacao: ${post.title}`, pat);
-
-    // 3. Atualizar posts.json
-    toast('Atualizando posts.json...', 'ok');
+    // 2. Buscar posts.json antes de enviar o HTML (necessário para injetar relacionados estáticos)
+    toast('Buscando posts existentes...', 'ok');
     let postsAtuais = [];
     try {
       const rj = await fetch(
@@ -1767,6 +1763,40 @@ async function publicarNoSite() {
       }
     } catch(e) { postsAtuais = []; }
 
+    // Injetar artigos relacionados estáticos (mesma subcategoria, com fallback para categoria-pai)
+    const relatedExact = postsAtuais
+      .filter(p => p.id !== post.id && p.category === post.category)
+      .sort((a, b) => (b.date || '').localeCompare(a.date || ''))
+      .slice(0, 3);
+
+    const parentCat = post.category.split('-')[0];
+    const relatedFinal = relatedExact.length >= 1 ? relatedExact :
+      postsAtuais
+        .filter(p => p.id !== post.id && p.category.startsWith(parentCat))
+        .sort((a, b) => (b.date || '').localeCompare(a.date || ''))
+        .slice(0, 3);
+
+    let relatedHTML = '';
+    if (relatedFinal.length > 0) {
+      const cards = relatedFinal.map(p => {
+        const label = catLabelsMap[p.category] || p.category_label || p.category;
+        const dateStr = p.date ? new Date(p.date + 'T12:00:00').toLocaleDateString('pt-BR', {day:'numeric', month:'short', year:'numeric'}) : '';
+        return `<a class="related-card" href="/blog/${p.id}.html"><div class="r-cat">${label}</div><div class="r-title">${p.title}</div><div class="r-date">${dateStr}</div></a>`;
+      }).join('');
+      relatedHTML = `<h3>Artigos Relacionados</h3><div class="related-grid">${cards}</div>`;
+    }
+
+    const postHTMLFinal = relatedHTML
+      ? postHTML.replace('<div class="related-section" id="related-section"></div>',
+          `<div class="related-section" id="related-section">${relatedHTML}</div>`)
+      : postHTML;
+
+    // 3. Enviar HTML com relacionados estáticos
+    toast('Enviando arquivo HTML...', 'ok');
+    await githubUpsertFile(`blog/${post.id}.html`, postHTMLFinal, `publicacao: ${post.title}`, pat);
+
+    // 4. Atualizar posts.json
+    toast('Atualizando posts.json...', 'ok');
     postsAtuais = postsAtuais.filter(p => p.id !== post.id);
     postsAtuais.unshift({
       id: post.id,
