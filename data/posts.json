@@ -1,16 +1,5 @@
 [
   {
-    "id": "camara-aprova-atestado-acompanhar-crianca-doente",
-    "title": "Câmara aprova atestado para acompanhar criança doente",
-    "category": "legislacao-normas",
-    "category_label": "Legislação e Normas",
-    "excerpt": "Projeto aprovado pela Câmara prevê atestado e licença para responsáveis que precisem acompanhar crianças doentes. Texto segue ao Senado.",
-    "image": "https://imagens.ebc.com.br/ytmuhqZofWSqk67gsieToNcmplQ=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/eleicoes-camara_mcamgo_abr_010220211818.jpg?itok=DE95o82x",
-    "date": "2026-06-17",
-    "updatedAt": "2026-06-21",
-    "tags": []
-  },
-  {
     "id": "reforma-tributaria-act-cct-credito-cbs-ibs-beneficios",
     "title": "Reforma Tributária: quando o instrumento coletivo gera crédito de CBS e IBS",
     "category": "legislacao-normas",
@@ -19,6 +8,17 @@
     "image": "https://images.unsplash.com/photo-1672380135241-c024f7fbfa13?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "date": "2026-06-16",
     "updatedAt": "2026-06-16",
+    "tags": []
+  },
+  {
+    "id": "camara-aprova-atestado-acompanhar-crianca-doente",
+    "title": "Câmara aprova atestado para acompanhar criança doente",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "excerpt": "Projeto aprovado pela Câmara prevê atestado e licença para responsáveis que precisem acompanhar crianças doentes. Texto segue ao Senado.",
+    "image": "https://imagens.ebc.com.br/ytmuhqZofWSqk67gsieToNcmplQ=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/eleicoes-camara_mcamgo_abr_010220211818.jpg?itok=DE95o82x",
+    "date": "2026-06-17",
+    "updatedAt": "2026-06-21",
     "tags": []
   },
   {
