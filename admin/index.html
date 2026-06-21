@@ -406,24 +406,13 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
       </div>
 
       <div class="card" style="margin-bottom:16px;">
-        <div style="font-size:.9rem;font-weight:700;margin-bottom:14px;">2. Gere o conteúdo</div>
-        <p style="font-size:.8rem;color:var(--txt-s);margin-bottom:14px;">Cada bloco usa o provedor de IA configurado em Configurações → Provedores de IA. As imagens não são geradas aqui — copie o prompt de imagem e cole no Grok/ChatGPT/Gemini como você já faz.</p>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
-          <button class="btn btn-p" id="btn-gerar-tudo" onclick="studioGerarTudo()">⚡ Gerar Tudo</button>
+        <div style="font-size:.9rem;font-weight:700;margin-bottom:14px;">2. Selecione o que quer gerar</div>
+        <p style="font-size:.8rem;color:var(--txt-s);margin-bottom:14px;">Marque os formatos desejados e clique em "Gerar Selecionados". Cada bloco usa o provedor de IA configurado em Configurações → Provedores de IA. As imagens não são geradas aqui — copie o prompt de imagem e cole no Grok/ChatGPT/Gemini como você já faz.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+          <button class="btn btn-p" id="btn-gerar-selecionados" onclick="studioGerarSelecionados()">⚡ Gerar Selecionados</button>
+          <button class="btn btn-g" onclick="studioToggleSelectAll()">☑️ Selecionar Todos</button>
         </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="btn btn-g" onclick="studioGerarUm('infografico')">🖼️ Infográfico</button>
-          <button class="btn btn-g" onclick="studioGerarUm('redes_sociais')">📱 Redes Sociais</button>
-          <button class="btn btn-g" onclick="studioGerarUm('youtube_comunidade')">▶️ Post Comunidade YouTube</button>
-          <button class="btn btn-g" onclick="studioGerarUm('resumo_executivo')">📧 Resumo Executivo</button>
-          <button class="btn btn-g" onclick="studioGerarUm('thread_x')">🧵 Thread X</button>
-          <button class="btn btn-g" onclick="studioGerarUm('carrossel')">🎠 Carrossel</button>
-          <button class="btn btn-g" onclick="studioGerarUm('thumb_youtube')">🎬 Thumbnail YouTube</button>
-          <button class="btn btn-g" onclick="studioGerarUm('imagem_direto_ponto')">🎯 Direto ao Ponto</button>
-          <button class="btn btn-g" onclick="studioGerarUm('legenda_insta_linkedin')">💬 Legenda Insta/LinkedIn</button>
-          <button class="btn btn-g" onclick="studioGerarUm('descricao_youtube')">📝 Descrição YouTube</button>
-          <button class="btn btn-g" onclick="studioGerarUm('script_notebooklm')">🎙️ Script + NotebookLM</button>
-        </div>
+        <div id="studio-checkbox-list" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
       </div>
 
       <div id="studio-results"></div>
@@ -1102,7 +1091,7 @@ RODAPÉ: Calcula Prazo | calculaprazo.com.br — (Conteúdo informativo – não
 
 Paleta: Branco + azul claro, azul escuro para títulos, amarelo/ouro para destaques. Qualidade 8K, tipografia moderna, máxima legibilidade. Todo texto em português do Brasil. EVITAR: fundo escuro, elementos próximos das bordas, poluição visual.
 
-Gere o prompt já preenchido com o título correto, subtítulo e o conteúdo extraído do artigo abaixo. Mantenha o texto dos painéis claro, profissional e fiel ao artigo. Responda apenas com "✅ Prompt 1:1 pronto:" seguido do prompt completo.
+Gere o prompt já preenchido com o título correto, subtítulo e o conteúdo extraído do artigo abaixo. Mantenha o texto dos painéis claro, profissional e fiel ao artigo. O prompt inteiro deve ser escrito em português do Brasil — não traduza para inglês em nenhuma parte, mesmo que o prompt final seja usado em uma IA de imagem. Responda apenas com "✅ Prompt 1:1 pronto:" seguido do prompt completo.
 
 ARTIGO:
 Título: {{titulo}}
@@ -1230,7 +1219,7 @@ Manter fielmente: barra esquerda com degradê e logo, fundo totalmente branco li
 
 Alta resolução, textos nítidos, visual profissional e impactante.
 
-Responda apenas com "✅ Prompt Thumbnail YouTube pronto:" seguido do prompt completo já preenchido.
+Responda apenas com "✅ Prompt Thumbnail YouTube pronto:" seguido do prompt completo já preenchido, escrito inteiramente em português do Brasil (não traduza para inglês).
 
 ARTIGO:
 Título: {{titulo}}
@@ -1270,7 +1259,7 @@ Manter fielmente: barra esquerda com degradê e logo, fundo totalmente branco li
 
 Alta resolução, textos grandes e legíveis, visual limpo e profissional.
 
-Responda apenas com "✅ Prompt Direto ao Ponto pronto:" seguido do prompt completo já preenchido.
+Responda apenas com "✅ Prompt Direto ao Ponto pronto:" seguido do prompt completo já preenchido, escrito inteiramente em português do Brasil (não traduza para inglês).
 
 ARTIGO:
 Título: {{titulo}}
@@ -1426,11 +1415,35 @@ function stripHTML(html){
 
 let studioSelectedArticle = null;
 
+const STUDIO_TEMPLATE_ICONS = {
+  infografico: '🖼️', redes_sociais: '📱', youtube_comunidade: '▶️',
+  resumo_executivo: '📧', thread_x: '🧵', carrossel: '🎠',
+  thumb_youtube: '🎬', imagem_direto_ponto: '🎯', legenda_insta_linkedin: '💬',
+  descricao_youtube: '📝', script_notebooklm: '🎙️'
+};
+
+function studioRenderCheckboxList(){
+  const box = document.getElementById('studio-checkbox-list');
+  box.innerHTML = Object.keys(STUDIO_TEMPLATES).map(key => `
+    <label style="display:flex;align-items:center;gap:6px;padding:7px 12px;border:1px solid var(--brd);border-radius:8px;font-size:.82rem;cursor:pointer;background:var(--bg);">
+      <input type="checkbox" class="studio-checkbox" data-key="${key}">
+      <span>${STUDIO_TEMPLATE_ICONS[key]||''} ${STUDIO_TEMPLATES[key].label}</span>
+    </label>
+  `).join('');
+}
+
+function studioToggleSelectAll(){
+  const boxes = document.querySelectorAll('.studio-checkbox');
+  const allChecked = Array.from(boxes).every(b => b.checked);
+  boxes.forEach(b => b.checked = !allChecked);
+}
+
 function studioInit(){
   loadAIKeysIntoInputs();
   studioSelectedArticle = null;
   document.getElementById('studio-selected-article').style.display = 'none';
   document.getElementById('studio-results').innerHTML = '';
+  studioRenderCheckboxList();
   studioRenderArticleList();
 }
 
@@ -1582,6 +1595,11 @@ async function studioCallAI(provider, systemPrompt, userPrompt){
   return data.text;
 }
 
+// Regra de idioma reforçada em TODOS os templates, mesmo nos que pedem prompt de imagem
+// para outra IA (alguns modelos de texto "ajudam" traduzindo para inglês por entenderem
+// que prompts de imagem performam melhor em inglês — isso deve ser sempre evitado aqui).
+const STUDIO_LANGUAGE_LOCK = ' IMPORTANTE: responda SEMPRE em português do Brasil (pt-BR), do início ao fim, mesmo que o conteúdo final seja um prompt destinado a outra IA de geração de imagem. Nunca traduza para inglês ou qualquer outro idioma, mesmo que isso pareça otimizar o resultado da IA de imagem — o usuário sempre traduz manualmente se precisar.';
+
 async function studioGerarUm(key){
   if(!studioSelectedArticle){ toast('Selecione um artigo primeiro.','err'); return; }
   const tpl = STUDIO_TEMPLATES[key];
@@ -1590,7 +1608,7 @@ async function studioGerarUm(key){
   const provider = (providerSelect && providerSelect.value) ? providerSelect.value : getAIDefaultProvider();
   studioRenderPendingCard(key, provider);
   try {
-    const systemPrompt = tpl.systemPrompt;
+    const systemPrompt = tpl.systemPrompt + STUDIO_LANGUAGE_LOCK;
     const userPrompt = fillTemplate(tpl.userPrompt, studioSelectedArticle);
     const text = await studioCallAI(provider, systemPrompt, userPrompt);
     studioRenderResultCard(key, text, provider, null);
@@ -1600,15 +1618,16 @@ async function studioGerarUm(key){
   }
 }
 
-async function studioGerarTudo(){
+async function studioGerarSelecionados(){
   if(!studioSelectedArticle){ toast('Selecione um artigo primeiro.','err'); return; }
-  const btn = document.getElementById('btn-gerar-tudo');
-  btn.disabled = true; btn.textContent = '⏳ Gerando tudo...';
-  const keys = Object.keys(STUDIO_TEMPLATES);
-  for(const key of keys){
+  const selected = Array.from(document.querySelectorAll('.studio-checkbox:checked')).map(b => b.dataset.key);
+  if(!selected.length){ toast('Marque pelo menos um item para gerar.','err'); return; }
+  const btn = document.getElementById('btn-gerar-selecionados');
+  btn.disabled = true; btn.textContent = `⏳ Gerando ${selected.length} item(ns)...`;
+  for(const key of selected){
     await studioGerarUm(key); // sequencial, evita estourar rate-limit dos free tiers
   }
-  btn.disabled = false; btn.textContent = '⚡ Gerar Tudo';
+  btn.disabled = false; btn.textContent = '⚡ Gerar Selecionados';
   toast('Geração concluída!','ok');
 }
 
