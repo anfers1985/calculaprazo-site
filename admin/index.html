@@ -455,7 +455,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
 
         <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--brd);">
           <div style="font-size:.9rem;font-weight:700;margin-bottom:6px;">🔎 Indexação Automática + Content Studio</div>
-          <p style="font-size:.78rem;color:var(--txt-s);margin-bottom:12px;">Este secret autoriza o painel a usar o Worker <code>calculaprazo-views-api</code> para: (1) atualizar o <code>sitemap.xml</code> e notificar Google/Bing automaticamente ao publicar, e (2) gerar conteúdo no IA Content Studio. Configure o mesmo valor da variável <code>ADMIN_SECRET</code> no Worker.</p>
+          <p style="font-size:.78rem;color:var(--txt-s);margin-bottom:12px;">Este secret autoriza o painel a usar o Worker <code>calculaprazo-views-api</code> para: (1) atualizar o <code>sitemap.xml</code> e notificar o Google automaticamente ao publicar, e (2) gerar conteúdo no IA Content Studio. Configure o mesmo valor da variável <code>ADMIN_SECRET</code> no Worker. Bing/Yandex são notificados separadamente pelo <strong>Crawler Hints</strong> nativo do Cloudflare (Painel do domínio → Cache → Crawler Hints) — ative lá uma única vez, não depende deste secret.</p>
           <div class="fg">
             <label>Worker Admin Secret</label>
             <input type="password" id="worker-secret-input" placeholder="mesmo valor de ADMIN_SECRET no Worker">
@@ -622,22 +622,10 @@ async function testIndexingSetup(){
   const div = document.getElementById('indexing-test-result');
   if(!secret){ toast('Salve o secret primeiro.','err'); return; }
   div.style.display='block'; div.style.background='#FFFBEB';
-  div.innerHTML='<span style="color:#D97706;">⏳ Testando IndexNow e Google Indexing API...</span>';
+  div.innerHTML='<span style="color:#D97706;">⏳ Testando Google Indexing API...</span>';
 
   const testUrl = SITE_BASE_URL + '/';
   const results = [];
-
-  try {
-    const rIN = await fetch(`${WORKER_URL}/index-now`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Admin-Secret': secret },
-      body: JSON.stringify({ urls: [testUrl] })
-    });
-    const dIN = await rIN.json().catch(()=>({}));
-    results.push(rIN.ok ? `✅ IndexNow: ok (status ${dIN.status||rIN.status})` : `❌ IndexNow: ${dIN.error || ('erro ' + (dIN.status||rIN.status) + (dIN.detail ? ' — ' + dIN.detail : ''))}`);
-  } catch(e) {
-    results.push('❌ IndexNow: erro de rede — ' + e.message);
-  }
 
   try {
     const rG = await fetch(`${WORKER_URL}/index-google`, {
@@ -1020,8 +1008,11 @@ function buildSitemapXML(posts){
 }
 
 // ════════════════════════════════════════
-// INDEXAÇÃO AUTOMÁTICA — IndexNow + Google Indexing API
+// INDEXAÇÃO AUTOMÁTICA — Google Indexing API
 // (via Worker calculaprazo-views-api, que guarda as credenciais com segurança)
+// Bing/Yandex (IndexNow) são notificados automaticamente pelo "Crawler Hints"
+// nativo do Cloudflare (Painel do domínio → Cache → Crawler Hints), que não
+// passa por aqui — não precisa de nenhuma chamada manual.
 // ════════════════════════════════════════
 async function notifyIndexing(urls){
   const secret = localStorage.getItem(WORKER_SECRET_KEY);
@@ -1031,26 +1022,17 @@ async function notifyIndexing(urls){
   }
   if(!urls || !urls.length) return;
 
-  // Dispara as duas chamadas em paralelo, sem travar o fluxo de publicação em caso de falha
-  const [rIN, rG] = await Promise.allSettled([
-    fetch(`${WORKER_URL}/index-now`, {
+  try {
+    const rG = await fetch(`${WORKER_URL}/index-google`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-Admin-Secret': secret },
       body: JSON.stringify({ urls })
-    }),
-    fetch(`${WORKER_URL}/index-google`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Admin-Secret': secret },
-      body: JSON.stringify({ urls })
-    })
-  ]);
-
-  const okIN = rIN.status === 'fulfilled' && rIN.value.ok;
-  const okG  = rG.status  === 'fulfilled' && rG.value.ok;
-
-  if(okIN && okG) toast('🔎 Indexação solicitada ao Google e Bing/Yandex.', 'ok');
-  else if(okIN || okG) toast(`🔎 Indexação parcial — ${okIN?'Bing/Yandex ok':'Bing/Yandex falhou'}, ${okG?'Google ok':'Google falhou'}.`, 'err');
-  else toast('⚠️ Indexação automática falhou (sitemap foi atualizado normalmente). Veja Configurações.', 'err');
+    });
+    if(rG.ok) toast('🔎 Indexação solicitada ao Google.', 'ok');
+    else toast('⚠️ Indexação automática (Google) falhou (sitemap foi atualizado normalmente). Veja Configurações.', 'err');
+  } catch(e) {
+    toast('⚠️ Indexação automática (Google) falhou (sitemap foi atualizado normalmente). Veja Configurações.', 'err');
+  }
 }
 
 // ════════════════════════════════════════
@@ -1805,7 +1787,7 @@ async function publicarNoSite() {
     const sitemapXML = buildSitemapXML(postsAtuais);
     await githubUpsertFile('sitemap.xml', sitemapXML, `sitemap: ${post.title}`, pat);
 
-    // 5. Notificar Google (Indexing API) e Bing/Yandex (IndexNow)
+    // 5. Notificar Google (Indexing API) — Bing/Yandex são cobertos pelo Crawler Hints do Cloudflare
     toast('Solicitando indexação...', 'ok');
     notifyIndexing([`${SITE_BASE_URL}/blog/${post.id}`]); // não bloqueia o restante do fluxo
 

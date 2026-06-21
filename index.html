@@ -1620,18 +1620,7 @@
 
 
 
-<!-- Share FAB -->
-<div id="share-fab">
-  <div id="share-fab-menu">
-    <a class="share-fab-item share-wpp" href="#" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar via WhatsApp" onclick="this.href='https://api.whatsapp.com/send?text='+encodeURIComponent(document.title+' — '+location.href);return true;">📱 WhatsApp</a>
-    <a class="share-fab-item share-li" href="#" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no LinkedIn" onclick="this.href='https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href);return true;">💼 LinkedIn</a>
-    <a class="share-fab-item share-x" href="#" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no X (Twitter)" onclick="this.href='https://twitter.com/intent/tweet?url='+encodeURIComponent(location.href)+'&text='+encodeURIComponent(document.title);return true;">𝕏 Twitter</a>
-    <a class="share-fab-item share-fb" href="#" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no Facebook" onclick="this.href='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href);return true;">Facebook</a>
-    <a class="share-fab-item share-tg" href="#" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no Telegram" onclick="this.href='https://t.me/share/url?url='+encodeURIComponent(location.href)+'&text='+encodeURIComponent(document.title);return true;">✈️ Telegram</a>
-    <button class="share-fab-item share-copy" id="share-copy-fab" aria-label="Copiar link da página" onclick="navigator.clipboard.writeText(location.href).then(function(){document.getElementById('share-copy-fab').textContent='✅ Copiado!';setTimeout(function(){document.getElementById('share-copy-fab').textContent='🔗 Copiar link'},1800)})">🔗 Copiar link</button>
-  </div>
-  <button id="share-fab-btn" title="Compartilhar" aria-label="Compartilhar página" aria-expanded="false" aria-controls="share-fab-menu" onclick="this.setAttribute('aria-expanded', document.getElementById('share-fab-menu').classList.toggle('open'));">📤</button>
-</div>
+
 <!-- nh-functions incluído em app.js -->
 <script>
 // ── Menu mobile: abrir/fechar ────────────────────────────

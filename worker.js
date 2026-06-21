@@ -1,17 +1,20 @@
 /**
  * calculaprazo-views-api — Cloudflare Worker
  * Contador de visualizações com KV persistente
- * + Proxy de indexação automática (IndexNow + Google Indexing API)
+ * + Proxy de indexação automática (Google Indexing API)
  *
  * KV binding: VIEWS (configurar no dashboard Cloudflare)
  * Variável: ALLOWED_ORIGIN = https://calculaprazo.com.br
  *
+ * Observação sobre IndexNow (Bing/Yandex): a notificação NÃO passa mais por
+ * aqui. Use o "Crawler Hints" nativo do Cloudflare (Painel do domínio →
+ * Cache → Crawler Hints → Enable), que integra com IndexNow internamente
+ * e não esbarra no limite de IP compartilhado que o fetch() deste Worker
+ * enfrentava em /index-now.
+ *
  * Secrets necessários (Workers → Settings → Variables):
  *   ADMIN_SECRET     → senha simples que autoriza chamadas do admin
- *                      (usada em /index-now, /index-google e /ai-generate)
- *   INDEXNOW_KEY     → chave gerada (string hex aleatória), o mesmo
- *                      valor deve existir no arquivo público
- *                      /{INDEXNOW_KEY}.txt na raiz do site
+ *                      (usada em /index-google e /ai-generate)
  *   GOOGLE_SA_JSON   → conteúdo completo do JSON da Service Account
  *                      (Google Cloud → IAM → Service Accounts → Keys)
  *
@@ -20,7 +23,6 @@
  *   POST /view/:slug     → { slug, views }   (incrementa +1)
  *   GET  /top/:limit     → { top: [{slug, views}, ...] }
  *   GET  /health         → { ok: true }
- *   POST /index-now      → notifica Bing/Yandex via IndexNow
  *   POST /index-google   → notifica Google via Indexing API (URL_UPDATED)
  *   POST /ai-generate    → proxy para Gemini/OpenAI/Grok/DeepSeek/Claude
  *                          (Content Studio — chave de API do provedor vem
@@ -109,41 +111,6 @@ export default {
       entries.sort((a, b) => b.views - a.views);
       const top = entries.slice(0, limit);
       return json({ top }, 200, origin);
-    }
-
-    // ── POST /index-now — notifica Bing/Yandex via IndexNow ────
-    if (request.method === 'POST' && path === '/index-now') {
-      const authErr = checkAdminAuth(request, env, origin);
-      if (authErr) return authErr;
-
-      let body;
-      try { body = await request.json(); } catch (e) { return json({ error: 'JSON inválido' }, 400, origin); }
-      const urls = Array.isArray(body.urls) ? body.urls.filter(u => typeof u === 'string') : [];
-      if (!urls.length) return json({ error: 'urls (array) é obrigatório' }, 400, origin);
-      if (!env.INDEXNOW_KEY) return json({ error: 'INDEXNOW_KEY não configurado no Worker' }, 500, origin);
-
-      try {
-        const resp = await fetch('https://api.indexnow.org/indexnow', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json; charset=utf-8' },
-          body: JSON.stringify({
-            host: 'calculaprazo.com.br',
-            key: env.INDEXNOW_KEY,
-            keyLocation: `https://calculaprazo.com.br/${env.INDEXNOW_KEY}.txt`,
-            urlList: urls
-          })
-        });
-        const ok = resp.status === 200 || resp.status === 202;
-        let detail = '';
-        if (!ok) {
-          try { detail = await resp.text(); } catch (e2) { detail = '(sem corpo de resposta)'; }
-        }
-        return json({ ok, status: resp.status, sent: urls.length, detail: detail.slice(0, 500) }, ok ? 200 : 502, origin);
-      } catch (e) {
-        const errMsg = (e && (e.message || e.toString())) || 'erro desconhecido (sem mensagem)';
-        const errName = (e && e.name) || 'Error';
-        return json({ error: `Falha ao chamar IndexNow [${errName}]: ${errMsg}` }, 502, origin);
-      }
     }
 
     // ── POST /index-google — notifica Google via Indexing API ──
