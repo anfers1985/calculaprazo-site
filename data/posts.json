@@ -1,5 +1,16 @@
 [
   {
+    "id": "nova-nr-10-aprovada-seguranca-instalacoes-eletricas-2027",
+    "title": "Nova NR-10 é aprovada e entra em vigor em 2027",
+    "category": "legislacao-nr",
+    "category_label": "NR",
+    "excerpt": "MTE publica nova redação da NR-10, atualizando regras de segurança em instalações elétricas e serviços com eletricidade a partir de 2027.",
+    "image": "https://images.unsplash.com/photo-1758101755915-462eddc23f57?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-06-15",
+    "updatedAt": "2026-06-15",
+    "tags": []
+  },
+  {
     "id": "reforma-tributaria-act-cct-credito-cbs-ibs-beneficios",
     "title": "Reforma Tributária: quando o instrumento coletivo gera crédito de CBS e IBS",
     "category": "legislacao-normas",
@@ -193,17 +204,6 @@
     "category_label": "TST",
     "excerpt": "TST mantém indenização a empregados que perderam a oportunidade de obter patente após empresa deixar arquivar pedido no INPI.",
     "image": "https://images.unsplash.com/photo-1589391886645-d51941baf7fb?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "date": "2026-06-15",
-    "updatedAt": "2026-06-15",
-    "tags": []
-  },
-  {
-    "id": "nova-nr-10-aprovada-seguranca-instalacoes-eletricas-2027",
-    "title": "Nova NR-10 é aprovada e entra em vigor em 2027",
-    "category": "legislacao-nr",
-    "category_label": "NR",
-    "excerpt": "MTE publica nova redação da NR-10, atualizando regras de segurança em instalações elétricas e serviços com eletricidade a partir de 2027.",
-    "image": "https://images.unsplash.com/photo-1758101755915-462eddc23f57?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "date": "2026-06-15",
     "updatedAt": "2026-06-15",
     "tags": []
