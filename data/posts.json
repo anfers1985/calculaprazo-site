@@ -1,5 +1,16 @@
 [
   {
+    "id": "credito-trabalhador-fgts-garantia-verbas-rescisorias",
+    "title": "Crédito do Trabalhador libera FGTS como garantia",
+    "category": "fgts-digital",
+    "category_label": "FGTS",
+    "excerpt": "Crédito do Trabalhador passa a permitir uso de FGTS e verbas rescisórias como garantia a partir de 23/06 via CTPS Digital e bancos.",
+    "image": "https://imagens.ebc.com.br/sW9i4pnQIdJsqvhaAh3quzhI1u0=/770x0/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/fachada-ministerio_mcamgo_abr_100420231818-11.jpg?itok=T-NWkSaW",
+    "date": "2026-06-21",
+    "updatedAt": "2026-06-21",
+    "tags": []
+  },
+  {
     "id": "stf-retomada-acoes-pejotizacao-processos-trts",
     "title": "STF autoriza retomada de ações sobre pejotização",
     "category": "jurisprudencia-stf",
