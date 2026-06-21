@@ -418,6 +418,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
           <button class="btn btn-g" onclick="studioGerarUm('resumo_executivo')">📧 Resumo Executivo</button>
           <button class="btn btn-g" onclick="studioGerarUm('thread_x')">🧵 Thread X</button>
           <button class="btn btn-g" onclick="studioGerarUm('carrossel')">🎠 Carrossel</button>
+          <button class="btn btn-g" onclick="studioGerarUm('thumb_youtube')">🎬 Thumbnail YouTube</button>
+          <button class="btn btn-g" onclick="studioGerarUm('imagem_direto_ponto')">🎯 Direto ao Ponto</button>
+          <button class="btn btn-g" onclick="studioGerarUm('legenda_insta_linkedin')">💬 Legenda Insta/LinkedIn</button>
+          <button class="btn btn-g" onclick="studioGerarUm('descricao_youtube')">📝 Descrição YouTube</button>
+          <button class="btn btn-g" onclick="studioGerarUm('script_notebooklm')">🎙️ Script + NotebookLM</button>
         </div>
       </div>
 
@@ -476,6 +481,16 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
         <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--brd);">
           <div style="font-size:.9rem;font-weight:700;margin-bottom:6px;">🤖 Provedores de IA (Content Studio)</div>
           <p style="font-size:.78rem;color:var(--txt-s);margin-bottom:12px;">Cole a chave de cada provedor que for usar (nenhuma é obrigatória). As chaves ficam só no seu navegador e são enviadas ao Worker apenas no momento da geração. O nome do modelo já vem preenchido com uma opção atual e barata/gratuita — troque se quiser usar outro.</p>
+          <div class="fg">
+            <label>Provedor Padrão (usado por todos os templates, exceto se você trocar individualmente no card de resultado)</label>
+            <select id="ai-default-provider" style="width:100%;padding:9px 13px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.86rem;font-family:var(--fh);color:var(--txt);">
+              <option value="gemini">Gemini</option>
+              <option value="openai">OpenAI</option>
+              <option value="grok">Grok (xAI)</option>
+              <option value="deepseek">DeepSeek</option>
+              <option value="claude">Claude</option>
+            </select>
+          </div>
           <div class="fg"><label>Gemini API Key (Google AI Studio)</label><input type="password" id="ai-key-gemini" placeholder="AIza..."></div>
           <div class="fg"><label>Modelo Gemini</label><input type="text" id="ai-model-gemini" placeholder="gemini-2.5-flash" value="gemini-2.5-flash"></div>
           <div class="fg"><label>OpenAI API Key</label><input type="password" id="ai-key-openai" placeholder="sk-..."></div>
@@ -539,6 +554,7 @@ const GITHUB_BRANCH = 'main';
 const WORKER_URL    = 'https://calculaprazo-views-api.andersonfernand3s.workers.dev';
 const SITE_BASE_URL = 'https://calculaprazo.com.br';
 const AI_KEYS_KEY    = 'cp_ai_keys';
+const AI_DEFAULT_PROVIDER_KEY = 'cp_ai_default_provider';
 const STUDIO_HISTORY_KEY = 'cp_studio_history';
 
 // Páginas estáticas fixas do sitemap (fora do blog) — mantidas em sincronia manual
@@ -629,7 +645,7 @@ async function testIndexingSetup(){
       body: JSON.stringify({ urls: [testUrl] })
     });
     const dIN = await rIN.json().catch(()=>({}));
-    results.push(rIN.ok ? `✅ IndexNow: ok (status ${dIN.status||rIN.status})` : `❌ IndexNow: ${dIN.error || 'erro ' + rIN.status}`);
+    results.push(rIN.ok ? `✅ IndexNow: ok (status ${dIN.status||rIN.status})` : `❌ IndexNow: ${dIN.error || ('erro ' + (dIN.status||rIN.status) + (dIN.detail ? ' — ' + dIN.detail : ''))}`);
   } catch(e) {
     results.push('❌ IndexNow: erro de rede — ' + e.message);
   }
@@ -1053,8 +1069,9 @@ async function notifyIndexing(urls){
 // ════════════════════════════════════════
 
 // Cada template usa {{titulo}} {{url}} {{resumo}} {{conteudo}} como variáveis.
-// "provider" é o padrão sugerido (igual à spec original), mas o usuário pode trocar
-// no momento da geração se preferir outro provedor configurado.
+// "provider" aqui é só uma sugestão de referência (qual IA combina melhor com o formato).
+// O provedor realmente usado é sempre o "Provedor Padrão" salvo em Configurações,
+// a menos que o usuário troque manualmente no seletor do card de resultado.
 const STUDIO_TEMPLATES = {
   infografico: {
     label: 'Infográfico 1:1',
@@ -1183,6 +1200,167 @@ Título: {{titulo}}
 URL: {{url}}
 Resumo: {{resumo}}
 Conteúdo: {{conteudo}}`
+  },
+
+  thumb_youtube: {
+    label: 'Thumbnail YouTube (1280x720)',
+    provider: 'gemini',
+    systemPrompt: 'Você cria prompts de imagem seguindo fielmente o template de marca do Calcula Prazo. Sua única função é devolver o PROMPT completo e otimizado para gerar a imagem em outra IA (nunca gerar a imagem você mesmo). Responda apenas com o prompt preenchido, pronto para copiar e colar.',
+    userPrompt: `Com base no artigo abaixo, gere um prompt de imagem seguindo EXATAMENTE esta estrutura, preenchendo as partes em maiúsculas com conteúdo extraído do artigo (título principal curto e impactante, de até 6 palavras; subtítulo curto de contexto, até 5 palavras):
+
+MODE: STRICT BRAND REPLICATION
+TEXT MUST BE EXACT. DO NOT APPROXIMATE LETTERING.
+
+Use exatamente o template base fornecido (barra azul vertical esquerda com logo Calcula Prazo + fundo branco limpo + rodapé inferior).
+
+Formato: 1280x720 pixels (16:9 horizontal).
+
+Sobreponha exatamente:
+
+TÍTULO PRINCIPAL (grande, negrito, cor #0F2C5A, alinhado à esquerda na área central):
+[título curto extraído do artigo, até 6 palavras]
+
+SUBTÍTULO (logo abaixo do título, fonte menor, cor cinza escuro #334455):
+[subtítulo curto de contexto, até 5 palavras]
+
+ILUSTRAÇÃO / MOTIF (lado direito, estilo flat design jurídico chamativo, cores azul #2196F3, verde e rosa suave):
+[descreva uma cena simples e relevante ao tema do artigo, em estilo flat design]
+
+Manter fielmente: barra esquerda com degradê e logo, fundo totalmente branco limpo, rodapé central "CalculaPrazo.com.br" e base ondulada sutil verde-azulada.
+
+Alta resolução, textos nítidos, visual profissional e impactante.
+
+Responda apenas com "✅ Prompt Thumbnail YouTube pronto:" seguido do prompt completo já preenchido.
+
+ARTIGO:
+Título: {{titulo}}
+URL: {{url}}
+Resumo: {{resumo}}
+Conteúdo: {{conteudo}}`
+  },
+
+  imagem_direto_ponto: {
+    label: 'Imagem "Direto ao Ponto" (1280x720)',
+    provider: 'gemini',
+    systemPrompt: 'Você cria prompts de imagem seguindo fielmente o template de marca do Calcula Prazo. Sua única função é devolver o PROMPT completo e otimizado para gerar a imagem em outra IA (nunca gerar a imagem você mesmo). Responda apenas com o prompt preenchido, pronto para copiar e colar.',
+    userPrompt: `Com base no artigo abaixo, gere um prompt de imagem seguindo EXATAMENTE esta estrutura, preenchendo as partes em maiúsculas com conteúdo extraído do artigo (título principal bem curto, até 4 palavras; subtítulo ainda mais curto, até 3 palavras):
+
+MODE: STRICT BRAND REPLICATION
+TEXT MUST BE EXACT. DO NOT APPROXIMATE LETTERING.
+
+Use exatamente o template base fornecido (barra azul vertical esquerda com logo Calcula Prazo + fundo branco limpo + rodapé inferior).
+
+Formato: 1280x720 pixels (16:9 horizontal).
+
+Sobreponha exatamente:
+
+TÍTULO PRINCIPAL (grande, negrito, cor #0F2C5A, alinhado à esquerda na área central):
+[título bem curto extraído do artigo, até 4 palavras]
+
+SUBTÍTULO (logo abaixo do título, fonte menor, cor cinza escuro #334455):
+[subtítulo ainda mais curto, até 3 palavras]
+
+ILUSTRAÇÃO / MOTIF (lado direito, estilo flat design jurídico chamativo, cores azul #2196F3, verde e rosa suave):
+[descreva uma cena simples e relevante ao tema do artigo, em estilo flat design]
+
+Adicionar um selo chamativo e moderno no canto superior direito com o texto em negrito branco com borda:
+"DIRETO AO PONTO"
+
+Manter fielmente: barra esquerda com degradê e logo, fundo totalmente branco limpo, rodapé central "CalculaPrazo.com.br" e base ondulada sutil verde-azulada.
+
+Alta resolução, textos grandes e legíveis, visual limpo e profissional.
+
+Responda apenas com "✅ Prompt Direto ao Ponto pronto:" seguido do prompt completo já preenchido.
+
+ARTIGO:
+Título: {{titulo}}
+URL: {{url}}
+Resumo: {{resumo}}
+Conteúdo: {{conteudo}}`
+  },
+
+  legenda_insta_linkedin: {
+    label: 'Legenda Instagram/LinkedIn',
+    provider: 'gemini',
+    systemPrompt: 'Você escreve legendas para Instagram e LinkedIn do Calcula Prazo: profissionais, acolhedoras e que geram engajamento, sem revelar todo o conteúdo do artigo.',
+    userPrompt: `Com base no artigo abaixo, escreva uma LEGENDA para Instagram e LinkedIn seguindo esta estrutura:
+- Abertura chamativa com 1 emoji relevante, resumindo a notícia/ponto principal em 1-2 linhas
+- Um parágrafo curto de contexto (o que muda, ou o que foi decidido)
+- Lista de 3 a 5 pontos principais, cada um com um emoji de check (✅) na frente
+- Uma pergunta de engajamento convidando comentários
+- A linha "Artigo completo:" seguida da URL
+- 6 a 10 hashtags relevantes ao final (incluindo #CalculaPrazo)
+
+Tom profissional, acolhedor, sem revelar todos os detalhes do artigo (gere curiosidade para o clique).
+
+ARTIGO:
+Título: {{titulo}}
+URL: {{url}}
+Resumo: {{resumo}}
+Conteúdo: {{conteudo}}`
+  },
+
+  descricao_youtube: {
+    label: 'Descrição para YouTube',
+    provider: 'gemini',
+    systemPrompt: 'Você escreve descrições de vídeo para o canal do YouTube do Calcula Prazo: claras, organizadas em tópicos, com aviso legal padrão.',
+    userPrompt: `Com base no artigo abaixo, escreva uma DESCRIÇÃO DE VÍDEO para YouTube seguindo esta estrutura:
+- Uma linha de abertura resumindo o tema do vídeo
+- Uma linha em branco
+- "Neste vídeo explicamos:" seguido de uma lista com 4 a 6 bullets (•) cobrindo os pontos principais do artigo
+- Uma linha indicando o público-alvo (ex: "Conteúdo relevante para trabalhadores, RH e advogados trabalhistas.")
+- A linha "Artigo completo:" seguida da URL
+- O aviso legal: "⚠️ Este conteúdo tem caráter informativo e não substitui assessoria jurídica especializada."
+- 6 a 10 hashtags relevantes ao final (incluindo #CalculaPrazo)
+
+ARTIGO:
+Título: {{titulo}}
+URL: {{url}}
+Resumo: {{resumo}}
+Conteúdo: {{conteudo}}`
+  },
+
+  script_notebooklm: {
+    label: 'Script + Áudio NotebookLM',
+    provider: 'gemini',
+    systemPrompt: 'Você é um roteirista brasileiro especialista em Direito do Trabalho, criando scripts de vídeo explicativo claros, objetivos e didáticos para o Calcula Prazo, e instruções de narração para ferramentas de áudio como o NotebookLM.',
+    userPrompt: `Com base no artigo abaixo, gere DUAS PARTES, claramente separadas por um título em maiúsculas:
+
+PARTE 1 — SCRIPT PARA VÍDEO
+Crie um roteiro com marcações de tempo no formato [M:SS], cobrindo:
+[0:00] Introdução — abertura chamativa nos primeiros segundos, contextualizando o tema
+[trecho seguinte] O que foi decidido/aconteceu — explicação direta do ponto principal do artigo
+[trecho seguinte] Detalhes e implicações práticas
+[trecho seguinte] Próximos passos, se houver (ex: tramitação, prazos)
+[trecho final] Conclusão com chamada para ação (ver artigo completo)
+Cada bloco deve ter uma fala pronta, em português do Brasil, tom profissional, claro e acessível.
+
+PARTE 2 — PROMPT MASTER PARA NOTEBOOKLM
+Escreva um prompt completo, no seguinte formato:
+
+"Você é um narrador brasileiro especialista em Direito do Trabalho, com tom profissional, claro, objetivo, didático e acessível. Fale sempre em PORTUGUÊS DO BRASIL (pt-BR), com voz natural brasileira, ritmo dinâmico e boa entonação.
+
+Crie um vídeo explicativo completo baseado no artigo do site Calcula Prazo sobre "[TÍTULO DO ARTIGO]".
+
+Público-alvo: [defina o público mais relevante para este artigo específico, ex: trabalhadores, RH, advogados, empregadores].
+
+Seja prático, explique [resuma em 1 linha o ponto central do artigo] e seus impactos.
+
+Estrutura ideal:
+- Introdução chamativa nos primeiros 5-8 segundos
+- [adapte os tópicos da estrutura ao conteúdo real do artigo]
+- Conclusão com chamada para ação
+
+O link do artigo completo deve ficar na descrição:
+[URL]
+
+Agora gere o áudio narrado completo do vídeo em português brasileiro fluente e natural"
+
+ARTIGO:
+Título: {{titulo}}
+URL: {{url}}
+Resumo: {{resumo}}
+Conteúdo: {{conteudo}}`
   }
 };
 
@@ -1205,11 +1383,17 @@ function saveAIKeys(){
     };
   });
   localStorage.setItem(AI_KEYS_KEY, JSON.stringify(keys));
+  const defaultProvider = document.getElementById('ai-default-provider').value;
+  localStorage.setItem(AI_DEFAULT_PROVIDER_KEY, defaultProvider);
   const msg = document.getElementById('ai-keys-saved-msg');
   msg.style.display = 'block';
   msg.style.color = '#059669';
-  msg.textContent = '✅ Chaves salvas neste navegador.';
+  msg.textContent = '✅ Chaves e provedor padrão salvos neste navegador.';
   toast('Chaves de IA salvas!','ok');
+}
+
+function getAIDefaultProvider(){
+  return localStorage.getItem(AI_DEFAULT_PROVIDER_KEY) || 'gemini';
 }
 
 function loadAIKeysIntoInputs(){
@@ -1220,6 +1404,8 @@ function loadAIKeysIntoInputs(){
     if(keyEl && keys[p] && keys[p].apiKey) keyEl.value = keys[p].apiKey;
     if(modelEl && keys[p] && keys[p].model) modelEl.value = keys[p].model;
   });
+  const defaultEl = document.getElementById('ai-default-provider');
+  if(defaultEl) defaultEl.value = getAIDefaultProvider();
 }
 
 // Preenche um template substituindo as variáveis pelo conteúdo real do artigo
@@ -1319,7 +1505,7 @@ function studioProviderSelectHTML(key, currentProvider){
 
 function studioRenderPendingCard(key, provider){
   const tpl = STUDIO_TEMPLATES[key];
-  const useProvider = provider || tpl.provider;
+  const useProvider = provider || getAIDefaultProvider();
   const box = document.getElementById('studio-results');
   let card = document.getElementById(studioResultCardId(key));
   if(!card){
@@ -1399,9 +1585,9 @@ async function studioCallAI(provider, systemPrompt, userPrompt){
 async function studioGerarUm(key){
   if(!studioSelectedArticle){ toast('Selecione um artigo primeiro.','err'); return; }
   const tpl = STUDIO_TEMPLATES[key];
-  // Se já existe um seletor de provedor no card (de uma geração anterior), respeita a escolha do usuário
+  // Prioridade: provedor já escolhido manualmente no card (regeração) > provedor padrão salvo nas Configurações > sugestão do template
   const providerSelect = document.getElementById('studio-provider-' + key);
-  const provider = (providerSelect && providerSelect.value) ? providerSelect.value : tpl.provider;
+  const provider = (providerSelect && providerSelect.value) ? providerSelect.value : getAIDefaultProvider();
   studioRenderPendingCard(key, provider);
   try {
     const systemPrompt = tpl.systemPrompt;
