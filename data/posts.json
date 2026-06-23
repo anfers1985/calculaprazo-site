@@ -1,5 +1,16 @@
 [
   {
+    "id": "empresa-alterar-data-pagamento-salario-clt",
+    "title": "Empresa pode mudar a data de pagamento dos salários? Entenda as regras",
+    "category": "rh-folha",
+    "category_label": "Folha de Pagamento",
+    "excerpt": "CLT permite alterar a data de pagamento dos salários, desde que o depósito seja realizado até o quinto dia útil do mês seguinte.",
+    "image": "https://images.unsplash.com/photo-1582731489394-51b65c9fcb04?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-06-23",
+    "updatedAt": "2026-06-23",
+    "tags": []
+  },
+  {
     "id": "tst-reverte-justa-causa-motorista-desvio-rota",
     "title": "TST reverte justa causa de motorista por desvio isolado de rota",
     "category": "jurisprudencia-tst",
