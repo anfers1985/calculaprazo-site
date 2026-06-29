@@ -151,6 +151,11 @@
           <a href="/gerador-de-senhas" onclick="event.preventDefault();closeMobNav();navGoTo('senhas')"><span class="dm-icon">🔐</span>Gerador de Senhas</a>
           <a href="/numero-por-extenso" onclick="event.preventDefault();closeMobNav();navGoTo('extenso')"><span class="dm-icon">🔢</span>Número por Extenso</a>
           <a href="/calculadora-imc" onclick="event.preventDefault();closeMobNav();navGoTo('imc')"><span class="dm-icon">🏃</span>Calculadora de IMC</a>
+          <div class="nav-drop-divider"></div>
+          <a href="/calculadora-de-prescricao" onclick="event.preventDefault();closeMobNav();navGoTo('prescricao')"><span class="dm-icon">⏳</span>Calculadora de Prescrição</a>
+          <a href="/calculadora-jornada-intermitente" onclick="event.preventDefault();closeMobNav();navGoTo('intermitente')"><span class="dm-icon">🔄</span>Jornada Intermitente</a>
+          <a href="/calculadora-fgts-digital" onclick="event.preventDefault();closeMobNav();navGoTo('fgts')"><span class="dm-icon">🏦</span>FGTS Digital</a>
+          <a href="/feriados-nacionais"><span class="dm-icon">📆</span>Feriados Nacionais</a>
         </div>
       </div>
             <div class="nav-dropdown" id="nav-dropdown-conteudo" role="navigation" aria-label="Conteúdo">
@@ -463,8 +468,33 @@
             <div class="pchk"><input type="checkbox" id="p-dom" checked><label for="p-dom">Domingos</label></div>
           </div>
           <div class="pfg" style="margin-bottom:0;">
-            <label for="p-fer">Feriados (DD/MM/AAAA, separados por vírgula)</label>
+            <label for="p-fer">Feriados adicionais (DD/MM/AAAA, separados por vírgula)</label>
             <input type="text" id="p-fer" placeholder="Ex: 25/12/2026, 01/01/2026">
+          </div>
+          <div class="pfg" style="margin-top:10px;">
+            <label for="p-uf">Feriados estaduais <small style="font-weight:400;">(opcional)</small></label>
+            <select id="p-uf" onchange="loadFeriadosUF()">
+              <option value="">— Selecionar Estado —</option>
+              <option value="AC">Acre (AC)</option><option value="AL">Alagoas (AL)</option>
+              <option value="AM">Amazonas (AM)</option><option value="AP">Amapá (AP)</option>
+              <option value="BA">Bahia (BA)</option><option value="CE">Ceará (CE)</option>
+              <option value="DF">Distrito Federal (DF)</option><option value="ES">Espírito Santo (ES)</option>
+              <option value="GO">Goiás (GO)</option><option value="MA">Maranhão (MA)</option>
+              <option value="MG">Minas Gerais (MG)</option><option value="MS">Mato Grosso do Sul (MS)</option>
+              <option value="MT">Mato Grosso (MT)</option><option value="PA">Pará (PA)</option>
+              <option value="PB">Paraíba (PB)</option><option value="PE">Pernambuco (PE)</option>
+              <option value="PI">Piauí (PI)</option><option value="PR">Paraná (PR)</option>
+              <option value="RJ">Rio de Janeiro (RJ)</option><option value="RN">Rio Grande do Norte (RN)</option>
+              <option value="RO">Rondônia (RO)</option><option value="RR">Roraima (RR)</option>
+              <option value="RS">Rio Grande do Sul (RS)</option><option value="SC">Santa Catarina (SC)</option>
+              <option value="SE">Sergipe (SE)</option><option value="SP">São Paulo (SP)</option>
+              <option value="TO">Tocantins (TO)</option>
+            </select>
+            <div id="p-uf-lista" style="margin-top:4px;font-size:.73rem;color:var(--txt-s);"></div>
+          </div>
+          <div class="pchk" style="margin-top:10px;" title="Suspende a contagem de 20/dez a 20/jan — art. 220 CPC/2015">
+            <input type="checkbox" id="p-recesso">
+            <label for="p-recesso">Recesso forense — art. 220 CPC (20/dez–20/jan)</label>
           </div>
         </div>
 
@@ -484,6 +514,7 @@
           <div id="p-res-txt"></div>
           <div id="p-res-resumo"></div>
           <div id="p-res-feriados"></div>
+          <button onclick="exportarPDF('Cálculo de Prazo Processual','p-resultado')" style="margin-top:10px;padding:7px 16px;border:1.5px solid var(--brd);border-radius:999px;background:var(--card);color:var(--txt);font-size:.78rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">📄 Exportar PDF</button>
         </div>
       </div>
 
@@ -574,6 +605,7 @@
         <div class="res-lbl">Valor Atualizado</div>
         <div class="res-val" id="corr-res-val"></div>
         <div class="res-det" id="corr-res-det"></div>
+        <button onclick="exportarPDF('Correção Monetária','corr-res')" style="margin-top:10px;padding:7px 16px;border:1.5px solid var(--brd);border-radius:999px;background:var(--card);color:var(--txt);font-size:.78rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">📄 Exportar PDF</button>
       </div>
       <div class="note-box" id="corr-fallback-note" style="display:none;"><strong>⚠ Dados offline:</strong> Não foi possível buscar os índices em tempo real. O cálculo usou taxas de referência locais. Para valores exatos em processos judiciais, consulte as tabelas oficiais do IBGE/FGV ou sistemas do tribunal.<div class="card-sm">
         <h3 style="font-size:.9rem;font-weight:700;margin-bottom:12px;">📊 Sobre os índices</h3>
@@ -702,6 +734,7 @@
           <div class="ri span2"><div class="ri-lbl">Salário Líquido</div><div class="ri-val" id="sr-liq" style="color:var(--ok);">—</div></div>
         </div>
         <div id="sr-aliq" style="font-size:.82rem;color:var(--txt-m);padding:12px;background:var(--bg);border-radius:var(--r);"></div>
+        <button onclick="exportarPDF('Calculadora de Salário Líquido','sal-res')" style="margin-top:10px;padding:7px 16px;border:1.5px solid var(--brd);border-radius:999px;background:var(--card);color:var(--txt);font-size:.78rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">📄 Exportar PDF</button>
       </div>
     </div>
     <div style="display:flex;flex-direction:column;gap:16px;position:sticky;top:76px;">
@@ -1314,6 +1347,207 @@
 
 
 
+
+
+<!-- ══════════════════════════════════════
+     CALCULADORA DE PRESCRIÇÃO
+══════════════════════════════════════ -->
+<div id="sec-prescricao" class="sec">
+<h2 class="sr-only">Calculadora de Prescrição</h2>
+  <div class="container" style="max-width:900px;">
+    <div style="display:flex;flex-direction:column;gap:18px;">
+      <div class="card">
+        <h2><span aria-hidden="true">⏳</span> Calculadora de Prescrição</h2>
+        <p class="sub">Calcule o prazo prescricional e a data de extinção do direito de ação</p>
+        <div class="pfg-row" style="margin-bottom:12px;">
+          <div class="pfg">
+            <label for="presc-tipo">Tipo de prescrição</label>
+            <select id="presc-tipo" onchange="prescUpdateLayout()">
+              <optgroup label="Trabalhista (CLT)">
+                <option value="trab_geral">Trabalhista geral — 2 anos após extinção do contrato (art. 7º, XXIX CF)</option>
+                <option value="trab_fgts">FGTS — 5 anos durante vigência + 2 após extinção (art. 23 Lei 8.036/90)</option>
+                <option value="trab_menor">Trabalhista — menor de 18 anos (prescrição suspensa — art. 440 CLT)</option>
+              </optgroup>
+              <optgroup label="Civil (CC)">
+                <option value="civil_geral">Civil geral — 10 anos (art. 205 CC)</option>
+                <option value="civil_3anos">Civil — 3 anos (art. 206-A CC)</option>
+                <option value="civil_5anos">Civil — 5 anos (art. 206 §5º CC)</option>
+                <option value="civil_1ano">Civil — 1 ano (art. 206 §1º CC)</option>
+              </optgroup>
+              <optgroup label="Tributário / Administrativo">
+                <option value="trib_5anos">Tributário — 5 anos (art. 174 CTN)</option>
+                <option value="admin_5anos">Administrativo — 5 anos (Decreto 20.910/1932)</option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+        <div class="pfg-row">
+          <div class="pfg">
+            <label for="presc-ini">Data do fato / término do contrato</label>
+            <input type="date" id="presc-ini" aria-required="true">
+          </div>
+          <div class="pfg" id="presc-fim-grp" style="display:none;">
+            <label for="presc-fim">Data de extinção do contrato (FGTS)</label>
+            <input type="date" id="presc-fim">
+          </div>
+        </div>
+        <div id="presc-menor-aviso" style="display:none;background:#FEF3C7;border:1.5px solid #FDE68A;border-radius:10px;padding:10px 14px;font-size:.82rem;color:#92400E;margin-top:8px;">⚠️ Para menores de 18 anos, a prescrição não corre durante a vigência do contrato (art. 440 CLT).</div>
+        <button class="btn btn-p btn-full" style="margin-top:14px;" onclick="calcPrescricao()">Calcular Prescrição →</button>
+      </div>
+      <div id="presc-res" aria-live="polite" aria-atomic="true" style="display:none;">
+        <div class="card">
+          <h2>⏳ Resultado</h2>
+          <div class="ri-grid">
+            <div class="ri span2"><div class="ri-lbl">Prazo prescricional</div><div class="ri-val" id="presc-prazo">—</div></div>
+            <div class="ri"><div class="ri-lbl">Início da contagem</div><div class="ri-val" id="presc-data-ini">—</div></div>
+            <div class="ri"><div class="ri-lbl">Extinção do direito</div><div class="ri-val" id="presc-data-fim" style="color:var(--acc);">—</div></div>
+            <div class="ri span2"><div class="ri-lbl">Situação atual</div><div class="ri-val" id="presc-status">—</div></div>
+          </div>
+          <div id="presc-obs" style="margin-top:12px;font-size:.8rem;color:var(--txt-s);border-top:1px solid var(--brd);padding-top:10px;"></div>
+          <button onclick="exportarPDF('Calculadora de Prescrição','presc-res')" style="margin-top:10px;padding:7px 16px;border:1.5px solid var(--brd);border-radius:999px;background:var(--card);color:var(--txt);font-size:.78rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">📄 Exportar PDF</button>
+        </div>
+      </div>
+      <div class="card" style="background:var(--b50);border:1px solid var(--b100);">
+        <h3 style="font-size:.88rem;font-weight:700;margin-bottom:10px;">📋 Principais prazos prescricionais</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;font-size:.78rem;">
+          <div style="padding:8px 10px;background:var(--card);border-radius:8px;border:1px solid var(--brd);"><strong>2 anos</strong> — Trabalhista geral (pós-rescisão)</div>
+          <div style="padding:8px 10px;background:var(--card);border-radius:8px;border:1px solid var(--brd);"><strong>5 anos</strong> — FGTS (durante contrato) | Tributário | Administrativo</div>
+          <div style="padding:8px 10px;background:var(--card);border-radius:8px;border:1px solid var(--brd);"><strong>3 anos</strong> — Reparação civil / dano moral</div>
+          <div style="padding:8px 10px;background:var(--card);border-radius:8px;border:1px solid var(--brd);"><strong>10 anos</strong> — Civil geral (regra subsidiária)</div>
+          <div style="padding:8px 10px;background:var(--card);border-radius:8px;border:1px solid var(--brd);"><strong>Suspensa</strong> — Menor de 18 anos (CLT art. 440)</div>
+          <div style="padding:8px 10px;background:var(--card);border-radius:8px;border:1px solid var(--brd);"><strong>Imprescritível</strong> — Trabalho escravo (STF RE 466.343)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     CALCULADORA DE JORNADA INTERMITENTE
+══════════════════════════════════════ -->
+<div id="sec-intermitente" class="sec">
+<h2 class="sr-only">Calculadora de Jornada Intermitente</h2>
+  <div class="container" style="max-width:900px;">
+    <div style="display:flex;flex-direction:column;gap:18px;">
+      <div class="card">
+        <h2><span aria-hidden="true">🔄</span> Calculadora de Jornada Intermitente</h2>
+        <p class="sub">Simule remuneração e verbas do contrato intermitente conforme art. 452-A da CLT</p>
+        <div class="pfg-row">
+          <div class="pfg">
+            <label for="int-valor-hora">Valor da hora (R$)</label>
+            <div class="sfx"><input type="number" id="int-valor-hora" placeholder="20,00" min="0" step="0.01"><span class="sfx-s">R$</span></div>
+            <small style="color:var(--txt-s);font-size:.72rem;">Mínimo: R$ <span id="int-minimo-hora">6,90</span>/h</small>
+          </div>
+          <div class="pfg">
+            <label for="int-horas">Horas convocadas no período</label>
+            <div class="sfx"><input type="number" id="int-horas" placeholder="80" min="0" step="0.5"><span class="sfx-s">h</span></div>
+          </div>
+        </div>
+        <div class="pfg-row">
+          <div class="pfg">
+            <label for="int-dependentes">Dependentes (IR)</label>
+            <input type="number" id="int-dependentes" placeholder="0" min="0" max="20" value="0">
+          </div>
+        </div>
+        <div class="pfg-row">
+          <div class="pfg">
+            <label>Incluir no cálculo</label>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:4px;">
+              <div class="pchk"><input type="checkbox" id="int-ferias" checked><label for="int-ferias">Férias + 1/3</label></div>
+              <div class="pchk"><input type="checkbox" id="int-13" checked><label for="int-13">13º salário</label></div>
+              <div class="pchk"><input type="checkbox" id="int-fgts" checked><label for="int-fgts">FGTS (8%)</label></div>
+              <div class="pchk"><input type="checkbox" id="int-inss" checked><label for="int-inss">INSS</label></div>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-p btn-full" style="margin-top:14px;" onclick="calcIntermitente()">Calcular →</button>
+      </div>
+      <div id="int-res" aria-live="polite" aria-atomic="true" style="display:none;">
+        <div class="card">
+          <h2>🔄 Resultado — Jornada Intermitente</h2>
+          <div class="ri-grid">
+            <div class="ri"><div class="ri-lbl">Remuneração bruta</div><div class="ri-val" id="int-bruto">—</div></div>
+            <div class="ri"><div class="ri-lbl">INSS</div><div class="ri-val" id="int-inss-val">—</div></div>
+            <div class="ri"><div class="ri-lbl">IRRF</div><div class="ri-val" id="int-irrf-val">—</div></div>
+            <div class="ri"><div class="ri-lbl">Remuneração líquida</div><div class="ri-val" id="int-liquido" style="color:var(--acc);">—</div></div>
+            <div class="ri"><div class="ri-lbl">Férias proporcionais</div><div class="ri-val" id="int-ferias-val">—</div></div>
+            <div class="ri"><div class="ri-lbl">13º proporcional</div><div class="ri-val" id="int-13-val">—</div></div>
+            <div class="ri"><div class="ri-lbl">FGTS (8%)</div><div class="ri-val" id="int-fgts-val">—</div></div>
+            <div class="ri span2"><div class="ri-lbl">Custo total ao empregador</div><div class="ri-val" id="int-custo-total" style="font-size:1.3rem;font-weight:800;">—</div></div>
+          </div>
+          <div id="int-aviso" style="margin-top:12px;font-size:.79rem;color:var(--txt-s);border-top:1px solid var(--brd);padding-top:10px;">⚠️ Férias, 13º e FGTS são pagos junto com cada remuneração no contrato intermitente (art. 452-A §6º CLT).</div>
+          <button onclick="exportarPDF('Jornada Intermitente','int-res')" style="margin-top:10px;padding:7px 16px;border:1.5px solid var(--brd);border-radius:999px;background:var(--card);color:var(--txt);font-size:.78rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">📄 Exportar PDF</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     CALCULADORA FGTS DIGITAL
+══════════════════════════════════════ -->
+<div id="sec-fgts" class="sec">
+<h2 class="sr-only">Calculadora FGTS Digital</h2>
+  <div class="container" style="max-width:900px;">
+    <div style="display:flex;flex-direction:column;gap:18px;">
+      <div class="card">
+        <h2><span aria-hidden="true">🏦</span> Calculadora FGTS Digital</h2>
+        <p class="sub">Estime o saldo do FGTS e simule saques, multa rescisória e contribuições mensais</p>
+        <div class="pfg-row">
+          <div class="pfg">
+            <label for="fgts-salario">Salário bruto mensal (R$)</label>
+            <div class="sfx"><input type="number" id="fgts-salario" placeholder="3000,00" min="0" step="0.01"><span class="sfx-s">R$</span></div>
+          </div>
+          <div class="pfg">
+            <label for="fgts-meses">Meses trabalhados</label>
+            <input type="number" id="fgts-meses" placeholder="24" min="1" max="600">
+          </div>
+        </div>
+        <div class="pfg-row">
+          <div class="pfg">
+            <label for="fgts-saldo-atual">Saldo atual na conta FGTS (R$) <small style="font-weight:400;">(opcional)</small></label>
+            <div class="sfx"><input type="number" id="fgts-saldo-atual" placeholder="0,00" min="0" step="0.01"><span class="sfx-s">R$</span></div>
+          </div>
+          <div class="pfg">
+            <label for="fgts-tipo">Tipo de trabalhador</label>
+            <select id="fgts-tipo">
+              <option value="0.08">CLT — Empregado (8%)</option>
+              <option value="0.02">Aprendiz (2%)</option>
+            </select>
+          </div>
+        </div>
+        <div class="pfg-row">
+          <div class="pfg">
+            <label>Simulação de rescisão</label>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:4px;">
+              <div class="pchk"><input type="radio" name="fgts-rescisao" id="fgts-r-sem" value="sem" checked><label for="fgts-r-sem">Sem rescisão</label></div>
+              <div class="pchk"><input type="radio" name="fgts-rescisao" id="fgts-r-imot" value="imotivada"><label for="fgts-r-imot">Dispensa imotivada (multa 40%)</label></div>
+              <div class="pchk"><input type="radio" name="fgts-rescisao" id="fgts-r-culpa" value="culpa"><label for="fgts-r-culpa">Culpa recíproca (multa 20%)</label></div>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-p btn-full" style="margin-top:14px;" onclick="calcFGTS()">Calcular FGTS →</button>
+      </div>
+      <div id="fgts-res" aria-live="polite" aria-atomic="true" style="display:none;">
+        <div class="card">
+          <h2>🏦 Resultado FGTS</h2>
+          <div class="ri-grid">
+            <div class="ri"><div class="ri-lbl">Depósito mensal</div><div class="ri-val" id="fgts-mensal">—</div></div>
+            <div class="ri"><div class="ri-lbl">Total depositado (período)</div><div class="ri-val" id="fgts-total-dep">—</div></div>
+            <div class="ri span2"><div class="ri-lbl">Saldo estimado (c/ rendimento TR+3%a.a.)</div><div class="ri-val" id="fgts-saldo-est" style="color:var(--acc);">—</div></div>
+            <div class="ri" id="fgts-multa-row" style="display:none;"><div class="ri-lbl">Multa rescisória</div><div class="ri-val" id="fgts-multa">—</div></div>
+            <div class="ri" id="fgts-total-row" style="display:none;"><div class="ri-lbl">Total a receber (saldo + multa)</div><div class="ri-val" id="fgts-total-receber" style="font-size:1.3rem;font-weight:800;">—</div></div>
+          </div>
+          <div style="margin-top:12px;font-size:.79rem;color:var(--txt-s);border-top:1px solid var(--brd);padding-top:10px;">⚠️ Saldo estimado com TR ≈ 0 (conservador). Consulte o aplicativo FGTS Digital ou extrato da Caixa para o saldo real.</div>
+          <button onclick="exportarPDF('Calculadora FGTS Digital','fgts-res')" style="margin-top:10px;padding:7px 16px;border:1.5px solid var(--brd);border-radius:999px;background:var(--card);color:var(--txt);font-size:.78rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">📄 Exportar PDF</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ══════════════════════════════════════
      BLOG / CONTEÚDO
 ══════════════════════════════════════ -->
@@ -1471,7 +1705,7 @@
 </footer><!-- ══════════════════════════════════════
      JAVASCRIPT
 ══════════════════════════════════════ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/app.min.js?v=2" defer></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/app.min.js?v=3" defer></script>
 
 <!-- ══════════ COOKIE BANNER ══════════ -->
 <div id="cookie-banner">
