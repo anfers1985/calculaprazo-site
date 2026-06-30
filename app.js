@@ -152,21 +152,6 @@ function cap(s){return s?s.charAt(0).toUpperCase()+s.slice(1):s;}
 function parseFer(str){if(!str||!str.trim())return[];return str.split(',').map(s=>{const p=s.trim().split('/');if(p.length!==3)return null;const[d,m,a]=p.map(Number);if(isNaN(d)||isNaN(m)||isNaN(a))return null;return new Date(Date.UTC(a,m-1,d));}).filter(Boolean);}
 function isFer(dt,fl){return fl.some(f=>f.getTime()===dt.getTime());}
 function isNU(dt,eS,eD,fl){const ds=dt.getUTCDay();return(eD&&ds===0)||(eS&&ds===6)||isFer(dt,fl);}
-// Helper: exibe erro inline acessível (substitui alert())
-function showCalcError(msg, anchorId){
-  var existing = document.getElementById('cp-inline-err');
-  if(existing) existing.remove();
-  var el = document.createElement('div');
-  el.id = 'cp-inline-err';
-  el.setAttribute('role','alert');
-  el.setAttribute('aria-live','assertive');
-  el.style.cssText = 'background:#FEF2F2;color:#991B1B;border:1.5px solid #FECACA;border-radius:10px;padding:10px 14px;font-size:.84rem;font-weight:600;margin-top:10px;display:flex;align-items:center;gap:8px;';
-  el.innerHTML = '<span style="font-size:1.1rem;">⚠️</span><span>' + msg + '</span>';
-  var anchor = anchorId ? document.getElementById(anchorId) : null;
-  if(anchor){ anchor.parentNode.insertBefore(el, anchor); }
-  else { document.body.appendChild(el); }
-  setTimeout(function(){ if(el.parentNode) el.remove(); }, 6000);
-}
 function corrEntre(a,b,iA,iB){let d=Math.round(Math.abs(b.getTime()-a.getTime())/86400000);if(iA&&iB)d+=1;else if(!iA&&!iB)d=Math.max(0,d-1);return Math.max(0,d);}
 function uteisEntre(ini,fim,iI,iF,eS,eD,fl){let s=new Date(ini.getTime()),e=new Date(fim.getTime());if(s>e)[s,e]=[e,s];if(!iI)s=new Date(s.getTime()+864e5);if(!iF)e=new Date(e.getTime()-864e5);if(s>e)return{count:0,feriados:[]};let c=0,fer=[],cur=new Date(s.getTime());while(cur<=e){const ds=cur.getUTCDay();if(!((eD&&ds===0)||(eS&&ds===6))){if(isFer(cur,fl))fer.push(fd(cur));else c++;}cur=new Date(cur.getTime()+864e5);}return{count:c,feriados:fer};}
 function somarU(ref,n,t,eS,eD,fl,iR){if(t==='corridos'){const o=iR?Math.max(0,n-1):n;return new Date(ref.getTime()+o*864e5);}let c=0,cur=new Date(ref.getTime());if(iR&&!isNU(cur,eS,eD,fl))c=1;if(c>=n)return cur;while(c<n){cur=new Date(cur.getTime()+864e5);if(!isNU(cur,eS,eD,fl))c++;}return cur;}
@@ -186,21 +171,6 @@ document.getElementById('p-btn-calc').addEventListener('click', function(){ }); 
     const eS = document.getElementById('p-sab').checked;
     const eD = document.getElementById('p-dom').checked;
     const fl = parseFer(document.getElementById('p-fer').value);
-    // Recesso forense (art. 220 CPC)
-    const recessoEl = document.getElementById('p-recesso');
-    if(recessoEl && recessoEl.checked){
-      getRecessoDias(ini).forEach(function(d){ if(!fl.some(function(f){ return f.getTime()===d.getTime(); })) fl.push(d); });
-    }
-    // Feriados estaduais por UF
-    const ufEl = document.getElementById('p-uf');
-    if(ufEl && ufEl.value && _ferUFCache && _ferUFCache[ufEl.value]){
-      [ini.getUTCFullYear(), ini.getUTCFullYear()+1].forEach(function(ano){
-        (_ferUFCache[ufEl.value]||[]).forEach(function(f){
-          var d = new Date(Date.UTC(ano,f.mes-1,f.dia));
-          if(!fl.some(function(x){ return x.getTime()===d.getTime(); })) fl.push(d);
-        });
-      });
-    }
     const iI = document.getElementById('p-incl-ini').checked;
     const iF = document.getElementById('p-incl-fim').checked;
     let txt='', resumo='', ferTxt='';
@@ -367,10 +337,10 @@ async function calcCorrecao() {
 
   const val = parseVal(valStr);
   if (!val || isNaN(val) || !iniStr || !fimStr) {
-    showCalcError('Preencha valor, data base e data final.','corr-res'); return;
+    alert('Preencha valor, data base e data final.'); return;
   }
   if (iniStr >= fimStr) {
-    showCalcError('Data final deve ser após a data base.','corr-res'); return;
+    alert('Data final deve ser após a data base.'); return;
   }
 
   // Feedback visual enquanto busca
@@ -576,13 +546,13 @@ async function calcJuros() {
   const aporte = parseVal(aporteStr) || 0;
 
   if (!capStr || isNaN(C) || C <= 0) {
-    showCalcError('Informe um Capital válido e positivo (ex: 1000).','j-res-card'); return;
+    alert('⚠️ Informe um Capital válido e positivo (ex: 1000).'); return;
   }
   if (!taxaStr || isNaN(i) || i <= 0) {
-    showCalcError('Informe uma Taxa válida e positiva (ex: 1.5).','j-res-card'); return;
+    alert('⚠️ Informe uma Taxa válida e positiva (ex: 1.5).'); return;
   }
   if (!perStr || isNaN(n) || n <= 0) {
-    showCalcError('Informe um Período válido e positivo (ex: 12).','j-res-card'); return;
+    alert('⚠️ Informe um Período válido e positivo (ex: 12).'); return;
   }
   if (i > 100 && jPer === 'mensal') {
     if (!confirm('Taxa de ' + i + '% ao mês parece muito alta. Deseja continuar?')) return;
@@ -665,7 +635,7 @@ async function calcJuros() {
   }
 
   if (!isFinite(M) || !isFinite(J) || isNaN(M) || isNaN(J)) {
-    showCalcError('Resultado inválido. Verifique os valores informados.','j-res-card'); return;
+    alert('⚠️ Resultado inválido. Verifique os valores informados.'); return;
   }
 
   // 3. Exibe resultados principais
@@ -839,7 +809,7 @@ function calcSalario(){
   const bruto=parseVal(document.getElementById('sal-bruto').value)||0;
   const dep=parseInt(document.getElementById('sal-dep').value)||0;
   const outros=parseVal(document.getElementById('sal-outros').value)||0;
-  if(bruto<=0){showCalcError('Informe o salário bruto.','sal-res');return;}
+  if(bruto<=0){alert('Informe o salário bruto.');return;}
   // INSS progressivo
   let inss=0,base=bruto,ant=0;
   for(const[lim,aliq] of INSS_FAIXAS){if(base<=0)break;const fatia=Math.min(base,lim-ant);inss+=fatia*(aliq/100);ant=lim;base-=fatia;}
@@ -961,7 +931,7 @@ function calcTrabalhista(){
   const demStr = document.getElementById('t-dem').value;
   const tipo   = document.getElementById('t-tipo').value;
   const ferVenc= parseInt(document.getElementById('t-fer-venc').value)||0;
-  if(!sal||!admStr||!demStr){showCalcError('Preencha salário, admissão e demissão.','t-res');return;}
+  if(!sal||!admStr||!demStr){alert('Preencha salário, admissão e demissão.');return;}
 
   const adm = new Date(admStr+'T12:00:00');
   const dem = new Date(demStr+'T12:00:00');
@@ -1252,7 +1222,7 @@ function buildQRContent(){
   }
 }
 function genQR(){
-  const content=buildQRContent();if(!content){showCalcError('Preencha o campo de texto ou URL para gerar o QR Code.');return;}
+  const content=buildQRContent();if(!content){alert('Preencha os dados.');return;}
   qrContent=content;
   const sz=parseInt(document.getElementById('qr-sz').value);
   const disp=document.getElementById('qr-display');disp.innerHTML='';
@@ -1260,7 +1230,7 @@ function genQR(){
   showAdAfterResult('ad-qrcode-result');document.getElementById('qr-actions').style.display='flex';
 }
 function dlQR(){const c=document.querySelector('#qr-display canvas');if(!c)return;const a=document.createElement('a');a.href=c.toDataURL('image/png');a.download='calculaprazo-qrcode.png';a.click();}
-function cpQR(){if(!qrContent)return;navigator.clipboard.writeText(qrContent).catch(()=>showCalcError('Não foi possível copiar automaticamente. Selecione o texto manualmente.'));}
+function cpQR(){if(!qrContent)return;navigator.clipboard.writeText(qrContent).catch(()=>alert('Não foi possível copiar automaticamente.'));}
 
 // ─── SENHAS ────────────────────────────────────────
 function buildCS(){
@@ -1371,7 +1341,7 @@ function cpExt(){const t=document.getElementById('ext-res-val').textContent;if(t
 function calcIMC(){
   const p=parseFloat(document.getElementById('imc-peso').value)||0;
   const h=parseFloat(document.getElementById('imc-alt').value)||0;
-  if(p<=0||h<=0){showCalcError('Preencha peso e altura.','imc-res');return;}
+  if(p<=0||h<=0){alert('Preencha peso e altura.');return;}
   const hm=h/100;const imc=p/(hm*hm);
   let cls,cor,msg;
   if(imc<18.5){cls='Abaixo do peso';cor='#3B82F6';msg='Seu IMC indica peso abaixo do ideal. Consulte um nutricionista para orientações sobre alimentação e saúde.';}
@@ -1412,7 +1382,6 @@ function getFeriadosNacionais(ano){
     new Date(Date.UTC(ano,9,12)),  // 12/10 N.Sra.Aparecida
     new Date(Date.UTC(ano,10,2)),  // 02/11 Finados
     new Date(Date.UTC(ano,10,15)), // 15/11 Proclamação República
-    new Date(Date.UTC(ano,10,20)), // 20/11 Consciência Negra (Lei 14.759/2023 — vigente desde 2024)
     new Date(Date.UTC(ano,11,25)), // 25/12 Natal
     // Móveis (relativos à Páscoa)
     add(pascoa,-48), // Carnaval (2ª)
@@ -1428,7 +1397,7 @@ function calcHero(){
   const ini=pd(document.getElementById('h-ini').value);
   const n=parseInt(document.getElementById('h-dias').value)||0;
   const res=document.getElementById('h-res');
-  if(!ini||n<0){res.style.display='none';showCalcError('Preencha a data inicial e o número de dias.','p-resultado');return;}
+  if(!ini||n<0){res.style.display='none';alert('Preencha a data inicial e o número de dias.');return;}
   let df;
   if(hTipo==='corridos'){
     df=new Date(ini.getTime()+n*864e5);
@@ -1594,206 +1563,6 @@ function showAdAfterResult(id){
 
 
 // ═══════════════════════════════════════════════════════════
-//  EXPORTAÇÃO PDF
-// ═══════════════════════════════════════════════════════════
-function exportarPDF(tituloCalc, elementoId){
-  var el = document.getElementById(elementoId);
-  if(!el){ showCalcError('Realize o cálculo primeiro.'); return; }
-  var conteudo = el.innerHTML;
-  var printWin = window.open('','_blank','width=800,height=600');
-  if(!printWin){ showCalcError('Permita pop-ups para este site.'); return; }
-  printWin.document.write('<!DOCTYPE html><html lang="pt-BR"><head>'
-    +'<meta charset="UTF-8"><title>'+tituloCalc+' — Calcula Prazo</title>'
-    +'<style>*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}body{padding:32px;color:#0F172A;}.header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #2563EB;padding-bottom:12px;margin-bottom:20px;}.logo{font-size:1.3rem;font-weight:900;color:#2563EB;}.data{font-size:.75rem;color:#64748B;text-align:right;}.titulo{font-size:1.1rem;font-weight:800;margin-bottom:16px;color:#1E40AF;}.ri-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px;}.ri{background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:12px;}.ri.span2{grid-column:span 2;}.ri-lbl{font-size:.72rem;color:#64748B;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}.ri-val{font-size:1rem;font-weight:700;color:#0F172A;}.footer{margin-top:32px;padding-top:12px;border-top:1px solid #E2E8F0;font-size:.7rem;color:#94A3B8;text-align:center;}@media print{body{padding:20px;}}</style>'
-    +'</head><body>'
-    +'<div class="header"><div class="logo">⚖️ Calcula Prazo</div>'
-    +'<div class="data">calculaprazo.com.br<br>'+new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})+'</div></div>'
-    +'<div class="titulo">'+tituloCalc+'</div>'
-    +'<div>'+conteudo+'</div>'
-    +'<div class="footer">Gerado pelo Calcula Prazo (calculaprazo.com.br). Caráter informativo — não substitui assessoria jurídica.</div>'
-    +'</body></html>');
-  printWin.document.close();
-  setTimeout(function(){ printWin.focus(); printWin.print(); },400);
-}
-
-
-// ═══════════════════════════════════════════════════════════
-//  FERIADOS ESTADUAIS POR UF
-// ═══════════════════════════════════════════════════════════
-var _ferUFCache = null;
-var _ferUFPromise = null;
-
-async function fetchFeriadosUF(){
-  if(_ferUFCache) return _ferUFCache;
-  if(!_ferUFPromise){
-    _ferUFPromise = fetch('/data/feriados-estaduais.json')
-      .then(function(r){ return r.json(); })
-      .then(function(d){ _ferUFCache = d; return d; })
-      .catch(function(){ _ferUFCache = {}; return {}; });
-  }
-  return _ferUFPromise;
-}
-
-async function loadFeriadosUF(){
-  var uf = document.getElementById('p-uf') ? document.getElementById('p-uf').value : '';
-  var lista = document.getElementById('p-uf-lista');
-  if(!uf){ if(lista) lista.textContent = ''; return; }
-  if(lista) lista.textContent = '⏳ Carregando feriados de ' + uf + '...';
-  var data = await fetchFeriadosUF();
-  var feriados = data[uf] || [];
-  if(lista){
-    lista.textContent = feriados.length
-      ? '📅 ' + feriados.length + ' feriado(s) estadual(is) de ' + uf + ' incluídos automaticamente.'
-      : 'Nenhum feriado estadual cadastrado para ' + uf + '.';
-  }
-}
-
-
-// ═══════════════════════════════════════════════════════════
-//  RECESSO FORENSE — art. 220 CPC
-// ═══════════════════════════════════════════════════════════
-function getRecessoDias(refIni){
-  var dias = [];
-  var anoRef = refIni.getUTCFullYear();
-  [anoRef-1, anoRef, anoRef+1].forEach(function(a){
-    var cur = new Date(Date.UTC(a,11,20));
-    var fim = new Date(Date.UTC(a+1,0,20));
-    while(cur<=fim){
-      dias.push(new Date(cur.getTime()));
-      cur = new Date(cur.getTime()+864e5);
-    }
-  });
-  var uniq = [...new Map(dias.map(function(d){ return [d.getTime(),d]; })).values()];
-  return uniq;
-}
-
-
-// ═══════════════════════════════════════════════════════════
-//  CALCULADORA DE PRESCRIÇÃO
-// ═══════════════════════════════════════════════════════════
-function prescUpdateLayout(){
-  var tipo = document.getElementById('presc-tipo').value;
-  var fimGrp = document.getElementById('presc-fim-grp');
-  var menorAviso = document.getElementById('presc-menor-aviso');
-  if(fimGrp) fimGrp.style.display = tipo === 'trab_fgts' ? 'block' : 'none';
-  if(menorAviso) menorAviso.style.display = tipo === 'trab_menor' ? 'block' : 'none';
-}
-
-function calcPrescricao(){
-  var tipo = document.getElementById('presc-tipo').value;
-  var iniEl = document.getElementById('presc-ini');
-  var res = document.getElementById('presc-res');
-  if(!iniEl.value){ showCalcError('Informe a data do fato ou término do contrato.','presc-res'); return; }
-
-  var ini = new Date(iniEl.value + 'T12:00:00');
-  var hoje = new Date(); hoje.setHours(12,0,0,0);
-
-  var PRAZOS_P = {
-    trab_geral:  {anos:2,  label:'2 anos (art. 7º, XXIX CF)'},
-    trab_fgts:   {anos:2,  label:'2 anos após extinção (art. 23 Lei 8.036/90)'},
-    trab_menor:  {anos:2,  label:'2 anos após extinção (prescrição suspensa — art. 440 CLT)'},
-    civil_geral: {anos:10, label:'10 anos (art. 205 CC)'},
-    civil_3anos: {anos:3,  label:'3 anos (art. 206-A CC)'},
-    civil_5anos: {anos:5,  label:'5 anos (art. 206 §5º CC)'},
-    civil_1ano:  {anos:1,  label:'1 ano (art. 206 §1º CC)'},
-    trib_5anos:  {anos:5,  label:'5 anos (art. 174 CTN)'},
-    admin_5anos: {anos:5,  label:'5 anos (Decreto 20.910/1932)'},
-  };
-
-  var cfg = PRAZOS_P[tipo];
-  var iniContagem = new Date(ini.getTime());
-
-  var obs = '';
-  if(tipo === 'trab_fgts'){
-    var fimEl = document.getElementById('presc-fim');
-    if(!fimEl||!fimEl.value){ showCalcError('Informe a data de extinção do contrato para o FGTS.','presc-res'); return; }
-    iniContagem = new Date(fimEl.value + 'T12:00:00');
-    obs = 'Para o FGTS, o prazo de 5 anos corre durante a vigência do contrato. Após a extinção, o prazo para cobrar é de 2 anos.';
-  } else if(tipo === 'trab_geral'||tipo === 'trab_menor'){
-    obs = 'A prescrição bienal começa a correr da extinção do contrato. Créditos do período contratual têm prazo adicional de 5 anos durante a vigência, limitado a 2 anos após a extinção.';
-  }
-
-  var dataFim = new Date(iniContagem.getTime());
-  dataFim.setFullYear(dataFim.getFullYear() + cfg.anos);
-
-  var prescrito = hoje > dataFim;
-  var diasRestantes = Math.ceil((dataFim - hoje) / 86400000);
-
-  var fd = function(d){ return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'}); };
-  var dsem = function(d){ return ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'][d.getDay()]; };
-
-  document.getElementById('presc-prazo').textContent    = cfg.label;
-  document.getElementById('presc-data-ini').textContent = fd(iniContagem)+' ('+dsem(iniContagem)+')';
-  document.getElementById('presc-data-fim').textContent = fd(dataFim)+' ('+dsem(dataFim)+')';
-  document.getElementById('presc-status').innerHTML = prescrito
-    ? '<span style="color:#DC2626;font-weight:700;">⚠️ PRESCRITO</span> — direito extinto em '+fd(dataFim)
-    : '<span style="color:#16A34A;font-weight:700;">✅ Dentro do prazo</span> — restam '+diasRestantes+' dia(s) ('+Math.floor(diasRestantes/30)+' meses aprox.)';
-  document.getElementById('presc-obs').textContent = obs;
-  res.style.display = 'block';
-}
-
-
-// ═══════════════════════════════════════════════════════════
-//  CALCULADORA DE JORNADA INTERMITENTE
-// ═══════════════════════════════════════════════════════════
-function calcIntermitente(){
-  var valorHora = parseFloat(String(document.getElementById('int-valor-hora').value).replace(',','.'));
-  var horas     = parseFloat(String(document.getElementById('int-horas').value).replace(',','.'));
-  var deps      = parseInt(document.getElementById('int-dependentes').value)||0;
-  var incFerias = document.getElementById('int-ferias').checked;
-  var inc13     = document.getElementById('int-13').checked;
-  var incFGTS   = document.getElementById('int-fgts').checked;
-  var incINSS   = document.getElementById('int-inss').checked;
-
-  var HORA_MIN = 1518/220;
-  if(!valorHora||valorHora<=0||!horas||horas<=0){ showCalcError('Informe o valor da hora e as horas convocadas.','int-res'); return; }
-  if(valorHora<HORA_MIN){ showCalcError('Valor/hora (R$'+valorHora.toFixed(2)+') inferior ao mínimo legal de R$'+HORA_MIN.toFixed(2)+'/h.','int-res'); return; }
-
-  var bruto = valorHora * horas;
-  var ferias = incFerias ? bruto/12*(1+1/3) : 0;
-  var dec    = inc13 ? bruto/12 : 0;
-  var fgts   = incFGTS ? bruto*0.08 : 0;
-
-  var inss = 0;
-  if(incINSS){
-    var faixasINSS = [[1518,0.075],[2793.88,0.09],[4190.83,0.12],[8157.41,0.14]];
-    var base = bruto, prev = 0;
-    faixasINSS.forEach(function(fi){
-      if(base<=0) return;
-      var f = Math.min(base, fi[0]-prev);
-      inss += f*fi[1]; prev=fi[0]; base-=f;
-    });
-  }
-
-  var baseIR = Math.max(0, bruto-inss-(deps*189.59));
-  var irrf = 0;
-  if(baseIR>7350){
-    var fIR=[[2259.20,0,0],[2826.65,0.075,169.44],[3751.05,0.15,381.44],[4664.68,0.225,662.77],[Infinity,0.275,896]];
-    var fi=fIR.find(function(x){ return baseIR<=x[0]; })||fIR[fIR.length-1];
-    irrf=Math.max(0,baseIR*fi[1]-fi[2]);
-  } else if(baseIR>5000){
-    irrf=Math.max(0,(baseIR-5000)*0.075*((baseIR-5000)/2350));
-  }
-
-  var liquido = bruto-inss-irrf;
-  var custoTotal = bruto+ferias+dec+fgts;
-  var fmt = function(v){ return 'R$ '+v.toFixed(2).replace('.',','); };
-
-  document.getElementById('int-bruto').textContent      = fmt(bruto);
-  document.getElementById('int-inss-val').textContent   = incINSS ? fmt(inss) : 'Não calculado';
-  document.getElementById('int-irrf-val').textContent   = fmt(irrf);
-  document.getElementById('int-liquido').textContent    = fmt(liquido);
-  document.getElementById('int-ferias-val').textContent = incFerias ? fmt(ferias) : '—';
-  document.getElementById('int-13-val').textContent     = inc13 ? fmt(dec) : '—';
-  document.getElementById('int-fgts-val').textContent   = incFGTS ? fmt(fgts) : '—';
-  document.getElementById('int-custo-total').textContent= fmt(custoTotal);
-  document.getElementById('int-minimo-hora').textContent= HORA_MIN.toFixed(2).replace('.',',');
-  document.getElementById('int-res').style.display = 'block';
-}
-
-
-
-// ═══════════════════════════════════════════════════════════
 //  SEO — Hash routing + meta dinâmica
 // ═══════════════════════════════════════════════════════════
 const SEO = {
@@ -1827,22 +1596,6 @@ const SEO = {
     desc:  'Calcule verbas rescisórias: saldo de salário, férias proporcionais, 13º, FGTS, multa e aviso prévio conforme CLT. Gratuito.',
     h1:    'Calculadora de Verbas Trabalhistas',
     kw:    'calculadora trabalhista, verbas rescisórias, calcular rescisão CLT, férias proporcionais, FGTS multa',
-    schemaType: 'SoftwareApplication',
-  },
-  prescricao: {
-    slug: 'calculadora-de-prescricao',
-    title: 'Calculadora de Prescrição Trabalhista e Civil — Calcula Prazo',
-    desc:  'Calcule o prazo prescricional e a data de extinção do direito de ação. Prescrição trabalhista (2 anos), civil (3, 5 e 10 anos), FGTS e tributária.',
-    h1:    'Calculadora de Prescrição',
-    kw:    'calculadora de prescrição, prescrição trabalhista, prescrição civil, prazo prescricional, prescrição FGTS',
-    schemaType: 'SoftwareApplication',
-  },
-  intermitente: {
-    slug: 'calculadora-jornada-intermitente',
-    title: 'Calculadora de Jornada Intermitente (CLT art. 452-A) — Calcula Prazo',
-    desc:  'Simule remuneração, férias, 13º, FGTS e custo total do contrato intermitente conforme art. 452-A da CLT.',
-    h1:    'Calculadora de Jornada Intermitente',
-    kw:    'calculadora jornada intermitente, contrato intermitente CLT, remuneração intermitente, custo intermitente',
     schemaType: 'SoftwareApplication',
   },
   salario: {

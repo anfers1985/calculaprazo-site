@@ -13,8 +13,8 @@
 /termos/          /termos/index.html       200
 /contato          /contato/index.html      200
 /contato/         /contato/index.html      200
-/conteudo         /conteudo/index.html  200
-/conteudo/        /conteudo/index.html  200
+/conteudo         /               301
+/conteudo/        /               301
 
 # Arquivos de dados — servir diretamente ANTES do fallback SPA
 /data/posts.json  /data/posts.json         200
@@ -37,7 +37,6 @@
 
 # Redirect 301 — slug duplicado corrigido
 /blog/fim-da-escala-6x1-ccj-da-cmara-aprova-pec-e-debate-avana-no-congresso /blog/fim-da-escala-6x1-ccj-da-camara-aprova-pec-e-debate-avanca-no-congresso 301
-/blog/stf-encerra-reviso-da-vida-toda-e-mantm-regra-do-inss /blog/stf-encerra-revisao-vida-toda-inss 301
 
 # /blog redireciona para página de conteúdo real
 /blog             /               301
@@ -51,8 +50,3 @@
 
 # SPA fallback — todas as outras rotas vão para index.html
 /*                /index.html              200
-
-/feriados-nacionais  /feriados-nacionais/index.html  200
-/feriados-nacionais/ /feriados-nacionais/index.html  200
-/calculadora-de-prescricao         /index.html   200
-/calculadora-jornada-intermitente         /index.html   200

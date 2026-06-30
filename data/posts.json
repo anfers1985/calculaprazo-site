@@ -1,66 +1,5 @@
 [
   {
-    "id": "camisa-selecao-trabalho-empresa-pode-proibir",
-    "title": "Camisa da Seleção no trabalho: empresa pode proibir o uso?",
-    "category": "orientacoes-praticas",
-    "category_label": "Outros RH",
-    "excerpt": "Empresas podem proibir o uso da camisa da Seleção Brasileira durante o expediente. Entenda o que diz a CLT sobre dress code e possíveis punições.",
-    "image": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1293&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "date": "2026-06-27",
-    "updatedAt": "2026-06-29",
-    "tags": []
-  },
-  {
-    "id": "feriados-nacionais-2026-2027-tabela-completa",
-    "title": "Feriados Nacionais 2026 e 2027 — Tabela Completa com Datas",
-    "description": "Tabela completa de feriados nacionais de 2026 e 2027, incluindo datas de Páscoa, Carnaval, Corpus Christi e Consciência Negra (Lei 14.759/2023).",
-    "date": "2026-06-28",
-    "section": "essenciais",
-    "subsection": "feriados",
-    "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=70&auto=format&fit=crop",
-    "category_label": "Essenciais"
-  },
-  {
-    "id": "prescricao-trabalhista-como-calcular-prazo",
-    "title": "Prescrição Trabalhista — Como Calcular o Prazo e Não Perder o Direito de Ação",
-    "description": "Guia completo sobre prescrição trabalhista: prazo bienal, quinquenal, FGTS, menor de 18 anos, interrupção e suspensão. Com exemplos práticos.",
-    "date": "2026-06-28",
-    "section": "processual",
-    "subsection": "prazos",
-    "image": "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=400&q=70&auto=format&fit=crop",
-    "category_label": "Processual"
-  },
-  {
-    "id": "contrato-trabalho-intermitente-como-funciona-clt",
-    "title": "Contrato de Trabalho Intermitente — Como Funciona, Direitos e Cálculo",
-    "description": "Guia completo sobre o contrato intermitente (art. 452-A CLT): convocação, remuneração, férias, 13º, FGTS e como calcular.",
-    "date": "2026-06-28",
-    "section": "legislacao-normas",
-    "subsection": "reforma-trabalhista",
-    "image": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&q=70&auto=format&fit=crop",
-    "category_label": "Legislação"
-  },
-  {
-    "id": "fgts-digital-como-funciona-guia-completo-2026",
-    "title": "FGTS Digital 2026 — Como Funciona, Prazo de Pagamento e Guia Completo",
-    "description": "Guia completo sobre o FGTS Digital: o que mudou, como acessar, prazo de pagamento, cálculo do depósito, multa rescisória e penalidades por atraso.",
-    "date": "2026-06-28",
-    "section": "legislacao-normas",
-    "subsection": "esocial-fgts",
-    "image": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=400&q=70&auto=format&fit=crop",
-    "category_label": "Legislação"
-  },
-  {
-    "id": "negociacao-coletiva-cct-act-o-que-e-como-funciona",
-    "title": "Negociação Coletiva — CCT e ACT: O que São, Diferenças e o que Pode Ser Negociado",
-    "description": "Guia completo sobre CCT e ACT: diferenças, o que pode ser negociado após a Reforma Trabalhista, ultratividade e como verificar vigência.",
-    "date": "2026-06-28",
-    "section": "legislacao-normas",
-    "subsection": "negociacao-coletiva",
-    "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400&q=70&auto=format&fit=crop",
-    "category_label": "Legislação"
-  },
-  {
     "id": "aposentadoria-especial-ppp-ltcat-comprovacao-inss",
     "title": "Aposentadoria especial e o papel do PPP e LTCAT no INSS hoje",
     "category": "legislacao-previdenciario",
@@ -199,6 +138,17 @@
     "category_label": "TRT",
     "excerpt": "Justiça do Trabalho confirma justa causa de operador de empilhadeira que praticou ofensas racistas contra colega e determina envio do caso ao MP.",
     "image": "https://images.unsplash.com/photo-1532635026-d12867005472?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "date": "2026-06-27",
+    "updatedAt": "2026-06-27",
+    "tags": []
+  },
+  {
+    "id": "camisa-selecao-trabalho-empresa-pode-proibir",
+    "title": "Camisa da Seleção no trabalho: empresa pode proibir o uso?",
+    "category": "orientacoes-praticas",
+    "category_label": "Outros RH",
+    "excerpt": "Empresas podem proibir o uso da camisa da Seleção Brasileira durante o expediente. Entenda o que diz a CLT sobre dress code e possíveis punições.",
+    "image": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1293&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "date": "2026-06-27",
     "updatedAt": "2026-06-27",
     "tags": []
