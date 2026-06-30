@@ -1792,45 +1792,6 @@ function calcIntermitente(){
 }
 
 
-// ═══════════════════════════════════════════════════════════
-//  CALCULADORA FGTS DIGITAL
-// ═══════════════════════════════════════════════════════════
-function calcFGTS(){
-  var salario    = parseFloat(String(document.getElementById('fgts-salario').value).replace(',','.'));
-  var meses      = parseInt(document.getElementById('fgts-meses').value)||0;
-  var saldoAtual = parseFloat(String(document.getElementById('fgts-saldo-atual').value||'0').replace(',','.'))||0;
-  var aliq       = parseFloat(document.getElementById('fgts-tipo').value)||0.08;
-  var rescisao   = document.querySelector('input[name="fgts-rescisao"]:checked').value;
-
-  if(!salario||salario<=0||meses<=0){ showCalcError('Informe o salário e os meses trabalhados.','fgts-res'); return; }
-
-  var dep_mensal = salario*aliq;
-  var total_dep  = dep_mensal*meses;
-  var saldo = saldoAtual;
-  for(var i=0;i<meses;i++) saldo = saldo*(1+0.0025)+dep_mensal;
-
-  var pct = rescisao==='imotivada' ? 0.40 : rescisao==='culpa' ? 0.20 : 0;
-  var multa = saldo*pct;
-  var fmt = function(v){ return 'R$ '+v.toFixed(2).replace('.',','); };
-
-  document.getElementById('fgts-mensal').textContent    = fmt(dep_mensal);
-  document.getElementById('fgts-total-dep').textContent = fmt(total_dep);
-  document.getElementById('fgts-saldo-est').textContent = fmt(saldo);
-
-  var mRow = document.getElementById('fgts-multa-row');
-  var tRow = document.getElementById('fgts-total-row');
-  if(pct>0){
-    document.getElementById('fgts-multa').textContent         = fmt(multa)+' ('+(pct*100)+'%)';
-    document.getElementById('fgts-total-receber').textContent = fmt(saldo+multa);
-    if(mRow) mRow.style.display='block';
-    if(tRow) tRow.style.display='block';
-  } else {
-    if(mRow) mRow.style.display='none';
-    if(tRow) tRow.style.display='none';
-  }
-  document.getElementById('fgts-res').style.display='block';
-}
-
 
 // ═══════════════════════════════════════════════════════════
 //  SEO — Hash routing + meta dinâmica
@@ -1866,6 +1827,22 @@ const SEO = {
     desc:  'Calcule verbas rescisórias: saldo de salário, férias proporcionais, 13º, FGTS, multa e aviso prévio conforme CLT. Gratuito.',
     h1:    'Calculadora de Verbas Trabalhistas',
     kw:    'calculadora trabalhista, verbas rescisórias, calcular rescisão CLT, férias proporcionais, FGTS multa',
+    schemaType: 'SoftwareApplication',
+  },
+  prescricao: {
+    slug: 'calculadora-de-prescricao',
+    title: 'Calculadora de Prescrição Trabalhista e Civil — Calcula Prazo',
+    desc:  'Calcule o prazo prescricional e a data de extinção do direito de ação. Prescrição trabalhista (2 anos), civil (3, 5 e 10 anos), FGTS e tributária.',
+    h1:    'Calculadora de Prescrição',
+    kw:    'calculadora de prescrição, prescrição trabalhista, prescrição civil, prazo prescricional, prescrição FGTS',
+    schemaType: 'SoftwareApplication',
+  },
+  intermitente: {
+    slug: 'calculadora-jornada-intermitente',
+    title: 'Calculadora de Jornada Intermitente (CLT art. 452-A) — Calcula Prazo',
+    desc:  'Simule remuneração, férias, 13º, FGTS e custo total do contrato intermitente conforme art. 452-A da CLT.',
+    h1:    'Calculadora de Jornada Intermitente',
+    kw:    'calculadora jornada intermitente, contrato intermitente CLT, remuneração intermitente, custo intermitente',
     schemaType: 'SoftwareApplication',
   },
   salario: {
@@ -1938,30 +1915,6 @@ const SEO = {
     desc:  'Calcule seu IMC (Índice de Massa Corporal) conforme a tabela da OMS. Resultado imediato com classificação e recomendações.',
     h1:    'Calculadora de IMC',
     kw:    'calculadora de IMC, calcular IMC, índice de massa corporal, IMC normal, IMC obesidade',
-    schemaType: 'SoftwareApplication',
-  },
-  prescricao: {
-    slug: 'calculadora-de-prescricao',
-    title: 'Calculadora de Prescrição Trabalhista e Civil — Calcula Prazo',
-    desc:  'Calcule o prazo prescricional e a data de extinção do direito de ação. Prescrição trabalhista (2 anos), civil (3, 5 e 10 anos), FGTS e tributária.',
-    h1:    'Calculadora de Prescrição',
-    kw:    'calculadora de prescrição, prescrição trabalhista, prescrição civil, prazo prescricional, prescrição FGTS',
-    schemaType: 'SoftwareApplication',
-  },
-  intermitente: {
-    slug: 'calculadora-jornada-intermitente',
-    title: 'Calculadora de Jornada Intermitente (CLT art. 452-A) — Calcula Prazo',
-    desc:  'Simule remuneração, férias, 13º, FGTS e custo total do contrato intermitente conforme art. 452-A da CLT.',
-    h1:    'Calculadora de Jornada Intermitente',
-    kw:    'calculadora jornada intermitente, contrato intermitente CLT, remuneração intermitente, custo intermitente',
-    schemaType: 'SoftwareApplication',
-  },
-  fgts: {
-    slug: 'calculadora-fgts-digital',
-    title: 'Calculadora FGTS Digital — Saldo, Multa e Simulação de Rescisão — Calcula Prazo',
-    desc:  'Estime o saldo do FGTS, calcule depósitos mensais, multa de 40% na dispensa imotivada e o total a receber na rescisão.',
-    h1:    'Calculadora FGTS Digital',
-    kw:    'calculadora FGTS, FGTS digital, multa FGTS 40%, saldo FGTS, calcular FGTS rescisão',
     schemaType: 'SoftwareApplication',
   },
   home: {
