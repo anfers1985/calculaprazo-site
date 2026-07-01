@@ -1841,7 +1841,7 @@ window.addEventListener('popstate', function(e) {
 // ── Inicialização — lê a URL ao carregar ────────────────
 document.addEventListener('DOMContentLoaded', function() {
   var id = resolveIdFromURL();
-  // Se há hash na URL (ex: /#conteudo), usa o id resolvido mesmo na raiz
+  // Se há hash na URL (ex: /conteudo), usa o id resolvido mesmo na raiz
   if (id && id !== 'prazos') {
     _navOriginal(id);
     updateSEO(id);

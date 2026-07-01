@@ -13,8 +13,9 @@
 /termos/          /termos/index.html       200
 /contato          /contato/index.html      200
 /contato/         /contato/index.html      200
-/conteudo         /               301
-/conteudo/        /               301
+# Página de Conteúdo (arquivo HTML real, desvinculado da SPA)
+/conteudo         /conteudo/index.html     200
+/conteudo/        /conteudo/index.html     200
 
 # Arquivos de dados — servir diretamente ANTES do fallback SPA
 /data/posts.json  /data/posts.json         200
@@ -39,8 +40,8 @@
 /blog/fim-da-escala-6x1-ccj-da-cmara-aprova-pec-e-debate-avana-no-congresso /blog/fim-da-escala-6x1-ccj-da-camara-aprova-pec-e-debate-avanca-no-congresso 301
 
 # /blog redireciona para página de conteúdo real
-/blog             /               301
-/blog/            /               301
+/blog             /conteudo         301
+/blog/            /conteudo         301
 
 # Blog posts (arquivos HTML reais)
 /blog/*           /blog/:splat             200
