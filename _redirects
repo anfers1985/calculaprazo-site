@@ -39,6 +39,14 @@
 # Redirect 301 — slug duplicado corrigido
 /blog/fim-da-escala-6x1-ccj-da-cmara-aprova-pec-e-debate-avana-no-congresso /blog/fim-da-escala-6x1-ccj-da-camara-aprova-pec-e-debate-avanca-no-congresso 301
 
+# Redirect 301 — arquivo duplicado com slug mal codificado (mesmo artigo já
+# publicado corretamente em /blog/stf-encerra-revisao-vida-toda-inss).
+# Esta versão com acentos quebrados nunca esteve no sitemap nem no
+# posts.json e não tem nenhum link interno apontando para ela — era uma
+# página órfã e de conteúdo 100% duplicado. Em vez de indexá-la como
+# artigo novo, ela passa a redirecionar para a versão canônica.
+/blog/stf-encerra-reviso-da-vida-toda-e-mantm-regra-do-inss /blog/stf-encerra-revisao-vida-toda-inss 301
+
 # /blog redireciona para página de conteúdo real
 /blog             /conteudo         301
 /blog/            /conteudo         301
@@ -49,5 +57,12 @@
 # Página 404 explícita
 /404              /404.html                200
 
-# SPA fallback — todas as outras rotas vão para index.html
-/*                /index.html              200
+# Fallback final — qualquer URL não reconhecida pelas regras acima
+# retorna a página 404 real com status HTTP 404 (evita "soft 404":
+# antes, URLs inexistentes devolviam a home com status 200, o que o
+# Google Search Console e o AdSense tratam como sinal de baixa qualidade).
+# Todas as rotas válidas (calculadoras, blog, páginas institucionais,
+# /data, /admin) já foram tratadas explicitamente acima, portanto esta
+# regra só é atingida por links quebrados, slugs digitados errados ou
+# páginas removidas.
+/*                /404.html                404
