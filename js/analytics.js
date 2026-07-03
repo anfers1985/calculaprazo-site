@@ -100,7 +100,7 @@
       if (!el) return;
       var n = d.views || 0;
       el.textContent = '🧮 ' + n.toLocaleString('pt-BR') + (n === 1 ? ' pessoa já usou esta calculadora' : ' pessoas já usaram esta calculadora');
-      el.style.display = 'inline-flex';
+      el.style.display = 'flex';
     })
     .catch(function(e) {
       if (tid) clearTimeout(tid);
