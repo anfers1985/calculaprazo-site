@@ -142,6 +142,8 @@
           <a href="/calculadora-de-juros" onclick="event.preventDefault();closeMobNav();navGoTo('juros')"><span class="dm-icon">📈</span>Cálculo de Juros</a>
           <a href="/calculadora-verbas-trabalhistas" onclick="event.preventDefault();closeMobNav();navGoTo('trabalhista')"><span class="dm-icon">⚖️</span>Calculadora de Verbas Trabalhistas</a>
           <a href="/calculadora-salario-liquido" onclick="event.preventDefault();closeMobNav();navGoTo('salario')"><span class="dm-icon">💵</span>Salário Líquido</a>
+          <a href="/calculadora-salario-intermitente" onclick="event.preventDefault();closeMobNav();navGoTo('intermitente')"><span class="dm-icon">🕒</span>Salário Intermitente</a>
+          <a href="/calculadora-de-prescricao" onclick="event.preventDefault();closeMobNav();navGoTo('prescricao')"><span class="dm-icon">⌛</span>Calculadora de Prescrição</a>
           <a href="/calculadora-de-porcentagem" onclick="event.preventDefault();closeMobNav();navGoTo('porcentagem')"><span class="dm-icon">🧮</span>Porcentagem</a>
           <a href="/conversor-de-moedas" onclick="event.preventDefault();closeMobNav();navGoTo('moedas')"><span class="dm-icon">💱</span>Conversor de Moedas</a>
           <div class="nav-drop-divider"></div>
@@ -161,70 +163,70 @@
 
           <a class="nm-sec" onclick="toggleNavSec('nms-jurisp',event)"><span class="dm-icon">⚖️</span>Jurisprudência<span class="nm-arr" id="nma-jurisp">›</span></a>
           <div class="nm-sub-wrap" id="nms-jurisp">
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('jurisprudencia-trts','jurisprudencia');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">TRT</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('jurisprudencia-tst','jurisprudencia');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">TST</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('jurisprudencia-stj','jurisprudencia');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">STJ</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('jurisprudencia-stf','jurisprudencia');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">STF</a>
-            <a href="/conteudo" class="nm-sub nm-outros" onclick="event.preventDefault();navGoTo('blog');filterBlogSection('jurisprudencia');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outros temas</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','jurisprudencia','jurisprudencia-trts');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">TRT</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','jurisprudencia','jurisprudencia-tst');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">TST</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','jurisprudencia','jurisprudencia-stj');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">STJ</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','jurisprudencia','jurisprudencia-stf');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">STF</a>
+            <a href="/conteudo" class="nm-sub nm-outros" onclick="event.preventDefault();navGoTo('blog','jurisprudencia','');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outros temas</a>
           </div>
 
           <a class="nm-sec" onclick="toggleNavSec('nms-orgaos',event)"><span class="dm-icon">🏛️</span>Órgãos Públicos<span class="nm-arr" id="nma-orgaos">›</span></a>
           <div class="nm-sub-wrap" id="nms-orgaos">
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('noticias-mte','orgaos-publicos');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">MTE</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('noticias-mpt','orgaos-publicos');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">MPT</a>
-            <a href="/conteudo" class="nm-sub nm-outros" onclick="event.preventDefault();navGoTo('blog');filterBlogSection('orgaos-publicos');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outros órgãos</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','orgaos-publicos','noticias-mte');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">MTE</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','orgaos-publicos','noticias-mpt');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">MPT</a>
+            <a href="/conteudo" class="nm-sub nm-outros" onclick="event.preventDefault();navGoTo('blog','orgaos-publicos','');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outros órgãos</a>
           </div>
 
           <a class="nm-sec" onclick="toggleNavSec('nms-leg',event)"><span class="dm-icon">📋</span>Legislação e Normas<span class="nm-arr" id="nma-leg">›</span></a>
           <div class="nm-sub-wrap" id="nms-leg">
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('legislacao-clt','legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">CLT</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('legislacao-cf','legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Constituição Federal</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('esocial','legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">eSocial</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('fgts-digital','legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">FGTS</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('legislacao-previdenciario','legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Previdenciário</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('legislacao-sindical','legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Sindical</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('legislacao-portarias','legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Portarias</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('legislacao-nr','legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">NR</a>
-            <a href="/conteudo" class="nm-sub nm-outros" onclick="event.preventDefault();navGoTo('blog');filterBlogSection('legislacao-normas');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outras Legislação e Normas</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','legislacao-normas','legislacao-clt');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">CLT</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','legislacao-normas','legislacao-cf');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Constituição Federal</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','legislacao-normas','esocial');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">eSocial</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','legislacao-normas','fgts-digital');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">FGTS</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','legislacao-normas','legislacao-previdenciario');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Previdenciário</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','legislacao-normas','legislacao-sindical');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Sindical</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','legislacao-normas','legislacao-portarias');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Portarias</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','legislacao-normas','legislacao-nr');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">NR</a>
+            <a href="/conteudo" class="nm-sub nm-outros" onclick="event.preventDefault();navGoTo('blog','legislacao-normas','');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outras Legislação e Normas</a>
           </div>
 
           <a class="nm-sec" onclick="toggleNavSec('nms-rh',event)"><span class="dm-icon">👥</span>RH e Gestão de Pessoas<span class="nm-arr" id="nma-rh">›</span></a>
           <div class="nm-sub-wrap" id="nms-rh">
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('rh-folha','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Folha de Pagamento</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('rh-jornada','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Jornada de Trabalho</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('rh-contrato','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Contrato de Trabalho</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('rh-salario','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Salário</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('rh-rescisao','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Rescisão Contratual</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('saude-seguranca','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Saúde e Segurança do Trabalho</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('rh-beneficios','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Benefícios</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('rh-ctps','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">CTPS</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('rh-sindical','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Relacionamento Sindical</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('rh-fiscalizacao','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Fiscalização</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('rh-inss','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">INSS</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('rh-modelos','rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Modelos</a>
-            <a href="/conteudo" class="nm-sub nm-outros" onclick="event.preventDefault();navGoTo('blog');filterBlogSection('rh-gestao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outros temas de RH</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','rh-gestao','rh-folha');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Folha de Pagamento</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','rh-gestao','rh-jornada');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Jornada de Trabalho</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','rh-gestao','rh-contrato');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Contrato de Trabalho</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','rh-gestao','rh-salario');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Salário</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','rh-gestao','rh-rescisao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Rescisão Contratual</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','rh-gestao','saude-seguranca');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Saúde e Segurança do Trabalho</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','rh-gestao','rh-beneficios');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Benefícios</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','rh-gestao','rh-ctps');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">CTPS</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','rh-gestao','rh-sindical');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Relacionamento Sindical</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','rh-gestao','rh-fiscalizacao');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Fiscalização</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','rh-gestao','rh-inss');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">INSS</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','rh-gestao','rh-modelos');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Modelos</a>
+            <a href="/conteudo" class="nm-sub nm-outros" onclick="event.preventDefault();navGoTo('blog','rh-gestao','');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outros temas de RH</a>
           </div>
 
           <a class="nm-sec" onclick="toggleNavSec('nms-proc',event)"><span class="dm-icon">📄</span>Processual<span class="nm-arr" id="nma-proc">›</span></a>
           <div class="nm-sub-wrap" id="nms-proc">
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('processual-peticoes','processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Petições e Peças</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('processual-pratica','processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Prática Advocatícia</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('modelos','processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Modelos</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('artigos','processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Artigos</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('processual-analises','processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Análises</a>
-            <a href="/conteudo" class="nm-sub nm-outros" onclick="event.preventDefault();navGoTo('blog');filterBlogSection('processual');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outros temas</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','processual','processual-peticoes');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Petições e Peças</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','processual','processual-pratica');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Prática Advocatícia</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','processual','modelos');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Modelos</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','processual','artigos');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Artigos</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','processual','processual-analises');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">Análises</a>
+            <a href="/conteudo" class="nm-sub nm-outros" onclick="event.preventDefault();navGoTo('blog','processual','');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">+ outros temas</a>
           </div>
 
           <div class="nav-drop-divider"></div>
           <a class="nm-sec" onclick="toggleNavSec('nms-ess',event)"><span class="dm-icon">⭐</span>Essenciais<span class="nm-arr" id="nma-ess">›</span></a>
           <div class="nm-sub-wrap" id="nms-ess">
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('essenciais-livros','essenciais');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">📚 Livros Jurídicos</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('essenciais-equipamentos','essenciais');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">🖥️ Equipamentos de Escritório</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('essenciais-cursos','essenciais');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">🎓 Cursos</a>
-            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog');filterBlogSub('essenciais-outros','essenciais');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">📦 Outros</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','essenciais','essenciais-livros');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">📚 Livros Jurídicos</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','essenciais','essenciais-equipamentos');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">🖥️ Equipamentos de Escritório</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','essenciais','essenciais-cursos');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">🎓 Cursos</a>
+            <a class="nm-sub" onclick="closeMobNav();navGoTo('blog','essenciais','essenciais-outros');document.getElementById('nav-dropdown-conteudo').classList.remove('open')">📦 Outros</a>
           </div>
           <div class="nav-drop-divider"></div>
-          <a href="/conteudo" class="nm-sec" onclick="event.preventDefault();navGoTo('blog');filterBlogSection('outros');document.getElementById('nav-dropdown-conteudo').classList.remove('open')"><span class="dm-icon">🔧</span>Outros</a>
+          <a href="/conteudo" class="nm-sec" onclick="event.preventDefault();navGoTo('blog','outros','');document.getElementById('nav-dropdown-conteudo').classList.remove('open')"><span class="dm-icon">🔧</span>Outros</a>
         </div>
       </div>
       <div class="nav-dropdown" id="nav-dropdown-sociais">
@@ -484,6 +486,7 @@
           <div id="p-res-txt"></div>
           <div id="p-res-resumo"></div>
           <div id="p-res-feriados"></div>
+          <span class="calc-count" id="cc-prazos"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
         </div>
       </div>
 
@@ -533,6 +536,8 @@
       <div class="tc" onclick="goTo('juros')"><div class="tc-icon">📈</div><div class="tc-name">Juros Simples e Compostos</div><div class="tc-desc">Montante, taxa, período e tabela.</div></div>
       <div class="tc" onclick="goTo('trabalhista')"><div class="tc-icon">⚖️</div><div class="tc-name">Calculadora de Verbas Trabalhistas</div><div class="tc-desc">Rescisão, férias, FGTS.</div></div>
       <div class="tc" onclick="goTo('salario')"><div class="tc-icon">💵</div><div class="tc-name">Salário Líquido</div><div class="tc-desc">INSS + IRRF 2026.</div></div>
+      <div class="tc" onclick="goTo('intermitente')"><div class="tc-icon">🕒</div><div class="tc-name">Salário Intermitente</div><div class="tc-desc">DSR, 13º, férias, INSS, FGTS.</div></div>
+      <div class="tc" onclick="goTo('prescricao')"><div class="tc-icon">⌛</div><div class="tc-name">Calculadora de Prescrição</div><div class="tc-desc">Trabalhista, cível e tributária.</div></div>
       <div class="tc" onclick="goTo('porcentagem')"><div class="tc-icon">🧮</div><div class="tc-name">Porcentagem</div><div class="tc-desc">Descontos, aumentos, variações.</div></div>
       <div class="tc" onclick="goTo('moedas')"><div class="tc-icon">💱</div><div class="tc-name">Conversor de Moedas</div><div class="tc-desc">BRL, USD, EUR, GBP e mais.</div></div>
     </div>
@@ -586,6 +591,7 @@
     </div>
   </div>
 
+  <span class="calc-count" id="cc-correcao"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
   <!-- ▸ ANÚNCIO: sec-correcao after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-correcao-result" style="display:none;">
   
@@ -667,6 +673,7 @@
     </div>
   </div>
 
+  <span class="calc-count" id="cc-juros"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
   <!-- ▸ ANÚNCIO: sec-juros after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-juros-result" style="display:none;">
   
@@ -736,6 +743,7 @@
     </div>
   </div>
 
+  <span class="calc-count" id="cc-salario"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
   <!-- ▸ ANÚNCIO: sec-salario after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-salario-result" style="display:none;">
   
@@ -743,6 +751,112 @@
   
   <!-- SEO: salario -->
   <section class="seo-content" id="seo-salario"><div class="container" style="max-width:800px;padding:18px 16px 6px;"><div class="seo-grid"><div><h2 class="seo-h2">O que é a Calculadora de Salário Líquido 2026?</h2><p class="seo-p">A Calculadora de Salário Líquido do Calcula Prazo calcula o valor que você efetivamente recebe em mãos após os descontos obrigatórios de INSS e IRRF, com base nas tabelas vigentes em 2026 (Lei 15.270/2025). Basta informar o salário bruto e o número de dependentes — o sistema aplica automaticamente as alíquotas progressivas corretas.</p></div><div><h2 class="seo-h2">Como usar a calculadora de salário líquido?</h2><p class="seo-p">Informe: (1) o salário bruto mensal em reais; (2) o número de dependentes para fins de IRRF; (3) eventuais outros descontos (plano de saúde, vale-refeição etc.). Clique em <strong>Calcular →</strong>. O resultado exibe o desconto de INSS, a base de cálculo do IR, o desconto de IRRF e o valor líquido final.</p></div></div><h2 class="seo-h2" style="margin-top:12px;">Tabela INSS e IRRF 2026 — como funciona o cálculo?</h2><p class="seo-p">O INSS em 2026 usa alíquotas progressivas: 7,5% (até R$1.518), 9% (até R$2.793,88), 12% (até R$4.190,83) e 14% (até R$8.157,41). Já o IRRF é isento para rendimentos até R$5.000 pela Lei 15.270/2025. Exemplo prático: salário bruto de R$4.500 → INSS de R$460,34 → base IR R$4.039,66 → isento de IR → <strong>salário líquido ≈ R$4.039,66</strong>. Para salários acima de R$5.000, aplica-se o redutor progressivo do IR. Use a calculadora para simular o seu cenário com precisão.</p><h2 class="seo-h2" style="margin-top:12px;">Perguntas frequentes</h2><div class="faq-list"><div class="faq-item"><div class="faq-q">Como funciona o cálculo do INSS em 2026?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">O INSS do empregado CLT em 2026 usa alíquotas progressivas (tabela vigente): 7,5% sobre a parcela até R$1.518,00; 9% sobre a parcela de R$1.518,01 a R$2.793,88; 12% sobre a parcela de R$2.793,89 a R$4.190,83; e 14% sobre a parcela de R$4.190,84 a R$8.157,41. O desconto é calculado sobre cada faixa separadamente (semelhante ao IR), e não sobre o salário total pela alíquota da faixa mais alta. Salários acima do teto previdenciário (R$8.157,41) contribuem com o valor máximo fixo.</div></div></div><div class="faq-item"><div class="faq-q">Quem está isento do IRRF em 2026?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">Pela Lei 15.270/2025, em vigor desde janeiro de 2026, trabalhadores com rendimento mensal tributável até R$5.000,00 estão isentos do Imposto de Renda Retido na Fonte (IRRF). Para rendimentos entre R$5.000,01 e R$7.350,00, aplica-se um desconto simplificado progressivo (redutor), que reduz o imposto a pagar. Acima de R$7.350,00 aplicam-se as alíquotas progressivas normais: 7,5%, 15%, 22,5% e 27,5%, conforme a tabela oficial vigente.</div></div></div><div class="faq-item"><div class="faq-q">Como calcular o salário líquido de forma correta?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">O salário líquido é calculado em três etapas: (1) calcula-se o desconto do INSS progressivo sobre o salário bruto; (2) subtrai-se o INSS do bruto e aplica-se a tabela progressiva do IRRF sobre a base de cálculo, deduzindo ainda R$189,59 por dependente; (3) o salário líquido = Bruto − INSS − IRRF. Por exemplo, para um salário de R$6.000: INSS ≈ R$624,87 → base IR = R$5.375,13 → IRRF ≈ R$62,77 → líquido ≈ R$5.312,36. Sempre confira o holerite com os valores reais descontados pelo empregador.</div></div></div></div></div></section>
+</div>
+</div><!-- ══════════════════════════════════════
+     SALÁRIO INTERMITENTE
+══════════════════════════════════════ -->
+
+<div id="sec-intermitente" class="sec">
+<h2 class="sr-only">Calculadora de Salário Intermitente</h2>
+
+  <div class="container" style="max-width:900px;"><div style="display:flex;flex-direction:column;gap:18px;">
+    <div class="card">
+      <h2><span aria-hidden="true">🕒</span> Salário Intermitente</h2>
+      <p class="sub">Confira se o valor pago pela empresa está correto — inclui DSR, férias, 13º, FGTS, INSS e IRRF</p>
+      <div class="fg-row">
+        <div class="fg"><label>Salário-hora (R$)</label><div class="pfx"><span class="pfx-s">R$</span><input type="number" id="int-hora" aria-label="Salário-hora (R$)" placeholder="15,00" min="0" step="0.01"></div></div>
+        <div class="fg"><label>Horas trabalhadas no período</label><input type="number" id="int-horas" aria-label="Horas trabalhadas no período" placeholder="80" min="0" step="0.5"></div>
+      </div>
+      <div class="fg-row">
+        <div class="fg"><label>Início do período de apuração</label><input type="date" id="int-ini" aria-label="Data de início do período"></div>
+        <div class="fg"><label>Fim do período de apuração</label><input type="date" id="int-fim" aria-label="Data de fim do período"></div>
+      </div>
+      <div class="fg-row">
+        <div class="fg"><label>Dependentes IRRF</label><input type="number" id="int-dep" aria-label="Número de dependentes" value="0" min="0"></div>
+        <div class="fg"><label>Outros descontos (R$)</label><div class="pfx"><span class="pfx-s">R$</span><input type="number" id="int-outros" aria-label="Outros descontos (R$)" value="0" min="0" step="0.01"></div></div>
+      </div>
+      <button class="btn btn-p btn-full" onclick="calcIntermitente()">Calcular →</button>
+    </div>
+    <div id="int-res" aria-live="polite" aria-atomic="true" style="display:none;">
+      <div class="card">
+        <p class="sub" style="margin-bottom:10px;" id="ir-periodo"></p>
+        <div class="ri-grid">
+          <div class="ri"><div class="ri-lbl">Remuneração (horas)</div><div class="ri-val" id="ir-rem">—</div></div>
+          <div class="ri"><div class="ri-lbl">DSR proporcional</div><div class="ri-val" id="ir-dsr">—</div></div>
+          <div class="ri"><div class="ri-lbl">Férias proporcionais</div><div class="ri-val" id="ir-ferias">—</div></div>
+          <div class="ri"><div class="ri-lbl">1/3 constitucional</div><div class="ri-val" id="ir-terco">—</div></div>
+          <div class="ri"><div class="ri-lbl">13º proporcional</div><div class="ri-val" id="ir-13">—</div></div>
+          <div class="ri"><div class="ri-lbl">FGTS (8%, depositado)</div><div class="ri-val" id="ir-fgts">—</div></div>
+          <div class="ri"><div class="ri-lbl">INSS (desconto)</div><div class="ri-val" id="ir-inss" style="color:var(--err);">—</div></div>
+          <div class="ri"><div class="ri-lbl">IRRF (desconto)</div><div class="ri-val" id="ir-irrf" style="color:var(--err);">—</div></div>
+          <div class="ri span2"><div class="ri-lbl">Total Bruto</div><div class="ri-val" id="ir-bruto">—</div></div>
+          <div class="ri span2"><div class="ri-lbl">Valor Líquido a Receber</div><div class="ri-val" id="ir-liquido" style="color:var(--ok);">—</div></div>
+        </div>
+        <div id="ir-nota" style="font-size:.8rem;color:var(--txt-m);padding:12px;background:var(--bg);border-radius:var(--r);"></div>
+        <span class="calc-count" id="cc-intermitente"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
+      </div>
+    </div>
+    <div class="card-sm">
+      <h3 style="font-size:.9rem;font-weight:700;margin-bottom:12px;">📌 Como funciona o intermitente</h3>
+      <p style="font-size:.82rem;color:var(--txt-m);line-height:1.6;">O contrato de trabalho intermitente (art. 443, §3º e 452-A da CLT) foi declarado <strong>constitucional pelo STF</strong> em dezembro/2024 (ADIs 5826, 5829 e 6154). A cada convocação, o empregado recebe de imediato: remuneração pelas horas, DSR, férias proporcionais + 1/3 e 13º proporcional — todos calculados em avos de 1/12 por período. FGTS (8%) é depositado pelo empregador. INSS e IRRF seguem as tabelas progressivas de 2026.</p>
+    </div>
+  </div>
+
+  <!-- ▸ ANÚNCIO: sec-intermitente after result (aparece após calcular) -->
+  <div class="ad-container ad-rect" id="ad-intermitente-result" style="display:none;"></div>
+
+  <!-- SEO: intermitente -->
+  <section class="seo-content" id="seo-intermitente"><div class="container" style="max-width:800px;padding:18px 16px 6px;"><div class="seo-grid"><div><h2 class="seo-h2">O que é a Calculadora de Salário Intermitente?</h2><p class="seo-p">A Calculadora de Salário Intermitente do Calcula Prazo permite ao trabalhador conferir se o pagamento recebido da empresa está correto, calculando remuneração, DSR, férias + 1/3, 13º proporcional, FGTS, INSS e IRRF de acordo com a CLT (art. 443, §3º e 452-A) e o entendimento do STF (ADIs 5826/5829/6154, constitucionalidade confirmada em dezembro/2024).</p></div><div><h2 class="seo-h2">Como usar a calculadora?</h2><p class="seo-p">Informe o salário-hora combinado, o total de horas trabalhadas no período de apuração, as datas de início e fim do período e o número de dependentes. Clique em <strong>Calcular →</strong>. O resultado mostra cada verba separadamente e o valor líquido final a receber.</p></div></div><h2 class="seo-h2" style="margin-top:12px;">Como é calculado o DSR do trabalhador intermitente?</h2><p class="seo-p">O Descanso Semanal Remunerado do intermitente segue, por analogia, a fórmula usada para remuneração variável (Lei 605/49, art. 7º): DSR = (remuneração do período ÷ dias úteis do período) × (domingos + feriados do período). Assim, quanto mais dias de descanso houver no período apurado, maior o valor do DSR proporcional.</p><h2 class="seo-h2" style="margin-top:12px;">Perguntas frequentes</h2><div class="faq-list"><div class="faq-item"><div class="faq-q">O intermitente tem direito a férias e 13º?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">Sim. O art. 452-A, §6º da CLT garante o pagamento imediato, a cada período de prestação de serviço, de férias proporcionais acrescidas de 1/3 constitucional e de 13º salário proporcional, calculados em avos de 1/12. O STF confirmou a constitucionalidade dessa sistemática em dezembro de 2024.</div></div></div><div class="faq-item"><div class="faq-q">O contrato intermitente é constitucional?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">Sim. O Supremo Tribunal Federal julgou as ADIs 5826, 5829 e 6154 em dezembro de 2024 e, por maioria, declarou constitucional o contrato de trabalho intermitente instituído pela Reforma Trabalhista (Lei 13.467/2017), por entender que a modalidade não suprime direitos trabalhistas, apenas os torna proporcionais ao tempo efetivamente trabalhado.</div></div></div><div class="faq-item"><div class="faq-q">Quem paga o FGTS do intermitente?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">O FGTS (8% sobre a remuneração e demais verbas salariais do período) é depositado pelo empregador diretamente na conta vinculada do trabalhador — não é descontado do valor pago a ele, ao contrário do INSS e do IRRF.</div></div></div></div></div></section>
+</div>
+</div><!-- ══════════════════════════════════════
+     PRESCRIÇÃO
+══════════════════════════════════════ -->
+
+<div id="sec-prescricao" class="sec">
+<h2 class="sr-only">Calculadora de Prescrição</h2>
+
+  <div class="container" style="max-width:900px;"><div style="display:flex;flex-direction:column;gap:18px;">
+    <div class="card">
+      <h2><span aria-hidden="true">⌛</span> Calculadora de Prescrição</h2>
+      <p class="sub">Trabalhista, cível e tributária — informe a data do fato gerador</p>
+      <div class="fg"><label>Área do Direito</label>
+        <select id="presc-area" aria-label="Área do direito" onchange="prescAreaChange()" style="width:100%;padding:10px 12px;border:1.5px solid var(--brd);border-radius:var(--r);font-family:var(--fh);appearance:none;background:var(--bg);">
+          <option value="trabalhista">Trabalhista (CF/88 art. 7º, XXIX)</option>
+          <option value="civil">Cível (Código Civil)</option>
+          <option value="tributario">Tributário (CTN)</option>
+        </select>
+      </div>
+      <div class="fg" id="presc-tipo-grp">
+        <label>Tipo de prazo</label>
+        <select id="presc-tipo" aria-label="Tipo de prazo prescricional" onchange="updatePrescDataLabel()" style="width:100%;padding:10px 12px;border:1.5px solid var(--brd);border-radius:var(--r);font-family:var(--fh);appearance:none;background:var(--bg);">
+          <option value="bienal">Prescrição bienal (2 anos) — reclamação trabalhista</option>
+          <option value="fgts">FGTS não depositado (5 anos) — Tema 608 STF</option>
+        </select>
+      </div>
+      <div class="fg"><label id="presc-data-lbl">Data do término do contrato de trabalho</label><input type="date" id="presc-data" aria-label="Data do fato gerador do prazo"></div>
+      <button class="btn btn-p btn-full" onclick="calcPrescricao()">Calcular Prescrição →</button>
+    </div>
+    <div id="presc-res" aria-live="polite" aria-atomic="true" style="display:none;">
+      <div class="card">
+        <div class="ri-grid">
+          <div class="ri span2"><div class="ri-lbl">Prazo aplicável</div><div class="ri-val" id="presc-r-prazo" style="font-size:1rem;">—</div></div>
+          <div class="ri"><div class="ri-lbl">Data-limite (prescrição)</div><div class="ri-val" id="presc-r-limite" style="color:var(--err);">—</div></div>
+          <div class="ri"><div class="ri-lbl">Situação hoje</div><div class="ri-val" id="presc-r-status">—</div></div>
+        </div>
+        <div id="presc-r-obs" style="font-size:.8rem;color:var(--txt-m);padding:12px;background:var(--bg);border-radius:var(--r);"></div>
+        <span class="calc-count" id="cc-prescricao"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
+      </div>
+    </div>
+    <div class="card-sm" style="background:#FFF9E6;border:1.5px solid #FDE68A;">
+      <p style="font-size:.8rem;color:var(--txt-m);line-height:1.6;"><strong style="color:#B45309;">⚠ Aviso:</strong> esta calculadora tem finalidade informativa e educativa, apresentando regras gerais de prescrição. Prazos podem ser suspensos ou interrompidos por diversas causas legais (ex.: menoridade, ajuizamento de ação, protesto, reconhecimento da dívida). Consulte sempre um advogado para análise do caso concreto.</p>
+    </div>
+  </div>
+
+  <!-- ▸ ANÚNCIO: sec-prescricao after result (aparece após calcular) -->
+  <div class="ad-container ad-rect" id="ad-prescricao-result" style="display:none;"></div>
+
+  <!-- SEO: prescricao -->
+  <section class="seo-content" id="seo-prescricao"><div class="container" style="max-width:800px;padding:18px 16px 6px;"><div class="seo-grid"><div><h2 class="seo-h2">O que é a Calculadora de Prescrição?</h2><p class="seo-p">A Calculadora de Prescrição do Calcula Prazo estima o prazo-limite para exercer um direito nas esferas trabalhista, cível e tributária, com base na Constituição Federal, no Código Civil e no Código Tributário Nacional. Informe a área do direito, o tipo de prazo e a data do fato gerador para obter a data-limite estimada.</p></div><div><h2 class="seo-h2">Como usar a calculadora de prescrição?</h2><p class="seo-p">Selecione a área do direito (trabalhista, cível ou tributário), escolha o tipo de prazo aplicável ao seu caso e informe a data de referência (ex.: data de término do contrato de trabalho, data do dano, ou data da constituição definitiva do crédito tributário). Clique em <strong>Calcular Prescrição →</strong> para ver o prazo-limite estimado.</p></div></div><h2 class="seo-h2" style="margin-top:12px;">Prescrição trabalhista: bienal e quinquenal</h2><p class="seo-p">Pelo art. 7º, XXIX da CF/88, o trabalhador tem <strong>2 anos</strong> após o fim do contrato de trabalho para ajuizar reclamação trabalhista (prescrição bienal), podendo reclamar apenas os créditos dos <strong>últimos 5 anos</strong> anteriores ao ajuizamento (prescrição quinquenal). Para menores de 18 anos, o prazo não corre (art. 440 CLT).</p><h2 class="seo-h2" style="margin-top:12px;">Perguntas frequentes</h2><div class="faq-list"><div class="faq-item"><div class="faq-q">Qual o prazo de prescrição trabalhista?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">2 anos contados do término do contrato de trabalho (prescrição bienal, art. 7º, XXIX CF/88), limitado aos créditos dos 5 anos anteriores ao ajuizamento da ação (prescrição quinquenal). O FGTS segue a mesma prescrição quinquenal, conforme Tema 608 do STF.</div></div></div><div class="faq-item"><div class="faq-q">Qual o prazo de prescrição civil?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">A regra geral do Código Civil (art. 205) é de 10 anos. Existem prazos especiais menores no art. 206, como 3 anos para pretensão de reparação civil e 1 ano para determinadas pretensões de seguro.</div></div></div><div class="faq-item"><div class="faq-q">Qual o prazo de prescrição tributária?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">5 anos, contados da constituição definitiva do crédito tributário, conforme art. 174 do Código Tributário Nacional (CTN), para a Fazenda Pública promover a ação de cobrança judicial.</div></div></div></div></div></section>
 </div>
 </div><!-- ══════════════════════════════════════
      PORCENTAGEM
@@ -771,6 +885,7 @@
         </div>
       <div id="pct-res" aria-live="polite" aria-atomic="true" class="res-box" style="margin-top:8px;"><div class="res-lbl">Resultado</div><div class="res-val" id="pct-res-val"></div><div class="res-det" id="pct-res-det"></div></div></div>
 
+  <span class="calc-count" id="cc-porcentagem"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
   <!-- ▸ ANÚNCIO: sec-porcentagem after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-porcentagem-result" style="display:none;">
   
@@ -818,6 +933,7 @@
       <p style="font-size:.78rem;color:var(--txt-s);margin-top:12px;">⚠ Taxas de referência (estimativas). Para transações, consulte seu banco ou corretora.</p>
         </div>
 
+  <span class="calc-count" id="cc-moedas"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
   <!-- ▸ ANÚNCIO: sec-moedas after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-moedas-result" style="display:none;">
   
@@ -950,6 +1066,7 @@
         <p id="t-descontos-nota" style="font-size:.68rem;color:var(--txt-s);margin-top:8px;line-height:1.5;"></p>
       </div>
 
+  <span class="calc-count" id="cc-trabalhista"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
   <!-- ▸ ANÚNCIO: sec-trabalhista after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-trabalhista-result" style="display:none;">
   
@@ -984,6 +1101,7 @@
       <div id="d-res" aria-live="polite" aria-atomic="true" class="res-box" style="margin-top:8px;"><div class="res-lbl">Resultado</div><div class="res-val" id="d-res-val"></div><div class="res-det" id="d-res-det"></div></div>
         </div>
 
+  <span class="calc-count" id="cc-datas"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
   <!-- ▸ ANÚNCIO: sec-datas after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-datas-result" style="display:none;">
   
@@ -1017,6 +1135,7 @@
           <button class="btn btn-g btn-sm" onclick="fmtCPF()">Formatar</button>
           <button class="btn btn-g btn-sm" onclick="clearV('cpf-in','cpf-vr')">Limpar</button>
           <button class="btn btn-s btn-sm" onclick="gerarCPF()">Gerar de teste</button>
+          <button class="btn btn-s btn-sm btn-print" onclick="window.print()">🖨️ Imprimir / PDF</button>
         </div>
       </div>
       <div class="card">
@@ -1033,10 +1152,12 @@
           <button class="btn btn-g btn-sm" onclick="fmtCNPJ()">Formatar</button>
           <button class="btn btn-g btn-sm" onclick="clearV('cnpj-in','cnpj-vr')">Limpar</button>
           <button class="btn btn-s btn-sm" onclick="gerarCNPJ()">Gerar de teste</button>
+          <button class="btn btn-s btn-sm btn-print" onclick="window.print()">🖨️ Imprimir / PDF</button>
         </div>
       </div>
         </div>
     </div>
+    <div style="text-align:center;"><span class="calc-count" id="cc-valid"></span></div>
     <div class="card-sm" style="position:sticky;top:76px;">
       <h3 style="font-size:.9rem;font-weight:700;margin-bottom:12px;">🔬 Como funciona</h3>
       <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:12px;">
@@ -1095,6 +1216,8 @@
         <div id="qr-actions" style="display:none;width:100%;display:flex;flex-direction:column;gap:8px;">
           <button class="btn btn-p" style="width:100%;" onclick="dlQR()">⬇ Download PNG</button>
           <button class="btn btn-g" style="width:100%;" onclick="cpQR()">📋 Copiar conteúdo</button>
+          <button class="btn btn-s btn-print" style="width:100%;" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
+          <span class="calc-count" id="cc-qrcode" style="align-self:center;"></span>
         </div>
       </div>
     </div>
@@ -1149,7 +1272,8 @@
           <label class="tog"><input type="checkbox" id="pw-am" aria-label="Excluir caracteres ambíguos" onchange="genPW()"><div class="tog-tr"></div><div class="tog-th"></div></label>
         </div>
       </div>
-      <button class="btn btn-p btn-full" style="margin-top:18px;" onclick="genPW()">🔄 Gerar Nova Senha</button>
+      <button class="btn btn-p btn-full" style="margin-top:18px;" onclick="genPW();trackCalcUsage('senhas','cc-senhas')">🔄 Gerar Nova Senha</button>
+      <span class="calc-count" id="cc-senhas"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
         </div>
 
   <!-- ▸ ANÚNCIO: sec-senhas after result (aparece após calcular) -->
@@ -1181,6 +1305,7 @@
       <button class="btn btn-g" style="margin-top:12px;width:100%;" onclick="cpExt()">📋 Copiar texto</button>
         </div></div>
 
+  <span class="calc-count" id="cc-extenso"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
   <!-- ▸ ANÚNCIO: sec-extenso after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-extenso-result" style="display:none;">
   
@@ -1243,6 +1368,7 @@
     </div>
   </div>
 
+  <span class="calc-count" id="cc-imc"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
   <!-- ▸ ANÚNCIO: sec-imc after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-imc-result" style="display:none;">
   
@@ -1438,6 +1564,8 @@
         <li><a href="#" onclick="event.preventDefault(); goTo('juros')">Juros</a></li>
         <li><a href="#" onclick="event.preventDefault(); goTo('trabalhista')">Trabalhista</a></li>
         <li><a href="#" onclick="event.preventDefault(); goTo('salario')">Salário Líquido</a></li>
+        <li><a href="#" onclick="event.preventDefault(); goTo('intermitente')">Salário Intermitente</a></li>
+        <li><a href="#" onclick="event.preventDefault(); goTo('prescricao')">Prescrição</a></li>
         <li><a href="#" onclick="event.preventDefault(); goTo('porcentagem')">Porcentagem</a></li>
         <li><a href="#" onclick="event.preventDefault(); goTo('moedas')">Moedas</a></li>
       </ul></div>
@@ -1616,6 +1744,7 @@
      BLOG / CONTEÚDO — JavaScript
 ══════════════════════════════════════ -->
 <script src="/blog.min.js?v=2" defer></script>
+<script src="/js/analytics.js" defer></script>
 
 
 

@@ -76,9 +76,41 @@
     });
   }
 
+  /* ── Contador de uso de calculadoras (todo clique conta) ──── */
+  /* Diferente de trackView: sem dedup por sessão e sem delay —
+     cada cálculo concluído com sucesso soma +1 imediatamente,
+     e o total é exibido publicamente ao lado do resultado. */
+  function trackCalc(slug, displayElId) {
+    if (!slug) return;
+    var ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    var tid  = ctrl ? setTimeout(function() { ctrl.abort(); }, 5000) : null;
+    fetch(WORKER_URL + '/view/' + encodeURIComponent(slug), {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      mode:    'cors',
+      signal:  ctrl ? ctrl.signal : undefined
+    })
+    .then(function(r) {
+      if (tid) clearTimeout(tid);
+      return r.ok ? r.json() : null;
+    })
+    .then(function(d) {
+      if (!d || !displayElId) return;
+      var el = document.getElementById(displayElId);
+      if (!el) return;
+      var n = d.views || 0;
+      el.textContent = '🧮 ' + n.toLocaleString('pt-BR') + (n === 1 ? ' pessoa já usou esta calculadora' : ' pessoas já usaram esta calculadora');
+      el.style.display = 'inline-flex';
+    })
+    .catch(function(e) {
+      if (tid) clearTimeout(tid);
+    });
+  }
+
   /* ── API pública ─────────────────────────────────────────── */
   window.CPViews = {
     trackView: trackView,
+    trackCalc: trackCalc,
     getViews:  getViews,
     getTop:    getTop,
     render:    renderViewCount

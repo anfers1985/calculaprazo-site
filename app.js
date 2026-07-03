@@ -2,14 +2,14 @@
 // ─── NAVIGATION ────────────────────────────────────
 const NAV_MAP = {
   home:'home',prazos:'prazos',blog:'blog',calc:'calc',correcao:'correcao',juros:'juros',
-  trabalhista:'trabalhista',salario:'salario',porcentagem:'porcentagem',
+  trabalhista:'trabalhista',salario:'salario',intermitente:'intermitente',prescricao:'prescricao',porcentagem:'porcentagem',
   moedas:'moedas',valid:'valid',qrcode:'qrcode',senhas:'senhas',
   extenso:'extenso',imc:'imc',datas:'datas',util:'util',gerador:'valid'
 };
 const NAV_ACTIVE = {
   home:'home',prazos:'prazos',
   calc:'tools',correcao:'tools',juros:'tools',trabalhista:'tools',
-  salario:'tools',porcentagem:'tools',moedas:'tools',
+  salario:'tools',intermitente:'tools',prescricao:'tools',porcentagem:'tools',moedas:'tools',
   valid:'tools',gerador:'tools',qrcode:'tools',senhas:'tools',
   extenso:'tools',imc:'tools',datas:'tools',util:'tools',
   blog:'conteudo'
@@ -206,6 +206,7 @@ document.getElementById('p-btn-calc').addEventListener('click', function(){ }); 
     document.getElementById('p-res-resumo').textContent = resumo;
     resDiv.classList.add('show');
     if(ferTxt){ resFer.textContent = ferTxt; resFer.classList.add('show'); }
+    trackCalcUsage('prazos','cc-prazos');
   } catch(err){
     document.getElementById('p-res-txt').textContent    = 'Erro: '+err.message;
     document.getElementById('p-res-resumo').textContent = '';
@@ -324,6 +325,7 @@ function calcCorrecaoFallback(val, iniStr, fimStr, idx) {
   document.getElementById('corr-res-det').textContent =
     `Valor original: ${fmt(val)} · Correção: ${fmt(atualizado-val)} · Variação: ${((fator-1)*100).toFixed(2).replace('.',',')}% · Fator: ${fator.toFixed(6)} · Fonte: taxas anuais (estimativa — API BCB indisponível)`;
   document.getElementById('corr-res').classList.add('show');
+  trackCalcUsage('correcao','cc-correcao');
 }
 
 async function calcCorrecao() {
@@ -382,7 +384,7 @@ async function calcCorrecao() {
 
     rb.classList.add('show');
     showAdAfterResult('ad-correcao-after-result');
-    showAdAfterResult('ad-correcao-result');
+    showAdAfterResult('ad-correcao-result');trackCalcUsage('correcao','cc-correcao');
     document.getElementById('corr-fallback-note').style.display='none';
 
   } catch (err) {
@@ -512,6 +514,20 @@ function jSetPer(p, btn) {
 }
 
 const fmtBRL = n => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(n);
+
+// ─── CONTADOR DE USO DAS CALCULADORAS ──────────────────────────
+// Reaproveita o mesmo Worker/KV já usado para contar leituras de artigos
+// (calculaprazo-views-api), mas com slugs próprios por ferramenta
+// (prefixo "calc-"), sem qualquer alteração no back-end.
+// Toda vez que um cálculo é concluído com sucesso, incrementa +1 e
+// atualiza o contador visível ao lado do resultado.
+function trackCalcUsage(toolSlug, displayElId){
+  try{
+    if(window.CPViews && typeof window.CPViews.trackCalc === 'function'){
+      window.CPViews.trackCalc('calc-' + toolSlug, displayElId);
+    }
+  }catch(e){/* silencioso: contador nunca deve travar o cálculo */}
+}
 // parseVal: aceita formato BR (1.234,56), US (1234.56) e inteiros — resistente a type=number no mobile
 function parseVal(s){
   if(s===null||s===undefined)return NaN;
@@ -739,7 +755,7 @@ async function calcJuros() {
 
   // 7. Anúncio + recomendações
   showAdAfterResult('ad-juros-after-result');
-  showAdAfterResult('ad-juros-result');
+  showAdAfterResult('ad-juros-result');trackCalcUsage('juros','cc-juros');
   loadRecomendacoes('j-recomendacoes');
 
   document.getElementById('j-res-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -830,7 +846,7 @@ function calcSalario(){
   document.getElementById('sr-liq').textContent=fmtBRL(liq);
   document.getElementById('sr-aliq').innerHTML=`INSS: <strong>${fmtBRL(inss)}</strong> · IRRF: <strong>${fmtBRL(irrf)}</strong> (alíq. efetiva: ${aliqLabel}) · Dependentes: ${dep} · Dedução/dep: R$ ${DEP_IRRF.toFixed(2).replace('.',',')}`;
   showAdAfterResult('ad-salario-after-result');
-  showAdAfterResult('ad-salario-result');document.getElementById('sal-res').style.display='block';
+  showAdAfterResult('ad-salario-result');document.getElementById('sal-res').style.display='block';trackCalcUsage('salario','cc-salario');
 }
 
 // ─── PORCENTAGEM ───────────────────────────────────
@@ -845,7 +861,7 @@ function calcPct(){
     else if(pctM==='aumento'){const base=parseFloat(document.getElementById('pct-a3').value),p=parseFloat(document.getElementById('pct-b3').value);if(isNaN(base)||isNaN(p))throw new Error('Preencha.');const ac=base*p/100;v=fmtBRL(base+ac);d=`Aumento de ${fmtN(p)}% (${fmtBRL(ac)}) sobre ${fmtBRL(base)}`;}
     else if(pctM==='variacao'){const a=parseFloat(document.getElementById('pct-a4').value),b=parseFloat(document.getElementById('pct-b4').value);if(isNaN(a)||isNaN(b)||a===0)throw new Error('Preencha.');const pct=(b-a)/a*100;v=`${pct>=0?'+':''}${fmtN(pct)}%`;d=`De ${fmtBRL(a)} para ${fmtBRL(b)} = variação de ${fmtN(pct)}%`;}
     else{const x=parseFloat(document.getElementById('pct-a5').value),y=parseFloat(document.getElementById('pct-b5').value);if(isNaN(x)||isNaN(y)||y===0)throw new Error('Preencha.');v=`${fmtN(x/y*100)}%`;d=`${fmtBRL(x)} representa ${fmtN(x/y*100)}% de ${fmtBRL(y)}`;}
-    document.getElementById('pct-res-val').textContent=v;document.getElementById('pct-res-det').textContent=d;rb.classList.add('show');showAdAfterResult('ad-porcentagem-result');
+    document.getElementById('pct-res-val').textContent=v;document.getElementById('pct-res-det').textContent=d;rb.classList.add('show');showAdAfterResult('ad-porcentagem-result');trackCalcUsage('porcentagem','cc-porcentagem');
   }catch(e){document.getElementById('pct-res-val').textContent='Erro: '+e.message;rb.classList.add('show','err');}
 }
 
@@ -881,7 +897,7 @@ async function fetchRatesLive(){
 }
 
 function calcMoeda(){
-  showAdAfterResult('ad-moedas-result');
+  showAdAfterResult('ad-moedas-result');trackCalcUsage('moedas','cc-moedas');
   const v=parseFloat(document.getElementById('moeda-val-in').value)||0;
   const de=document.getElementById('moeda-de').value;
   const para=document.getElementById('moeda-para').value;
@@ -1124,9 +1140,202 @@ function calcTrabalhista(){
   }
 
   showAdAfterResult('ad-trabalhista-after-result');
-  showAdAfterResult('ad-trabalhista-result');
+  showAdAfterResult('ad-trabalhista-result');trackCalcUsage('trabalhista','cc-trabalhista');
   document.getElementById('t-res').style.display='block';
   document.getElementById('t-res').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// ─── SALÁRIO INTERMITENTE (CLT art. 443 §3º / 452-A) ─────────────
+// Fórmula validada pelo STF (ADIs 5826/5829/6154, dez/2024): a cada período de
+// prestação de serviço, o empregado recebe de imediato: I) remuneração; II) férias
+// proporcionais + 1/3; III) 13º proporcional; IV) DSR; V) adicionais legais.
+function irrfCalc(base){
+  // Aplica a tabela progressiva de IRRF (mesma tabela usada em calcSalario) a uma base já líquida de INSS/dependentes
+  for(const[lim,aliq,dedu] of IRRF_FAIXAS){
+    if(base<=lim) return Math.max(0, base*(aliq/100)-dedu);
+  }
+  return 0;
+}
+function inssCalc(base){
+  let inss=0, ant=0, b=base;
+  for(const[lim,aliq] of INSS_FAIXAS){
+    if(b<=0) break;
+    const fatia=Math.min(b, lim-ant);
+    inss += fatia*(aliq/100);
+    ant = lim; b -= fatia;
+  }
+  return inss;
+}
+function calcIntermitente(){
+  const rb = document.getElementById('int-res');
+  try{
+    const valorHora = parseFloat(document.getElementById('int-hora').value.replace(',','.'))||0;
+    const horas = parseFloat(document.getElementById('int-horas').value.replace(',','.'))||0;
+    const dep = parseInt(document.getElementById('int-dep').value)||0;
+    const outros = parseFloat((document.getElementById('int-outros').value||'0').replace(',','.'))||0;
+    const ini = pd(document.getElementById('int-ini').value);
+    const fim = pd(document.getElementById('int-fim').value);
+    if(valorHora<=0 || horas<=0) throw new Error('Informe o salário-hora e as horas trabalhadas.');
+    if(!ini || !fim || fim<ini) throw new Error('Informe um período de apuração válido (data início ≤ data fim).');
+
+    // Conta domingos, feriados nacionais e dias úteis no período de apuração
+    const anos = new Set([ini.getUTCFullYear(), fim.getUTCFullYear()]);
+    let feriados = [];
+    anos.forEach(a => { feriados = feriados.concat(getFeriadosNacionais(a)); });
+    const feriadosTime = new Set(feriados.map(f=>f.getTime()));
+    let diasTotais=0, domingos=0, diasFeriados=0;
+    for(let cur=new Date(ini.getTime()); cur<=fim; cur=new Date(cur.getTime()+864e5)){
+      diasTotais++;
+      const wd = cur.getUTCDay();
+      if(wd===0) domingos++;
+      else if(feriadosTime.has(cur.getTime())) diasFeriados++;
+    }
+    const diasRepouso = domingos + diasFeriados;
+    const diasUteis = Math.max(1, diasTotais - diasRepouso);
+
+    // 1) Remuneração pelas horas trabalhadas
+    const remuneracao = valorHora * horas;
+
+    // 2) DSR sobre remuneração variável (Lei 605/49, art. 7º, por analogia)
+    const dsr = (remuneracao / diasUteis) * diasRepouso;
+
+    const baseMes = remuneracao + dsr; // base "salarial" do período (sem 13º)
+
+    // 3) Férias proporcionais + 1/3 (1/12 avos por período, pagamento imediato — CLT art. 452-A §6º)
+    const ferias = baseMes / 12;
+    const tercoFerias = ferias / 3;
+
+    // 4) 13º proporcional (1/12 avos, tributação exclusiva na fonte)
+    const decimoTerceiro = baseMes / 12;
+
+    // 5) FGTS 8% sobre todas as verbas de natureza salarial do período
+    const baseFGTS = baseMes + ferias + tercoFerias + decimoTerceiro;
+    const fgts = baseFGTS * 0.08;
+
+    // 6) INSS e IRRF — verbas mensais (remuneração+DSR+férias+1/3) tributadas juntas;
+    //    13º tem tabela própria e tributação exclusiva na fonte (não se soma à base mensal)
+    const baseMensalTrib = baseMes + ferias + tercoFerias;
+    const inssMensal = inssCalc(baseMensalTrib);
+    const baseIRRFMensal = Math.max(0, baseMensalTrib - inssMensal - dep*DEP_IRRF);
+    const irrfMensal = irrfCalc(baseIRRFMensal);
+
+    const inss13 = inssCalc(decimoTerceiro);
+    const baseIRRF13 = Math.max(0, decimoTerceiro - inss13 - dep*DEP_IRRF);
+    const irrf13 = irrfCalc(baseIRRF13);
+
+    const totalBruto = baseMensalTrib + decimoTerceiro;
+    const totalDescontos = inssMensal + irrfMensal + inss13 + irrf13 + outros;
+    const liquido = totalBruto - totalDescontos;
+
+    document.getElementById('ir-periodo').textContent = `${fd(ini)} a ${fd(fim)} (${diasTotais} dias corridos · ${diasUteis} dias úteis · ${diasRepouso} domingos/feriados)`;
+    document.getElementById('ir-rem').textContent = fmtBRL(remuneracao);
+    document.getElementById('ir-dsr').textContent = fmtBRL(dsr);
+    document.getElementById('ir-ferias').textContent = fmtBRL(ferias);
+    document.getElementById('ir-terco').textContent = fmtBRL(tercoFerias);
+    document.getElementById('ir-13').textContent = fmtBRL(decimoTerceiro);
+    document.getElementById('ir-fgts').textContent = fmtBRL(fgts);
+    document.getElementById('ir-inss').textContent = fmtBRL(inssMensal+inss13);
+    document.getElementById('ir-irrf').textContent = fmtBRL(irrfMensal+irrf13);
+    document.getElementById('ir-bruto').textContent = fmtBRL(totalBruto);
+    document.getElementById('ir-liquido').textContent = fmtBRL(liquido);
+    document.getElementById('ir-nota').innerHTML =
+      `FGTS (${fmtBRL(fgts)}) é depositado pelo empregador na conta vinculada — não é descontado do trabalhador. ` +
+      `13º proporcional tem INSS (${fmtBRL(inss13)}) e IRRF (${fmtBRL(irrf13)}) próprios, com tributação exclusiva na fonte. ` +
+      `Dependentes considerados: ${dep} (dedução de ${fmtBRL(DEP_IRRF)} cada).`;
+
+    rb.style.display='block';
+    showAdAfterResult('ad-intermitente-result');trackCalcUsage('intermitente','cc-intermitente');
+    rb.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }catch(err){
+    rb.style.display='block';
+    document.getElementById('ir-periodo').textContent='';
+    document.getElementById('ir-nota').innerHTML = `<span style="color:var(--err);font-weight:600;">${err.message}</span>`;
+    ['ir-rem','ir-dsr','ir-ferias','ir-terco','ir-13','ir-fgts','ir-inss','ir-irrf','ir-bruto','ir-liquido'].forEach(id=>{document.getElementById(id).textContent='—';});
+  }
+}
+
+// ─── PRESCRIÇÃO (trabalhista / cível / tributária) ─────────────
+// Regras gerais — sempre informativas; suspensão/interrupção depende do caso concreto.
+const PRESC_TIPOS = {
+  trabalhista: [
+    {id:'bienal', label:'Prescrição bienal (2 anos) — reclamação trabalhista', anos:2,
+     dataLabel:'Data do término do contrato de trabalho',
+     obs:'Art. 7º, XXIX da CF/88 c/c art. 11 da CLT: o prazo para ajuizar reclamação trabalhista é de 2 anos após a extinção do contrato de trabalho. Dentro da ação, só podem ser cobrados créditos dos últimos 5 anos anteriores ao ajuizamento (prescrição quinquenal). Para menores de 18 anos, o prazo não corre (art. 440 CLT).'},
+    {id:'fgts', label:'FGTS não depositado (5 anos) — Tema 608 STF', anos:5,
+     dataLabel:'Data da competência do depósito não realizado',
+     obs:'Desde a fixação do Tema 608 pelo STF, a prescrição para reclamar diferenças de FGTS é quinquenal (5 anos), contados da lesão ao direito (mês da competência não recolhida), respeitado o prazo bienal após o fim do contrato.'},
+  ],
+  civil: [
+    {id:'geral', label:'Prazo geral (10 anos) — art. 205 CC', anos:10,
+     dataLabel:'Data em que o direito poderia ser exercido',
+     obs:'Regra geral do Código Civil: na ausência de prazo específico previsto em lei, aplica-se o prazo de 10 anos (art. 205, CC).'},
+    {id:'reparacao', label:'Reparação civil / indenização (3 anos) — art. 206 §3º V CC', anos:3,
+     dataLabel:'Data do dano ou do ato ilícito',
+     obs:'Pretensão de reparação civil (indenização por dano material ou moral) prescreve em 3 anos, contados da data do ato ilícito ou, em certos casos, da ciência inequívoca do dano (art. 206, §3º, V, CC).'},
+    {id:'titulos', label:'Dívida líquida em instrumento (5 anos) — art. 206 §5º I CC', anos:5,
+     dataLabel:'Data de vencimento do título/instrumento',
+     obs:'Pretensão de cobrança de dívidas líquidas constantes de instrumento público ou particular prescreve em 5 anos (art. 206, §5º, I, CC).'},
+    {id:'alugueis', label:'Cobrança de aluguéis (3 anos) — art. 206 §3º I CC', anos:3,
+     dataLabel:'Data de vencimento do aluguel',
+     obs:'Pretensão do locador para cobrança de aluguéis (pagamentos periódicos) prescreve em 3 anos (art. 206, §3º, I, CC).'},
+  ],
+  tributario: [
+    {id:'cobranca', label:'Cobrança de crédito tributário (5 anos) — art. 174 CTN', anos:5,
+     dataLabel:'Data da constituição definitiva do crédito',
+     obs:'A ação de cobrança do crédito tributário já constituído (após o lançamento definitivo) prescreve em 5 anos, contados da constituição definitiva (art. 174, CTN).'},
+    {id:'decadencia', label:'Decadência para lançamento (5 anos) — art. 150 §4º / 173 CTN', anos:5,
+     dataLabel:'Data do fato gerador',
+     obs:'O Fisco tem 5 anos para constituir (lançar) o crédito tributário, contados, em regra, do fato gerador (art. 150, §4º, CTN, tributos sujeitos a lançamento por homologação) ou do primeiro dia do exercício seguinte (art. 173, I, CTN, nos demais casos). Trata-se tecnicamente de decadência, não de prescrição.'},
+  ],
+};
+function prescAreaChange(){
+  const area = document.getElementById('presc-area').value;
+  const sel = document.getElementById('presc-tipo');
+  sel.innerHTML = PRESC_TIPOS[area].map(t=>`<option value="${t.id}">${t.label}</option>`).join('');
+  updatePrescDataLabel();
+}
+function updatePrescDataLabel(){
+  const area = document.getElementById('presc-area').value;
+  const tipoId = document.getElementById('presc-tipo').value;
+  const t = PRESC_TIPOS[area].find(x=>x.id===tipoId) || PRESC_TIPOS[area][0];
+  document.getElementById('presc-data-lbl').textContent = t ? t.dataLabel : 'Data do fato gerador';
+}
+function calcPrescricao(){
+  const rb = document.getElementById('presc-res');
+  try{
+    const area = document.getElementById('presc-area').value;
+    const tipoId = document.getElementById('presc-tipo').value;
+    const t = PRESC_TIPOS[area].find(x=>x.id===tipoId);
+    if(!t) throw new Error('Selecione o tipo de prazo.');
+    const dataStr = document.getElementById('presc-data').value;
+    const data = pd(dataStr);
+    if(!data) throw new Error('Informe a data de referência.');
+    const limite = new Date(Date.UTC(data.getUTCFullYear()+t.anos, data.getUTCMonth(), data.getUTCDate()));
+    const hoje = new Date(); const hojeUTC = new Date(Date.UTC(hoje.getFullYear(),hoje.getMonth(),hoje.getDate()));
+    const diasRestantes = Math.round((limite.getTime()-hojeUTC.getTime())/864e5);
+
+    document.getElementById('presc-r-prazo').textContent = `${t.label} (${t.anos} ${t.anos===1?'ano':'anos'})`;
+    document.getElementById('presc-r-limite').textContent = fd(limite);
+    if(diasRestantes < 0){
+      document.getElementById('presc-r-status').innerHTML = `<span style="color:var(--err);">Prazo esgotado</span>`;
+      document.getElementById('presc-r-status').style.color = 'var(--err)';
+    } else {
+      document.getElementById('presc-r-status').textContent = `Em curso — faltam ${diasRestantes} dias`;
+      document.getElementById('presc-r-status').style.color = 'var(--ok)';
+    }
+    document.getElementById('presc-r-obs').innerHTML =
+      t.obs + ' <strong>Este resultado é uma estimativa geral</strong> — causas de suspensão ou interrupção da prescrição (ex.: ajuizamento de ação, protesto, reconhecimento da dívida, menoridade) podem alterar o prazo-limite real. Consulte um advogado para o seu caso específico.';
+
+    rb.style.display='block';
+    showAdAfterResult('ad-prescricao-result');trackCalcUsage('prescricao','cc-prescricao');
+    rb.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }catch(err){
+    rb.style.display='block';
+    document.getElementById('presc-r-prazo').textContent='—';
+    document.getElementById('presc-r-limite').textContent='—';
+    document.getElementById('presc-r-status').textContent='';
+    document.getElementById('presc-r-obs').innerHTML = `<span style="color:var(--err);font-weight:600;">${err.message}</span>`;
+  }
 }
 
 // ─── DATAS ─────────────────────────────────────────
@@ -1140,7 +1349,7 @@ function calcDatas(){
     else if(dM==='add'){const a=pd(document.getElementById('d-a2').value);const n=parseInt(document.getElementById('d-b2').value)||0;if(!a)throw new Error('Preencha a data.');const r=new Date(a.getTime()+n*864e5);v=fd(r);d=`${cap(dsem(r))} · ${n} dias somados a ${fd(a)}`;}
     else if(dM==='sub'){const a=pd(document.getElementById('d-a3').value);const n=parseInt(document.getElementById('d-b3').value)||0;if(!a)throw new Error('Preencha a data.');const r=new Date(a.getTime()-n*864e5);v=fd(r);d=`${cap(dsem(r))} · ${n} dias subtraídos de ${fd(a)}`;}
     else{const a=pd(document.getElementById('d-a4').value);if(!a)throw new Error('Preencha a data.');v=cap(dsem(a));d=`${fd(a)}`;}
-    document.getElementById('d-res-val').textContent=v;document.getElementById('d-res-det').textContent=d;rb.classList.add('show');showAdAfterResult('ad-datas-result');
+    document.getElementById('d-res-val').textContent=v;document.getElementById('d-res-det').textContent=d;rb.classList.add('show');showAdAfterResult('ad-datas-result');trackCalcUsage('datas','cc-datas');
   }catch(e){document.getElementById('d-res-val').textContent='Erro: '+e.message;rb.classList.add('show','err');}
 }
 
@@ -1158,6 +1367,7 @@ function validCPF(){
   document.getElementById('cpf-vr-dv').textContent=res.dv||'—';
   document.getElementById('cpf-vr-msg').textContent=res.msg;
   vr.className='vr show '+(res.ok?'ok':'fail');
+  if(n.length===11) trackCalcUsage('valid','cc-valid');
 }
 function _validCPF(n){
   if(n.length!==11)return{ok:false,msg:'CPF deve ter 11 dígitos.'};
@@ -1179,6 +1389,7 @@ function validCNPJ(){
   document.getElementById('cnpj-vr-dv').textContent=res.dv||'—';
   document.getElementById('cnpj-vr-msg').textContent=res.msg;
   vr.className='vr show '+(res.ok?'ok':'fail');
+  if(n.length===14) trackCalcUsage('valid','cc-valid');
 }
 function _validCNPJ(n){
   if(n.length!==14)return{ok:false,msg:'CNPJ deve ter 14 dígitos.'};
@@ -1228,6 +1439,7 @@ function genQR(){
   const disp=document.getElementById('qr-display');disp.innerHTML='';
   new QRCode(disp,{text:content,width:sz,height:sz,correctLevel:QRCode.CorrectLevel.H});
   showAdAfterResult('ad-qrcode-result');document.getElementById('qr-actions').style.display='flex';
+  trackCalcUsage('qrcode','cc-qrcode');
 }
 function dlQR(){const c=document.querySelector('#qr-display canvas');if(!c)return;const a=document.createElement('a');a.href=c.toDataURL('image/png');a.download='calculaprazo-qrcode.png';a.click();}
 function cpQR(){if(!qrContent)return;navigator.clipboard.writeText(qrContent).catch(()=>alert('Não foi possível copiar automaticamente.'));}
@@ -1242,7 +1454,7 @@ function buildCS(){
   if(document.getElementById('pw-am').checked)cs=cs.replace(/[0OlI1]/g,'');
   return cs||'abcdefghijklmnopqrstuvwxyz';
 }
-function genPW(){
+function _genPWCore(){
   const len=parseInt(document.getElementById('pw-len').value);
   const cs=buildCS();
   const arr=new Uint32Array(len);crypto.getRandomValues(arr);
@@ -1253,8 +1465,9 @@ function genPW(){
   document.getElementById('str-f').style.width=cfg.p+'%';document.getElementById('str-f').style.background=cfg.c;
   document.getElementById('str-l').textContent='Força: '+cfg.l;document.getElementById('str-l').style.color=cfg.c;
 }
+function genPW(){ _genPWCore(); }
 function cpPW(){const pw=document.getElementById('pw-val').textContent;if(pw==='Clique em Gerar →')return;navigator.clipboard.writeText(pw).then(()=>{const b=document.getElementById('pw-copy-btn');b.textContent='✅';setTimeout(()=>b.textContent='📋',1400);}).catch(()=>{});}
-genPW();
+_genPWCore();
 
 // ─── NÚMERO POR EXTENSO ────────────────────────────
 let extMode='num';
@@ -1333,7 +1546,7 @@ function calcExtenso(){
   }
   document.getElementById('ext-res-val').textContent=txt;
   res.classList.add('show');
-  showAdAfterResult('ad-extenso-result');
+  showAdAfterResult('ad-extenso-result');trackCalcUsage('extenso','cc-extenso');
 }
 function cpExt(){const t=document.getElementById('ext-res-val').textContent;if(t)navigator.clipboard.writeText(t).catch(()=>{});}
 
@@ -1360,7 +1573,7 @@ function calcIMC(){
   document.getElementById('imc-ptr').style.left=pct+'%';
   const msgEl=document.getElementById('imc-msg');msgEl.textContent=msg;msgEl.style.background=imc<25?'rgba(5,150,105,.07)':'rgba(220,38,38,.06)';msgEl.style.color=cor;msgEl.style.border=`1.5px solid ${imc<25?'rgba(5,150,105,.2)':'rgba(220,38,38,.15)'}`;msgEl.style.borderRadius='var(--r)';
   showAdAfterResult('ad-imc-after-result');
-  showAdAfterResult('ad-imc-result');document.getElementById('imc-res').style.display='block';
+  showAdAfterResult('ad-imc-result');document.getElementById('imc-res').style.display='block';trackCalcUsage('imc','cc-imc');
 }
 
 // ─── HERO MINI CALC ───────────────────────────────
@@ -1670,6 +1883,30 @@ const SEO = {
     kw:    'calculadora de IMC, calcular IMC, índice de massa corporal, IMC normal, IMC obesidade',
     schemaType: 'SoftwareApplication',
   },
+  intermitente: {
+    slug: 'calculadora-salario-intermitente',
+    title: 'Calculadora de Salário Intermitente (CLT) – Calcula Prazo',
+    desc:  'Calcule a remuneração do trabalho intermitente: salário-hora × horas trabalhadas, DSR, férias + 1/3, 13º proporcional, FGTS, INSS e IRRF. Confira se o valor pago está correto.',
+    h1:    'Calculadora de Salário Intermitente',
+    kw:    'calculadora salário intermitente, trabalho intermitente clt, dsr intermitente, como calcular salário intermitente',
+    schemaType: 'SoftwareApplication',
+  },
+  prescricao: {
+    slug: 'calculadora-de-prescricao',
+    title: 'Calculadora de Prescrição — Trabalhista, Cível e Tributária – Calcula Prazo',
+    desc:  'Calcule o prazo prescricional trabalhista (bienal/quinquenal), cível (CC) e tributário (CTN). Informe a data do fato gerador e veja o prazo-limite.',
+    h1:    'Calculadora de Prescrição',
+    kw:    'calculadora de prescrição, prescrição trabalhista, prescrição bienal quinquenal, prescrição cível, prescrição tributária',
+    schemaType: 'SoftwareApplication',
+  },
+  blog: {
+    slug: 'conteudo',
+    title: 'Conteúdo Jurídico e Trabalhista: Notícias, Jurisprudência e Orientações | Calcula Prazo',
+    desc:  'Notícias, jurisprudência do TST e TRTs, legislação, eSocial, FGTS Digital e orientações práticas de RH e folha de pagamento.',
+    h1:    'Conteúdo Jurídico e Trabalhista',
+    kw:    'notícias trabalhistas, jurisprudência tst, legislação trabalhista, conteúdo jurídico',
+    schemaType: 'CollectionPage',
+  },
   home: {
     slug: '',
     title: 'Calcula Prazo — Calculadoras Jurídicas e Conteúdo Trabalhista',
@@ -1709,6 +1946,16 @@ const SEO_FAQ = {
   imc: [
     {q:"O que é IMC?", a:"IMC (Índice de Massa Corporal) é uma medida que relaciona peso e altura para classificar o estado nutricional de um adulto, conforme critérios da OMS."},
     {q:"Qual é o IMC normal?", a:"Segundo a OMS: abaixo de 18,5 = abaixo do peso; 18,5–24,9 = normal; 25–29,9 = sobrepeso; 30–34,9 = obesidade grau I; 35–39,9 = obesidade grau II; acima de 40 = obesidade grau III."},
+  ],
+  intermitente: [
+    {q:"Como funciona o pagamento no trabalho intermitente?", a:"No contrato intermitente (art. 443, §3º CLT), o empregado é convocado para prestar serviços por período determinado e recebe o valor da hora ou dia trabalhado, mais o DSR, 13º, férias + 1/3 e FGTS proporcionais, calculados ao final de cada período de prestação de serviço."},
+    {q:"O trabalhador intermitente tem direito a DSR?", a:"Sim. O Descanso Semanal Remunerado é devido de forma proporcional aos dias trabalhados no período, calculado sobre a remuneração das convocações somada às demais parcelas."},
+    {q:"Como calcular o INSS do trabalhador intermitente?", a:"O INSS incide sobre a remuneração de cada convocação/período, aplicando a tabela progressiva mensal do INSS, da mesma forma que para os demais empregados CLT."},
+  ],
+  prescricao: [
+    {q:"Qual o prazo de prescrição trabalhista?", a:"Pelo art. 7º, XXIX da CF/88, o prazo é de 2 anos após o fim do contrato de trabalho (prescrição bienal) para reclamar créditos referentes aos últimos 5 anos (prescrição quinquenal)."},
+    {q:"Qual o prazo de prescrição civil geral?", a:"O Código Civil prevê prazo geral de 10 anos (art. 205), com prazos especiais menores para hipóteses específicas listadas no art. 206, como 3 anos para reparação civil."},
+    {q:"Qual o prazo de prescrição de crédito tributário?", a:"O art. 174 do CTN prevê 5 anos, contados da data da constituição definitiva do crédito tributário, para a Fazenda Pública promover a cobrança."},
   ],
 };
 

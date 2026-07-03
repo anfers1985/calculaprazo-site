@@ -227,15 +227,18 @@ function renderSidebarPosts(){
   }).join('');
 }
 
-function navGoTo(id){
+// navGoTo('blog', sec, cat) — navega de verdade para /conteudo (URL real, sem hash),
+// gravando o filtro de categoria desejado no sessionStorage para a página de
+// destino aplicar automaticamente (lida em blog.js/conteudo via 'cp_nav_filter').
+function navGoTo(id, sec, cat){
   if(id==='blog'){
-    document.querySelectorAll('.sec').forEach(function(s){s.classList.remove('active');});
-    var sb=document.getElementById('sec-blog');if(sb)sb.classList.add('active');
-    renderBlogSection();window.scrollTo(0,0);
-    try{history.replaceState(null,'','#conteudo');}catch(e){}
-    document.querySelectorAll('#hdr .hdr-nav>a, #hdr .nav-dropdown>a').forEach(function(a){a.classList.remove('on');});
-    var nc=document.getElementById('nav-conteudo');if(nc)nc.classList.add('on');
-  }else{goTo(id);}
+    try{
+      if(sec || cat) sessionStorage.setItem('cp_nav_filter', JSON.stringify({sec:sec||'', cat:cat||''}));
+    }catch(e){}
+    window.location.href = '/conteudo';
+    return;
+  }
+  goTo(id);
   document.querySelectorAll('.nav-dropdown').forEach(function(d){d.classList.remove('open');});
 }
 
@@ -363,8 +366,22 @@ function toggleSociais(e){
       });
   }
 
+  function applyPendingNavFilter(){
+    // Lê o filtro de categoria gravado pela navegação vinda de outra página
+    // (home ou posts do blog) via navGoTo('blog', sec, cat) e aplica assim
+    // que os posts terminarem de carregar.
+    try{
+      var raw = sessionStorage.getItem('cp_nav_filter');
+      if(!raw) return;
+      sessionStorage.removeItem('cp_nav_filter');
+      var f = JSON.parse(raw);
+      if(f.cat && f.sec){ filterBlogSub(f.cat, f.sec); }
+      else if(f.sec){ filterBlogSection(f.sec); }
+    }catch(ex){}
+  }
+
   function bootAll(){
-    loadBlogPosts();
+    loadBlogPosts().then(applyPendingNavFilter);
     loadYouTubeVideos();
     var hash=window.location.hash;
     if(hash==='#conteudo'||hash==='#blog'){
