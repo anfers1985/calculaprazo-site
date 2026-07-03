@@ -549,6 +549,7 @@ const STUDIO_HISTORY_KEY = 'cp_studio_history';
 // Páginas estáticas fixas do sitemap (fora do blog) — mantidas em sincronia manual
 const SITEMAP_STATIC_PAGES = [
   { loc: '/',                                  changefreq: 'daily',   priority: '1.0' },
+  { loc: '/conteudo',                          changefreq: 'daily',   priority: '0.8' },
   { loc: '/calculadora-de-prazo-processual',    changefreq: 'monthly', priority: '0.9' },
   { loc: '/calculadora-verbas-trabalhistas',    changefreq: 'monthly', priority: '0.9' },
   { loc: '/correcao-monetaria',                 changefreq: 'monthly', priority: '0.8' },
@@ -560,6 +561,10 @@ const SITEMAP_STATIC_PAGES = [
   { loc: '/validador-cpf-cnpj',                 changefreq: 'monthly', priority: '0.3' },
   { loc: '/numero-por-extenso',                 changefreq: 'monthly', priority: '0.3' },
   { loc: '/calculadora-imc',                    changefreq: 'monthly', priority: '0.3' },
+  { loc: '/calculadora-de-prescricao',          changefreq: 'monthly', priority: '0.5' },
+  { loc: '/calculadora-salario-intermitente',   changefreq: 'monthly', priority: '0.5' },
+  { loc: '/gerador-de-qr-code',                 changefreq: 'monthly', priority: '0.3' },
+  { loc: '/gerador-de-senhas',                  changefreq: 'monthly', priority: '0.3' },
   { loc: '/sobre',                              changefreq: 'monthly', priority: '0.6' },
   { loc: '/contato',                            changefreq: 'monthly', priority: '0.5' },
   { loc: '/privacidade',                        changefreq: 'yearly',  priority: '0.3' },
@@ -1786,12 +1791,37 @@ async function publicarNoSite() {
       relatedHTML = `<h3>Artigos Relacionados</h3><div class="related-grid">${cards}</div>`;
     }
 
-    const postHTMLFinal = relatedHTML
+    let postHTMLFinal = relatedHTML
       ? postHTML.replace('<div class="related-section" id="related-section"></div>',
           `<div class="related-section" id="related-section">${relatedHTML}</div>`)
       : postHTML;
 
-    // 3. Enviar HTML com relacionados estáticos
+    // Injetar navegação Anterior/Próximo estática (mesma ordem cronológica usada pelo loadPrevNext() no client)
+    const pnList = [...postsAtuais, {
+      id: post.id,
+      title: post.title,
+      category_label: catLabelsMap[post.category] || post.category,
+      date: post.date
+    }].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+    const pnIdx  = pnList.findIndex(p => p.id === post.id);
+    const pnPrev = pnIdx < pnList.length - 1 ? pnList[pnIdx + 1] : null; // mais antigo
+    const pnNext = pnIdx > 0 ? pnList[pnIdx - 1] : null;                 // mais recente
+
+    let pnHTML = '';
+    pnHTML += pnPrev
+      ? `<a class="pn-btn pn-prev" href="/blog/${pnPrev.id}.html"><span class="pn-arrow">‹</span><div><div class="pn-label">Artigo anterior</div><div class="pn-title">${pnPrev.title}</div>${pnPrev.category_label ? `<div class="pn-cat">${pnPrev.category_label}</div>` : ''}</div></a>`
+      : `<div class="pn-btn" style="opacity:.35;pointer-events:none;"><span class="pn-arrow">‹</span><div><div class="pn-label">Artigo anterior</div><div class="pn-title">Início da lista</div></div></div>`;
+    pnHTML += pnNext
+      ? `<a class="pn-btn pn-next" href="/blog/${pnNext.id}.html"><div><div class="pn-label">Próximo artigo</div><div class="pn-title">${pnNext.title}</div>${pnNext.category_label ? `<div class="pn-cat">${pnNext.category_label}</div>` : ''}</div><span class="pn-arrow">›</span></a>`
+      : `<div class="pn-btn pn-next" style="opacity:.35;pointer-events:none;"><div><div class="pn-label">Próximo artigo</div><div class="pn-title">Fim da lista</div></div><span class="pn-arrow">›</span></div>`;
+
+    postHTMLFinal = postHTMLFinal.replace(
+      '<nav class="pn-nav" id="pn-nav" aria-label="Navegação entre artigos"></nav>',
+      `<nav class="pn-nav" id="pn-nav" aria-label="Navegação entre artigos">${pnHTML}</nav>`
+    );
+
+    // 3. Enviar HTML com relacionados e navegação estáticos
     toast('Enviando arquivo HTML...', 'ok');
     await githubUpsertFile(`blog/${post.id}.html`, postHTMLFinal, `publicacao: ${post.title}`, pat);
 
