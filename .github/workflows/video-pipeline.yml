@@ -1,0 +1,85 @@
+name: Video Pipeline
+
+on:
+  push:
+    paths:
+      - 'data/posts.json'
+  workflow_dispatch: {}  # permite rodar manualmente (ex: reprocessar jobs com erro)
+  schedule:
+    - cron: '0 * * * *'  # roda a cada hora, processando o que estiver pendente na fila
+
+jobs:
+  detectar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm install @supabase/supabase-js
+      - run: node scripts/01-detectar-post.mjs
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+
+  listar:
+    needs: detectar
+    runs-on: ubuntu-latest
+    outputs:
+      ids: ${{ steps.listar.outputs.ids }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm install @supabase/supabase-js
+      - id: listar
+        run: node scripts/listar-pendentes.mjs >> "$GITHUB_OUTPUT"
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+
+  processar:
+    needs: listar
+    if: ${{ needs.listar.outputs.ids != '[]' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        job_id: ${{ fromJson(needs.listar.outputs.ids) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+
+      - name: Instalar dependências Node
+        run: |
+          npm install @supabase/supabase-js googleapis playwright
+          npx playwright install --with-deps chromium
+          cd remotion && npm install
+
+      - name: Instalar dependências Python
+        run: pip install piper-tts supabase requests
+
+      - name: Instalar ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Processar job ${{ matrix.job_id }}
+        run: node scripts/processar-job.mjs "${{ matrix.job_id }}"
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          WORKER_SECRET: ${{ secrets.WORKER_SECRET }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          AI_MODEL: ${{ secrets.AI_MODEL }}  # opcional — nome do modelo Gemini, se seu Worker exigir
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+
+      - name: Upload artefatos para depuração (só se falhar)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-${{ matrix.job_id }}
+          path: output/

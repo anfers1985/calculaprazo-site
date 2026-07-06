@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family: 'Outfit', 'Segoe UI', sans-serif; }
+  body { width:1280px; height:720px; overflow:hidden; }
+  .bg {
+    width:100%; height:100%;
+    background: linear-gradient(135deg, #0A1628 0%, #0D2154 100%);
+    display:flex; flex-direction:column; justify-content:center;
+    padding:80px; position:relative;
+  }
+  .logo { position:absolute; top:40px; left:60px; font-size:28px; font-weight:700; color:#fff; }
+  .logo span { color:#60A5FA; }
+  .titulo {
+    font-family: 'DM Serif Display', serif;
+    font-size:64px; color:#fff; line-height:1.15; max-width:1000px;
+  }
+  .destaque { color:#F4C542; }
+  .subtitulo { font-size:28px; color:#93C5FD; margin-top:24px; }
+  .rodape { position:absolute; bottom:40px; left:60px; font-size:20px; color:rgba(255,255,255,.6); }
+</style>
+</head>
+<body>
+  <div class="bg">
+    <div class="logo">Calcula<span>Prazo</span></div>
+    <div class="titulo" id="titulo"><!-- preenchido dinamicamente --></div>
+    <div class="subtitulo" id="subtitulo"><!-- preenchido dinamicamente --></div>
+    <div class="rodape">calculaprazo.com.br</div>
+  </div>
+</body>
+</html>
