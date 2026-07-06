@@ -1187,7 +1187,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
       <!-- Article content -->
       <article class="article-body">
-        <article class="article-body">
 
   <div class="resumo-rapido">
     <strong>Resumo rápido</strong>
@@ -1212,6 +1211,8 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <p>O objetivo é garantir aos empregados domésticos o direito ao trabalho decente, à dignidade, à segurança e à saúde durante o exercício de suas atividades.</p>
 
   <h2>Novas responsabilidades do poder público</h2>
+<p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/pec-1-2026-contribuicao-previdenciaria-faturamento.html" style="color:#2563EB;font-weight:600;">PEC 1/2026 propõe nova contribuição previdenciária sobre faturamento</a></p>
+
 
   <p>A Lei 15.455 também determina que o poder público adote políticas específicas para fortalecer a proteção da categoria. Entre as medidas previstas estão:</p>
 
@@ -1251,7 +1252,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <p>Confira a íntegra da legislação no Portal da Legislação do Planalto: <a href="https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2026/lei/l15455.htm" target="_blank" rel="noopener noreferrer">Lei nº 15.455/2026</a>.</p>
 
 </article>
-      </article>
 
       <!-- Compartilhamento -->
       <div style="margin:28px 0 20px;padding:14px 18px;background:var(--card);border:1.5px solid var(--brd);border-radius:14px;">
@@ -1557,11 +1557,13 @@ var THIS_TAGS = [];
 async function loadRelated() {
   let posts = [];
   try {
-    const local = localStorage.getItem('cp_posts');
-    if (local) posts = JSON.parse(local);
-    else {
+    const cached = JSON.parse(localStorage.getItem('cp_posts_cache') || 'null');
+    if (cached && cached.ts && (Date.now() - cached.ts) < 900000 && Array.isArray(cached.data)) {
+      posts = cached.data;
+    } else {
       const r = await fetch('../data/posts.json');
       if (r.ok) posts = await r.json();
+      try { localStorage.setItem('cp_posts_cache', JSON.stringify({ data: posts, ts: Date.now() })); } catch(e){}
     }
   } catch(e) {}
 
@@ -1632,12 +1634,13 @@ if (document.readyState !== 'loading') loadRelated();
   async function loadPrevNext() {
     var posts = [];
     try {
-      var local = localStorage.getItem('cp_posts');
-      if (local) posts = JSON.parse(local);
-      else {
+      var cached = JSON.parse(localStorage.getItem('cp_posts_cache') || 'null');
+      if (cached && cached.ts && (Date.now() - cached.ts) < 900000 && Array.isArray(cached.data)) {
+        posts = cached.data;
+      } else {
         var r = await fetch('../data/posts.json');
         if (r.ok) posts = await r.json();
-        try { localStorage.setItem('cp_posts', JSON.stringify(posts)); } catch(e){}
+        try { localStorage.setItem('cp_posts_cache', JSON.stringify({ data: posts, ts: Date.now() })); } catch(e){}
       }
     } catch(e) {}
     if (!posts.length) return;

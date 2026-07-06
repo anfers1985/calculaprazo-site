@@ -1187,7 +1187,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
       <!-- Article content -->
       <article class="article-body">
-        <article class="article-body">
 
   <div class="resumo-rapido">
     <strong>Resumo rápido</strong>
@@ -1214,6 +1213,8 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <p>Mesmo quando estados ou municípios decretam ponto facultativo, essa medida normalmente alcança apenas órgãos da administração pública, não sendo obrigatória para empresas privadas.</p>
 
   <h2>Empresa pode definir regras internas</h2>
+<p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/escalas-6x1-5x2-4x3-diferencas-impactos-jornada-trabalho.html" style="color:#2563EB;font-weight:600;">Escalas 6x1, 5x2 e 4x3: diferenças e impactos no trabalho</a></p>
+
 
   <p>Cada organização possui liberdade para adotar a solução mais adequada à sua realidade operacional. Entre as alternativas mais utilizadas estão a antecipação do encerramento do expediente, ajustes de jornada, trabalho remoto, instalação de telões no ambiente de trabalho ou liberação durante o horário da partida.</p>
 
@@ -1260,7 +1261,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <p>As informações desta matéria foram elaboradas com base na Consolidação das Leis do Trabalho (CLT) e na legislação trabalhista vigente.</p>
 
 </article>
-      </article>
 
       <!-- Compartilhamento -->
       <div style="margin:28px 0 20px;padding:14px 18px;background:var(--card);border:1.5px solid var(--brd);border-radius:14px;">
@@ -1566,11 +1566,13 @@ var THIS_TAGS = [];
 async function loadRelated() {
   let posts = [];
   try {
-    const local = localStorage.getItem('cp_posts');
-    if (local) posts = JSON.parse(local);
-    else {
+    const cached = JSON.parse(localStorage.getItem('cp_posts_cache') || 'null');
+    if (cached && cached.ts && (Date.now() - cached.ts) < 900000 && Array.isArray(cached.data)) {
+      posts = cached.data;
+    } else {
       const r = await fetch('../data/posts.json');
       if (r.ok) posts = await r.json();
+      try { localStorage.setItem('cp_posts_cache', JSON.stringify({ data: posts, ts: Date.now() })); } catch(e){}
     }
   } catch(e) {}
 
@@ -1641,12 +1643,13 @@ if (document.readyState !== 'loading') loadRelated();
   async function loadPrevNext() {
     var posts = [];
     try {
-      var local = localStorage.getItem('cp_posts');
-      if (local) posts = JSON.parse(local);
-      else {
+      var cached = JSON.parse(localStorage.getItem('cp_posts_cache') || 'null');
+      if (cached && cached.ts && (Date.now() - cached.ts) < 900000 && Array.isArray(cached.data)) {
+        posts = cached.data;
+      } else {
         var r = await fetch('../data/posts.json');
         if (r.ok) posts = await r.json();
-        try { localStorage.setItem('cp_posts', JSON.stringify(posts)); } catch(e){}
+        try { localStorage.setItem('cp_posts_cache', JSON.stringify({ data: posts, ts: Date.now() })); } catch(e){}
       }
     } catch(e) {}
     if (!posts.length) return;

@@ -1187,7 +1187,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
       <!-- Article content -->
       <article class="article-body">
-        <article class="article-body">
 
   <div class="resumo-rapido">
     <strong>Resumo rápido</strong>
@@ -1212,6 +1211,8 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <p>Segundo a servidora, a decisão desconsiderou o direito adquirido e utilizou como fundamento alterações promovidas pela Emenda Constitucional nº 103/2019, que ampliou a autonomia dos entes federativos para disciplinar seus regimes próprios de previdência.</p>
 
   <h2>STF rejeitou a chamada constitucionalidade superveniente</h2>
+<p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/stf-encerra-revisao-vida-toda-inss.html" style="color:#2563EB;font-weight:600;">STF encerra revisão da vida toda e mantém regra do INSS</a></p>
+
 
   <p>Ao analisar o caso, o presidente do STF, ministro Edson Fachin, destacou que a Corte já possui entendimento consolidado no sentido de que uma lei incompatível com a Constituição no momento em que foi editada não pode se tornar válida apenas porque houve alteração posterior do texto constitucional.</p>
 
@@ -1244,7 +1245,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <p><strong>Tema de Repercussão Geral:</strong> Tema 1.462 – RE 1.558.247.</p>
 
 </article>
-      </article>
 
       <!-- Compartilhamento -->
       <div style="margin:28px 0 20px;padding:14px 18px;background:var(--card);border:1.5px solid var(--brd);border-radius:14px;">
@@ -1550,11 +1550,13 @@ var THIS_TAGS = [];
 async function loadRelated() {
   let posts = [];
   try {
-    const local = localStorage.getItem('cp_posts');
-    if (local) posts = JSON.parse(local);
-    else {
+    const cached = JSON.parse(localStorage.getItem('cp_posts_cache') || 'null');
+    if (cached && cached.ts && (Date.now() - cached.ts) < 900000 && Array.isArray(cached.data)) {
+      posts = cached.data;
+    } else {
       const r = await fetch('../data/posts.json');
       if (r.ok) posts = await r.json();
+      try { localStorage.setItem('cp_posts_cache', JSON.stringify({ data: posts, ts: Date.now() })); } catch(e){}
     }
   } catch(e) {}
 
@@ -1625,12 +1627,13 @@ if (document.readyState !== 'loading') loadRelated();
   async function loadPrevNext() {
     var posts = [];
     try {
-      var local = localStorage.getItem('cp_posts');
-      if (local) posts = JSON.parse(local);
-      else {
+      var cached = JSON.parse(localStorage.getItem('cp_posts_cache') || 'null');
+      if (cached && cached.ts && (Date.now() - cached.ts) < 900000 && Array.isArray(cached.data)) {
+        posts = cached.data;
+      } else {
         var r = await fetch('../data/posts.json');
         if (r.ok) posts = await r.json();
-        try { localStorage.setItem('cp_posts', JSON.stringify(posts)); } catch(e){}
+        try { localStorage.setItem('cp_posts_cache', JSON.stringify({ data: posts, ts: Date.now() })); } catch(e){}
       }
     } catch(e) {}
     if (!posts.length) return;

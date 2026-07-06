@@ -1187,8 +1187,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
       <!-- Article content -->
       <article class="article-body">
-        ```html
-<article class="article-body">
 
   <div class="resumo-rapido">
     <strong>Resumo rápido</strong>
@@ -1215,6 +1213,8 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <p>Além disso, o alvará poderá estabelecer condições específicas para a atividade, incluindo limitação de horários, duração das gravações, períodos obrigatórios de descanso, restrições sobre determinados temas e medidas destinadas à preservação da imagem, da privacidade e da dignidade da criança ou do adolescente.</p>
 
   <h2>Participação do Ministério Público e validade da autorização</h2>
+<p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/mte-orientacoes-consignado-rescisao-credito-trabalhador.html" style="color:#2563EB;font-weight:600;">MTE orienta empresas sobre desconto do consignado em rescisões até 22 de julho</a></p>
+
 
   <p>A resolução determina que o Ministério Público deverá atuar obrigatoriamente em todos os processos de autorização judicial envolvendo a participação de menores na produção de conteúdo digital.</p>
 
@@ -1253,8 +1253,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <p>As informações desta matéria foram divulgadas pela Agência Gov.</p>
 
 </article>
-```
-      </article>
 
       <!-- Compartilhamento -->
       <div style="margin:28px 0 20px;padding:14px 18px;background:var(--card);border:1.5px solid var(--brd);border-radius:14px;">
@@ -1560,11 +1558,13 @@ var THIS_TAGS = [];
 async function loadRelated() {
   let posts = [];
   try {
-    const local = localStorage.getItem('cp_posts');
-    if (local) posts = JSON.parse(local);
-    else {
+    const cached = JSON.parse(localStorage.getItem('cp_posts_cache') || 'null');
+    if (cached && cached.ts && (Date.now() - cached.ts) < 900000 && Array.isArray(cached.data)) {
+      posts = cached.data;
+    } else {
       const r = await fetch('../data/posts.json');
       if (r.ok) posts = await r.json();
+      try { localStorage.setItem('cp_posts_cache', JSON.stringify({ data: posts, ts: Date.now() })); } catch(e){}
     }
   } catch(e) {}
 
@@ -1635,12 +1635,13 @@ if (document.readyState !== 'loading') loadRelated();
   async function loadPrevNext() {
     var posts = [];
     try {
-      var local = localStorage.getItem('cp_posts');
-      if (local) posts = JSON.parse(local);
-      else {
+      var cached = JSON.parse(localStorage.getItem('cp_posts_cache') || 'null');
+      if (cached && cached.ts && (Date.now() - cached.ts) < 900000 && Array.isArray(cached.data)) {
+        posts = cached.data;
+      } else {
         var r = await fetch('../data/posts.json');
         if (r.ok) posts = await r.json();
-        try { localStorage.setItem('cp_posts', JSON.stringify(posts)); } catch(e){}
+        try { localStorage.setItem('cp_posts_cache', JSON.stringify({ data: posts, ts: Date.now() })); } catch(e){}
       }
     } catch(e) {}
     if (!posts.length) return;

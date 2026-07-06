@@ -1187,7 +1187,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
       <!-- Article content -->
       <article class="article-body">
-        <article class="article-body">
 
   <div class="resumo-rapido">
     <strong>Resumo rápido</strong>
@@ -1212,6 +1211,8 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <p>Durante a investigação, uma ex-coordenadora de recursos humanos afirmou que mulheres se candidatavam às vagas de chefia, mas eram sistematicamente preteridas. Segundo seu depoimento, existia uma cultura interna que desencorajava a contratação de mulheres para funções de comando, mesmo quando havia dificuldades para preencher as vagas.</p>
 
   <h2>Empresa alegou adoção de critérios meritocráticos</h2>
+<p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/toyota-condenada-xenofobia-lider-baiano-assedio-moral.html" style="color:#2563EB;font-weight:600;">Toyota é condenada por xenofobia contra líder baiano no trabalho</a></p>
+
 
   <p>Em sua defesa, a indústria sustentou que seus gerentes alcançaram os cargos por mérito e evolução profissional. Também argumentou que outras investigações conduzidas pelo MPT em diferentes unidades da empresa não teriam constatado irregularidades semelhantes.</p>
 
@@ -1250,7 +1251,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <p><strong>Processo:</strong> RR-151-04.2022.5.09.0653.</p>
 
 </article>
-      </article>
 
       <!-- Compartilhamento -->
       <div style="margin:28px 0 20px;padding:14px 18px;background:var(--card);border:1.5px solid var(--brd);border-radius:14px;">
@@ -1556,11 +1556,13 @@ var THIS_TAGS = [];
 async function loadRelated() {
   let posts = [];
   try {
-    const local = localStorage.getItem('cp_posts');
-    if (local) posts = JSON.parse(local);
-    else {
+    const cached = JSON.parse(localStorage.getItem('cp_posts_cache') || 'null');
+    if (cached && cached.ts && (Date.now() - cached.ts) < 900000 && Array.isArray(cached.data)) {
+      posts = cached.data;
+    } else {
       const r = await fetch('../data/posts.json');
       if (r.ok) posts = await r.json();
+      try { localStorage.setItem('cp_posts_cache', JSON.stringify({ data: posts, ts: Date.now() })); } catch(e){}
     }
   } catch(e) {}
 
@@ -1631,12 +1633,13 @@ if (document.readyState !== 'loading') loadRelated();
   async function loadPrevNext() {
     var posts = [];
     try {
-      var local = localStorage.getItem('cp_posts');
-      if (local) posts = JSON.parse(local);
-      else {
+      var cached = JSON.parse(localStorage.getItem('cp_posts_cache') || 'null');
+      if (cached && cached.ts && (Date.now() - cached.ts) < 900000 && Array.isArray(cached.data)) {
+        posts = cached.data;
+      } else {
         var r = await fetch('../data/posts.json');
         if (r.ok) posts = await r.json();
-        try { localStorage.setItem('cp_posts', JSON.stringify(posts)); } catch(e){}
+        try { localStorage.setItem('cp_posts_cache', JSON.stringify({ data: posts, ts: Date.now() })); } catch(e){}
       }
     } catch(e) {}
     if (!posts.length) return;

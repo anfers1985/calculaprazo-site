@@ -983,6 +983,127 @@ async function githubUpsertFile(path, content, commitMsg, pat) {
 }
 
 // ════════════════════════════════════════
+// LINK INTERNO DENTRO DO CORPO DO ARTIGO
+// ════════════════════════════════════════
+// Objetivo: aumentar link interno de forma confiável — nunca inventando URL.
+// O link só existe se o post de destino já existe em allPosts (vindo de
+// posts.json), então é IMPOSSÍVEL gerar um link quebrado por este mecanismo.
+function pickRelatedForInlineLinks(post, allPosts, max) {
+  const candidates = (allPosts || []).filter(p => p && p.id && p.id !== post.id);
+  const postTags = new Set((post.tags || []).map(t => String(t).toLowerCase()));
+  const postParentCat = (post.category || '').split('-')[0];
+
+  const scored = candidates.map(p => {
+    let score = 0;
+    if (p.category === post.category) score += 3;
+    else if (postParentCat && (p.category || '').split('-')[0] === postParentCat) score += 1;
+    const pTags = new Set((p.tags || []).map(t => String(t).toLowerCase()));
+    let overlap = 0;
+    pTags.forEach(t => { if (postTags.has(t)) overlap++; });
+    score += overlap * 2;
+    return { p, score };
+  }).filter(x => x.score > 0)
+    .sort((a, b) => b.score - a.score || (b.p.date || '').localeCompare(a.p.date || ''));
+
+  return scored.slice(0, max).map(x => x.p);
+}
+
+function buildLeiaTambemHTML(p) {
+  return `\n<p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/${p.id}.html" style="color:#2563EB;font-weight:600;">${p.title}</a></p>\n`;
+}
+
+// Insere UM link "Leia também" dentro do corpo, logo após o 2º <h2> (ou o 1º,
+// se só houver um; ou no fim do conteúdo, se não houver nenhum <h2>).
+// Roda DEPOIS da sanitização e ANTES do conteúdo entrar no template — por
+// isso nunca aumenta o risco de quebrar tag, já que só insere um <p> novo
+// entre blocos existentes, nunca no meio de uma tag.
+function injectInlineRelatedLinks(html, post, allPosts) {
+  const related = pickRelatedForInlineLinks(post, allPosts, 1);
+  if (!related.length) return html; // sem candidato relevante — não força link fraco
+
+  const h2Regex = /<h2[^>]*>[\s\S]*?<\/h2>/gi;
+  const matches = [...html.matchAll(h2Regex)];
+
+  if (matches.length === 0) {
+    return html.replace(/\s*$/, '') + '\n' + buildLeiaTambemHTML(related[0]);
+  }
+  const anchor = matches.length >= 2 ? matches[1] : matches[0];
+  const insertPos = anchor.index + anchor[0].length;
+  return html.slice(0, insertPos) + buildLeiaTambemHTML(related[0]) + html.slice(insertPos);
+}
+
+// ════════════════════════════════════════
+// SANITIZAÇÃO DO CONTEÚDO GERADO POR IA
+// ════════════════════════════════════════
+// A IA que gera o conteúdo do artigo às vezes deixa resíduos de markdown
+// (```html ... ```) ou já embrulha o próprio conteúdo num <article class="article-body">
+// redundante — o que duplicava a tag quando o template adicionava o seu próprio wrapper.
+// Isso sempre roda antes de qualquer publicação para blindar contra os dois casos.
+function sanitizeArticleContent(raw) {
+  let html = (raw || '').trim();
+  html = html.replace(/^```(?:html)?\s*\n?/i, '').replace(/\n?```\s*$/, '').trim();
+  const wrapperMatch = html.match(/^<article class="article-body">([\s\S]*)<\/article>\s*$/i);
+  if (wrapperMatch) html = wrapperMatch[1].trim();
+  return html;
+}
+
+// ════════════════════════════════════════
+// NAVEGAÇÃO ANTERIOR/PRÓXIMO — geração e sincronização entre posts
+// ════════════════════════════════════════
+function buildPnPrevSlot(p) {
+  return p
+    ? `<a class="pn-btn pn-prev" href="/blog/${p.id}.html"><span class="pn-arrow">‹</span><div><div class="pn-label">Artigo anterior</div><div class="pn-title">${p.title}</div>${p.category_label ? `<div class="pn-cat">${p.category_label}</div>` : ''}</div></a>`
+    : `<div class="pn-btn" style="opacity:.35;pointer-events:none;"><span class="pn-arrow">‹</span><div><div class="pn-label">Artigo anterior</div><div class="pn-title">Início da lista</div></div></div>`;
+}
+function buildPnNextSlot(p) {
+  return p
+    ? `<a class="pn-btn pn-next" href="/blog/${p.id}.html"><div><div class="pn-label">Próximo artigo</div><div class="pn-title">${p.title}</div>${p.category_label ? `<div class="pn-cat">${p.category_label}</div>` : ''}</div><span class="pn-arrow">›</span></a>`
+    : `<div class="pn-btn pn-next" style="opacity:.35;pointer-events:none;"><div><div class="pn-label">Próximo artigo</div><div class="pn-title">Fim da lista</div></div><span class="pn-arrow">›</span></div>`;
+}
+
+// Atualiza o nav estático (Anterior/Próximo) de UM post vizinho já publicado,
+// para que ele aponte para o post recém-publicado. Necessário porque publicar
+// um post novo pode deixar o link estático do vizinho desatualizado (ex: o post
+// que era "o mais recente" ficava travado em "Fim da lista" para sempre).
+// side: 'next' -> atualiza o slot "Próximo artigo" do vizinho (usado quando o vizinho é cronologicamente mais antigo)
+// side: 'prev' -> atualiza o slot "Artigo anterior" do vizinho (usado quando o vizinho é cronologicamente mais novo)
+// Falha aqui nunca deve interromper a publicação principal — por isso sempre retorna bool e não lança erro.
+async function atualizarVizinhoPN(neighborId, side, newPostRef, pat) {
+  const path = `blog/${neighborId}.html`;
+  try {
+    const rj = await fetch(
+      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}?ref=${GITHUB_BRANCH}`,
+      { headers: { 'Authorization': `token ${pat}`, 'Accept': 'application/vnd.github.v3+json' } }
+    );
+    if (!rj.ok) return false;
+    const dj = await rj.json();
+    const html = decodeURIComponent(escape(atob(dj.content.replace(/\s/g, ''))));
+
+    const navMatch = html.match(/<nav class="pn-nav" id="pn-nav" aria-label="Navegação entre artigos">([\s\S]*?)<\/nav>/);
+    if (!navMatch) return false; // formato inesperado nesse arquivo — não mexe, evita corromper
+
+    const navInner  = navMatch[1];
+    const splitIdx  = navInner.search(/<(?:a class="pn-btn pn-next"|div class="pn-btn pn-next")/);
+    if (splitIdx < 0) return false;
+
+    const prevBlock = navInner.slice(0, splitIdx);
+    const nextBlock = navInner.slice(splitIdx);
+    const newPrevBlock = side === 'prev' ? buildPnPrevSlot(newPostRef) : prevBlock;
+    const newNextBlock = side === 'next' ? buildPnNextSlot(newPostRef) : nextBlock;
+    const newNavInner  = newPrevBlock + newNextBlock;
+
+    if (newNavInner === navInner) return true; // já estava correto, nada a fazer
+
+    const newHTML = html.replace(navMatch[0], `<nav class="pn-nav" id="pn-nav" aria-label="Navegação entre artigos">${newNavInner}</nav>`);
+    await githubUpsertFile(path, newHTML, `nav: sincronizar link com ${newPostRef.title}`, pat);
+    return true;
+  } catch (e) {
+    console.warn('[atualizarVizinhoPN] falha ao sincronizar', neighborId, e);
+    return false;
+  }
+}
+
+// ════════════════════════════════════════
 // SITEMAP — geração automática
 // ════════════════════════════════════════
 function xmlEscape(str){
@@ -1699,6 +1820,21 @@ async function publicarNoSite() {
   const updatedAt = updatedInput && updatedInput !== postDate ? updatedInput : postDate;
   const post = { id: slug, title, category: cat, excerpt, image, imageCaption: caption, date: postDate, updatedAt, content, tags };
 
+    // 0. Buscar posts.json ANTES de montar o HTML — necessário pro link interno
+    // dentro do corpo do artigo (buildLeiaTambemHTML só usa posts que realmente existem).
+    toast('Buscando posts existentes...', 'ok');
+    let postsParaLinks = [];
+    try {
+      const rjLinks = await fetch(
+        `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/data/posts.json?ref=${GITHUB_BRANCH}`,
+        { headers: { 'Authorization': `token ${pat}`, 'Accept': 'application/vnd.github.v3+json' } }
+      );
+      if (rjLinks.ok) {
+        const djLinks = await rjLinks.json();
+        postsParaLinks = JSON.parse(decodeURIComponent(escape(atob(djLinks.content.replace(/\s/g, '')))));
+      }
+    } catch (e) { postsParaLinks = []; }
+
     // 1. Gerar HTML do post
     toast('Gerando HTML do post...', 'ok');
     let template = '';
@@ -1726,7 +1862,7 @@ async function publicarNoSite() {
 
     // Imagem de capa
     const coverHTML = post.image
-      ? `<div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;"><img src="${post.image}" alt="${post.title}" style="width:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>`
+      ? `<div style="margin-bottom:${post.imageCaption ? '6px' : '24px'};border-radius:12px;overflow:hidden;max-height:380px;"><img src="${post.image}" alt="${post.title}" style="width:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>${post.imageCaption ? `<p style="font-size:.75rem;color:var(--txt-s);margin:0 0 24px;">${post.imageCaption}</p>` : ''}`
       : '';
     const ogImageUrl  = post.image || 'https://calculaprazo.com.br/og-image.jpg';
     const ogImageTag  = `<meta property="og:image" content="${ogImageUrl}">`;
@@ -1747,7 +1883,7 @@ async function publicarNoSite() {
       .replace(/\{\{UPDATED_LINE\}\}/g,   post.updatedAt && post.updatedAt !== post.date
         ? `<div style="margin-top:4px;font-size:.78rem;color:rgba(255,255,255,.55);">📝 <strong>Atualizado em:</strong> ${new Date(post.updatedAt + 'T12:00:00').toLocaleDateString('pt-BR', {day:'numeric', month:'long', year:'numeric'})}</div>`
         : '')
-      .replace(/\{\{CONTENT\}\}/g,        post.content)
+      .replace(/\{\{CONTENT\}\}/g,        injectInlineRelatedLinks(sanitizeArticleContent(post.content), post, postsParaLinks))
       .replace(/\{\{TAGS_BADGES\}\}/g,    tagsBadgesHTML)
       .replace(/\{\{TAGS_JSON\}\}/g,      tagsJSON)
       .replace(/\{\{OG_IMAGE\}\}/g,       ogImageTag)
@@ -1808,13 +1944,7 @@ async function publicarNoSite() {
     const pnPrev = pnIdx < pnList.length - 1 ? pnList[pnIdx + 1] : null; // mais antigo
     const pnNext = pnIdx > 0 ? pnList[pnIdx - 1] : null;                 // mais recente
 
-    let pnHTML = '';
-    pnHTML += pnPrev
-      ? `<a class="pn-btn pn-prev" href="/blog/${pnPrev.id}.html"><span class="pn-arrow">‹</span><div><div class="pn-label">Artigo anterior</div><div class="pn-title">${pnPrev.title}</div>${pnPrev.category_label ? `<div class="pn-cat">${pnPrev.category_label}</div>` : ''}</div></a>`
-      : `<div class="pn-btn" style="opacity:.35;pointer-events:none;"><span class="pn-arrow">‹</span><div><div class="pn-label">Artigo anterior</div><div class="pn-title">Início da lista</div></div></div>`;
-    pnHTML += pnNext
-      ? `<a class="pn-btn pn-next" href="/blog/${pnNext.id}.html"><div><div class="pn-label">Próximo artigo</div><div class="pn-title">${pnNext.title}</div>${pnNext.category_label ? `<div class="pn-cat">${pnNext.category_label}</div>` : ''}</div><span class="pn-arrow">›</span></a>`
-      : `<div class="pn-btn pn-next" style="opacity:.35;pointer-events:none;"><div><div class="pn-label">Próximo artigo</div><div class="pn-title">Fim da lista</div></div><span class="pn-arrow">›</span></div>`;
+    const pnHTML = buildPnPrevSlot(pnPrev) + buildPnNextSlot(pnNext);
 
     postHTMLFinal = postHTMLFinal.replace(
       '<nav class="pn-nav" id="pn-nav" aria-label="Navegação entre artigos"></nav>',
@@ -1824,6 +1954,20 @@ async function publicarNoSite() {
     // 3. Enviar HTML com relacionados e navegação estáticos
     toast('Enviando arquivo HTML...', 'ok');
     await githubUpsertFile(`blog/${post.id}.html`, postHTMLFinal, `publicacao: ${post.title}`, pat);
+
+    // 3.1 Sincronizar os vizinhos: sem isso, o post que atualmente aponta para
+    // "Fim da lista" (ou "Início da lista") ficaria com esse link estático
+    // errado para sempre, mesmo depois deste post novo ser publicado. Isso não
+    // impede a publicação principal caso falhe (ex: vizinho com formato antigo).
+    const newPostRef = { id: post.id, title: post.title, category_label: catLabelsMap[post.category] || post.category };
+    if (pnPrev) {
+      toast('Sincronizando link no artigo anterior...', 'ok');
+      await atualizarVizinhoPN(pnPrev.id, 'next', newPostRef, pat);
+    }
+    if (pnNext) {
+      toast('Sincronizando link no artigo seguinte...', 'ok');
+      await atualizarVizinhoPN(pnNext.id, 'prev', newPostRef, pat);
+    }
 
     // 4. Atualizar posts.json
     toast('Atualizando posts.json...', 'ok');
@@ -1835,6 +1979,7 @@ async function publicarNoSite() {
       category_label: catLabelsMap[post.category] || post.category,
       excerpt: post.excerpt,
       image: post.image || '',
+      imageCaption: post.imageCaption || '',
       date: post.date,
       updatedAt: post.updatedAt || post.date,
       tags: post.tags || []
@@ -1917,7 +2062,7 @@ async function baixarHTML() {
     ).join('');
 
     const coverHTML = image
-      ? `<div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;"><img src="${image}" alt="${title}" style="width:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display=\'none\'"></div>`
+      ? `<div style="margin-bottom:${caption ? '6px' : '24px'};border-radius:12px;overflow:hidden;max-height:380px;"><img src="${image}" alt="${title}" style="width:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display=\'none\'"></div>${caption ? `<p style="font-size:.75rem;color:var(--txt-s);margin:0 0 24px;">${caption}</p>` : ''}`
       : '';
     const ogImageUrlLocal = image || 'https://calculaprazo.com.br/og-image.jpg';
     const updatedLineBaixar = updatedAtRepost
@@ -1935,7 +2080,7 @@ async function baixarHTML() {
       .replace(/\{\{UPDATED_DATE\}\}/g,   updatedAtRepost || postDateRepost)
       .replace(/\{\{UPDATED_DATE_BR\}\}/g, updatedAtRepost ? new Date(updatedAtRepost+'T12:00:00').toLocaleDateString('pt-BR',{day:'numeric',month:'long',year:'numeric'}) : dateBR)
       .replace(/\{\{UPDATED_LINE\}\}/g,   updatedLineBaixar)
-      .replace(/\{\{CONTENT\}\}/g,        content)
+      .replace(/\{\{CONTENT\}\}/g,        injectInlineRelatedLinks(sanitizeArticleContent(content), {id: slug, category: cat, tags: tagsArr}, getPosts()))
       .replace(/\{\{TAGS_BADGES\}\}/g,    tagsBadgesHTML)
       .replace(/\{\{TAGS_JSON\}\}/g,      JSON.stringify(tagsArr))
       .replace(/\{\{OG_IMAGE\}\}/g,       `<meta property="og:image" content="${ogImageUrlLocal}">`)
