@@ -1,42 +1,36 @@
-// Gera 1 imagem por cena usando o Gemini (free tier). Módulo isolado de propósito:
-// se um dia você quiser trocar por Stable Diffusion local ou outro provedor, só
-// precisa reescrever a função gerarImagem() abaixo — o resto da pipeline não muda.
+// Gera 1 imagem por cena usando Pollinations.ai (Flux) — 100% gratuito, sem chave de
+// API, sem cartão, sem cota diária. Módulo isolado de propósito: se um dia você quiser
+// trocar de provedor, só precisa reescrever a função gerarImagem() abaixo.
 import fs from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
 import { getJob, updateJob, marcarErro } from './lib/supabase.mjs';
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-// Confirme o nome exato do modelo de imagem disponível na sua conta em aistudio.google.com
-// (o nome do modelo de geração de imagem do Gemini muda de tempos em tempos).
-const GEMINI_IMAGE_MODEL = process.env.GEMINI_IMAGE_MODEL || 'gemini-3.1-flash-image';
-
 const OUTPUT_DIR = 'output/imagens';
 
 const ESTILO_FIXO =
-  ' Identidade visual: fundo azul marinho (#0A1628 a #0D2154), acentos em dourado/azul claro, ' +
-  'estilo clean e institucional, sem texto sobreposto na imagem (o texto é adicionado depois no vídeo).';
+  ' Identidade visual: fundo azul marinho, acentos em dourado/azul claro, ' +
+  'estilo clean e institucional, sem texto sobreposto na imagem.';
 
-async function gerarImagem(prompt, destino) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_IMAGE_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
-  const r = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt + ESTILO_FIXO }] }],
-      generationConfig: { responseModalities: ['IMAGE'] },
-    }),
-  });
-  if (!r.ok) throw new Error(`Gemini respondeu ${r.status}: ${await r.text()}`);
-  const data = await r.json();
-  const parte = data.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
-  if (!parte) throw new Error('Gemini não retornou imagem. Resposta: ' + JSON.stringify(data).slice(0, 500));
-  fs.writeFileSync(destino, Buffer.from(parte.inlineData.data, 'base64'));
+function aguardar(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// Alguns temas do blog (trabalho escravo, assédio, acidentes) podem levar o Gemini a
-// recusar a geração por segurança. Em vez de derrubar o job inteiro, cai para um card
-// de fundo com a identidade visual, sem gerar imagem nenhuma sobre o tema sensível.
+async function gerarImagem(prompt, destino) {
+  const promptCompleto = encodeURIComponent(prompt + ESTILO_FIXO);
+  // width/height no formato vertical do Short. seed aleatória evita cache repetido.
+  const seed = Math.floor(Math.random() * 1_000_000);
+  const url = `https://image.pollinations.ai/prompt/${promptCompleto}?width=1080&height=1920&model=flux&nologo=true&seed=${seed}`;
+
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`Pollinations respondeu ${r.status}: ${await r.text().catch(() => '')}`);
+  const buffer = Buffer.from(await r.arrayBuffer());
+  if (buffer.length < 1000) throw new Error('Resposta da Pollinations veio vazia/pequena demais, provável falha.');
+  fs.writeFileSync(destino, buffer);
+}
+
+// Se a geração falhar (raro, mas a Pollinations não tem SLA), cai para um card de marca
+// simples — o job continua, não trava por causa de uma imagem.
 async function gerarFallback(destino) {
   const html = `<!doctype html><html><head><style>
     body{margin:0;width:1080px;height:1920px;background:linear-gradient(160deg,#0A1628,#0D2154);
@@ -62,7 +56,8 @@ async function main(jobId) {
       await gerarImagem(cenas[i].prompt_imagem, destino);
       console.log(`Imagem gerada: ${destino}`);
     } catch (e1) {
-      console.warn(`Falhou 1ª tentativa (cena ${i}): ${e1.message}. Tentando de novo...`);
+      console.warn(`Falhou 1ª tentativa (cena ${i}): ${e1.message}. Aguardando e tentando de novo...`);
+      await aguardar(16000); // respeita o limite de ~1 requisição a cada 15s do uso anônimo
       try {
         await gerarImagem(cenas[i].prompt_imagem, destino);
         console.log(`Imagem gerada na 2ª tentativa: ${destino}`);
@@ -72,6 +67,7 @@ async function main(jobId) {
       }
     }
     caminhos.push(destino);
+    await aguardar(16000); // espaça as requisições pra não bater no limite de taxa anônimo
   }
 
   await updateJob(jobId, { imagens: caminhos, status: 'imagens_ok' });
