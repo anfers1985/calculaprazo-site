@@ -21,7 +21,7 @@ async function main(jobId) {
 
   const destino = path.resolve('output/video.mp4');
   execSync(
-    `npx remotion render src/index.jsx VideoDoArtigo "${destino}" --props="${path.resolve(inputPath)}"`,
+    `node node_modules/@remotion/cli/dist/index.js render src/index.jsx VideoDoArtigo "${destino}" --props="${path.resolve(inputPath)}"`,
     { cwd: 'remotion', stdio: 'inherit' }
   );
 
