@@ -1,5 +1,5 @@
 import React from 'react';
-import { Composition, getInputProps } from 'remotion';
+import { Composition, getInputProps, registerRoot } from 'remotion';
 import { VideoDoArtigo } from './VideoComposition.jsx';
 
 const FPS = 30;
@@ -7,7 +7,7 @@ const input = getInputProps(); // vem de --props=output/remotion-input.json (ver
 
 const duracaoTotalSeg = (input.cenas || []).reduce((soma, c) => soma + c.duracao_seg, 0) || 10;
 
-export const RemotionRoot = () => (
+const RemotionRoot = () => (
   <Composition
     id="VideoDoArtigo"
     component={VideoDoArtigo}
@@ -18,3 +18,5 @@ export const RemotionRoot = () => (
     defaultProps={{ cenas: input.cenas || [], narracaoSrc: input.narracaoSrc || '', fps: FPS }}
   />
 );
+
+registerRoot(RemotionRoot);
