@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: '20' }
+        with: { node-version: '22' }
       - run: npm install @supabase/supabase-js
       - run: node scripts/01-detectar-post.mjs
         env:
@@ -29,7 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: '20' }
+        with: { node-version: '22' }
       - run: npm install @supabase/supabase-js
       - id: listar
         run: node scripts/listar-pendentes.mjs >> "$GITHUB_OUTPUT"
@@ -49,7 +49,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
-        with: { node-version: '20' }
+        with: { node-version: '22' }
       - uses: actions/setup-python@v5
         with: { python-version: '3.11' }
 
