@@ -56,8 +56,9 @@ jobs:
       - name: Instalar dependências Node
         run: |
           npm install @supabase/supabase-js googleapis playwright
-          npx playwright install --with-deps chromium
-          cd remotion && npm install
+          chmod -R +x node_modules/.bin
+          node node_modules/playwright/cli.js install --with-deps chromium
+          cd remotion && npm install && chmod -R +x node_modules/.bin
 
       - name: Instalar dependências Python
         run: pip install piper-tts supabase requests
