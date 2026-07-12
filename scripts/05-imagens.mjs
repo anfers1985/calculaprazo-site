@@ -9,7 +9,7 @@ import { getJob, updateJob, marcarErro } from './lib/supabase.mjs';
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 // Confirme o nome exato do modelo de imagem disponível na sua conta em aistudio.google.com
 // (o nome do modelo de geração de imagem do Gemini muda de tempos em tempos).
-const GEMINI_IMAGE_MODEL = process.env.GEMINI_IMAGE_MODEL || 'gemini-2.5-flash-image';
+const GEMINI_IMAGE_MODEL = process.env.GEMINI_IMAGE_MODEL || 'gemini-3.1-flash-image';
 
 const OUTPUT_DIR = 'output/imagens';
 
