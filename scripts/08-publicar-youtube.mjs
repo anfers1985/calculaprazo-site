@@ -1,8 +1,8 @@
 import fs from 'node:fs';
+import path from 'node:path';
 import { google } from 'googleapis';
-import { getJob, updateJob, marcarErro } from './lib/supabase.mjs';
+import { getJob, updateJob, marcarErro, garantirArquivoLocal } from './lib/supabase.mjs';
 
-// Autenticação OAuth2 com refresh token (gerado uma única vez, ver README "Configurar YouTube").
 const oauth2Client = new google.auth.OAuth2(
   process.env.YOUTUBE_CLIENT_ID,
   process.env.YOUTUBE_CLIENT_SECRET
@@ -15,6 +15,14 @@ async function main(jobId) {
   const job = await getJob(jobId);
   const { titulo_seo, descricao, hashtags } = job.roteiro;
 
+  const videoLocal = path.resolve('output/video.mp4');
+  await garantirArquivoLocal(job.video_path, videoLocal);
+  let thumbnailLocal = null;
+  if (job.thumbnail_path) {
+    thumbnailLocal = path.resolve('output/thumbnail.png');
+    await garantirArquivoLocal(job.thumbnail_path, thumbnailLocal);
+  }
+
   const descricaoFinal =
     `${descricao}\n\nSaiba mais: ${job.post_url}\n\n${(hashtags || []).join(' ')}\n\n` +
     `Este vídeo tem caráter informativo e não substitui consulta jurídica individualizada.`;
@@ -26,19 +34,19 @@ async function main(jobId) {
         title: titulo_seo,
         description: descricaoFinal,
         tags: (hashtags || []).map(h => h.replace('#', '')),
-        categoryId: '22', // "People & Blogs" — ajuste se preferir outra categoria
+        categoryId: '22',
       },
       status: { privacyStatus: 'public', selfDeclaredMadeForKids: false },
     },
-    media: { body: fs.createReadStream(job.video_path) },
+    media: { body: fs.createReadStream(videoLocal) },
   });
 
   const videoId = uploadRes.data.id;
 
-  if (job.thumbnail_path) {
+  if (thumbnailLocal) {
     await youtube.thumbnails.set({
       videoId,
-      media: { body: fs.createReadStream(job.thumbnail_path) },
+      media: { body: fs.createReadStream(thumbnailLocal) },
     });
   }
 
