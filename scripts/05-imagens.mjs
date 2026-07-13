@@ -1,10 +1,7 @@
-// Gera 1 imagem por cena usando Pollinations.ai (Flux) — 100% gratuito, sem chave de
-// API, sem cartão, sem cota diária. Módulo isolado de propósito: se um dia você quiser
-// trocar de provedor, só precisa reescrever a função gerarImagem() abaixo.
 import fs from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
-import { getJob, updateJob, marcarErro } from './lib/supabase.mjs';
+import { getJob, updateJob, marcarErro, enviarArquivo } from './lib/supabase.mjs';
 
 const OUTPUT_DIR = 'output/imagens';
 
@@ -18,7 +15,6 @@ function aguardar(ms) {
 
 async function gerarImagem(prompt, destino) {
   const promptCompleto = encodeURIComponent(prompt + ESTILO_FIXO);
-  // width/height no formato vertical do Short. seed aleatória evita cache repetido.
   const seed = Math.floor(Math.random() * 1_000_000);
   const url = `https://image.pollinations.ai/prompt/${promptCompleto}?width=1080&height=1920&model=flux&nologo=true&seed=${seed}`;
 
@@ -29,8 +25,6 @@ async function gerarImagem(prompt, destino) {
   fs.writeFileSync(destino, buffer);
 }
 
-// Se a geração falhar (raro, mas a Pollinations não tem SLA), cai para um card de marca
-// simples — o job continua, não trava por causa de uma imagem.
 async function gerarFallback(destino) {
   const html = `<!doctype html><html><head><style>
     body{margin:0;width:1080px;height:1920px;background:linear-gradient(160deg,#0A1628,#0D2154);
@@ -49,28 +43,31 @@ async function main(jobId) {
   const cenas = job.roteiro.cenas;
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
-  const caminhos = [];
+  const caminhosStorage = [];
   for (let i = 0; i < cenas.length; i++) {
-    const destino = path.join(OUTPUT_DIR, `cena_${String(i).padStart(2, '0')}.png`);
+    const nomeArquivo = `cena_${String(i).padStart(2, '0')}.png`;
+    const destinoLocal = path.join(OUTPUT_DIR, nomeArquivo);
     try {
-      await gerarImagem(cenas[i].prompt_imagem, destino);
-      console.log(`Imagem gerada: ${destino}`);
+      await gerarImagem(cenas[i].prompt_imagem, destinoLocal);
+      console.log(`Imagem gerada: ${destinoLocal}`);
     } catch (e1) {
       console.warn(`Falhou 1ª tentativa (cena ${i}): ${e1.message}. Aguardando e tentando de novo...`);
-      await aguardar(16000); // respeita o limite de ~1 requisição a cada 15s do uso anônimo
+      await aguardar(16000);
       try {
-        await gerarImagem(cenas[i].prompt_imagem, destino);
-        console.log(`Imagem gerada na 2ª tentativa: ${destino}`);
+        await gerarImagem(cenas[i].prompt_imagem, destinoLocal);
+        console.log(`Imagem gerada na 2ª tentativa: ${destinoLocal}`);
       } catch (e2) {
         console.warn(`Falhou de novo (cena ${i}): ${e2.message}. Usando fallback de marca.`);
-        await gerarFallback(destino);
+        await gerarFallback(destinoLocal);
       }
     }
-    caminhos.push(destino);
-    await aguardar(16000); // espaça as requisições pra não bater no limite de taxa anônimo
+    const caminhoStorage = `jobs/${jobId}/imagens/${nomeArquivo}`;
+    await enviarArquivo(destinoLocal, caminhoStorage);
+    caminhosStorage.push(caminhoStorage);
+    await aguardar(16000);
   }
 
-  await updateJob(jobId, { imagens: caminhos, status: 'imagens_ok' });
+  await updateJob(jobId, { imagens: caminhosStorage, status: 'imagens_ok' });
 }
 
 const jobId = process.argv[2];
