@@ -28,7 +28,6 @@ VOICE_NAME = "pt_BR-faber-medium"
 VOICE_DIR = Path("voices")
 OUTPUT_DIR = Path("output/audio")
 
-# URLs oficiais do repositório rhasspy/piper-voices no Hugging Face.
 VOICE_BASE_URL = (
     "https://huggingface.co/rhasspy/piper-voices/resolve/main/pt/pt_BR/faber/medium"
 )
@@ -91,13 +90,19 @@ def main(job_id: str):
     narracao_final = OUTPUT_DIR / "narracao_completa.mp3"
     concatenar_wavs(wavs, narracao_final)
 
+    caminho_storage = f"jobs/{job_id}/narracao.mp3"
+    with open(narracao_final, "rb") as f:
+        sb.storage.from_("pipeline").upload(
+            caminho_storage, f.read(), {"upsert": "true", "content-type": "audio/mpeg"}
+        )
+
     sb.table("video_jobs").update({
-        "narracao_path": str(narracao_final),
-        "roteiro": roteiro,  # já com duracao_seg preenchida por cena
+        "narracao_path": caminho_storage,
+        "roteiro": roteiro,
         "status": "narracao_ok",
     }).eq("id", job_id).execute()
 
-    print(f"Narração gerada: {narracao_final} ({len(cenas)} cenas)")
+    print(f"Narração gerada e enviada: {caminho_storage} ({len(cenas)} cenas)")
 
 
 if __name__ == "__main__":
