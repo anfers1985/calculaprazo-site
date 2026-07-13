@@ -24,13 +24,22 @@ async function main(jobId) {
   fs.writeFileSync(inputPath, JSON.stringify(inputProps));
 
   const saidaRelativa = 'out/video.mp4';
+  console.log('Iniciando render do Remotion (pode demorar alguns minutos, sem log até terminar cada fase)...');
   execSync(
-    `node node_modules/@remotion/cli/dist/index.js render src/index.jsx VideoDoArtigo "${saidaRelativa}" --props="${path.resolve(inputPath)}"`,
+    `./node_modules/.bin/remotion render src/index.jsx VideoDoArtigo "${saidaRelativa}" --props="${path.resolve(inputPath)}" --log=verbose`,
     { cwd: 'remotion', stdio: 'inherit' }
   );
 
   const origemAbsoluta = path.resolve('remotion', saidaRelativa);
   if (!fs.existsSync(origemAbsoluta)) {
+    console.error('Conteúdo de remotion/out (se existir):');
+    try {
+      console.error(fs.readdirSync(path.resolve('remotion', 'out')));
+    } catch {
+      console.error('(pasta remotion/out nem existe)');
+    }
+    console.error('Conteúdo de remotion/ (raiz):');
+    console.error(fs.readdirSync(path.resolve('remotion')));
     throw new Error(`Remotion terminou sem erro, mas o vídeo não apareceu em ${origemAbsoluta}.`);
   }
 
