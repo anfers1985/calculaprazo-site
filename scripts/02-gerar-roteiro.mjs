@@ -12,12 +12,34 @@ async function buscarConteudoDoPost(postUrl) {
   const res = await fetch(postUrl);
   if (!res.ok) throw new Error(`Não consegui abrir o post: ${postUrl} (${res.status})`);
   const html = await res.text();
-  // Extração simples do texto do artigo. Ajuste o seletor se a estrutura do POST_TEMPLATE mudar.
   const match = html.match(/<article[^>]*>([\s\S]*?)<\/article>/i);
   const bruto = match ? match[1] : html;
   const texto = bruto.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
   const tituloMatch = html.match(/<title>([^<]+)<\/title>/i);
   return { titulo: tituloMatch ? tituloMatch[1] : postUrl, conteudo: texto.slice(0, 6000) };
+}
+
+function aguardar(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function chamarWorkerComRetry(body, workerSecret, tentativas = 3) {
+  for (let i = 1; i <= tentativas; i++) {
+    const r = await fetch(`${WORKER_URL}/ai-generate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Admin-Secret': workerSecret },
+      body: JSON.stringify(body),
+    });
+    const data = await r.json().catch(() => ({}));
+    const ehLimiteDeTaxa = !r.ok && /quota|rate.?limit|429/i.test(data.error || '');
+    if (r.ok && data.text) return data;
+    if (ehLimiteDeTaxa && i < tentativas) {
+      console.warn(`Limite de taxa do Gemini (tentativa ${i}/${tentativas}). Aguardando 30s...`);
+      await aguardar(30000);
+      continue;
+    }
+    throw new Error(data.error || `Erro ${r.status} ao chamar o Worker de IA`);
+  }
 }
 
 async function gerarRoteiro(jobId) {
@@ -30,28 +52,21 @@ async function gerarRoteiro(jobId) {
     conteudo,
   });
 
-  // O Worker /ai-generate espera o mesmo contrato que o admin usa hoje: provider,
-  // apiKey e model vêm do cliente (não ficam guardados no Worker). Por isso os
-  // secrets GEMINI_API_KEY e AI_MODEL (opcional) precisam estar configurados aqui também.
   const workerSecret = process.env.WORKER_SECRET;
-  const r = await fetch(`${WORKER_URL}/ai-generate`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-Admin-Secret': workerSecret },
-    body: JSON.stringify({
+  const data = await chamarWorkerComRetry(
+    {
       provider: process.env.AI_PROVIDER || 'gemini',
       apiKey: process.env.GEMINI_API_KEY,
       model: process.env.AI_MODEL || undefined,
       systemPrompt: prompts.roteiro.systemPrompt,
       userPrompt,
-    }),
-  });
-  const data = await r.json().catch(() => ({}));
-  if (!r.ok || !data.text) throw new Error(data.error || `Erro ${r.status} ao chamar o Worker de IA`);
+    },
+    workerSecret
+  );
   const { text } = data;
 
   let roteiro;
   try {
-    // Remove possíveis cercas de código, caso o modelo insista em incluir.
     const limpo = text.trim().replace(/^```json\s*/i, '').replace(/```$/i, '');
     roteiro = JSON.parse(limpo);
   } catch (e) {

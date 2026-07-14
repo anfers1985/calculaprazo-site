@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
-import { getJob, updateJob, marcarErro } from './lib/supabase.mjs';
+import { getJob, updateJob, marcarErro, enviarArquivo } from './lib/supabase.mjs';
 
 const OUTPUT_DIR = 'output/thumbnail';
 const TEMPLATE_PATH = new URL('./thumbnail-template.html', import.meta.url);
@@ -10,7 +10,6 @@ async function main(jobId) {
   const job = await getJob(jobId);
   const { titulo_seo } = job.roteiro;
 
-  // Título grande em duas partes: primeiras 4-5 palavras normais + resto em destaque dourado.
   const palavras = titulo_seo.split(' ');
   const meio = Math.ceil(palavras.length / 2);
   const parte1 = palavras.slice(0, meio).join(' ');
@@ -37,8 +36,11 @@ async function main(jobId) {
   await page.screenshot({ path: destino });
   await browser.close();
 
-  await updateJob(jobId, { thumbnail_path: destino, status: 'thumbnail_ok' });
-  console.log(`Thumbnail gerada: ${destino}`);
+  const caminhoStorage = `jobs/${jobId}/thumbnail.png`;
+  await enviarArquivo(destino, caminhoStorage);
+
+  await updateJob(jobId, { thumbnail_path: caminhoStorage, status: 'thumbnail_ok' });
+  console.log(`Thumbnail gerada e enviada: ${caminhoStorage}`);
 }
 
 const jobId = process.argv[2];
