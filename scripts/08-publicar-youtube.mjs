@@ -23,8 +23,13 @@ async function main(jobId) {
     await garantirArquivoLocal(job.thumbnail_path, thumbnailLocal);
   }
 
+  // Garante #Shorts mesmo que a IA não tenha colocado.
+  const hashtagsFinais = (hashtags || []).some(h => h.toLowerCase() === '#shorts')
+    ? hashtags
+    : ['#Shorts', ...(hashtags || [])];
+
   const descricaoFinal =
-    `${descricao}\n\nSaiba mais: ${job.post_url}\n\n${(hashtags || []).join(' ')}\n\n` +
+    `${descricao}\n\nSaiba mais: ${job.post_url}\n\n${hashtagsFinais.join(' ')}\n\n` +
     `Este vídeo tem caráter informativo e não substitui consulta jurídica individualizada.`;
 
   const uploadRes = await youtube.videos.insert({
@@ -33,7 +38,7 @@ async function main(jobId) {
       snippet: {
         title: titulo_seo,
         description: descricaoFinal,
-        tags: (hashtags || []).map(h => h.replace('#', '')),
+        tags: hashtagsFinais.map(h => h.replace('#', '')),
         categoryId: '22',
       },
       status: { privacyStatus: 'public', selfDeclaredMadeForKids: false },
