@@ -1,32 +1,70 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { execSync } from 'node:child_process';
-import { getJob, updateJob, marcarErro } from './lib/supabase.mjs';
+import { getJob, updateJob, marcarErro, garantirArquivoLocal, enviarArquivo } from './lib/supabase.mjs';
 
 async function main(jobId) {
   const job = await getJob(jobId);
-  const cenas = job.roteiro.cenas.map((cena, i) => ({
-    ...cena,
-    imagemSrc: path.resolve(job.imagens[i]),
-  }));
 
-  const inputProps = {
-    cenas,
-    narracaoSrc: path.resolve(job.narracao_path),
-  };
+  // IMPORTANTE: os arquivos precisam ficar DENTRO de remotion/public/, porque o
+  // servidor de assets do Remotion só serve arquivos dentro da raiz do projeto
+  // Remotion (remotion/). Um caminho absoluto fora dessa árvore (ex.: ../output/...)
+  // resulta em 404 ao carregar <Img>/<Audio>, mesmo que o arquivo exista no disco.
+  const PUBLIC_DIR = path.resolve('remotion/public');
+  const jobPublicDir = `jobs/${jobId}`; // caminho relativo à public/, usado com staticFile()
+
+  const narracaoRel = `${jobPublicDir}/audio/narracao_completa.mp3`;
+  const narracaoLocal = path.join(PUBLIC_DIR, narracaoRel);
+  await garantirArquivoLocal(job.narracao_path, narracaoLocal);
+
+  const cenas = [];
+  for (let i = 0; i < job.roteiro.cenas.length; i++) {
+    const cena = job.roteiro.cenas[i];
+    const imagemRel = `${jobPublicDir}/imagens/cena_${String(i).padStart(2, '0')}.png`;
+    const imagemLocal = path.join(PUBLIC_DIR, imagemRel);
+    await garantirArquivoLocal(job.imagens[i], imagemLocal);
+    cenas.push({ ...cena, imagemSrc: imagemRel });
+  }
+
+  const inputProps = { cenas, narracaoSrc: narracaoRel };
 
   fs.mkdirSync('output', { recursive: true });
   const inputPath = 'output/remotion-input.json';
   fs.writeFileSync(inputPath, JSON.stringify(inputProps));
 
-  const destino = path.resolve('output/video.mp4');
+  const saidaRelativa = 'out/video.mp4';
+  console.log('Iniciando render do Remotion (pode demorar alguns minutos, sem log até terminar cada fase)...');
   execSync(
-    `npx remotion render src/index.jsx VideoDoArtigo "${destino}" --props="${path.resolve(inputPath)}"`,
+    `./node_modules/.bin/remotion render src/index.jsx VideoDoArtigo "${saidaRelativa}" --props="${path.resolve(inputPath)}" --log=verbose`,
     { cwd: 'remotion', stdio: 'inherit' }
   );
 
-  await updateJob(jobId, { video_path: destino, status: 'render_ok' });
-  console.log(`Vídeo renderizado: ${destino}`);
+  const origemAbsoluta = path.resolve('remotion', saidaRelativa);
+  if (!fs.existsSync(origemAbsoluta)) {
+    console.error('Conteúdo de remotion/out (se existir):');
+    try {
+      console.error(fs.readdirSync(path.resolve('remotion', 'out')));
+    } catch {
+      console.error('(pasta remotion/out nem existe)');
+    }
+    console.error('Conteúdo de remotion/ (raiz):');
+    console.error(fs.readdirSync(path.resolve('remotion')));
+    throw new Error(`Remotion terminou sem erro, mas o vídeo não apareceu em ${origemAbsoluta}.`);
+  }
+
+  const destinoLocal = path.resolve('output/video.mp4');
+  fs.copyFileSync(origemAbsoluta, destinoLocal);
+
+  const tamanho = fs.statSync(destinoLocal).size;
+  if (tamanho < 10_000) {
+    throw new Error(`Vídeo renderizado ficou suspeitosamente pequeno (${tamanho} bytes) — provável falha silenciosa.`);
+  }
+
+  const caminhoStorage = `jobs/${jobId}/video.mp4`;
+  await enviarArquivo(destinoLocal, caminhoStorage);
+
+  await updateJob(jobId, { video_path: caminhoStorage, status: 'render_ok' });
+  console.log(`Vídeo renderizado e enviado: ${caminhoStorage} (${(tamanho / 1024 / 1024).toFixed(1)} MB)`);
 }
 
 const jobId = process.argv[2];

@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteFill, Audio, Img, Sequence, useCurrentFrame, interpolate } from 'remotion';
+import { AbsoluteFill, Audio, Img, Sequence, staticFile, useCurrentFrame, interpolate } from 'remotion';
 
 // Identidade visual fixa do Calcula Prazo — o "Design System" do vídeo vive aqui, em código,
 // não em prompt. Trocar cor/fonte/vinheta é editar este arquivo, nunca mais de uma vez.
@@ -14,7 +14,7 @@ function Cena({ imagem, textoTela }) {
   return (
     <AbsoluteFill style={{ background: CORES.navyEscuro }}>
       <Img
-        src={imagem}
+        src={staticFile(imagem)}
         style={{ width: '100%', height: '100%', objectFit: 'cover', transform: `scale(${scale})` }}
       />
       <AbsoluteFill
@@ -42,7 +42,7 @@ export function VideoDoArtigo({ cenas, narracaoSrc, fps }) {
 
   return (
     <AbsoluteFill style={{ background: CORES.navyEscuro }}>
-      <Audio src={narracaoSrc} />
+      <Audio src={staticFile(narracaoSrc)} />
       {cenas.map((cena, i) => {
         const duracaoFrames = Math.round(cena.duracao_seg * fps);
         const seq = (
