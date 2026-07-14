@@ -4,9 +4,9 @@ on:
   push:
     paths:
       - 'data/posts.json'
-  workflow_dispatch: {}  # permite rodar manualmente (ex: reprocessar jobs com erro)
+  workflow_dispatch: {}
   schedule:
-    - cron: '0 * * * *'  # roda a cada hora, processando o que estiver pendente na fila
+    - cron: '0 * * * *'
 
 jobs:
   detectar:
@@ -43,6 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      max-parallel: 1
       matrix:
         job_id: ${{ fromJson(needs.listar.outputs.ids) }}
     steps:
@@ -73,7 +74,7 @@ jobs:
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           WORKER_SECRET: ${{ secrets.WORKER_SECRET }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          AI_MODEL: ${{ secrets.AI_MODEL }}  # opcional — nome do modelo Gemini, se seu Worker exigir
+          AI_MODEL: ${{ secrets.AI_MODEL }}
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
