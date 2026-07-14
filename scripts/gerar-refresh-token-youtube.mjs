@@ -15,7 +15,7 @@ import { google } from 'googleapis';
 import http from 'node:http';
 
 const PORTA = 8080;
-const REDIRECT_URI = `http://localhost:${PORTA}`;
+const REDIRECT_URI = `http://127.0.0.1:${PORTA}`;
 
 const oauth2Client = new google.auth.OAuth2(
   process.env.YOUTUBE_CLIENT_ID,
@@ -25,7 +25,7 @@ const oauth2Client = new google.auth.OAuth2(
 
 const url = oauth2Client.generateAuthUrl({
   access_type: 'offline',
-  prompt: 'consent',
+  prompt: 'consent select_account', // força escolher a conta e gerar refresh_token novo
   scope: ['https://www.googleapis.com/auth/youtube.upload'],
 });
 
