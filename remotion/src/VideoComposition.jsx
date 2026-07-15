@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteFill, Audio, Img, Sequence, staticFile, useCurrentFrame, interpolate } from 'remotion';
+import { AbsoluteFill, Audio, Img, Sequence, useCurrentFrame, interpolate } from 'remotion';
 
 // Identidade visual fixa do Calcula Prazo — o "Design System" do vídeo vive aqui, em código,
 // não em prompt. Trocar cor/fonte/vinheta é editar este arquivo, nunca mais de uma vez.
@@ -14,18 +14,20 @@ function Cena({ imagem, textoTela }) {
   return (
     <AbsoluteFill style={{ background: CORES.navyEscuro }}>
       <Img
-        src={staticFile(imagem)}
+        src={imagem}
         style={{ width: '100%', height: '100%', objectFit: 'cover', transform: `scale(${scale})` }}
       />
       <AbsoluteFill
         style={{
-          background: 'linear-gradient(to top, rgba(10,22,40,0.85) 0%, rgba(10,22,40,0.15) 45%, transparent 100%)',
+          background: 'linear-gradient(to top, rgba(10,22,40,0.9) 0%, rgba(10,22,40,0.35) 30%, transparent 55%)',
         }}
       />
       <div
         style={{
-          position: 'absolute', bottom: 90, left: 60, right: 60,
-          fontFamily: 'Outfit, sans-serif', fontSize: 54, fontWeight: 700,
+          // bottom:340 fica acima da faixa que o YouTube Shorts cobre com botões/descrição/@canal;
+          // right:150 evita a coluna de ícones (curtir/comentar/compartilhar) do lado direito.
+          position: 'absolute', bottom: 340, left: 60, right: 150,
+          fontFamily: 'Outfit, sans-serif', fontSize: 50, fontWeight: 700,
           color: '#fff', textShadow: '0 2px 12px rgba(0,0,0,.6)',
           opacity: opacityTexto,
         }}
@@ -42,7 +44,7 @@ export function VideoDoArtigo({ cenas, narracaoSrc, fps }) {
 
   return (
     <AbsoluteFill style={{ background: CORES.navyEscuro }}>
-      <Audio src={staticFile(narracaoSrc)} />
+      <Audio src={narracaoSrc} />
       {cenas.map((cena, i) => {
         const duracaoFrames = Math.round(cena.duracao_seg * fps);
         const seq = (
