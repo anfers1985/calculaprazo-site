@@ -6,27 +6,18 @@ import { getJob, updateJob, marcarErro, garantirArquivoLocal, enviarArquivo } fr
 async function main(jobId) {
   const job = await getJob(jobId);
 
-  // IMPORTANTE: os arquivos precisam ficar DENTRO de remotion/public/, porque o
-  // servidor de assets do Remotion só serve arquivos dentro da raiz do projeto
-  // Remotion (remotion/). Um caminho absoluto fora dessa árvore (ex.: ../output/...)
-  // resulta em 404 ao carregar <Img>/<Audio>, mesmo que o arquivo exista no disco.
-  const PUBLIC_DIR = path.resolve('remotion/public');
-  const jobPublicDir = `jobs/${jobId}`; // caminho relativo à public/, usado com staticFile()
-
-  const narracaoRel = `${jobPublicDir}/audio/narracao_completa.mp3`;
-  const narracaoLocal = path.join(PUBLIC_DIR, narracaoRel);
+  const narracaoLocal = path.resolve('output/audio/narracao_completa.mp3');
   await garantirArquivoLocal(job.narracao_path, narracaoLocal);
 
   const cenas = [];
   for (let i = 0; i < job.roteiro.cenas.length; i++) {
     const cena = job.roteiro.cenas[i];
-    const imagemRel = `${jobPublicDir}/imagens/cena_${String(i).padStart(2, '0')}.png`;
-    const imagemLocal = path.join(PUBLIC_DIR, imagemRel);
+    const imagemLocal = path.resolve(`output/imagens/cena_${String(i).padStart(2, '0')}.png`);
     await garantirArquivoLocal(job.imagens[i], imagemLocal);
-    cenas.push({ ...cena, imagemSrc: imagemRel });
+    cenas.push({ ...cena, imagemSrc: `file://${imagemLocal}` });
   }
 
-  const inputProps = { cenas, narracaoSrc: narracaoRel };
+  const inputProps = { cenas, narracaoSrc: `file://${narracaoLocal}` };
 
   fs.mkdirSync('output', { recursive: true });
   const inputPath = 'output/remotion-input.json';
