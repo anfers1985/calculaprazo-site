@@ -41,7 +41,7 @@ async function main(jobId) {
         tags: hashtagsFinais.map(h => h.replace('#', '')),
         categoryId: '22',
       },
-      status: { privacyStatus: 'public', selfDeclaredMadeForKids: false },
+      status: { privacyStatus: 'private', selfDeclaredMadeForKids: false },
     },
     media: { body: fs.createReadStream(videoLocal) },
   });
