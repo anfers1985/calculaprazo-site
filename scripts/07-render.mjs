@@ -6,27 +6,32 @@ import { getJob, updateJob, marcarErro, garantirArquivoLocal, enviarArquivo } fr
 async function main(jobId) {
   const job = await getJob(jobId);
 
-  // IMPORTANTE: os arquivos precisam ficar DENTRO de remotion/public/, porque o
-  // servidor de assets do Remotion só serve arquivos dentro da raiz do projeto
-  // Remotion (remotion/). Um caminho absoluto fora dessa árvore (ex.: ../output/...)
-  // resulta em 404 ao carregar <Img>/<Audio>, mesmo que o arquivo exista no disco.
-  const PUBLIC_DIR = path.resolve('remotion/public');
-  const jobPublicDir = `jobs/${jobId}`; // caminho relativo à public/, usado com staticFile()
+  // IMPORTANTE: NÃO usamos mais remotion/public/ + staticFile()/caminho relativo.
+  // Em duas tentativas anteriores, o servidor HTTP interno do `remotion render`
+  // (CLI, diferente do Remotion Studio) devolveu 404 tanto para caminho absoluto
+  // fora da árvore do projeto Remotion quanto para caminho relativo dentro de
+  // remotion/public/ — porque fora do Studio o staticFile()/serve estático do
+  // Remotion tem um comportamento de prefixo/raiz que varia entre versões e não
+  // é confiável. A forma que elimina esse problema de vez é não depender de
+  // nenhum servidor de arquivo: embutimos a imagem/áudio como data URI (base64)
+  // diretamente no JSON de props, então o navegador nunca precisa fazer uma
+  // requisição HTTP para carregá-los.
+  const SCRATCH_DIR = path.resolve('output/assets');
 
-  const narracaoRel = `${jobPublicDir}/audio/narracao_completa.mp3`;
-  const narracaoLocal = path.join(PUBLIC_DIR, narracaoRel);
+  const narracaoLocal = path.join(SCRATCH_DIR, 'narracao_completa.mp3');
   await garantirArquivoLocal(job.narracao_path, narracaoLocal);
+  const narracaoSrc = `data:audio/mpeg;base64,${fs.readFileSync(narracaoLocal).toString('base64')}`;
 
   const cenas = [];
   for (let i = 0; i < job.roteiro.cenas.length; i++) {
     const cena = job.roteiro.cenas[i];
-    const imagemRel = `${jobPublicDir}/imagens/cena_${String(i).padStart(2, '0')}.png`;
-    const imagemLocal = path.join(PUBLIC_DIR, imagemRel);
+    const imagemLocal = path.join(SCRATCH_DIR, `cena_${String(i).padStart(2, '0')}.png`);
     await garantirArquivoLocal(job.imagens[i], imagemLocal);
-    cenas.push({ ...cena, imagemSrc: imagemRel });
+    const imagemSrc = `data:image/png;base64,${fs.readFileSync(imagemLocal).toString('base64')}`;
+    cenas.push({ ...cena, imagemSrc });
   }
 
-  const inputProps = { cenas, narracaoSrc: narracaoRel };
+  const inputProps = { cenas, narracaoSrc };
 
   fs.mkdirSync('output', { recursive: true });
   const inputPath = 'output/remotion-input.json';
