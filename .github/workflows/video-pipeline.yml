@@ -62,7 +62,7 @@ jobs:
           cd remotion && npm install && chmod -R +x node_modules/.bin
 
       - name: Instalar dependências Python
-        run: pip install piper-tts supabase requests
+        run: pip install kokoro-onnx soundfile supabase requests
 
       - name: Instalar ffmpeg
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
@@ -74,7 +74,7 @@ jobs:
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           WORKER_SECRET: ${{ secrets.WORKER_SECRET }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          AI_MODEL: ${{ secrets.AI_MODEL }}
+          AI_MODEL: ${{ secrets.AI_MODEL }}  # opcional — nome do modelo Gemini, se seu Worker exigir
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
