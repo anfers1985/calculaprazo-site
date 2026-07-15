@@ -1,5 +1,41 @@
 [
   {
+    "id": "o-que-e-cipa-obrigatoriedade-empresas-nr5",
+    "title": "O que é CIPA? Entenda quando ela é obrigatória nas empresas",
+    "category": "legislacao-nr",
+    "category_label": "NR",
+    "excerpt": "Saiba o que é a CIPA, quando ela é obrigatória, como funciona, quais são suas atribuições e o que determina a NR-5 sobre a prevenção de acidentes.",
+    "image": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-07-15",
+    "updatedAt": "2026-07-15",
+    "tags": []
+  },
+  {
+    "id": "como-contratar-jovem-aprendiz-regras-beneficios",
+    "title": "Como contratar um jovem aprendiz: regras, etapas e benefícios",
+    "category": "rh-contrato",
+    "category_label": "Contrato",
+    "excerpt": "Saiba como contratar um jovem aprendiz, quais são as regras da Lei da Aprendizagem, quem pode contratar e os principais cuidados no processo.",
+    "image": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-07-15",
+    "updatedAt": "2026-07-15",
+    "tags": []
+  },
+  {
+    "id": "tst-indenizacao-divulgacao-acoes-trabalhistas-intranet",
+    "title": "TST mantém indenização por divulgação de ações trabalhistas na intranet",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "TST confirma indenização a empregado após empresa divulgar na intranet lista com ações trabalhistas, por violação à privacidade e risco de discriminação.",
+    "image": "https://images.unsplash.com/photo-1714977616144-f9bca2c31d30?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-07-15",
+    "updatedAt": "2026-07-15",
+    "tags": []
+  },
+  {
     "id": "faltas-justificadas-clt-artigo-473",
     "title": "Faltas justificadas na CLT: conheça os direitos do trabalhador",
     "category": "rh-jornada",
