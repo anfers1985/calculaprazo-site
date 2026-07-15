@@ -23,7 +23,7 @@ function aguardar(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function chamarWorkerComRetry(body, workerSecret, tentativas = 3) {
+async function chamarWorkerComRetry(body, workerSecret, tentativas = 5) {
   for (let i = 1; i <= tentativas; i++) {
     const r = await fetch(`${WORKER_URL}/ai-generate`, {
       method: 'POST',
@@ -31,10 +31,10 @@ async function chamarWorkerComRetry(body, workerSecret, tentativas = 3) {
       body: JSON.stringify(body),
     });
     const data = await r.json().catch(() => ({}));
-    const ehLimiteDeTaxa = !r.ok && /quota|rate.?limit|429/i.test(data.error || '');
+    const vale_retry = !r.ok && /quota|rate.?limit|429|overload|high demand|unavailable|503|try again/i.test(data.error || '');
     if (r.ok && data.text) return data;
-    if (ehLimiteDeTaxa && i < tentativas) {
-      console.warn(`Limite de taxa do Gemini (tentativa ${i}/${tentativas}). Aguardando 30s...`);
+    if (vale_retry && i < tentativas) {
+      console.warn(`Erro temporário do Gemini (tentativa ${i}/${tentativas}). Aguardando 30s...`);
       await aguardar(30000);
       continue;
     }
