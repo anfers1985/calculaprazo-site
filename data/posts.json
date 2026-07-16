@@ -1,5 +1,17 @@
 [
   {
+    "id": "whatsapp-empresa-fora-expediente-horas-extras",
+    "title": "WhatsApp da empresa após o expediente gera horas extras?",
+    "category": "rh-jornada",
+    "category_label": "Jornada",
+    "excerpt": "Mensagens de trabalho fora do expediente podem gerar horas extras ou sobreaviso. Entenda as regras da CLT, o direito à desconexão e a Súmula 428 do TST.",
+    "image": "https://images.unsplash.com/photo-1636751364472-12bfad09b451?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-07-16",
+    "updatedAt": "2026-07-16",
+    "tags": []
+  },
+  {
     "id": "gravacao-chefe-escondido-prova-justica-trabalho",
     "title": "Gravar conversa com o chefe escondido vale como prova trabalhista?",
     "category": "processual-analises",
