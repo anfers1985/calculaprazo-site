@@ -13,6 +13,7 @@ Uso:
     python 03-narracao.py <job_id>
 """
 import os
+import re
 import subprocess
 import sys
 import wave
@@ -33,6 +34,35 @@ LANG = "pt-br"
 MODEL_DIR = Path("kokoro-model")
 OUTPUT_DIR = Path("output/audio")
 
+# Pausas reais entre frases/orações. O Kokoro não interpreta pontuação como pausa de
+# forma confiável quando o texto inteiro da cena é sintetizado de uma vez só — por isso
+# quebramos em frases e inserimos silêncio de verdade (em segundos) entre elas.
+PAUSA_PONTO_FINAL = 0.38   # depois de "." "!" "?"
+PAUSA_VIRGULA = 0.16       # depois de ","
+PAUSA_ENTRE_CENAS = 0.55   # respiro extra no fim de cada cena, além da pausa de ponto final
+
+# Pequena variação de velocidade por posição da cena: o gancho (1ª cena) fica um pouco
+# mais ágil pra prender atenção, o CTA (última) fica um pouco mais lento e claro.
+SPEED_GANCHO = 1.04
+SPEED_CTA = 0.94
+SPEED_PADRAO = 1.0
+
+_SPLIT_FRASES = re.compile(r"(?<=[.!?])\s+")
+_SPLIT_VIRGULA = re.compile(r",\s*")
+
+
+def dividir_em_trechos(texto: str):
+    """Divide o texto da cena em (trecho, pausa_depois_em_seg), respeitando pontuação."""
+    trechos = []
+    frases = [f.strip() for f in _SPLIT_FRASES.split(texto.strip()) if f.strip()]
+    for frase in frases:
+        partes_virgula = [p.strip() for p in _SPLIT_VIRGULA.split(frase) if p.strip()]
+        for idx, parte in enumerate(partes_virgula):
+            ultima_da_frase = idx == len(partes_virgula) - 1
+            pausa = PAUSA_PONTO_FINAL if ultima_da_frase else PAUSA_VIRGULA
+            trechos.append((parte, pausa))
+    return trechos
+
 MODEL_URL = "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx"
 VOICES_URL = "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin"
 
@@ -48,6 +78,10 @@ def baixar_modelo_se_necessario():
             resp.raise_for_status()
             destino.write_bytes(resp.content)
     return modelo, vozes
+
+
+def silencio(duracao_seg: float, sample_rate: int) -> np.ndarray:
+    return np.zeros(int(duracao_seg * sample_rate), dtype=np.float32)
 
 
 def duracao_wav(caminho: Path) -> float:
@@ -77,12 +111,29 @@ def main(job_id: str):
 
     wavs = []
     for i, cena in enumerate(cenas):
-        samples, sample_rate = kokoro.create(
-            cena["narracao"], voice=VOICE, speed=1.0, lang=LANG
-        )
+        if i == 0:
+            speed = SPEED_GANCHO
+        elif i == len(cenas) - 1:
+            speed = SPEED_CTA
+        else:
+            speed = SPEED_PADRAO
+
+        trechos = dividir_em_trechos(cena["narracao"])
+        pedacos = []
+        sample_rate = None
+        for texto_trecho, pausa_depois in trechos:
+            samples, sample_rate = kokoro.create(
+                texto_trecho, voice=VOICE, speed=speed, lang=LANG
+            )
+            pedacos.append(samples)
+            pedacos.append(silencio(pausa_depois, sample_rate))
+        # Respiro extra entre cenas (além da pausa de ponto final já incluída acima).
+        pedacos.append(silencio(PAUSA_ENTRE_CENAS, sample_rate))
+
+        cena_audio = np.concatenate(pedacos)
         wav_path = OUTPUT_DIR / f"cena_{i:02d}.wav"
-        sf.write(str(wav_path), samples, sample_rate)
-        cena["duracao_seg"] = round(len(samples) / sample_rate, 2)
+        sf.write(str(wav_path), cena_audio, sample_rate)
+        cena["duracao_seg"] = round(len(cena_audio) / sample_rate, 2)
         wavs.append(wav_path)
 
     narracao_final = OUTPUT_DIR / "narracao_completa.mp3"

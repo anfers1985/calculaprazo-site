@@ -3,9 +3,14 @@ import { AbsoluteFill, Audio, Img, Sequence, useCurrentFrame, interpolate } from
 
 // Identidade visual fixa do Calcula Prazo — o "Design System" do vídeo vive aqui, em código,
 // não em prompt. Trocar cor/fonte/vinheta é editar este arquivo, nunca mais de uma vez.
-const CORES = { navyEscuro: '#0A1628', navyMedio: '#0D2154', dourado: '#F4C542', azulClaro: '#60A5FA' };
+const CORES = {
+  navyEscuro: '#0A1628',
+  navyMedio: '#0D2154',
+  dourado: '#F4C542',
+  azulClaro: '#60A5FA',
+};
 
-function Cena({ imagem, textoTela }) {
+function Cena({ imagem, textoTela, narracao }) {
   const frame = useCurrentFrame();
   // Ken Burns: zoom lento e contínuo, dá sensação de movimento numa imagem estática.
   const scale = interpolate(frame, [0, 150], [1, 1.12], { extrapolateRight: 'clamp' });
@@ -19,7 +24,7 @@ function Cena({ imagem, textoTela }) {
       />
       <AbsoluteFill
         style={{
-          background: 'linear-gradient(to top, rgba(10,22,40,0.9) 0%, rgba(10,22,40,0.35) 30%, transparent 55%)',
+          background: 'linear-gradient(to top, rgba(10,22,40,0.92) 0%, rgba(10,22,40,0.45) 32%, transparent 58%)',
         }}
       />
       <div
@@ -34,22 +39,106 @@ function Cena({ imagem, textoTela }) {
       >
         {textoTela}
       </div>
+      {/* Legenda "de verdade": o texto realmente falado (com pontuação), menor,
+          logo abaixo do texto de impacto — atende a exigência de legenda/closed caption. */}
+      {narracao && (
+        <div
+          style={{
+            position: 'absolute', bottom: 250, left: 60, right: 150,
+            fontFamily: 'Inter, sans-serif', fontSize: 26, fontWeight: 500, lineHeight: 1.35,
+            color: 'rgba(255,255,255,0.88)', textShadow: '0 1px 8px rgba(0,0,0,.7)',
+            opacity: opacityTexto,
+          }}
+        >
+          {narracao}
+        </div>
+      )}
+    </AbsoluteFill>
+  );
+}
+
+// Última cena: tela de chamada para ação 100% renderizada em código (nada de IA aqui).
+// É o que resolve, de vez, o problema de cor errada / logotipo malformado no final do vídeo:
+// a identidade visual sai sempre idêntica, pixel a pixel, em todo vídeo — porque usamos o
+// PNG real do logo (icon-512.png, embutido em base64 pelo 07-render.mjs), não uma recriação.
+function CenaFinal({ textoTela, logoSrc }) {
+  const frame = useCurrentFrame();
+  const opacityGeral = interpolate(frame, [0, 18], [0, 1], { extrapolateRight: 'clamp' });
+  const subida = interpolate(frame, [0, 18], [24, 0], { extrapolateRight: 'clamp' });
+  // Botão "respirando" — leve pulso contínuo pra chamar atenção sem ser irritante.
+  const pulso = 1 + Math.sin(frame / 14) * 0.035;
+
+  return (
+    <AbsoluteFill
+      style={{
+        background: `radial-gradient(circle at 50% 30%, ${CORES.navyMedio} 0%, ${CORES.navyEscuro} 70%)`,
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+        opacity: opacityGeral, transform: `translateY(${subida}px)`,
+      }}
+    >
+      {logoSrc && (
+        <Img
+          src={logoSrc}
+          style={{ width: 180, height: 180, borderRadius: 40, boxShadow: '0 12px 40px rgba(0,0,0,.4)' }}
+        />
+      )}
+      <div
+        style={{
+          marginTop: 28, fontFamily: 'Outfit, sans-serif', fontWeight: 800, fontSize: 56,
+          color: '#fff', letterSpacing: -0.5,
+        }}
+      >
+        Calcula Prazo
+      </div>
+      <div
+        style={{
+          marginTop: 8, fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: 28,
+          color: CORES.azulClaro,
+        }}
+      >
+        calculaprazo.com.br
+      </div>
+      {textoTela && (
+        <div
+          style={{
+            marginTop: 20, fontFamily: 'Outfit, sans-serif', fontWeight: 600, fontSize: 32,
+            color: 'rgba(255,255,255,0.85)', textAlign: 'center', maxWidth: 780, padding: '0 40px',
+          }}
+        >
+          {textoTela}
+        </div>
+      )}
+      <div
+        style={{
+          marginTop: 44, background: CORES.dourado, color: CORES.navyEscuro,
+          fontFamily: 'Outfit, sans-serif', fontWeight: 700, fontSize: 32,
+          padding: '20px 52px', borderRadius: 999, transform: `scale(${pulso})`,
+          boxShadow: '0 8px 30px rgba(244,197,66,0.35)',
+        }}
+      >
+        Acesse agora
+      </div>
     </AbsoluteFill>
   );
 }
 
 // props recebidas via input.json (ver scripts/07-render.mjs)
-export function VideoDoArtigo({ cenas, narracaoSrc, fps }) {
+export function VideoDoArtigo({ cenas, narracaoSrc, logoSrc, fps }) {
   let inicioFrame = 0;
 
   return (
     <AbsoluteFill style={{ background: CORES.navyEscuro }}>
       <Audio src={narracaoSrc} />
       {cenas.map((cena, i) => {
+        const ehUltima = i === cenas.length - 1;
         const duracaoFrames = Math.round(cena.duracao_seg * fps);
         const seq = (
           <Sequence key={i} from={inicioFrame} durationInFrames={duracaoFrames}>
-            <Cena imagem={cena.imagemSrc} textoTela={cena.texto_tela} />
+            {ehUltima ? (
+              <CenaFinal textoTela={cena.texto_tela} logoSrc={logoSrc} />
+            ) : (
+              <Cena imagem={cena.imagemSrc} textoTela={cena.texto_tela} narracao={cena.narracao} />
+            )}
           </Sequence>
         );
         inicioFrame += duracaoFrames;

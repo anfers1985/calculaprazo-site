@@ -5,6 +5,7 @@ import { supabase } from './lib/supabase.mjs';
 
 const SITE_BASE_URL = 'https://calculaprazo.com.br';
 const POSTS_JSON_PATH = process.env.POSTS_JSON_PATH || 'data/posts.json';
+const LIMITE_DIARIO = 3;
 
 async function main() {
   const posts = JSON.parse(fs.readFileSync(POSTS_JSON_PATH, 'utf-8'));
@@ -18,6 +19,21 @@ async function main() {
     return;
   }
 
+  // Quantos jobs já foram criados hoje (UTC) — limite diário pra controlar custo/cota.
+  const inicioDoDia = new Date();
+  inicioDoDia.setUTCHours(0, 0, 0, 0);
+  const { count: criadosHoje, error: errCont } = await supabase
+    .from('video_jobs')
+    .select('id', { count: 'exact', head: true })
+    .gte('criado_em', inicioDoDia.toISOString());
+  if (errCont) throw new Error(errCont.message);
+
+  const vagasRestantes = LIMITE_DIARIO - (criadosHoje || 0);
+  if (vagasRestantes <= 0) {
+    console.log(`Limite diário de ${LIMITE_DIARIO} vídeos já atingido (${criadosHoje} criados hoje). Aguardando amanhã.`);
+    return;
+  }
+
   const slugs = recentes.map(p => p.id || p.slug);
   const { data: existentes, error } = await supabase
     .from('video_jobs')
@@ -26,7 +42,7 @@ async function main() {
   if (error) throw new Error(error.message);
 
   const jaTemJob = new Set((existentes || []).map(r => r.post_slug));
-  const novos = recentes.filter(p => !jaTemJob.has(p.id || p.slug));
+  const novos = recentes.filter(p => !jaTemJob.has(p.id || p.slug)).slice(0, vagasRestantes);
 
   if (novos.length === 0) {
     console.log('Todos os posts recentes já têm job de vídeo.');

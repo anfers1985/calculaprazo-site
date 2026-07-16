@@ -31,7 +31,16 @@ async function main(jobId) {
     cenas.push({ ...cena, imagemSrc });
   }
 
-  const inputProps = { cenas, narracaoSrc };
+  // Logo real do site (o mesmo ícone do favicon/PWA) embutido como base64 — usado na cena
+  // final em vez de qualquer coisa desenhada por IA, pra garantir o mesmo logotipo pixel a
+  // pixel sempre. Embutir como base64 é obrigatório: o Chrome do Remotion bloqueia carregar
+  // "file://" fora da pasta pública do projeto ("Not allowed to load local resource").
+  const logoLocal = path.resolve('icon-512.png');
+  const logoSrc = fs.existsSync(logoLocal)
+    ? `data:image/png;base64,${fs.readFileSync(logoLocal).toString('base64')}`
+    : '';
+
+  const inputProps = { cenas, narracaoSrc, logoSrc };
 
   fs.mkdirSync('output', { recursive: true });
   const inputPath = 'output/remotion-input.json';

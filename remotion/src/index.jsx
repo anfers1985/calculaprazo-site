@@ -15,7 +15,12 @@ const RemotionRoot = () => (
     fps={FPS}
     width={1080}
     height={1920} // formato vertical (Shorts). Para vídeo longo, trocar para 1920x1080.
-    defaultProps={{ cenas: input.cenas || [], narracaoSrc: input.narracaoSrc || '', fps: FPS }}
+    defaultProps={{
+      cenas: input.cenas || [],
+      narracaoSrc: input.narracaoSrc || '',
+      logoSrc: input.logoSrc || '',
+      fps: FPS,
+    }}
   />
 );
 
