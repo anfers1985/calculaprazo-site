@@ -1,12 +1,16 @@
-// Gera 1 imagem por cena usando Pollinations.ai (Flux) — 100% gratuito, sem chave de
-// API, sem cartão, sem cota diária. Módulo isolado de propósito: se um dia você quiser
-// trocar de provedor, só precisa reescrever a função gerarImagem() abaixo.
+// Gera 1 imagem por cena. Tenta primeiro o Gemini (Nano Banana — melhor qualidade),
+// e cai automaticamente pro Pollinations.ai (gratuito, sem chave) se o Gemini falhar
+// (ex: faturamento não ativado, cota, bloqueio de segurança). Módulo isolado de
+// propósito: cada provedor é uma função própria, fácil de trocar/remover.
 import fs from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
 import { getJob, updateJob, marcarErro, enviarArquivo } from './lib/supabase.mjs';
 
 const OUTPUT_DIR = 'output/imagens';
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GEMINI_IMAGE_MODEL = process.env.GEMINI_IMAGE_MODEL || 'gemini-3.1-flash-image';
+const USAR_GEMINI = process.env.USAR_GEMINI_IMAGE !== 'false'; // desliga com secret USAR_GEMINI_IMAGE=false
 
 const ESTILO_FIXO =
   ' Identidade visual: fundo azul marinho, acentos em dourado/azul claro, ' +
@@ -17,7 +21,24 @@ function aguardar(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function gerarImagem(prompt, destino) {
+async function gerarImagemGemini(prompt, destino) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_IMAGE_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+  const r = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt + ESTILO_FIXO }] }],
+      generationConfig: { responseModalities: ['IMAGE'] },
+    }),
+  });
+  if (!r.ok) throw new Error(`Gemini respondeu ${r.status}: ${(await r.text()).slice(0, 300)}`);
+  const data = await r.json();
+  const parte = data.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
+  if (!parte) throw new Error('Gemini não retornou imagem (provável bloqueio de segurança).');
+  fs.writeFileSync(destino, Buffer.from(parte.inlineData.data, 'base64'));
+}
+
+async function gerarImagemPollinations(prompt, destino) {
   const promptCompleto = encodeURIComponent(prompt + ESTILO_FIXO);
   const seed = Math.floor(Math.random() * 1_000_000);
   const url = `https://image.pollinations.ai/prompt/${promptCompleto}?width=768&height=1344&model=flux&nologo=true&enhance=true&seed=${seed}`;
@@ -40,6 +61,21 @@ async function gerarFallback(destino) {
   await page.setContent(html);
   await page.screenshot({ path: destino });
   await browser.close();
+}
+
+// Ordem de tentativa: Gemini (se habilitado) -> Pollinations -> Pollinations de novo -> fallback de marca.
+async function gerarImagem(prompt, destino) {
+  if (USAR_GEMINI && GEMINI_API_KEY) {
+    try {
+      await gerarImagemGemini(prompt, destino);
+      console.log('  (via Gemini/Nano Banana)');
+      return;
+    } catch (e) {
+      console.warn(`  Gemini falhou (${e.message.slice(0, 150)}), tentando Pollinations...`);
+    }
+  }
+  await gerarImagemPollinations(prompt, destino);
+  console.log('  (via Pollinations)');
 }
 
 async function main(jobId) {
@@ -68,7 +104,7 @@ async function main(jobId) {
     const caminhoStorage = `jobs/${jobId}/imagens/${nomeArquivo}`;
     await enviarArquivo(destinoLocal, caminhoStorage);
     caminhosStorage.push(caminhoStorage);
-    await aguardar(16000);
+    await aguardar(4000); // Gemini não tem o limite de taxa do Pollinations; a espera aqui é só cortesia
   }
 
   await updateJob(jobId, { imagens: caminhosStorage, status: 'imagens_ok' });
