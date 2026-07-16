@@ -11,3 +11,11 @@ og-image.png
 # OS
 .DS_Store
 Thumbs.db
+
+# Dependências e artefatos gerados — NUNCA commitar
+node_modules/
+remotion/node_modules/
+remotion/out/
+output/
+voices/
+kokoro-model/
