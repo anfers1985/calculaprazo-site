@@ -6,32 +6,18 @@ import { getJob, updateJob, marcarErro, garantirArquivoLocal, enviarArquivo } fr
 async function main(jobId) {
   const job = await getJob(jobId);
 
-  // IMPORTANTE: NÃO usamos mais remotion/public/ + staticFile()/caminho relativo.
-  // Em duas tentativas anteriores, o servidor HTTP interno do `remotion render`
-  // (CLI, diferente do Remotion Studio) devolveu 404 tanto para caminho absoluto
-  // fora da árvore do projeto Remotion quanto para caminho relativo dentro de
-  // remotion/public/ — porque fora do Studio o staticFile()/serve estático do
-  // Remotion tem um comportamento de prefixo/raiz que varia entre versões e não
-  // é confiável. A forma que elimina esse problema de vez é não depender de
-  // nenhum servidor de arquivo: embutimos a imagem/áudio como data URI (base64)
-  // diretamente no JSON de props, então o navegador nunca precisa fazer uma
-  // requisição HTTP para carregá-los.
-  const SCRATCH_DIR = path.resolve('output/assets');
-
-  const narracaoLocal = path.join(SCRATCH_DIR, 'narracao_completa.mp3');
+  const narracaoLocal = path.resolve('output/audio/narracao_completa.mp3');
   await garantirArquivoLocal(job.narracao_path, narracaoLocal);
-  const narracaoSrc = `data:audio/mpeg;base64,${fs.readFileSync(narracaoLocal).toString('base64')}`;
 
   const cenas = [];
   for (let i = 0; i < job.roteiro.cenas.length; i++) {
     const cena = job.roteiro.cenas[i];
-    const imagemLocal = path.join(SCRATCH_DIR, `cena_${String(i).padStart(2, '0')}.png`);
+    const imagemLocal = path.resolve(`output/imagens/cena_${String(i).padStart(2, '0')}.png`);
     await garantirArquivoLocal(job.imagens[i], imagemLocal);
-    const imagemSrc = `data:image/png;base64,${fs.readFileSync(imagemLocal).toString('base64')}`;
-    cenas.push({ ...cena, imagemSrc });
+    cenas.push({ ...cena, imagemSrc: `file://${imagemLocal}` });
   }
 
-  const inputProps = { cenas, narracaoSrc };
+  const inputProps = { cenas, narracaoSrc: `file://${narracaoLocal}` };
 
   fs.mkdirSync('output', { recursive: true });
   const inputPath = 'output/remotion-input.json';
@@ -40,7 +26,7 @@ async function main(jobId) {
   const saidaRelativa = 'out/video.mp4';
   console.log('Iniciando render do Remotion (pode demorar alguns minutos, sem log até terminar cada fase)...');
   execSync(
-    `./node_modules/.bin/remotion render src/index.jsx VideoDoArtigo "${saidaRelativa}" --props="${path.resolve(inputPath)}" --log=verbose`,
+    `./node_modules/.bin/remotion render src/index.jsx VideoDoArtigo "${saidaRelativa}" --props="${path.resolve(inputPath)}" --crf=16 --log=verbose`,
     { cwd: 'remotion', stdio: 'inherit' }
   );
 
