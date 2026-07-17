@@ -1,5 +1,17 @@
 [
   {
+    "id": "trabalhador-obrigado-aceitar-promocao-trabalho",
+    "title": "Trabalhador é obrigado a aceitar uma promoção no emprego?",
+    "category": "orientacoes-praticas",
+    "category_label": "Outros RH",
+    "excerpt": "Saiba quando o empregado pode recusar uma promoção no trabalho e o que diz a CLT sobre alteração contratual, transferência e cargo de confiança.",
+    "image": "https://images.unsplash.com/photo-1573497491208-6b1acb260507?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-07-17",
+    "updatedAt": "2026-07-17",
+    "tags": []
+  },
+  {
     "id": "empresa-pode-usar-redes-sociais-contra-voce",
     "title": "Empresa pode usar suas redes sociais contra você no trabalho?",
     "category": "artigos",
