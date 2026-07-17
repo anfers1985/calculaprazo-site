@@ -57,8 +57,11 @@ Em Settings → Secrets and variables → Actions, cadastre:
 | `SUPABASE_URL` | URL do projeto Supabase |
 | `SUPABASE_SERVICE_KEY` | service_role key do Supabase |
 | `WORKER_SECRET` | o mesmo `ADMIN_SECRET` do seu Worker `calculaprazo-views-api` |
-| `GEMINI_API_KEY` | chave do passo 3 (usada tanto no roteiro quanto nas imagens, igual ao admin faz hoje) |
+| `GEMINI_API_KEY` | chave do passo 3 (usada só pra gerar o roteiro em texto, não imagem) |
 | `AI_MODEL` | opcional — só se o seu Worker exigir o nome do modelo Gemini explicitamente |
+| `EDGE_TTS_VOICE` | opcional — nome da voz Edge TTS, padrão `pt-BR-FranciscaNeural` |
+| `PEXELS_API_KEY` | chave gratuita em pexels.com/api — usada pra buscar as fotos das cenas |
+| `PIXABAY_API_KEY` | opcional — chave gratuita em pixabay.com/api/docs, reforço se o Pexels não achar foto |
 | `YOUTUBE_CLIENT_ID` / `YOUTUBE_CLIENT_SECRET` / `YOUTUBE_REFRESH_TOKEN` | do passo 4 |
 
 ### 6. Ativar
@@ -68,7 +71,7 @@ hora em hora (pra reprocessar qualquer job que tenha ficado pendente ou com erro
 ## Como funciona o reprocessamento em caso de falha
 
 Cada etapa grava seu progresso na tabela `video_jobs` do Supabase. Se uma etapa falhar
-(ex: a IA devolveu um JSON malformado, ou o Gemini recusou uma imagem), o job fica com
+(ex: a IA devolveu um JSON malformado, ou nenhuma foto foi encontrada pra uma cena), o job fica com
 `status = 'erro'` e `erro_etapa` indicando onde parou. Na próxima rodada (automática, de
 hora em hora, ou manual via "Run workflow" no GitHub), a pipeline retoma exatamente
 daquela etapa — não refaz o que já deu certo.
@@ -76,18 +79,21 @@ daquela etapa — não refaz o que já deu certo.
 ## Limitações conhecidas desta primeira versão (Fase 1)
 
 - Só gera Shorts (vídeo vertical, até ~60s). Vídeo longo é a Fase 2.
-- A voz do Piper (`pt_BR-faber-medium`) é masculina — hoje é a única voz pt-BR estável e
-  gratuita disponível nesse motor. Se quiser trocar de voz/motor de TTS no futuro, a
-  única coisa que muda é `scripts/03-narracao.py` — o resto da pipeline não é afetado.
+- A narração usa Edge TTS (vozes neurais da Microsoft, gratuitas, sem chave de API) —
+  voz padrão `pt-BR-FranciscaNeural`, feminina. É uma API não-oficial (mesmo motor do
+  "Ler em voz alta" do Edge, sem passar pela conta paga do Azure), então não tem SLA
+  garantido; se um dia parar de funcionar, a alternativa "oficial" é o Azure Speech de
+  verdade (mesmas vozes, só precisa criar chave paga com cota grátis mensal).
 - As legendas são sincronizadas por cena (não palavra por palavra) — usam a duração real
   do áudio de cada cena. Funciona bem para o estilo "frase aparece, é falada, some".
-- O modelo de imagem do Gemini (`GEMINI_IMAGE_MODEL` em `scripts/05-imagens.mjs`) muda de
-  nome de tempos em tempos — confirme o nome atual em aistudio.google.com antes de rodar
-  pela primeira vez.
-- Se o Gemini recusar gerar a imagem de uma cena (comum em temas sensíveis do blog —
-  trabalho escravo, assédio, acidentes), a pipeline tenta de novo uma vez e, se falhar
-  outra vez, usa um card de marca simples no lugar — o job continua, não trava por causa
-  de uma imagem.
+- As imagens são fotos reais buscadas no Pexels (com Pixabay como reforço), não geradas
+  por IA — isso elimina o risco de mão/rosto malformado, mas depende do roteiro escrever
+  bons termos de busca em inglês (`prompt_imagem` em `config/prompts.json`). Se nenhuma
+  foto for encontrada pra uma cena, a pipeline usa um card de marca simples no lugar — o
+  job continua, não trava por causa de uma imagem.
+- A padronização visual entre fotos de fontes diferentes é feita por um filtro/overlay de
+  cor fixo no Remotion (`remotion/src/VideoComposition.jsx`), não nas próprias fotos —
+  trocar a paleta do canal é editar esse arquivo, não o script de busca de imagem.
 - O Centro de Configuração de Prompts (painel admin) ainda não foi construído — por
   enquanto, o prompt do roteiro é editado diretamente em `config/prompts.json`. Faz mais
   sentido construir esse painel depois que o formato de roteiro estiver validado com

@@ -62,7 +62,7 @@ jobs:
           cd remotion && npm install && chmod -R +x node_modules/.bin
 
       - name: Instalar dependências Python
-        run: pip install kokoro-onnx soundfile supabase requests
+        run: pip install edge-tts pydub supabase requests
 
       - name: Instalar ffmpeg
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
@@ -75,6 +75,9 @@ jobs:
           WORKER_SECRET: ${{ secrets.WORKER_SECRET }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           AI_MODEL: ${{ secrets.AI_MODEL }}  # opcional — nome do modelo Gemini, se seu Worker exigir
+          EDGE_TTS_VOICE: ${{ secrets.EDGE_TTS_VOICE }}  # opcional — padrão: pt-BR-FranciscaNeural
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}  # obrigatório pra buscar as fotos das cenas
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}  # opcional — reforço se o Pexels não achar foto
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}

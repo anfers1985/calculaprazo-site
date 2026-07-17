@@ -20,7 +20,16 @@ function Cena({ imagem, textoTela, narracao }) {
     <AbsoluteFill style={{ background: CORES.navyEscuro }}>
       <Img
         src={imagem}
-        style={{ width: '100%', height: '100%', objectFit: 'cover', transform: `scale(${scale})` }}
+        style={{
+          width: '100%', height: '100%', objectFit: 'cover', transform: `scale(${scale})`,
+          // Fotos vindas de bancos de imagem diferentes têm luz/cor variadas — esse filtro +
+          // o overlay de cor logo abaixo padronizam o tom pra "cara do canal" em toda cena,
+          // independente da foto de origem.
+          filter: 'saturate(0.88) contrast(1.04) brightness(0.97)',
+        }}
+      />
+      <AbsoluteFill
+        style={{ background: `linear-gradient(160deg, ${CORES.navyEscuro}59, ${CORES.azulClaro}1F)`, mixBlendMode: 'color' }}
       />
       <AbsoluteFill
         style={{

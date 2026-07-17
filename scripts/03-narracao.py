@@ -1,58 +1,69 @@
 #!/usr/bin/env python3
 """
-Gera a narração de cada cena do roteiro usando Kokoro-82M (TTS local, offline,
-Apache 2.0, gratuito e comercial) — muito mais natural que o Piper.
-Voz usada: pf_dora (feminina, pt-BR). Para trocar de voz, mude VOICE abaixo
-(outras opções pt-BR: pm_alex, pm_santa — masculinas).
+Gera a narração de cada cena do roteiro usando Edge TTS — vozes neurais da
+Microsoft (as mesmas do Azure Speech, acessadas de graça pelo mesmo canal do
+"Ler em voz alta" do navegador Edge). Gratuito, sem chave de API. Muito mais
+natural e com pronúncia pt-BR confiável do que o Kokoro (TTS comunitário, que
+foi a causa da narração saindo com sotaque/pronúncia errada).
+
+Voz padrão: pt-BR-FranciscaNeural (feminina). Para trocar, mude EDGE_VOICE
+abaixo ou a env var EDGE_TTS_VOICE (outras opções pt-BR: pt-BR-AntonioNeural,
+pt-BR-BrendaNeural, pt-BR-DonatoNeural, pt-BR-GiovannaNeural, pt-BR-HumbertoNeural).
+
+Como as pausas são feitas: o edge-tts não interpreta tags de pausa (<break>)
+de forma confiável quando embutidas no texto simples, então — como já fazíamos
+com o Kokoro — quebramos a narração em frases/orações e inserimos silêncio de
+verdade entre elas. Isso continua garantindo que ponto final e vírgula virem
+pausa real na fala, independente do motor de TTS por baixo.
 
 Requisitos (instalados no workflow do GitHub Actions):
-    pip install kokoro-onnx soundfile
-    ffmpeg (para concatenar os áudios e medir duração)
+    pip install edge-tts pydub soundfile supabase requests
+    ffmpeg (usado pelo pydub e para concatenar/medir os áudios)
 
 Uso:
     python 03-narracao.py <job_id>
 """
+import asyncio
 import os
 import re
-import subprocess
 import sys
-import wave
 from pathlib import Path
 
-import numpy as np
-import requests
-import soundfile as sf
-from kokoro_onnx import Kokoro
+import edge_tts
+from pydub import AudioSegment
 from supabase import create_client
 
 SUPABASE_URL = os.environ["SUPABASE_URL"]
 SUPABASE_KEY = os.environ["SUPABASE_SERVICE_KEY"]
 sb = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-VOICE = os.environ.get("KOKORO_VOICE", "pf_dora")
-LANG = "pt-br"
-MODEL_DIR = Path("kokoro-model")
+EDGE_VOICE = os.environ.get("EDGE_TTS_VOICE", "pt-BR-FranciscaNeural")
+VOZES_PT_BR_VALIDAS = {
+    "pt-BR-FranciscaNeural", "pt-BR-AntonioNeural", "pt-BR-BrendaNeural",
+    "pt-BR-DonatoNeural", "pt-BR-ElzaNeural", "pt-BR-FabioNeural",
+    "pt-BR-GiovannaNeural", "pt-BR-HumbertoNeural", "pt-BR-JulioNeural",
+    "pt-BR-LeilaNeural", "pt-BR-LeticiaNeural", "pt-BR-ManuelaNeural",
+    "pt-BR-NicolauNeural", "pt-BR-ValerioNeural", "pt-BR-YaraNeural",
+}
 OUTPUT_DIR = Path("output/audio")
 
-# Pausas reais entre frases/orações. O Kokoro não interpreta pontuação como pausa de
-# forma confiável quando o texto inteiro da cena é sintetizado de uma vez só — por isso
-# quebramos em frases e inserimos silêncio de verdade (em segundos) entre elas.
-PAUSA_PONTO_FINAL = 0.38   # depois de "." "!" "?"
-PAUSA_VIRGULA = 0.16       # depois de ","
-PAUSA_ENTRE_CENAS = 0.55   # respiro extra no fim de cada cena, além da pausa de ponto final
+# Pausas reais entre frases/orações (em milissegundos).
+PAUSA_PONTO_FINAL = 380   # depois de "." "!" "?"
+PAUSA_VIRGULA = 160       # depois de ","
+PAUSA_ENTRE_CENAS = 550   # respiro extra no fim de cada cena
 
-# Pequena variação de velocidade por posição da cena: o gancho (1ª cena) fica um pouco
-# mais ágil pra prender atenção, o CTA (última) fica um pouco mais lento e claro.
-SPEED_GANCHO = 1.04
-SPEED_CTA = 0.94
-SPEED_PADRAO = 1.0
+# Variação de ritmo por posição da cena, em % de velocidade pro parâmetro
+# `rate` do edge-tts (ex: "+4%" fala mais rápido, "-6%" mais devagar).
+RATE_GANCHO = "+4%"
+RATE_CTA = "-6%"
+RATE_PADRAO = "+0%"
 
 _SPLIT_FRASES = re.compile(r"(?<=[.!?])\s+")
 _SPLIT_VIRGULA = re.compile(r",\s*")
 
 
 def dividir_em_trechos(texto: str):
-    """Divide o texto da cena em (trecho, pausa_depois_em_seg), respeitando pontuação."""
+    """Divide o texto da cena em (trecho, pausa_depois_em_ms), respeitando pontuação."""
     trechos = []
     frases = [f.strip() for f in _SPLIT_FRASES.split(texto.strip()) if f.strip()]
     for frase in frases:
@@ -63,40 +74,10 @@ def dividir_em_trechos(texto: str):
             trechos.append((parte, pausa))
     return trechos
 
-MODEL_URL = "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx"
-VOICES_URL = "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin"
 
-
-def baixar_modelo_se_necessario():
-    MODEL_DIR.mkdir(parents=True, exist_ok=True)
-    modelo = MODEL_DIR / "kokoro-v1.0.onnx"
-    vozes = MODEL_DIR / "voices-v1.0.bin"
-    for url, destino in [(MODEL_URL, modelo), (VOICES_URL, vozes)]:
-        if not destino.exists():
-            print(f"Baixando {destino.name}...")
-            resp = requests.get(url, timeout=180)
-            resp.raise_for_status()
-            destino.write_bytes(resp.content)
-    return modelo, vozes
-
-
-def silencio(duracao_seg: float, sample_rate: int) -> np.ndarray:
-    return np.zeros(int(duracao_seg * sample_rate), dtype=np.float32)
-
-
-def duracao_wav(caminho: Path) -> float:
-    with wave.open(str(caminho), "rb") as w:
-        return w.getnframes() / float(w.getframerate())
-
-
-def concatenar_wavs(caminhos: list[Path], destino: Path):
-    lista_path = destino.with_suffix(".txt")
-    lista_path.write_text("\n".join(f"file '{c.resolve()}'" for c in caminhos))
-    subprocess.run(
-        ["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(lista_path),
-         "-c:a", "libmp3lame", "-q:a", "2", str(destino)],
-        check=True,
-    )
+async def sintetizar_trecho(texto: str, rate: str, destino_mp3: Path):
+    comunicador = edge_tts.Communicate(texto, voice=EDGE_VOICE, rate=rate)
+    await comunicador.save(str(destino_mp3))
 
 
 def main(job_id: str):
@@ -104,40 +85,46 @@ def main(job_id: str):
     roteiro = job["roteiro"]
     cenas = roteiro["cenas"]
 
-    modelo, vozes = baixar_modelo_se_necessario()
-    kokoro = Kokoro(str(modelo), str(vozes))
+    if EDGE_VOICE not in VOZES_PT_BR_VALIDAS:
+        print(
+            f"AVISO: voz '{EDGE_VOICE}' não está na lista de vozes pt-BR conhecidas "
+            f"do Edge TTS. Confira o nome em EDGE_TTS_VOICE — nomes têm que ser "
+            f"exatamente iguais aos da Microsoft (ex: 'pt-BR-FranciscaNeural')."
+        )
+    print(f"Gerando narração com voice='{EDGE_VOICE}' ({len(cenas)} cenas)")
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    tmp_dir = OUTPUT_DIR / "_tmp_trechos"
+    tmp_dir.mkdir(parents=True, exist_ok=True)
 
     wavs = []
     for i, cena in enumerate(cenas):
         if i == 0:
-            speed = SPEED_GANCHO
+            rate = RATE_GANCHO
         elif i == len(cenas) - 1:
-            speed = SPEED_CTA
+            rate = RATE_CTA
         else:
-            speed = SPEED_PADRAO
+            rate = RATE_PADRAO
 
         trechos = dividir_em_trechos(cena["narracao"])
-        pedacos = []
-        sample_rate = None
-        for texto_trecho, pausa_depois in trechos:
-            samples, sample_rate = kokoro.create(
-                texto_trecho, voice=VOICE, speed=speed, lang=LANG
-            )
-            pedacos.append(samples)
-            pedacos.append(silencio(pausa_depois, sample_rate))
-        # Respiro extra entre cenas (além da pausa de ponto final já incluída acima).
-        pedacos.append(silencio(PAUSA_ENTRE_CENAS, sample_rate))
+        cena_audio = AudioSegment.empty()
+        for j, (texto_trecho, pausa_depois_ms) in enumerate(trechos):
+            trecho_mp3 = tmp_dir / f"cena_{i:02d}_trecho_{j:02d}.mp3"
+            asyncio.run(sintetizar_trecho(texto_trecho, rate, trecho_mp3))
+            cena_audio += AudioSegment.from_file(trecho_mp3, format="mp3")
+            cena_audio += AudioSegment.silent(duration=pausa_depois_ms)
+        cena_audio += AudioSegment.silent(duration=PAUSA_ENTRE_CENAS)
 
-        cena_audio = np.concatenate(pedacos)
         wav_path = OUTPUT_DIR / f"cena_{i:02d}.wav"
-        sf.write(str(wav_path), cena_audio, sample_rate)
-        cena["duracao_seg"] = round(len(cena_audio) / sample_rate, 2)
+        cena_audio.export(str(wav_path), format="wav")
+        cena["duracao_seg"] = round(len(cena_audio) / 1000, 2)
         wavs.append(wav_path)
 
     narracao_final = OUTPUT_DIR / "narracao_completa.mp3"
-    concatenar_wavs(wavs, narracao_final)
+    completa = AudioSegment.empty()
+    for w in wavs:
+        completa += AudioSegment.from_file(w, format="wav")
+    completa.export(str(narracao_final), format="mp3", bitrate="128k")
 
     caminho_storage = f"jobs/{job_id}/narracao.mp3"
     with open(narracao_final, "rb") as f:

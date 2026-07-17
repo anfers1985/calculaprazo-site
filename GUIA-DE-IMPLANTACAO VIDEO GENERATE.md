@@ -102,12 +102,15 @@ Cadastre um por um:
 | `SUPABASE_SERVICE_KEY` | Passo 2 |
 | `WORKER_SECRET` | O mesmo valor que já é `ADMIN_SECRET` no seu Worker `calculaprazo-views-api` hoje |
 | `GEMINI_API_KEY` | Passo 3 |
+| `PEXELS_API_KEY` | Crie grátis em pexels.com/api — usada pra buscar as fotos das cenas |
+| `PIXABAY_API_KEY` | Opcional — grátis em pixabay.com/api/docs, reforço se o Pexels não achar foto |
 | `YOUTUBE_CLIENT_ID` | Passo 4 |
 | `YOUTUBE_CLIENT_SECRET` | Passo 4 |
 | `YOUTUBE_REFRESH_TOKEN` | Passo 5 |
 
-Não precisa cadastrar `AI_MODEL` — é opcional, só usa se seu Worker exigir isso
-explicitamente (hoje não exige, pelo que vi no seu `admin/index.html`).
+Não precisa cadastrar `AI_MODEL` nem `EDGE_TTS_VOICE` — os dois são opcionais: o primeiro
+só é usado se seu Worker exigir isso explicitamente (hoje não exige, pelo que vi no seu
+`admin/index.html`), e o segundo só se você quiser trocar a voz padrão (`pt-BR-FranciscaNeural`).
 
 ---
 
@@ -146,12 +149,13 @@ node scripts/05-imagens.mjs <job_id>
 
 ## O que já está resolvido nesta versão
 
-- Narração 100% local (Piper, MIT, zero custo, sem cartão) — roda dentro do próprio
-  GitHub Actions, não precisa do seu notebook ligado.
+- Narração via Edge TTS (vozes neurais Microsoft, gratuito, sem chave de API) — roda
+  dentro do próprio GitHub Actions, não precisa do seu notebook ligado.
 - Thumbnail sem IA (HTML/CSS renderizado via Playwright) — identidade visual sempre
   idêntica, sem gastar tokens.
-- Fallback automático se o Gemini recusar gerar imagem de um tema sensível (trabalho
-  escravo, assédio etc.) — o job continua com um card de marca no lugar.
+- Imagens são fotos reais buscadas no Pexels/Pixabay (não geradas por IA) — elimina o
+  risco de mão/rosto malformado; se nenhuma foto for encontrada, o job continua com um
+  card de marca no lugar.
 - Reprocessamento automático a partir da etapa que falhou, sem refazer o que já deu certo.
 
 ## O que ainda não está pronto (próximas fases, se quiser seguir depois)
