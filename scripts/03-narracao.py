@@ -37,7 +37,7 @@ SUPABASE_URL = os.environ["SUPABASE_URL"]
 SUPABASE_KEY = os.environ["SUPABASE_SERVICE_KEY"]
 sb = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-EDGE_VOICE = os.environ.get("EDGE_TTS_VOICE", "pt-BR-FranciscaNeural")
+EDGE_VOICE = os.environ.get("EDGE_TTS_VOICE") or "pt-BR-FranciscaNeural"
 VOZES_PT_BR_VALIDAS = {
     "pt-BR-FranciscaNeural", "pt-BR-AntonioNeural", "pt-BR-BrendaNeural",
     "pt-BR-DonatoNeural", "pt-BR-ElzaNeural", "pt-BR-FabioNeural",
