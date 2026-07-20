@@ -31,13 +31,14 @@ from pathlib import Path
 
 import edge_tts
 from pydub import AudioSegment
+from pydub.silence import detect_leading_silence
 from supabase import create_client
 
 SUPABASE_URL = os.environ["SUPABASE_URL"]
 SUPABASE_KEY = os.environ["SUPABASE_SERVICE_KEY"]
 sb = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-EDGE_VOICE = os.environ.get("EDGE_TTS_VOICE", "pt-BR-FranciscaNeural")
+EDGE_VOICE = os.environ.get("EDGE_TTS_VOICE") or "pt-BR-FranciscaNeural"
 VOZES_PT_BR_VALIDAS = {
     "pt-BR-FranciscaNeural", "pt-BR-AntonioNeural", "pt-BR-BrendaNeural",
     "pt-BR-DonatoNeural", "pt-BR-ElzaNeural", "pt-BR-FabioNeural",
@@ -47,10 +48,13 @@ VOZES_PT_BR_VALIDAS = {
 }
 OUTPUT_DIR = Path("output/audio")
 
-# Pausas reais entre frases/orações (em milissegundos).
-PAUSA_PONTO_FINAL = 380   # depois de "." "!" "?"
-PAUSA_VIRGULA = 160       # depois de ","
-PAUSA_ENTRE_CENAS = 550   # respiro extra no fim de cada cena
+# Pausas reais entre frases/orações (em milissegundos). Valores mais baixos que antes
+# porque agora cortamos o silêncio que o próprio Edge TTS já embute em cada trecho — sem
+# esse corte, esses valores se somavam ao silêncio nativo e o áudio saía bem mais pausado
+# do que o configurado (medido: 1,2 a 2,9s reais contra 380/550ms configurados).
+PAUSA_PONTO_FINAL = 260   # depois de "." "!" "?"
+PAUSA_VIRGULA = 110       # depois de ","
+PAUSA_ENTRE_CENAS = 380   # respiro extra no fim de cada cena
 
 # Variação de ritmo por posição da cena, em % de velocidade pro parâmetro
 # `rate` do edge-tts (ex: "+4%" fala mais rápido, "-6%" mais devagar).
@@ -78,6 +82,16 @@ def dividir_em_trechos(texto: str):
 async def sintetizar_trecho(texto: str, rate: str, destino_mp3: Path):
     comunicador = edge_tts.Communicate(texto, voice=EDGE_VOICE, rate=rate)
     await comunicador.save(str(destino_mp3))
+
+
+def cortar_silencio_das_pontas(segmento: AudioSegment, limiar_db: int = -42) -> AudioSegment:
+    """Remove o silêncio que o Edge TTS deixa no início/fim de cada trecho sintetizado,
+    pra quem controlar a pausa entre falas seja só o PAUSA_* daqui, não o motor de TTS."""
+    inicio = detect_leading_silence(segmento, silence_threshold=limiar_db)
+    fim = detect_leading_silence(segmento.reverse(), silence_threshold=limiar_db)
+    duracao = len(segmento)
+    cortado = segmento[inicio: duracao - fim]
+    return cortado if len(cortado) > 50 else segmento  # nunca corta o áudio inteiro
 
 
 def main(job_id: str):
@@ -111,7 +125,9 @@ def main(job_id: str):
         for j, (texto_trecho, pausa_depois_ms) in enumerate(trechos):
             trecho_mp3 = tmp_dir / f"cena_{i:02d}_trecho_{j:02d}.mp3"
             asyncio.run(sintetizar_trecho(texto_trecho, rate, trecho_mp3))
-            cena_audio += AudioSegment.from_file(trecho_mp3, format="mp3")
+            audio_trecho = AudioSegment.from_file(trecho_mp3, format="mp3")
+            audio_trecho = cortar_silencio_das_pontas(audio_trecho)
+            cena_audio += audio_trecho
             cena_audio += AudioSegment.silent(duration=pausa_depois_ms)
         cena_audio += AudioSegment.silent(duration=PAUSA_ENTRE_CENAS)
 

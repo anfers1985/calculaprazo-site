@@ -64,8 +64,8 @@ jobs:
       - name: Instalar dependências Python
         run: pip install edge-tts pydub supabase requests
 
-      - name: Instalar ffmpeg
-        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Instalar ffmpeg e Tesseract OCR
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg tesseract-ocr tesseract-ocr-por
 
       - name: Processar job ${{ matrix.job_id }}
         run: node scripts/processar-job.mjs "${{ matrix.job_id }}"
