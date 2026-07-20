@@ -4,20 +4,11 @@
         style="width:300px;height:250px;max-width:100%;margin:0 auto;"></div>
    - Reserva o espaço via style inline (width/height) => sem CLS.
    - Carrega o anúncio só quando o slot está perto da viewport (lazy).
-   - Cada anúncio roda isolado num iframe próprio (srcdoc), evitando
-     conflito entre múltiplos banners na mesma página (atOptions global).
+   - Cada anúncio roda isolado em /ads/adsterra-slot.html (mesma origem,
+     mas fora do CSP restrito do site principal — ver _headers).
    ════════════════════════════════════════════════════ */
 (function () {
   'use strict';
-
-  function buildSrcDoc(key, w, h) {
-    return '<!DOCTYPE html><html><head><meta charset="utf-8">' +
-      '<style>html,body{margin:0;padding:0;overflow:hidden;background:transparent;}</style>' +
-      '</head><body>' +
-      '<script>atOptions = {"key":"' + key + '","format":"iframe","height":' + h + ',"width":' + w + ',"params":{}};<\/script>' +
-      '<script src="https://www.highperformanceformat.com/' + key + '/invoke.js"><\/script>' +
-      '</body></html>';
-  }
 
   function loadSlot(el) {
     if (el.getAttribute('data-adst-loaded')) return;
@@ -34,7 +25,7 @@
     iframe.setAttribute('loading', 'lazy');
     iframe.setAttribute('aria-hidden', 'true');
     iframe.style.cssText = 'width:' + w + 'px;height:' + h + 'px;max-width:100%;border:none;display:block;';
-    iframe.srcdoc = buildSrcDoc(key, w, h);
+    iframe.src = '/ads/adsterra-slot.html?key=' + encodeURIComponent(key) + '&w=' + w + '&h=' + h;
     el.appendChild(iframe);
   }
 

@@ -60,16 +60,28 @@
 # Segurança geral
 /*
   X-Content-Type-Options: nosniff
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://adservice.google.com https://www.googletagservices.com https://partner.googleadservices.com https://tpc.googlesyndication.com https://www.googletagmanager.com https://static.cloudflareinsights.com https://www.highperformanceformat.com; img-src 'self' data: https: blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://stats.g.doubleclick.net https://cloudflareinsights.com https://api.bcb.gov.br https://open.er-api.com https://economia.awesomeapi.com.br https://api.github.com https://www.googleapis.com https://api.web3forms.com https://googleads.g.doubleclick.net https://adservice.google.com https://calculaprazo-views-api.andersonfernand3s.workers.dev; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://pagead2.googlesyndication.com https://www.highperformanceformat.com;
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://adservice.google.com https://www.googletagservices.com https://partner.googleadservices.com https://tpc.googlesyndication.com https://www.googletagmanager.com https://static.cloudflareinsights.com; img-src 'self' data: https: blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://stats.g.doubleclick.net https://cloudflareinsights.com https://api.bcb.gov.br https://open.er-api.com https://economia.awesomeapi.com.br https://api.github.com https://www.googleapis.com https://api.web3forms.com https://googleads.g.doubleclick.net https://adservice.google.com https://calculaprazo-views-api.andersonfernand3s.workers.dev; frame-src 'self' https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://pagead2.googlesyndication.com;
   X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
 
 # ============================================================
-# ADSTERRA — ativo desde [data da implementação dos banners de teste]
-# Domínio liberado no CSP acima: www.highperformanceformat.com
-# (formato "iframe" / atOptions, usado nos banners fixos por tamanho)
+# ADSTERRA — slot isolado em /ads/adsterra-slot.html
+#
+# O invoke.js do Adsterra contata domínios de criativo que trocam
+# a cada carregamento (ex.: realizationnewestfangs.com, spendsdetachment.com,
+# protrafficinspector.com — mudam sem aviso), então é inviável colocar
+# domínio fixo em allowlist no CSP principal. A solução foi isolar os
+# anúncios numa página própria (/ads/*) carregada via <iframe src="...">
+# (não srcdoc — por isso não herda o CSP do bloco /* acima) e dar a essa
+# página um CSP dedicado e mais permissivo, só para si mesma. O restante
+# do site (calculadoras, blog, admin) permanece protegido pelo CSP
+# restrito de cima.
+#
+# "! Content-Security-Policy" remove o header herdado do bloco /* antes
+# de definir o novo — sem isso, o navegador aplicaria a INTERSEÇÃO dos
+# dois CSPs (o mais restritivo prevaleceria) e nada mudaria.
 #
 # Placement IDs Adsterra para referência (não usar Popunder,
 # Smartlink, Social Bar nem Native Banner neste site):
@@ -78,6 +90,10 @@
 #   Banner 160x600:947ebabcaa1be2c0967dcdaca3c67aba
 #   Banner 728x90: 4f5894de8245c23422f7de3e03a1363e
 # ============================================================
+/ads/*
+  ! Content-Security-Policy
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https:; connect-src https:; frame-src https:; img-src * data: https:; style-src 'self' 'unsafe-inline';
+  X-Robots-Tag: noindex, nofollow
 
 # POST_TEMPLATE — impede indexação pelo Google
 /blog/POST_TEMPLATE.html

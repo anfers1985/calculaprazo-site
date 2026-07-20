@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<title>ad</title>
+<style>
+  html, body { margin: 0; padding: 0; overflow: hidden; background: transparent; }
+</style>
+</head>
+<body>
+<script>
+  /* ════════════════════════════════════════════════════
+     Calcula Prazo — slot isolado do Adsterra
+     Carregado via <iframe src="/ads/adsterra-slot.html?key=..&w=..&h=..">
+     a partir de js/ads-adsterra.js.
+
+     Este arquivo é servido com um CSP próprio, mais permissivo,
+     definido em _headers só para o caminho /ads/* — o CSP restrito
+     do restante do site (index.html, /blog/*, etc.) não é afetado
+     porque esta é uma navegação real (src), não um srcdoc que
+     herdaria o CSP da página que o embutiu.
+     ════════════════════════════════════════════════════ */
+  (function () {
+    'use strict';
+
+    var params = new URLSearchParams(window.location.search);
+    var key = params.get('key');
+    var w = parseInt(params.get('w'), 10);
+    var h = parseInt(params.get('h'), 10);
+
+    if (!key || !w || !h) return;
+
+    window.atOptions = {
+      key: key,
+      format: 'iframe',
+      height: h,
+      width: w,
+      params: {}
+    };
+
+    var s = document.createElement('script');
+    s.src = 'https://www.highperformanceformat.com/' + key + '/invoke.js';
+    document.body.appendChild(s);
+  })();
+</script>
+</body>
+</html>
