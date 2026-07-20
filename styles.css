@@ -786,6 +786,20 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   .ad-desktop-only { display: none !important; }  /* oculta ad extra no mobile */
 }
 
+/* ── Adsterra: slots com espaço reservado (evita CLS) ── */
+.adst-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin: 20px auto;
+}
+.ad-mobile-only { display: none !important; }
+@media (max-width: 768px) {
+  .ad-mobile-only { display: flex !important; }
+  .ad-desktop-only.adst-slot { display: none !important; }
+}
+
 /* ════════════════════════════════════════
    CONTEÚDO SEO
 ════════════════════════════════════════ */

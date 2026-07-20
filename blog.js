@@ -496,9 +496,15 @@ function renderNhTop10(){
   });
 
   function buildItems(slugs) {
-    return slugs.map(function(slug, i){
-      var p = map[slug];
-      if(!p) return null;
+    // Primeiro filtra os slugs sem post correspondente, depois numera
+    // a lista já filtrada — evita "buracos" tipo Top 10 começando em 3.
+    var validPosts = slugs
+      .map(function(slug){ return { slug: slug, post: map[slug] }; })
+      .filter(function(entry){ return !!entry.post; });
+
+    return validPosts.map(function(entry, i){
+      var slug = entry.slug;
+      var p = entry.post;
       var numCls = i < 3 ? 'top' : 'rest';
       var cat = p.category_label || p.category || '';
       var imgUrl = p.image || '';
@@ -513,7 +519,7 @@ function renderNhTop10(){
           +(cat?'<div class="nh-top10-cat">'+cat+'</div>':'')
         +'</div>'
       +'</a>';
-    }).filter(Boolean);
+    });
   }
 
   function renderSlugs(slugs) {

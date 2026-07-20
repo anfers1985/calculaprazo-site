@@ -991,6 +991,14 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .ad-block ins[data-ad-status="unfilled"],
 .ad-block ins:not([data-ad-status]) { display:none !important; height:0 !important; }
 
+/* ── Adsterra: slots com espaço reservado (evita CLS) ── */
+.adst-slot { display:flex; align-items:center; justify-content:center; overflow:hidden; margin:20px auto; }
+.ad-mobile-only { display:none !important; }
+@media (max-width: 768px) {
+  .ad-mobile-only { display:flex !important; }
+  .ad-desktop-only.adst-slot { display:none !important; }
+}
+
 .post-cta {
   background: linear-gradient(135deg, var(--b900), var(--b700));
   border-radius: var(--rl); padding: 28px 32px; margin-top: 40px;
@@ -1088,8 +1096,10 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 </div>
 <div class="ad-sidebar-wrap ad-sidebar-right" id="ad-sidebar-right">
   <div class="ad-sidebar-slot">
-    
-
+    <!-- ▸ ANÚNCIO ADSTERRA: sidebar (160x600, desktop) -->
+    <div class="adst-slot" id="ad-sidebar-adsterra"
+         data-adst-key="947ebabcaa1be2c0967dcdaca3c67aba" data-adst-w="160" data-adst-h="600"
+         style="width:160px;height:600px;max-width:100%;margin:0;"></div>
   </div>
 </div>
 
@@ -1187,6 +1197,11 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
         
       </div>
 
+      <!-- ▸ ANÚNCIO ADSTERRA: topo do artigo (728x90, desktop) -->
+      <div class="adst-slot ad-desktop-only" id="ad-post-top-adsterra"
+           data-adst-key="4f5894de8245c23422f7de3e03a1363e" data-adst-w="728" data-adst-h="90"
+           style="width:728px;height:90px;max-width:100%;"></div>
+
       <!-- Article content -->
       <article class="article-body">
         <div class="resumo-rapido">
@@ -1218,6 +1233,11 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <p>O caso analisado pelo TST envolveu um auxiliar de operações da empresa Harsco Metals Ltda., que trabalhava em Piracicaba (SP) prestando serviços para a ArcelorMittal Brasil S.A.</p>
 
   <p>O empregado foi dispensado em fevereiro de 2021 após o encerramento do contrato de prestação de serviços entre as empresas. Na Justiça do Trabalho, ele alegou que teria direito à estabilidade provisória por ter integrado a CIPA.</p>
+
+  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (300x250, desktop e mobile) -->
+  <div class="adst-slot" id="ad-post-mid-adsterra"
+       data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+       style="width:300px;height:250px;max-width:100%;"></div>
 
   <h2>Empresa alegou encerramento das atividades no local</h2>
 
@@ -1254,6 +1274,11 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <p>As informações desta matéria foram divulgadas pelo Tribunal Superior do Trabalho (TST).</p>
 
   <p><strong>Processo:</strong> ROT-10434-69.2024.5.15.0000.</p>
+
+  <!-- ▸ ANÚNCIO ADSTERRA: final do artigo (320x50, mobile) -->
+  <div class="adst-slot ad-mobile-only" id="ad-post-end-adsterra"
+       data-adst-key="f9a6a26e51d4d397ec65d29e8f2ca7a5" data-adst-w="320" data-adst-h="50"
+       style="width:320px;height:50px;max-width:100%;"></div>
       </article>
 
       <!-- Compartilhamento -->
@@ -1553,6 +1578,7 @@ document.addEventListener('click', function(e) {
 // ── ANALYTICS / VIEWS ─────────────────────────
 </script>
 <script src="/js/analytics.js" defer></script>
+<script src="/js/ads-adsterra.js?v=1" defer></script>
 <script>
 // ── RELATED POSTS ─────────────────────────────
 var THIS_SLUG = 'cnpj-ativo-nao-garante-estabilidade-cipeiro';
