@@ -1,5 +1,53 @@
 [
   {
+    "id": "conteudo-ia-trabalho-pertence-empresa-ou-empregado",
+    "title": "Conteúdo criado com IA no trabalho pertence ao empregado ou à empresa?",
+    "category": "artigos",
+    "category_label": "Artigos",
+    "excerpt": "Descubra quem é o titular de textos, imagens e códigos criados com IA no trabalho e como a legislação brasileira trata os direitos autorais nesses casos.",
+    "image": "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-07-17",
+    "updatedAt": "2026-07-17",
+    "tags": []
+  },
+  {
+    "id": "trabalhador-obrigado-aceitar-promocao-trabalho",
+    "title": "Trabalhador é obrigado a aceitar uma promoção no emprego?",
+    "category": "orientacoes-praticas",
+    "category_label": "Outros RH",
+    "excerpt": "Saiba quando o empregado pode recusar uma promoção no trabalho e o que diz a CLT sobre alteração contratual, transferência e cargo de confiança.",
+    "image": "https://images.unsplash.com/photo-1573497491208-6b1acb260507?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-07-17",
+    "updatedAt": "2026-07-17",
+    "tags": []
+  },
+  {
+    "id": "empresa-pode-usar-redes-sociais-contra-voce",
+    "title": "Empresa pode usar suas redes sociais contra você no trabalho?",
+    "category": "artigos",
+    "category_label": "Artigos",
+    "excerpt": "Entenda quando a empresa pode usar publicações em redes sociais contra o trabalhador, os limites da LGPD e quando uma postagem pode gerar justa causa.",
+    "image": "https://images.unsplash.com/photo-1579869847557-1f67382cc158?q=80&w=1334&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-07-17",
+    "updatedAt": "2026-07-17",
+    "tags": []
+  },
+  {
+    "id": "trt2-teletrabalho-reducao-jornada-empregada-tea",
+    "title": "TRT-2 garante teletrabalho e redução de jornada a empregada com TEA",
+    "category": "jurisprudencia-trts",
+    "category_label": "TRT",
+    "excerpt": "TRT-2 manteve decisão que assegura teletrabalho integral, redução de 30% da jornada e indenização a empregada com TEA, sem redução salarial.",
+    "image": "https://images.unsplash.com/photo-1545558014-8692077e9b5c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-07-17",
+    "updatedAt": "2026-07-17",
+    "tags": []
+  },
+  {
     "id": "whatsapp-empresa-fora-expediente-horas-extras",
     "title": "WhatsApp da empresa após o expediente gera horas extras?",
     "category": "rh-jornada",
