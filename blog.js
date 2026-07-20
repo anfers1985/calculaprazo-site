@@ -536,10 +536,15 @@ function renderNhTop10(){
   fetch(workerUrl + '/top/10')
     .then(function(r){ return r.ok ? r.json() : null; })
     .then(function(d){
-      var slugs = d && d.top && d.top.length >= 5
+      var apiSlugs = (d && d.top && d.top.length >= 5)
         ? d.top.map(function(item){ return item.slug || item; })
-        : NH_TOP10_IDS;
-      renderSlugs(slugs);
+        : [];
+      // Completa até 10 com o fallback, sem duplicar os que já vieram da API
+      var slugs = apiSlugs.slice();
+      for (var i = 0; i < NH_TOP10_IDS.length && slugs.length < 10; i++) {
+        if (slugs.indexOf(NH_TOP10_IDS[i]) === -1) slugs.push(NH_TOP10_IDS[i]);
+      }
+      renderSlugs(slugs.length ? slugs : NH_TOP10_IDS);
     })
     .catch(function(){
       // Fallback para lista hardcoded se Worker indisponível
