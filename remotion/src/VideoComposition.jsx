@@ -36,32 +36,48 @@ function Cena({ imagem, textoTela, narracao }) {
           background: 'linear-gradient(to top, rgba(10,22,40,0.92) 0%, rgba(10,22,40,0.45) 32%, transparent 58%)',
         }}
       />
+      {/* CORREÇÃO (era o bug da legenda sobreposta na UI do Shorts):
+          antes, texto_tela e narração tinham cada um seu próprio "bottom" fixo (340 e 250px).
+          Numa tela de 1920px de altura, o YouTube Shorts reserva ~380-420px no rodapé pra
+          @canal/título/descrição/barra de música, e ~150-170px na lateral direita pros ícones
+          de curtir/comentar/compartilhar. bottom:250 caía DENTRO dessa faixa — por isso a
+          legenda aparecia colada/ilegível em cima do título e do nome do canal no Shorts.
+          A correção: um único bloco ancorado por "bottom" (não por "top"), que cresce pra CIMA
+          conforme o texto ocupa mais linhas — assim o texto_tela nunca empurra a narração pra
+          dentro da zona de risco, não importa o tamanho do roteiro daquela cena. */}
       <div
         style={{
-          // bottom:340 fica acima da faixa que o YouTube Shorts cobre com botões/descrição/@canal;
-          // right:150 evita a coluna de ícones (curtir/comentar/compartilhar) do lado direito.
-          position: 'absolute', bottom: 340, left: 60, right: 150,
-          fontFamily: 'Outfit, sans-serif', fontSize: 50, fontWeight: 700,
-          color: '#fff', textShadow: '0 2px 12px rgba(0,0,0,.6)',
+          position: 'absolute', bottom: 460, left: 60, right: 170,
+          display: 'flex', flexDirection: 'column', gap: 20,
           opacity: opacityTexto,
         }}
       >
-        {textoTela}
-      </div>
-      {/* Legenda "de verdade": o texto realmente falado (com pontuação), menor,
-          logo abaixo do texto de impacto — atende a exigência de legenda/closed caption. */}
-      {narracao && (
         <div
           style={{
-            position: 'absolute', bottom: 250, left: 60, right: 150,
-            fontFamily: 'Inter, sans-serif', fontSize: 26, fontWeight: 500, lineHeight: 1.35,
-            color: 'rgba(255,255,255,0.88)', textShadow: '0 1px 8px rgba(0,0,0,.7)',
-            opacity: opacityTexto,
+            fontFamily: 'Outfit, sans-serif', fontSize: 50, fontWeight: 800, lineHeight: 1.15,
+            color: '#fff', textShadow: '0 2px 10px rgba(0,0,0,.75)',
+            borderLeft: `6px solid ${CORES.dourado}`, paddingLeft: 22,
           }}
         >
-          {narracao}
+          {textoTela}
         </div>
-      )}
+        {/* Legenda "de verdade": o texto realmente falado (com pontuação) — atende a exigência
+            de legenda/closed caption. Fundo sólido (em vez de só text-shadow) garante leitura
+            mesmo sobre fotos claras ou de alto contraste, e dá aquele visual de "caption bar"
+            que roda bem em formato viral. */}
+        {narracao && (
+          <div
+            style={{
+              alignSelf: 'flex-start', maxWidth: '100%',
+              fontFamily: 'Inter, sans-serif', fontSize: 27, fontWeight: 600, lineHeight: 1.4,
+              color: '#fff', background: 'rgba(10,22,40,0.78)', borderRadius: 14,
+              padding: '10px 20px',
+            }}
+          >
+            {narracao}
+          </div>
+        )}
+      </div>
     </AbsoluteFill>
   );
 }
