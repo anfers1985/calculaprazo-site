@@ -54,7 +54,7 @@ function Cena({ imagem, textoTela, narracao }) {
       >
         <div
           style={{
-            fontFamily: 'Outfit, sans-serif', fontSize: 50, fontWeight: 800, lineHeight: 1.15,
+            fontFamily: 'Outfit, sans-serif', fontSize: 56, fontWeight: 800, lineHeight: 1.15,
             color: '#fff', textShadow: '0 2px 10px rgba(0,0,0,.75)',
             borderLeft: `6px solid ${CORES.dourado}`, paddingLeft: 22,
           }}
@@ -69,7 +69,7 @@ function Cena({ imagem, textoTela, narracao }) {
           <div
             style={{
               alignSelf: 'flex-start', maxWidth: '100%',
-              fontFamily: 'Inter, sans-serif', fontSize: 27, fontWeight: 600, lineHeight: 1.4,
+              fontFamily: 'Inter, sans-serif', fontSize: 36, fontWeight: 600, lineHeight: 1.4,
               color: '#fff', background: 'rgba(10,22,40,0.78)', borderRadius: 14,
               padding: '10px 20px',
             }}
