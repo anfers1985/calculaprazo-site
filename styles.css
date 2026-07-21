@@ -31,6 +31,31 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 
 .container{width:92%;max-width:1200px;margin:0 auto;padding:0 16px;}
 
+/* ── Banner lateral Adsterra (skyscraper) — só em Calculadora de Prazo + Ferramentas ── */
+.ad-sidebar-wrap{position:fixed;top:50%;transform:translateY(-50%);right:8px;z-index:100;display:none;}
+.ad-sidebar-slot{width:160px;}
+@media(min-width:1400px){
+  body:has(#sec-prazos.active) .ad-sidebar-wrap,
+  body:has(#sec-calc.active) .ad-sidebar-wrap,
+  body:has(#sec-correcao.active) .ad-sidebar-wrap,
+  body:has(#sec-juros.active) .ad-sidebar-wrap,
+  body:has(#sec-salario.active) .ad-sidebar-wrap,
+  body:has(#sec-intermitente.active) .ad-sidebar-wrap,
+  body:has(#sec-prescricao.active) .ad-sidebar-wrap,
+  body:has(#sec-porcentagem.active) .ad-sidebar-wrap,
+  body:has(#sec-moedas.active) .ad-sidebar-wrap,
+  body:has(#sec-trabalhista.active) .ad-sidebar-wrap,
+  body:has(#sec-datas.active) .ad-sidebar-wrap,
+  body:has(#sec-valid.active) .ad-sidebar-wrap,
+  body:has(#sec-qrcode.active) .ad-sidebar-wrap,
+  body:has(#sec-senhas.active) .ad-sidebar-wrap,
+  body:has(#sec-extenso.active) .ad-sidebar-wrap,
+  body:has(#sec-imc.active) .ad-sidebar-wrap,
+  body:has(#sec-util.active) .ad-sidebar-wrap{
+    display:block;
+  }
+}
+
 /* ════════════════════════════════════════
    HEADER
 ════════════════════════════════════════ */

@@ -105,8 +105,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .btn-calc-nav{background:var(--acc);color:#fff !important;border-radius:8px;padding:7px 12px !important;font-size:.78rem !important;font-weight:700;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:4px;flex-shrink:0;}
 .btn-calc-nav:hover{background:var(--acc-d) !important;}
 
-
-
 /* ════════════════════════════════════════
    SECTIONS (SPA navigation)
 ════════════════════════════════════════ */
@@ -854,50 +852,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   .seo-grid { grid-template-columns: 1fr; gap: 10px; }
 }
 
-/* ── Banners laterais (somente desktop) ── */
-.ad-sidebar-wrap {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 100;
-  display: none; /* oculto no mobile */
-}
-.ad-sidebar-left  { left: 8px; }
-.ad-sidebar-right { right: 8px; }
-.ad-sidebar-slot {
-  width: 160px;
-  min-height: 0;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #94A3B8;
-  font-size: .7rem;
-  font-family: var(--fh);
-  text-align: center;
-  padding: 8px;
-  gap: 4px;
-}
-.ad-sidebar-slot strong { font-size: .72rem; font-weight: 700; color: #64748B; }
-/* Mostra lateral apenas quando há espaço suficiente */
-@media(min-width:1400px){
-  .ad-sidebar-wrap { display: block; }
-}
-
-
-  .nav-full{display:none;}
+.nav-full{display:none;}
   /* Remove pseudo-element trick anterior */
   #nav-ref{font-size:.65rem;}
   #nav-ref::before{display:none;}
 }
-
-
-
-
-
 
 
 
@@ -907,13 +866,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 
 
-
-
-
 /* Spans para controle mobile/desktop */
 .d-mob-hide { display: inline; }
-
-
 
 
 /* ── BLOG POST OVERRIDES ── */
@@ -1088,21 +1042,20 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   .hdr-nav.mob-open{display:flex !important;}
   .hdr-nav a{width:100%;padding:13px 20px;font-size:.93rem;border-bottom:1px solid var(--brd,#e2e8f0);white-space:normal;}
 }
+
+/* ── Adsterra: slots com espaço reservado (evita CLS) ── */
+.adst-slot { display:flex; align-items:center; justify-content:center; overflow:hidden; margin:20px auto; }
+.ad-mobile-only { display:none !important; }
+@media (max-width: 768px) {
+  .ad-mobile-only { display:flex !important; }
+  .ad-desktop-only.adst-slot { display:none !important; }
+}
 </style>
 </head>
 <body>
 
 <!-- Reading progress -->
 <div class="progress-bar" id="progress-bar"></div>
-
-<!-- ▸ BANNERS LATERAIS (desktop ≥1400px) -->
-<div class="ad-sidebar-wrap ad-sidebar-left" id="ad-sidebar-left">
-  
-</div>
-<div class="ad-sidebar-wrap ad-sidebar-right" id="ad-sidebar-right">
-  
-</div>
-
 
 <header id="hdr">
   <div class="hdr-inner">
@@ -1191,15 +1144,24 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       <div style="margin-bottom:28px;border-radius:12px;overflow:hidden;max-height:400px;"><img src="https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=1200&q=80" alt="Abril Verde 2026: O Que as Empresas Devem Fazer para Cumprir as Normas de SST" width="1200" height="630" style="width:100%;height:auto;object-fit:cover;display:block;" loading="lazy"></div>
 
       <!-- Ad: topo do artigo (mostra apenas quando AdSense aprovado) -->
-      
 
       <!-- Article content -->
+        <!-- ▸ ANÚNCIO ADSTERRA: topo do artigo (728x90, desktop) -->
+  <div class="adst-slot ad-desktop-only" id="ad-post-top-adsterra"
+       data-adst-key="4f5894de8245c23422f7de3e03a1363e" data-adst-w="728" data-adst-h="90"
+       style="width:728px;height:90px;max-width:100%;"></div>
+
       <article class="article-body">
         
 <h2>O que é o Abril Verde e por que importa juridicamente</h2>
 <p>O <strong>Abril Verde</strong> é a campanha nacional de conscientização sobre prevenção de acidentes e doenças do trabalho, realizada em memória ao <strong>Desastre de Marcinelle</strong> (8 de agosto de 1956, Bélgica) e à criação das Normas Regulamentadoras no Brasil, em abril de 1978. Em 2026, o MTE usa a campanha para intensificar a fiscalização e sensibilizar empresas sobre as mudanças nas NRs nos últimos anos — especialmente a revisão da NR-1 em 2022, que tornou obrigatório o mapeamento de riscos psicossociais.</p>
 
 <h2>PGR — Programa de Gerenciamento de Riscos (NR-1 revisada)</h2>
+  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (300x250, desktop e mobile) -->
+  <div class="adst-slot" id="ad-post-mid-adsterra"
+       data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+       style="width:300px;height:250px;max-width:100%;"></div>
+
 <p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/afastamento-da-empregada-gestante-e-lactante-que-trabalha-em-ambiente-insalubridade.html" style="color:#2563EB;font-weight:600;">Afastamento da empregada gestante e lactante que trabalha em ambiente insalubridade: como proceder?</a></p>
 
 <p>A <strong>NR-1 revisada (Portaria MTE 1.419/2022)</strong> substituiu o PPRA (Programa de Prevenção de Riscos Ambientais) pelo <strong>PGR (Programa de Gerenciamento de Riscos)</strong>, com escopo mais amplo:</p>
@@ -1232,7 +1194,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <br>🔗 <a href="https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/ctpp-nrs/normas-regulamentadoras-nrs" target="_blank" rel="noopener noreferrer" style="color:#2563EB;">Normas Regulamentadoras — MTE</a>
 </p>
 
-      
   <h2>As principais causas de acidentes fatais no trabalho no Brasil</h2>
   <p>Os acidentes fatais no trabalho no Brasil concentram-se em quatro grandes causas: quedas de altura (responsaveis por cerca de 30% dos obitos em construcao civil), soterramento (mineracao e construcao), choque eletrico (instalacoes eletricas e trabalho em altura com cabos energizados) e acidentes com maquinas e equipamentos sem protecao adequada (industria e agropecuaria). A prevencao dessas causas depende da aplicacao rigorosa das NRs especificas: NR-35 (trabalho em altura), NR-10 (eletricidade), NR-12 (maquinas) e NR-22 (mineracao).</p>
   <h2>Responsabilidades do empregador em SST</h2>
@@ -1244,9 +1205,11 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   </details>
   <h2>Fonte</h2><p>Campanha Abril Verde 2026; NRs do MTE; dados do INSS e SmartLab.</p>
 
-</article>
-
-
+  <!-- ▸ ANÚNCIO ADSTERRA: final do artigo (320x50, mobile) -->
+  <div class="adst-slot ad-mobile-only" id="ad-post-end-adsterra"
+       data-adst-key="f9a6a26e51d4d397ec65d29e8f2ca7a5" data-adst-w="320" data-adst-h="50"
+       style="width:320px;height:50px;max-width:100%;"></div>
+      </article>
 
       <!-- Disclaimer jurídico -->
       <div style="background:#FFF7ED;border-left:4px solid #D97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:28px 0;font-size:.82rem;color:#78350F;line-height:1.6;">
@@ -1381,8 +1344,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   </div>
 </div>
 
-
-
 <!-- ══════════════════════════════════════
      BLOG / CONTEÚDO
 ══════════════════════════════════════ -->
@@ -1471,8 +1432,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     </div>
   </div>
 </div>
-
-
 
 <script>
 // ── READING PROGRESS ──────────────────────────
@@ -1667,5 +1626,6 @@ if (document.readyState !== 'loading') loadRelated();
 </script>
 <script src="/js/analytics.js" defer></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6e5715de2d20415d90b9904cb3475c40"}'></script>
+  <script src="/js/ads-adsterra.js?v=2" defer></script>
 </body>
 </html>

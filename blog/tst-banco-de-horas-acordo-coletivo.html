@@ -105,8 +105,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .btn-calc-nav{background:var(--acc);color:#fff !important;border-radius:8px;padding:7px 12px !important;font-size:.78rem !important;font-weight:700;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:4px;flex-shrink:0;}
 .btn-calc-nav:hover{background:var(--acc-d) !important;}
 
-
-
 /* ════════════════════════════════════════
    SECTIONS (SPA navigation)
 ════════════════════════════════════════ */
@@ -854,50 +852,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   .seo-grid { grid-template-columns: 1fr; gap: 10px; }
 }
 
-/* ── Banners laterais (somente desktop) ── */
-.ad-sidebar-wrap {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 100;
-  display: none; /* oculto no mobile */
-}
-.ad-sidebar-left  { left: 8px; }
-.ad-sidebar-right { right: 8px; }
-.ad-sidebar-slot {
-  width: 160px;
-  min-height: 0;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #94A3B8;
-  font-size: .7rem;
-  font-family: var(--fh);
-  text-align: center;
-  padding: 8px;
-  gap: 4px;
-}
-.ad-sidebar-slot strong { font-size: .72rem; font-weight: 700; color: #64748B; }
-/* Mostra lateral apenas quando há espaço suficiente */
-@media(min-width:1400px){
-  .ad-sidebar-wrap { display: block; }
-}
-
-
-  .nav-full{display:none;}
+.nav-full{display:none;}
   /* Remove pseudo-element trick anterior */
   #nav-ref{font-size:.65rem;}
   #nav-ref::before{display:none;}
 }
-
-
-
-
-
 
 
 
@@ -907,13 +866,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 
 
-
-
-
 /* Spans para controle mobile/desktop */
 .d-mob-hide { display: inline; }
-
-
 
 
 /* ── BLOG POST OVERRIDES ── */
@@ -1088,21 +1042,20 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   .hdr-nav.mob-open{display:flex !important;}
   .hdr-nav a{width:100%;padding:13px 20px;font-size:.93rem;border-bottom:1px solid var(--brd,#e2e8f0);white-space:normal;}
 }
+
+/* ── Adsterra: slots com espaço reservado (evita CLS) ── */
+.adst-slot { display:flex; align-items:center; justify-content:center; overflow:hidden; margin:20px auto; }
+.ad-mobile-only { display:none !important; }
+@media (max-width: 768px) {
+  .ad-mobile-only { display:flex !important; }
+  .ad-desktop-only.adst-slot { display:none !important; }
+}
 </style>
 </head>
 <body>
 
 <!-- Reading progress -->
 <div class="progress-bar" id="progress-bar"></div>
-
-<!-- ▸ BANNERS LATERAIS (desktop ≥1400px) -->
-<div class="ad-sidebar-wrap ad-sidebar-left" id="ad-sidebar-left">
-  
-</div>
-<div class="ad-sidebar-wrap ad-sidebar-right" id="ad-sidebar-right">
-  
-</div>
-
 
 <header id="hdr">
   <div class="hdr-inner">
@@ -1191,15 +1144,24 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       <div style="margin-bottom:28px;border-radius:12px;overflow:hidden;max-height:400px;"><img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80" alt="TST: Banco de Horas Sem Acordo Coletivo é Nulo e Gera Horas Extras" width="1200" height="630" style="width:100%;height:auto;object-fit:cover;display:block;" loading="lazy"></div>
 
       <!-- Ad: topo do artigo (mostra apenas quando AdSense aprovado) -->
-      
 
       <!-- Article content -->
+        <!-- ▸ ANÚNCIO ADSTERRA: topo do artigo (728x90, desktop) -->
+  <div class="adst-slot ad-desktop-only" id="ad-post-top-adsterra"
+       data-adst-key="4f5894de8245c23422f7de3e03a1363e" data-adst-w="728" data-adst-h="90"
+       style="width:728px;height:90px;max-width:100%;"></div>
+
       <article class="article-body">
         
 <h2>O que decidiu o TST</h2>
 <p>O Tribunal Superior do Trabalho reafirma sistematicamente, por suas Turmas, que o banco de horas para compensação em período <strong>superior a 30 dias</strong> exige obrigatoriamente instrumento coletivo — Convenção Coletiva de Trabalho (CCT) ou Acordo Coletivo de Trabalho (ACT) —, com participação do sindicato da categoria. Quando implantado apenas por acordo individual escrito, o banco de horas é <strong>nulo de pleno direito</strong>, e todas as horas trabalhadas além da jornada legal devem ser pagas como horas extras, com adicional mínimo de 50% (art. 7º, XVI, CF/88).</p>
 
 <h2>Base legal: o que diz a CLT após a Reforma de 2017</h2>
+  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (300x250, desktop e mobile) -->
+  <div class="adst-slot" id="ad-post-mid-adsterra"
+       data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+       style="width:300px;height:250px;max-width:100%;"></div>
+
 <p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/toyota-condenada-xenofobia-lider-baiano-assedio-moral.html" style="color:#2563EB;font-weight:600;">Toyota é condenada por xenofobia contra líder baiano no trabalho</a></p>
 
 <p>O art. 59, §§ 2º e 5º da CLT, com a redação conferida pela Lei 13.467/2017 (Reforma Trabalhista), regula o banco de horas da seguinte forma:</p>
@@ -1236,7 +1198,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   📌 <strong>Base legal:</strong> Art. 59, §§ 2º e 5º, e art. 59-B da CLT (Lei 13.467/2017); Súmula 85/TST (itens I a VI); Art. 7º, XVI, CF/88; Súmula 264/TST (integração de horas extras habituais).
 </p>
 
-      
   <h2>As modalidades de banco de horas e suas exigencias legais</h2>
   <p>A CLT (art. 59, par. 2) e a Sumula 85 do TST distinguem duas modalidades de banco de horas: (1) banco de horas por convencao ou acordo coletivo, que pode compensar horas em ate 12 meses; e (2) compensacao semanal, que pode ser feita por acordo individual escrito e deve compensar dentro da propria semana ou, no maximo, na semana seguinte.</p>
   <p>O banco de horas por acordo coletivo (ACT ou CCT) exige que o instrumento preveja: o prazo de compensacao, a forma de controle das horas, as condicoes de pagamento das horas nao compensadas ao final do periodo e a vedacao de reducao salarial. Bancos de horas sem instrumento coletivo valido sao nulos — as horas extras prestadas geram direito a pagamento imediato com o adicional correspondente.</p>
@@ -1249,9 +1210,11 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   </details>
   <h2>Fonte</h2><p>TST — decisao sobre banco de horas e acordo coletivo, 2026. Sumula 85 do TST; art. 59 CLT.</p>
 
-</article>
-
-
+  <!-- ▸ ANÚNCIO ADSTERRA: final do artigo (320x50, mobile) -->
+  <div class="adst-slot ad-mobile-only" id="ad-post-end-adsterra"
+       data-adst-key="f9a6a26e51d4d397ec65d29e8f2ca7a5" data-adst-w="320" data-adst-h="50"
+       style="width:320px;height:50px;max-width:100%;"></div>
+      </article>
 
       <!-- Disclaimer jurídico -->
       <div style="background:#FFF7ED;border-left:4px solid #D97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:28px 0;font-size:.82rem;color:#78350F;line-height:1.6;">
@@ -1386,8 +1349,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   </div>
 </div>
 
-
-
 <!-- ══════════════════════════════════════
      BLOG / CONTEÚDO
 ══════════════════════════════════════ -->
@@ -1476,8 +1437,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     </div>
   </div>
 </div>
-
-
 
 <script>
 // ── READING PROGRESS ──────────────────────────
@@ -1672,5 +1631,6 @@ if (document.readyState !== 'loading') loadRelated();
 </script>
 <script src="/js/analytics.js" defer></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6e5715de2d20415d90b9904cb3475c40"}'></script>
+  <script src="/js/ads-adsterra.js?v=2" defer></script>
 </body>
 </html>

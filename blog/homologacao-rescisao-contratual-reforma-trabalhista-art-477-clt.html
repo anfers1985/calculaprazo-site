@@ -102,8 +102,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .btn-calc-nav{background:var(--acc);color:#fff !important;border-radius:8px;padding:7px 12px !important;font-size:.78rem !important;font-weight:700;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:4px;flex-shrink:0;}
 .btn-calc-nav:hover{background:var(--acc-d) !important;}
 
-
-
 /* ════════════════════════════════════════
    SECTIONS (SPA navigation)
 ════════════════════════════════════════ */
@@ -851,50 +849,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   .seo-grid { grid-template-columns: 1fr; gap: 10px; }
 }
 
-/* ── Banners laterais (somente desktop) ── */
-.ad-sidebar-wrap {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 100;
-  display: none; /* oculto no mobile */
-}
-.ad-sidebar-left  { left: 8px; }
-.ad-sidebar-right { right: 8px; }
-.ad-sidebar-slot {
-  width: 160px;
-  min-height: 0;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #94A3B8;
-  font-size: .7rem;
-  font-family: var(--fh);
-  text-align: center;
-  padding: 8px;
-  gap: 4px;
-}
-.ad-sidebar-slot strong { font-size: .72rem; font-weight: 700; color: #64748B; }
-/* Mostra lateral apenas quando há espaço suficiente */
-@media(min-width:1400px){
-  .ad-sidebar-wrap { display: block; }
-}
-
-
-  .nav-full{display:none;}
+.nav-full{display:none;}
   /* Remove pseudo-element trick anterior */
   #nav-ref{font-size:.65rem;}
   #nav-ref::before{display:none;}
 }
-
-
-
-
-
 
 
 
@@ -904,13 +863,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 
 
-
-
-
 /* Spans para controle mobile/desktop */
 .d-mob-hide { display: inline; }
-
-
 
 
 /* ── BLOG POST OVERRIDES ── */
@@ -1095,27 +1049,20 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   .hdr-nav.mob-open{display:flex !important;}
   .hdr-nav a{width:100%;padding:13px 20px;font-size:.93rem;border-bottom:1px solid var(--brd,#e2e8f0);white-space:normal;}
 }
+
+/* ── Adsterra: slots com espaço reservado (evita CLS) ── */
+.adst-slot { display:flex; align-items:center; justify-content:center; overflow:hidden; margin:20px auto; }
+.ad-mobile-only { display:none !important; }
+@media (max-width: 768px) {
+  .ad-mobile-only { display:flex !important; }
+  .ad-desktop-only.adst-slot { display:none !important; }
+}
 </style>
 </head>
 <body>
 
 <!-- Reading progress -->
 <div class="progress-bar" id="progress-bar"></div>
-
-<!-- ▸ BANNERS LATERAIS (desktop ≥1400px) -->
-<div class="ad-sidebar-wrap ad-sidebar-left" id="ad-sidebar-left">
-  <div class="ad-sidebar-slot">
-    
-
-  </div>
-</div>
-<div class="ad-sidebar-wrap ad-sidebar-right" id="ad-sidebar-right">
-  <div class="ad-sidebar-slot">
-    
-
-  </div>
-</div>
-
 
 <header id="hdr">
   <div class="hdr-inner">
@@ -1210,6 +1157,11 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       </div>
 
       <!-- Article content -->
+        <!-- ▸ ANÚNCIO ADSTERRA: topo do artigo (728x90, desktop) -->
+  <div class="adst-slot ad-desktop-only" id="ad-post-top-adsterra"
+       data-adst-key="4f5894de8245c23422f7de3e03a1363e" data-adst-w="728" data-adst-h="90"
+       style="width:728px;height:90px;max-width:100%;"></div>
+
       <article class="article-body">
 
   <div class="resumo-rapido">
@@ -1232,8 +1184,12 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <p>Essa exigência tinha como finalidade garantir que o trabalhador, ao encerrar o vínculo empregatício, recebesse orientação adequada sobre seus direitos e verificasse a correção dos valores pagos. Na prática, o ato homologatório era realizado na sede do sindicato profissional ou junto à autoridade competente à época vinculada ao Ministério do Trabalho, com o acompanhamento de um representante que atestava a regularidade da rescisão.</p>
 
   <h2>O que mudou com a Reforma Trabalhista</h2>
-<p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/justa-causa-desidia-art-482-e-clt.html" style="color:#2563EB;font-weight:600;">Justa causa por desídia: o que diz o art. 482, alínea e, da CLT</a></p>
+  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (300x250, desktop e mobile) -->
+  <div class="adst-slot" id="ad-post-mid-adsterra"
+       data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+       style="width:300px;height:250px;max-width:100%;"></div>
 
+<p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/justa-causa-desidia-art-482-e-clt.html" style="color:#2563EB;font-weight:600;">Justa causa por desídia: o que diz o art. 482, alínea e, da CLT</a></p>
 
   <p>A Lei nº 13.467/2017 revogou expressamente o parágrafo 1º do artigo 477 da CLT. Com isso, a exigência de assistência sindical ou de órgão público deixou de ser obrigatória para a validade da rescisão, independentemente do tempo de serviço do empregado.</p>
 
@@ -1299,7 +1255,11 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
   <p>Para empresas, o cuidado essencial é verificar a existência de cláusula convencional antes de cada rescisão e respeitar os prazos de pagamento. Para trabalhadores, o ponto central é conhecer os direitos assegurados pelo instrumento coletivo da categoria e conferir cada parcela recebida, independentemente de a homologação ter ou não ocorrido.</p>
 
-</article>
+  <!-- ▸ ANÚNCIO ADSTERRA: final do artigo (320x50, mobile) -->
+  <div class="adst-slot ad-mobile-only" id="ad-post-end-adsterra"
+       data-adst-key="f9a6a26e51d4d397ec65d29e8f2ca7a5" data-adst-w="320" data-adst-h="50"
+       style="width:320px;height:50px;max-width:100%;"></div>
+      </article>
 
       <!-- Compartilhamento -->
       <div style="margin:28px 0 20px;padding:14px 18px;background:var(--card);border:1.5px solid var(--brd);border-radius:14px;">
@@ -1434,8 +1394,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   </div>
 </div>
 
-
-
 <!-- ══════════════════════════════════════
      BLOG / CONTEÚDO
 ══════════════════════════════════════ -->
@@ -1524,8 +1482,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     </div>
   </div>
 </div>
-
-
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── READING PROGRESS ──────────────────────────
@@ -1743,5 +1699,6 @@ if (document.readyState !== 'loading') loadRelated();
   if (document.readyState !== 'loading') loadPrevNext();
 })();
 </script>
+  <script src="/js/ads-adsterra.js?v=2" defer></script>
 </body>
 </html>

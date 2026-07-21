@@ -105,8 +105,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .btn-calc-nav{background:var(--acc);color:#fff !important;border-radius:8px;padding:7px 12px !important;font-size:.78rem !important;font-weight:700;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:4px;flex-shrink:0;}
 .btn-calc-nav:hover{background:var(--acc-d) !important;}
 
-
-
 /* ════════════════════════════════════════
    SECTIONS (SPA navigation)
 ════════════════════════════════════════ */
@@ -854,50 +852,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   .seo-grid { grid-template-columns: 1fr; gap: 10px; }
 }
 
-/* ── Banners laterais (somente desktop) ── */
-.ad-sidebar-wrap {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 100;
-  display: none; /* oculto no mobile */
-}
-.ad-sidebar-left  { left: 8px; }
-.ad-sidebar-right { right: 8px; }
-.ad-sidebar-slot {
-  width: 160px;
-  min-height: 0;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #94A3B8;
-  font-size: .7rem;
-  font-family: var(--fh);
-  text-align: center;
-  padding: 8px;
-  gap: 4px;
-}
-.ad-sidebar-slot strong { font-size: .72rem; font-weight: 700; color: #64748B; }
-/* Mostra lateral apenas quando há espaço suficiente */
-@media(min-width:1400px){
-  .ad-sidebar-wrap { display: block; }
-}
-
-
-  .nav-full{display:none;}
+.nav-full{display:none;}
   /* Remove pseudo-element trick anterior */
   #nav-ref{font-size:.65rem;}
   #nav-ref::before{display:none;}
 }
-
-
-
-
-
 
 
 
@@ -907,13 +866,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 
 
-
-
-
 /* Spans para controle mobile/desktop */
 .d-mob-hide { display: inline; }
-
-
 
 
 /* ── BLOG POST OVERRIDES ── */
@@ -1088,21 +1042,20 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   .hdr-nav.mob-open{display:flex !important;}
   .hdr-nav a{width:100%;padding:13px 20px;font-size:.93rem;border-bottom:1px solid var(--brd,#e2e8f0);white-space:normal;}
 }
+
+/* ── Adsterra: slots com espaço reservado (evita CLS) ── */
+.adst-slot { display:flex; align-items:center; justify-content:center; overflow:hidden; margin:20px auto; }
+.ad-mobile-only { display:none !important; }
+@media (max-width: 768px) {
+  .ad-mobile-only { display:flex !important; }
+  .ad-desktop-only.adst-slot { display:none !important; }
+}
 </style>
 </head>
 <body>
 
 <!-- Reading progress -->
 <div class="progress-bar" id="progress-bar"></div>
-
-<!-- ▸ BANNERS LATERAIS (desktop ≥1400px) -->
-<div class="ad-sidebar-wrap ad-sidebar-left" id="ad-sidebar-left">
-  
-</div>
-<div class="ad-sidebar-wrap ad-sidebar-right" id="ad-sidebar-right">
-  
-</div>
-
 
 <header id="hdr">
   <div class="hdr-inner">
@@ -1191,9 +1144,13 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       <div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;"><img src="https://images.unsplash.com/photo-1592293354312-9160458b1a57?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzcwNDI4MzJ8&ixlib=rb-4.1.0&q=80&w=1080" alt="TRT-15 mantém penhora de 30%" width="1200" height="630" style="width:100%;height:auto;object-fit:cover;display:block;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
 
       <!-- Ad: topo do artigo (mostra apenas quando AdSense aprovado) -->
-      
 
       <!-- Article content -->
+        <!-- ▸ ANÚNCIO ADSTERRA: topo do artigo (728x90, desktop) -->
+  <div class="adst-slot ad-desktop-only" id="ad-post-top-adsterra"
+       data-adst-key="4f5894de8245c23422f7de3e03a1363e" data-adst-w="728" data-adst-h="90"
+       style="width:728px;height:90px;max-width:100%;"></div>
+
       <article class="article-body">
   <p>
     A 4ª Câmara do Tribunal Regional do Trabalho da 15ª Região (TRT-15, Campinas) manteve a penhora de 30% do salário de uma devedora para pagamento de dívida trabalhista, desde que preservado o recebimento de ao menos um salário mínimo mensal. A decisão aplica entendimento já consolidado no TST e reafirma a possibilidade de constrição de rendimentos salariais para satisfação de crédito trabalhista.
@@ -1205,6 +1162,11 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   </p>
 
   <h2>A fundamentação da desembargadora relatora</h2>
+  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (300x250, desktop e mobile) -->
+  <div class="adst-slot" id="ad-post-mid-adsterra"
+       data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+       style="width:300px;height:250px;max-width:100%;"></div>
+
 <p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/farmacia-indenizacao-furto-motocicleta-estacionamento-funcionarios.html" style="color:#2563EB;font-weight:600;">Farmácia é condenada por furto de moto em estacionamento de funcionários</a></p>
 
   <p>
@@ -1267,7 +1229,11 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <p>
     TRT-15 — 4ª Câmara, acórdão relatado pela desembargadora Eleonora Bordini Coca, abril de 2026.
   </p>
-</article>
+  <!-- ▸ ANÚNCIO ADSTERRA: final do artigo (320x50, mobile) -->
+  <div class="adst-slot ad-mobile-only" id="ad-post-end-adsterra"
+       data-adst-key="f9a6a26e51d4d397ec65d29e8f2ca7a5" data-adst-w="320" data-adst-h="50"
+       style="width:320px;height:50px;max-width:100%;"></div>
+      </article>
 
       <!-- Compartilhamento -->
       <div style="margin:28px 0 20px;padding:14px 18px;background:var(--card);border:1.5px solid var(--brd);border-radius:14px;">
@@ -1402,8 +1368,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   </div>
 </div>
 
-
-
 <!-- ══════════════════════════════════════
      BLOG / CONTEÚDO
 ══════════════════════════════════════ -->
@@ -1492,8 +1456,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     </div>
   </div>
 </div>
-
-
 
 <script>
 // ── READING PROGRESS ──────────────────────────
@@ -1688,5 +1650,6 @@ if (document.readyState !== 'loading') loadRelated();
 </script>
 <script src="/js/analytics.js" defer></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6e5715de2d20415d90b9904cb3475c40"}'></script>
+  <script src="/js/ads-adsterra.js?v=2" defer></script>
 </body>
 </html>

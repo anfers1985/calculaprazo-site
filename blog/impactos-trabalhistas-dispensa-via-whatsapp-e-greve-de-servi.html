@@ -105,8 +105,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .btn-calc-nav{background:var(--acc);color:#fff !important;border-radius:8px;padding:7px 12px !important;font-size:.78rem !important;font-weight:700;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:4px;flex-shrink:0;}
 .btn-calc-nav:hover{background:var(--acc-d) !important;}
 
-
-
 /* ════════════════════════════════════════
    SECTIONS (SPA navigation)
 ════════════════════════════════════════ */
@@ -854,50 +852,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   .seo-grid { grid-template-columns: 1fr; gap: 10px; }
 }
 
-/* ── Banners laterais (somente desktop) ── */
-.ad-sidebar-wrap {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 100;
-  display: none; /* oculto no mobile */
-}
-.ad-sidebar-left  { left: 8px; }
-.ad-sidebar-right { right: 8px; }
-.ad-sidebar-slot {
-  width: 160px;
-  min-height: 0;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #94A3B8;
-  font-size: .7rem;
-  font-family: var(--fh);
-  text-align: center;
-  padding: 8px;
-  gap: 4px;
-}
-.ad-sidebar-slot strong { font-size: .72rem; font-weight: 700; color: #64748B; }
-/* Mostra lateral apenas quando há espaço suficiente */
-@media(min-width:1400px){
-  .ad-sidebar-wrap { display: block; }
-}
-
-
-  .nav-full{display:none;}
+.nav-full{display:none;}
   /* Remove pseudo-element trick anterior */
   #nav-ref{font-size:.65rem;}
   #nav-ref::before{display:none;}
 }
-
-
-
-
-
 
 
 
@@ -907,13 +866,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 
 
-
-
-
 /* Spans para controle mobile/desktop */
 .d-mob-hide { display: inline; }
-
-
 
 
 /* ── BLOG POST OVERRIDES ── */
@@ -1088,21 +1042,20 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   .hdr-nav.mob-open{display:flex !important;}
   .hdr-nav a{width:100%;padding:13px 20px;font-size:.93rem;border-bottom:1px solid var(--brd,#e2e8f0);white-space:normal;}
 }
+
+/* ── Adsterra: slots com espaço reservado (evita CLS) ── */
+.adst-slot { display:flex; align-items:center; justify-content:center; overflow:hidden; margin:20px auto; }
+.ad-mobile-only { display:none !important; }
+@media (max-width: 768px) {
+  .ad-mobile-only { display:flex !important; }
+  .ad-desktop-only.adst-slot { display:none !important; }
+}
 </style>
 </head>
 <body>
 
 <!-- Reading progress -->
 <div class="progress-bar" id="progress-bar"></div>
-
-<!-- ▸ BANNERS LATERAIS (desktop ≥1400px) -->
-<div class="ad-sidebar-wrap ad-sidebar-left" id="ad-sidebar-left">
-  
-</div>
-<div class="ad-sidebar-wrap ad-sidebar-right" id="ad-sidebar-right">
-  
-</div>
-
 
 <header id="hdr">
   <div class="hdr-inner">
@@ -1191,9 +1144,13 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       <div style="margin-bottom:28px;border-radius:12px;overflow:hidden;max-height:400px;"><img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=1200&q=80" alt="Dispensa por WhatsApp e Greve de Servidores: Análise dos Riscos Trabalhistas Recentes" width="1200" height="630" style="width:100%;height:auto;object-fit:cover;display:block;" loading="lazy"></div>
 
       <!-- Ad: topo do artigo (mostra apenas quando AdSense aprovado) -->
-      
 
       <!-- Article content -->
+        <!-- ▸ ANÚNCIO ADSTERRA: topo do artigo (728x90, desktop) -->
+  <div class="adst-slot ad-desktop-only" id="ad-post-top-adsterra"
+       data-adst-key="4f5894de8245c23422f7de3e03a1363e" data-adst-w="728" data-adst-h="90"
+       style="width:728px;height:90px;max-width:100%;"></div>
+
       <article class="article-body">
         
 <h2>Dispensa por WhatsApp: quando é válida?</h2>
@@ -1201,6 +1158,11 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 <p>A validade da comunicação por mensagem eletrônica decorre do art. 107 do Código Civil (liberdade de forma) e da Lei 14.063/2020 (assinatura eletrônica em relações trabalhistas). O TST ainda não uniformizou sua jurisprudência sobre o tema — cautela é recomendada.</p>
 
 <h2>O que NÃO pode ser feito por WhatsApp</h2>
+  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (300x250, desktop e mobile) -->
+  <div class="adst-slot" id="ad-post-mid-adsterra"
+       data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+       style="width:300px;height:250px;max-width:100%;"></div>
+
 <p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/farmacia-indenizacao-furto-motocicleta-estacionamento-funcionarios.html" style="color:#2563EB;font-weight:600;">Farmácia é condenada por furto de moto em estacionamento de funcionários</a></p>
 
 <p>A comunicação da dispensa pode ser válida, mas o processo rescisório exige atos formais que não podem ser substituídos por mensagens:</p>
@@ -1227,7 +1189,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   📌 <strong>Base legal:</strong> Art. 107, CC (liberdade de forma); Lei 14.063/2020 (assinatura eletrônica); Art. 477, §§ 6º e 8º, CLT (prazos e multa rescisória); Lei 7.783/1989 (Lei de Greve); Art. 9º, CF/88 (direito de greve).
 </p>
 
-      
   <h2>Dispensa via WhatsApp: e valida juridicamente?</h2>
   <p>A CLT nao exige forma especifica para a comunicacao da dispensa — o que importa e que o empregado seja inequivocamente comunicado. Nesse sentido, a dispensa via WhatsApp pode ser valida formalmente, desde que: (1) haja confirmacao de leitura ou resposta do empregado; (2) o conteudo seja claro quanto a data e motivo da rescisao; e (3) o pagamento das verbas rescisórias ocorra dentro do prazo legal (art. 477, par. 6, CLT).</p>
   <p>Contudo, o TST tem apontado que a dispensa por mensagem instantanea, sem qualquer comunicacao presencial ou formal, pode agravar o dano moral em contextos de longa relacao de emprego ou de vulnerabilidade do trabalhador. A impessoalidade da mensagem digital pode ser fator de majoracao da indenizacao por dano moral em demandas que discutem a forma da rescisao.</p>
@@ -1240,9 +1201,11 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   </details>
   <h2>Fonte</h2><p>TST — decisoes sobre dispensa digital e greve em servicos essenciais, 2026.</p>
 
-</article>
-
-
+  <!-- ▸ ANÚNCIO ADSTERRA: final do artigo (320x50, mobile) -->
+  <div class="adst-slot ad-mobile-only" id="ad-post-end-adsterra"
+       data-adst-key="f9a6a26e51d4d397ec65d29e8f2ca7a5" data-adst-w="320" data-adst-h="50"
+       style="width:320px;height:50px;max-width:100%;"></div>
+      </article>
 
       <!-- Disclaimer jurídico -->
       <div style="background:#FFF7ED;border-left:4px solid #D97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:28px 0;font-size:.82rem;color:#78350F;line-height:1.6;">
@@ -1377,8 +1340,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   </div>
 </div>
 
-
-
 <!-- ══════════════════════════════════════
      BLOG / CONTEÚDO
 ══════════════════════════════════════ -->
@@ -1467,8 +1428,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     </div>
   </div>
 </div>
-
-
 
 <script>
 // ── READING PROGRESS ──────────────────────────
@@ -1663,5 +1622,6 @@ if (document.readyState !== 'loading') loadRelated();
 </script>
 <script src="/js/analytics.js" defer></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6e5715de2d20415d90b9904cb3475c40"}'></script>
+  <script src="/js/ads-adsterra.js?v=2" defer></script>
 </body>
 </html>

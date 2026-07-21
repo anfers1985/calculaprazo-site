@@ -105,8 +105,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .btn-calc-nav{background:var(--acc);color:#fff !important;border-radius:8px;padding:7px 12px !important;font-size:.78rem !important;font-weight:700;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:4px;flex-shrink:0;}
 .btn-calc-nav:hover{background:var(--acc-d) !important;}
 
-
-
 /* ════════════════════════════════════════
    SECTIONS (SPA navigation)
 ════════════════════════════════════════ */
@@ -854,50 +852,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   .seo-grid { grid-template-columns: 1fr; gap: 10px; }
 }
 
-/* ── Banners laterais (somente desktop) ── */
-.ad-sidebar-wrap {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 100;
-  display: none; /* oculto no mobile */
-}
-.ad-sidebar-left  { left: 8px; }
-.ad-sidebar-right { right: 8px; }
-.ad-sidebar-slot {
-  width: 160px;
-  min-height: 0;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #94A3B8;
-  font-size: .7rem;
-  font-family: var(--fh);
-  text-align: center;
-  padding: 8px;
-  gap: 4px;
-}
-.ad-sidebar-slot strong { font-size: .72rem; font-weight: 700; color: #64748B; }
-/* Mostra lateral apenas quando há espaço suficiente */
-@media(min-width:1400px){
-  .ad-sidebar-wrap { display: block; }
-}
-
-
-  .nav-full{display:none;}
+.nav-full{display:none;}
   /* Remove pseudo-element trick anterior */
   #nav-ref{font-size:.65rem;}
   #nav-ref::before{display:none;}
 }
-
-
-
-
-
 
 
 
@@ -907,13 +866,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 
 
-
-
-
 /* Spans para controle mobile/desktop */
 .d-mob-hide { display: inline; }
-
-
 
 
 /* ── BLOG POST OVERRIDES ── */
@@ -1088,21 +1042,20 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   .hdr-nav.mob-open{display:flex !important;}
   .hdr-nav a{width:100%;padding:13px 20px;font-size:.93rem;border-bottom:1px solid var(--brd,#e2e8f0);white-space:normal;}
 }
+
+/* ── Adsterra: slots com espaço reservado (evita CLS) ── */
+.adst-slot { display:flex; align-items:center; justify-content:center; overflow:hidden; margin:20px auto; }
+.ad-mobile-only { display:none !important; }
+@media (max-width: 768px) {
+  .ad-mobile-only { display:flex !important; }
+  .ad-desktop-only.adst-slot { display:none !important; }
+}
 </style>
 </head>
 <body>
 
 <!-- Reading progress -->
 <div class="progress-bar" id="progress-bar"></div>
-
-<!-- ▸ BANNERS LATERAIS (desktop ≥1400px) -->
-<div class="ad-sidebar-wrap ad-sidebar-left" id="ad-sidebar-left">
-  
-</div>
-<div class="ad-sidebar-wrap ad-sidebar-right" id="ad-sidebar-right">
-  
-</div>
-
 
 <header id="hdr">
   <div class="hdr-inner">
@@ -1191,11 +1144,20 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       <div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;"><img src="https://images.unsplash.com/photo-1758685848142-06e158cf64bc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY0MzQ5Nzh8&ixlib=rb-4.1.0&q=80&w=1080" alt="STF reafirma direito ao piso salarial para professores temporários" width="1200" height="630" style="width:100%;height:auto;object-fit:cover;display:block;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
 
       <!-- Ad: topo do artigo (mostra apenas quando AdSense aprovado) -->
-      
 
       <!-- Article content -->
+        <!-- ▸ ANÚNCIO ADSTERRA: topo do artigo (728x90, desktop) -->
+  <div class="adst-slot ad-desktop-only" id="ad-post-top-adsterra"
+       data-adst-key="4f5894de8245c23422f7de3e03a1363e" data-adst-w="728" data-adst-h="90"
+       style="width:728px;height:90px;max-width:100%;"></div>
+
       <article class="article-body">
         <h2>Contexto e fato julgado</h2><p>O Supremo Tribunal Federal (STF) decidiu que os professores temporários têm direito ao piso salarial do magistério, conforme previsto na legislação educacional brasileira. A decisão foi proferida em um contexto de crescente discussão sobre os direitos dos profissionais da educação, especialmente aqueles que atuam em regime temporário. A questão central envolvia a interpretação da legislação que regulamenta a remuneração dos docentes, considerando a necessidade de garantir condições dignas de trabalho e remuneração justa para todos os educadores.</p><h2>Fundamentação jurídica</h2>
+  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (300x250, desktop e mobile) -->
+  <div class="adst-slot" id="ad-post-mid-adsterra"
+       data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+       style="width:300px;height:250px;max-width:100%;"></div>
+
 <p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/lei-igualdade-salarial-constitucional-stf-adi-7612.html" style="color:#2563EB;font-weight:600;">STF declara Lei de Igualdade Salarial Constitucional</a></p>
 <p>A decisão do STF se baseou em dispositivos da Constituição Federal e na Lei de Diretrizes e Bases da Educação Nacional (Lei nº 9.394/1996), que estabelece o piso salarial do magistério. O tribunal analisou a importância de assegurar que todos os professores, independentemente do regime de contratação, tenham acesso a uma remuneração que respeite os mínimos estabelecidos pela legislação. A jurisprudência anterior também foi considerada, reforçando a necessidade de proteção aos direitos dos trabalhadores da educação.</p><h2>O que foi decidido</h2><p>O STF, em sua decisão, reafirmou que os professores temporários têm direito ao piso salarial do magistério, estabelecendo que essa garantia é fundamental para a valorização da profissão e para a qualidade da educação no país. O julgamento foi realizado pela Primeira Turma do STF, sob a relatoria do ministro André Mendonça. O processo em questão foi o RE 123456/DF, que discutia a aplicação do piso salarial a professores contratados temporariamente por instituições de ensino.</p><h2>Tese jurídica central</h2><p>A tese central firmada pelo STF é a de que a garantia do piso salarial do magistério deve ser estendida a todos os professores, independentemente do tipo de contrato, visando à valorização da educação e à proteção dos direitos trabalhistas. Essa decisão reforça a ideia de que a educação é um direito fundamental e que todos os profissionais que atuam nesse setor devem ser devidamente remunerados.</p><h2>Base legal e precedentes</h2><ul><li>Constituição Federal, Art. 206</li><li>Lei de Diretrizes e Bases da Educação Nacional (Lei nº 9.394/1996)</li><li>Súmula 1 do STF</li><li>RE 123456/DF</li></ul><h2>Impactos práticos para empresas e trabalhadores</h2><p>A decisão do STF tem impactos significativos tanto para as instituições de ensino quanto para os professores temporários. As escolas e universidades deverão adequar suas políticas de remuneração para garantir que todos os docentes recebam, no mínimo, o piso salarial estabelecido. Isso pode resultar em um aumento nos custos operacionais para as instituições, especialmente aquelas que dependem de contratos temporários para suprir a demanda por professores. Para os trabalhadores, a decisão representa uma conquista importante, garantindo uma remuneração mais justa e digna.</p><h2>Recomendações para RH e jurídico</h2><p>As áreas de Recursos Humanos e Jurídico das instituições de ensino devem revisar suas práticas de contratação e remuneração de professores temporários. É recomendável que as instituições: <ul><li>Realizem um levantamento das remunerações atuais dos professores temporários e ajustem-nas conforme o piso salarial.</li><li>Elaborem políticas claras de contratação que respeitem os direitos trabalhistas dos docentes.</li><li>Promovam treinamentos para gestores sobre a importância da valorização dos profissionais da educação.</li><li>Consultem assessoria jurídica para garantir conformidade com a nova interpretação do STF.</li></ul></p>
 <p style="font-size:.78rem;color:#64748B;margin-top:28px;padding-top:12px;border-top:1px solid #E2E8F0;"><strong>Fonte:</strong> <a href="https://noticias.stf.jus.br/" target="_blank" rel="noopener noreferrer">STF — Notícias</a> — acesso em 17 de abril de 2026.</p>
@@ -1212,9 +1174,11 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   </details>
   <h2>Fonte</h2><p>STF — decisao sobre piso salarial do magisterio para professores temporarios, 2026. Lei 11.738/2008.</p>
 
-</article>
-
-
+  <!-- ▸ ANÚNCIO ADSTERRA: final do artigo (320x50, mobile) -->
+  <div class="adst-slot ad-mobile-only" id="ad-post-end-adsterra"
+       data-adst-key="f9a6a26e51d4d397ec65d29e8f2ca7a5" data-adst-w="320" data-adst-h="50"
+       style="width:320px;height:50px;max-width:100%;"></div>
+      </article>
 
       <!-- Disclaimer jurídico -->
       <div style="background:#FFF7ED;border-left:4px solid #D97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:28px 0;font-size:.82rem;color:#78350F;line-height:1.6;">
@@ -1349,8 +1313,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   </div>
 </div>
 
-
-
 <!-- ══════════════════════════════════════
      BLOG / CONTEÚDO
 ══════════════════════════════════════ -->
@@ -1439,8 +1401,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     </div>
   </div>
 </div>
-
-
 
 <script>
 // ── READING PROGRESS ──────────────────────────
@@ -1635,5 +1595,6 @@ if (document.readyState !== 'loading') loadRelated();
 </script>
 <script src="/js/analytics.js" defer></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6e5715de2d20415d90b9904cb3475c40"}'></script>
+  <script src="/js/ads-adsterra.js?v=2" defer></script>
 </body>
 </html>

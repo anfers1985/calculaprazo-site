@@ -1032,6 +1032,28 @@ function injectInlineRelatedLinks(html, post, allPosts) {
   return html.slice(0, insertPos) + buildLeiaTambemHTML(related[0]) + html.slice(insertPos);
 }
 
+// Insere o banner Adsterra de meio de artigo (300x250) após o 2º <h2>
+// (ou o 1º, se só houver um) — mesma âncora usada em injectInlineRelatedLinks,
+// pra manter a posição consistente com os artigos já publicados manualmente.
+const AD_MID_HTML = '\n  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (300x250, desktop e mobile) -->\n'
+  + '  <div class="adst-slot" id="ad-post-mid-adsterra"\n'
+  + '       data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"\n'
+  + '       style="width:300px;height:250px;max-width:100%;"></div>\n';
+
+function injectMidArticleAd(html) {
+  const h2Regex = /<h2[^>]*>[\s\S]*?<\/h2>/gi;
+  const matches = [...html.matchAll(h2Regex)];
+  if (matches.length === 0) {
+    const pMatches = [...html.matchAll(/<\/p>/gi)];
+    if (!pMatches.length) return html;
+    const mid = pMatches[Math.floor(pMatches.length / 2)];
+    return html.slice(0, mid.index + mid[0].length) + AD_MID_HTML + html.slice(mid.index + mid[0].length);
+  }
+  const anchor = matches.length >= 2 ? matches[1] : matches[0];
+  const insertPos = anchor.index + anchor[0].length;
+  return html.slice(0, insertPos) + AD_MID_HTML + html.slice(insertPos);
+}
+
 // ════════════════════════════════════════
 // SANITIZAÇÃO DO CONTEÚDO GERADO POR IA
 // ════════════════════════════════════════
@@ -1883,7 +1905,7 @@ async function publicarNoSite() {
       .replace(/\{\{UPDATED_LINE\}\}/g,   post.updatedAt && post.updatedAt !== post.date
         ? `<div style="margin-top:4px;font-size:.78rem;color:rgba(255,255,255,.55);">📝 <strong>Atualizado em:</strong> ${new Date(post.updatedAt + 'T12:00:00').toLocaleDateString('pt-BR', {day:'numeric', month:'long', year:'numeric'})}</div>`
         : '')
-      .replace(/\{\{CONTENT\}\}/g,        injectInlineRelatedLinks(sanitizeArticleContent(post.content), post, postsParaLinks))
+      .replace(/\{\{CONTENT\}\}/g,        injectMidArticleAd(injectInlineRelatedLinks(sanitizeArticleContent(post.content), post, postsParaLinks)))
       .replace(/\{\{TAGS_BADGES\}\}/g,    tagsBadgesHTML)
       .replace(/\{\{TAGS_JSON\}\}/g,      tagsJSON)
       .replace(/\{\{OG_IMAGE\}\}/g,       ogImageTag)
@@ -2080,7 +2102,7 @@ async function baixarHTML() {
       .replace(/\{\{UPDATED_DATE\}\}/g,   updatedAtRepost || postDateRepost)
       .replace(/\{\{UPDATED_DATE_BR\}\}/g, updatedAtRepost ? new Date(updatedAtRepost+'T12:00:00').toLocaleDateString('pt-BR',{day:'numeric',month:'long',year:'numeric'}) : dateBR)
       .replace(/\{\{UPDATED_LINE\}\}/g,   updatedLineBaixar)
-      .replace(/\{\{CONTENT\}\}/g,        injectInlineRelatedLinks(sanitizeArticleContent(content), {id: slug, category: cat, tags: tagsArr}, getPosts()))
+      .replace(/\{\{CONTENT\}\}/g,        injectMidArticleAd(injectInlineRelatedLinks(sanitizeArticleContent(content), {id: slug, category: cat, tags: tagsArr}, getPosts())))
       .replace(/\{\{TAGS_BADGES\}\}/g,    tagsBadgesHTML)
       .replace(/\{\{TAGS_JSON\}\}/g,      JSON.stringify(tagsArr))
       .replace(/\{\{OG_IMAGE\}\}/g,       `<meta property="og:image" content="${ogImageUrlLocal}">`)

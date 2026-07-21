@@ -105,8 +105,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .btn-calc-nav{background:var(--acc);color:#fff !important;border-radius:8px;padding:7px 12px !important;font-size:.78rem !important;font-weight:700;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:4px;flex-shrink:0;}
 .btn-calc-nav:hover{background:var(--acc-d) !important;}
 
-
-
 /* ════════════════════════════════════════
    SECTIONS (SPA navigation)
 ════════════════════════════════════════ */
@@ -854,50 +852,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   .seo-grid { grid-template-columns: 1fr; gap: 10px; }
 }
 
-/* ── Banners laterais (somente desktop) ── */
-.ad-sidebar-wrap {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 100;
-  display: none; /* oculto no mobile */
-}
-.ad-sidebar-left  { left: 8px; }
-.ad-sidebar-right { right: 8px; }
-.ad-sidebar-slot {
-  width: 160px;
-  min-height: 0;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #94A3B8;
-  font-size: .7rem;
-  font-family: var(--fh);
-  text-align: center;
-  padding: 8px;
-  gap: 4px;
-}
-.ad-sidebar-slot strong { font-size: .72rem; font-weight: 700; color: #64748B; }
-/* Mostra lateral apenas quando há espaço suficiente */
-@media(min-width:1400px){
-  .ad-sidebar-wrap { display: block; }
-}
-
-
-  .nav-full{display:none;}
+.nav-full{display:none;}
   /* Remove pseudo-element trick anterior */
   #nav-ref{font-size:.65rem;}
   #nav-ref::before{display:none;}
 }
-
-
-
-
-
 
 
 
@@ -907,13 +866,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 
 
-
-
-
 /* Spans para controle mobile/desktop */
 .d-mob-hide { display: inline; }
-
-
 
 
 /* ── BLOG POST OVERRIDES ── */
@@ -1088,21 +1042,20 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   .hdr-nav.mob-open{display:flex !important;}
   .hdr-nav a{width:100%;padding:13px 20px;font-size:.93rem;border-bottom:1px solid var(--brd,#e2e8f0);white-space:normal;}
 }
+
+/* ── Adsterra: slots com espaço reservado (evita CLS) ── */
+.adst-slot { display:flex; align-items:center; justify-content:center; overflow:hidden; margin:20px auto; }
+.ad-mobile-only { display:none !important; }
+@media (max-width: 768px) {
+  .ad-mobile-only { display:flex !important; }
+  .ad-desktop-only.adst-slot { display:none !important; }
+}
 </style>
 </head>
 <body>
 
 <!-- Reading progress -->
 <div class="progress-bar" id="progress-bar"></div>
-
-<!-- ▸ BANNERS LATERAIS (desktop ≥1400px) -->
-<div class="ad-sidebar-wrap ad-sidebar-left" id="ad-sidebar-left">
-  
-</div>
-<div class="ad-sidebar-wrap ad-sidebar-right" id="ad-sidebar-right">
-  
-</div>
-
 
 <header id="hdr">
   <div class="hdr-inner">
@@ -1191,11 +1144,20 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       <div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;"><img src="https://images.unsplash.com/photo-1637166163357-5bfe39327688?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY0Mjk0MDd8&ixlib=rb-4.1.0&q=80&w=1080" alt="Projeto de Lei de Redução de Jornada: Implicações e Alterações" width="1200" height="630" style="width:100%;height:auto;object-fit:cover;display:block;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
 
       <!-- Ad: topo do artigo (mostra apenas quando AdSense aprovado) -->
-      
 
       <!-- Article content -->
+        <!-- ▸ ANÚNCIO ADSTERRA: topo do artigo (728x90, desktop) -->
+  <div class="adst-slot ad-desktop-only" id="ad-post-top-adsterra"
+       data-adst-key="4f5894de8245c23422f7de3e03a1363e" data-adst-w="728" data-adst-h="90"
+       style="width:728px;height:90px;max-width:100%;"></div>
+
       <article class="article-body">
         <h2>Visão geral da norma</h2><p>O projeto de lei encaminhado ao Congresso Nacional pelo Governo do Brasil propõe a redução da jornada de trabalho para 40 horas semanais, sem a correspondente diminuição salarial. Essa iniciativa surge em um contexto de valorização do trabalho e busca atender demandas sociais por melhores condições laborais, especialmente em um cenário pós-pandemia. O ministro do Trabalho e Emprego, Luiz Marinho, enfatizou a importância dessa mudança durante reuniões com centrais sindicais, destacando que a proposta visa promover uma melhor qualidade de vida para os trabalhadores.</p><h2>O que a lei altera</h2>
+  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (300x250, desktop e mobile) -->
+  <div class="adst-slot" id="ad-post-mid-adsterra"
+       data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+       style="width:300px;height:250px;max-width:100%;"></div>
+
 <p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/governo-propoe-reducao-da-jornada-de-trabalho-o-que-muda-par.html" style="color:#2563EB;font-weight:600;">Governo Propõe Redução da Jornada de Trabalho: O Que Muda para os Trabalhadores?</a></p>
 <p>O projeto de lei altera dispositivos da Consolidação das Leis do Trabalho (CLT), especificamente os artigos que tratam da jornada de trabalho. A proposta visa substituir a atual jornada de 44 horas semanais para a jornada de 40 horas, sem redução de salário, além de acabar com a escala 6x1, que é frequentemente criticada por não proporcionar um descanso adequado aos trabalhadores.</p><h2>Principais mudanças</h2><ul><li>Redução da jornada de trabalho de 44 para 40 horas semanais.</li><li>Proibição da escala 6x1, que impõe um dia de folga a cada seis dias trabalhados.</li><li>Garantia de que a redução da jornada não implique em diminuição salarial.</li><li>Possibilidade de negociação coletiva para adequações específicas em setores que necessitem de jornadas diferenciadas.</li></ul><h2>Vigência e implementação</h2><p>A vigência do projeto de lei dependerá da aprovação pelo Congresso Nacional e da sanção presidencial. Uma vez aprovada, a norma deverá ser implementada em um prazo que ainda será definido, mas que deve considerar a adaptação das empresas às novas regras. O governo deverá também promover campanhas de conscientização sobre as mudanças e seus benefícios.</p><h2>Impactos para empresas</h2><p>As empresas deverão se adaptar à nova legislação, o que pode exigir reestruturações em suas operações. A redução da jornada de trabalho pode inicialmente parecer um ônus, mas pode resultar em aumento da produtividade e satisfação dos trabalhadores. Além disso, as empresas que não se adequarem à nova norma poderão enfrentar penalidades e ações trabalhistas. É fundamental que as organizações revisem seus contratos de trabalho e políticas internas para garantir conformidade com a nova legislação.</p><h2>Impactos para trabalhadores</h2><p>Para os trabalhadores, a proposta representa uma conquista significativa, pois promove um equilíbrio entre vida profissional e pessoal. A redução da jornada de trabalho sem perda salarial pode contribuir para a saúde mental e física dos empregados, além de proporcionar mais tempo livre para atividades pessoais e familiares. Essa mudança também pode estimular o aumento da empregabilidade, uma vez que a redução da jornada pode abrir espaço para novas contratações.</p><h2>Pontos de atenção jurídica</h2><p>É essencial que tanto empregadores quanto empregados estejam cientes dos novos direitos e obrigações que surgirão com a aprovação do projeto de lei. As empresas devem estar atentas às cláusulas de negociação coletiva, que poderão estabelecer condições específicas para a implementação da nova jornada. Além disso, é importante monitorar as possíveis reações do mercado e as interpretações judiciais que poderão surgir em decorrência da nova legislação. A assessoria jurídica será crucial para garantir que as empresas estejam em conformidade e para evitar litígios futuros.</p>
 <p style="font-size:.78rem;color:#64748B;margin-top:28px;padding-top:12px;border-top:1px solid #E2E8F0;"><strong>Fonte:</strong> <a href="https://www.gov.br/trabalho-e-emprego/pt-br/noticias-e-conteudo" target="_blank" rel="noopener noreferrer">MTE — Notícias</a> — acesso em 17 de abril de 2026.</p>
@@ -1220,9 +1182,11 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   </details>
   <h2>Fonte</h2><p>Camara dos Deputados — PL 1.838/2026 e PECs de reducao de jornada em tramitacao, abril de 2026.</p>
 
-</article>
-
-
+  <!-- ▸ ANÚNCIO ADSTERRA: final do artigo (320x50, mobile) -->
+  <div class="adst-slot ad-mobile-only" id="ad-post-end-adsterra"
+       data-adst-key="f9a6a26e51d4d397ec65d29e8f2ca7a5" data-adst-w="320" data-adst-h="50"
+       style="width:320px;height:50px;max-width:100%;"></div>
+      </article>
 
       <!-- Disclaimer jurídico -->
       <div style="background:#FFF7ED;border-left:4px solid #D97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:28px 0;font-size:.82rem;color:#78350F;line-height:1.6;">
@@ -1357,8 +1321,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   </div>
 </div>
 
-
-
 <!-- ══════════════════════════════════════
      BLOG / CONTEÚDO
 ══════════════════════════════════════ -->
@@ -1447,8 +1409,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     </div>
   </div>
 </div>
-
-
 
 <script>
 // ── READING PROGRESS ──────────────────────────
@@ -1643,5 +1603,6 @@ if (document.readyState !== 'loading') loadRelated();
 </script>
 <script src="/js/analytics.js" defer></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6e5715de2d20415d90b9904cb3475c40"}'></script>
+  <script src="/js/ads-adsterra.js?v=2" defer></script>
 </body>
 </html>

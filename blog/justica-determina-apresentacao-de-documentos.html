@@ -105,8 +105,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .btn-calc-nav{background:var(--acc);color:#fff !important;border-radius:8px;padding:7px 12px !important;font-size:.78rem !important;font-weight:700;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:4px;flex-shrink:0;}
 .btn-calc-nav:hover{background:var(--acc-d) !important;}
 
-
-
 /* ════════════════════════════════════════
    SECTIONS (SPA navigation)
 ════════════════════════════════════════ */
@@ -854,50 +852,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   .seo-grid { grid-template-columns: 1fr; gap: 10px; }
 }
 
-/* ── Banners laterais (somente desktop) ── */
-.ad-sidebar-wrap {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 100;
-  display: none; /* oculto no mobile */
-}
-.ad-sidebar-left  { left: 8px; }
-.ad-sidebar-right { right: 8px; }
-.ad-sidebar-slot {
-  width: 160px;
-  min-height: 0;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #94A3B8;
-  font-size: .7rem;
-  font-family: var(--fh);
-  text-align: center;
-  padding: 8px;
-  gap: 4px;
-}
-.ad-sidebar-slot strong { font-size: .72rem; font-weight: 700; color: #64748B; }
-/* Mostra lateral apenas quando há espaço suficiente */
-@media(min-width:1400px){
-  .ad-sidebar-wrap { display: block; }
-}
-
-
-  .nav-full{display:none;}
+.nav-full{display:none;}
   /* Remove pseudo-element trick anterior */
   #nav-ref{font-size:.65rem;}
   #nav-ref::before{display:none;}
 }
-
-
-
-
-
 
 
 
@@ -907,13 +866,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 
 
-
-
-
 /* Spans para controle mobile/desktop */
 .d-mob-hide { display: inline; }
-
-
 
 
 /* ── BLOG POST OVERRIDES ── */
@@ -1088,21 +1042,20 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   .hdr-nav.mob-open{display:flex !important;}
   .hdr-nav a{width:100%;padding:13px 20px;font-size:.93rem;border-bottom:1px solid var(--brd,#e2e8f0);white-space:normal;}
 }
+
+/* ── Adsterra: slots com espaço reservado (evita CLS) ── */
+.adst-slot { display:flex; align-items:center; justify-content:center; overflow:hidden; margin:20px auto; }
+.ad-mobile-only { display:none !important; }
+@media (max-width: 768px) {
+  .ad-mobile-only { display:flex !important; }
+  .ad-desktop-only.adst-slot { display:none !important; }
+}
 </style>
 </head>
 <body>
 
 <!-- Reading progress -->
 <div class="progress-bar" id="progress-bar"></div>
-
-<!-- ▸ BANNERS LATERAIS (desktop ≥1400px) -->
-<div class="ad-sidebar-wrap ad-sidebar-left" id="ad-sidebar-left">
-  
-</div>
-<div class="ad-sidebar-wrap ad-sidebar-right" id="ad-sidebar-right">
-  
-</div>
-
 
 <header id="hdr">
   <div class="hdr-inner">
@@ -1191,11 +1144,20 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       <div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;"><img src="https://images.unsplash.com/photo-1655151485863-5bd031271d31?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY2NTA1MTB8&ixlib=rb-4.1.0&q=80&w=1080" alt="Justiça determina apresentação de documentos" width="1200" height="630" style="width:100%;height:auto;object-fit:cover;display:block;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
 
       <!-- Ad: topo do artigo (mostra apenas quando AdSense aprovado) -->
-      
 
       <!-- Article content -->
+        <!-- ▸ ANÚNCIO ADSTERRA: topo do artigo (728x90, desktop) -->
+  <div class="adst-slot ad-desktop-only" id="ad-post-top-adsterra"
+       data-adst-key="4f5894de8245c23422f7de3e03a1363e" data-adst-w="728" data-adst-h="90"
+       style="width:728px;height:90px;max-width:100%;"></div>
+
       <article class="article-body">
         <h2>Decisão Judicial: Apresentação de Documentos Trabalhistas</h2><p>A Justiça determinou que a empresa BIOGESP apresente documentos trabalhistas ao Ministério Público do Trabalho (MPT) sob pena de multa diária. A decisão se baseia em acusações de violações trabalhistas que afetam aproximadamente 1.700 empregados da empresa. Essa medida visa garantir a transparência e a regularidade das práticas trabalhistas dentro da empresa.</p><h2>O Caso Concreto</h2>
+  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (300x250, desktop e mobile) -->
+  <div class="adst-slot" id="ad-post-mid-adsterra"
+       data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+       style="width:300px;height:250px;max-width:100%;"></div>
+
 <p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/mpt-ba-intensifica-combate-a-producao-ilegal-de-fogos-na-bah.html" style="color:#2563EB;font-weight:600;">MPT-BA Intensifica Combate à Produção Ilegal de Fogos na Bahia</a></p>
 <p>O caso envolve a empresa BIOGESP, que está sendo acusada de cometer violações trabalhistas que afetam um grande número de seus empregados. O MPT, responsável por fiscalizar e promover ações para proteger os direitos dos trabalhadores, solicitou a apresentação de documentos trabalhistas para investigar as denúncias. A empresa, no entanto, não atendeu ao pedido, o que levou à intervenção judicial.</p><h3>Fundamentos Legais</h3><p>A decisão judicial se baseia em fundamentos legais que garantem o acesso a informações e documentos trabalhistas para fins de fiscalização e investigação. A <strong>Constituição Federal</strong> e a <strong>Consolidação das Leis do Trabalho (CLT)</strong> estabelecem os direitos dos trabalhadores e as obrigações das empresas em relação à manutenção de registros e documentos trabalhistas. Além disso, a <strong>Lei nº 13.467/2017</strong>, conhecida como Reforma Trabalhista, reforçou a importância da documentação trabalhista para a comprovação de direitos e obrigações.</p><h2>Consequências Práticas</h2><p>A decisão tem consequências práticas significativas para as empresas e os trabalhadores. Para as empresas, a não apresentação de documentos trabalhistas pode resultar em multas diárias, o que pode impactar financeiramente a organização. Além disso, a falta de transparência e regularidade nas práticas trabalhistas pode danificar a reputação da empresa e afetar suas relações com os empregados e a comunidade. Para os trabalhadores, a garantia de acesso a documentos trabalhistas é fundamental para a defesa de seus direitos, especialmente em casos de disputas trabalhistas ou quando há suspeitas de violações.</p><h3>Orientações para RH e Jurídico</h3><p>Diante dessa decisão, é crucial que os departamentos de Recursos Humanos (RH) e Jurídico das empresas estejam atentos à importância da manutenção de documentos trabalhistas atualizados e acessíveis. Algumas orientações incluem:</p><ul><li><strong>Manter registros precisos e atualizados</strong> de todos os contratos de trabalho, folhas de pagamento, horários de trabalho, e outros documentos relevantes.</li><li><strong>Implementar políticas de acesso</strong> a esses documentos, garantindo que sejam facilmente acessíveis para fins de fiscalização e investigação.</li><li><strong>Realizar auditorias internas</strong> regulares para garantir a conformidade com as leis trabalhistas e a precisão dos registros.</li><li><strong>Capacitar os funcionários</strong> sobre a importância da documentação trabalhista e como proceder em caso de solicitações de informações.</li></ul><h2>Tese Jurídica</h2><p>A tese jurídica que se extrai dessa decisão é a de que a apresentação de documentos trabalhistas é uma obrigação legal das empresas, fundamental para a proteção dos direitos dos trabalhadores e a garantia de práticas trabalhistas regulares. A recusa em apresentar esses documentos pode acarretar sanções legais, incluindo multas diárias, reforçando a importância da transparência e da cooperação das empresas com os órgãos de fiscalização.</p><h2>Conclusão</h2><p>A decisão judicial que determina a apresentação de documentos trabalhistas pela empresa BIOGESP sob pena de multa diária reflete a seriedade com que o sistema jurídico brasileiro trata as violações trabalhistas. É um lembrete importante para as empresas sobre a necessidade de manter práticas trabalhistas transparentes e regulares, e para os trabalhadores, sobre a importância de conhecer e defender seus direitos. A colaboração entre empresas, órgãos de fiscalização e a justiça é essencial para a construção de um ambiente de trabalho justo e protegido para todos.</p>
 <p style="font-size:.78rem;color:#64748B;margin-top:28px;padding-top:12px;border-top:1px solid #E2E8F0;"><strong>Fonte:</strong> <a href="https://www.prt2.mpt.mp.br/informe-se/noticias-do-mpt-sp" target="_blank" rel="noopener noreferrer">MPT-SP (PRT-2)</a> — acesso em 20 de abril de 2026.</p>
@@ -1219,9 +1181,11 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   </details>
   <h2>Fonte</h2><p>Justica do Trabalho — decisao determinando apresentacao de documentos, 2026. Art. 765 CLT; art. 400 CPC.</p>
 
-</article>
-
-
+  <!-- ▸ ANÚNCIO ADSTERRA: final do artigo (320x50, mobile) -->
+  <div class="adst-slot ad-mobile-only" id="ad-post-end-adsterra"
+       data-adst-key="f9a6a26e51d4d397ec65d29e8f2ca7a5" data-adst-w="320" data-adst-h="50"
+       style="width:320px;height:50px;max-width:100%;"></div>
+      </article>
 
       <!-- Disclaimer jurídico -->
       <div style="background:#FFF7ED;border-left:4px solid #D97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:28px 0;font-size:.82rem;color:#78350F;line-height:1.6;">
@@ -1356,8 +1320,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   </div>
 </div>
 
-
-
 <!-- ══════════════════════════════════════
      BLOG / CONTEÚDO
 ══════════════════════════════════════ -->
@@ -1446,8 +1408,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     </div>
   </div>
 </div>
-
-
 
 <script>
 // ── READING PROGRESS ──────────────────────────
@@ -1642,5 +1602,6 @@ if (document.readyState !== 'loading') loadRelated();
 </script>
 <script src="/js/analytics.js" defer></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6e5715de2d20415d90b9904cb3475c40"}'></script>
+  <script src="/js/ads-adsterra.js?v=2" defer></script>
 </body>
 </html>

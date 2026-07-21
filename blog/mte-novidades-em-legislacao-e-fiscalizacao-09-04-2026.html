@@ -105,8 +105,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .btn-calc-nav{background:var(--acc);color:#fff !important;border-radius:8px;padding:7px 12px !important;font-size:.78rem !important;font-weight:700;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:4px;flex-shrink:0;}
 .btn-calc-nav:hover{background:var(--acc-d) !important;}
 
-
-
 /* ════════════════════════════════════════
    SECTIONS (SPA navigation)
 ════════════════════════════════════════ */
@@ -854,50 +852,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   .seo-grid { grid-template-columns: 1fr; gap: 10px; }
 }
 
-/* ── Banners laterais (somente desktop) ── */
-.ad-sidebar-wrap {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 100;
-  display: none; /* oculto no mobile */
-}
-.ad-sidebar-left  { left: 8px; }
-.ad-sidebar-right { right: 8px; }
-.ad-sidebar-slot {
-  width: 160px;
-  min-height: 0;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #94A3B8;
-  font-size: .7rem;
-  font-family: var(--fh);
-  text-align: center;
-  padding: 8px;
-  gap: 4px;
-}
-.ad-sidebar-slot strong { font-size: .72rem; font-weight: 700; color: #64748B; }
-/* Mostra lateral apenas quando há espaço suficiente */
-@media(min-width:1400px){
-  .ad-sidebar-wrap { display: block; }
-}
-
-
-  .nav-full{display:none;}
+.nav-full{display:none;}
   /* Remove pseudo-element trick anterior */
   #nav-ref{font-size:.65rem;}
   #nav-ref::before{display:none;}
 }
-
-
-
-
-
 
 
 
@@ -907,13 +866,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 
 
-
-
-
 /* Spans para controle mobile/desktop */
 .d-mob-hide { display: inline; }
-
-
 
 
 /* ── BLOG POST OVERRIDES ── */
@@ -1088,21 +1042,20 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   .hdr-nav.mob-open{display:flex !important;}
   .hdr-nav a{width:100%;padding:13px 20px;font-size:.93rem;border-bottom:1px solid var(--brd,#e2e8f0);white-space:normal;}
 }
+
+/* ── Adsterra: slots com espaço reservado (evita CLS) ── */
+.adst-slot { display:flex; align-items:center; justify-content:center; overflow:hidden; margin:20px auto; }
+.ad-mobile-only { display:none !important; }
+@media (max-width: 768px) {
+  .ad-mobile-only { display:flex !important; }
+  .ad-desktop-only.adst-slot { display:none !important; }
+}
 </style>
 </head>
 <body>
 
 <!-- Reading progress -->
 <div class="progress-bar" id="progress-bar"></div>
-
-<!-- ▸ BANNERS LATERAIS (desktop ≥1400px) -->
-<div class="ad-sidebar-wrap ad-sidebar-left" id="ad-sidebar-left">
-  
-</div>
-<div class="ad-sidebar-wrap ad-sidebar-right" id="ad-sidebar-right">
-  
-</div>
-
 
 <header id="hdr">
   <div class="hdr-inner">
@@ -1191,15 +1144,24 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       <div style="margin-bottom:28px;border-radius:12px;overflow:hidden;max-height:400px;"><img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1200&q=80" alt="MTE: Principais Atualizações de Legislação e Fiscalização Trabalhista — Abril 2026" width="1200" height="630" style="width:100%;height:auto;object-fit:cover;display:block;" loading="lazy"></div>
 
       <!-- Ad: topo do artigo (mostra apenas quando AdSense aprovado) -->
-      
 
       <!-- Article content -->
+        <!-- ▸ ANÚNCIO ADSTERRA: topo do artigo (728x90, desktop) -->
+  <div class="adst-slot ad-desktop-only" id="ad-post-top-adsterra"
+       data-adst-key="4f5894de8245c23422f7de3e03a1363e" data-adst-w="728" data-adst-h="90"
+       style="width:728px;height:90px;max-width:100%;"></div>
+
       <article class="article-body">
         
 <h2>Principais movimentos do MTE em abril de 2026</h2>
 <p>O Ministério do Trabalho e Emprego (MTE) concentrou suas atividades em abril de 2026 em três frentes: atualização do cadastro de empregadores com trabalho análogo à escravidão (Lista Suja), orientações sobre o Programa de Alimentação do Trabalhador (PAT) e intensificação das fiscalizações em saúde e segurança do trabalho, especialmente na aplicação das Normas Regulamentadoras revisadas.</p>
 
 <h2>Lista Suja: atualização de abril de 2026</h2>
+  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (300x250, desktop e mobile) -->
+  <div class="adst-slot" id="ad-post-mid-adsterra"
+       data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+       style="width:300px;height:250px;max-width:100%;"></div>
+
 <p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/mte-orientacoes-consignado-rescisao-credito-trabalhador.html" style="color:#2563EB;font-weight:600;">MTE orienta empresas sobre desconto do consignado em rescisões até 22 de julho</a></p>
 
 <p>Em 8 de abril de 2026, o MTE publicou atualização extraordinária do <strong>Cadastro de Empregadores</strong> (Lista Suja), incluindo 169 novos empregadores e elevando o total para 613 registros. A atualização semestral regular ocorre em janeiro e julho, mas operações de fiscalização com resgates expressivos podem gerar atualizações extraordinárias a qualquer momento. Consulte a lista atualizada em: <a href="https://sit.trabalho.gov.br/radar/" target="_blank" rel="noopener noreferrer" style="color:#2563EB;">sit.trabalho.gov.br/radar</a>.</p>
@@ -1229,7 +1191,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   📌 <strong>Fontes:</strong> <a href="https://www.gov.br/trabalho-e-emprego/pt-br" target="_blank" rel="noopener noreferrer" style="color:#2563EB;">MTE — gov.br/trabalho-e-emprego</a> · Portaria MTE 671/2021 · Portaria MTE 672/2021 · NR-1 (revisada 2022) · Lei 6.321/1976 (PAT) · Decreto 10.854/2021.
 </p>
 
-      
   <h2>PAT 2026: atualizacoes no Programa de Alimentacao do Trabalhador</h2>
   <p>O Ministerio do Trabalho e Emprego publicou, em abril de 2026, novas orientacoes sobre o Programa de Alimentacao do Trabalhador (PAT). As principais mudancas dizem respeito ao valor maximo do beneficio por refeicao (atualizado para R$ 26,58 em 2026), as regras de portabilidade do beneficio entre fornecedores e a vedacao expressa de descontos ou cashbacks para o trabalhador quando realiza o saque ou transferencia do saldo do vale-refeicao.</p>
   <p>Empresas inscritas no PAT tem beneficio fiscal: deducao de 250% das despesas com alimentacao do trabalhador no Lucro Real, limitada ao dobro do valor de referencia por refeicao. O descumprimento das regras do PAT pode resultar na exclusao do programa e na cobranca retroativa do beneficio fiscal indevidamente aproveitado.</p>
@@ -1242,9 +1203,11 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   </details>
   <h2>Fonte</h2><p>Ministerio do Trabalho e Emprego — atualizacoes legislativas e de fiscalizacao, abril de 2026.</p>
 
-</article>
-
-
+  <!-- ▸ ANÚNCIO ADSTERRA: final do artigo (320x50, mobile) -->
+  <div class="adst-slot ad-mobile-only" id="ad-post-end-adsterra"
+       data-adst-key="f9a6a26e51d4d397ec65d29e8f2ca7a5" data-adst-w="320" data-adst-h="50"
+       style="width:320px;height:50px;max-width:100%;"></div>
+      </article>
 
       <!-- Disclaimer jurídico -->
       <div style="background:#FFF7ED;border-left:4px solid #D97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:28px 0;font-size:.82rem;color:#78350F;line-height:1.6;">
@@ -1379,8 +1342,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   </div>
 </div>
 
-
-
 <!-- ══════════════════════════════════════
      BLOG / CONTEÚDO
 ══════════════════════════════════════ -->
@@ -1469,8 +1430,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     </div>
   </div>
 </div>
-
-
 
 <script>
 // ── READING PROGRESS ──────────────────────────
@@ -1665,5 +1624,6 @@ if (document.readyState !== 'loading') loadRelated();
 </script>
 <script src="/js/analytics.js" defer></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6e5715de2d20415d90b9904cb3475c40"}'></script>
+  <script src="/js/ads-adsterra.js?v=2" defer></script>
 </body>
 </html>

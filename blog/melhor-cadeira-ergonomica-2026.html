@@ -851,41 +851,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   .seo-grid { grid-template-columns: 1fr; gap: 10px; }
 }
 
-/* ── Banners laterais (somente desktop) ── */
-.ad-sidebar-wrap {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 100;
-  display: none; /* oculto no mobile */
-}
-.ad-sidebar-left  { left: 8px; }
-.ad-sidebar-right { right: 8px; }
-.ad-sidebar-slot {
-  width: 160px;
-  min-height: 0;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #94A3B8;
-  font-size: .7rem;
-  font-family: var(--fh);
-  text-align: center;
-  padding: 8px;
-  gap: 4px;
-}
-.ad-sidebar-slot strong { font-size: .72rem; font-weight: 700; color: #64748B; }
-/* Mostra lateral apenas quando há espaço suficiente */
-@media(min-width:1400px){
-  .ad-sidebar-wrap { display: block; }
-}
-
-
-  .nav-full{display:none;}
+.nav-full{display:none;}
   /* Remove pseudo-element trick anterior */
   #nav-ref{font-size:.65rem;}
   #nav-ref::before{display:none;}
@@ -1094,6 +1060,14 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   .hdr-nav.mob-open{display:flex !important;}
   .hdr-nav a{width:100%;padding:13px 20px;font-size:.93rem;border-bottom:1px solid var(--brd,#e2e8f0);white-space:normal;}
 }
+
+/* ── Adsterra: slots com espaço reservado (evita CLS) ── */
+.adst-slot { display:flex; align-items:center; justify-content:center; overflow:hidden; margin:20px auto; }
+.ad-mobile-only { display:none !important; }
+@media (max-width: 768px) {
+  .ad-mobile-only { display:flex !important; }
+  .ad-desktop-only.adst-slot { display:none !important; }
+}
 </style>
 <style>
 .prod-card{background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);overflow:hidden;margin:28px 0;box-shadow:var(--sh);transition:box-shadow .25s,transform .25s;}
@@ -1287,6 +1261,11 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
         <strong>ℹ️ Transparência editorial:</strong> Este ranking foi elaborado de forma independente pela equipe Calcula Prazo com base em critérios técnicos, conformidade com a NR-17 e análise de avaliações de usuários. Os links levam à <strong>Amazon.com.br</strong>, ao <strong>Mercado Livre</strong> e à <strong>Shopee</strong> — se você comprar por eles, podemos receber uma comissão <em>sem custo adicional para você</em>. Isso nos ajuda a manter o site 100% gratuito.
       </div>
 
+        <!-- ▸ ANÚNCIO ADSTERRA: topo do artigo (728x90, desktop) -->
+  <div class="adst-slot ad-desktop-only" id="ad-post-top-adsterra"
+       data-adst-key="4f5894de8245c23422f7de3e03a1363e" data-adst-w="728" data-adst-h="90"
+       style="width:728px;height:90px;max-width:100%;"></div>
+
       <article class="article-body">
 
         <div class="resumo-rapido">
@@ -1376,6 +1355,11 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
         <!-- ═══ PRODUTO 2 ═══ -->
         <h2>🥈 #2 — Fratini Everest Presidente NR-17 Mesh</h2>
+  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (300x250, desktop e mobile) -->
+  <div class="adst-slot" id="ad-post-mid-adsterra"
+       data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+       style="width:300px;height:250px;max-width:100%;"></div>
+
 <p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/melhor-vade-mecum-2026.html" style="color:#2563EB;font-weight:600;">Melhor Vade Mecum 2026: Os 10 Melhores para Comprar</a></p>
 
         <div class="prod-card">
@@ -1814,6 +1798,10 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
         <p>Independentemente do modelo escolhido, lembre-se: nenhuma cadeira ergonômica elimina os riscos de doenças ocupacionais por si só. A NR-17 exige também que o trabalhador faça pausas periódicas, que o monitor esteja na altura correta dos olhos e que a organização do posto de trabalho como um todo seja adequada. A cadeira é parte de um sistema — não a solução completa.</p>
 
+        <!-- ▸ ANÚNCIO ADSTERRA: final do artigo (320x50, mobile) -->
+  <div class="adst-slot ad-mobile-only" id="ad-post-end-adsterra"
+       data-adst-key="f9a6a26e51d4d397ec65d29e8f2ca7a5" data-adst-w="320" data-adst-h="50"
+       style="width:320px;height:50px;max-width:100%;"></div>
       </article>
 
       <!-- Compartilhamento -->
@@ -2142,5 +2130,6 @@ if (document.readyState !== 'loading') loadRelated();
   if (document.readyState !== 'loading') loadPrevNext();
 })();
 </script>
+  <script src="/js/ads-adsterra.js?v=2" defer></script>
 </body>
 </html>

@@ -102,8 +102,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .btn-calc-nav{background:var(--acc);color:#fff !important;border-radius:8px;padding:7px 12px !important;font-size:.78rem !important;font-weight:700;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:4px;flex-shrink:0;}
 .btn-calc-nav:hover{background:var(--acc-d) !important;}
 
-
-
 /* ════════════════════════════════════════
    SECTIONS (SPA navigation)
 ════════════════════════════════════════ */
@@ -851,50 +849,11 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   .seo-grid { grid-template-columns: 1fr; gap: 10px; }
 }
 
-/* ── Banners laterais (somente desktop) ── */
-.ad-sidebar-wrap {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 100;
-  display: none; /* oculto no mobile */
-}
-.ad-sidebar-left  { left: 8px; }
-.ad-sidebar-right { right: 8px; }
-.ad-sidebar-slot {
-  width: 160px;
-  min-height: 0;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #94A3B8;
-  font-size: .7rem;
-  font-family: var(--fh);
-  text-align: center;
-  padding: 8px;
-  gap: 4px;
-}
-.ad-sidebar-slot strong { font-size: .72rem; font-weight: 700; color: #64748B; }
-/* Mostra lateral apenas quando há espaço suficiente */
-@media(min-width:1400px){
-  .ad-sidebar-wrap { display: block; }
-}
-
-
-  .nav-full{display:none;}
+.nav-full{display:none;}
   /* Remove pseudo-element trick anterior */
   #nav-ref{font-size:.65rem;}
   #nav-ref::before{display:none;}
 }
-
-
-
-
-
 
 
 
@@ -904,13 +863,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 
 
-
-
-
 /* Spans para controle mobile/desktop */
 .d-mob-hide { display: inline; }
-
-
 
 
 /* ── BLOG POST OVERRIDES ── */
@@ -1074,27 +1028,20 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 .pn-title{font-size:.82rem;font-weight:700;color:var(--txt);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .pn-cat{font-size:.65rem;color:var(--acc);margin-top:2px;}
 @media(max-width:580px){.pn-nav{flex-direction:column;}.pn-btn.pn-next{flex-direction:row;text-align:left;}}
+
+/* ── Adsterra: slots com espaço reservado (evita CLS) ── */
+.adst-slot { display:flex; align-items:center; justify-content:center; overflow:hidden; margin:20px auto; }
+.ad-mobile-only { display:none !important; }
+@media (max-width: 768px) {
+  .ad-mobile-only { display:flex !important; }
+  .ad-desktop-only.adst-slot { display:none !important; }
+}
 </style>
 </head>
 <body>
 
 <!-- Reading progress -->
 <div class="progress-bar" id="progress-bar"></div>
-
-<!-- ▸ BANNERS LATERAIS (desktop ≥1400px) -->
-<div class="ad-sidebar-wrap ad-sidebar-left" id="ad-sidebar-left">
-  <div class="ad-sidebar-slot">
-    
-
-  </div>
-</div>
-<div class="ad-sidebar-wrap ad-sidebar-right" id="ad-sidebar-right">
-  <div class="ad-sidebar-slot">
-    
-
-  </div>
-</div>
-
 
 <header id="hdr">
   <div class="hdr-inner">
@@ -1189,6 +1136,11 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       </div>
 
       <!-- Article content -->
+        <!-- ▸ ANÚNCIO ADSTERRA: topo do artigo (728x90, desktop) -->
+  <div class="adst-slot ad-desktop-only" id="ad-post-top-adsterra"
+       data-adst-key="4f5894de8245c23422f7de3e03a1363e" data-adst-w="728" data-adst-h="90"
+       style="width:728px;height:90px;max-width:100%;"></div>
+
       <article class="article-body">
 
   <div class="resumo-rapido">
@@ -1212,8 +1164,12 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <p>A Lei 14.442/2022 deixou claro que o teletrabalho pode ser parcial — alguns dias presenciais, outros remotos —, sem que isso descaracterize a modalidade ou altere as obrigações do empregador.</p>
 
   <h2>O contrato escrito é obrigatório</h2>
-<p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/contrato-prazo-determinado-art-443-clt-empresa.html" style="color:#2563EB;font-weight:600;">Contrato por prazo determinado: regras e riscos para a empresa</a></p>
+  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (300x250, desktop e mobile) -->
+  <div class="adst-slot" id="ad-post-mid-adsterra"
+       data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+       style="width:300px;height:250px;max-width:100%;"></div>
 
+<p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/contrato-prazo-determinado-art-443-clt-empresa.html" style="color:#2563EB;font-weight:600;">Contrato por prazo determinado: regras e riscos para a empresa</a></p>
 
   <p>O art. 75-C da CLT exige que a prestação de serviços em regime de teletrabalho conste <strong>expressamente</strong> do instrumento de contrato individual de trabalho. O contrato deve especificar quais atividades serão executadas remotamente e a localidade de referência do trabalho, pois o empregador <strong>não responde</strong> pelas despesas de retorno ao presencial se o empregado optou por trabalhar fora da localidade contratada (art. 75-C, § 3º, da CLT).</p>
 
@@ -1246,7 +1202,11 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     <li>Revisar o PGR e o PCMSO para incluir os riscos específicos do trabalho remoto, especialmente os psicossociais exigidos pela NR-1 atualizada.</li>
   </ul>
 
-</article>
+  <!-- ▸ ANÚNCIO ADSTERRA: final do artigo (320x50, mobile) -->
+  <div class="adst-slot ad-mobile-only" id="ad-post-end-adsterra"
+       data-adst-key="f9a6a26e51d4d397ec65d29e8f2ca7a5" data-adst-w="320" data-adst-h="50"
+       style="width:320px;height:50px;max-width:100%;"></div>
+      </article>
 
       <!-- Compartilhamento -->
       <div style="margin:28px 0 20px;padding:14px 18px;background:var(--card);border:1.5px solid var(--brd);border-radius:14px;">
@@ -1381,8 +1341,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   </div>
 </div>
 
-
-
 <!-- ══════════════════════════════════════
      BLOG / CONTEÚDO
 ══════════════════════════════════════ -->
@@ -1471,8 +1429,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     </div>
   </div>
 </div>
-
-
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── READING PROGRESS ──────────────────────────
@@ -1669,5 +1625,6 @@ if (document.readyState !== 'loading') loadRelated();
   if (document.readyState !== 'loading') loadPrevNext();
 })();
 </script>
+  <script src="/js/ads-adsterra.js?v=2" defer></script>
 </body>
 </html>
