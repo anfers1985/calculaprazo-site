@@ -10,18 +10,22 @@ const LIMITE_DIARIO = 3;
 async function main() {
   const posts = JSON.parse(fs.readFileSync(POSTS_JSON_PATH, 'utf-8'));
 
-  // Considera só posts publicados nas últimas 48h, pra não tentar gerar vídeo pro blog inteiro na primeira vez.
-  const desde = Date.now() - 48 * 60 * 60 * 1000;
-  const recentes = posts.filter(p => new Date(p.publishedAt || p.date).getTime() >= desde);
+  // Considera só posts publicados HOJE (mesmo dia UTC usado no limite abaixo).
+  // Antes era uma janela corrida de 48h — isso fazia um post de ontem que não coubesse na cota
+  // do dia anterior "furar a fila" e tomar a vaga de um post novo publicado hoje, porque ele
+  // aparecia antes no array. Restringindo a hoje, o backlog de ontem não compete mais.
+  const inicioDoDia = new Date();
+  inicioDoDia.setUTCHours(0, 0, 0, 0);
+  const recentes = posts
+    .filter(p => new Date(p.publishedAt || p.date).getTime() >= inicioDoDia.getTime())
+    .sort((a, b) => new Date(a.publishedAt || a.date) - new Date(b.publishedAt || b.date));
 
   if (recentes.length === 0) {
-    console.log('Nenhum post recente. Nada a fazer.');
+    console.log('Nenhum post publicado hoje. Nada a fazer.');
     return;
   }
 
   // Quantos jobs já foram criados hoje (UTC) — limite diário pra controlar custo/cota.
-  const inicioDoDia = new Date();
-  inicioDoDia.setUTCHours(0, 0, 0, 0);
   const { count: criadosHoje, error: errCont } = await supabase
     .from('video_jobs')
     .select('id', { count: 'exact', head: true })
