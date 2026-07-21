@@ -1,5 +1,41 @@
 [
   {
+    "id": "beneficios-apos-demissao-direitos-trabalhador",
+    "title": "Benefícios após demissão: saiba quais direitos permanecem",
+    "category": "rh-beneficios",
+    "category_label": "Benefícios",
+    "excerpt": "Entenda o que acontece com vale-alimentação, transporte, plano de saúde e outros benefícios após a demissão do trabalhador.",
+    "image": "https://plus.unsplash.com/premium_photo-1683121938935-118d0a16a469?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-07-21",
+    "updatedAt": "2026-07-21",
+    "tags": []
+  },
+  {
+    "id": "limbo-previdenciario-retorno-trabalho-seguranca-juridica",
+    "title": "Limbo previdenciário: como reduzir riscos no retorno ao trabalho",
+    "category": "legislacao-previdenciario",
+    "category_label": "Previdenciário",
+    "excerpt": "Entenda como o RH deve agir no limbo previdenciário, conciliando alta do INSS, ASO ocupacional e medidas para evitar riscos trabalhistas.",
+    "image": "https://images.unsplash.com/photo-1624555130581-1d9cca783bc0?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-07-21",
+    "updatedAt": "2026-07-21",
+    "tags": []
+  },
+  {
+    "id": "rh-conscientizacao-apostas-online-bets",
+    "title": "RH pode ajudar a prevenir os impactos das apostas online",
+    "category": "orientacoes-praticas",
+    "category_label": "Outros RH",
+    "excerpt": "Descubra como o RH pode conscientizar colaboradores sobre os riscos das apostas online, incentivar a educação financeira e promover saúde mental no ambiente de trabalho.",
+    "image": "https://images.unsplash.com/photo-1633613286880-dae9f126b728?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-07-21",
+    "updatedAt": "2026-07-21",
+    "tags": []
+  },
+  {
     "id": "cnpj-ativo-nao-garante-estabilidade-cipeiro",
     "title": "CNPJ ativo não garante estabilidade de ex-membro da CIPA",
     "category": "jurisprudencia-tst",
