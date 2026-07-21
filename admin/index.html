@@ -1043,15 +1043,18 @@ const AD_MID_HTML = '\n  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (300x250, de
 function injectMidArticleAd(html) {
   const h2Regex = /<h2[^>]*>[\s\S]*?<\/h2>/gi;
   const matches = [...html.matchAll(h2Regex)];
-  if (matches.length === 0) {
-    const pMatches = [...html.matchAll(/<\/p>/gi)];
-    if (!pMatches.length) return html;
-    const mid = pMatches[Math.floor(pMatches.length / 2)];
-    return html.slice(0, mid.index + mid[0].length) + AD_MID_HTML + html.slice(mid.index + mid[0].length);
+  if (matches.length >= 3) {
+    const anchor = matches[2];
+    return html.slice(0, anchor.index) + AD_MID_HTML + html.slice(anchor.index);
   }
-  const anchor = matches.length >= 2 ? matches[1] : matches[0];
-  const insertPos = anchor.index + anchor[0].length;
-  return html.slice(0, insertPos) + AD_MID_HTML + html.slice(insertPos);
+  if (matches.length === 2) {
+    const anchor = matches[1];
+    return html.slice(0, anchor.index) + AD_MID_HTML + html.slice(anchor.index);
+  }
+  const pMatches = [...html.matchAll(/<\/p>/gi)];
+  if (!pMatches.length) return html;
+  const mid = pMatches[Math.floor(pMatches.length / 2)];
+  return html.slice(0, mid.index + mid[0].length) + AD_MID_HTML + html.slice(mid.index + mid[0].length);
 }
 
 // ════════════════════════════════════════

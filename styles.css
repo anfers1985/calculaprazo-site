@@ -866,37 +866,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 
 /* ── Banners laterais (somente desktop) ── */
-.ad-sidebar-wrap {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 100;
-  display: none; /* oculto no mobile */
-}
-.ad-sidebar-left  { left: 8px; }
-.ad-sidebar-right { right: 8px; }
-.ad-sidebar-slot {
-  width: 160px;
-  min-height: 600px;
-  background: #f1f5f9;
-  border: 1.5px dashed #CBD5E1;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #94A3B8;
-  font-size: .7rem;
-  font-family: var(--fh);
-  text-align: center;
-  padding: 8px;
-  gap: 4px;
-}
-.ad-sidebar-slot strong { font-size: .72rem; font-weight: 700; color: #64748B; }
-/* Mostra lateral apenas quando há espaço suficiente */
-@media(min-width:1400px){
-  .ad-sidebar-wrap { display: block; }
-}
+/* (definição consolidada acima, junto com a regra :has() que controla em quais
+   seções o banner aparece — ver topo do arquivo, próximo a .container) */
 
 
 
