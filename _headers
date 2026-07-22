@@ -60,7 +60,7 @@
 # Segurança geral
 /*
   X-Content-Type-Options: nosniff
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://adservice.google.com https://www.googletagservices.com https://partner.googleadservices.com https://tpc.googlesyndication.com https://www.googletagmanager.com https://static.cloudflareinsights.com https://pl29266866.effectivecpmnetwork.com https:; img-src 'self' data: https: blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://stats.g.doubleclick.net https://cloudflareinsights.com https://api.bcb.gov.br https://open.er-api.com https://economia.awesomeapi.com.br https://api.github.com https://www.googleapis.com https://api.web3forms.com https://googleads.g.doubleclick.net https://adservice.google.com https://calculaprazo-views-api.andersonfernand3s.workers.dev https:; frame-src 'self' https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://pagead2.googlesyndication.com https:;
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://adservice.google.com https://www.googletagservices.com https://partner.googleadservices.com https://tpc.googlesyndication.com https://www.googletagmanager.com https://static.cloudflareinsights.com; img-src 'self' data: https: blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://stats.g.doubleclick.net https://cloudflareinsights.com https://api.bcb.gov.br https://open.er-api.com https://economia.awesomeapi.com.br https://api.github.com https://www.googleapis.com https://api.web3forms.com https://googleads.g.doubleclick.net https://adservice.google.com https://calculaprazo-views-api.andersonfernand3s.workers.dev; frame-src 'self' https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://pagead2.googlesyndication.com;
   X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
@@ -83,22 +83,12 @@
 # de definir o novo — sem isso, o navegador aplicaria a INTERSEÇÃO dos
 # dois CSPs (o mais restritivo prevaleceria) e nada mudaria.
 #
-# Placement IDs Adsterra para referência:
+# Placement IDs Adsterra para referência (não usar Popunder,
+# Smartlink, Social Bar nem Native Banner neste site):
 #   Banner 320x50: f9a6a26e51d4d397ec65d29e8f2ca7a5
 #   Banner 300x250:b4454cd1dba198adabbd5fad568cb2c6
 #   Banner 160x600:947ebabcaa1be2c0967dcdaca3c67aba
 #   Banner 728x90: 4f5894de8245c23422f7de3e03a1363e
-#
-# ATUALIZAÇÃO: Social Bar (script direto, sem iframe isolado) foi
-# adicionado apenas na home (index.html), enquanto o AdSense não é
-# aprovado. Como esse script roda no documento principal (não em
-# /ads/*), o CSP acima do bloco /* precisou ser ampliado com
-# "https://pl29266866.effectivecpmnetwork.com" e "https:" em
-# script-src/frame-src/connect-src, pois o Social Bar redireciona
-# para domínios de criativo que trocam sem aviso — mesmo problema
-# dos banners, só que sem a proteção do iframe isolado. Isso reduz
-# a segurança do CSP do site inteiro (não só de /ads/*). Se possível,
-# reavaliar migrar o Social Bar para dentro de /ads/* futuramente.
 # ============================================================
 /ads/*
   ! Content-Security-Policy
