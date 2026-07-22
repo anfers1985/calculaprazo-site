@@ -41,6 +41,11 @@
 # Redirect 301 — slug duplicado corrigido
 /blog/fim-da-escala-6x1-ccj-da-cmara-aprova-pec-e-debate-avana-no-congresso /blog/fim-da-escala-6x1-ccj-da-camara-aprova-pec-e-debate-avanca-no-congresso 301
 
+# Redirect 301 — artigo duplicado sobre prazos processuais removido a
+# pedido do Anderson (26/04/2026 era conteúdo repetido do artigo de
+# 29/04/2026, já padronizado). Redireciona para a versão canônica.
+/blog/calculadora-de-prazos-processuais-tutorial-completo-para-usar-o-calculaprazocombr /blog/calculadora-de-prazos-processuais-dias-uteis-corridos 301
+
 # Redirect 301 — arquivo duplicado com slug mal codificado (mesmo artigo já
 # publicado corretamente em /blog/stf-encerra-revisao-vida-toda-inss).
 # Esta versão com acentos quebrados nunca esteve no sitemap nem no
