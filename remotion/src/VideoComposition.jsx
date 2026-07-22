@@ -47,7 +47,12 @@ function Cena({ imagem, textoTela, narracao }) {
           dentro da zona de risco, não importa o tamanho do roteiro daquela cena. */}
       <div
         style={{
-          position: 'absolute', bottom: 460, left: 60, right: 170,
+          // bottom:600 (era 460) — o YouTube passou a exibir um chip de "Dublagem automática"
+          // bem em cima da linha do @canal em vídeos elegíveis, que não existia quando a folga
+          // original foi calculada. Isso reduziu a margem real da legenda pra ~10-15px, fazendo
+          // o chip cobrir a última linha da narração. 600 garante folga confortável mesmo com
+          // esse chip (e outros badges que o YouTube possa adicionar no futuro nessa mesma faixa).
+          position: 'absolute', bottom: 600, left: 60, right: 170,
           display: 'flex', flexDirection: 'column', gap: 20,
           opacity: opacityTexto,
         }}
