@@ -1,5 +1,17 @@
 [
   {
+    "id": "salario-intermitente-calculadora-online",
+    "title": "Salário Intermitente: Calcule seus Ganhos e Direitos com Precisão",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Descubra como calcular o salário intermitente, DSR, férias e 13º proporcional. Utilize gratuitamente a Calculadora de Salário Intermitente do Calcula Prazo.",
+    "image": "https://github.com/anfers1985/imagens/blob/main/capa_salario_intermitente.png?raw=true",
+    "imageCaption": "Fonte: acervo site",
+    "date": "2026-07-22",
+    "updatedAt": "2026-07-22",
+    "tags": []
+  },
+  {
     "id": "tst-demissao-motorista-hiv-discriminacao",
     "title": "TST reconhece presunção de discriminação em demissão de motorista com HIV",
     "category": "jurisprudencia-tst",
