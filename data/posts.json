@@ -1,5 +1,77 @@
 [
   {
+    "id": "trabalho-comercio-feriados-convencao-coletiva-portaria",
+    "title": "Trabalho no comércio em feriados passa a exigir convenção coletiva",
+    "category": "noticias-mte",
+    "category_label": "MTE",
+    "excerpt": "Nova portaria regulamenta o trabalho no comércio em feriados, exige convenção coletiva e mantém autorização permanente para atividades essenciais.",
+    "image": "https://images.unsplash.com/photo-1567958451986-2de427a4a0be?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-07-22",
+    "updatedAt": "2026-07-22",
+    "tags": []
+  },
+  {
+    "id": "empresas-monitoramento-det-fgts-digital",
+    "title": "Empresas devem monitorar o DET após reforço do FGTS Digital",
+    "category": "fgts-digital",
+    "category_label": "FGTS",
+    "excerpt": "Empresas precisam acompanhar o DET para identificar notificações do FGTS Digital e evitar perda de prazos, autuações e outras consequências administrativas.",
+    "image": "https://images.unsplash.com/photo-1508780709619-79562169bc64?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-07-22",
+    "updatedAt": "2026-07-22",
+    "tags": []
+  },
+  {
+    "id": "burnout-alta-acoes-trabalhistas-empresas",
+    "title": "Burnout gera alta de ações trabalhistas e acende alerta nas empresas",
+    "category": "processual-outros",
+    "category_label": "Outros Processual",
+    "excerpt": "Levantamento mostra crescimento de 400% nas ações trabalhistas por burnout entre 2016 e 2025, com quase R$ 10 bilhões em valores discutidos.",
+    "image": "https://images.unsplash.com/photo-1544145332-289eb83bbb68?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-07-22",
+    "updatedAt": "2026-07-22",
+    "tags": []
+  },
+  {
+    "id": "controle-ponto-home-office-regime-hibrido-obrigatorio",
+    "title": "Controle de ponto no home office e regime híbrido: quando é obrigatório",
+    "category": "rh-jornada",
+    "category_label": "Jornada",
+    "excerpt": "Entenda quando o controle de ponto é obrigatório no home office e no regime híbrido, conforme a CLT, a Lei 14.442/2022 e a Portaria 671/2021.",
+    "image": "https://images.unsplash.com/photo-1591382696684-38c427c7547a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-07-22",
+    "updatedAt": "2026-07-22",
+    "tags": []
+  },
+  {
+    "id": "integracao-esocial-fgts-digital-processos-trabalhistas",
+    "title": "Integração entre eSocial e FGTS Digital evita erros trabalhistas",
+    "category": "orientacoes-praticas",
+    "category_label": "Outros RH",
+    "excerpt": "Entenda como integrar eSocial, FGTS Digital e processos trabalhistas para reduzir inconsistências, evitar autuações e garantir recolhimentos corretos.",
+    "image": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-07-22",
+    "updatedAt": "2026-07-22",
+    "tags": []
+  },
+  {
+    "id": "banco-horas-rescisao-saldo-positivo-negativo",
+    "title": "Banco de horas na rescisão: como tratar saldos positivos e negativos",
+    "category": "rh-jornada",
+    "category_label": "Jornada",
+    "excerpt": "Entenda como funciona o banco de horas na rescisão, quando há pagamento ou desconto e quais cuidados evitam passivos trabalhistas.",
+    "image": "https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-07-22",
+    "updatedAt": "2026-07-22",
+    "tags": []
+  },
+  {
     "id": "tst-reconhece-radialista-empresa-ensino-distancia",
     "title": "TST reconhece radialista em empresa de ensino a distância",
     "category": "jurisprudencia-tst",
