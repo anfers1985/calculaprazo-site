@@ -95,6 +95,24 @@ const AREA_LABEL = {
   rh:"👥 RH / CLT"
 };
 
+// Utilitários de data compartilhados por várias calculadoras
+// (Prazos, Salário Intermitente, Prescrição, Datas, mini-calc da home)
+function pd(s){if(!s)return null;const[y,m,d]=s.split('-').map(Number);const dt=new Date(Date.UTC(y,m-1,d));if(dt.getUTCFullYear()!==y||dt.getUTCMonth()!==m-1||dt.getUTCDate()!==d)throw new Error('Data inexistente.');return dt;}
+function fd(dt){return`${String(dt.getUTCDate()).padStart(2,'0')}/${String(dt.getUTCMonth()+1).padStart(2,'0')}/${dt.getUTCFullYear()}`;}
+const DS=['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'];
+function dsem(dt){return DS[dt.getUTCDay()];}
+function cap(s){return s?s.charAt(0).toUpperCase()+s.slice(1):s;}
+
+// Calculator UI logic — protegido: só roda se o widget de prazos existir nesta página
+(function(){
+if(!document.getElementById('p-tipo-contagem')) return;
+
+// Corrigido: renderPCards e o toggle das abas de área precisam estar DENTRO
+// desta mesma IIFE, no mesmo escopo de openPModal (definida mais abaixo).
+// Antes, renderPCards rodava fora da IIFE e chamava openPModal(), que só
+// existe dentro dela — isso gerava "ReferenceError: openPModal is not
+// defined" ao clicar em qualquer cartão de prazo, e o cartão não fazia nada.
+
 // Render cards
 function renderPCards(area){
   const grid = document.getElementById(`pcards-${area}`);
@@ -122,18 +140,6 @@ document.querySelectorAll('.patab').forEach(tab => {
     }
   });
 });
-
-// Utilitários de data compartilhados por várias calculadoras
-// (Prazos, Salário Intermitente, Prescrição, Datas, mini-calc da home)
-function pd(s){if(!s)return null;const[y,m,d]=s.split('-').map(Number);const dt=new Date(Date.UTC(y,m-1,d));if(dt.getUTCFullYear()!==y||dt.getUTCMonth()!==m-1||dt.getUTCDate()!==d)throw new Error('Data inexistente.');return dt;}
-function fd(dt){return`${String(dt.getUTCDate()).padStart(2,'0')}/${String(dt.getUTCMonth()+1).padStart(2,'0')}/${dt.getUTCFullYear()}`;}
-const DS=['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'];
-function dsem(dt){return DS[dt.getUTCDay()];}
-function cap(s){return s?s.charAt(0).toUpperCase()+s.slice(1):s;}
-
-// Calculator UI logic — protegido: só roda se o widget de prazos existir nesta página
-(function(){
-if(!document.getElementById('p-tipo-contagem')) return;
 const pTipoSel   = document.getElementById('p-tipo-contagem');
 const pFimGrp    = document.getElementById('p-fim-grp');
 const pDiasGrp   = document.getElementById('p-dias-grp');
