@@ -16,12 +16,12 @@
   Cache-Control: public, max-age=86400, must-revalidate
   Content-Type: text/css; charset=utf-8
 
-/app.js
-  Cache-Control: public, max-age=86400, must-revalidate
+/app.min.js
+  Cache-Control: public, max-age=300, must-revalidate
   Content-Type: application/javascript; charset=utf-8
 
-/blog.js
-  Cache-Control: public, max-age=86400, must-revalidate
+/blog.min.js
+  Cache-Control: public, max-age=300, must-revalidate
   Content-Type: application/javascript; charset=utf-8
 
 # Ícones PWA
