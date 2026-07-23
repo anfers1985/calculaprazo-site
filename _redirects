@@ -21,37 +21,22 @@
 /data/posts.json  /data/posts.json         200
 /data/*           /data/:splat             200
 
-# Ferramentas — páginas estáticas próprias (migradas da SPA)
-/calculadora-de-prazo-processual   /calculadora-de-prazo-processual/index.html   200
-/calculadora-de-prazo-processual/  /calculadora-de-prazo-processual/index.html   200
-/correcao-monetaria                /correcao-monetaria/index.html                200
-/correcao-monetaria/               /correcao-monetaria/index.html                200
-/calculadora-de-juros              /calculadora-de-juros/index.html              200
-/calculadora-de-juros/             /calculadora-de-juros/index.html              200
-/calculadora-verbas-trabalhistas   /calculadora-verbas-trabalhistas/index.html   200
-/calculadora-verbas-trabalhistas/  /calculadora-verbas-trabalhistas/index.html   200
-/calculadora-salario-liquido       /calculadora-salario-liquido/index.html       200
-/calculadora-salario-liquido/      /calculadora-salario-liquido/index.html       200
-/calculadora-de-porcentagem        /calculadora-de-porcentagem/index.html        200
-/calculadora-de-porcentagem/       /calculadora-de-porcentagem/index.html        200
-/conversor-de-moedas               /conversor-de-moedas/index.html               200
-/conversor-de-moedas/              /conversor-de-moedas/index.html               200
-/calculadora-de-datas              /calculadora-de-datas/index.html              200
-/calculadora-de-datas/             /calculadora-de-datas/index.html              200
-/validador-cpf-cnpj                /validador-cpf-cnpj/index.html                200
-/validador-cpf-cnpj/               /validador-cpf-cnpj/index.html                200
-/gerador-de-qr-code                /gerador-de-qr-code/index.html                200
-/gerador-de-qr-code/               /gerador-de-qr-code/index.html                200
-/gerador-de-senhas                 /gerador-de-senhas/index.html                 200
-/gerador-de-senhas/                /gerador-de-senhas/index.html                 200
-/numero-por-extenso                /numero-por-extenso/index.html                200
-/numero-por-extenso/               /numero-por-extenso/index.html                200
-/calculadora-imc                   /calculadora-imc/index.html                   200
-/calculadora-imc/                  /calculadora-imc/index.html                   200
-/calculadora-de-prescricao         /calculadora-de-prescricao/index.html         200
-/calculadora-de-prescricao/        /calculadora-de-prescricao/index.html         200
-/calculadora-salario-intermitente  /calculadora-salario-intermitente/index.html  200
-/calculadora-salario-intermitente/ /calculadora-salario-intermitente/index.html  200
+# Ferramentas SPA — URLs limpas
+/calculadora-de-prazo-processual   /index.html   200
+/correcao-monetaria                /index.html   200
+/calculadora-de-juros              /index.html   200
+/calculadora-verbas-trabalhistas   /index.html   200
+/calculadora-salario-liquido       /index.html   200
+/calculadora-de-porcentagem        /index.html   200
+/conversor-de-moedas               /index.html   200
+/calculadora-de-datas              /index.html   200
+/validador-cpf-cnpj                /index.html   200
+/gerador-de-qr-code                /index.html   200
+/gerador-de-senhas                 /index.html   200
+/numero-por-extenso                /index.html   200
+/calculadora-imc                   /index.html   200
+/calculadora-de-prescricao         /index.html   200
+/calculadora-salario-intermitente  /index.html   200
 
 # Redirect 301 — slug duplicado corrigido
 /blog/fim-da-escala-6x1-ccj-da-cmara-aprova-pec-e-debate-avana-no-congresso /blog/fim-da-escala-6x1-ccj-da-camara-aprova-pec-e-debate-avanca-no-congresso 301
