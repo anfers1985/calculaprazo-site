@@ -123,7 +123,17 @@ document.querySelectorAll('.patab').forEach(tab => {
   });
 });
 
-// Calculator UI logic
+// Utilitários de data compartilhados por várias calculadoras
+// (Prazos, Salário Intermitente, Prescrição, Datas, mini-calc da home)
+function pd(s){if(!s)return null;const[y,m,d]=s.split('-').map(Number);const dt=new Date(Date.UTC(y,m-1,d));if(dt.getUTCFullYear()!==y||dt.getUTCMonth()!==m-1||dt.getUTCDate()!==d)throw new Error('Data inexistente.');return dt;}
+function fd(dt){return`${String(dt.getUTCDate()).padStart(2,'0')}/${String(dt.getUTCMonth()+1).padStart(2,'0')}/${dt.getUTCFullYear()}`;}
+const DS=['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'];
+function dsem(dt){return DS[dt.getUTCDay()];}
+function cap(s){return s?s.charAt(0).toUpperCase()+s.slice(1):s;}
+
+// Calculator UI logic — protegido: só roda se o widget de prazos existir nesta página
+(function(){
+if(!document.getElementById('p-tipo-contagem')) return;
 const pTipoSel   = document.getElementById('p-tipo-contagem');
 const pFimGrp    = document.getElementById('p-fim-grp');
 const pDiasGrp   = document.getElementById('p-dias-grp');
@@ -144,11 +154,6 @@ pRUteis.addEventListener('change',    () => { if(pRUteis.checked)   pUteisOpts.c
 pRCorridos.addEventListener('change', () => { if(pRCorridos.checked) pUteisOpts.classList.remove('show'); });
 
 // Date utils
-function pd(s){if(!s)return null;const[y,m,d]=s.split('-').map(Number);const dt=new Date(Date.UTC(y,m-1,d));if(dt.getUTCFullYear()!==y||dt.getUTCMonth()!==m-1||dt.getUTCDate()!==d)throw new Error('Data inexistente.');return dt;}
-function fd(dt){return`${String(dt.getUTCDate()).padStart(2,'0')}/${String(dt.getUTCMonth()+1).padStart(2,'0')}/${dt.getUTCFullYear()}`;}
-const DS=['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'];
-function dsem(dt){return DS[dt.getUTCDay()];}
-function cap(s){return s?s.charAt(0).toUpperCase()+s.slice(1):s;}
 function parseFer(str){if(!str||!str.trim())return[];return str.split(',').map(s=>{const p=s.trim().split('/');if(p.length!==3)return null;const[d,m,a]=p.map(Number);if(isNaN(d)||isNaN(m)||isNaN(a))return null;return new Date(Date.UTC(a,m-1,d));}).filter(Boolean);}
 function isFer(dt,fl){return fl.some(f=>f.getTime()===dt.getTime());}
 function isNU(dt,eS,eD,fl){const ds=dt.getUTCDay();return(eD&&ds===0)||(eS&&ds===6)||isFer(dt,fl);}
@@ -262,6 +267,8 @@ document.getElementById('pm-btn').addEventListener('click', () => {
     setTimeout(()=>{ card.style.boxShadow=''; },1200);
   },600);
 });
+
+})();
 
 // ─── CORREÇÃO MONETÁRIA — dados via API Banco Central ──
 // API pública do BCB: https://api.bcb.gov.br/dados/serie/bcdata.sgs.{codigo}/dados
@@ -1467,7 +1474,13 @@ function _genPWCore(){
 }
 function genPW(){ _genPWCore(); }
 function cpPW(){const pw=document.getElementById('pw-val').textContent;if(pw==='Clique em Gerar →')return;navigator.clipboard.writeText(pw).then(()=>{const b=document.getElementById('pw-copy-btn');b.textContent='✅';setTimeout(()=>b.textContent='📋',1400);}).catch(()=>{});}
-_genPWCore();
+// Corrigido: _genPWCore() NÃO deve rodar automaticamente ao carregar o script.
+// Antes, chamada sem guarda, quebrava com erro fatal em QUALQUER página que não
+// tivesse o campo #pw-len (ou seja, todas as páginas exceto /gerador-de-senhas),
+// interrompendo a execução de TODO o restante do app.js nessas páginas (o que
+// impedia o preenchimento automático de datas, o conversor de moedas, o
+// dropdown de ferramentas, o banner de cookies, etc. de funcionar).
+if (document.getElementById('pw-len')) { _genPWCore(); }
 
 // ─── NÚMERO POR EXTENSO ────────────────────────────
 let extMode='num';
@@ -1645,8 +1658,7 @@ window.addEventListener('load',()=>{
   const y5ago=new Date(t);y5ago.setFullYear(y5ago.getFullYear()-5);
   const str5=`${y5ago.getFullYear()}-${String(y5ago.getMonth()+1).padStart(2,'0')}-${String(y5ago.getDate()).padStart(2,'0')}`;
   const ci=document.getElementById('corr-ini');if(ci&&!ci.value)ci.value=str5;
-  calcMoeda();
-  fetchRatesLive();
+  if(document.getElementById('moeda-val-in')){ calcMoeda(); fetchRatesLive(); }
 });
 
 // FAQ
@@ -1735,10 +1747,7 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 // ─── AD SLOTS: show after-result ads ───────────────────────────────────────
-function showAdAfterResult(adId){
-  const el = document.getElementById(adId);
-  if(el){ el.style.display='block'; }
-}
+// (função definida mais abaixo, junto com o observer de #p-resultado)
 
 // Show prazos after-result ad when result appears
 (function(){
@@ -1998,6 +2007,7 @@ function resolveIdFromURL() {
 
 // Atualiza <title>, metas, canonical, OG e schema
 function updateSEO(id) {
+  if (!document.getElementById('page-title')) return; // página estática já tem o SEO correto embutido
   const s = SEO[id] || SEO.prazos;
   const slug  = s.slug || '';
   const url   = 'https://calculaprazo.com.br' + (slug ? '/' + slug : '/');
