@@ -132,34 +132,34 @@
 
 <header id="hdr">
   <div class="hdr-inner">
-    <a class="logo" href="/" title="Ir para página inicial">
+    <a class="logo" href="/" onclick="event.preventDefault();goTo('home')" title="Ir para página inicial">
       <div class="logo-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 7h18"/></svg></div><span class="logo-text">Calcula</span><span>Prazo</span>
     </a>
     <button id="hdr-burger" class="hdr-burger" aria-label="Abrir menu" aria-expanded="false" onclick="toggleMobNav()">
       <span></span><span></span><span></span>
     </button>
     <nav class="hdr-nav">
-      <a href="/" id="nav-home" class="on" onclick="closeMobNav()" style="display:flex;align-items:center;gap:4px;">🏠 Início</a>
-      <a href="/calculadora-de-prazo-processual" id="nav-prazos" onclick="closeMobNav()">Calculadora de Prazo</a>
+      <a href="/" id="nav-home" onclick="event.preventDefault();closeMobNav();goTo('home')" style="display:flex;align-items:center;gap:4px;">🏠 Início</a>
+      <a href="/calculadora-de-prazo-processual" id="nav-prazos" onclick="event.preventDefault();closeMobNav();goTo('prazos')">Calculadora de Prazo</a>
       <div class="nav-dropdown" id="nav-dropdown-ferramentas" role="navigation" aria-label="Ferramentas">
         <a id="nav-tools" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="ferramentas-menu" onclick="toggleFerramentas(event)">Ferramentas</a>
         <div class="nav-drop-menu" id="ferramentas-menu" role="menu">
           <div class="nav-drop-divider"></div>
-          <a href="/correcao-monetaria"><span class="dm-icon">💰</span>Correção Monetária</a>
-          <a href="/calculadora-de-juros"><span class="dm-icon">📈</span>Cálculo de Juros</a>
-          <a href="/calculadora-verbas-trabalhistas"><span class="dm-icon">⚖️</span>Calculadora de Verbas Trabalhistas</a>
-          <a href="/calculadora-salario-liquido"><span class="dm-icon">💵</span>Salário Líquido</a>
-          <a href="/calculadora-salario-intermitente"><span class="dm-icon">🕒</span>Salário Intermitente</a>
-          <a href="/calculadora-de-prescricao"><span class="dm-icon">⌛</span>Calculadora de Prescrição</a>
-          <a href="/calculadora-de-porcentagem"><span class="dm-icon">🧮</span>Porcentagem</a>
-          <a href="/conversor-de-moedas"><span class="dm-icon">💱</span>Conversor de Moedas</a>
+          <a href="/correcao-monetaria" onclick="event.preventDefault();closeMobNav();navGoTo('correcao')"><span class="dm-icon">💰</span>Correção Monetária</a>
+          <a href="/calculadora-de-juros" onclick="event.preventDefault();closeMobNav();navGoTo('juros')"><span class="dm-icon">📈</span>Cálculo de Juros</a>
+          <a href="/calculadora-verbas-trabalhistas" onclick="event.preventDefault();closeMobNav();navGoTo('trabalhista')"><span class="dm-icon">⚖️</span>Calculadora de Verbas Trabalhistas</a>
+          <a href="/calculadora-salario-liquido" onclick="event.preventDefault();closeMobNav();navGoTo('salario')"><span class="dm-icon">💵</span>Salário Líquido</a>
+          <a href="/calculadora-salario-intermitente" onclick="event.preventDefault();closeMobNav();navGoTo('intermitente')"><span class="dm-icon">🕒</span>Salário Intermitente</a>
+          <a href="/calculadora-de-prescricao" onclick="event.preventDefault();closeMobNav();navGoTo('prescricao')"><span class="dm-icon">⌛</span>Calculadora de Prescrição</a>
+          <a href="/calculadora-de-porcentagem" onclick="event.preventDefault();closeMobNav();navGoTo('porcentagem')"><span class="dm-icon">🧮</span>Porcentagem</a>
+          <a href="/conversor-de-moedas" onclick="event.preventDefault();closeMobNav();navGoTo('moedas')"><span class="dm-icon">💱</span>Conversor de Moedas</a>
           <div class="nav-drop-divider"></div>
-          <a href="/calculadora-de-datas"><span class="dm-icon">📅</span>Operações com Datas</a>
-          <a href="/validador-cpf-cnpj"><span class="dm-icon">🪪</span>Validador CPF / CNPJ</a>
-          <a href="/gerador-de-qr-code"><span class="dm-icon">📱</span>Gerador de QR Code</a>
-          <a href="/gerador-de-senhas"><span class="dm-icon">🔐</span>Gerador de Senhas</a>
-          <a href="/numero-por-extenso"><span class="dm-icon">🔢</span>Número por Extenso</a>
-          <a href="/calculadora-imc"><span class="dm-icon">🏃</span>Calculadora de IMC</a>
+          <a href="/calculadora-de-datas" onclick="event.preventDefault();closeMobNav();navGoTo('datas')"><span class="dm-icon">📅</span>Operações com Datas</a>
+          <a href="/validador-cpf-cnpj" onclick="event.preventDefault();closeMobNav();navGoTo('valid')"><span class="dm-icon">🪪</span>Validador CPF / CNPJ</a>
+          <a href="/gerador-de-qr-code" onclick="event.preventDefault();closeMobNav();navGoTo('qrcode')"><span class="dm-icon">📱</span>Gerador de QR Code</a>
+          <a href="/gerador-de-senhas" onclick="event.preventDefault();closeMobNav();navGoTo('senhas')"><span class="dm-icon">🔐</span>Gerador de Senhas</a>
+          <a href="/numero-por-extenso" onclick="event.preventDefault();closeMobNav();navGoTo('extenso')"><span class="dm-icon">🔢</span>Número por Extenso</a>
+          <a href="/calculadora-imc" onclick="event.preventDefault();closeMobNav();navGoTo('imc')"><span class="dm-icon">🏃</span>Calculadora de IMC</a>
         </div>
       </div>
             <div class="nav-dropdown" id="nav-dropdown-conteudo" role="navigation" aria-label="Conteúdo">
@@ -296,7 +296,7 @@
           ACESSO RÁPIDO
         </div>
         <div class="nh-quick-list">
-          <button class="nh-quick-btn" onclick="window.location.href='/calculadora-de-prazo-processual'">
+          <button class="nh-quick-btn" onclick="goTo('prazos')">
             <div class="nh-quick-icon" style="background:rgba(37,99,235,.25);">⏱️</div>
             <div class="nh-quick-text">
               <div class="nh-quick-name">Calculadora de Prazos</div>
@@ -304,7 +304,7 @@
             </div>
             <span class="nh-quick-arr">›</span>
           </button>
-          <button class="nh-quick-btn" onclick="window.location.href='/calculadora-verbas-trabalhistas'">
+          <button class="nh-quick-btn" onclick="goTo('trabalhista')">
             <div class="nh-quick-icon" style="background:rgba(99,102,241,.25);">⚖️</div>
             <div class="nh-quick-text">
               <div class="nh-quick-name">Verbas Trabalhistas</div>
@@ -312,7 +312,7 @@
             </div>
             <span class="nh-quick-arr">›</span>
           </button>
-          <button class="nh-quick-btn" onclick="window.location.href='/correcao-monetaria'">
+          <button class="nh-quick-btn" onclick="goTo('correcao')">
             <div class="nh-quick-icon" style="background:rgba(16,185,129,.2);">💰</div>
             <div class="nh-quick-text">
               <div class="nh-quick-name">Correção Monetária</div>
@@ -320,7 +320,7 @@
             </div>
             <span class="nh-quick-arr">›</span>
           </button>
-          <button class="nh-quick-btn" onclick="window.location.href='/calculadora-salario-liquido'">
+          <button class="nh-quick-btn" onclick="goTo('salario')">
             <div class="nh-quick-icon" style="background:rgba(245,158,11,.2);">💵</div>
             <div class="nh-quick-text">
               <div class="nh-quick-name">Salário Líquido</div>
@@ -415,18 +415,158 @@
 <!-- ══════════════════════════════════════
      PRAZOS
 ══════════════════════════════════════ -->
+<div id="sec-prazos" class="sec">
+<h2 class="sr-only">Calculadora de Prazos Processuais</h2>
+
+  <!-- ▸ ANÚNCIO: prazos-top -->
+  <div class="ad-container" id="ad-prazos-top" style="min-height:0;">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="9166132471" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+  <!-- ══ CALCULADORA CENTRALIZADA ══ -->
+  <div class="container" style="padding:32px 0 48px;">
+    <div style="max-width:520px;margin:0 auto;">
+
+      <div id="p-calc-card">
+        <h2><span aria-hidden="true">🗓</span> Calculadora de Prazos</h2>
+
+        <!-- ── Prazos de Referência (acordeão) ── -->
+        <div id="p-prazos-ref" style="margin-bottom:14px;border-bottom:1px solid var(--brd);padding-bottom:12px;">
+          <div style="font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8888AA;margin-bottom:8px;text-align:center;">⚡ Prazos de Referência</div>
+          <div class="p-area-tabs" style="margin-bottom:0;justify-content:center;">
+            <button class="patab" data-area="trabalho">⚖️ Trabalho</button>
+            <button class="patab" data-area="civil">📋 Civil / CPC</button>
+            <button class="patab" data-area="tributario">💰 Tributário</button>
+            <button class="patab" data-area="rh">👥 RH / CLT</button>
+          </div>
+          <div class="p-area-panel" id="pp-trabalho"><div class="p-prazo-grid" id="pcards-trabalho"></div></div>
+          <div class="p-area-panel" id="pp-civil"><div class="p-prazo-grid" id="pcards-civil"></div></div>
+          <div class="p-area-panel" id="pp-tributario"><div class="p-prazo-grid" id="pcards-tributario"></div></div>
+          <div class="p-area-panel" id="pp-rh"><div class="p-prazo-grid" id="pcards-rh"></div></div>
+        </div>
+
+        <div class="pfg">
+          <label for="p-tipo-contagem">Operação</label>
+          <select id="p-tipo-contagem">
+            <option value="somar_dias">Somar dias a uma data</option>
+            <option value="subtrair_dias">Subtrair dias de uma data</option>
+            <option value="dias_entre_datas">Contar dias entre datas</option>
+          </select>
+        </div>
+
+        <div class="pfg-row" id="p-dates-row">
+          <div class="pfg">
+            <label for="p-ini">Data Inicial</label>
+            <input type="date" id="p-ini" required aria-required="true">
+          </div>
+          <div class="pfg" id="p-fim-grp" style="display:none;">
+            <label for="p-fim">Data Final</label>
+            <input type="date" id="p-fim" required aria-required="true">
+          </div>
+          <div class="pfg" id="p-dias-grp">
+            <label for="p-dias">Nº de Dias</label>
+            <input type="number" id="p-dias" min="0" value="10">
+          </div>
+        </div>
+
+        <label style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8888AA;display:block;margin-bottom:5px;">Tipo de Dias</label>
+        <div class="p-pills">
+          <input type="radio" id="p-r-corridos" name="p-tipo-dias" value="corridos" checked>
+          <label for="p-r-corridos"><span aria-hidden="true">📅</span> Corridos</label>
+          <input type="radio" id="p-r-uteis" name="p-tipo-dias" value="uteis">
+          <label for="p-r-uteis"><span aria-hidden="true">💼</span> Úteis</label>
+        </div>
+
+        <div id="p-uteis-opts">
+          <label style="font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8888AA;display:block;margin-bottom:7px;">Excluir da contagem</label>
+          <div class="p-checks" style="margin-bottom:10px;">
+            <div class="pchk"><input type="checkbox" id="p-sab" checked><label for="p-sab">Sábados</label></div>
+            <div class="pchk"><input type="checkbox" id="p-dom" checked><label for="p-dom">Domingos</label></div>
+          </div>
+          <div class="pfg" style="margin-bottom:0;">
+            <label for="p-fer">Feriados (DD/MM/AAAA, separados por vírgula)</label>
+            <input type="text" id="p-fer" placeholder="Ex: 25/12/2026, 01/01/2026">
+          </div>
+        </div>
+
+        <div class="p-divider"></div>
+
+        <label style="font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8888AA;display:block;margin-bottom:7px;">Incluir na contagem</label>
+        <div class="p-checks" style="margin-bottom:14px;">
+          <div class="pchk"><input type="checkbox" id="p-incl-ini" checked><label for="p-incl-ini">Dia inicial</label></div>
+          <div class="pchk"><input type="checkbox" id="p-incl-fim" checked><label for="p-incl-fim">Dia final</label></div>
+        </div>
+
+        <button id="p-btn-calc">Calcular Prazo →</button>
+        </div>
+
+        <div id="p-resultado">
+          <div class="p-res-lbl">Resultado</div>
+          <div id="p-res-txt"></div>
+          <div id="p-res-resumo"></div>
+          <div id="p-res-feriados"></div>
+          <span class="calc-count" id="cc-prazos"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- ▸ ANÚNCIO ADSTERRA: prazos (300x250) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="adst-slot" id="ad-prazos-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
+
+  <!-- SEO: prazos -->
+  <section class="seo-content" id="seo-prazos"><div class="container" style="max-width:800px;padding:18px 16px 6px;"><div class="seo-grid"><div><h2 class="seo-h2">O que é a Calculadora de Prazos Processuais?</h2><p class="seo-p">A Calculadora de Prazos do Calcula Prazo é uma ferramenta online gratuita que permite calcular prazos judiciais em dias úteis ou corridos, de acordo com as regras do CPC/2015, da CLT e do Código Tributário Nacional. Conta com mais de 30 tipos de prazo pré-configurados, como Recurso Ordinário (8 dias úteis), Embargos de Declaração (5 dias úteis), Contestação CPC (15 dias úteis) e Agravo de Instrumento (15 dias úteis). Não é necessário fazer cadastro ou instalar nenhum aplicativo.</p></div><div><h2 class="seo-h2">Como usar a calculadora de prazos?</h2><p class="seo-p">Para calcular um prazo processual: (1) informe a data inicial — geralmente o 1º dia útil após a publicação da decisão no diário oficial; (2) selecione o tipo de prazo ou informe o número de dias manualmente; (3) escolha se a contagem é em dias úteis ou corridos; (4) clique em Calcular Prazo. O resultado mostra a data de vencimento do prazo com destaque para o dia da semana, facilitando a conferência. É possível também informar feriados locais adicionais para maior precisão.</p></div></div><h2 class="seo-h2" style="margin-top:12px;">Exemplo prático de cálculo de prazo</h2><p class="seo-p">Suponha que uma sentença trabalhista seja publicada no DEJT em 13/03/2026 (sexta-feira). O prazo para o Recurso Ordinário é de 8 dias úteis (art. 895 da CLT). A contagem inicia em 16/03/2026 (segunda-feira, 1º dia útil após a publicação). Excluindo os fins de semana, o prazo vence em <strong>25/03/2026</strong> (quarta-feira). Se o último dia coincidir com feriado ou ausência de expediente no tribunal, o prazo é automaticamente prorrogado para o próximo dia útil (art. 775 CLT / art. 224 CPC).</p><h2 class="seo-h2" style="margin-top:12px;">Perguntas frequentes</h2><div class="faq-list"><div class="faq-item"><div class="faq-q">Como calcular prazo em dias úteis no CPC/2015?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">No CPC/2015 (art. 219), os prazos processuais são contados em dias úteis, excluindo-se sábados, domingos e feriados nacionais. Na calculadora, selecione "Dias Úteis", informe a data inicial (geralmente o 1º dia útil após a publicação/intimação) e o número de dias do prazo. O sistema já exclui automaticamente os fins de semana. Lembre-se: exclui-se o dia do começo e inclui-se o do vencimento (art. 224 CPC).</div></div></div><div class="faq-item"><div class="faq-q">Qual a diferença entre dias úteis e dias corridos?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">Dias corridos contam todos os dias do calendário, sem exceção — incluindo sábados, domingos e feriados. Dias úteis excluem finais de semana e feriados nacionais. Por exemplo: um prazo de 10 dias corridos a partir de uma segunda-feira termina na quarta-feira da semana seguinte, enquanto 10 dias úteis terminam duas semanas depois. O CPC/2015 (art. 219) determina que prazos processuais civis sejam contados em dias úteis. Para contratos e prazos extrajudiciais, verifica-se o que foi convencionado pelas partes.</div></div></div><div class="faq-item"><div class="faq-q">Como contar prazo de Recurso Ordinário na Justiça do Trabalho?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">O Recurso Ordinário trabalhista tem prazo de 8 dias úteis (art. 895 c/c art. 775 da CLT, com redação dada pela Reforma Trabalhista de 2017). A contagem inicia no 1º dia útil seguinte à publicação da sentença no DEJT. Se o último dia cair em dia sem expediente forense, o prazo é automaticamente prorrogado para o próximo dia útil com funcionamento normal do tribunal. Use a calculadora selecionando "Recurso Ordinário" nos atalhos pré-configurados.</div></div></div><div class="faq-item"><div class="faq-q">Prazos trabalhistas são em dias úteis após a Reforma Trabalhista?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">Sim. A Lei 13.467/2017 (Reforma Trabalhista) alterou o art. 775 da CLT para determinar que os prazos processuais trabalhistas sejam contados em dias úteis, igualando-se ao sistema do CPC/2015. Antes da reforma, os prazos trabalhistas eram contados em dias corridos. Portanto, para processos trabalhistas ajuizados ou com intimações após 11/11/2017, todos os prazos recursais devem ser calculados em dias úteis.</div></div></div><div class="faq-item"><div class="faq-q">O que é a suspensão dos prazos de 20 de dezembro a 20 de janeiro?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">O art. 220 do CPC/2015 prevê suspensão automática dos prazos processuais no período de 20 de dezembro a 20 de janeiro do ano seguinte (recesso forense). Durante esse período, os prazos ficam suspensos e só retomam a contagem a partir do 1º dia útil após o término do recesso (21 de janeiro, ou o próximo dia útil). A calculadora permite configurar essa suspensão manualmente no campo de feriados adicionais.</div></div></div></div></div></section>
+
+<div class="container" id="prazos-sidebar-wrap" style="padding:0 0 28px;">
+  <div style="max-width:520px;margin:0 auto;">
+    <div style="background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:16px;box-shadow:var(--sh);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--brd);">
+        <span style="font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--txt-s);">📰 Últimos Conteúdos</span>
+        <a onclick="navGoTo('blog')" style="font-size:.75rem;font-weight:600;color:var(--acc);cursor:pointer;text-decoration:none;">Ver todos →</a>
+      </div>
+      <div id="sidebar-posts-list" style="display:flex;flex-direction:column;gap:0;"></div>
+    </div>
+  </div>
+</div>
+</div><!-- /prazos -->
+
+<!-- MODAL DE PRAZO -->
+<div id="p-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="pm-title">
+  <div id="p-modal-box">
+    <button id="p-modal-close" aria-label="Fechar modal">✕</button>
+    <div class="pm-tag" id="pm-tag"></div>
+    <div class="pm-title" id="pm-title"></div>
+    <div class="pm-dias" id="pm-dias"></div>
+    <div class="pm-tipo" id="pm-tipo"></div>
+    <div class="pm-row"><span class="pm-lbl">Base Legal</span><span class="pm-val" id="pm-lei"></span></div>
+    <div class="pm-row"><span class="pm-lbl">Contagem</span><span class="pm-val" id="pm-cont"></span></div>
+    <div class="pm-obs" id="pm-obs"><strong>⚠ Atenção</strong><span id="pm-obs-txt"></span></div>
+    <button class="pm-btn" id="pm-btn">→ Usar na Calculadora</button>
+  </div>
+
+
+    </div>
+</div><!-- ══════════════════════════════════════
+     CALCULADORAS HUB
+══════════════════════════════════════ -->
 <div id="sec-calc" class="sec">
 <h2 class="sr-only">Calculadoras Trabalhistas</h2>
   <div class="container" style="padding:10px 0 20px;">
     <div class="tools-grid">
-      <div class="tc" onclick="window.location.href='/correcao-monetaria'"><div class="tc-icon">💰</div><div class="tc-name">Correção Monetária</div><div class="tc-desc">IPCA, IGP-M, INPC, SELIC.</div></div>
-      <div class="tc" onclick="window.location.href='/calculadora-de-juros'"><div class="tc-icon">📈</div><div class="tc-name">Juros Simples e Compostos</div><div class="tc-desc">Montante, taxa, período e tabela.</div></div>
-      <div class="tc" onclick="window.location.href='/calculadora-verbas-trabalhistas'"><div class="tc-icon">⚖️</div><div class="tc-name">Calculadora de Verbas Trabalhistas</div><div class="tc-desc">Rescisão, férias, FGTS.</div></div>
-      <div class="tc" onclick="window.location.href='/calculadora-salario-liquido'"><div class="tc-icon">💵</div><div class="tc-name">Salário Líquido</div><div class="tc-desc">INSS + IRRF 2026.</div></div>
-      <div class="tc" onclick="window.location.href='/calculadora-salario-intermitente'"><div class="tc-icon">🕒</div><div class="tc-name">Salário Intermitente</div><div class="tc-desc">DSR, 13º, férias, INSS, FGTS.</div></div>
-      <div class="tc" onclick="window.location.href='/calculadora-de-prescricao'"><div class="tc-icon">⌛</div><div class="tc-name">Calculadora de Prescrição</div><div class="tc-desc">Trabalhista, cível e tributária.</div></div>
-      <div class="tc" onclick="window.location.href='/calculadora-de-porcentagem'"><div class="tc-icon">🧮</div><div class="tc-name">Porcentagem</div><div class="tc-desc">Descontos, aumentos, variações.</div></div>
-      <div class="tc" onclick="window.location.href='/conversor-de-moedas'"><div class="tc-icon">💱</div><div class="tc-name">Conversor de Moedas</div><div class="tc-desc">BRL, USD, EUR, GBP e mais.</div></div>
+      <div class="tc" onclick="goTo('correcao')"><div class="tc-icon">💰</div><div class="tc-name">Correção Monetária</div><div class="tc-desc">IPCA, IGP-M, INPC, SELIC.</div></div>
+      <div class="tc" onclick="goTo('juros')"><div class="tc-icon">📈</div><div class="tc-name">Juros Simples e Compostos</div><div class="tc-desc">Montante, taxa, período e tabela.</div></div>
+      <div class="tc" onclick="goTo('trabalhista')"><div class="tc-icon">⚖️</div><div class="tc-name">Calculadora de Verbas Trabalhistas</div><div class="tc-desc">Rescisão, férias, FGTS.</div></div>
+      <div class="tc" onclick="goTo('salario')"><div class="tc-icon">💵</div><div class="tc-name">Salário Líquido</div><div class="tc-desc">INSS + IRRF 2026.</div></div>
+      <div class="tc" onclick="goTo('intermitente')"><div class="tc-icon">🕒</div><div class="tc-name">Salário Intermitente</div><div class="tc-desc">DSR, 13º, férias, INSS, FGTS.</div></div>
+      <div class="tc" onclick="goTo('prescricao')"><div class="tc-icon">⌛</div><div class="tc-name">Calculadora de Prescrição</div><div class="tc-desc">Trabalhista, cível e tributária.</div></div>
+      <div class="tc" onclick="goTo('porcentagem')"><div class="tc-icon">🧮</div><div class="tc-name">Porcentagem</div><div class="tc-desc">Descontos, aumentos, variações.</div></div>
+      <div class="tc" onclick="goTo('moedas')"><div class="tc-icon">💱</div><div class="tc-name">Conversor de Moedas</div><div class="tc-desc">BRL, USD, EUR, GBP e mais.</div></div>
     </div>
   </div>
 </div>
@@ -434,15 +574,947 @@
 <!-- ══════════════════════════════════════
      CORRECAO MONETARIA
 ══════════════════════════════════════ -->
+<div id="sec-correcao" class="sec">
+<h2 class="sr-only">Calculadora de Correção Monetária</h2>
+
+  <!-- ▸ ANÚNCIO: ad-correcao-top -->
+  <div class="ad-container" id="ad-correcao-top" style="min-height:0;">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="5261026571" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+  <div class="container" style="max-width:900px;"><div style="display:flex;flex-direction:column;gap:18px;"><div class="card"><h2><span aria-hidden="true">💰</span> Correção Monetária</h2>
+      <p class="sub">Dados oficiais em tempo real via API do Banco Central do Brasil — sempre atualizados</p>
+      <div class="flbl" style="margin-bottom:7px;">Índice de correção</div>
+      <div class="idx-pills">
+        <button class="idx-pill on" data-idx="ipca" onclick="setCorrIdx('ipca',this)">IPCA</button>
+        <button class="idx-pill" data-idx="igpm" onclick="setCorrIdx('igpm',this)">IGP-M</button>
+        <button class="idx-pill" data-idx="inpc" onclick="setCorrIdx('inpc',this)">INPC</button>
+        <button class="idx-pill" data-idx="selic" onclick="setCorrIdx('selic',this)">SELIC</button>
+      </div>
+      <div class="fg-row">
+        <div class="fg"><label>Valor Original (R$)</label><div class="pfx"><span class="pfx-s">R$</span><input type="number" id="corr-val" aria-label="Valor original (R$)" placeholder="1000,00" min="0" step="0.01"></div></div>
+        <div class="fg"><label>Data base (início)</label><input type="date" id="corr-ini" aria-label="Data base (início da correção)" required aria-required="true"></div>
+      </div>
+      <div class="fg"><label>Data de atualização (fim)</label><input type="date" id="corr-fim" aria-label="Data de atualização (fim)" required aria-required="true"></div>
+      <p style="font-size:.71rem;color:var(--txt-s);margin-bottom:8px;">
+  📡 Índices buscados em tempo real na API oficial do <strong>Banco Central do Brasil</strong>.
+  Requer conexão com a internet.
+</p>
+<button class="btn btn-p btn-full" onclick="calcCorrecao()">Atualizar Valor →</button>
+        </div>
+      <div id="corr-res" aria-live="polite" aria-atomic="true" class="res-box" style="margin-top:8px;">
+        <div class="res-lbl">Valor Atualizado</div>
+        <div class="res-val" id="corr-res-val"></div>
+        <div class="res-det" id="corr-res-det"></div>
+      </div>
+      <div class="note-box" id="corr-fallback-note" style="display:none;"><strong>⚠ Dados offline:</strong> Não foi possível buscar os índices em tempo real. O cálculo usou taxas de referência locais. Para valores exatos em processos judiciais, consulte as tabelas oficiais do IBGE/FGV ou sistemas do tribunal.<div class="card-sm">
+        <h3 style="font-size:.9rem;font-weight:700;margin-bottom:12px;">📊 Sobre os índices</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:12px;">
+          <div style="padding:10px;background:var(--bg);border-radius:var(--r);"><p style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--txt-s);margin-bottom:3px;">IPCA</p><p style="font-size:.81rem;color:var(--txt-m);">Índice de inflação oficial do Brasil (IBGE). Usado em contratos e atualização judicial.</p></div>
+          <div style="padding:10px;background:var(--bg);border-radius:var(--r);"><p style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--txt-s);margin-bottom:3px;">IGP-M</p><p style="font-size:.81rem;color:var(--txt-m);">Índice da FGV. Muito usado em contratos de aluguel.</p></div>
+          <div style="padding:10px;background:var(--bg);border-radius:var(--r);"><p style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--txt-s);margin-bottom:3px;">SELIC</p><p style="font-size:.81rem;color:var(--txt-m);">Taxa básica de juros. Usada em débitos tributários (CTN).</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <span class="calc-count" id="cc-correcao"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
+  <!-- ▸ ANÚNCIO: sec-correcao after result (aparece após calcular) -->
+  <div class="ad-container ad-rect" id="ad-correcao-result" style="display:none;">
+  
+  </div>
+
+  <!-- ▸ ANÚNCIO ADSTERRA: correcao (300x250) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="adst-slot" id="ad-correcao-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
+  
+  <!-- SEO: correcao -->
+  <section class="seo-content" id="seo-correcao"><div class="container" style="max-width:800px;padding:18px 16px 6px;"><div class="seo-grid"><div><h2 class="seo-h2">O que é a Calculadora de Correção Monetária?</h2><p class="seo-p">A Calculadora de Correção Monetária do Calcula Prazo atualiza valores financeiros pelos principais índices econômicos oficiais: IPCA (Índice de Preços ao Consumidor Amplo), IGP-M (Índice Geral de Preços — Mercado), INPC (Índice Nacional de Preços ao Consumidor) e SELIC (taxa básica de juros). Os dados são obtidos diretamente da API pública do Banco Central do Brasil, garantindo que os cálculos reflitam os índices oficiais e atualizados. A ferramenta é amplamente utilizada para liquidações de sentença, atualização de contratos de aluguel, cálculo de correção em cobranças judiciais e extrajudiciais, e atualização de valores em inventários e partilhas.</p></div><div><h2 class="seo-h2">Como usar a calculadora de correção monetária?</h2><p class="seo-p">Informe: (1) o valor original a ser corrigido; (2) o mês e ano de referência (data base do valor); (3) o mês e ano final da correção (normalmente o mês atual); (4) o índice de correção aplicável ao seu caso (IPCA, IGP-M, INPC ou SELIC). Clique em Atualizar Valor. A calculadora exibirá o valor corrigido, o fator de correção acumulado no período e a variação percentual total. Para correção com juros de mora, combine o resultado com a calculadora de juros simples à taxa de 1% ao mês.</p></div></div><h2 class="seo-h2" style="margin-top:12px;">Exemplo de correção monetária pelo IPCA</h2><p class="seo-p">Um valor de R$10.000,00 referente a janeiro de 2020 atualizado pelo IPCA até dezembro de 2023 resulta em fator acumulado de aproximadamente 1,2648, totalizando <strong>≈ R$12.648</strong> — uma variação de 26,48% no período. O IPCA acumulou forte alta em 2021 e 2022, reflexo dos efeitos da pandemia e da crise de energia. Para processos trabalhistas, o índice determinado pelo STF na ADC 58 (2020) é o IPCA-E para atualização do débito principal.</p><h2 class="seo-h2" style="margin-top:12px;">Perguntas frequentes</h2><div class="faq-list"><div class="faq-item"><div class="faq-q">Qual índice usar para correção monetária em processos judiciais?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">A escolha do índice depende do tipo de débito e da determinação judicial. Em linhas gerais: o IPCA-E é utilizado para débitos trabalhistas (conforme decisão do STF na ADC 58); o IPCA é usado para débitos previdenciários e federais; o IGP-M é comum em contratos de aluguel e alguns contratos comerciais; a SELIC é aplicada a débitos fiscais e tributários. Sempre verifique o título executivo ou a decisão judicial para confirmar o índice correto a ser aplicado no seu caso.</div></div></div><div class="faq-item"><div class="faq-q">O que é o fator de correção monetária?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">O fator de correção monetária é o multiplicador que representa a variação acumulada do índice escolhido no período. Por exemplo, um fator de 1,3247 significa que o poder de compra da moeda diminuiu 32,47% no período — ou seja, R$1.000 de 2019 equivale a R$1.324,70 em valores atualizados. Para calcular, divide-se o índice do período final pelo índice do período inicial e multiplica-se pelo valor original a ser corrigido.</div></div></div><div class="faq-item"><div class="faq-q">Como a correção monetária é calculada com dados do Banco Central?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">A calculadora do Calcula Prazo busca os dados mensais diretamente da API pública do Banco Central do Brasil (api.bcb.gov.br), garantindo que os índices utilizados sejam os dados oficiais e atualizados. O cálculo compõe os índices mensais multiplicando-os sequencialmente ao longo do período selecionado — método chamado de "correção pela variação acumulada" ou "produto encadeado". Isso garante precisão nos cálculos, inclusive para períodos longos de mais de 10 anos.</div></div></div></div></div></section>
+</div>
+</div><!-- ══════════════════════════════════════
+     JUROS
+══════════════════════════════════════ -->
+
+<div id="sec-juros" class="sec">
+<h2 class="sr-only">Calculadora de Juros</h2>
+
+  <div class="container" style="max-width:900px;">
+    <div style="display:flex;flex-direction:column;gap:18px;">
+      <!-- Formulário da Calculadora -->
+      <div class="card">
+        <h2><span aria-hidden="true">📈</span> Calculadora de Juros</h2>
+        <p class="sub">Juros simples, compostos ou de mora</p>
+        <div class="pill-tabs" id="j-tipo-tabs" style="margin-bottom:18px;">
+          <button class="ptab on" onclick="jSetTipo('simples',this)">Simples</button>
+          <button class="ptab" onclick="jSetTipo('compostos',this)">Compostos</button>
+          <button class="ptab" onclick="jSetTipo('mora',this)">Mora</button>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label>Capital (R$)</label><div class="pfx"><span class="pfx-s">R$</span><input type="number" id="j-cap" aria-label="Capital inicial (R$)" placeholder="1000,00" min="0" step="0.01"></div></div>
+          <div class="fg"><label>Taxa <span id="j-taxa-lbl">Mensal</span> (%)</label><div class="sfx"><input type="number" id="j-taxa" aria-label="Taxa de juros (%)" placeholder="1,00" min="0" step="0.01"><span class="sfx-s">%</span></div></div>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label>Período <span id="j-per-lbl">(meses)</span></label><input type="number" id="j-per" aria-label="Período (meses ou anos)" placeholder="12" min="1" style="width:100%;padding:10px 12px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.91rem;font-family:var(--fh);background:var(--bg);"></div>
+          <div class="fg" id="j-multa-grp" style="display:none;"><label>Multa (%)</label><div class="sfx"><input type="number" id="j-multa" aria-label="Multa inicial (%)" placeholder="2" min="0" step="0.01"><span class="sfx-s">%</span></div></div>
+        </div>
+        <div class="fg"><label>Aporte Mensal (R$) - Opcional</label><div class="pfx"><span class="pfx-s">R$</span><input type="number" id="j-aporte" aria-label="Aporte mensal (R$)" placeholder="0,00" min="0" step="0.01" value="0"></div></div>
+        <div style="display:flex;gap:7px;margin-bottom:16px;">
+          <button class="btn btn-p" style="flex:1;font-size:.8rem;" id="jp-mes" onclick="jSetPer('mensal',this)">Mensal</button>
+          <button class="btn btn-g" style="flex:1;font-size:.8rem;" id="jp-ano" onclick="jSetPer('anual',this)">Anual</button>
+          <button class="btn btn-g" style="flex:1;font-size:.8rem;" id="jp-dia" onclick="jSetPer('diaria',this)">Diária</button>
+        </div>
+        <button class="btn btn-p btn-full" onclick="calcJuros()">Calcular →</button>
+      </div>
+
+      <!-- Resultado (Aparece abaixo do formulário) -->
+      <div class="card" id="j-res-card" aria-live="polite" aria-atomic="true" style="display:none;">
+        <h2><span aria-hidden="true">📊</span> Resultado</h2>
+        <div class="ri-grid" id="j-ri-grid"></div>
+
+        <!-- IR sobre rendimentos de renda fixa -->
+        <div id="j-ir-box" style="display:none;margin-top:14px;padding:14px 16px;background:#FFF7ED;border:1.5px solid #FED7AA;border-radius:var(--r);">
+          <p style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#92400E;margin-bottom:8px;">💰 Imposto de Renda sobre Rendimentos (Renda Fixa)</p>
+          <div class="ri-grid" id="j-ir-grid" style="grid-template-columns:1fr 1fr;"></div>
+          <p id="j-ir-aliq" style="font-size:.75rem;color:#78350F;margin-top:8px;"></p>
+        </div>
+
+        <!-- Gráfico comparativo -->
+        <div id="j-chart-box" style="display:none;margin-top:18px;">
+          <p class="flbl" style="margin-bottom:10px;">📈 Comparação com outros investimentos</p>
+          <div style="position:relative;max-width:100%;">
+            <canvas id="j-chart" height="220"></canvas>
+          </div>
+          <p id="j-chart-info" style="font-size:.71rem;color:var(--txt-s);margin-top:6px;text-align:center;"></p>
+        </div>
+
+        <div id="j-tbl-wrap" style="display:none;margin-top:18px;">
+          <p class="flbl" style="margin-bottom:8px;">Evolução por período</p>
+          <div class="tbl-wrap"><table class="tbl" id="j-tbl"></table></div>
+        </div>
+      </div>
+
+      <!-- Área de recomendações -->
+      <div id="j-recomendacoes" style="display:none;"></div>
+
+      <!-- Fórmulas (Abaixo de tudo no mobile/desktop) -->
+      <div class="card-sm" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:12px;">
+        <div style="background:var(--bg);border-radius:var(--r);padding:12px;"><p style="font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--txt-s);margin-bottom:4px;">Simples</p><p style="font-family:'Courier New',monospace;font-size:.88rem;font-weight:600;">M = C × (1 + i × n)</p></div>
+        <div style="background:var(--bg);border-radius:var(--r);padding:12px;"><p style="font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--txt-s);margin-bottom:4px;">Compostos</p><p style="font-family:'Courier New',monospace;font-size:.88rem;font-weight:600;">M = C × (1 + i)ⁿ</p></div>
+      </div>
+    </div>
+  </div>
+
+  <span class="calc-count" id="cc-juros"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
+  <!-- ▸ ANÚNCIO: sec-juros after result (aparece após calcular) -->
+  <div class="ad-container ad-rect" id="ad-juros-result" style="display:none;">
+  
+  </div>
+  
+    <!-- ▸ ANÚNCIO ADSTERRA: juros (300x250) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="adst-slot" id="ad-juros-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
+
+  <!-- SEO: juros -->
+  <section class="seo-content" id="seo-juros"><div class="container" style="max-width:800px;padding:18px 16px 6px;"><div class="seo-grid"><div><h2 class="seo-h2">O que é a Calculadora de Juros?</h2><p class="seo-p">A Calculadora de Juros do Calcula Prazo simula o crescimento de um capital ao longo do tempo, aplicando juros <strong>simples</strong> ou <strong>compostos</strong>, com ou sem aportes mensais. O resultado inclui o montante final, o total de juros gerado e uma tabela de evolução mês a mês. Também calcula o Imposto de Renda sobre rendimentos de renda fixa, conforme a tabela regressiva da Lei 11.033/2004.</p></div><div><h2 class="seo-h2">Como usar a calculadora de juros?</h2><p class="seo-p">Selecione o regime (simples ou compostos), informe o capital inicial, a taxa de juros (por mês ou por ano) e o período (em meses ou anos). Opcionalmente, adicione um aporte mensal fixo. Clique em <strong>Calcular →</strong> para obter o montante, os juros acumulados e a tabela de evolução. Para simular juros de mora sobre uma dívida, use juros simples com taxa de 1% ao mês.</p></div></div><h2 class="seo-h2" style="margin-top:12px;">Exemplo de cálculo de juros compostos</h2><p class="seo-p">Capital de R$5.000,00 aplicado a 2% ao mês durante 12 meses (juros compostos, sem aportes): montante final = R$5.000 × (1,02)¹² = <strong>R$6.341,21</strong>, gerando R$1.341,21 de rendimento líquido antes do IR. Com aporte mensal de R$500, o montante sobe para aproximadamente <strong>R$13.085</strong> no mesmo período.</p><h2 class="seo-h2" style="margin-top:12px;">Perguntas frequentes</h2><div class="faq-list"><div class="faq-item"><div class="faq-q">Qual a diferença entre juros simples e compostos?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">Nos juros simples, a taxa incide sempre sobre o capital original — o crescimento é linear. Nos juros compostos, a taxa incide sobre o montante acumulado (capital + juros anteriores), gerando crescimento exponencial. Para períodos longos ou taxas elevadas, os juros compostos produzem montantes muito superiores. Dívidas bancárias, financiamentos e investimentos de renda fixa usam regime composto. Multas de mora sobre aluguéis e contratos simples costumam usar regime simples.</div></div></div><div class="faq-item"><div class="faq-q">Como calcular juros de mora sobre dívidas?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">Juros de mora para dívidas civis são de 1% ao mês (12% ao ano), conforme o art. 406 do Código Civil combinado com o art. 161, §1º do CTN. Use a calculadora em modo Juros Simples, informe o valor da dívida como capital, 1% como taxa mensal e o número de meses de atraso. Somando correção monetária (IPCA ou INPC) ao resultado, obtém-se a atualização completa do débito conforme a prática forense.</div></div></div><div class="faq-item"><div class="faq-q">O que é a tabela regressiva do IR sobre renda fixa?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">A Lei 11.033/2004 estabelece alíquotas decrescentes de IR sobre rendimentos de renda fixa conforme o prazo da aplicação: 22,5% até 180 dias; 20% de 181 a 360 dias; 17,5% de 361 a 720 dias; 15% acima de 720 dias. A calculadora aplica automaticamente a alíquota correspondente ao período informado, mostrando o rendimento líquido após o imposto.</div></div></div></div></div></section>
+</div>
+</div><!-- ══════════════════════════════════════
+     SALÁRIO LÍQUIDO
+══════════════════════════════════════ -->
+
+<div id="sec-salario" class="sec">
+<h2 class="sr-only">Calculadora de Salário Líquido 2026</h2>
+
+  <div class="container" style="max-width:900px;"><div style="display:flex;flex-direction:column;gap:18px;">
+    <div class="card">
+      <h2><span aria-hidden="true">💵</span> Salário Líquido 2026</h2>
+      <p class="sub">Informe o salário bruto e dependentes para calcular o líquido</p>
+      <div class="fg"><label>Salário Bruto (R$)</label><div class="pfx"><span class="pfx-s">R$</span><input type="number" id="sal-bruto" aria-label="Salário bruto (R$)" placeholder="3000,00" min="0" step="0.01"></div></div>
+      <div class="fg-row">
+        <div class="fg"><label>Dependentes IRRF</label><input type="number" id="sal-dep" aria-label="Número de dependentes" value="0" min="0"></div>
+        <div class="fg"><label>Outros descontos (R$)</label><div class="pfx"><span class="pfx-s">R$</span><input type="number" id="sal-outros" aria-label="Outros descontos (R$)" value="0" min="0" step="0.01"></div></div>
+      </div>
+      <button class="btn btn-p btn-full" onclick="calcSalario()">Calcular →</button>
+        </div>
+      <div id="sal-res" aria-live="polite" aria-atomic="true" style="display:none;margin-top:18px;">
+        <div class="ri-grid">
+          <div class="ri"><div class="ri-lbl">Salário Bruto</div><div class="ri-val" id="sr-bruto">—</div></div>
+          <div class="ri"><div class="ri-lbl">INSS</div><div class="ri-val" id="sr-inss" style="color:var(--err);">—</div></div>
+          <div class="ri"><div class="ri-lbl">Base IRRF</div><div class="ri-val" id="sr-base">—</div></div>
+          <div class="ri"><div class="ri-lbl">IRRF</div><div class="ri-val" id="sr-irrf" style="color:var(--err);">—</div></div>
+          <div class="ri span2"><div class="ri-lbl">Salário Líquido</div><div class="ri-val" id="sr-liq" style="color:var(--ok);">—</div></div>
+        </div>
+        <div id="sr-aliq" style="font-size:.82rem;color:var(--txt-m);padding:12px;background:var(--bg);border-radius:var(--r);"></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;position:sticky;top:76px;">
+      <div class="card-sm">
+        <h3 style="font-size:.9rem;font-weight:700;margin-bottom:12px;">📊 Tabelas 2026</h3>
+        <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--txt-s);margin-bottom:7px;">INSS — Tabela Progressiva</p>
+        <table style="width:100%;border-collapse:collapse;font-size:.79rem;margin-bottom:14px;">
+          <tr style="background:var(--b900);color:#fff;"><th style="padding:6px 8px;text-align:left;">Faixa</th><th style="padding:6px 8px;text-align:right;">Alíquota</th></tr>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid var(--brd);">Até R$ 1.518,00</td><td style="padding:5px 8px;text-align:right;">7,5%</td></tr>
+          <tr style="background:var(--b50);"><td style="padding:5px 8px;border-bottom:1px solid var(--brd);">R$ 1.518,01 a R$ 2.793,88</td><td style="padding:5px 8px;text-align:right;">9%</td></tr>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid var(--brd);">R$ 2.793,89 a R$ 4.190,83</td><td style="padding:5px 8px;text-align:right;">12%</td></tr>
+          <tr style="background:var(--b50);"><td style="padding:5px 8px;">R$ 4.190,84 a R$ 8.157,41</td><td style="padding:5px 8px;text-align:right;">14%</td></tr>
+        </table>
+        <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--txt-s);margin-bottom:7px;">IRRF 2026 — Lei 15.270/2025</p>
+        <table style="width:100%;border-collapse:collapse;font-size:.76rem;">
+          <tr style="background:var(--b900);color:#fff;"><th style="padding:6px 8px;text-align:left;">Renda bruta mensal</th><th style="padding:6px 8px;text-align:right;">Efeito</th></tr>
+          <tr style="background:#d1fae5;"><td style="padding:5px 8px;border-bottom:1px solid var(--brd);font-weight:700;">Até R$ 5.000,00</td><td style="padding:5px 8px;text-align:right;font-weight:700;color:var(--ok);">🎉 Isento</td></tr>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid var(--brd);">R$ 5.000,01 – R$ 7.350,00</td><td style="padding:5px 8px;text-align:right;color:var(--warn);">Redução parcial</td></tr>
+          <tr style="background:var(--b50);"><td style="padding:5px 8px;">Acima de R$ 7.350,00</td><td style="padding:5px 8px;text-align:right;">Tabela progressiva</td></tr>
+        </table>
+        <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--txt-s);margin-bottom:7px;margin-top:12px;">Tabela progressiva base (acima R$ 7.350)</p>
+        <table style="width:100%;border-collapse:collapse;font-size:.76rem;">
+          <tr style="background:var(--b900);color:#fff;"><th style="padding:6px 8px;text-align:left;">Base cálculo</th><th style="padding:6px 8px;text-align:right;">Alíq.</th><th style="padding:6px 8px;text-align:right;">Dedução</th></tr>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid var(--brd);">Até R$ 2.428,80</td><td style="padding:5px 8px;text-align:right;">0%</td><td style="padding:5px 8px;text-align:right;">—</td></tr>
+          <tr style="background:var(--b50);"><td style="padding:5px 8px;border-bottom:1px solid var(--brd);">até R$ 2.826,65</td><td style="padding:5px 8px;text-align:right;">7,5%</td><td style="padding:5px 8px;text-align:right;">R$ 182,16</td></tr>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid var(--brd);">até R$ 3.751,05</td><td style="padding:5px 8px;text-align:right;">15%</td><td style="padding:5px 8px;text-align:right;">R$ 394,16</td></tr>
+          <tr style="background:var(--b50);"><td style="padding:5px 8px;border-bottom:1px solid var(--brd);">até R$ 4.664,68</td><td style="padding:5px 8px;text-align:right;">22,5%</td><td style="padding:5px 8px;text-align:right;">R$ 675,49</td></tr>
+          <tr><td style="padding:5px 8px;">Acima</td><td style="padding:5px 8px;text-align:right;">27,5%</td><td style="padding:5px 8px;text-align:right;">R$ 908,73</td></tr>
+        </table>
+        <p style="font-size:.7rem;color:var(--txt-s);margin-top:6px;">Dedução/dependente: R$ 189,59 · Redutor Lei 15.270/2025</p>
+      </div>
+    </div>
+  </div>
+
+  <span class="calc-count" id="cc-salario"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
+  <!-- ▸ ANÚNCIO: sec-salario after result (aparece após calcular) -->
+  <div class="ad-container ad-rect" id="ad-salario-result" style="display:none;">
+  
+  </div>
+  
+    <!-- ▸ ANÚNCIO ADSTERRA: salario (300x250) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="adst-slot" id="ad-salario-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
+
+  <!-- SEO: salario -->
+  <section class="seo-content" id="seo-salario"><div class="container" style="max-width:800px;padding:18px 16px 6px;"><div class="seo-grid"><div><h2 class="seo-h2">O que é a Calculadora de Salário Líquido 2026?</h2><p class="seo-p">A Calculadora de Salário Líquido do Calcula Prazo calcula o valor que você efetivamente recebe em mãos após os descontos obrigatórios de INSS e IRRF, com base nas tabelas vigentes em 2026 (Lei 15.270/2025). Basta informar o salário bruto e o número de dependentes — o sistema aplica automaticamente as alíquotas progressivas corretas.</p></div><div><h2 class="seo-h2">Como usar a calculadora de salário líquido?</h2><p class="seo-p">Informe: (1) o salário bruto mensal em reais; (2) o número de dependentes para fins de IRRF; (3) eventuais outros descontos (plano de saúde, vale-refeição etc.). Clique em <strong>Calcular →</strong>. O resultado exibe o desconto de INSS, a base de cálculo do IR, o desconto de IRRF e o valor líquido final.</p></div></div><h2 class="seo-h2" style="margin-top:12px;">Tabela INSS e IRRF 2026 — como funciona o cálculo?</h2><p class="seo-p">O INSS em 2026 usa alíquotas progressivas: 7,5% (até R$1.518), 9% (até R$2.793,88), 12% (até R$4.190,83) e 14% (até R$8.157,41). Já o IRRF é isento para rendimentos até R$5.000 pela Lei 15.270/2025. Exemplo prático: salário bruto de R$4.500 → INSS de R$460,34 → base IR R$4.039,66 → isento de IR → <strong>salário líquido ≈ R$4.039,66</strong>. Para salários acima de R$5.000, aplica-se o redutor progressivo do IR. Use a calculadora para simular o seu cenário com precisão.</p><h2 class="seo-h2" style="margin-top:12px;">Perguntas frequentes</h2><div class="faq-list"><div class="faq-item"><div class="faq-q">Como funciona o cálculo do INSS em 2026?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">O INSS do empregado CLT em 2026 usa alíquotas progressivas (tabela vigente): 7,5% sobre a parcela até R$1.518,00; 9% sobre a parcela de R$1.518,01 a R$2.793,88; 12% sobre a parcela de R$2.793,89 a R$4.190,83; e 14% sobre a parcela de R$4.190,84 a R$8.157,41. O desconto é calculado sobre cada faixa separadamente (semelhante ao IR), e não sobre o salário total pela alíquota da faixa mais alta. Salários acima do teto previdenciário (R$8.157,41) contribuem com o valor máximo fixo.</div></div></div><div class="faq-item"><div class="faq-q">Quem está isento do IRRF em 2026?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">Pela Lei 15.270/2025, em vigor desde janeiro de 2026, trabalhadores com rendimento mensal tributável até R$5.000,00 estão isentos do Imposto de Renda Retido na Fonte (IRRF). Para rendimentos entre R$5.000,01 e R$7.350,00, aplica-se um desconto simplificado progressivo (redutor), que reduz o imposto a pagar. Acima de R$7.350,00 aplicam-se as alíquotas progressivas normais: 7,5%, 15%, 22,5% e 27,5%, conforme a tabela oficial vigente.</div></div></div><div class="faq-item"><div class="faq-q">Como calcular o salário líquido de forma correta?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">O salário líquido é calculado em três etapas: (1) calcula-se o desconto do INSS progressivo sobre o salário bruto; (2) subtrai-se o INSS do bruto e aplica-se a tabela progressiva do IRRF sobre a base de cálculo, deduzindo ainda R$189,59 por dependente; (3) o salário líquido = Bruto − INSS − IRRF. Por exemplo, para um salário de R$6.000: INSS ≈ R$624,87 → base IR = R$5.375,13 → IRRF ≈ R$62,77 → líquido ≈ R$5.312,36. Sempre confira o holerite com os valores reais descontados pelo empregador.</div></div></div></div></div></section>
+</div>
+</div><!-- ══════════════════════════════════════
+     SALÁRIO INTERMITENTE
+══════════════════════════════════════ -->
+
+<div id="sec-intermitente" class="sec">
+<h2 class="sr-only">Calculadora de Salário Intermitente</h2>
+
+  <div class="container" style="max-width:900px;"><div style="display:flex;flex-direction:column;gap:18px;">
+    <div class="card">
+      <h2><span aria-hidden="true">🕒</span> Salário Intermitente</h2>
+      <p class="sub">Confira se o valor pago pela empresa está correto — inclui DSR, férias, 13º, FGTS, INSS e IRRF</p>
+      <div class="fg-row">
+        <div class="fg"><label>Salário-hora (R$)</label><div class="pfx"><span class="pfx-s">R$</span><input type="number" id="int-hora" aria-label="Salário-hora (R$)" placeholder="15,00" min="0" step="0.01"></div></div>
+        <div class="fg"><label>Horas trabalhadas no período</label><input type="number" id="int-horas" aria-label="Horas trabalhadas no período" placeholder="80" min="0" step="0.5"></div>
+      </div>
+      <div class="fg-row">
+        <div class="fg"><label>Início do período de apuração</label><input type="date" id="int-ini" aria-label="Data de início do período"></div>
+        <div class="fg"><label>Fim do período de apuração</label><input type="date" id="int-fim" aria-label="Data de fim do período"></div>
+      </div>
+      <div class="fg-row">
+        <div class="fg"><label>Dependentes IRRF</label><input type="number" id="int-dep" aria-label="Número de dependentes" value="0" min="0"></div>
+        <div class="fg"><label>Outros descontos (R$)</label><div class="pfx"><span class="pfx-s">R$</span><input type="number" id="int-outros" aria-label="Outros descontos (R$)" value="0" min="0" step="0.01"></div></div>
+      </div>
+      <button class="btn btn-p btn-full" onclick="calcIntermitente()">Calcular →</button>
+    </div>
+    <div id="int-res" aria-live="polite" aria-atomic="true" style="display:none;">
+      <div class="card">
+        <p class="sub" style="margin-bottom:10px;" id="ir-periodo"></p>
+        <div class="ri-grid">
+          <div class="ri"><div class="ri-lbl">Remuneração (horas)</div><div class="ri-val" id="ir-rem">—</div></div>
+          <div class="ri"><div class="ri-lbl">DSR proporcional</div><div class="ri-val" id="ir-dsr">—</div></div>
+          <div class="ri"><div class="ri-lbl">Férias proporcionais</div><div class="ri-val" id="ir-ferias">—</div></div>
+          <div class="ri"><div class="ri-lbl">1/3 constitucional</div><div class="ri-val" id="ir-terco">—</div></div>
+          <div class="ri"><div class="ri-lbl">13º proporcional</div><div class="ri-val" id="ir-13">—</div></div>
+          <div class="ri"><div class="ri-lbl">FGTS (8%, depositado)</div><div class="ri-val" id="ir-fgts">—</div></div>
+          <div class="ri"><div class="ri-lbl">INSS (desconto)</div><div class="ri-val" id="ir-inss" style="color:var(--err);">—</div></div>
+          <div class="ri"><div class="ri-lbl">IRRF (desconto)</div><div class="ri-val" id="ir-irrf" style="color:var(--err);">—</div></div>
+          <div class="ri span2"><div class="ri-lbl">Total Bruto</div><div class="ri-val" id="ir-bruto">—</div></div>
+          <div class="ri span2"><div class="ri-lbl">Valor Líquido a Receber</div><div class="ri-val" id="ir-liquido" style="color:var(--ok);">—</div></div>
+        </div>
+        <div id="ir-nota" style="font-size:.8rem;color:var(--txt-m);padding:12px;background:var(--bg);border-radius:var(--r);"></div>
+        <span class="calc-count" id="cc-intermitente"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
+      </div>
+    </div>
+    <div class="card-sm">
+      <h3 style="font-size:.9rem;font-weight:700;margin-bottom:12px;">📌 Como funciona o intermitente</h3>
+      <p style="font-size:.82rem;color:var(--txt-m);line-height:1.6;">O contrato de trabalho intermitente (art. 443, §3º e 452-A da CLT) foi declarado <strong>constitucional pelo STF</strong> em dezembro/2024 (ADIs 5826, 5829 e 6154). A cada convocação, o empregado recebe de imediato: remuneração pelas horas, DSR, férias proporcionais + 1/3 e 13º proporcional — todos calculados em avos de 1/12 por período. FGTS (8%) é depositado pelo empregador. INSS e IRRF seguem as tabelas progressivas de 2026.</p>
+    </div>
+  </div>
+
+  <!-- ▸ ANÚNCIO: sec-intermitente after result (aparece após calcular) -->
+  <div class="ad-container ad-rect" id="ad-intermitente-result" style="display:none;"></div>
+
+    <!-- ▸ ANÚNCIO ADSTERRA: intermitente (300x250) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="adst-slot" id="ad-intermitente-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
+
+  <!-- SEO: intermitente -->
+  <section class="seo-content" id="seo-intermitente"><div class="container" style="max-width:800px;padding:18px 16px 6px;"><div class="seo-grid"><div><h2 class="seo-h2">O que é a Calculadora de Salário Intermitente?</h2><p class="seo-p">A Calculadora de Salário Intermitente do Calcula Prazo permite ao trabalhador conferir se o pagamento recebido da empresa está correto, calculando remuneração, DSR, férias + 1/3, 13º proporcional, FGTS, INSS e IRRF de acordo com a CLT (art. 443, §3º e 452-A) e o entendimento do STF (ADIs 5826/5829/6154, constitucionalidade confirmada em dezembro/2024).</p></div><div><h2 class="seo-h2">Como usar a calculadora?</h2><p class="seo-p">Informe o salário-hora combinado, o total de horas trabalhadas no período de apuração, as datas de início e fim do período e o número de dependentes. Clique em <strong>Calcular →</strong>. O resultado mostra cada verba separadamente e o valor líquido final a receber.</p></div></div><h2 class="seo-h2" style="margin-top:12px;">Como é calculado o DSR do trabalhador intermitente?</h2><p class="seo-p">O Descanso Semanal Remunerado do intermitente segue, por analogia, a fórmula usada para remuneração variável (Lei 605/49, art. 7º): DSR = (remuneração do período ÷ dias úteis do período) × (domingos + feriados do período). Assim, quanto mais dias de descanso houver no período apurado, maior o valor do DSR proporcional.</p><h2 class="seo-h2" style="margin-top:12px;">Perguntas frequentes</h2><div class="faq-list"><div class="faq-item"><div class="faq-q">O intermitente tem direito a férias e 13º?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">Sim. O art. 452-A, §6º da CLT garante o pagamento imediato, a cada período de prestação de serviço, de férias proporcionais acrescidas de 1/3 constitucional e de 13º salário proporcional, calculados em avos de 1/12. O STF confirmou a constitucionalidade dessa sistemática em dezembro de 2024.</div></div></div><div class="faq-item"><div class="faq-q">O contrato intermitente é constitucional?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">Sim. O Supremo Tribunal Federal julgou as ADIs 5826, 5829 e 6154 em dezembro de 2024 e, por maioria, declarou constitucional o contrato de trabalho intermitente instituído pela Reforma Trabalhista (Lei 13.467/2017), por entender que a modalidade não suprime direitos trabalhistas, apenas os torna proporcionais ao tempo efetivamente trabalhado.</div></div></div><div class="faq-item"><div class="faq-q">Quem paga o FGTS do intermitente?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">O FGTS (8% sobre a remuneração e demais verbas salariais do período) é depositado pelo empregador diretamente na conta vinculada do trabalhador — não é descontado do valor pago a ele, ao contrário do INSS e do IRRF.</div></div></div></div></div></section>
+</div>
+</div><!-- ══════════════════════════════════════
+     PRESCRIÇÃO
+══════════════════════════════════════ -->
+
+<div id="sec-prescricao" class="sec">
+<h2 class="sr-only">Calculadora de Prescrição</h2>
+
+  <div class="container" style="max-width:900px;"><div style="display:flex;flex-direction:column;gap:18px;">
+    <div class="card">
+      <h2><span aria-hidden="true">⌛</span> Calculadora de Prescrição</h2>
+      <p class="sub">Trabalhista, cível e tributária — informe a data do fato gerador</p>
+      <div class="fg"><label>Área do Direito</label>
+        <select id="presc-area" aria-label="Área do direito" onchange="prescAreaChange()" style="width:100%;padding:10px 12px;border:1.5px solid var(--brd);border-radius:var(--r);font-family:var(--fh);appearance:none;background:var(--bg);">
+          <option value="trabalhista">Trabalhista (CF/88 art. 7º, XXIX)</option>
+          <option value="civil">Cível (Código Civil)</option>
+          <option value="tributario">Tributário (CTN)</option>
+        </select>
+      </div>
+      <div class="fg" id="presc-tipo-grp">
+        <label>Tipo de prazo</label>
+        <select id="presc-tipo" aria-label="Tipo de prazo prescricional" onchange="updatePrescDataLabel()" style="width:100%;padding:10px 12px;border:1.5px solid var(--brd);border-radius:var(--r);font-family:var(--fh);appearance:none;background:var(--bg);">
+          <option value="bienal">Prescrição bienal (2 anos) — reclamação trabalhista</option>
+          <option value="fgts">FGTS não depositado (5 anos) — Tema 608 STF</option>
+        </select>
+      </div>
+      <div class="fg"><label id="presc-data-lbl">Data do término do contrato de trabalho</label><input type="date" id="presc-data" aria-label="Data do fato gerador do prazo"></div>
+      <button class="btn btn-p btn-full" onclick="calcPrescricao()">Calcular Prescrição →</button>
+    </div>
+    <div id="presc-res" aria-live="polite" aria-atomic="true" style="display:none;">
+      <div class="card">
+        <div class="ri-grid">
+          <div class="ri span2"><div class="ri-lbl">Prazo aplicável</div><div class="ri-val" id="presc-r-prazo" style="font-size:1rem;">—</div></div>
+          <div class="ri"><div class="ri-lbl">Data-limite (prescrição)</div><div class="ri-val" id="presc-r-limite" style="color:var(--err);">—</div></div>
+          <div class="ri"><div class="ri-lbl">Situação hoje</div><div class="ri-val" id="presc-r-status">—</div></div>
+        </div>
+        <div id="presc-r-obs" style="font-size:.8rem;color:var(--txt-m);padding:12px;background:var(--bg);border-radius:var(--r);"></div>
+        <span class="calc-count" id="cc-prescricao"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
+      </div>
+    </div>
+    <div class="card-sm" style="background:#FFF9E6;border:1.5px solid #FDE68A;">
+      <p style="font-size:.8rem;color:var(--txt-m);line-height:1.6;"><strong style="color:#B45309;">⚠ Aviso:</strong> esta calculadora tem finalidade informativa e educativa, apresentando regras gerais de prescrição. Prazos podem ser suspensos ou interrompidos por diversas causas legais (ex.: menoridade, ajuizamento de ação, protesto, reconhecimento da dívida). Consulte sempre um advogado para análise do caso concreto.</p>
+    </div>
+  </div>
+
+  <!-- ▸ ANÚNCIO: sec-prescricao after result (aparece após calcular) -->
+  <div class="ad-container ad-rect" id="ad-prescricao-result" style="display:none;"></div>
+
+    <!-- ▸ ANÚNCIO ADSTERRA: prescricao (300x250) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="adst-slot" id="ad-prescricao-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
+
+  <!-- SEO: prescricao -->
+  <section class="seo-content" id="seo-prescricao"><div class="container" style="max-width:800px;padding:18px 16px 6px;"><div class="seo-grid"><div><h2 class="seo-h2">O que é a Calculadora de Prescrição?</h2><p class="seo-p">A Calculadora de Prescrição do Calcula Prazo estima o prazo-limite para exercer um direito nas esferas trabalhista, cível e tributária, com base na Constituição Federal, no Código Civil e no Código Tributário Nacional. Informe a área do direito, o tipo de prazo e a data do fato gerador para obter a data-limite estimada.</p></div><div><h2 class="seo-h2">Como usar a calculadora de prescrição?</h2><p class="seo-p">Selecione a área do direito (trabalhista, cível ou tributário), escolha o tipo de prazo aplicável ao seu caso e informe a data de referência (ex.: data de término do contrato de trabalho, data do dano, ou data da constituição definitiva do crédito tributário). Clique em <strong>Calcular Prescrição →</strong> para ver o prazo-limite estimado.</p></div></div><h2 class="seo-h2" style="margin-top:12px;">Prescrição trabalhista: bienal e quinquenal</h2><p class="seo-p">Pelo art. 7º, XXIX da CF/88, o trabalhador tem <strong>2 anos</strong> após o fim do contrato de trabalho para ajuizar reclamação trabalhista (prescrição bienal), podendo reclamar apenas os créditos dos <strong>últimos 5 anos</strong> anteriores ao ajuizamento (prescrição quinquenal). Para menores de 18 anos, o prazo não corre (art. 440 CLT).</p><h2 class="seo-h2" style="margin-top:12px;">Perguntas frequentes</h2><div class="faq-list"><div class="faq-item"><div class="faq-q">Qual o prazo de prescrição trabalhista?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">2 anos contados do término do contrato de trabalho (prescrição bienal, art. 7º, XXIX CF/88), limitado aos créditos dos 5 anos anteriores ao ajuizamento da ação (prescrição quinquenal). O FGTS segue a mesma prescrição quinquenal, conforme Tema 608 do STF.</div></div></div><div class="faq-item"><div class="faq-q">Qual o prazo de prescrição civil?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">A regra geral do Código Civil (art. 205) é de 10 anos. Existem prazos especiais menores no art. 206, como 3 anos para pretensão de reparação civil e 1 ano para determinadas pretensões de seguro.</div></div></div><div class="faq-item"><div class="faq-q">Qual o prazo de prescrição tributária?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">5 anos, contados da constituição definitiva do crédito tributário, conforme art. 174 do Código Tributário Nacional (CTN), para a Fazenda Pública promover a ação de cobrança judicial.</div></div></div></div></div></section>
+</div>
+</div><!-- ══════════════════════════════════════
+     PORCENTAGEM
+══════════════════════════════════════ -->
+
+<div id="sec-porcentagem" class="sec">
+<h2 class="sr-only">Calculadora de Porcentagem</h2>
+
+  <div class="container" style="padding:10px 0 20px;max-width:720px;">
+    <div class="card">
+      <h2><span aria-hidden="true">🧮</span> Porcentagem</h2>
+      <p class="sub">Escolha a operação e preencha os campos</p>
+      <div class="pills" id="pct-mode-pills" style="margin-bottom:20px;">
+        <button class="pill on" data-m="pct-de" onclick="pctMode(this)">% de um valor</button>
+        <button class="pill" data-m="desconto" onclick="pctMode(this)">Desconto</button>
+        <button class="pill" data-m="aumento" onclick="pctMode(this)">Aumento</button>
+        <button class="pill" data-m="variacao" onclick="pctMode(this)">Variação %</button>
+        <button class="pill" data-m="quanto-pct" onclick="pctMode(this)">X é % de Y?</button>
+      </div>
+      <div id="pct-pct-de" class="pct-f"><div class="fg-row"><div class="fg"><label>Percentual (%)</label><div class="sfx"><input type="number" id="pct-a1" aria-label="Percentual (%)" placeholder="15"><span class="sfx-s">%</span></div></div><div class="fg"><label>Sobre o valor</label><div class="pfx"><span class="pfx-s">R$</span><input type="number" id="pct-b1" aria-label="Valor base (R$)" placeholder="1000"></div></div></div></div>
+      <div id="pct-desconto" class="pct-f" style="display:none;"><div class="fg-row"><div class="fg"><label>Valor original</label><div class="pfx"><span class="pfx-s">R$</span><input type="number" id="pct-a2" aria-label="Valor original" placeholder="1000"></div></div><div class="fg"><label>Desconto (%)</label><div class="sfx"><input type="number" id="pct-b2" aria-label="Percentual de desconto (%)" placeholder="10"><span class="sfx-s">%</span></div></div></div></div>
+      <div id="pct-aumento" class="pct-f" style="display:none;"><div class="fg-row"><div class="fg"><label>Valor original</label><div class="pfx"><span class="pfx-s">R$</span><input type="number" id="pct-a3" aria-label="Valor original" placeholder="1000"></div></div><div class="fg"><label>Aumento (%)</label><div class="sfx"><input type="number" id="pct-b3" aria-label="Percentual de aumento (%)" placeholder="10"><span class="sfx-s">%</span></div></div></div></div>
+      <div id="pct-variacao" class="pct-f" style="display:none;"><div class="fg-row"><div class="fg"><label>Valor inicial</label><div class="pfx"><span class="pfx-s">R$</span><input type="number" id="pct-a4" aria-label="Valor inicial" placeholder="800"></div></div><div class="fg"><label>Valor final</label><div class="pfx"><span class="pfx-s">R$</span><input type="number" id="pct-b4" aria-label="Valor final" placeholder="1000"></div></div></div></div>
+      <div id="pct-quanto-pct" class="pct-f" style="display:none;"><div class="fg-row"><div class="fg"><label>Valor X</label><div class="pfx"><span class="pfx-s">R$</span><input type="number" id="pct-a5" aria-label="Parte" placeholder="150"></div></div><div class="fg"><label>Do total Y</label><div class="pfx"><span class="pfx-s">R$</span><input type="number" id="pct-b5" aria-label="Total" placeholder="1000"></div></div></div></div>
+      <button class="btn btn-p btn-full" onclick="calcPct()">Calcular →</button>
+        </div>
+      <div id="pct-res" aria-live="polite" aria-atomic="true" class="res-box" style="margin-top:8px;"><div class="res-lbl">Resultado</div><div class="res-val" id="pct-res-val"></div><div class="res-det" id="pct-res-det"></div></div></div>
+
+  <span class="calc-count" id="cc-porcentagem"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
+  <!-- ▸ ANÚNCIO: sec-porcentagem after result (aparece após calcular) -->
+  <div class="ad-container ad-rect" id="ad-porcentagem-result" style="display:none;">
+  
+  </div>
+    
+    <!-- ▸ ANÚNCIO ADSTERRA: porcentagem (300x250) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="adst-slot" id="ad-porcentagem-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
+
+  <!-- SEO: porcentagem -->
+  <section class="seo-content" id="seo-porcentagem"><div class="container" style="max-width:800px;padding:18px 16px 6px;"><div class="seo-grid"><div><h2 class="seo-h2">O que é a Calculadora de Porcentagem?</h2><p class="seo-p">A Calculadora de Porcentagem oferece cinco modos de cálculo em uma única interface: <strong>% de um valor</strong> (quanto é X% de Y?), <strong>desconto</strong> (valor final após redução percentual), <strong>aumento</strong> (valor final após acréscimo percentual), <strong>variação entre dois valores</strong> (qual a variação % de A para B?) e <strong>representação percentual</strong> (X representa qual % de Y?). Útil para cálculos financeiros, comerciais e tributários do cotidiano.</p></div><div><h2 class="seo-h2">Como usar a calculadora de porcentagem?</h2><p class="seo-p">Selecione o modo desejado pelos botões no topo da calculadora. Preencha os campos correspondentes — cada modo exibe apenas os campos necessários para o cálculo escolhido. Clique em <strong>Calcular →</strong>. O resultado mostra o valor final e um resumo explicativo do cálculo realizado, facilitando a conferência.</p></div></div><h2 class="seo-h2" style="margin-top:12px;">Exemplos práticos de porcentagem</h2><p class="seo-p">Desconto: R$350 com 15% de desconto → R$350 × 0,85 = <strong>R$297,50</strong>. Aumento: R$2.500 + 8% → R$2.500 × 1,08 = <strong>R$2.700</strong>. Variação: de R$1.200 para R$1.350 = (150 ÷ 1200) × 100 = <strong>+12,5%</strong>. Representação: R$480 é qual % de R$3.200? = (480 ÷ 3200) × 100 = <strong>15%</strong>.</p><h2 class="seo-h2" style="margin-top:12px;">Perguntas frequentes</h2><div class="faq-list"><div class="faq-item"><div class="faq-q">Como calcular desconto percentual?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">Para calcular o valor final após um desconto: Valor Final = Valor Original × (1 − Desconto/100). Exemplo: produto de R$420 com 12% de desconto = R$420 × 0,88 = R$369,60. Para descobrir qual o percentual de desconto dado um valor original e um valor final: % desconto = ((original − final) ÷ original) × 100. A calculadora realiza todos esses cálculos automaticamente no modo "Desconto".</div></div></div><div class="faq-item"><div class="faq-q">Como calcular a variação percentual entre dois valores?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">A variação percentual mede quanto um valor cresceu ou diminuiu em relação ao ponto de partida: Variação % = ((Valor Final − Valor Inicial) ÷ Valor Inicial) × 100. Se o resultado for positivo, houve aumento; se negativo, houve queda. Esse cálculo é amplamente usado para comparar índices econômicos, reajustes salariais, variação de preços e crescimento de indicadores ao longo do tempo.</div></div></div></div></div></section>
+</div>
+  </div>
+</div><!-- ══════════════════════════════════════
+     MOEDAS
+══════════════════════════════════════ -->
+
+<div id="sec-moedas" class="sec">
+<h2 class="sr-only">Conversor de Moedas</h2>
+
+  <div class="container" style="padding:10px 0 20px;max-width:720px;">
+    <div class="card">
+      <h2><span aria-hidden="true">💱</span> Conversor de Moedas</h2>
+      <p class="sub">Taxas de referência para consulta. Para operações financeiras, use cotações em tempo real.</p>
+      <div class="fg-row">
+        <div class="fg"><label>Valor</label><div class="pfx"><span class="pfx-s" id="moeda-pfx-s">R$</span><input type="number" id="moeda-val-in" aria-label="Valor a converter" placeholder="1000" min="0" step="0.01" oninput="calcMoeda()"></div></div>
+        <div class="fg"><label>De</label><select id="moeda-de" aria-label="Moeda de origem" onchange="calcMoeda()">
+          <option value="BRL">🇧🇷 Real Brasileiro (BRL)</option>
+          <option value="USD">🇺🇸 Dólar Americano (USD)</option>
+          <option value="EUR">🇪🇺 Euro (EUR)</option>
+          <option value="GBP">🇬🇧 Libra Esterlina (GBP)</option>
+          <option value="ARS">🇦🇷 Peso Argentino (ARS)</option>
+          <option value="JPY">🇯🇵 Iene Japonês (JPY)</option>
+          <option value="CAD">🇨🇦 Dólar Canadense (CAD)</option>
+          <option value="CHF">🇨🇭 Franco Suíço (CHF)</option>
+        </select></div>
+      </div>
+      <div class="fg"><label>Para</label><select id="moeda-para" aria-label="Moeda de destino" onchange="calcMoeda()">
+        <option value="USD">🇺🇸 Dólar Americano (USD)</option>
+        <option value="BRL">🇧🇷 Real Brasileiro (BRL)</option>
+        <option value="EUR">🇪🇺 Euro (EUR)</option>
+        <option value="GBP">🇬🇧 Libra Esterlina (GBP)</option>
+        <option value="ARS">🇦🇷 Peso Argentino (ARS)</option>
+        <option value="JPY">🇯🇵 Iene Japonês (JPY)</option>
+        <option value="CAD">🇨🇦 Dólar Canadense (CAD)</option>
+        <option value="CHF">🇨🇭 Franco Suíço (CHF)</option>
+      </select></div>
+      <div id="moeda-res" aria-live="polite" aria-atomic="true" class="res-box show"><div class="res-lbl">Resultado</div><div class="res-val" id="moeda-res-val">—</div><div class="res-det" id="moeda-res-det">Informe um valor acima</div></div>
+      <p style="font-size:.78rem;color:var(--txt-s);margin-top:12px;">⚠ Taxas de referência (estimativas). Para transações, consulte seu banco ou corretora.</p>
+        </div>
+
+  <span class="calc-count" id="cc-moedas"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
+  <!-- ▸ ANÚNCIO: sec-moedas after result (aparece após calcular) -->
+  <div class="ad-container ad-rect" id="ad-moedas-result" style="display:none;">
+  
+  </div>
+    </div>
+  
+    <!-- ▸ ANÚNCIO ADSTERRA: moedas (300x250) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="adst-slot" id="ad-moedas-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
+
+  <!-- SEO: moedas -->
+  <section class="seo-content" id="seo-moedas"><div class="container" style="max-width:800px;padding:18px 16px 6px;"><div class="seo-grid"><div><h2 class="seo-h2">O que é o Conversor de Moedas?</h2><p class="seo-p">O Conversor de Moedas do Calcula Prazo realiza conversões entre as principais moedas do mercado internacional: Real (BRL), Dólar Americano (USD), Euro (EUR), Libra Esterlina (GBP), Iene Japonês (JPY), Franco Suíço (CHF), Dólar Canadense (CAD) e Dólar Australiano (AUD). A conversão é bidirecional e automática — altere o valor em qualquer campo para ver o equivalente nas demais moedas.</p></div><div><h2 class="seo-h2">Como usar o conversor de moedas?</h2><p class="seo-p">Digite o valor a converter no campo da moeda de origem e selecione a moeda de destino. A conversão é exibida automaticamente. As taxas utilizadas são de referência para uso informativo — para transações financeiras reais (câmbio, remessas, importações), consulte sempre a taxa praticada pela instituição financeira ou o câmbio oficial do <a href="https://www.bcb.gov.br" target="_blank" rel="noopener noreferrer" style="color:var(--acc);">Banco Central do Brasil</a>.</p></div></div><h2 class="seo-h2" style="margin-top:12px;">Exemplo de conversão de moedas</h2><p class="seo-p">Com dólar a R$5,80: R$1.000 ÷ 5,80 = <strong>US$172,41</strong>. Com euro a R$6,30: R$1.000 ÷ 6,30 = <strong>€158,73</strong>. Conversão inversa: US$100 × 5,80 = <strong>R$580,00</strong>. Para valores elevados (contratos internacionais, importações), pequenas variações na taxa de câmbio impactam significativamente o resultado — verifique sempre a cotação vigente no momento da operação.</p><h2 class="seo-h2" style="margin-top:12px;">Perguntas frequentes</h2><div class="faq-list"><div class="faq-item"><div class="faq-q">As taxas de câmbio são atualizadas em tempo real?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">As taxas exibidas no Conversor de Moedas são valores de referência aproximados, adequados para estimativas e comparações. Elas não refletem o câmbio em tempo real nem as taxas praticadas por bancos, corretoras ou casas de câmbio, que incluem spreads e tarifas variáveis. Para operações financeiras reais — remessas internacionais, pagamentos em moeda estrangeira ou contratos de câmbio — consulte a cotação oficial do Banco Central do Brasil (bcb.gov.br) ou a instituição financeira responsável pela operação.</div></div></div><div class="faq-item"><div class="faq-q">O que é a taxa PTAX do Banco Central?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">A PTAX é a taxa de câmbio oficial calculada e divulgada pelo Banco Central do Brasil, representando a média das cotações do mercado de câmbio ao longo do dia. É usada como referência em contratos, liquidações financeiras e em diversas obrigações legais que preveem pagamento ou correção em moeda estrangeira. A PTAX de fechamento é divulgada diariamente no site do Banco Central.</div></div></div></div></div></section>
+</div>
+</div><!-- ══════════════════════════════════════
+     TRABALHISTA
+══════════════════════════════════════ -->
+
+<div id="sec-trabalhista" class="sec">
+<h2 class="sr-only">Calculadora de Verbas Trabalhistas</h2>
+
+  <!-- ▸ ANÚNCIO: ad-trabalhista-top -->
+  <div class="ad-container" id="ad-trabalhista-top" style="min-height:0;">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="7615727177" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+  <div class="container" style="padding:10px 0 20px;max-width:800px;">
+    <div class="card">
+      <h2><span aria-hidden="true">⚖️</span> Calculadora de Verbas Trabalhistas</h2>
+      <p class="sub">Calcule todas as verbas trabalhistas e rescisórias conforme CLT</p>
+
+      <div class="fg-row">
+        <div class="fg"><label>Salário Base (R$)</label><div class="pfx"><span class="pfx-s">R$</span><input type="number" id="t-sal" aria-label="Salário base (R$)" placeholder="2000,00" min="0" step="0.01"></div></div>
+        <div class="fg"><label>Data de admissão</label><input type="date" id="t-adm" aria-label="Data de admissão" required aria-required="true"></div>
+      </div>
+      <div class="fg-row">
+        <div class="fg"><label>Data de demissão</label><input type="date" id="t-dem" aria-label="Data de demissão" required aria-required="true"></div>
+        <div class="fg"><label>Períodos de férias vencidas</label><input type="number" id="t-fer-venc" aria-label="Períodos de férias vencidas" value="0" min="0" max="5" title="Número de períodos aquisitivos completos de 12 meses de férias não gozadas"></div>
+      </div>
+
+      <!-- Médias salariais com tooltip -->
+      <div class="fg">
+        <label style="display:flex;align-items:center;gap:6px;">
+          Médias Salariais — parcelas variáveis (R$/mês)
+          <span class="t-tip" tabindex="0">?
+            <span class="t-tip-box">
+              <strong>O que são médias salariais?</strong><br><br>
+              Valores de natureza salarial recebidos habitualmente que integram a base de cálculo de férias, 13º salário, FGTS e aviso prévio (Súmula 264, TST).<br><br>
+              <strong>Exemplos:</strong><br>
+              • Horas extras habituais<br>
+              • Adicional noturno<br>
+              • Adicional de insalubridade<br>
+              • Adicional de periculosidade<br>
+              • Gratificação de função habitual<br>
+              • Prêmio/assiduidade habitual<br>
+              • Comissões habituais<br><br>
+              Informe a <strong>média mensal</strong> desses valores.
+            </span>
+          </span>
+        </label>
+        <div class="pfx"><span class="pfx-s">R$</span><input type="number" id="t-medias" aria-label="Médias salariais (R$)" placeholder="0,00" min="0" step="0.01" value="0"></div>
+        <p style="font-size:.72rem;color:var(--txt-s);margin-top:5px;">💡 Passe o mouse sobre <strong>?</strong> para ver quais verbas incluir. Deixe 0 se não houver.</p>
+      </div>
+
+      <div class="fg-row">
+        <div class="fg">
+          <label style="display:flex;align-items:center;gap:6px;">
+            Nº de Dependentes (IRRF)
+            <span class="t-tip" tabindex="0">?
+              <span class="t-tip-box">
+                <strong>Dependentes para fins de IRRF</strong><br><br>
+                Informe o número de dependentes declarados na ficha do empregado (cônjuge, filhos, etc.). Cada dependente reduz a base de cálculo do IR em R$ 189,59 (2026).<br><br>
+                Se o empregado não tiver declaração de dependentes, deixe 0.
+              </span>
+            </span>
+          </label>
+          <input type="number" id="t-dep" aria-label="Dependentes para fins de IRRF" value="0" min="0" max="20" step="1">
+        </div>
+        <div class="fg" style="align-self:flex-end;">
+          <p style="font-size:.72rem;color:var(--txt-s);line-height:1.5;">💡 Usado no cálculo do<br>IRRF sobre as verbas tributáveis.</p>
+        </div>
+      </div>
+
+      <div class="fg"><label>Tipo de rescisão</label><select id="t-tipo" aria-label="Tipo de rescisão" onchange="tTipoChange()">
+        <option value="semjusta">Sem justa causa (empregador)</option>
+        <option value="comjusta">Com justa causa</option>
+        <option value="pedido">Pedido de demissão</option>
+        <option value="acordo">Acordo (Art. 484-A CLT)</option>
+      </select></div>
+
+      <!-- Aviso prévio: indenizado ou trabalhado -->
+      <div class="fg" id="t-aviso-wrap">
+        <label style="display:flex;align-items:center;gap:6px;">
+          Aviso prévio
+          <span class="t-tip" tabindex="0">?
+            <span class="t-tip-box">
+              <strong>Aviso prévio indenizado:</strong> a empresa dispensa o empregado imediatamente e paga os dias como verba rescisória no Termo de Rescisão.<br><br>
+              <strong>Aviso prévio trabalhado:</strong> o empregado cumpre os dias de aviso. Nesse caso os dias são pagos no saldo de salário (não como verba separada).<br><br>
+              <strong>No pedido de demissão:</strong> o empregado deve 30 dias de aviso à empresa. Se não cumprir, o valor é descontado das verbas. Se cumprir, é pago no saldo de salário.
+            </span>
+          </span>
+        </label>
+        <select id="t-aviso" aria-label="Aviso prévio cumprido pelo empregador">
+          <option value="indenizado">Indenizado pela empresa (pago no Termo de Rescisão)</option>
+          <option value="trabalhado">Trabalhado (pago no saldo de salário)</option>
+          <option value="dispensado">Dispensado / sem aviso</option>
+        </select>
+        <!-- Desconto para pedido de demissão -->
+        <div id="t-aviso-desconto-wrap" style="display:none;margin-top:6px;">
+          <select id="t-aviso-pedido" aria-label="Aviso prévio no pedido de demissão">
+            <option value="nao_cumpriu">Empregado não cumpriu — empresa desconta</option>
+            <option value="cumpriu">Empregado cumpriu (pago no saldo de salário)</option>
+            <option value="dispensado">Empresa dispensou o cumprimento</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn btn-p btn-full" onclick="calcTrabalhista()">Calcular Verbas →</button>
+
+      <div id="t-res" aria-live="polite" aria-atomic="true" style="display:none;margin-top:10px;">
+        <!-- Verbas pagas no TRCT -->
+        <h3 style="font-size:.82rem;font-weight:700;margin-bottom:8px;color:var(--txt-s);text-transform:uppercase;letter-spacing:.05em;">Verbas Rescisórias — pagas no Termo de Rescisão</h3>
+        <div id="t-grid" class="ri-grid"></div>
+        <!-- FGTS — separado, pago na conta vinculada CEF -->
+        <div id="t-fgts-section" style="margin-top:14px;">
+          <h3 style="font-size:.82rem;font-weight:700;margin-bottom:8px;color:var(--txt-s);text-transform:uppercase;letter-spacing:.05em;">FGTS — depositado na conta vinculada (CEF)</h3>
+          <div id="t-fgts-grid" class="ri-grid"></div>
+        </div>
+      </div>
+
+      <!-- ── Descontos do Empregado (INSS + IRRF) ── -->
+      <div id="t-descontos-section" style="margin-top:14px;display:none;">
+        <h3 style="font-size:.82rem;font-weight:700;margin-bottom:8px;color:var(--txt-s);text-transform:uppercase;letter-spacing:.05em;">Descontos do Empregado — INSS e IRRF</h3>
+        <div id="t-descontos-grid" class="ri-grid"></div>
+        <p id="t-descontos-nota" style="font-size:.68rem;color:var(--txt-s);margin-top:8px;line-height:1.5;"></p>
+      </div>
+
+  <span class="calc-count" id="cc-trabalhista"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
+  <!-- ▸ ANÚNCIO: sec-trabalhista after result (aparece após calcular) -->
+  <div class="ad-container ad-rect" id="ad-trabalhista-result" style="display:none;">
+  
+  </div>
+    </div>
+  </div>
+
+    <!-- ▸ ANÚNCIO ADSTERRA: trabalhista (300x250) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="adst-slot" id="ad-trabalhista-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
+
+  <!-- SEO: trabalhista -->
+  <section class="seo-content" id="seo-trabalhista"><div class="container" style="max-width:800px;padding:18px 16px 6px;"><div class="seo-grid"><div><h2 class="seo-h2">O que calcula a Calculadora Trabalhista?</h2><p class="seo-p">A Calculadora de Verbas Trabalhistas do Calcula Prazo calcula todas as parcelas da rescisão contratual de acordo com a CLT e a jurisprudência do TST: saldo de salário pelos dias trabalhados, férias vencidas e proporcionais com o adicional de 1/3 constitucional (art. 7º, XVII, CF/88), 13º salário proporcional, FGTS do período, multa de 40% sobre o FGTS (nas dispensas imotivadas), aviso prévio proporcional (Lei 12.506/2011) e as principais médias salariais que integram a base de cálculo. A ferramenta é indicada para advogados trabalhistas, profissionais de RH e trabalhadores que desejam conferir o valor correto da rescisão.</p></div><div><h2 class="seo-h2">Como usar a calculadora de verbas rescisórias?</h2><p class="seo-p">Preencha: (1) salário bruto mensal; (2) data de admissão e de demissão; (3) tipo de rescisão (sem justa causa, com justa causa, pedido de demissão, distrato, término de contrato por prazo determinado); (4) médias salariais habituais (horas extras, adicional noturno, insalubridade, comissões — conforme Súmula 264 do TST); (5) saldo atual do FGTS na conta vinculada (para cálculo da multa). Clique em Calcular Verbas para ver o detalhamento completo de cada parcela e o total geral da rescisão.</p></div></div><h2 class="seo-h2" style="margin-top:12px;">Exemplo de cálculo de rescisão trabalhista</h2><p class="seo-p">Empregado com salário de R$3.000, admitido em 01/03/2022 e demitido sem justa causa em 31/03/2026 (4 anos e 1 mês): saldo de salário R$3.000 + férias proporcionais + 1/3 ≈ R$1.667 + 13º proporcional ≈ R$250 + aviso prévio proporcional 42 dias ≈ R$4.200 + FGTS + multa 40% ≈ R$6.720 = <strong>total aproximado de R$15.837</strong>. Use a calculadora para simular o seu cenário específico com precisão.</p><h2 class="seo-h2" style="margin-top:12px;">Perguntas frequentes</h2><div class="faq-list"><div class="faq-item"><div class="faq-q">Quais verbas são devidas na demissão sem justa causa?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">Na dispensa imotivada (sem justa causa), o empregador deve pagar: (1) saldo de salário pelos dias trabalhados no mês da rescisão; (2) férias vencidas + 1/3 constitucional, se houver; (3) férias proporcionais + 1/3; (4) 13º salário proporcional; (5) aviso prévio — trabalhado ou indenizado; (6) FGTS do período de aviso prévio indenizado; (7) multa de 40% sobre o saldo total do FGTS. O empregado também tem direito a sacar o FGTS e receber o seguro-desemprego, se atender aos requisitos da Lei 7.998/1990.</div></div></div><div class="faq-item"><div class="faq-q">Como é calculado o aviso prévio proporcional?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">Pela Lei 12.506/2011, o aviso prévio é de 30 dias para empregados com até 1 ano de serviço. A partir do 2º ano completo, acrescem-se 3 dias por ano de serviço, até o limite máximo de 90 dias. Exemplo: 5 anos de contrato = 30 + (4 × 3) = 42 dias de aviso. O aviso prévio proporcional incide apenas quando a dispensa é feita pelo empregador; no pedido de demissão, o empregado cumpre apenas os 30 dias padrão.</div></div></div><div class="faq-item"><div class="faq-q">O que são médias salariais e como afetam a rescisão?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">Médias salariais são verbas pagas habitualmente ao empregado que têm natureza salarial, como horas extras habituais, adicional noturno, insalubridade, periculosidade e comissões. Pela Súmula 264 do TST, esses valores integram a remuneração para fins de cálculo de férias, 13º salário, aviso prévio e FGTS. Na calculadora, informe a média dos últimos 12 meses de cada verba para obter um cálculo mais preciso das verbas rescisórias.</div></div></div><div class="faq-item"><div class="faq-q">Como calcular o FGTS e a multa de 40%?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">O FGTS mensal é de 8% sobre a remuneração bruta do empregado (2% para aprendizes). Na rescisão sem justa causa, incide multa de 40% sobre o saldo total da conta vinculada do FGTS — isso inclui todos os depósitos feitos ao longo do contrato, mais os rendimentos. Além disso, o empregador deve depositar o FGTS referente ao mês da rescisão e ao período do aviso prévio (mesmo que indenizado). A calculadora estima o saldo com base nos meses trabalhados e no salário informado.</div></div></div></div></div></section>
+</div><!-- ══════════════════════════════════════
+     OPERAÇÕES COM DATAS
+══════════════════════════════════════ -->
+
+<div id="sec-datas" class="sec">
+<h2 class="sr-only">Calculadora de Datas</h2>
+
+  <div class="container" style="padding:10px 0 20px;max-width:700px;">
+    <div class="card">
+      <h2><span aria-hidden="true">📅</span> Operações com Datas</h2>
+      <p class="sub">Escolha a operação desejada</p>
+      <div class="pills" id="d-mode-pills" style="margin-bottom:20px;">
+        <button class="pill on" data-dm="diff" onclick="dMode(this)">Diferença entre datas</button>
+        <button class="pill" data-dm="add" onclick="dMode(this)">Somar dias</button>
+        <button class="pill" data-dm="sub" onclick="dMode(this)">Subtrair dias</button>
+        <button class="pill" data-dm="diaSem" onclick="dMode(this)">Dia da semana</button>
+      </div>
+      <div id="d-diff"><div class="fg-row"><div class="fg"><label>Data inicial</label><input type="date" id="d-a1" aria-label="Data inicial" required aria-required="true"></div><div class="fg"><label>Data final</label><input type="date" id="d-b1" aria-label="Data final" required aria-required="true"></div></div></div>
+      <div id="d-add" style="display:none;"><div class="fg-row"><div class="fg"><label>Data base</label><input type="date" id="d-a2" aria-label="Data inicial" required aria-required="true"></div><div class="fg"><label>Dias a somar</label><input type="number" id="d-b2" aria-label="Número de dias" placeholder="30" min="0"></div></div></div>
+      <div id="d-sub" style="display:none;"><div class="fg-row"><div class="fg"><label>Data base</label><input type="date" id="d-a3" aria-label="Data" required aria-required="true"></div><div class="fg"><label>Dias a subtrair</label><input type="number" id="d-b3" aria-label="Número de dias" placeholder="30" min="0"></div></div></div>
+      <div id="d-diaSem" style="display:none;"><div class="fg"><label>Data</label><input type="date" id="d-a4" aria-label="Data" required aria-required="true"></div></div>
+      <button class="btn btn-p btn-full" onclick="calcDatas()">Calcular →</button>
+      <div id="d-res" aria-live="polite" aria-atomic="true" class="res-box" style="margin-top:8px;"><div class="res-lbl">Resultado</div><div class="res-val" id="d-res-val"></div><div class="res-det" id="d-res-det"></div></div>
+        </div>
+
+  <span class="calc-count" id="cc-datas"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
+  <!-- ▸ ANÚNCIO: sec-datas after result (aparece após calcular) -->
+  <div class="ad-container ad-rect" id="ad-datas-result" style="display:none;">
+  
+  </div>
+    </div>
+  
+    <!-- ▸ ANÚNCIO ADSTERRA: datas (300x250) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="adst-slot" id="ad-datas-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
+
+  <!-- SEO: datas -->
+  <section class="seo-content" id="seo-datas"><div class="container" style="max-width:800px;padding:18px 16px 6px;"><div class="seo-grid"><div><h2 class="seo-h2">O que é a calculadora de operações com datas?</h2><p class="seo-p">A calculadora de datas do Calcula Prazo oferece três operações distintas: <strong>diferença entre datas</strong> (quantos dias, meses e anos entre duas datas?), <strong>somar ou subtrair dias</strong> a uma data (qual será a data após X dias corridos a partir de hoje?) e <strong>identificação do dia da semana</strong> de qualquer data. Diferente da Calculadora de Prazos Processuais, esta ferramenta trabalha com dias <em>corridos</em> sem aplicação de regras processuais.</p></div><div><h2 class="seo-h2">Como usar a calculadora de datas?</h2><p class="seo-p">Selecione o modo de operação pelos botões no topo. No modo "Diferença", informe as datas inicial e final para obter o total de dias, meses e anos entre elas. No modo "Somar/Subtrair", informe uma data base e a quantidade de dias (positivo para somar, negativo para subtrair). O resultado indica a data resultante e o dia da semana correspondente.</p></div></div><h2 class="seo-h2" style="margin-top:12px;">Exemplos de cálculo com datas</h2><p class="seo-p">Diferença: de 01/01/2026 a 31/12/2026 = <strong>364 dias corridos</strong> (2026 não é bissexto). Soma: 01/03/2026 + 30 dias corridos = <strong>31/03/2026</strong>. Subtração: 31/12/2026 − 90 dias = <strong>02/10/2026</strong> (sexta-feira). Para prazos processuais com exclusão de fins de semana e feriados, utilize a <strong>Calculadora de Prazos Processuais</strong>.</p><h2 class="seo-h2" style="margin-top:12px;">Perguntas frequentes</h2><div class="faq-list"><div class="faq-item"><div class="faq-q">Qual a diferença entre esta calculadora e a Calculadora de Prazos?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">A Calculadora de Operações com Datas trabalha com dias corridos — conta todos os dias do calendário, incluindo fins de semana e feriados. É indicada para calcular diferenças entre datas em contratos, vencimentos, prazos de garantia ou situações do cotidiano. A Calculadora de Prazos Processuais, por outro lado, aplica as regras do CPC/2015 e da CLT: conta apenas dias úteis, exclui feriados nacionais e considera suspensões forenses. Para fins jurídico-processuais, sempre use a ferramenta de prazos.</div></div></div><div class="faq-item"><div class="faq-q">A calculadora considera anos bissextos?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">Sim. Todos os cálculos de datas levam em conta a existência de anos bissextos (anos divisíveis por 4, exceto centenários não divisíveis por 400). Fevereiro tem 29 dias nos anos bissextos, o que é relevante especialmente para cálculos que cruzam o mês de fevereiro. A ferramenta utiliza a API de datas nativa do JavaScript, que trata corretamente essa regra automaticamente.</div></div></div></div></div></section>
+</div>
+</div><!-- ══════════════════════════════════════
+     VALIDADORES
+══════════════════════════════════════ -->
+
+<div id="sec-valid" class="sec">
+<h2 class="sr-only">Validador de CPF e CNPJ</h2>
+
+  <div class="container">
+  <div class="inner-2col" style="align-items:start;">
+    <div style="display:flex;flex-direction:column;gap:18px;">
+      <div class="card">
+        <h2><span aria-hidden="true">🪪</span> Validar CPF</h2>
+        <p class="sub">11 dígitos — com ou sem pontuação</p>
+        <div class="big-input"><input type="text" id="cpf-in" aria-label="Número de CPF" placeholder="000.000.000-00" maxlength="14" autocomplete="off" oninput="validCPF()"></div>
+        <div class="vr" id="cpf-vr">
+          <div class="vr-title" id="cpf-vr-t"></div>
+          <div class="vr-row"><span class="vr-lbl">Formatado</span><span class="vr-val" id="cpf-vr-fmt"></span></div>
+          <div class="vr-row"><span class="vr-lbl">Dígitos verif.</span><span class="vr-val" id="cpf-vr-dv"></span></div>
+          <div style="margin-top:8px;font-size:.81rem;color:var(--txt-m);" id="cpf-vr-msg"></div>
+        </div>
+        <div style="display:flex;gap:7px;margin-top:10px;flex-wrap:wrap;">
+          <button class="btn btn-g btn-sm" onclick="fmtCPF()">Formatar</button>
+          <button class="btn btn-g btn-sm" onclick="clearV('cpf-in','cpf-vr')">Limpar</button>
+          <button class="btn btn-s btn-sm" onclick="gerarCPF()">Gerar de teste</button>
+          <button class="btn btn-s btn-sm btn-print" onclick="window.print()">🖨️ Imprimir / PDF</button>
+        </div>
+      </div>
+      <div class="card">
+        <h2><span aria-hidden="true">🏢</span> Validar CNPJ</h2>
+        <p class="sub">14 dígitos — com ou sem pontuação</p>
+        <div class="big-input"><input type="text" id="cnpj-in" aria-label="Número de CNPJ" placeholder="00.000.000/0000-00" maxlength="18" autocomplete="off" oninput="validCNPJ()"></div>
+        <div class="vr" id="cnpj-vr">
+          <div class="vr-title" id="cnpj-vr-t"></div>
+          <div class="vr-row"><span class="vr-lbl">Formatado</span><span class="vr-val" id="cnpj-vr-fmt"></span></div>
+          <div class="vr-row"><span class="vr-lbl">Dígitos verif.</span><span class="vr-val" id="cnpj-vr-dv"></span></div>
+          <div style="margin-top:8px;font-size:.81rem;color:var(--txt-m);" id="cnpj-vr-msg"></div>
+        </div>
+        <div style="display:flex;gap:7px;margin-top:10px;flex-wrap:wrap;">
+          <button class="btn btn-g btn-sm" onclick="fmtCNPJ()">Formatar</button>
+          <button class="btn btn-g btn-sm" onclick="clearV('cnpj-in','cnpj-vr')">Limpar</button>
+          <button class="btn btn-s btn-sm" onclick="gerarCNPJ()">Gerar de teste</button>
+          <button class="btn btn-s btn-sm btn-print" onclick="window.print()">🖨️ Imprimir / PDF</button>
+        </div>
+      </div>
+      <div style="text-align:center;"><span class="calc-count" id="cc-valid"></span></div>
+        </div>
+    <div class="card-sm" style="position:sticky;top:76px;">
+      <h3 style="font-size:.9rem;font-weight:700;margin-bottom:12px;">🔬 Como funciona</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:12px;">
+        <div style="display:flex;gap:9px;"><div style="flex-shrink:0;width:22px;height:22px;background:var(--b50);color:var(--acc);border-radius:50%;font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;">1</div><p style="font-size:.82rem;color:var(--txt-m);">Remove não-numéricos e verifica comprimento.</p></div>
+        <div style="display:flex;gap:9px;"><div style="flex-shrink:0;width:22px;height:22px;background:var(--b50);color:var(--acc);border-radius:50%;font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;">2</div><p style="font-size:.82rem;color:var(--txt-m);">Rejeita sequências com todos os dígitos iguais.</p></div>
+        <div style="display:flex;gap:9px;"><div style="flex-shrink:0;width:22px;height:22px;background:var(--b50);color:var(--acc);border-radius:50%;font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;">3</div><p style="font-size:.82rem;color:var(--txt-m);">Calcula os 2 dígitos verificadores via módulo 11 e compara.</p></div>
+      </div>
+      <div style="background:var(--b50);border:1.5px solid var(--b200);border-radius:var(--r);padding:12px;margin-top:14px;font-size:.8rem;color:var(--txt-m);line-height:1.55;"><strong style="color:var(--acc);">⚠</strong> Verifica apenas a estrutura matemática, não a existência na Receita Federal.</div>
+      <div id="v-gerador-res" aria-live="polite" aria-atomic="true" style="margin-top:14px;display:none;background:var(--bg);border-radius:var(--r);padding:13px;font-family:'Courier New',monospace;font-size:1rem;font-weight:700;color:var(--acc);letter-spacing:.06em;text-align:center;"></div>
+    </div>
+  </div>
+
+  <!-- ▸ ANÚNCIO: sec-valid after result (aparece após calcular) -->
+  <div class="ad-container ad-rect" id="ad-valid-result" style="display:none;">
+  
+  </div>
+  
+    <!-- ▸ ANÚNCIO ADSTERRA: valid (300x250) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="adst-slot" id="ad-valid-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
+
+  <!-- SEO: valid -->
+  <section class="seo-content" id="seo-valid"><div class="container" style="max-width:800px;padding:18px 16px 6px;"><div class="seo-grid"><div><h2 class="seo-h2">O que é o validador de CPF e CNPJ?</h2><p class="seo-p">O Validador de CPF e CNPJ do Calcula Prazo verifica se um número de CPF ou CNPJ é matematicamente válido, aplicando o algoritmo oficial dos dígitos verificadores (Módulo 11) utilizado pela Receita Federal do Brasil. A validação é instantânea e ocorre 100% no navegador, sem envio dos dados a nenhum servidor. Aceita os formatos com ou sem pontuação.</p></div><div><h2 class="seo-h2">Como usar o validador de CPF e CNPJ?</h2><p class="seo-p">Cole ou digite o CPF (com ou sem formatação: 000.000.000-00 ou 00000000000) ou CNPJ (com ou sem formatação: 00.000.000/0000-00 ou 00000000000000) no campo correspondente. A validação é automática — o resultado aparece imediatamente sem necessidade de clicar em nenhum botão. CPFs com todos os dígitos iguais (ex.: 111.111.111-11) são identificados como inválidos mesmo que passem pela soma do Módulo 11.</p></div></div><h2 class="seo-h2" style="margin-top:12px;">Exemplos de validação</h2><p class="seo-p">CPF válido: 123.456.789-09 (dígitos verificadores corretos). CPF inválido: 123.456.789-00 (dígitos não correspondem ao cálculo). CPF inválido por sequência repetida: 111.111.111-11. CNPJ válido: 11.222.333/0001-81. A ferramenta valida apenas a <strong>estrutura matemática</strong> do número — um CPF válido matematicamente pode pertencer a uma pessoa real ou ter sido gerado aleatoriamente.</p><h2 class="seo-h2" style="margin-top:12px;">Perguntas frequentes</h2><div class="faq-list"><div class="faq-item"><div class="faq-q">Validar CPF/CNPJ confirma se o documento existe na Receita Federal?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">Não. A validação realizada pela ferramenta é estritamente matemática — verifica se os dígitos verificadores do número estão corretos conforme o algoritmo Módulo 11 da Receita Federal. Um número válido matematicamente pode ou não corresponder a um CPF/CNPJ real e ativo. Para verificar a situação cadastral de um CPF junto à Receita Federal, acesse o portal da RF (gov.br/receitafederal). Para consultar CNPJ e situação de empresa, utilize o sistema REDESIM ou o portal da Receita Federal.</div></div></div><div class="faq-item"><div class="faq-q">Como funciona o algoritmo Módulo 11 do CPF?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">O CPF é composto por 9 dígitos base e 2 dígitos verificadores. O 10º dígito é calculado multiplicando cada dígito base por pesos de 10 a 2, somando os resultados e calculando o resto da divisão por 11. Se o resto for menor que 2, o dígito é 0; caso contrário, é 11 menos o resto. O mesmo processo é repetido com pesos de 11 a 2 (incluindo o 10º dígito) para calcular o 11º dígito. Qualquer CPF com dígitos verificadores que não correspondam a esse cálculo é matematicamente inválido.</div></div></div></div></div></section>
+</div>
+</div><!-- ══════════════════════════════════════
+     QR CODE
+══════════════════════════════════════ -->
+
+<div id="sec-qrcode" class="sec">
+<h2 class="sr-only">Gerador de QR Code</h2>
+
+  <div class="container">
+  <div class="inner-side" style="padding:10px 0 20px;">
+    <div class="card">
+      <h2><span aria-hidden="true">📱</span> Gerar QR Code</h2>
+      <p class="sub">Escolha o tipo de conteúdo</p>
+      <div class="qr-type-tabs">
+        <button class="qrtt on" data-qt="link" onclick="qrType(this)">🔗 Link</button>
+        <button class="qrtt" data-qt="texto" onclick="qrType(this)">📝 Texto</button>
+        <button class="qrtt" data-qt="email" onclick="qrType(this)">✉️ E-mail</button>
+        <button class="qrtt" data-qt="tel" onclick="qrType(this)">📞 Tel.</button>
+        <button class="qrtt" data-qt="pix" onclick="qrType(this)">💸 Pix</button>
+        <button class="qrtt" data-qt="wifi" onclick="qrType(this)">📶 Wi-Fi</button>
+      </div>
+      <div id="qf-link" class="qr-f on"><div class="fg"><label>URL</label><input type="text" id="qf-link-v" aria-label="URL ou texto para o QR Code" placeholder="https://exemplo.com.br"></div></div>
+      <div id="qf-texto" class="qr-f"><div class="fg"><label>Texto</label><textarea id="qf-texto-v" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--brd);border-radius:var(--r);font-family:var(--fh);resize:vertical;" placeholder="Digite qualquer texto…"></textarea></div></div>
+      <div id="qf-email" class="qr-f"><div class="fg"><label>E-mail</label><input type="text" id="qf-email-v" aria-label="Endereço de e-mail" placeholder="email@exemplo.com"></div><div class="fg-row"><div class="fg"><label>Assunto</label><input type="text" id="qf-email-s" aria-label="Assunto do e-mail" placeholder="Assunto"></div><div class="fg"><label>Mensagem</label><input type="text" id="qf-email-b" aria-label="Corpo da mensagem" placeholder="Mensagem"></div></div></div>
+      <div id="qf-tel" class="qr-f"><div class="fg"><label>Telefone (com DDD)</label><input type="text" id="qf-tel-v" aria-label="Número de telefone" placeholder="+55 11 99999-9999"></div></div>
+      <div id="qf-pix" class="qr-f"><div class="fg"><label>Chave Pix</label><input type="text" id="qf-pix-k" aria-label="Chave PIX" placeholder="CPF, e-mail, celular ou chave aleatória"></div><div class="fg-row"><div class="fg"><label>Favorecido</label><input type="text" id="qf-pix-n" aria-label="Nome do destinatário" placeholder="Nome"></div><div class="fg"><label>Valor (opcional)</label><input type="number" id="qf-pix-v" aria-label="Valor da transferência (R$)" placeholder="0.00" min="0" step="0.01"></div></div><div class="fg"><label>Cidade</label><input type="text" id="qf-pix-c" aria-label="Mensagem/descrição do PIX" placeholder="São Paulo"></div></div>
+      <div id="qf-wifi" class="qr-f"><div class="fg"><label>Nome da rede (SSID)</label><input type="text" id="qf-wifi-s" aria-label="Nome da rede Wi-Fi (SSID)" placeholder="MinhaRede"></div><div class="fg-row"><div class="fg"><label>Senha</label><input type="text" id="qf-wifi-p" aria-label="Senha da rede Wi-Fi" placeholder="senha123"></div><div class="fg"><label>Segurança</label><select id="qf-wifi-t" aria-label="Tipo de segurança da rede Wi-Fi" style="width:100%;padding:10px 12px;border:1.5px solid var(--brd);border-radius:var(--r);font-family:var(--fh);appearance:none;background:var(--bg);"><option value="WPA">WPA/WPA2</option><option value="WEP">WEP</option><option value="">Aberta</option></select></div></div></div>
+      <div class="div"></div>
+      <div class="sl-row" style="margin-bottom:14px;"><label>Tamanho</label><input type="range" id="qr-sz" aria-label="Tamanho do QR Code" min="150" max="350" value="220" step="10" oninput="document.getElementById('qr-sz-v').textContent=this.value+'px'"><span class="sl-val" id="qr-sz-v">220px</span></div>
+      <button class="btn btn-p btn-full" onclick="genQR()">Gerar QR Code →</button>
+        </div>
+    <div style="display:flex;flex-direction:column;gap:16px;position:sticky;top:76px;">
+      <div class="card-sm" style="display:flex;flex-direction:column;align-items:center;gap:14px;">
+        <h3 style="font-size:.85rem;font-weight:700;color:var(--txt-s);text-transform:uppercase;letter-spacing:.06em;align-self:flex-start;">Preview</h3>
+        <div id="qr-display" class="qr-out"><div class="qr-empty"><div class="qi">📱</div><p>Clique em<br><strong>Gerar QR Code</strong></p></div></div>
+        <div id="qr-actions" style="display:none;width:100%;display:flex;flex-direction:column;gap:8px;">
+          <button class="btn btn-p" style="width:100%;" onclick="dlQR()">⬇ Download PNG</button>
+          <button class="btn btn-g" style="width:100%;" onclick="cpQR()">📋 Copiar conteúdo</button>
+          <button class="btn btn-s btn-print" style="width:100%;" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
+          <span class="calc-count" id="cc-qrcode" style="align-self:center;"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▸ ANÚNCIO: sec-qrcode after result (aparece após calcular) -->
+  <div class="ad-container ad-rect" id="ad-qrcode-result" style="display:none;">
+  
+  </div>
+  
+    <!-- ▸ ANÚNCIO ADSTERRA: qrcode (300x250) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="adst-slot" id="ad-qrcode-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
+
+  <!-- SEO: qrcode -->
+  <section class="seo-content" id="seo-qrcode"><div class="container" style="max-width:800px;padding:18px 16px 6px;"><div class="seo-grid"><div><h2 class="seo-h2">O que é o Gerador de QR Code?</h2><p class="seo-p">O Gerador de QR Code do Calcula Prazo cria códigos QR para qualquer tipo de conteúdo textual: links (URLs), endereços de e-mail, números de telefone, textos livres, chaves PIX e links para WhatsApp. O processamento é 100% local — nenhum dado digitado é enviado a servidores. O QR Code gerado pode ser baixado em formato PNG em diferentes resoluções.</p></div><div><h2 class="seo-h2">Como usar o gerador de QR Code?</h2><p class="seo-p">Digite ou cole o conteúdo no campo de texto — pode ser uma URL, um e-mail no formato <code>mailto:email@exemplo.com</code>, um link do WhatsApp no formato <code>wa.me/5511999999999</code> ou qualquer texto. Ajuste o tamanho do QR Code pelo seletor. Clique em <strong>Gerar QR Code →</strong> para visualizar e baixe a imagem em PNG clicando no botão de download.</p></div></div><h2 class="seo-h2" style="margin-top:12px;">Exemplos de uso do QR Code</h2><p class="seo-p">URL de site: <code>https://calculaprazo.com.br</code>. E-mail: <code>mailto:contato@empresa.com.br</code>. WhatsApp direto: <code>https://wa.me/5511999887766</code>. Chave PIX (e-mail): <code>pagamentos@empresa.com.br</code>. Para QR Code PIX com valor e descrição específicos (formato EMV), utilize o aplicativo do banco ou plataformas de pagamento, pois esse formato exige um payload estruturado gerado pelo banco.</p><h2 class="seo-h2" style="margin-top:12px;">Perguntas frequentes</h2><div class="faq-list"><div class="faq-item"><div class="faq-q">É possível gerar QR Code para chave PIX?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">Sim, é possível gerar um QR Code a partir de uma chave PIX (e-mail, CPF/CNPJ, telefone ou chave aleatória). Ao escanear, o aplicativo do banco abrirá a tela de pagamento PIX com a chave preenchida, mas sem valor predefinido. Para gerar um QR Code PIX com valor fixo e descrição (formato copia e cola), é necessário utilizar o próprio aplicativo do banco ou uma plataforma homologada pelo Banco Central, pois esse formato requer um payload EMV criptografado gerado pela instituição financeira.</div></div></div><div class="faq-item"><div class="faq-q">O conteúdo digitado é armazenado ou enviado a algum servidor?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">Não. Todo o processamento do Gerador de QR Code ocorre diretamente no navegador, utilizando a biblioteca QRCode.js. Nenhum dado digitado é transmitido a servidores externos ou armazenado em banco de dados. O QR Code é gerado e exibido localmente, e o download da imagem também é realizado sem qualquer comunicação com a internet.</div></div></div></div></div></section>
+</div>
+</div><!-- ══════════════════════════════════════
+     SENHAS
+══════════════════════════════════════ -->
+
+<div id="sec-senhas" class="sec">
+<h2 class="sr-only">Gerador de Senhas Seguras</h2>
+
+  <div class="container" style="padding:10px 0 20px;max-width:640px;">
+    <div class="card">
+      <h2><span aria-hidden="true">🔐</span> Configurar Senha</h2>
+      <p class="sub">Personalize e gere instantaneamente</p>
+      <div class="pw-out"><div id="pw-val">Clique em Gerar →</div><button id="pw-copy-btn" onclick="cpPW()" title="Copiar">📋</button></div>
+      <div class="str-bar"><div class="str-fill" id="str-f" style="width:0%;background:var(--brd-m);"></div></div>
+      <div class="str-lbl" id="str-l" style="color:var(--txt-s);">— Gere uma senha</div>
+      <div class="sl-row" style="margin-bottom:14px;">
+        <label>Comprimento</label>
+        <input type="range" id="pw-len" aria-label="Comprimento da senha (caracteres)" min="6" max="64" value="16" oninput="document.getElementById('pw-len-v').textContent=this.value;genPW()">
+        <span class="sl-val" id="pw-len-v">16</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0;">
+        <div style="display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--brd);">
+          <div style="flex:1;font-size:.88rem;font-weight:500;">Maiúsculas <span style="font-size:.76rem;color:var(--txt-s);">(A-Z)</span></div>
+          <label class="tog"><input type="checkbox" id="pw-up" aria-label="Incluir letras maiúsculas" checked onchange="genPW()"><div class="tog-tr"></div><div class="tog-th"></div></label>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--brd);">
+          <div style="flex:1;font-size:.88rem;font-weight:500;">Minúsculas <span style="font-size:.76rem;color:var(--txt-s);">(a-z)</span></div>
+          <label class="tog"><input type="checkbox" id="pw-lo" aria-label="Incluir letras minúsculas" checked onchange="genPW()"><div class="tog-tr"></div><div class="tog-th"></div></label>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--brd);">
+          <div style="flex:1;font-size:.88rem;font-weight:500;">Números <span style="font-size:.76rem;color:var(--txt-s);">(0-9)</span></div>
+          <label class="tog"><input type="checkbox" id="pw-nu" aria-label="Incluir números" checked onchange="genPW()"><div class="tog-tr"></div><div class="tog-th"></div></label>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--brd);">
+          <div style="flex:1;font-size:.88rem;font-weight:500;">Símbolos <span style="font-size:.76rem;color:var(--txt-s);">(!@#$%)</span></div>
+          <label class="tog"><input type="checkbox" id="pw-sy" aria-label="Incluir símbolos especiais" onchange="genPW()"><div class="tog-tr"></div><div class="tog-th"></div></label>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:11px 0;">
+          <div style="flex:1;font-size:.88rem;font-weight:500;">Excluir ambíguos <span style="font-size:.76rem;color:var(--txt-s);">(0,O,l,1,I)</span></div>
+          <label class="tog"><input type="checkbox" id="pw-am" aria-label="Excluir caracteres ambíguos" onchange="genPW()"><div class="tog-tr"></div><div class="tog-th"></div></label>
+        </div>
+      </div>
+      <button class="btn btn-p btn-full" style="margin-top:18px;" onclick="genPW();trackCalcUsage('senhas','cc-senhas')">🔄 Gerar Nova Senha</button>
+      <span class="calc-count" id="cc-senhas"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
+        </div>
+
+  <!-- ▸ ANÚNCIO: sec-senhas after result (aparece após calcular) -->
+  <div class="ad-container ad-rect" id="ad-senhas-result" style="display:none;">
+  
+  </div>
+    </div>
+  
+    <!-- ▸ ANÚNCIO ADSTERRA: senhas (300x250) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="adst-slot" id="ad-senhas-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
+
+  <!-- SEO: senhas -->
+  <section class="seo-content" id="seo-senhas"><div class="container" style="max-width:800px;padding:18px 16px 6px;"><div class="seo-grid"><div><h2 class="seo-h2">O que é o Gerador de Senhas?</h2><p class="seo-p">O Gerador de Senhas do Calcula Prazo cria senhas aleatórias e criptograficamente seguras com comprimento e composição personalizáveis. É possível incluir ou excluir letras maiúsculas, minúsculas, números e símbolos especiais. As senhas são geradas usando a API <code>window.crypto.getRandomValues</code> do navegador — um gerador de números aleatórios de nível criptográfico, muito mais seguro que o <code>Math.random()</code> convencional.</p></div><div><h2 class="seo-h2">Como usar o gerador de senhas?</h2><p class="seo-p">Ajuste o comprimento desejado (de 4 a 64 caracteres) e marque os tipos de caracteres a incluir: letras maiúsculas (A–Z), minúsculas (a–z), números (0–9) e símbolos (!@#$%...). A senha é gerada automaticamente ao alterar qualquer opção. Clique em "Nova Senha" para gerar outra combinação. Use o botão de cópia para transferir a senha para a área de transferência com um clique.</p></div></div><h2 class="seo-h2" style="margin-top:12px;">Exemplo de senha gerada</h2><p class="seo-p">Com 16 caracteres, todos os tipos ativos: <code>mK7#pQ2@xR9!wL4&amp;</code>. Com 12 caracteres, apenas letras e números (alfanumérica): <code>kP3xRm7wL1nQ</code>. Para sistemas que não aceitam símbolos especiais, desative a opção "Símbolos". Para senhas de alto nível de segurança (sistemas críticos, cofres digitais), recomenda-se mínimo de 16 caracteres com todos os tipos de caracteres ativos.</p><h2 class="seo-h2" style="margin-top:12px;">Perguntas frequentes</h2><div class="faq-list"><div class="faq-item"><div class="faq-q">O que torna uma senha realmente segura?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">Uma senha segura combina quatro fatores: comprimento (mínimo 12 caracteres, idealmente 16 ou mais), variedade de tipos (maiúsculas, minúsculas, números e símbolos), unicidade (uma senha diferente para cada serviço) e aleatoriedade (gerada por algoritmo, não por palavras ou padrões previsíveis). Senhas baseadas em palavras do dicionário, datas de nascimento ou sequências como "123456" são altamente vulneráveis a ataques de força bruta e dicionário, mesmo que tenham letras maiúsculas substituídas por números.</div></div></div><div class="faq-item"><div class="faq-q">As senhas geradas são armazenadas em algum lugar?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">Não. O Gerador de Senhas funciona inteiramente no navegador e não envia nenhum dado a servidores externos. As senhas geradas existem apenas na memória do navegador durante a sessão e são descartadas ao fechar ou recarregar a página. Não há histórico de senhas armazenado em banco de dados. Para maior segurança, copie a senha gerada imediatamente e armazene-a em um gerenciador de senhas confiável.</div></div></div></div></div></section>
+</div>
+</div><!-- ══════════════════════════════════════
+     NÚMERO POR EXTENSO
+══════════════════════════════════════ -->
+
+<div id="sec-extenso" class="sec">
+<h2 class="sr-only">Conversor de Número por Extenso</h2>
+
+  <div class="container" style="padding:10px 0 20px;max-width:680px;">
+    <div class="card">
+      <h2><span aria-hidden="true">🔢</span> Converter para Extenso</h2>
+      <p class="sub">Converta números e valores monetários para texto por extenso</p>
+      <div class="pill-tabs" id="ext-mode" style="margin-bottom:16px;">
+        <button class="ptab on" onclick="extSetMode('num',this)">Número</button>
+        <button class="ptab" onclick="extSetMode('brl',this)">Valor em Reais</button>
+      </div>
+      <div class="fg"><label id="ext-lbl">Número</label><input type="text" id="ext-val" aria-label="Valor numérico a converter por extenso" inputmode="decimal" placeholder="Ex: 1.234.567,89 ou 1234567.89" autocomplete="off" oninput="calcExtenso()"></div>
+      <div id="ext-res" aria-live="polite" aria-atomic="true" class="res-box" style="margin-top:14px;"><div class="res-lbl">Por extenso</div><div style="font-size:1.1rem;font-weight:700;color:var(--txt);line-height:1.5;" id="ext-res-val"></div></div>
+      <button class="btn btn-g" style="margin-top:12px;width:100%;" onclick="cpExt()">📋 Copiar texto</button>
+        </div></div>
+
+  <span class="calc-count" id="cc-extenso"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
+  <!-- ▸ ANÚNCIO: sec-extenso after result (aparece após calcular) -->
+  <div class="ad-container ad-rect" id="ad-extenso-result" style="display:none;">
+  
+  </div>
+    
+    <!-- ▸ ANÚNCIO ADSTERRA: extenso (300x250) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="adst-slot" id="ad-extenso-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
+
+  <!-- SEO: extenso -->
+  <section class="seo-content" id="seo-extenso"><div class="container" style="max-width:800px;padding:18px 16px 6px;"><div class="seo-grid"><div><h2 class="seo-h2">O que é a ferramenta de número por extenso?</h2><p class="seo-p">A ferramenta de Número por Extenso converte valores numéricos em texto escrito por extenso em português brasileiro, de centavos até trilhões de reais. Indicada para preenchimento de cheques, elaboração de contratos, escrituras públicas, laudos periciais e qualquer documento que exija a grafia por extenso do valor monetário conforme as normas da língua portuguesa.</p></div><div><h2 class="seo-h2">Como usar a ferramenta?</h2><p class="seo-p">Digite o valor numérico no campo — use vírgula ou ponto para separar os centavos (ex.: 1234,56 ou 1234.56). Clique em <strong>Converter →</strong>. O resultado aparece imediatamente com o valor escrito por extenso. É possível copiar o texto gerado com um clique para colar diretamente no documento.</p></div></div><h2 class="seo-h2" style="margin-top:12px;">Exemplo de número por extenso</h2><p class="seo-p">R$12.543,87 → <em>"doze mil, quinhentos e quarenta e três reais e oitenta e sete centavos"</em>. R$1.000.000,00 → <em>"um milhão de reais"</em>. R$0,50 → <em>"cinquenta centavos"</em>. R$250.000,99 → <em>"duzentos e cinquenta mil reais e noventa e nove centavos"</em>.</p><h2 class="seo-h2" style="margin-top:12px;">Perguntas frequentes</h2><div class="faq-list"><div class="faq-item"><div class="faq-q">Em que documentos é obrigatório escrever o valor por extenso?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">A grafia por extenso é exigida ou fortemente recomendada em cheques bancários (Resolução CMN 2.511/1998), contratos em geral, escrituras de compra e venda de imóveis, procurações com poderes de alienação, laudos de avaliação, acordos extrajudiciais e homologatórios, entre outros. Em contratos, a convenção é indicar o valor em algarismos seguido do valor por extenso entre parênteses — ex.: R$10.500,00 (dez mil e quinhentos reais) — para evitar interpretações divergentes e fraudes por rasura.</div></div></div><div class="faq-item"><div class="faq-q">A ferramenta funciona para valores muito altos?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">Sim. A ferramenta suporta valores de centavos até a casa dos trilhões (R$999.999.999.999.999,99), cobrindo qualquer necessidade prática de documentos jurídicos e contratos. Para valores acima de um milhão, a grafia segue as normas do VOLP (Vocabulário Ortográfico da Língua Portuguesa) e as convenções adotadas nos tribunais brasileiros — por exemplo, "um milhão de reais" (e não "um milhão reais").</div></div></div></div></div></section>
+</div>
+  </div>
+</div><!-- ══════════════════════════════════════
+     IMC
+══════════════════════════════════════ -->
+
+<div id="sec-imc" class="sec">
+<h2 class="sr-only">Calculadora de IMC</h2>
+
+  <div class="container" style="max-width:900px;">
+    <div style="display:flex;flex-direction:column;gap:18px;">
+      <div class="card">
+        <h2><span aria-hidden="true">🏃</span> Calcular IMC</h2>
+        <p class="sub">Informe peso e altura para calcular seu IMC</p>
+        <div class="fg-row">
+          <div class="fg"><label>Peso (kg)</label><div class="sfx"><input type="number" id="imc-peso" aria-label="Peso em quilogramas" placeholder="70" min="1" step="0.1"><span class="sfx-s">kg</span></div></div>
+          <div class="fg"><label>Altura (cm)</label><div class="sfx"><input type="number" id="imc-alt" aria-label="Altura em centímetros" placeholder="170" min="1"><span class="sfx-s">cm</span></div></div>
+        </div>
+        <button class="btn btn-p btn-full" onclick="calcIMC()">Calcular IMC →</button>
+      </div>
+
+      <!-- Resultado abaixo do formulário -->
+      <div id="imc-res" aria-live="polite" aria-atomic="true" style="display:none;">
+        <div class="card">
+          <h2>📊 Resultado</h2>
+          <div class="ri-grid">
+            <div class="ri span2"><div class="ri-lbl">Seu IMC</div><div class="ri-val" id="imc-val" style="font-size:2rem;">—</div></div>
+            <div class="ri"><div class="ri-lbl">Classificação</div><div class="ri-val" id="imc-class" style="font-size:1rem;">—</div></div>
+            <div class="ri"><div class="ri-lbl">Peso ideal (aprox.)</div><div class="ri-val" id="imc-ideal" style="font-size:1rem;">—</div></div>
+          </div>
+          <div style="margin-top:14px;">
+            <div class="imc-meter"><div class="imc-ptr" id="imc-ptr"></div></div>
+            <div class="imc-ranges"><span>Abaixo</span><span>Normal</span><span>Sobrepeso</span><span>Obesidade</span></div>
+          </div>
+          <div id="imc-msg" style="margin-top:14px;padding:13px 15px;border-radius:var(--r);font-size:.84rem;line-height:1.6;"></div>
+        </div>
+      </div>
+
+      <!-- Tabela de classificação -->
+      <div class="card-sm">
+        <h3 style="font-size:.9rem;font-weight:700;margin-bottom:12px;">📊 Classificação OMS</h3>
+        <table style="width:100%;border-collapse:collapse;font-size:.82rem;">
+          <tr style="background:var(--b900);color:#fff;"><th style="padding:8px 10px;text-align:left;">IMC</th><th style="padding:8px 10px;text-align:left;">Classificação</th></tr>
+          <tr><td style="padding:7px 10px;border-bottom:1px solid var(--brd);">Abaixo de 18,5</td><td style="padding:7px 10px;border-bottom:1px solid var(--brd);color:#3B82F6;">Abaixo do peso</td></tr>
+          <tr style="background:var(--b50);"><td style="padding:7px 10px;border-bottom:1px solid var(--brd);">18,5 – 24,9</td><td style="padding:7px 10px;border-bottom:1px solid var(--brd);color:var(--ok);">Peso normal ✓</td></tr>
+          <tr><td style="padding:7px 10px;border-bottom:1px solid var(--brd);">25,0 – 29,9</td><td style="padding:7px 10px;border-bottom:1px solid var(--brd);color:var(--warn);">Sobrepeso</td></tr>
+          <tr style="background:var(--b50);"><td style="padding:7px 10px;border-bottom:1px solid var(--brd);">30,0 – 34,9</td><td style="padding:7px 10px;border-bottom:1px solid var(--brd);color:var(--err);">Obesidade I</td></tr>
+          <tr><td style="padding:7px 10px;border-bottom:1px solid var(--brd);">35,0 – 39,9</td><td style="padding:7px 10px;border-bottom:1px solid var(--brd);color:var(--err);">Obesidade II</td></tr>
+          <tr style="background:var(--b50);"><td style="padding:7px 10px;">40,0 ou mais</td><td style="padding:7px 10px;color:var(--err);">Obesidade III</td></tr>
+        </table>
+        <p style="font-size:.78rem;color:var(--txt-s);margin-top:12px;line-height:1.5;">O IMC é um indicador geral. Para avaliação completa, consulte um médico ou nutricionista.</p>
+      </div>
+    </div>
+  </div>
+
+  <span class="calc-count" id="cc-imc"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
+  <!-- ▸ ANÚNCIO: sec-imc after result (aparece após calcular) -->
+  <div class="ad-container ad-rect" id="ad-imc-result" style="display:none;">
+  
+  </div>
+  
+    <!-- ▸ ANÚNCIO ADSTERRA: imc (300x250) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="adst-slot" id="ad-imc-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
+
+  <!-- SEO: imc -->
+  <section class="seo-content" id="seo-imc"><div class="container" style="max-width:800px;padding:18px 16px 6px;"><div class="seo-grid"><div><h2 class="seo-h2">O que é a Calculadora de IMC?</h2><p class="seo-p">A Calculadora de IMC (Índice de Massa Corporal) calcula e classifica o estado nutricional de adultos conforme os critérios da Organização Mundial da Saúde (OMS). O IMC é obtido dividindo o peso (em kg) pelo quadrado da altura (em metros): <strong>IMC = Peso ÷ Altura²</strong>. O resultado é apresentado com a classificação correspondente (abaixo do peso, normal, sobrepeso ou obesidade) e uma breve orientação.</p></div><div><h2 class="seo-h2">Como usar a Calculadora de IMC?</h2><p class="seo-p">Informe o peso em quilogramas e a altura em centímetros nos campos indicados. Clique em <strong>Calcular IMC →</strong>. O resultado exibe o valor numérico do IMC, a classificação segundo a tabela da OMS e uma escala visual indicando a posição do resultado entre as faixas. A calculadora é destinada a adultos — para crianças e adolescentes, a OMS adota curvas de crescimento específicas por idade e sexo.</p></div></div><h2 class="seo-h2" style="margin-top:12px;">Exemplo de cálculo de IMC</h2><p class="seo-p">Pessoa com 75 kg e 1,75 m de altura: IMC = 75 ÷ (1,75)² = 75 ÷ 3,0625 = <strong>24,5</strong> → classificação <strong>Peso Normal</strong> (faixa OMS: 18,5 a 24,9). Outra pessoa com 90 kg e 1,70 m: IMC = 90 ÷ 2,89 ≈ <strong>31,1</strong> → classificação <strong>Obesidade Grau I</strong> (faixa OMS: 30,0 a 34,9).</p><h2 class="seo-h2" style="margin-top:12px;">Perguntas frequentes</h2><div class="faq-list"><div class="faq-item"><div class="faq-q">Quais são as faixas de IMC segundo a OMS?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">A Organização Mundial da Saúde classifica o IMC em adultos da seguinte forma: abaixo de 18,5 = abaixo do peso; 18,5 a 24,9 = peso normal (eutrofia); 25,0 a 29,9 = sobrepeso; 30,0 a 34,9 = obesidade grau I; 35,0 a 39,9 = obesidade grau II; 40,0 ou mais = obesidade grau III (mórbida). Para idosos (acima de 60 anos), alguns protocolos clínicos adotam a faixa de 22 a 27 como ideal, divergindo ligeiramente da tabela padrão.</div></div></div><div class="faq-item"><div class="faq-q">O IMC é suficiente para avaliar a saúde?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-ai">O IMC é um indicador simples e amplamente usado para triagem populacional, mas tem limitações. Ele não diferencia massa muscular de gordura corporal — atletas e pessoas com alta massa muscular podem ter IMC elevado sem excesso de gordura. Também não leva em conta a distribuição da gordura corporal, que é um fator de risco cardiovascular independente (a gordura abdominal é mais perigosa do que a subcutânea). Para uma avaliação nutricional e de saúde completa, consulte um médico ou nutricionista.</div></div></div></div></div></section>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     UTILIDADES HUB
+══════════════════════════════════════ -->
+
 <div id="sec-util" class="sec">
 <h2 class="sr-only">Ferramentas Úteis</h2>
   <div class="container" style="padding:10px 0 20px;">
     <div class="tools-grid">
-      <div class="tc" onclick="window.location.href='/validador-cpf-cnpj'"><div class="tc-icon">🪪</div><div class="tc-name">Validador CPF/CNPJ</div><div class="tc-desc">Algoritmo módulo 11 em tempo real.</div></div>
-      <div class="tc" onclick="window.location.href='/gerador-de-qr-code'"><div class="tc-icon">📱</div><div class="tc-name">Gerador QR Code</div><div class="tc-desc">Link, texto, Pix, Wi-Fi, download PNG.</div></div>
-      <div class="tc" onclick="window.location.href='/gerador-de-senhas'"><div class="tc-icon">🔐</div><div class="tc-name">Gerador de Senhas</div><div class="tc-desc">100% local, configurável, com histórico.</div></div>
-      <div class="tc" onclick="window.location.href='/numero-por-extenso'"><div class="tc-icon">🔢</div><div class="tc-name">Número por Extenso</div><div class="tc-desc">Para cheques e contratos.</div></div>
-      <div class="tc" onclick="window.location.href='/calculadora-imc'"><div class="tc-icon">🏃</div><div class="tc-name">Calculadora IMC</div><div class="tc-desc">Índice de Massa Corporal + OMS.</div></div>
+      <div class="tc" onclick="goTo('valid')"><div class="tc-icon">🪪</div><div class="tc-name">Validador CPF/CNPJ</div><div class="tc-desc">Algoritmo módulo 11 em tempo real.</div></div>
+      <div class="tc" onclick="goTo('qrcode')"><div class="tc-icon">📱</div><div class="tc-name">Gerador QR Code</div><div class="tc-desc">Link, texto, Pix, Wi-Fi, download PNG.</div></div>
+      <div class="tc" onclick="goTo('senhas')"><div class="tc-icon">🔐</div><div class="tc-name">Gerador de Senhas</div><div class="tc-desc">100% local, configurável, com histórico.</div></div>
+      <div class="tc" onclick="goTo('extenso')"><div class="tc-icon">🔢</div><div class="tc-name">Número por Extenso</div><div class="tc-desc">Para cheques e contratos.</div></div>
+      <div class="tc" onclick="goTo('imc')"><div class="tc-icon">🏃</div><div class="tc-name">Calculadora IMC</div><div class="tc-desc">Índice de Massa Corporal + OMS.</div></div>
     </div>
   </div>
 </div>
@@ -504,7 +1576,7 @@
     <div class="container" style="position:relative;z-index:1;">
       <div style="max-width:800px;margin:0 auto;">
         <nav style="display:flex;align-items:center;gap:6px;font-size:.78rem;margin-bottom:14px;">
-          <span onclick="window.location.href='/'" style="cursor:pointer;color:rgba(255,255,255,.5);text-decoration:none;">Início</span>
+          <span onclick="goTo('home')" style="cursor:pointer;color:rgba(255,255,255,.5);text-decoration:none;">Início</span>
           <span style="color:rgba(255,255,255,.4);">›</span>
           <span style="color:rgba(255,255,255,.75);font-weight:600;">Conteúdo Profissional</span>
         </nav>
@@ -601,35 +1673,35 @@
   <div class="container">
     <div class="ftr-grid">
       <div class="ftr-brand">
-        <a class="logo" href="/"><div class="logo-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 7h18"/></svg></div><span class="logo-text">Calcula</span><span>Prazo</span></a>
+        <a class="logo" href="/" onclick="window.goTo('home')"><div class="logo-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 7h18"/></svg></div><span class="logo-text">Calcula</span><span>Prazo</span></a>
         <p class="ftr-desc">Calculadoras jurídicas gratuitas e conteúdo especializado em Direito do Trabalho para advogados, contadores, profissionais de RH e trabalhadores.</p>
         <p style="margin-top:12px;font-size:.8rem;color:rgba(255,255,255,.45);line-height:1.6;">✉ Dúvidas, sugestões ou elogios?<br>
         <a href="mailto:contato@calculaprazo.com.br" style="color:rgba(255,255,255,.6);text-decoration:underline;">contato@calculaprazo.com.br</a></p>
       </div>
       <div class="ftr-col"><h4>Prazos</h4><ul>
-        <li><a href="/calculadora-de-prazo-processual">Calculadora de Prazos</a></li>
-        <li><a href="/calculadora-de-datas">Operações com Datas</a></li>
+        <li><a href="#" onclick="event.preventDefault(); goTo('prazos')">Calculadora de Prazos</a></li>
+        <li><a href="#" onclick="event.preventDefault(); goTo('datas')">Operações com Datas</a></li>
       </ul></div>
       <div class="ftr-col"><h4>Calculadoras</h4><ul>
-        <li><a href="/correcao-monetaria">Correção Monetária</a></li>
-        <li><a href="/calculadora-de-juros">Juros</a></li>
-        <li><a href="/calculadora-verbas-trabalhistas">Trabalhista</a></li>
-        <li><a href="/calculadora-salario-liquido">Salário Líquido</a></li>
-        <li><a href="/calculadora-salario-intermitente">Salário Intermitente</a></li>
-        <li><a href="/calculadora-de-prescricao">Prescrição</a></li>
-        <li><a href="/calculadora-de-porcentagem">Porcentagem</a></li>
-        <li><a href="/conversor-de-moedas">Moedas</a></li>
+        <li><a href="#" onclick="event.preventDefault(); goTo('correcao')">Correção Monetária</a></li>
+        <li><a href="#" onclick="event.preventDefault(); goTo('juros')">Juros</a></li>
+        <li><a href="#" onclick="event.preventDefault(); goTo('trabalhista')">Trabalhista</a></li>
+        <li><a href="#" onclick="event.preventDefault(); goTo('salario')">Salário Líquido</a></li>
+        <li><a href="#" onclick="event.preventDefault(); goTo('intermitente')">Salário Intermitente</a></li>
+        <li><a href="#" onclick="event.preventDefault(); goTo('prescricao')">Prescrição</a></li>
+        <li><a href="#" onclick="event.preventDefault(); goTo('porcentagem')">Porcentagem</a></li>
+        <li><a href="#" onclick="event.preventDefault(); goTo('moedas')">Moedas</a></li>
       </ul></div>
       <div class="ftr-col"><h4>Utilidades</h4><ul>
-        <li><a href="/validador-cpf-cnpj">Validador CPF/CNPJ</a></li>
-        <li><a href="/gerador-de-qr-code">QR Code</a></li>
-        <li><a href="/gerador-de-senhas">Senhas</a></li>
-        <li><a href="/numero-por-extenso">Número por Extenso</a></li>
-        <li><a href="/calculadora-imc">IMC</a></li>
+        <li><a href="#" onclick="event.preventDefault(); goTo('valid')">Validador CPF/CNPJ</a></li>
+        <li><a href="#" onclick="event.preventDefault(); goTo('qrcode')">QR Code</a></li>
+        <li><a href="#" onclick="event.preventDefault(); goTo('senhas')">Senhas</a></li>
+        <li><a href="#" onclick="event.preventDefault(); goTo('extenso')">Número por Extenso</a></li>
+        <li><a href="#" onclick="event.preventDefault(); goTo('imc')">IMC</a></li>
       </ul></div>
       <div class="ftr-col"><h4>Informações</h4><ul>
         <li><a href="/sobre">Sobre o Calcula Prazo</a></li>
-        <li><a href="/conteudo" style="cursor:pointer;color:rgba(255,255,255,.5);">Conteúdo / Blog</a></li>
+        <li><a href="/conteudo" onclick="navGoTo('blog')" style="cursor:pointer;color:rgba(255,255,255,.5);">Conteúdo / Blog</a></li>
         <li><a href="/contato">Contato</a></li>
         <li><a href="/privacidade">Privacidade & LGPD</a></li>
         <li><a href="/termos">Termos de Uso</a></li>
@@ -651,7 +1723,7 @@
      JAVASCRIPT
 ══════════════════════════════════════ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/app.min.js?v=4" defer></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/app.min.js?v=3" defer></script>
 
 <!-- ══════════ COOKIE BANNER ══════════ -->
 <div id="cookie-banner">
@@ -795,7 +1867,7 @@
 <!-- ══════════════════════════════════════
      BLOG / CONTEÚDO — JavaScript
 ══════════════════════════════════════ -->
-<script src="/blog.min.js?v=4" defer></script>
+<script src="/blog.min.js?v=3" defer></script>
 <script src="/js/ads-adsterra.js?v=2" defer></script>
 <script src="/js/analytics.js?v=1" defer></script>
 
