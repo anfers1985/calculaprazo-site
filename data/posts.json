@@ -1,5 +1,17 @@
 [
   {
+    "id": "credito-consignado-desconto-verbas-rescisorias-mte",
+    "title": "Crédito consignado: MTE orienta desconto em rescisão",
+    "category": "noticias-mte",
+    "category_label": "MTE",
+    "excerpt": "MTE define regras para desconto de crédito consignado em verbas rescisórias e esclarece responsabilidades de empregadores e bancos.",
+    "image": "https://images.unsplash.com/photo-1738479021471-d5bfcc169e10?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-07-24",
+    "updatedAt": "2026-07-24",
+    "tags": []
+  },
+  {
     "id": "auxilio-alimentacao-regras-decreto-12712-2025-empresas",
     "title": "Auxílio-alimentação: novas regras valem para empresas",
     "category": "rh-beneficios",
