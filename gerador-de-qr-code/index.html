@@ -105,6 +105,7 @@
     .sec { display: block !important; margin-bottom: 32px; }
   </style>
 </noscript>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"É possível gerar QR Code para chave PIX?","acceptedAnswer":{"@type":"Answer","text":"Sim, é possível gerar um QR Code a partir de uma chave PIX (e-mail, CPF/CNPJ, telefone ou chave aleatória). Ao escanear, o aplicativo do banco abrirá a tela de pagamento PIX com a chave preenchida, mas sem valor predefinido. Para gerar um QR Code PIX com valor fixo e descrição (formato copia e cola), é necessário utilizar o próprio aplicativo do banco ou uma plataforma homologada pelo Banco Central, pois esse formato requer um payload EMV criptografado gerado pela instituição financeira."}},{"@type":"Question","name":"O conteúdo digitado é armazenado ou enviado a algum servidor?","acceptedAnswer":{"@type":"Answer","text":"Não. Todo o processamento do Gerador de QR Code ocorre diretamente no navegador, utilizando a biblioteca QRCode.js. Nenhum dado digitado é transmitido a servidores externos ou armazenado em banco de dados. O QR Code é gerado e exibido localmente, e o download da imagem também é realizado sem qualquer comunicação com a internet."}}]}</script>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Pular para o conteúdo principal</a>
