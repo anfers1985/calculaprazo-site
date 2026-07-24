@@ -33,6 +33,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 
 /* ── Banner lateral Adsterra (skyscraper) — só em Calculadora de Prazo + Ferramentas ── */
 .ad-sidebar-wrap{position:fixed;top:50%;transform:translateY(-50%);right:8px;z-index:100;display:none;}
+.ad-sidebar-wrap.ad-sidebar-left{right:auto;left:8px;}
 .ad-sidebar-slot{width:160px;}
 @media(min-width:1400px){
   body:has(#sec-prazos.active) .ad-sidebar-wrap,
