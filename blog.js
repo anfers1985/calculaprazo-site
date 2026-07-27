@@ -21,13 +21,11 @@ function exploreShowCategories(){
 }
 function exploreOpenSection(sec,btn){
   showBlogResultsMode();
-  var tabBtn=document.querySelector('#blog-sec-row .ctab[data-sec="'+sec+'"]');
-  filterBlogSection(sec,tabBtn);
+  filterBlogSection(sec);
 }
 function exploreShowAll(){
   showBlogResultsMode();
-  var allBtn=document.getElementById('blog-tab-all');
-  filterBlogCat('',allBtn);
+  filterBlogCat('');
 }
 function handleBlogSearchInput(){
   var se=document.getElementById('blog-search');
@@ -35,10 +33,9 @@ function handleBlogSearchInput(){
   blogPage=1;
   if(val && BLOG_MODE==='explore'){
     showBlogResultsMode();
-    document.querySelectorAll('#blog-sec-row .ctab').forEach(function(b){b.classList.remove('on');});
-    var allBtn=document.getElementById('blog-tab-all');if(allBtn)allBtn.classList.add('on');
     BLOG_CAT='';BLOG_CUR_SEC='';
-    var sr=document.getElementById('blog-subsec-row');if(sr)sr.style.display='none';
+    var ch=document.getElementById('blog-cat-header');if(ch)ch.style.display='none';
+    var sr=document.getElementById('blog-subsec-row');if(sr){sr.style.display='none';sr.innerHTML='';}
   }
   renderBlogSection();
 }
@@ -87,6 +84,16 @@ function formatPostDate(d){
   return new Date(d+'T12:00:00').toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'});
 }
 
+var BLOG_CAT_META={
+  'jurisprudencia':   {icon:'⚖️', name:'Jurisprudência',    desc:'Decisões e entendimentos dos tribunais que impactam o Direito do Trabalho.'},
+  'orgaos-publicos':  {icon:'🏛️', name:'Órgãos Públicos',   desc:'Normas, atos e posicionamentos do MTE, MPT e demais órgãos públicos.'},
+  'legislacao-normas':{icon:'📋', name:'Legislação e Normas',desc:'CLT, eSocial, FGTS Digital, portarias e normas regulamentadoras.'},
+  'rh-gestao':        {icon:'👥', name:'RH e Gestão',        desc:'Folha de pagamento, rescisão, jornada e rotinas do departamento pessoal.'},
+  'processual':       {icon:'📄', name:'Processual',         desc:'Ações, prazos, petições e prática no processo do trabalho.'},
+  'essenciais':       {icon:'⭐', name:'Essenciais',         desc:'Guias, modelos e checklists indispensáveis no dia a dia.'},
+  'outros':           {icon:'🔧', name:'Outros',             desc:'Diversos temas relacionados ao Direito do Trabalho.'}
+};
+
 // ── MAPA seção → categorias ──────────────────────────────────
 var BLOG_SEC_MAP={
   'jurisprudencia':    ['jurisprudencia-tst','jurisprudencia-trts','jurisprudencia-stj','jurisprudencia-stf','jurisprudencia-outros'],
@@ -112,10 +119,8 @@ function BLOG_BLOG_SEC_MAP_CATS(sec){return BLOG_SEC_MAP[sec]||[];}
 function filterBlogCat(cat,btn){
   showBlogResultsMode();
   BLOG_CAT=cat;BLOG_CUR_SEC='';blogPage=1;
-  document.querySelectorAll('#sec-blog .ctab').forEach(function(b){b.classList.remove('on');});
-  if(btn){btn.classList.add('on');}else{var ab=document.getElementById('blog-tab-all');if(ab)ab.classList.add('on');}
-  // esconder linha de sub-seções
-  var sr=document.getElementById('blog-subsec-row');if(sr){sr.style.display='none';}
+  var ch=document.getElementById('blog-cat-header');if(ch){ch.style.display='none';}
+  var sr=document.getElementById('blog-subsec-row');if(sr){sr.style.display='none';sr.innerHTML='';}
   renderBlogSection();
 }
 
@@ -124,14 +129,22 @@ function filterBlogSection(sec,btn){
   BLOG_CUR_SEC=sec;
   BLOG_CAT='__sec__'+sec;// sentinela
   blogPage=1;
-  document.querySelectorAll('#blog-sec-row .ctab').forEach(function(b){b.classList.remove('on');});
-  if(btn){btn.classList.add('on');}
-  // montar sub-seções
+  // cabeçalho da categoria
+  var meta=BLOG_CAT_META[sec];
+  var ch=document.getElementById('blog-cat-header');
+  if(ch&&meta){
+    document.getElementById('blog-cat-header-crumb').textContent=meta.name;
+    document.getElementById('blog-cat-header-icon').textContent=meta.icon;
+    document.getElementById('blog-cat-header-title').textContent=meta.name;
+    document.getElementById('blog-cat-header-desc').textContent=meta.desc;
+    ch.style.display='block';
+  }
+  // montar chips de sub-seções (Todos + subtemas)
   var sr=document.getElementById('blog-subsec-row');
-  if(sr&&BLOG_SUBSEC_MAP[sec]){
-    var html='<span style="font-size:.72rem;font-weight:700;color:var(--txt-s);margin-right:4px;flex-shrink:0;">Ver:</span>';
-    BLOG_SUBSEC_MAP[sec].forEach(function(sub){
-      html+='<button class="ctab" style="font-size:.78rem;padding:5px 12px;" onclick="filterBlogSub(\''+sub[0]+'\',\''+sec+'\',this)">'+sub[1]+'</button>';
+  if(sr){
+    var html='<button class="ctab on" onclick="filterBlogSection(\''+sec+'\',this)">Todos</button>';
+    (BLOG_SUBSEC_MAP[sec]||[]).forEach(function(sub){
+      html+='<button class="ctab" onclick="filterBlogSub(\''+sub[0]+'\',\''+sec+'\',this)">'+sub[1]+'</button>';
     });
     sr.innerHTML=html;
     sr.style.display='flex';

@@ -52,9 +52,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"></noscript>
-<link rel="preload" as="style" href="/styles.css?v=8">
+<link rel="preload" as="style" href="/styles.css?v=9">
 <style>:root{color-scheme:light}html,body{background:#F8FAFC;color:#0F172A}</style>
-<link rel="stylesheet" href="/styles.css?v=8">
+<link rel="stylesheet" href="/styles.css?v=9">
 </head>
 <body>
 
@@ -141,6 +141,18 @@
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       </div>
 
+  <!-- ▸ ANÚNCIO ADSTERRA: conteudo-top (728x90 desktop / 320x50 mobile) -->
+  <div class="ad-desktop-only" style="display:flex;justify-content:center;margin:20px 0;">
+    <div class="adst-slot" id="ad-conteudo-top-desktop"
+         data-adst-key="4f5894de8245c23422f7de3e03a1363e" data-adst-w="728" data-adst-h="90"
+         style="width:728px;height:90px;max-width:100%;"></div>
+  </div>
+  <div class="ad-mobile-only" style="justify-content:center;margin:16px 0;">
+    <div class="adst-slot" id="ad-conteudo-top-mobile"
+         data-adst-key="f9a6a26e51d4d397ec65d29e8f2ca7a5" data-adst-w="320" data-adst-h="50"
+         style="width:320px;height:50px;max-width:100%;"></div>
+  </div>
+
   <!-- Filtros e busca -->
   <div class="container" style="padding-top:32px;">
 
@@ -207,24 +219,24 @@
     <!-- Tela: Resultados (lista/grid filtrada) -->
     <div id="blog-results" style="display:none;">
 
-      <button type="button" onclick="exploreShowCategories()" style="display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:var(--txt-m);font-family:var(--fh);font-weight:700;font-size:.8rem;cursor:pointer;padding:4px 2px;margin-bottom:12px;">← Categorias</button>
+      <button type="button" onclick="exploreShowCategories()" style="display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:var(--txt-m);font-family:var(--fh);font-weight:700;font-size:.8rem;cursor:pointer;padding:4px 2px;margin-bottom:14px;">← Categorias</button>
 
-      <!-- Linha 2: filtro por seção -->
-      <div id="blog-sec-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:center;">
-        <button class="ctab on" id="blog-tab-all" onclick="filterBlogCat('',this)" style="white-space:nowrap;">Todos</button>
-        <button class="ctab" data-sec="jurisprudencia"    onclick="filterBlogSection('jurisprudencia',this)">⚖️ Jurisprudência</button>
-        <button class="ctab" data-sec="orgaos-publicos"   onclick="filterBlogSection('orgaos-publicos',this)">🏛️ Órgãos Públicos</button>
-        <button class="ctab" data-sec="legislacao-normas" onclick="filterBlogSection('legislacao-normas',this)">📋 Legislação e Normas</button>
-        <button class="ctab" data-sec="rh-gestao"         onclick="filterBlogSection('rh-gestao',this)">👥 RH e Gestão</button>
-        <button class="ctab" data-sec="processual"        onclick="filterBlogSection('processual',this)">📄 Processual</button>
-        <button class="ctab" data-sec="essenciais"        onclick="filterBlogSection('essenciais',this)">⭐ Essenciais</button>
-        <button class="ctab" data-sec="outros"            onclick="filterBlogSection('outros',this)">🔧 Outros</button>
+      <!-- Cabeçalho da categoria selecionada -->
+      <div id="blog-cat-header" style="display:none;margin-bottom:16px;">
+        <nav style="display:flex;align-items:center;gap:6px;font-size:.74rem;color:var(--txt-s);margin-bottom:10px;">
+          <span>Conteúdo</span><span>›</span><span id="blog-cat-header-crumb" style="color:var(--acc);font-weight:700;"></span>
+        </nav>
+        <div style="display:flex;align-items:center;gap:13px;">
+          <span id="blog-cat-header-icon" class="cec-ic" style="background:var(--b50);font-size:1.5rem;width:48px;height:48px;flex-shrink:0;"></span>
+          <div>
+            <div id="blog-cat-header-title" style="font-size:1.1rem;font-weight:800;color:var(--txt);"></div>
+            <div id="blog-cat-header-desc" style="font-size:.8rem;color:var(--txt-m);margin-top:2px;"></div>
+          </div>
+        </div>
       </div>
 
-      <!-- Linha 3: sub-seções (aparece dinamicamente) -->
-      <div id="blog-subsec-row" style="display:none;gap:7px;flex-wrap:wrap;margin-bottom:18px;padding:10px 14px;background:var(--b50);border-radius:12px;border:1px solid var(--b100);align-items:center;">
-        <span style="font-size:.72rem;font-weight:700;color:var(--txt-s);margin-right:4px;flex-shrink:0;">Ver:</span>
-      </div>
+      <!-- Linha de sub-filtros (tribunais/subtemas) -->
+      <div id="blog-subsec-row" style="display:none;gap:7px;flex-wrap:wrap;margin-bottom:18px;align-items:center;"></div>
 
       <!-- Contador de resultados -->
       <div id="blog-count" style="font-size:.8rem;color:var(--txt-s);margin-bottom:16px;"></div>
@@ -243,9 +255,17 @@
       </div>
     </div>
 
-    <!-- Ad: blog middle -->
-    <div class="ad-container ad-desktop-only" style="margin-bottom:40px;">
-          </div>
+    <!-- ▸ ANÚNCIO ADSTERRA: conteudo-fim (728x90 desktop / 300x250 mobile) -->
+    <div class="ad-desktop-only" style="display:flex;justify-content:center;margin-bottom:40px;">
+      <div class="adst-slot" id="ad-conteudo-fim-desktop"
+           data-adst-key="a95b609abad42b5f0da1fd621eefbd64" data-adst-w="728" data-adst-h="90"
+           style="width:728px;height:90px;max-width:100%;"></div>
+    </div>
+    <div class="ad-mobile-only" style="justify-content:center;margin-bottom:24px;">
+      <div class="adst-slot" id="ad-conteudo-fim-mobile"
+           data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+           style="width:300px;height:250px;max-width:100%;"></div>
+    </div>
 
     <!-- SEO content block -->
     <div class="seo-content" style="margin-bottom:40px;">
@@ -384,5 +404,6 @@ document.addEventListener('keydown', function(e){
 });
 </script>
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script src="/js/ads-adsterra.js?v=2" defer></script>
 </body>
 </html>
