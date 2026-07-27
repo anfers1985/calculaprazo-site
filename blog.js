@@ -1,5 +1,61 @@
 
 var BLOG_POSTS=[];var BLOG_CAT='';var BLOG_H_FILTER='';var BLOG_VIEW='grid';var blogPage=1;var BLOG_PER_PAGE=25;var BLOG_MAX_PAGES=10;
+var BLOG_MODE='explore'; // 'explore' (cards de categoria) ou 'list' (resultados filtrados)
+
+// ── Alternância Explorar ⇄ Resultados (página /conteudo) ──────
+function showBlogResultsMode(){
+  BLOG_MODE='list';
+  var ex=document.getElementById('blog-explore');var re=document.getElementById('blog-results');
+  if(ex)ex.style.display='none';
+  if(re)re.style.display='block';
+}
+function exploreShowCategories(){
+  BLOG_MODE='explore';
+  BLOG_CAT='';BLOG_CUR_SEC='';blogPage=1;
+  var se=document.getElementById('blog-search');if(se)se.value='';
+  var de=document.getElementById('blog-date-filter');if(de)de.value='';
+  var ex=document.getElementById('blog-explore');var re=document.getElementById('blog-results');
+  if(re)re.style.display='none';
+  if(ex)ex.style.display='block';
+  var sec=document.getElementById('sec-blog');if(sec)sec.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function exploreOpenSection(sec,btn){
+  showBlogResultsMode();
+  var tabBtn=document.querySelector('#blog-sec-row .ctab[data-sec="'+sec+'"]');
+  filterBlogSection(sec,tabBtn);
+}
+function exploreShowAll(){
+  showBlogResultsMode();
+  var allBtn=document.getElementById('blog-tab-all');
+  filterBlogCat('',allBtn);
+}
+function handleBlogSearchInput(){
+  var se=document.getElementById('blog-search');
+  var val=se?se.value.trim():'';
+  blogPage=1;
+  if(val && BLOG_MODE==='explore'){
+    showBlogResultsMode();
+    document.querySelectorAll('#blog-sec-row .ctab').forEach(function(b){b.classList.remove('on');});
+    var allBtn=document.getElementById('blog-tab-all');if(allBtn)allBtn.classList.add('on');
+    BLOG_CAT='';BLOG_CUR_SEC='';
+    var sr=document.getElementById('blog-subsec-row');if(sr)sr.style.display='none';
+  }
+  renderBlogSection();
+}
+function handleBlogDateFilterChange(){
+  blogPage=1;
+  if(BLOG_MODE==='explore'){exploreShowAll();return;}
+  renderBlogSection();
+}
+function renderExploreCounts(){
+  Object.keys(BLOG_SEC_MAP).forEach(function(sec){
+    var el=document.getElementById('cec-count-'+sec);
+    if(!el)return;
+    var cats=BLOG_SEC_MAP[sec];
+    var n=BLOG_POSTS.filter(function(p){return cats.indexOf(p.category)>=0;}).length;
+    el.textContent=n+' artigo'+(n!==1?'s':'');
+  });
+}
 
 // Posts embutidos como fallback — garante funcionamento mesmo se fetch falhar
 // POSTS_FALLBACK movido para /data/posts-fallback.json
@@ -21,7 +77,7 @@ async function loadBlogPosts(){
     BLOG_POSTS=await loadFallback();
   }
   renderHomeBlog();renderBlogSection();renderSidebarPosts();
-  renderNhRecentes();renderNhTop10();
+  renderNhRecentes();renderNhTop10();renderExploreCounts();
   var _el=document.getElementById('nh-stat-artigos');
   if(_el && BLOG_POSTS.length>0) _el.textContent=BLOG_POSTS.length;
 }
@@ -54,6 +110,7 @@ var BLOG_CUR_SEC='';// seção activa
 function BLOG_BLOG_SEC_MAP_CATS(sec){return BLOG_SEC_MAP[sec]||[];}
 
 function filterBlogCat(cat,btn){
+  showBlogResultsMode();
   BLOG_CAT=cat;BLOG_CUR_SEC='';blogPage=1;
   document.querySelectorAll('#sec-blog .ctab').forEach(function(b){b.classList.remove('on');});
   if(btn){btn.classList.add('on');}else{var ab=document.getElementById('blog-tab-all');if(ab)ab.classList.add('on');}
@@ -63,6 +120,7 @@ function filterBlogCat(cat,btn){
 }
 
 function filterBlogSection(sec,btn){
+  showBlogResultsMode();
   BLOG_CUR_SEC=sec;
   BLOG_CAT='__sec__'+sec;// sentinela
   blogPage=1;
@@ -99,6 +157,7 @@ function toggleNavSec(id,e){
   if(dd&&!dd.classList.contains('open')){dd.classList.add('open');positionDropdownConteudo();}
 }
 function filterBlogSub(cat,sec,btn){
+  showBlogResultsMode();
   BLOG_CUR_SEC=sec;
   BLOG_CAT=cat;
   blogPage=1;
@@ -108,6 +167,7 @@ function filterBlogSub(cat,sec,btn){
 }
 
 function setBlogView(v){
+  if(BLOG_MODE==='explore'){exploreShowAll();}
   BLOG_VIEW=v;
   var gb=document.getElementById('blog-view-grid');var lb=document.getElementById('blog-view-list');
   if(gb){gb.style.background=v==='grid'?'var(--acc)':'var(--card)';gb.style.color=v==='grid'?'#fff':'var(--txt)';}
@@ -522,8 +582,22 @@ function renderNhTop10(){
     });
   }
 
+  // Completa a lista até 10 posts válidos usando os mais recentes,
+  // caso alguns slugs (API ou fallback) não existam mais em BLOG_POSTS.
+  function padToTen(slugs) {
+    var valid = slugs.filter(function(s){ return !!map[s]; });
+    if (valid.length >= 10) return valid.slice(0, 10);
+    var recent = BLOG_POSTS.slice()
+      .sort(function(a,b){ return (b.date||'').localeCompare(a.date||''); });
+    for (var i = 0; i < recent.length && valid.length < 10; i++) {
+      var s = recent[i].id || recent[i].slug || '';
+      if (s && valid.indexOf(s) === -1) valid.push(s);
+    }
+    return valid;
+  }
+
   function renderSlugs(slugs) {
-    var items = buildItems(slugs);
+    var items = buildItems(padToTen(slugs));
     if(!items.length){
       list.innerHTML='<p style="font-size:.8rem;color:var(--txt-s);padding:8px 0;">Carregando...</p>';
       return;
