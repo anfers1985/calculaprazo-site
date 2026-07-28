@@ -1044,12 +1044,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 /* ── Tipografia base NH ── */
 .nh-h1 {
   font-family:'Sora',var(--fh),sans-serif;
-  font-size:clamp(1.9rem,3.1vw,2.6rem);
+  font-size:clamp(2rem,3.8vw,3rem);
   font-weight:800;
   color:#fff;
   letter-spacing:-1.5px;
-  line-height:1.1;
-  margin:0 0 14px;
+  line-height:1.08;
+  margin:0 0 18px;
 }
 .nh-h1-grad {
   background:linear-gradient(90deg,#60A5FA,#93C5FD);
@@ -1107,22 +1107,22 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 /* ── HERO ── */
 .nh-hero {
   background:linear-gradient(135deg,#0B1437 0%,#0F2057 50%,#162466 100%);
-  padding:34px 0 28px;
+  padding:64px 0 56px;
 }
 .nh-hero-grid {
   display:grid;
-  grid-template-columns:1fr 440px;
-  gap:32px;
-  align-items:start;
+  grid-template-columns:1fr 380px;
+  gap:52px;
+  align-items:center;
 }
 .nh-hero-sub {
-  font-size:.94rem;font-weight:400;
+  font-size:.97rem;font-weight:400;
   color:rgba(255,255,255,.55);
-  max-width:440px;line-height:1.65;
-  margin:0 0 16px;
+  max-width:440px;line-height:1.72;
+  margin:0 0 20px;
 }
 .nh-hero-ctas {
-  display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px;
+  display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px;
 }
 .nh-btn-ghost {
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
@@ -1157,22 +1157,22 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .nh-quick-card {
   background:rgba(255,255,255,.06);
   border:1px solid rgba(255,255,255,.1);
-  border-radius:16px;padding:20px;
+  border-radius:16px;padding:24px;
   backdrop-filter:blur(8px);
 }
 .nh-quick-label {
   display:flex;align-items:center;gap:8px;
   font-size:.65rem;font-weight:700;
   text-transform:uppercase;letter-spacing:.1em;
-  color:#60A5FA;margin-bottom:12px;
+  color:#60A5FA;margin-bottom:16px;
 }
 .nh-quick-line { width:16px;height:2px;background:#60A5FA;border-radius:2px;flex-shrink:0; }
-.nh-quick-list { display:grid;grid-template-columns:1fr 1fr;gap:8px 10px; }
+.nh-quick-list { display:flex;flex-direction:column;gap:8px; }
 .nh-quick-btn {
-  display:flex;align-items:center;gap:10px;
+  display:flex;align-items:center;gap:12px;
   background:rgba(255,255,255,.05);
   border:1px solid rgba(255,255,255,.1);
-  border-radius:10px;padding:8px 10px;
+  border-radius:10px;padding:11px 14px;
   cursor:pointer;text-align:left;width:100%;
   transition:all .2s;
 }
@@ -1182,17 +1182,17 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   transform:translateX(3px);
 }
 .nh-quick-icon {
-  width:32px;height:32px;border-radius:8px;
+  width:36px;height:36px;border-radius:9px;
   display:flex;align-items:center;justify-content:center;
-  font-size:1rem;flex-shrink:0;
+  font-size:1.1rem;flex-shrink:0;
 }
 .nh-quick-text { flex:1;min-width:0; }
 .nh-quick-name {
-  font-size:.81rem;font-weight:700;
+  font-size:.84rem;font-weight:700;
   color:rgba(255,255,255,.9);line-height:1.2;
 }
 .nh-quick-desc {
-  font-size:.66rem;color:rgba(255,255,255,.4);
+  font-size:.68rem;color:rgba(255,255,255,.4);
   margin-top:2px;
 }
 .nh-quick-arr {
@@ -1202,11 +1202,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .nh-quick-btn:hover .nh-quick-arr { color:#60A5FA; }
 .nh-quick-all {
   display:flex;align-items:center;justify-content:center;gap:8px;
-  width:100%;margin-top:12px;
+  width:100%;margin-top:14px;
   background:rgba(255,255,255,.08);
   border:1.5px solid rgba(96,165,250,.35);
-  border-radius:10px;padding:11px 14px;
-  color:#fff;font-size:.83rem;font-weight:700;
+  border-radius:10px;padding:12px 14px;
+  color:#fff;font-size:.85rem;font-weight:700;
   text-decoration:none;cursor:pointer;
   transition:all .2s;
 }
@@ -1219,7 +1219,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 /* ── ARTIGOS ── */
 .nh-artigos {
   background:var(--bg);
-  padding:44px 0 64px;
+  padding:64px 0;
 }
 .nh-artigos-grid {
   display:grid;
@@ -1234,79 +1234,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   color:var(--acc);margin-bottom:16px;
 }
 .nh-col-line { width:16px;height:2px;background:var(--acc);border-radius:2px; }
-
-/* ── Mais Recentes: grade compacta (foto + categoria + título + resumo + data) ── */
-.nh-art-grid-compact { display:grid;grid-template-columns:repeat(6,1fr);gap:14px; }
-.nh-art-grid-compact .nh-art-card {
-  display:flex !important;flex-direction:column !important;
-  grid-template-columns:none !important;margin-bottom:0 !important;min-height:0 !important;
-}
-.nh-art-grid-compact .nh-art-img { width:100% !important;height:auto !important;aspect-ratio:4/3; }
-.nh-art-grid-compact .nh-art-ler { display:none !important; }
-.nh-art-grid-compact .nh-art-title {
-  display:-webkit-box !important;-webkit-line-clamp:2;-webkit-box-orient:vertical;
-  overflow:hidden;font-size:.86rem;
-}
-.nh-art-grid-compact .nh-art-excerpt {
-  display:-webkit-box !important;-webkit-line-clamp:3;-webkit-box-orient:vertical;
-  overflow:hidden;font-size:.78rem;min-height:0 !important;
-}
-.nh-art-grid-compact .nh-art-body { padding:12px 14px 14px; }
-@media(max-width:1050px){ .nh-art-grid-compact { grid-template-columns:repeat(3,1fr); } }
-@media(max-width:900px){ .nh-art-grid-compact { grid-template-columns:repeat(2,1fr); } }
-@media(max-width:640px){ .nh-art-grid-compact { grid-template-columns:1fr; } }
-
-/* ── NH DESTAQUES: Mais Acessados / Vídeos / Ferramentas em Destaque ── */
-.nh-destaques { background:#F1F5F9; padding:52px 0; border-top:1px solid var(--brd); }
-.nh-destaques-grid {
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:22px;
-  align-items:stretch;
-}
-.nh-dcol { min-width:0;display:flex;flex-direction:column; }
-/* Painel branco padrão — as 3 colunas usam o mesmo enquadramento e a mesma altura (igual ao mockup) */
-.nh-dcol-panel {
-  display:flex;flex-direction:column;height:100%;
-  background:var(--card);
-  border:1.5px solid var(--brd);
-  border-radius:var(--rl);
-  padding:20px 18px;
-}
-.nh-dcol-head { display:flex;align-items:center;justify-content:space-between;margin-bottom:16px; }
-.nh-dcol-title { font-size:.95rem;font-weight:800;color:var(--txt); }
-.nh-dcol-more { font-size:.74rem;font-weight:700;color:var(--acc);text-decoration:none;white-space:nowrap; }
-.nh-dcol-more:hover { text-decoration:underline; }
-/* Vídeos: empilhados em coluna única dentro do card */
-.nh-dcol .nh-yt-grid { display:flex;flex-direction:column;gap:12px; }
-.nh-dcol .nh-yt-grid > a { flex-direction:row !important;align-items:center;gap:12px;border:none !important;box-shadow:none !important;background:transparent !important; }
-.nh-dcol .nh-yt-grid > a > div:first-child { width:96px !important;aspect-ratio:16/9;flex-shrink:0;border-radius:8px; }
-.nh-dcol .nh-yt-grid > a > div:last-child { padding:0 !important; }
-.nh-dcol .nh-yt-grid > a > div:last-child > div { font-size:.78rem !important; -webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden; }
-/* Ferramentas em Destaque: reaproveita o estilo do Acesso Rápido, em tom claro */
-.nh-fdest-list { display:flex;flex-direction:column;gap:8px;margin-bottom:14px; }
-.nh-fdest-item {
-  display:flex;align-items:center;gap:12px;
-  background:var(--bg);border:1px solid var(--brd);
-  border-radius:10px;padding:10px 12px;
-  text-decoration:none;transition:all .2s;
-}
-.nh-fdest-item:hover { border-color:var(--b300);box-shadow:var(--sh);transform:translateY(-1px); }
-.nh-fdest-item .nh-quick-name { color:var(--txt);font-size:.83rem; }
-.nh-fdest-item .nh-quick-desc { color:var(--txt-s);font-size:.7rem; }
-.nh-dcol-panel .nh-quick-all {
-  background:#EEF4FF;border:1.5px solid var(--b200);color:var(--acc);
-  margin-top:auto;
-}
-.nh-dcol-panel .nh-quick-all:hover { background:#DCE9FF;border-color:var(--b300); }
-/* Mais Acessados: também vira painel de altura 100% e empurra o botão pro rodapé */
-.nh-top10-wrap { display:flex;flex-direction:column;height:100%; }
-.nh-top10-wrap #nh-top10-list { flex:1; }
-.nh-top10-wrap > .nh-quick-all { margin-top:14px; }
-@media(max-width:900px){
-  .nh-destaques-grid { grid-template-columns:1fr; gap:20px; }
-  .nh-dcol-panel, .nh-top10-wrap { height:auto; }
-}
 
 /* Card artigo recente */
 .nh-art-card {
@@ -1391,6 +1318,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   border:1.5px solid var(--brd);
   border-radius:var(--rl);
   padding:20px 18px;
+  position:sticky;top:70px;
 }
 .nh-top10-head {
   font-size:.65rem;font-weight:700;
@@ -1497,8 +1425,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 @media(max-width:1100px){
   .nh-hero-grid { grid-template-columns:1fr; }
   .nh-quick-card { max-width:480px; }
-  .nh-quick-list { display:flex;flex-direction:column;gap:7px; }
-  .nh-quick-btn { gap:12px;padding:9px 12px; }
   .nh-artigos-grid { grid-template-columns:1fr 340px; }
   .nh-autoridade-grid { grid-template-columns:1fr; }
   .nh-yt-grid { grid-template-columns:repeat(2,1fr); }
@@ -1518,7 +1444,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   .nh-stat-num { font-size:1.28rem; }
   .nh-stat-lbl { font-size:.6rem; margin-top:2px; }
   .nh-stat-sep { height:22px; }
-  .nh-artigos,.nh-destaques,.nh-autoridade { padding:36px 0; }
+  .nh-artigos,.nh-youtube,.nh-autoridade { padding:36px 0; }
   /* Hero: botões empilhados e com largura igual */
   .nh-hero-ctas { flex-direction:column; gap:10px; }
   .nh-btn-primary, .nh-btn-ghost { width:100%; font-size:.92rem; padding:13px 20px; }
@@ -1647,5 +1573,15 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   }
 }
 
+
+/* Fotos de produto (Amazon) em thumbs/cards: nunca cortar — sempre mostrar
+   o produto inteiro, nitidamente menor, com fundo claro ao redor, em vez de
+   preencher/cortar a caixa toda (cover). */
+img[src*="m.media-amazon.com"] {
+  object-fit: contain !important;
+  background: #f8fafc;
+  padding: 30px !important;
+  box-sizing: border-box;
+}
 
 /* build: 20260606145327 */
