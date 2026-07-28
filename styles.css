@@ -1235,17 +1235,38 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 .nh-col-line { width:16px;height:2px;background:var(--acc);border-radius:2px; }
 
+/* ── Mais Recentes: grade compacta (foto + categoria + título + resumo + data) ── */
+.nh-art-grid-compact { display:grid;grid-template-columns:repeat(3,1fr);gap:18px; }
+.nh-art-grid-compact .nh-art-card {
+  display:flex !important;flex-direction:column !important;
+  grid-template-columns:none !important;margin-bottom:0 !important;min-height:0 !important;
+}
+.nh-art-grid-compact .nh-art-img { width:100% !important;height:auto !important;aspect-ratio:4/3; }
+.nh-art-grid-compact .nh-art-ler { display:none !important; }
+.nh-art-grid-compact .nh-art-title {
+  display:-webkit-box !important;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  overflow:hidden;font-size:.86rem;
+}
+.nh-art-grid-compact .nh-art-excerpt {
+  display:-webkit-box !important;-webkit-line-clamp:3;-webkit-box-orient:vertical;
+  overflow:hidden;font-size:.78rem;min-height:0 !important;
+}
+.nh-art-grid-compact .nh-art-body { padding:12px 14px 14px; }
+@media(max-width:900px){ .nh-art-grid-compact { grid-template-columns:repeat(2,1fr); } }
+@media(max-width:640px){ .nh-art-grid-compact { grid-template-columns:1fr; } }
+
 /* ── NH DESTAQUES: Mais Acessados / Vídeos / Ferramentas em Destaque ── */
 .nh-destaques { background:#F1F5F9; padding:52px 0; border-top:1px solid var(--brd); }
 .nh-destaques-grid {
   display:grid;
   grid-template-columns:1fr 1fr 1fr;
   gap:22px;
-  align-items:start;
+  align-items:stretch;
 }
-.nh-dcol { min-width:0; }
-/* Painel branco padrão — as 3 colunas usam o mesmo enquadramento (igual ao mockup) */
+.nh-dcol { min-width:0;display:flex;flex-direction:column; }
+/* Painel branco padrão — as 3 colunas usam o mesmo enquadramento e a mesma altura (igual ao mockup) */
 .nh-dcol-panel {
+  display:flex;flex-direction:column;height:100%;
   background:var(--card);
   border:1.5px solid var(--brd);
   border-radius:var(--rl);
@@ -1274,11 +1295,16 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .nh-fdest-item .nh-quick-desc { color:var(--txt-s);font-size:.7rem; }
 .nh-dcol-panel .nh-quick-all {
   background:#EEF4FF;border:1.5px solid var(--b200);color:var(--acc);
-  margin-top:0;
+  margin-top:auto;
 }
 .nh-dcol-panel .nh-quick-all:hover { background:#DCE9FF;border-color:var(--b300); }
+/* Mais Acessados: também vira painel de altura 100% e empurra o botão pro rodapé */
+.nh-top10-wrap { display:flex;flex-direction:column;height:100%; }
+.nh-top10-wrap #nh-top10-list { flex:1; }
+.nh-top10-wrap > .nh-quick-all { margin-top:14px; }
 @media(max-width:900px){
   .nh-destaques-grid { grid-template-columns:1fr; gap:20px; }
+  .nh-dcol-panel, .nh-top10-wrap { height:auto; }
 }
 
 /* Card artigo recente */
