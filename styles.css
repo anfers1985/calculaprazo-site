@@ -1111,7 +1111,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 .nh-hero-grid {
   display:grid;
-  grid-template-columns:1fr 400px;
+  grid-template-columns:1fr 430px;
   gap:28px;
   align-items:start;
 }
@@ -1157,7 +1157,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .nh-quick-card {
   background:rgba(255,255,255,.06);
   border:1px solid rgba(255,255,255,.1);
-  border-radius:16px;padding:16px;
+  border-radius:16px;padding:18px;
   backdrop-filter:blur(8px);
 }
 .nh-quick-label {
@@ -1167,12 +1167,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   color:#60A5FA;margin-bottom:12px;
 }
 .nh-quick-line { width:16px;height:2px;background:#60A5FA;border-radius:2px;flex-shrink:0; }
-.nh-quick-list { display:grid;grid-template-columns:1fr 1fr;gap:7px 8px; }
+.nh-quick-list { display:grid;grid-template-columns:1fr 1fr;gap:9px 10px; }
 .nh-quick-btn {
-  display:flex;align-items:center;gap:8px;
+  display:flex;align-items:center;gap:10px;
   background:rgba(255,255,255,.05);
   border:1px solid rgba(255,255,255,.1);
-  border-radius:10px;padding:7px 9px;
+  border-radius:10px;padding:11px 13px;
   cursor:pointer;text-align:left;width:100%;
   transition:all .2s;
 }
@@ -1182,18 +1182,18 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   transform:translateX(3px);
 }
 .nh-quick-icon {
-  width:28px;height:28px;border-radius:8px;
+  width:32px;height:32px;border-radius:8px;
   display:flex;align-items:center;justify-content:center;
-  font-size:.9rem;flex-shrink:0;
+  font-size:1rem;flex-shrink:0;
 }
 .nh-quick-text { flex:1;min-width:0; }
 .nh-quick-name {
-  font-size:.74rem;font-weight:700;
-  color:rgba(255,255,255,.9);line-height:1.2;
+  font-size:.8rem;font-weight:700;
+  color:rgba(255,255,255,.9);line-height:1.25;
 }
 .nh-quick-desc {
-  font-size:.6rem;color:rgba(255,255,255,.4);
-  margin-top:2px;
+  font-size:.66rem;color:rgba(255,255,255,.42);
+  margin-top:3px;line-height:1.35;
 }
 .nh-quick-arr {
   font-size:1.1rem;color:rgba(255,255,255,.3);
@@ -1236,27 +1236,23 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .nh-col-line { width:16px;height:2px;background:var(--acc);border-radius:2px; }
 
 /* ── Mais Recentes: grade compacta (foto + categoria + título + resumo + data) ── */
-.nh-art-grid-compact { display:grid;grid-template-columns:repeat(6,1fr);gap:14px 12px; }
+.nh-art-grid-compact { display:grid;grid-template-columns:repeat(5,1fr);gap:16px 14px; }
 .nh-art-grid-compact .nh-art-card {
   display:flex !important;flex-direction:column !important;
   grid-template-columns:none !important;margin-bottom:0 !important;min-height:0 !important;
 }
 .nh-art-grid-compact .nh-art-img { width:100% !important;height:auto !important;aspect-ratio:16/9; }
 .nh-art-grid-compact .nh-art-ler { display:none !important; }
-.nh-art-grid-compact .nh-art-badge { font-size:.56rem;padding:2px 7px; }
+.nh-art-grid-compact .nh-art-badge { font-size:.58rem;padding:2px 7px; }
 .nh-art-grid-compact .nh-art-title {
-  font-size:.76rem;line-height:1.3;
-  display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;
-  -webkit-box-orient:vertical;overflow:hidden;
+  font-size:.8rem;line-height:1.32;
 }
 .nh-art-grid-compact .nh-art-excerpt {
-  font-size:.68rem;min-height:0 !important;line-height:1.4;
-  display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;
-  -webkit-box-orient:vertical;overflow:hidden;
+  font-size:.71rem;min-height:0 !important;line-height:1.45;
 }
-.nh-art-grid-compact .nh-art-date { font-size:.6rem; }
-.nh-art-grid-compact .nh-art-body { padding:10px 12px 12px; }
-@media(max-width:1050px){ .nh-art-grid-compact { grid-template-columns:repeat(3,1fr); } }
+.nh-art-grid-compact .nh-art-date { font-size:.62rem; }
+.nh-art-grid-compact .nh-art-body { padding:11px 13px 13px; }
+@media(max-width:1150px){ .nh-art-grid-compact { grid-template-columns:repeat(3,1fr); } }
 @media(max-width:900px){ .nh-art-grid-compact { grid-template-columns:repeat(2,1fr); } }
 @media(max-width:640px){ .nh-art-grid-compact { grid-template-columns:1fr; } }
 
@@ -1286,9 +1282,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .nh-dcol .nh-yt-grid > a { flex-direction:row !important;align-items:center;gap:12px;border:none !important;box-shadow:none !important;background:transparent !important; }
 .nh-dcol .nh-yt-grid > a > div:first-child { width:96px !important;aspect-ratio:16/9;flex-shrink:0;border-radius:8px; }
 .nh-dcol .nh-yt-grid > a > div:last-child { padding:0 !important; }
-.nh-dcol .nh-yt-grid > a > div:last-child > div { font-size:.78rem !important; -webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden; }
+.nh-dcol .nh-yt-grid > a > div:last-child > div { font-size:.76rem !important; line-height:1.32; }
 /* Ferramentas em Destaque: reaproveita o estilo do Acesso Rápido, em tom claro */
-.nh-fdest-list { display:flex;flex-direction:column;gap:8px;margin-bottom:14px;flex:1;justify-content:space-between; }
+.nh-fdest-list { display:flex;flex-direction:column;gap:10px;margin-bottom:14px; }
 .nh-fdest-item {
   display:flex;align-items:center;gap:12px;
   background:var(--bg);border:1px solid var(--brd);
@@ -1406,10 +1402,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 /* Duas sub-colunas de 5 itens cada, lado a lado, preenchendo a altura do painel */
 #nh-top10-list {
   display:grid;
-  grid-template-rows:repeat(5,1fr);
+  grid-template-rows:repeat(5,auto);
   grid-auto-flow:column;
   grid-template-columns:1fr 1fr;
   column-gap:14px;
+  align-content:start;
 }
 .nh-top10-item {
   display:grid;
@@ -1448,8 +1445,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   font-size:.66rem;font-weight:700;color:var(--txt);
   line-height:1.3;
   transition:color .15s;
-  display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;
-  -webkit-box-orient:vertical;overflow:hidden;
 }
 .nh-top10-cat { font-size:.56rem;color:var(--txt-s);margin-top:2px; }
 

@@ -528,7 +528,7 @@ function renderNhRecentes(){
   if(!list) return;
   var posts = BLOG_POSTS.slice()
     .sort(function(a,b){return (b.date||'').localeCompare(a.date||'');})
-    .slice(0,12);
+    .slice(0,10);
   if(!posts.length){
     list.innerHTML='<p style="font-size:.85rem;color:var(--txt-s);padding:16px 0;">Nenhum artigo publicado ainda.</p>';
     return;
