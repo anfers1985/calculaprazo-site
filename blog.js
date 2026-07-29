@@ -358,7 +358,7 @@ function toggleSociais(e){
       .then(function(j){
         var parser=new DOMParser();
         var doc=parser.parseFromString(j.contents,'text/xml');
-        var entries=Array.from(doc.querySelectorAll('entry')).slice(0,4);
+        var entries=Array.from(doc.querySelectorAll('entry')).slice(0,2);
         if(!entries.length){grid.innerHTML='<p style="color:var(--txt-s);font-size:.85rem;">Nenhum vídeo encontrado.</p>';return;}
         grid.innerHTML=entries.map(function(e){
           var vid=e.querySelector('videoId')&&e.querySelector('videoId').textContent;
@@ -378,7 +378,7 @@ function toggleSociais(e){
           .then(function(t){
             var parser=new DOMParser();
             var doc=parser.parseFromString(t,'text/xml');
-            var entries=Array.from(doc.querySelectorAll('entry')).slice(0,4);
+            var entries=Array.from(doc.querySelectorAll('entry')).slice(0,2);
             if(!entries.length){grid.innerHTML='<p style="color:var(--txt-s);font-size:.85rem;">Nenhum vídeo encontrado.</p>';return;}
             grid.innerHTML=entries.map(function(e){
               var vid=e.querySelector('videoId')&&e.querySelector('videoId').textContent;
@@ -417,7 +417,7 @@ function toggleSociais(e){
         var cid=(d.items&&d.items[0])?d.items[0].id:null;
         if(!cid){loadYouTubeViaRSS(grid);return;}
         // Step 2: busca os 4 últimos vídeos via search.list
-        return fetch('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId='+cid+'&maxResults=4&order=date&type=video&key='+YT_API_KEY);
+        return fetch('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId='+cid+'&maxResults=2&order=date&type=video&key='+YT_API_KEY);
       })
       .then(function(r){if(r)return r.json();})
       .then(function(d){
