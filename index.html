@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link rel="preload" as="style" href="/styles.css?v=11">
+  <link rel="preload" as="style" href="/styles.css?v=15">
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"></noscript>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -87,7 +87,7 @@
 </script>
 <!-- /Schema FAQ estático -->
 <style>:root{color-scheme:light}html,body{background:#F8FAFC;color:#0F172A}</style>
-<link rel="stylesheet" href="/styles.css?v=11">
+<link rel="stylesheet" href="/styles.css?v=15">
 
 <!-- Chart.js carregado sob demanda pela calculadora de juros -->
 <script>
@@ -360,7 +360,7 @@
   </section>
 
   <!-- ▸ ANÚNCIO ADSTERRA: home-top (728x90 desktop / 320x50 mobile) -->
-  <div class="ad-desktop-only" style="display:flex;justify-content:center;margin:20px 0;">
+  <div class="ad-desktop-only" style="display:flex;justify-content:center;margin:12px 0;">
     <div class="adst-slot" id="ad-home-top-desktop"
          data-adst-key="4f5894de8245c23422f7de3e03a1363e" data-adst-w="728" data-adst-h="90"
          style="width:728px;height:90px;max-width:100%;"></div>
@@ -384,30 +384,15 @@
         <button class="nh-ver-mais" onclick="navGoTo('blog')">Ver todos os artigos →</button>
       </div>
 
-      <!-- Grid artigos -->
-      <div class="nh-artigos-grid">
+      <!-- Mais Recentes (largura total) -->
+      <div class="nh-col-label"><span class="nh-col-line"></span>🕐 MAIS RECENTES</div>
+      <div id="nh-recentes-list" class="nh-art-grid-compact"></div>
 
-        <!-- Coluna esquerda: Mais Recentes -->
-        <div>
-          <div class="nh-col-label"><span class="nh-col-line"></span>🕐 MAIS RECENTES</div>
-          <div id="nh-recentes-list"></div>
-        </div>
-
-        <!-- ▸ ANÚNCIO ADSTERRA: entre Mais Recentes e Mais Acessados (320x50, mobile) -->
-        <div class="ad-mobile-only" style="justify-content:center;margin:16px 0;">
-          <div class="adst-slot" id="ad-home-mid-mobile-adsterra"
-               data-adst-key="cfa0d125d7dabd435f2b18e5f541bba5" data-adst-w="320" data-adst-h="50"
-               style="width:320px;height:50px;max-width:100%;"></div>
-        </div>
-
-        <!-- Coluna direita: Top 10 -->
-        <div>
-          <div class="nh-top10-wrap">
-            <div class="nh-top10-head">🔥 MAIS ACESSADOS</div>
-            <div id="nh-top10-list"></div>
-          </div>
-        </div>
-
+      <!-- ▸ ANÚNCIO ADSTERRA: entre Mais Recentes e o bloco seguinte (320x50, mobile) -->
+      <div class="ad-mobile-only" style="justify-content:center;margin:16px 0;">
+        <div class="adst-slot" id="ad-home-mid-mobile-adsterra"
+             data-adst-key="cfa0d125d7dabd435f2b18e5f541bba5" data-adst-w="320" data-adst-h="50"
+             style="width:320px;height:50px;max-width:100%;"></div>
       </div>
 
       <!-- home-blog-grid mantido oculto para o JS existente -->
@@ -427,19 +412,66 @@
          style="width:300px;height:250px;max-width:100%;"></div>
   </div>
 
-  <!-- ═══════════════ NH YOUTUBE ═══════════════ -->
-  <section class="nh-youtube">
+  <!-- ═══════════════ NH DESTAQUES: Mais Acessados / Vídeos / Ferramentas ═══════════════ -->
+  <section class="nh-destaques">
     <div class="container">
-      <div class="nh-sec-head">
-        <div>
-          <div class="nh-eyebrow"><span class="nh-eyebrow-line"></span>YOUTUBE</div>
-          <h2 class="nh-h2">Vídeos no Canal</h2>
-          <p class="nh-sec-sub">Acompanhe os últimos vídeos do canal Calcula Prazo</p>
+      <div class="nh-destaques-grid">
+
+        <!-- Coluna 1: Mais Acessados -->
+        <div class="nh-dcol">
+          <div class="nh-top10-wrap">
+            <div class="nh-top10-head">🔥 MAIS ACESSADOS</div>
+            <div id="nh-top10-list"></div>
+            <a class="nh-quick-all" href="/conteudo" style="background:#EEF4FF;border:1.5px solid var(--b200);color:var(--acc);margin-top:14px;">Ver todos os conteúdos →</a>
+          </div>
         </div>
-        <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener noreferrer" class="nh-ver-mais">Ver canal →</a>
-      </div>
-      <div id="yt-videos-grid" class="nh-yt-grid">
-        <!-- preenchido por loadYouTubeVideos() -->
+
+        <!-- Coluna 2: Vídeos -->
+        <div class="nh-dcol">
+          <div class="nh-dcol-panel">
+            <div class="nh-dcol-head">
+              <div class="nh-dcol-title">▶ Vídeos</div>
+              <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener noreferrer" class="nh-dcol-more">Ver todos no YouTube →</a>
+            </div>
+            <div id="yt-videos-grid" class="nh-yt-grid">
+              <!-- preenchido por loadYouTubeVideos() -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Coluna 3: Ferramentas em Destaque -->
+        <div class="nh-dcol">
+          <div class="nh-dcol-panel">
+            <div class="nh-dcol-head">
+              <div class="nh-dcol-title">🧰 Ferramentas em Destaque</div>
+            </div>
+            <div class="nh-fdest-list">
+              <a class="nh-fdest-item" href="/calculadora-de-prazo-processual">
+                <div class="nh-quick-icon" style="background:rgba(37,99,235,.15);">⏱️</div>
+                <div class="nh-quick-text">
+                  <div class="nh-quick-name">Calculadora de Prazos</div>
+                  <div class="nh-quick-desc">Calcule prazos processuais em dias úteis</div>
+                </div>
+              </a>
+              <a class="nh-fdest-item" href="/calculadora-verbas-trabalhistas">
+                <div class="nh-quick-icon" style="background:rgba(16,185,129,.15);">⚖️</div>
+                <div class="nh-quick-text">
+                  <div class="nh-quick-name">Verbas Rescisórias</div>
+                  <div class="nh-quick-desc">Cálculo completo e atualizado de verbas</div>
+                </div>
+              </a>
+              <a class="nh-fdest-item" href="/calculadora-salario-liquido">
+                <div class="nh-quick-icon" style="background:rgba(245,158,11,.15);">💵</div>
+                <div class="nh-quick-text">
+                  <div class="nh-quick-name">Salário Líquido</div>
+                  <div class="nh-quick-desc">Descontos e valor líquido na folha</div>
+                </div>
+              </a>
+            </div>
+            <a class="nh-quick-all" href="/ferramentas" style="background:#EEF4FF;border:1.5px solid var(--b200);color:var(--acc);margin-top:0;">Ver todas as ferramentas →</a>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
