@@ -1111,7 +1111,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 .nh-hero-grid {
   display:grid;
-  grid-template-columns:1fr 440px;
+  grid-template-columns:1fr 600px;
   gap:28px;
   align-items:start;
 }
@@ -1243,15 +1243,15 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 .nh-art-grid-compact .nh-art-img { width:100% !important;height:auto !important;aspect-ratio:16/9; }
 .nh-art-grid-compact .nh-art-ler { display:none !important; }
-.nh-art-grid-compact .nh-art-badge { font-size:.58rem;padding:2px 7px; }
+.nh-art-grid-compact .nh-art-badge { font-size:.53rem;padding:2px 6px; }
 .nh-art-grid-compact .nh-art-title {
-  font-size:.8rem;line-height:1.32;
+  font-size:.75rem;line-height:1.3;
   display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;
   -webkit-box-orient:vertical;overflow:hidden;
 }
 .nh-art-grid-compact .nh-art-excerpt {
-  font-size:.71rem;min-height:0 !important;line-height:1.45;
-  display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;
+  font-size:.66rem;min-height:0 !important;line-height:1.42;
+  display:-webkit-box;-webkit-line-clamp:5;line-clamp:5;
   -webkit-box-orient:vertical;overflow:hidden;
 }
 .nh-art-grid-compact .nh-art-date { font-size:.62rem; }
@@ -1264,7 +1264,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .nh-destaques { background:#F1F5F9; padding:36px 0; border-top:1px solid var(--brd); }
 .nh-destaques-grid {
   display:grid;
-  grid-template-columns:1.3fr 1fr 1fr;
+  grid-template-columns:1fr 1.15fr 0.85fr;
   gap:18px;
   align-items:stretch;
 }
@@ -1286,7 +1286,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .nh-dcol .nh-yt-grid > a { flex-direction:row !important;align-items:center;gap:12px;border:none !important;box-shadow:none !important;background:transparent !important; }
 .nh-dcol .nh-yt-grid > a > div:first-child { width:96px !important;aspect-ratio:16/9;flex-shrink:0;border-radius:8px; }
 .nh-dcol .nh-yt-grid > a > div:last-child { padding:0 !important; }
-.nh-dcol .nh-yt-grid > a > div:last-child > div { font-size:.76rem !important; line-height:1.32; display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden; }
+.nh-dcol .nh-yt-grid > a > div:last-child > div { font-size:.71rem !important; line-height:1.3; display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden; }
 /* Ferramentas em Destaque: reaproveita o estilo do Acesso Rápido, em tom claro */
 .nh-fdest-list { display:flex;flex-direction:column;gap:10px;margin-bottom:14px; }
 .nh-fdest-item {
@@ -1414,7 +1414,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 .nh-top10-item {
   display:grid;
-  grid-template-columns:16px 46px 1fr;
+  grid-template-columns:16px 1fr;
   align-items:center;
   gap:7px;
   padding:6px 0;
@@ -1424,10 +1424,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   transition:all .15s;
   min-width:0;
 }
+.nh-top10-thumb { display:none !important; }
 .nh-top10-item:nth-child(5),
 .nh-top10-item:nth-child(10) { border-bottom:none; }
-.nh-top10-item:nth-child(n+4) { grid-template-columns:16px 1fr; }
-.nh-top10-item:nth-child(n+4) .nh-top10-thumb { display:none; }
+
 .nh-top10-item:hover .nh-top10-title { color:var(--acc); }
 .nh-top10-num {
   font-size:.66rem;font-weight:800;
@@ -1451,7 +1451,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   font-size:.66rem;font-weight:700;color:var(--txt);
   line-height:1.3;
   transition:color .15s;
-  display:-webkit-box;-webkit-line-clamp:4;line-clamp:4;
+  display:-webkit-box;-webkit-line-clamp:5;line-clamp:5;
   -webkit-box-orient:vertical;overflow:hidden;
 }
 .nh-top10-cat { font-size:.56rem;color:var(--txt-s);margin-top:2px; }
@@ -1567,9 +1567,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   .nh-art-excerpt { display:block; -webkit-line-clamp:unset; line-clamp:unset; overflow:visible; min-height:0; flex:none; }
   /* top10: no mobile volta a ser lista única empilhada (a divisão em 2 colunas é só desktop) */
   #nh-top10-list { display:block; }
-  .nh-top10-item { grid-template-columns:20px 72px 1fr; }
+  .nh-top10-item { grid-template-columns:20px 1fr; }
   .nh-top10-item:nth-child(5) { border-bottom:1px solid var(--brd); }
-  .nh-top10-thumb { width:72px; height:52px; }
   .nh-top10-title { -webkit-line-clamp:unset; line-clamp:unset; overflow:visible; font-size:.76rem; }
 }
 @media(max-width:480px){
