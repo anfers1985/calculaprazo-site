@@ -1044,12 +1044,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 /* ── Tipografia base NH ── */
 .nh-h1 {
   font-family:'Sora',var(--fh),sans-serif;
-  font-size:clamp(1.9rem,3.1vw,2.6rem);
+  font-size:clamp(1.5rem,2.2vw,2rem);
   font-weight:800;
   color:#fff;
-  letter-spacing:-1.5px;
-  line-height:1.1;
-  margin:0 0 14px;
+  letter-spacing:-1px;
+  line-height:1.12;
+  margin:0 0 10px;
 }
 .nh-h1-grad {
   background:linear-gradient(90deg,#60A5FA,#93C5FD);
@@ -1059,12 +1059,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 .nh-h2 {
   font-family:'Sora',var(--fh),sans-serif;
-  font-size:clamp(1.4rem,2.5vw,1.9rem);
+  font-size:clamp(1.15rem,1.8vw,1.5rem);
   font-weight:800;
   color:var(--txt);
-  letter-spacing:-0.5px;
+  letter-spacing:-0.3px;
   line-height:1.15;
-  margin:6px 0 10px;
+  margin:4px 0 6px;
 }
 .nh-h2-light { color:#fff; }
 .nh-eyebrow {
@@ -1079,7 +1079,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   background:var(--acc);border-radius:2px;flex-shrink:0;
 }
 .nh-eyebrow-line-light { background:#60A5FA; }
-.nh-sec-sub { font-size:.93rem;color:var(--txt-m);line-height:1.6;margin:0; }
+.nh-sec-sub { font-size:.8rem;color:var(--txt-m);line-height:1.5;margin:0; }
 .nh-ver-mais {
   display:inline-flex;align-items:center;
   font-size:.85rem;font-weight:600;color:var(--acc);
@@ -1093,7 +1093,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   display:flex;align-items:flex-end;
   justify-content:space-between;
   gap:16px;flex-wrap:wrap;
-  margin-bottom:32px;
+  margin-bottom:18px;
 }
 .nh-btn-primary {
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
@@ -1107,19 +1107,19 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 /* ── HERO ── */
 .nh-hero {
   background:linear-gradient(135deg,#0B1437 0%,#0F2057 50%,#162466 100%);
-  padding:34px 0 28px;
+  padding:20px 0 18px;
 }
 .nh-hero-grid {
   display:grid;
-  grid-template-columns:1fr 440px;
-  gap:32px;
+  grid-template-columns:1fr 400px;
+  gap:28px;
   align-items:start;
 }
 .nh-hero-sub {
-  font-size:.94rem;font-weight:400;
+  font-size:.83rem;font-weight:400;
   color:rgba(255,255,255,.55);
-  max-width:440px;line-height:1.65;
-  margin:0 0 16px;
+  max-width:440px;line-height:1.55;
+  margin:0 0 12px;
 }
 .nh-hero-ctas {
   display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px;
@@ -1138,18 +1138,18 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .nh-stats {
   display:flex;align-items:center;gap:0;flex-wrap:wrap;
 }
-.nh-stat { text-align:center;padding:0 24px; }
+.nh-stat { text-align:center;padding:0 18px; }
 .nh-stat:first-child { padding-left:0; }
 .nh-stat-num {
-  font-size:1.8rem;font-weight:800;
+  font-size:1.35rem;font-weight:800;
   color:#fff;letter-spacing:-1px;line-height:1;
 }
 .nh-stat-lbl {
-  font-size:.72rem;font-weight:500;
-  color:rgba(255,255,255,.4);margin-top:4px;
+  font-size:.65rem;font-weight:500;
+  color:rgba(255,255,255,.4);margin-top:3px;
 }
 .nh-stat-sep {
-  width:1px;height:32px;
+  width:1px;height:24px;
   background:rgba(255,255,255,.08);
 }
 
@@ -1157,7 +1157,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .nh-quick-card {
   background:rgba(255,255,255,.06);
   border:1px solid rgba(255,255,255,.1);
-  border-radius:16px;padding:20px;
+  border-radius:16px;padding:16px;
   backdrop-filter:blur(8px);
 }
 .nh-quick-label {
@@ -1167,12 +1167,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   color:#60A5FA;margin-bottom:12px;
 }
 .nh-quick-line { width:16px;height:2px;background:#60A5FA;border-radius:2px;flex-shrink:0; }
-.nh-quick-list { display:grid;grid-template-columns:1fr 1fr;gap:8px 10px; }
+.nh-quick-list { display:grid;grid-template-columns:1fr 1fr;gap:7px 8px; }
 .nh-quick-btn {
-  display:flex;align-items:center;gap:10px;
+  display:flex;align-items:center;gap:8px;
   background:rgba(255,255,255,.05);
   border:1px solid rgba(255,255,255,.1);
-  border-radius:10px;padding:8px 10px;
+  border-radius:10px;padding:7px 9px;
   cursor:pointer;text-align:left;width:100%;
   transition:all .2s;
 }
@@ -1182,17 +1182,17 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   transform:translateX(3px);
 }
 .nh-quick-icon {
-  width:32px;height:32px;border-radius:8px;
+  width:28px;height:28px;border-radius:8px;
   display:flex;align-items:center;justify-content:center;
-  font-size:1rem;flex-shrink:0;
+  font-size:.9rem;flex-shrink:0;
 }
 .nh-quick-text { flex:1;min-width:0; }
 .nh-quick-name {
-  font-size:.81rem;font-weight:700;
+  font-size:.74rem;font-weight:700;
   color:rgba(255,255,255,.9);line-height:1.2;
 }
 .nh-quick-desc {
-  font-size:.66rem;color:rgba(255,255,255,.4);
+  font-size:.6rem;color:rgba(255,255,255,.4);
   margin-top:2px;
 }
 .nh-quick-arr {
@@ -1219,7 +1219,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 /* ── ARTIGOS ── */
 .nh-artigos {
   background:var(--bg);
-  padding:44px 0 64px;
+  padding:28px 0 40px;
 }
 .nh-artigos-grid {
   display:grid;
@@ -1229,41 +1229,43 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 .nh-col-label {
   display:flex;align-items:center;gap:8px;
-  font-size:.65rem;font-weight:700;
+  font-size:.62rem;font-weight:700;
   text-transform:uppercase;letter-spacing:.12em;
-  color:var(--acc);margin-bottom:16px;
+  color:var(--acc);margin-bottom:10px;
 }
 .nh-col-line { width:16px;height:2px;background:var(--acc);border-radius:2px; }
 
 /* ── Mais Recentes: grade compacta (foto + categoria + título + resumo + data) ── */
-.nh-art-grid-compact { display:grid;grid-template-columns:repeat(6,1fr);gap:14px; }
+.nh-art-grid-compact { display:grid;grid-template-columns:repeat(6,1fr);gap:14px 12px; }
 .nh-art-grid-compact .nh-art-card {
   display:flex !important;flex-direction:column !important;
   grid-template-columns:none !important;margin-bottom:0 !important;min-height:0 !important;
 }
-.nh-art-grid-compact .nh-art-img { width:100% !important;height:auto !important;aspect-ratio:4/3; }
+.nh-art-grid-compact .nh-art-img { width:100% !important;height:auto !important;aspect-ratio:16/9; }
 .nh-art-grid-compact .nh-art-ler { display:none !important; }
+.nh-art-grid-compact .nh-art-badge { font-size:.56rem;padding:2px 7px; }
 .nh-art-grid-compact .nh-art-title {
-  font-size:.86rem;
-  display:block;-webkit-line-clamp:unset;line-clamp:unset;
-  -webkit-box-orient:unset;overflow:visible;
+  font-size:.76rem;line-height:1.3;
+  display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;
 }
 .nh-art-grid-compact .nh-art-excerpt {
-  font-size:.78rem;min-height:0 !important;
-  display:block;-webkit-line-clamp:unset;line-clamp:unset;
-  -webkit-box-orient:unset;overflow:visible;
+  font-size:.68rem;min-height:0 !important;line-height:1.4;
+  display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;
 }
-.nh-art-grid-compact .nh-art-body { padding:12px 14px 14px; }
+.nh-art-grid-compact .nh-art-date { font-size:.6rem; }
+.nh-art-grid-compact .nh-art-body { padding:10px 12px 12px; }
 @media(max-width:1050px){ .nh-art-grid-compact { grid-template-columns:repeat(3,1fr); } }
 @media(max-width:900px){ .nh-art-grid-compact { grid-template-columns:repeat(2,1fr); } }
 @media(max-width:640px){ .nh-art-grid-compact { grid-template-columns:1fr; } }
 
 /* ── NH DESTAQUES: Mais Acessados / Vídeos / Ferramentas em Destaque ── */
-.nh-destaques { background:#F1F5F9; padding:52px 0; border-top:1px solid var(--brd); }
+.nh-destaques { background:#F1F5F9; padding:36px 0; border-top:1px solid var(--brd); }
 .nh-destaques-grid {
   display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:22px;
+  grid-template-columns:1.3fr 1fr 1fr;
+  gap:18px;
   align-items:stretch;
 }
 .nh-dcol { min-width:0;display:flex;flex-direction:column; }
@@ -1273,11 +1275,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   background:var(--card);
   border:1.5px solid var(--brd);
   border-radius:var(--rl);
-  padding:20px 18px;
+  padding:16px 16px;
 }
-.nh-dcol-head { display:flex;align-items:center;justify-content:space-between;margin-bottom:16px; }
-.nh-dcol-title { font-size:.95rem;font-weight:800;color:var(--txt); }
-.nh-dcol-more { font-size:.74rem;font-weight:700;color:var(--acc);text-decoration:none;white-space:nowrap; }
+.nh-dcol-head { display:flex;align-items:center;justify-content:space-between;margin-bottom:12px; }
+.nh-dcol-title { font-size:.82rem;font-weight:800;color:var(--txt); }
+.nh-dcol-more { font-size:.68rem;font-weight:700;color:var(--acc);text-decoration:none;white-space:nowrap; }
 .nh-dcol-more:hover { text-decoration:underline; }
 /* Vídeos: empilhados em coluna única dentro do card */
 .nh-dcol .nh-yt-grid { display:flex;flex-direction:column;gap:12px;flex:1;justify-content:space-between; }
@@ -1286,7 +1288,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .nh-dcol .nh-yt-grid > a > div:last-child { padding:0 !important; }
 .nh-dcol .nh-yt-grid > a > div:last-child > div { font-size:.78rem !important; -webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden; }
 /* Ferramentas em Destaque: reaproveita o estilo do Acesso Rápido, em tom claro */
-.nh-fdest-list { display:flex;flex-direction:column;gap:8px;margin-bottom:14px; }
+.nh-fdest-list { display:flex;flex-direction:column;gap:8px;margin-bottom:14px;flex:1;justify-content:space-between; }
 .nh-fdest-item {
   display:flex;align-items:center;gap:12px;
   background:var(--bg);border:1px solid var(--brd);
@@ -1392,37 +1394,47 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   background:var(--card);
   border:1.5px solid var(--brd);
   border-radius:var(--rl);
-  padding:20px 18px;
+  padding:16px 16px;
 }
 .nh-top10-head {
-  font-size:.65rem;font-weight:700;
+  font-size:.62rem;font-weight:700;
   text-transform:uppercase;color:var(--txt-m);
   border-bottom:1px solid var(--brd);
-  padding-bottom:12px;margin-bottom:12px;
+  padding-bottom:10px;margin-bottom:10px;
   letter-spacing:.1em;
+}
+/* Duas sub-colunas de 5 itens cada, lado a lado, preenchendo a altura do painel */
+#nh-top10-list {
+  display:grid;
+  grid-template-rows:repeat(5,1fr);
+  grid-auto-flow:column;
+  grid-template-columns:1fr 1fr;
+  column-gap:14px;
 }
 .nh-top10-item {
   display:grid;
-  grid-template-columns:22px 96px 1fr;
+  grid-template-columns:16px 46px 1fr;
   align-items:center;
-  gap:10px;
-  padding:10px 0;
+  gap:7px;
+  padding:6px 0;
   cursor:pointer;
   border-bottom:1px solid var(--brd);
   text-decoration:none;
   transition:all .15s;
+  min-width:0;
 }
-.nh-top10-item:last-child { border-bottom:none; }
+.nh-top10-item:nth-child(5),
+.nh-top10-item:nth-child(10) { border-bottom:none; }
 .nh-top10-item:hover .nh-top10-title { color:var(--acc); }
 .nh-top10-num {
-  font-size:.75rem;font-weight:800;
+  font-size:.66rem;font-weight:800;
   text-align:center;
 }
 .nh-top10-num.top { color:var(--acc); }
 .nh-top10-num.rest { color:var(--txt-s); }
 .nh-top10-thumb {
-  width:96px;height:68px;flex-shrink:0;
-  border-radius:7px;overflow:hidden;
+  width:46px;height:34px;flex-shrink:0;
+  border-radius:5px;overflow:hidden;
   background:var(--b50);
   position:relative;
 }
@@ -1433,11 +1445,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 .nh-top10-info { min-width:0; }
 .nh-top10-title {
-  font-size:.78rem;font-weight:700;color:var(--txt);
-  line-height:1.35;
+  font-size:.66rem;font-weight:700;color:var(--txt);
+  line-height:1.3;
   transition:color .15s;
+  display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;
 }
-.nh-top10-cat { font-size:.62rem;color:var(--txt-s);margin-top:3px; }
+.nh-top10-cat { font-size:.56rem;color:var(--txt-s);margin-top:2px; }
 
 /* ── YOUTUBE ── */
 .nh-youtube {
@@ -1548,8 +1562,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   .nh-art-img { width:100%; aspect-ratio:16/9; height:auto; flex-shrink:0; }
   .nh-art-title { display:block; -webkit-line-clamp:unset; line-clamp:unset; overflow:visible; font-size:.86rem; }
   .nh-art-excerpt { display:block; -webkit-line-clamp:unset; line-clamp:unset; overflow:visible; min-height:0; flex:none; }
-  /* top10: mantém miniatura pequena (área menor que "mais recentes"), mas título completo sem corte */
+  /* top10: no mobile volta a ser lista única empilhada (a divisão em 2 colunas é só desktop) */
+  #nh-top10-list { display:block; }
   .nh-top10-item { grid-template-columns:20px 72px 1fr; }
+  .nh-top10-item:nth-child(5) { border-bottom:1px solid var(--brd); }
   .nh-top10-thumb { width:72px; height:52px; }
   .nh-top10-title { -webkit-line-clamp:unset; line-clamp:unset; overflow:visible; font-size:.76rem; }
 }
