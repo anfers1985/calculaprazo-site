@@ -400,13 +400,10 @@ function toggleSociais(e){
     return '<a href="https://www.youtube.com/watch?v='+vid+'" target="_blank" rel="noopener noreferrer" style="display:flex;flex-direction:column;background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);overflow:hidden;text-decoration:none;transition:all .2s;box-shadow:var(--sh);" onmouseover="this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'var(--shl)\'" onmouseout="this.style.transform=\'\';this.style.boxShadow=\'var(--sh)\'" >'
       +'<div style="position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#111;flex-shrink:0;">'
       +'<img src="'+thumbUrl+'" alt="'+title+'" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;">'
-      +'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">'
-      +'<div style="width:44px;height:44px;background:rgba(255,0,0,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,.4);">'
-      +'<svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><polygon points="6,3 20,12 6,21"/></svg></div></div></div>'
-      +'<div style="padding:12px 14px 14px;flex:1;display:flex;flex-direction:column;">'
-      +'<span style="display:inline-flex;align-items:center;gap:5px;font-size:.6rem;font-weight:700;color:#FF0000;background:#FFF0F0;border:1px solid #FFCCCC;border-radius:999px;padding:2px 8px;margin-bottom:7px;align-self:flex-start;"><svg width="11" height="11" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>YouTube</span>'
-      +'<div style="font-size:.85rem;font-weight:700;color:var(--txt);line-height:1.4;flex:1;">'+title+'</div>'
-      +(dateStr?'<div style="font-size:.72rem;color:var(--txt-s);margin-top:7px;">'+dateStr+'</div>':'')
+      +'</div>'
+      +'<div style="padding:10px 12px 12px;flex:1;display:flex;flex-direction:column;">'
+      +'<div class="nh-yt-title" style="font-size:.85rem;font-weight:700;color:var(--txt);line-height:1.4;flex:1;">'+title+'</div>'
+      +(dateStr?'<div class="nh-yt-date" style="font-size:.72rem;color:var(--txt-s);margin-top:5px;">'+dateStr+'</div>':'')
       +'</div></a>';
   }
 
