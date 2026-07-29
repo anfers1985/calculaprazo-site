@@ -1282,7 +1282,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .nh-dcol-more { font-size:.68rem;font-weight:700;color:var(--acc);text-decoration:none;white-space:nowrap; }
 .nh-dcol-more:hover { text-decoration:underline; }
 /* Vídeos: empilhados em coluna única dentro do card */
-.nh-dcol .nh-yt-grid { display:flex;flex-direction:column;gap:12px;flex:1;justify-content:space-between; }
+.nh-dcol .nh-yt-grid { display:flex;flex-direction:column;gap:18px;flex:1;justify-content:flex-start; }
 .nh-dcol .nh-yt-grid > a { flex-direction:row !important;align-items:center;gap:10px;border:none !important;box-shadow:none !important;background:transparent !important; }
 .nh-dcol .nh-yt-grid > a > div:first-child { width:104px !important;aspect-ratio:16/9;flex-shrink:0;border-radius:8px; }
 .nh-dcol .nh-yt-grid > a > div:last-child { padding:0 !important; }
