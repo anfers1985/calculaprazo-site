@@ -1,26 +1,33 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://calculaprazo.com.br/</loc><lastmod>2026-07-27</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
-  <url><loc>https://calculaprazo.com.br/conteudo</loc><lastmod>2026-07-27</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://calculaprazo.com.br/calculadora-de-prazo-processual</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://calculaprazo.com.br/calculadora-verbas-trabalhistas</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://calculaprazo.com.br/correcao-monetaria</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://calculaprazo.com.br/calculadora-salario-liquido</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://calculaprazo.com.br/calculadora-de-juros</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://calculaprazo.com.br/calculadora-de-porcentagem</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://calculaprazo.com.br/calculadora-de-datas</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://calculaprazo.com.br/conversor-de-moedas</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://calculaprazo.com.br/validador-cpf-cnpj</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://calculaprazo.com.br/numero-por-extenso</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://calculaprazo.com.br/calculadora-imc</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://calculaprazo.com.br/calculadora-de-prescricao</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://calculaprazo.com.br/calculadora-salario-intermitente</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://calculaprazo.com.br/gerador-de-qr-code</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://calculaprazo.com.br/gerador-de-senhas</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://calculaprazo.com.br/sobre</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://calculaprazo.com.br/contato</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://calculaprazo.com.br/privacidade</loc><lastmod>2026-07-27</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://calculaprazo.com.br/termos</loc><lastmod>2026-07-27</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://calculaprazo.com.br/</loc><lastmod>2026-07-29</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://calculaprazo.com.br/conteudo</loc><lastmod>2026-07-29</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calculaprazo.com.br/calculadora-de-prazo-processual</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://calculaprazo.com.br/calculadora-verbas-trabalhistas</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://calculaprazo.com.br/correcao-monetaria</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calculaprazo.com.br/calculadora-salario-liquido</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calculaprazo.com.br/calculadora-de-juros</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://calculaprazo.com.br/calculadora-de-porcentagem</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://calculaprazo.com.br/calculadora-de-datas</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://calculaprazo.com.br/conversor-de-moedas</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://calculaprazo.com.br/validador-cpf-cnpj</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://calculaprazo.com.br/numero-por-extenso</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://calculaprazo.com.br/calculadora-imc</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://calculaprazo.com.br/calculadora-de-prescricao</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://calculaprazo.com.br/calculadora-salario-intermitente</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://calculaprazo.com.br/gerador-de-qr-code</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://calculaprazo.com.br/gerador-de-senhas</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://calculaprazo.com.br/sobre</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://calculaprazo.com.br/contato</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://calculaprazo.com.br/privacidade</loc><lastmod>2026-07-29</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://calculaprazo.com.br/termos</loc><lastmod>2026-07-29</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://calculaprazo.com.br/blog/empresa-aciona-trabalhadora-licenca-medica-indenizacao-danos-morais</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://calculaprazo.com.br/blog/tst-condena-empresa-omissao-assedio-sexual-call-center</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://calculaprazo.com.br/blog/justica-afasta-justa-causa-vitima-violencia-domestica</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://calculaprazo.com.br/blog/clinica-rescisao-indireta-falta-pagamento-insalubridade</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://calculaprazo.com.br/blog/dsr-regras-clculo-e-cuidados-para-evitar-erros-na-folha</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://calculaprazo.com.br/blog/horario-almoco-clt-regras-intervalo-jornada</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://calculaprazo.com.br/blog/cancelamento-admissao-regras-prazos-cuidados-rh</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://calculaprazo.com.br/blog/tst-motorista-interestadual-turno-ininterrupto</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://calculaprazo.com.br/blog/biomecanica-ocupacional-ergonomia-produtividade</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://calculaprazo.com.br/blog/tipos-contratos-trabalho-modelos-clt-guia</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
@@ -29,6 +36,16 @@
   <url><loc>https://calculaprazo.com.br/blog/ferias-ou-recesso-diferencas-clt-rh</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://calculaprazo.com.br/blog/abono-salarial-regras-direitos-obrigacoes-empresa</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://calculaprazo.com.br/blog/lei-15472-2026-honorarios-advocaticios-natureza-alimentar</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://calculaprazo.com.br/blog/melhor-webcam-audiencias-virtuais-2026</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://calculaprazo.com.br/blog/melhor-teclado-ergonomico-2026</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://calculaprazo.com.br/blog/melhor-scanner-portatil-documentos-2026</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://calculaprazo.com.br/blog/melhor-notebook-advogados-2026</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://calculaprazo.com.br/blog/melhor-mouse-ergonomico-2026</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://calculaprazo.com.br/blog/melhor-monitor-home-office-juridico-2026</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://calculaprazo.com.br/blog/melhor-mochila-executiva-notebook-2026</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://calculaprazo.com.br/blog/melhor-marca-texto-estudar-direito-2026</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://calculaprazo.com.br/blog/melhor-impressora-advogados-2026</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://calculaprazo.com.br/blog/melhor-apoio-notebook-ergonomico-2026</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://calculaprazo.com.br/blog/auxilio-alimentacao-regras-decreto-12712-2025-empresas</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://calculaprazo.com.br/blog/credito-consignado-desconto-verbas-rescisorias-mte</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://calculaprazo.com.br/blog/tst-afasta-reintegracao-metalurgico-justa-causa-critica-ceo</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
@@ -39,16 +56,6 @@
   <url><loc>https://calculaprazo.com.br/blog/posso-ter-dois-empregos-ao-mesmo-tempo-clt</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://calculaprazo.com.br/blog/ia-decidir-demissao-trabalhador-lgpd</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://calculaprazo.com.br/blog/empresa-pode-demitir-conduta-fora-do-trabalho</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://calculaprazo.com.br/blog/melhor-apoio-notebook-ergonomico-2026</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://calculaprazo.com.br/blog/melhor-impressora-advogados-2026</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://calculaprazo.com.br/blog/melhor-marca-texto-estudar-direito-2026</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://calculaprazo.com.br/blog/melhor-mochila-executiva-notebook-2026</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://calculaprazo.com.br/blog/melhor-monitor-home-office-juridico-2026</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://calculaprazo.com.br/blog/melhor-mouse-ergonomico-2026</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://calculaprazo.com.br/blog/melhor-notebook-advogados-2026</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://calculaprazo.com.br/blog/melhor-scanner-portatil-documentos-2026</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://calculaprazo.com.br/blog/melhor-teclado-ergonomico-2026</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://calculaprazo.com.br/blog/melhor-webcam-audiencias-virtuais-2026</loc><lastmod>2026-07-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://calculaprazo.com.br/blog/banco-horas-rescisao-saldo-positivo-negativo</loc><lastmod>2026-07-22</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://calculaprazo.com.br/blog/integracao-esocial-fgts-digital-processos-trabalhistas</loc><lastmod>2026-07-22</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://calculaprazo.com.br/blog/controle-ponto-home-office-regime-hibrido-obrigatorio</loc><lastmod>2026-07-22</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
