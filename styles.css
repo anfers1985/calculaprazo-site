@@ -1577,24 +1577,25 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   .nh-ben-desc { font-size:.68rem; }
   /* art-card no mobile: linha horizontal compacta — foto pequena à esquerda,
      categoria + título (2 linhas) + data à direita, sem resumo */
+  .nh-art-grid-compact { gap:8px; }
   .nh-art-grid-compact .nh-art-card {
-    flex-direction:row !important;align-items:center;gap:10px;
-    padding:10px 0;border-bottom:1px solid var(--brd);border-radius:0;
+    flex-direction:row !important;align-items:center;gap:12px;
+    padding:8px 0;border-bottom:1px solid #E5E7EB;border-radius:0;
     background:transparent;box-shadow:none;
   }
   .nh-art-grid-compact .nh-art-img {
-    width:72px !important;height:72px !important;aspect-ratio:auto !important;
+    width:96px !important;height:72px !important;aspect-ratio:auto !important;
     flex-shrink:0;border-radius:8px;
   }
   .nh-art-grid-compact .nh-art-body { padding:0 !important;flex:1;min-width:0; }
-  .nh-art-grid-compact .nh-art-badge { font-size:.58rem;padding:1px 6px; }
+  .nh-art-grid-compact .nh-art-badge { font-size:10px;font-weight:700;padding:1px 6px; }
   .nh-art-grid-compact .nh-art-title {
-    font-size:.78rem;line-height:1.28;margin-top:3px;
+    font-size:17px;font-weight:700;line-height:1.25;margin-top:3px;
     -webkit-line-clamp:2;line-clamp:2;
   }
   .nh-art-grid-compact .nh-art-excerpt { display:none !important; }
   .nh-art-grid-compact .nh-art-meta { margin-top:3px; }
-  .nh-art-grid-compact .nh-art-date { font-size:.62rem; }
+  .nh-art-grid-compact .nh-art-date { font-size:12px; }
   .nh-art-grid-compact .nh-art-ler { display:none !important; }
   /* top10: no mobile volta a ser lista única empilhada, sem foto (a divisão em 2 colunas e a foto são só desktop) */
   #nh-top10-list { display:block; }
@@ -1604,8 +1605,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 @media(max-width:480px){
   .nh-yt-grid { grid-template-columns:1fr; }
-  .nh-art-grid-compact .nh-art-img { width:60px !important;height:60px !important; }
-  .nh-art-grid-compact .nh-art-title { font-size:.74rem; }
   .nh-top10-item { grid-template-columns:18px 1fr; gap:8px; }
   .nh-top10-title { font-size:.7rem; }
   .nh-h1 { font-size:1.18rem; }
