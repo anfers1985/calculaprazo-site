@@ -1268,13 +1268,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   display:grid;
   grid-template-columns:1.5fr 1fr;
   gap:18px;
-  align-items:start;
+  align-items:stretch;
 }
 .nh-dcol { min-width:0;display:flex;flex-direction:column; }
 /* Painel branco padrão — as 3 colunas usam o mesmo enquadramento; a altura de cada uma
    agora acompanha o próprio conteúdo (não força mais esticar igual às vizinhas) */
 .nh-dcol-panel {
   display:flex;flex-direction:column;
+  height:100%;
   background:var(--card);
   border:1.5px solid var(--brd);
   border-radius:var(--rl);
@@ -1285,7 +1286,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .nh-dcol-more { font-size:.68rem;font-weight:700;color:var(--acc);text-decoration:none;white-space:nowrap; }
 .nh-dcol-more:hover { text-decoration:underline; }
 /* Vídeos: imagem à esquerda, título/data à direita — lista compacta sem espaçamento extra */
-.nh-dcol .nh-yt-grid { display:flex;flex-direction:column;gap:6px; }
+.nh-dcol .nh-yt-grid { display:flex;flex-direction:column;gap:6px;flex:1; }
 .nh-dcol .nh-yt-grid > a:not(.nh-yt-channel-btn) { flex-direction:row !important;align-items:center;gap:10px;border:none !important;box-shadow:none !important;background:transparent !important; }
 .nh-dcol .nh-yt-grid > a:not(.nh-yt-channel-btn) > div:first-child { width:88px !important;aspect-ratio:16/9;flex-shrink:0;border-radius:8px; }
 .nh-dcol .nh-yt-grid > a:not(.nh-yt-channel-btn) > div:last-child { padding:0 !important; }
@@ -1297,7 +1298,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   border-radius:10px;padding:11px 14px;
   font-size:.83rem;font-weight:700;
   text-decoration:none;transition:all .2s;
-  margin-top:14px;
+  margin-top:auto;
 }
 .nh-yt-channel-btn:hover { background:#DCE9FF;border-color:var(--b300); }
 /* Ferramentas em Destaque: reaproveita o estilo do Acesso Rápido, em tom claro */
@@ -1319,8 +1320,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 .nh-dcol-panel .nh-quick-all:hover { background:#DCE9FF;border-color:var(--b300); }
 /* Mais Acessados: painel de altura natural, sem vão embaixo da lista */
-.nh-top10-wrap { display:flex;flex-direction:column; }
-.nh-top10-wrap > .nh-quick-all { margin-top:14px; }
+.nh-top10-wrap { display:flex;flex-direction:column;height:100%; }
+.nh-top10-wrap > .nh-quick-all { margin-top:auto;padding-top:14px; }
 @media(max-width:900px){
   .nh-destaques-grid { grid-template-columns:1fr; gap:20px; }
   .nh-mobile-only-tools { display:block; }
