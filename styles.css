@@ -1698,4 +1698,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 
 
+/* Fotos de produto (Amazon) em thumbs/cards: nunca cortar — sempre mostrar
+   o produto inteiro, nitidamente menor, com fundo claro ao redor, em vez de
+   preencher/cortar a caixa toda (cover). */
+img[src*="m.media-amazon.com"] {
+  object-fit: contain !important;
+  background: #f8fafc;
+  padding: 30px !important;
+  box-sizing: border-box;
+}
+
 /* build: 20260606145327 */

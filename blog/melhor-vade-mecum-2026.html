@@ -1076,6 +1076,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       <div class="nav-dropdown" id="nav-dropdown-ferramentas">
         <a id="nav-tools" onclick="toggleFerramentas(event)">Ferramentas</a>
         <div class="nav-drop-menu" id="ferramentas-menu">
+          <a href="/ferramentas"><span class="dm-icon">🧰</span>Ver todas as ferramentas</a>
           <div class="nav-drop-divider"></div>
           <a href="/correcao-monetaria" ><span class="dm-icon">💰</span>Correção Monetária</a>
           <a href="/calculadora-de-juros" ><span class="dm-icon">📈</span>Cálculo de Juros</a>
@@ -1193,6 +1194,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 .prod-header{background:var(--b900);padding:9px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
 .prod-rank-num{font-size:.71rem;font-weight:800;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;}
 .prod-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 12px;border-radius:999px;font-size:.69rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;}
+@media(max-width:640px){.prod-header{flex-direction:column;align-items:flex-start;gap:6px;}.prod-badge,.prod-rank-num{white-space:normal;}}
 .bg-gold{background:rgba(255,210,0,.18);border:1px solid rgba(255,210,0,.35);color:#FFE082;}
 .bg-blue{background:rgba(96,165,250,.18);border:1px solid rgba(96,165,250,.3);color:#93C5FD;}
 .bg-green{background:rgba(52,211,153,.18);border:1px solid rgba(52,211,153,.3);color:#6EE7B7;}
