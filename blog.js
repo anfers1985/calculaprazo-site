@@ -350,6 +350,10 @@ function toggleSociais(e){
   var YT_CHANNEL_ID='@CalculaPrazo';
 
   // Fallback: carrega via RSS (sem API key, via allorigins proxy)
+  function renderYTChannelBtn(){
+    return '<a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener noreferrer" class="nh-yt-channel-btn">Ver canal no YouTube →</a>';
+  }
+
   function loadYouTubeViaRSS(grid){
     var rssUrl='https://www.youtube.com/feeds/videos.xml?channel_id=UCq_ZRZh3xI0LoiXzDmXSNsQ';
     var proxy='https://api.allorigins.win/get?url='+encodeURIComponent(rssUrl);
@@ -358,7 +362,7 @@ function toggleSociais(e){
       .then(function(j){
         var parser=new DOMParser();
         var doc=parser.parseFromString(j.contents,'text/xml');
-        var entries=Array.from(doc.querySelectorAll('entry')).slice(0,4);
+        var entries=Array.from(doc.querySelectorAll('entry')).slice(0,6);
         if(!entries.length){grid.innerHTML='<p style="color:var(--txt-s);font-size:.85rem;">Nenhum vídeo encontrado.</p>';return;}
         grid.innerHTML=entries.map(function(e){
           var vid=e.querySelector('videoId')&&e.querySelector('videoId').textContent;
@@ -368,7 +372,7 @@ function toggleSociais(e){
           var thumbUrl='https://i.ytimg.com/vi/'+vid+'/hqdefault.jpg';
           var dateStr=published?new Date(published).toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'}):'';
           return renderYTCard(vid,title,thumbUrl,dateStr);
-        }).filter(Boolean).join('');
+        }).filter(Boolean).join('')+renderYTChannelBtn();
       })
       .catch(function(){
         // Fallback 2: corsproxy.io
@@ -378,7 +382,7 @@ function toggleSociais(e){
           .then(function(t){
             var parser=new DOMParser();
             var doc=parser.parseFromString(t,'text/xml');
-            var entries=Array.from(doc.querySelectorAll('entry')).slice(0,4);
+            var entries=Array.from(doc.querySelectorAll('entry')).slice(0,6);
             if(!entries.length){grid.innerHTML='<p style="color:var(--txt-s);font-size:.85rem;">Nenhum vídeo encontrado.</p>';return;}
             grid.innerHTML=entries.map(function(e){
               var vid=e.querySelector('videoId')&&e.querySelector('videoId').textContent;
@@ -388,7 +392,7 @@ function toggleSociais(e){
               var thumbUrl='https://i.ytimg.com/vi/'+vid+'/hqdefault.jpg';
               var dateStr=published?new Date(published).toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'}):'';
               return renderYTCard(vid,title,thumbUrl,dateStr);
-            }).filter(Boolean).join('');
+            }).filter(Boolean).join('')+renderYTChannelBtn();
           })
           .catch(function(){
             grid.innerHTML='<p style="color:var(--txt-s);font-size:.85rem;">Não foi possível carregar os vídeos. <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener noreferrer" style="color:var(--acc);">Ver canal →</a></p>';
@@ -401,9 +405,9 @@ function toggleSociais(e){
       +'<div style="position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#111;flex-shrink:0;">'
       +'<img src="'+thumbUrl+'" alt="'+title+'" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;">'
       +'</div>'
-      +'<div style="padding:10px 12px 12px;flex:1;display:flex;flex-direction:column;">'
-      +'<div class="nh-yt-title" style="font-size:.85rem;font-weight:700;color:var(--txt);line-height:1.4;flex:1;">'+title+'</div>'
-      +(dateStr?'<div class="nh-yt-date" style="font-size:.72rem;color:var(--txt-s);margin-top:5px;">'+dateStr+'</div>':'')
+      +'<div style="padding:10px 12px;flex:1;display:flex;flex-direction:column;">'
+      +'<div class="nh-yt-title">'+title+'</div>'
+      +(dateStr?'<div class="nh-yt-date">'+dateStr+'</div>':'')
       +'</div></a>';
   }
 
@@ -416,8 +420,8 @@ function toggleSociais(e){
       .then(function(d){
         var cid=(d.items&&d.items[0])?d.items[0].id:null;
         if(!cid){loadYouTubeViaRSS(grid);return;}
-        // Step 2: busca os 4 últimos vídeos via search.list
-        return fetch('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId='+cid+'&maxResults=4&order=date&type=video&key='+YT_API_KEY);
+        // Step 2: busca os últimos vídeos via search.list
+        return fetch('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId='+cid+'&maxResults=6&order=date&type=video&key='+YT_API_KEY);
       })
       .then(function(r){if(r)return r.json();})
       .then(function(d){
@@ -429,7 +433,7 @@ function toggleSociais(e){
           var thumbUrl=thumb?thumb.url:'';
           var dateStr=new Date(sn.publishedAt).toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'});
           return renderYTCard(vid,sn.title,thumbUrl,dateStr);
-        }).join('');
+        }).join('')+renderYTChannelBtn();
       })
       .catch(function(){
         loadYouTubeViaRSS(grid);

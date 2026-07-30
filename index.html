@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link rel="preload" as="style" href="/styles.css?v=24">
+  <link rel="preload" as="style" href="/styles.css?v=27">
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"></noscript>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -87,7 +87,7 @@
 </script>
 <!-- /Schema FAQ estático -->
 <style>:root{color-scheme:light}html,body{background:#F8FAFC;color:#0F172A}</style>
-<link rel="stylesheet" href="/styles.css?v=24">
+<link rel="stylesheet" href="/styles.css?v=27">
 
 <!-- Chart.js carregado sob demanda pela calculadora de juros -->
 <script>
@@ -388,19 +388,12 @@
       <div class="nh-col-label"><span class="nh-col-line"></span>🕐 MAIS RECENTES</div>
       <div id="nh-recentes-list" class="nh-art-grid-compact"></div>
 
-      <!-- ▸ ANÚNCIO ADSTERRA: entre Mais Recentes e o bloco seguinte (320x50, mobile) -->
-      <div class="ad-mobile-only" style="justify-content:center;margin:16px 0;">
-        <div class="adst-slot" id="ad-home-mid-mobile-adsterra"
-             data-adst-key="cfa0d125d7dabd435f2b18e5f541bba5" data-adst-w="320" data-adst-h="50"
-             style="width:320px;height:50px;max-width:100%;"></div>
-      </div>
-
       <!-- home-blog-grid mantido oculto para o JS existente -->
       <div id="home-blog-grid" style="display:none;"></div>
     </div>
   </section>
 
-  <!-- ▸ ANÚNCIO ADSTERRA: home (728x90 desktop / 300x250 mobile) -->
+  <!-- ▸ ANÚNCIO ADSTERRA: home (728x90 desktop / 300x250 mobile) — entre Direito em Destaque e Mais Acessados -->
   <div class="ad-desktop-only" style="display:flex;justify-content:center;">
     <div class="adst-slot" id="ad-home-adsterra"
          data-adst-key="a95b609abad42b5f0da1fd621eefbd64" data-adst-w="728" data-adst-h="90"
@@ -412,7 +405,7 @@
          style="width:300px;height:250px;max-width:100%;"></div>
   </div>
 
-  <!-- ═══════════════ NH DESTAQUES: Mais Acessados / Vídeos / Ferramentas ═══════════════ -->
+  <!-- ═══════════════ NH DESTAQUES: Mais Acessados / Vídeos ═══════════════ -->
   <section class="nh-destaques">
     <div class="container">
       <div class="nh-destaques-grid">
@@ -430,8 +423,7 @@
         <div class="nh-dcol">
           <div class="nh-dcol-panel">
             <div class="nh-dcol-head">
-              <div class="nh-dcol-title">▶ Vídeos</div>
-              <a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener noreferrer" class="nh-dcol-more">Ver todos no YouTube →</a>
+              <div class="nh-dcol-title">▶ Vídeos Youtube</div>
             </div>
             <div id="yt-videos-grid" class="nh-yt-grid">
               <!-- preenchido por loadYouTubeVideos() -->
@@ -439,8 +431,8 @@
           </div>
         </div>
 
-        <!-- Coluna 3: Ferramentas em Destaque -->
-        <div class="nh-dcol">
+        <!-- Ferramentas em Destaque: só aparece no mobile -->
+        <div class="nh-dcol nh-mobile-only-tools">
           <div class="nh-dcol-panel">
             <div class="nh-dcol-head">
               <div class="nh-dcol-title">🧰 Ferramentas em Destaque</div>
@@ -482,7 +474,7 @@
                 </div>
               </a>
               <a class="nh-fdest-item" href="/calculadora-de-prescricao">
-                <div class="nh-quick-icon" style="background:rgba(99,102,241,.15);">⏳</div>
+                <div class="nh-quick-icon" style="background:rgba(99,102,241,.15);">⌛</div>
                 <div class="nh-quick-text">
                   <div class="nh-quick-name">Calculadora de Prescrição</div>
                   <div class="nh-quick-desc">Prazos trabalhistas e cíveis</div>
@@ -497,14 +489,12 @@
     </div>
   </section>
 
-  <!-- ▸ ANÚNCIO ADSTERRA: abaixo do bloco Mais Acessados/Vídeos/Ferramentas (468x60) -->
-  <div style="display:flex;justify-content:center;">
-    <div class="adst-slot" id="ad-destaques-adsterra"
-         data-adst-key="26e501da97315c3f84c571d64f3d10cc" data-adst-w="468" data-adst-h="60"
-         style="width:468px;height:60px;max-width:100%;margin:20px 0;"></div>
+  <!-- ▸ ANÚNCIO ADSTERRA: final da home (320x50, mobile) -->
+  <div class="ad-mobile-only" style="justify-content:center;margin:16px 0;">
+    <div class="adst-slot" id="ad-home-bottom-mobile-adsterra"
+         data-adst-key="cfa0d125d7dabd435f2b18e5f541bba5" data-adst-w="320" data-adst-h="50"
+         style="width:320px;height:50px;max-width:100%;"></div>
   </div>
-
-
 
 </div><!-- /home -->
 
@@ -893,7 +883,7 @@
 <!-- ══════════════════════════════════════
      BLOG / CONTEÚDO — JavaScript
 ══════════════════════════════════════ -->
-<script src="/blog.min.js?v=9" defer></script>
+<script src="/blog.min.js?v=14" defer></script>
 <script src="/js/ads-adsterra.js?v=2" defer></script>
 <script src="/js/analytics.js?v=1" defer></script>
 
