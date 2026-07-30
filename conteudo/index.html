@@ -119,22 +119,18 @@
 <main id="sec-blog" class="sec active">
 
 
-  <!-- Hero (reduzido — proporcional a Sobre/Termos/Contato) -->
-  <div id="conteudo-hero" style="background:linear-gradient(135deg,var(--b900) 0%,var(--b700) 55%,var(--b500) 100%);padding:26px 0 30px;position:relative;overflow:hidden;">
-    <div style="position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none;"></div>
-    <div style="position:absolute;bottom:-40px;left:5%;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.03);pointer-events:none;"></div>
-    <div class="container" style="position:relative;z-index:1;">
-      <div style="max-width:800px;margin:0 auto;">
-        <nav id="conteudo-crumb" style="display:flex;align-items:center;gap:6px;font-size:.76rem;margin-bottom:10px;">
-          <a href="/" style="cursor:pointer;color:rgba(255,255,255,.5);text-decoration:none;">Início</a>
-          <span style="color:rgba(255,255,255,.4);">›</span>
-          <span style="color:rgba(255,255,255,.75);font-weight:600;">Conteúdo</span>
+  <!-- Hero — igual ao componente .post-hero usado em Sobre/Termos/Contato/Ferramentas -->
+  <section class="post-hero">
+    <div class="container post-hero-inner">
+      <div class="article-wrap">
+        <nav class="post-breadcrumb" id="conteudo-crumb">
+          <a href="/">Início</a><span>›</span><span style="color:rgba(255,255,255,.75);">Conteúdo</span>
         </nav>
-        <h1 id="conteudo-h1" style="font-size:clamp(1.3rem,2.6vw,1.7rem);font-weight:800;color:#fff;line-height:1.25;margin-bottom:8px;letter-spacing:-.4px;">Notícias, Jurisprudência e Orientações</h1>
-        <div id="conteudo-sub" style="font-size:.82rem;color:rgba(255,255,255,.55);max-width:640px;">Decisões do TST e TRTs, eSocial, FGTS Digital, rescisões, folha de pagamento e tudo que move o universo trabalhista.</div>
+        <h1 id="conteudo-h1">Notícias, Jurisprudência e Orientações</h1>
+        <div class="post-hero-meta" id="conteudo-sub">Decisões do TST e TRTs, eSocial, FGTS Digital, rescisões, folha de pagamento e tudo que move o universo trabalhista.</div>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- ▸ ANÚNCIO ADSTERRA: conteudo-top (728x90 desktop / 320x50 mobile) -->
   <div class="ad-desktop-only" style="display:flex;justify-content:center;margin:20px 0;">
