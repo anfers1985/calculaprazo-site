@@ -1266,7 +1266,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .nh-destaques { background:#F1F5F9; padding:36px 0; border-top:1px solid var(--brd); }
 .nh-destaques-grid {
   display:grid;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:1.5fr 1fr;
   gap:18px;
   align-items:start;
 }
@@ -1423,13 +1423,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   display:grid;
   grid-template-rows:repeat(5,auto);
   grid-auto-flow:column;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
   column-gap:14px;
   align-content:start;
 }
 .nh-top10-item {
   display:grid;
-  grid-template-columns:16px 56px 1fr;
+  grid-template-columns:16px 56px minmax(0,1fr);
   align-items:center;
   gap:9px;
   padding:8px 0;
