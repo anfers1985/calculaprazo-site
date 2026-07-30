@@ -1577,7 +1577,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   .nh-ben-desc { font-size:.68rem; }
   /* art-card no mobile: linha horizontal compacta — foto pequena à esquerda,
      categoria + título (2 linhas) + data à direita, sem resumo */
-  .nh-art-grid-compact { gap:8px; }
+  .nh-art-grid-compact { gap:0; }
   .nh-art-grid-compact .nh-art-card {
     flex-direction:row !important;align-items:center;gap:12px;
     padding:8px 0;border-bottom:1px solid #E5E7EB;border-radius:0;
@@ -1590,7 +1590,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   .nh-art-grid-compact .nh-art-body { padding:0 !important;flex:1;min-width:0; }
   .nh-art-grid-compact .nh-art-badge { font-size:10px;font-weight:700;padding:1px 6px; }
   .nh-art-grid-compact .nh-art-title {
-    font-size:17px;font-weight:700;line-height:1.25;margin-top:3px;
+    font-size:16px;font-weight:700;line-height:1.25;margin-top:3px;
     -webkit-line-clamp:2;line-clamp:2;
   }
   .nh-art-grid-compact .nh-art-excerpt { display:none !important; }
