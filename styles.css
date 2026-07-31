@@ -1597,9 +1597,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   .nh-art-grid-compact .nh-art-meta { margin-top:2px; }
   .nh-art-grid-compact .nh-art-date { font-size:12px; }
   .nh-art-grid-compact .nh-art-ler { display:none !important; }
-  /* top10: fonte do título aumentada para o mesmo tamanho do título dos vídeos do
-     Youtube (.72rem) e liberada para até 3 linhas, para caber o texto inteiro */
-  .nh-top10-title { font-size:.72rem;line-height:1.32;-webkit-line-clamp:3;line-clamp:3; }
+  /* top10: fonte do título aumentada para o mesmo tamanho do título de
+     "Direito do Trabalho em Destaque" (.nh-art-grid-compact .nh-art-title: 14px),
+     limitado a 3 linhas para caber o texto inteiro sem estourar o card */
+  .nh-top10-title { font-size:14px;line-height:1.3;-webkit-line-clamp:3;line-clamp:3; }
   /* top10: no mobile volta a ser lista única empilhada, sem foto (a divisão em 2 colunas e a foto são só desktop) */
   #nh-top10-list { display:block; }
   .nh-top10-item { grid-template-columns:20px 1fr; }
