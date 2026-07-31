@@ -1,5 +1,5 @@
 
-var BLOG_POSTS=[];var BLOG_CAT='';var BLOG_H_FILTER='';var BLOG_VIEW='grid';var blogPage=1;var BLOG_PER_PAGE=25;var BLOG_MAX_PAGES=10;
+var BLOG_POSTS=[];var BLOG_CAT='';var BLOG_H_FILTER='';var BLOG_VIEW='grid';var blogPage=1;var BLOG_PER_PAGE=20;var BLOG_MAX_PAGES=Infinity;
 var BLOG_MODE='explore'; // 'explore' (cards de categoria) ou 'list' (resultados filtrados)
 
 // ── Alternância Explorar ⇄ Resultados (página /conteudo) ──────
@@ -198,7 +198,7 @@ function buildPostCard(p){
   return '<a href="/blog/'+(p.id||p.slug||'')+'.html" style="display:block;text-decoration:none;background:var(--card);border:1.5px solid var(--brd);border-radius:12px;overflow:hidden;transition:all .2s;box-shadow:var(--sh);" onmouseover="this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'var(--shl)\';this.style.borderColor=\'var(--b200)\'" onmouseout="this.style.transform=\'\';this.style.boxShadow=\'var(--sh)\';this.style.borderColor=\'var(--brd)\'">'
     +ih+'<div style="padding:14px;"><div style="margin-bottom:8px;">'+cb+'</div>'
     +'<div style="font-size:.88rem;font-weight:700;color:var(--txt);line-height:1.35;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">'+(p.title||'')+'</div>'
-    +'<div style="font-size:.76rem;color:var(--txt-m);line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">'+(p.excerpt||'')+'</div>'
+    +'<div style="font-size:.76rem;color:var(--txt-m);line-height:1.5;">'+(p.excerpt||'')+'</div>'
     +'<div style="margin-top:10px;font-size:.75rem;color:var(--txt-s);">'+formatPostDate(p.date)+'</div></div></a>';
 }
 
@@ -596,22 +596,15 @@ function renderNhTop10(){
     });
   }
 
-  // Completa a lista até 10 posts válidos usando os mais recentes,
-  // caso alguns slugs (API ou fallback) não existam mais em BLOG_POSTS.
-  function padToTen(slugs) {
-    var valid = slugs.filter(function(s){ return !!map[s]; });
-    if (valid.length >= 10) return valid.slice(0, 10);
-    var recent = BLOG_POSTS.slice()
-      .sort(function(a,b){ return (b.date||'').localeCompare(a.date||''); });
-    for (var i = 0; i < recent.length && valid.length < 10; i++) {
-      var s = recent[i].id || recent[i].slug || '';
-      if (s && valid.indexOf(s) === -1) valid.push(s);
-    }
-    return valid;
+  // Mantém apenas os slugs que realmente existem em BLOG_POSTS e
+  // respeita o tamanho real retornado pela API (sem inventar posições
+  // com posts recentes só para completar até 10).
+  function onlyValid(slugs) {
+    return slugs.filter(function(s){ return !!map[s]; }).slice(0, 10);
   }
 
   function renderSlugs(slugs) {
-    var items = buildItems(padToTen(slugs));
+    var items = buildItems(onlyValid(slugs));
     if(!items.length){
       list.innerHTML='<p style="font-size:.8rem;color:var(--txt-s);padding:8px 0;">Carregando...</p>';
       return;
@@ -619,23 +612,21 @@ function renderNhTop10(){
     list.innerHTML = items.join('');
   }
 
-  // Tentar carregar do Worker KV (Top 10 real)
+  // Tentar carregar do Worker KV (Top 10 real, com contagem de acesso genuína)
   var workerUrl = 'https://calculaprazo-views-api.andersonfernand3s.workers.dev';
   fetch(workerUrl + '/top/10')
     .then(function(r){ return r.ok ? r.json() : null; })
     .then(function(d){
-      var apiSlugs = (d && d.top && d.top.length >= 5)
+      var apiSlugs = (d && d.top && d.top.length)
         ? d.top.map(function(item){ return item.slug || item; })
         : [];
-      // Completa até 10 com o fallback, sem duplicar os que já vieram da API
-      var slugs = apiSlugs.slice();
-      for (var i = 0; i < NH_TOP10_IDS.length && slugs.length < 10; i++) {
-        if (slugs.indexOf(NH_TOP10_IDS[i]) === -1) slugs.push(NH_TOP10_IDS[i]);
-      }
-      renderSlugs(slugs.length ? slugs : NH_TOP10_IDS);
+      // Só usa o fallback hardcoded se a API não retornou NENHUM dado real
+      // (ex.: Worker fora do ar). Se retornou 3, 6 ou 8 itens reais, mostra
+      // exatamente esses — sem completar artificialmente até 10.
+      renderSlugs(apiSlugs.length ? apiSlugs : NH_TOP10_IDS);
     })
     .catch(function(){
-      // Fallback para lista hardcoded se Worker indisponível
+      // Fallback para lista hardcoded apenas se o Worker estiver indisponível
       renderSlugs(NH_TOP10_IDS);
     });
 }
