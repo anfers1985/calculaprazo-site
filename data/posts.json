@@ -1,5 +1,41 @@
 [
   {
+    "id": "promocao-sem-aumento-salarial-riscos-trabalhistas",
+    "title": "Promoção sem aumento: riscos trabalhistas e cuidados",
+    "category": "rh-contrato",
+    "category_label": "Contrato",
+    "excerpt": "Entenda quando uma promoção sem reajuste salarial pode gerar riscos trabalhistas e quais medidas evitam passivos com base na CLT.",
+    "image": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-07-30",
+    "updatedAt": "2026-07-30",
+    "tags": []
+  },
+  {
+    "id": "pec-fim-escala-6x1-volta-senado-agosto",
+    "title": "PEC do fim da escala 6x1 volta ao Senado em agosto",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Senado deve retomar debate da PEC 221/2019, que reduz jornada para 40 horas semanais e prevê fim da escala 6x1 sem corte salarial.",
+    "image": "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-07-30",
+    "updatedAt": "2026-07-30",
+    "tags": []
+  },
+  {
+    "id": "lucro-fgts-saque-caixa-situacoes-liberacao",
+    "title": "Lucro do FGTS: mais de 10 casos em que a Caixa libera saque",
+    "category": "fgts-digital",
+    "category_label": "FGTS",
+    "excerpt": "Entenda quando o trabalhador pode sacar o FGTS após o crédito do lucro, incluindo demissão, aposentadoria, imóvel, doenças graves e outras hipóteses legais.",
+    "image": "https://images.unsplash.com/photo-1579621970795-87facc2f976d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-07-30",
+    "updatedAt": "2026-07-30",
+    "tags": []
+  },
+  {
     "id": "cancelamento-admissao-regras-prazos-cuidados-rh",
     "title": "Cancelamento de admissão: regras, prazos e cuidados no RH",
     "category": "rh-contrato",
