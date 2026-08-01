@@ -1,5 +1,17 @@
 [
   {
+    "id": "tst-retencao-passaporte-devedor-trabalhista-casos",
+    "title": "TST define quando passaporte de devedor trabalhista pode ser retido",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "TST decide que retenção de passaporte de devedor trabalhista exige fundamentação específica e análise do caso concreto para ser mantida.",
+    "image": "https://images.unsplash.com/photo-1655722725332-9925c96dd627?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-01",
+    "updatedAt": "2026-08-01",
+    "tags": []
+  },
+  {
     "id": "trt-mg-afasta-vinculo-igreja-esposa-pastor",
     "title": "TRT-MG nega vínculo de emprego entre igreja e esposa de pastor",
     "category": "jurisprudencia-trts",
