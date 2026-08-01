@@ -8,6 +8,14 @@ on:
   schedule:
     - cron: '0 * * * *'
 
+# Evita que duas execuções (push + cron, ou dois cron seguidos) rodem ao mesmo tempo.
+# Isso é o que causava a criação de jobs duplicados/triplicados para o mesmo post:
+# duas execuções liam a mesma contagem "criados hoje" antes de qualquer uma inserir.
+# Com isso, a segunda execução fica na fila e só roda depois que a primeira terminar.
+concurrency:
+  group: video-pipeline
+  cancel-in-progress: false
+
 jobs:
   detectar:
     runs-on: ubuntu-latest

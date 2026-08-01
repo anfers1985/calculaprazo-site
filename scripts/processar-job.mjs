@@ -2,14 +2,19 @@ import { execFileSync } from 'node:child_process';
 import { getJob } from './lib/supabase.mjs';
 
 // Ordem das etapas e a partir de qual status cada uma deve rodar.
+// "etapa" precisa bater exatamente com o valor passado pra marcarErro(jobId, etapa, ...)
+// em cada script. Antes isso era resolvido comparando com o nome do arquivo
+// (ex: e.script.includes(job.erro_etapa)), e "publicacao" não bate em "08-publicar-youtube.mjs" —
+// isso fazia o job reiniciar do zero (roteiro, narração, etc.) em vez de só retomar a publicação,
+// e como a publicação não checava se já tinha subido, o vídeo ia pro YouTube de novo.
 const ETAPAS = [
-  { apos: 'queued', script: 'scripts/02-gerar-roteiro.mjs' },
-  { apos: 'roteiro_ok', script: 'scripts/03-narracao.py' },
-  { apos: 'narracao_ok', script: 'scripts/04-legendas.py' },
-  { apos: 'legendas_ok', script: 'scripts/05-imagens.mjs' },
-  { apos: 'imagens_ok', script: 'scripts/06-thumbnail.mjs' },
-  { apos: 'thumbnail_ok', script: 'scripts/07-render.mjs' },
-  { apos: 'render_ok', script: 'scripts/08-publicar-youtube.mjs' },
+  { apos: 'queued', etapa: 'roteiro', script: 'scripts/02-gerar-roteiro.mjs' },
+  { apos: 'roteiro_ok', etapa: 'narracao', script: 'scripts/03-narracao.py' },
+  { apos: 'narracao_ok', etapa: 'legendas', script: 'scripts/04-legendas.py' },
+  { apos: 'legendas_ok', etapa: 'imagens', script: 'scripts/05-imagens.mjs' },
+  { apos: 'imagens_ok', etapa: 'thumbnail', script: 'scripts/06-thumbnail.mjs' },
+  { apos: 'thumbnail_ok', etapa: 'render', script: 'scripts/07-render.mjs' },
+  { apos: 'render_ok', etapa: 'publicacao', script: 'scripts/08-publicar-youtube.mjs' },
 ];
 
 function statusParaIndice(status) {
@@ -24,7 +29,7 @@ async function main(jobId) {
   let indiceInicial;
   if (job.status === 'erro') {
     // Retoma a partir da etapa que falhou (não da anterior, que já está concluída).
-    const idxFalha = ETAPAS.findIndex(e => e.script.includes(job.erro_etapa));
+    const idxFalha = ETAPAS.findIndex(e => e.etapa === job.erro_etapa);
     indiceInicial = idxFalha === -1 ? 0 : idxFalha;
   } else if (job.status === 'publicado') {
     console.log(`Job ${jobId} já publicado. Nada a fazer.`);

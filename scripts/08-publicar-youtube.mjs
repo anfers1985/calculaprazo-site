@@ -13,6 +13,16 @@ const youtube = google.youtube({ version: 'v3', auth: oauth2Client });
 
 async function main(jobId) {
   const job = await getJob(jobId);
+
+  // Se uma tentativa anterior já subiu esse vídeo pro YouTube e só falhou depois
+  // (ex: no envio da thumbnail ou ao salvar o status), não faz sentido subir de novo.
+  // Isso é o que causava vídeo duplicado/triplicado no canal.
+  if (job.youtube_video_id) {
+    console.log(`Job ${jobId} já tinha sido publicado antes (${job.youtube_video_id}). Pulando novo upload.`);
+    await updateJob(jobId, { status: 'publicado' });
+    return;
+  }
+
   const { titulo_seo, descricao, hashtags } = job.roteiro;
 
   const videoLocal = path.resolve('output/video.mp4');

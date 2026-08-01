@@ -24,10 +24,13 @@ export async function updateJob(jobId, fields) {
 }
 
 export async function marcarErro(jobId, etapa, mensagem) {
+  const jobAtual = await getJob(jobId).catch(() => null);
+  const tentativas = (jobAtual?.tentativas || 0) + 1;
   await updateJob(jobId, {
     status: 'erro',
     erro_etapa: etapa,
     erro_mensagem: String(mensagem).slice(0, 2000),
+    tentativas,
   });
 }
 
