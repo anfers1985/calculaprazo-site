@@ -614,7 +614,7 @@ function renderNhTop10(){
 
   // Tentar carregar do Worker KV (Top 10 real, com contagem de acesso genuína)
   var workerUrl = 'https://calculaprazo-views-api.andersonfernand3s.workers.dev';
-  fetch(workerUrl + '/top/10')
+  fetch(workerUrl + '/top/30')
     .then(function(r){ return r.ok ? r.json() : null; })
     .then(function(d){
       var apiSlugs = (d && d.top && d.top.length)
