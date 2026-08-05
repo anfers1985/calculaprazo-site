@@ -1,5 +1,17 @@
 [
   {
+    "id": "descricao-cargos-importancia-gestao-pessoas",
+    "title": "Descrição de cargos: por que ela é essencial para a gestão de pessoas",
+    "category": "orientacoes-praticas",
+    "category_label": "Outros RH",
+    "excerpt": "Entenda a importância da descrição de cargos, seus benefícios para o RH, como elaborar o documento e reduzir riscos trabalhistas na empresa.",
+    "image": "https://images.unsplash.com/photo-1585938541980-db734b99b264?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-05",
+    "updatedAt": "2026-08-05",
+    "tags": []
+  },
+  {
     "id": "dirigente-sindical-direitos-estabilidade-contrato-trabalho",
     "title": "Dirigente sindical: direitos, estabilidade e efeitos no contrato",
     "category": "rh-sindical",
