@@ -1,5 +1,17 @@
 [
   {
+    "id": "ponto-por-excecao-como-funciona-clt",
+    "title": "Ponto por exceção: entenda como funciona e quando pode ser adotado",
+    "category": "rh-jornada",
+    "category_label": "Jornada",
+    "excerpt": "Saiba o que é o ponto por exceção, como funciona, o que diz a CLT e a Portaria MTE 671/2021 e quais cuidados o RH deve adotar.",
+    "image": "https://images.unsplash.com/photo-1592495981488-073153776d9a?q=80&w=1212&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-06",
+    "updatedAt": "2026-08-06",
+    "tags": []
+  },
+  {
     "id": "tst-desconto-dias-parados-greve-longa",
     "title": "TST autoriza desconto parcial de dias parados em greve longa",
     "category": "jurisprudencia-tst",
