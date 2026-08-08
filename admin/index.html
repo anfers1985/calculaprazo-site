@@ -148,6 +148,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
       <a onclick="goPage('dashboard')" id="nav-dashboard" class="on"><span class="s-icon">📊</span> Dashboard</a>
       <a onclick="goPage('new')" id="nav-new"><span class="s-icon">✏️</span> Novo Post</a>
       <a onclick="goPage('list')" id="nav-list"><span class="s-icon">📄</span> Gerenciar Posts</a>
+      <a onclick="goPage('scheduled')" id="nav-scheduled"><span class="s-icon">🗓️</span> Agendados</a>
       <div class="s-sep"></div>
       <a onclick="goPage('automation')" id="nav-automation"><span class="s-icon">🤖</span> Automação</a>
       <a onclick="goPage('studio')" id="nav-studio"><span class="s-icon">🚀</span> IA Content Studio</a>
@@ -183,10 +184,38 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button class="btn btn-g" onclick="goPage('list')">Cancelar</button>
           <button class="btn btn-g" id="btn-baixar" onclick="baixarHTML()">⬇️ Baixar HTML</button>
-          <button class="btn btn-p" id="btn-publicar" onclick="publicarNoSite()">🚀 Publicar no GitHub</button>
+          <button class="btn btn-p" id="btn-publicar" onclick="handlePublicarClick()">🚀 Publicar no GitHub</button>
         </div>
       </div>
-      
+
+      <div class="form-card" style="margin-bottom:16px;">
+        <div style="font-size:.9rem;font-weight:700;margin-bottom:12px;">🗓️ Quando publicar</div>
+        <div style="display:flex;gap:18px;margin-bottom:14px;flex-wrap:wrap;">
+          <label style="display:flex;align-items:center;gap:6px;font-size:.86rem;cursor:pointer;">
+            <input type="radio" name="modo-pub" value="agora" checked onchange="toggleModoPublicacao()"> Publicar agora
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:.86rem;cursor:pointer;">
+            <input type="radio" name="modo-pub" value="programar" onchange="toggleModoPublicacao()"> Programar publicação
+          </label>
+        </div>
+        <div id="bloco-programar" style="display:none;">
+          <div class="fg-row">
+            <div class="fg"><label>Data da publicação</label><input type="date" id="f-sched-date"></div>
+            <div class="fg">
+              <label>Horário</label>
+              <select id="f-sched-time">
+                <option value="09:00">09:00</option>
+                <option value="12:00">12:00</option>
+                <option value="15:00">15:00</option>
+                <option value="18:00">18:00</option>
+              </select>
+            </div>
+          </div>
+          <p style="font-size:.76rem;color:var(--txt-s);">O post fica na fila (aba "Agendados") e é publicado automaticamente pelo robô no horário escolhido (seg-sex). Se preferir, publique manualmente a qualquer momento pela aba Agendados.</p>
+        </div>
+        <input type="hidden" id="f-sched-id" value="">
+      </div>
+
       <div class="form-card">
         <input type="hidden" id="edit-id">
         <div class="fg"><label>Título do Post</label><input type="text" id="f-title" placeholder="Ex: Como calcular prazos processuais no CPC" oninput="autoSlug()"></div>
@@ -363,6 +392,18 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
         </select>
       </div>
       <div class="posts-list" id="posts-list"></div>
+    </div>
+
+    <!-- SCHEDULED -->
+    <div class="page" id="page-scheduled">
+      <div class="page-header">
+        <div><div class="page-title">Agendados</div><div class="page-sub">Conteúdo programado — publicado automaticamente às 09h/12h/15h/18h (seg-sex)</div></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-g" onclick="renderScheduled()">🔄 Atualizar</button>
+          <button class="btn btn-p" onclick="goPage('new')">✏️ Novo Post</button>
+        </div>
+      </div>
+      <div id="scheduled-list"><div class="card" style="text-align:center;color:var(--txt-s);padding:40px;">Carregando...</div></div>
     </div>
 
     <!-- AUTOMATION -->
@@ -805,6 +846,7 @@ function goPage(id){
   if(nav) nav.classList.add('on');
   if(id==='dashboard') renderDashboard();
   if(id==='list') renderList();
+  if(id==='scheduled') renderScheduled();
   if(id==='export') renderExport();
   if(id==='studio') studioInit();
   if(id==='new'){ resetForm(); document.getElementById('form-page-title').textContent='Novo Conteúdo'; }
@@ -908,6 +950,12 @@ function resetForm(){
   document.getElementById('editor-area').value='';
   document.getElementById('img-preview-el').style.display='none';
   document.getElementById('exc-count').textContent='0';
+  document.getElementById('f-sched-id').value='';
+  document.getElementById('f-sched-date').value='';
+  document.getElementById('f-sched-time').value='09:00';
+  const rAgora = document.querySelector('input[name="modo-pub"][value="agora"]');
+  if(rAgora) rAgora.checked = true;
+  toggleModoPublicacao();
 }
 
 function editPost(id){
@@ -1842,14 +1890,40 @@ async function publicarNoSite() {
   try {
     const now = new Date().toISOString().split('T')[0];
     const tagsInput = document.getElementById('f-tags') ? document.getElementById('f-tags').value.trim() : '';
-  const tags = tagsInput ? tagsInput.split(',').map(t=>t.trim()).filter(Boolean).slice(0,4) : [];
-  const updatedInput = document.getElementById('f-updated') ? document.getElementById('f-updated').value.trim() : '';
-  // Preserva data original ao editar; só usa 'now' para posts novos
-  const origDate = document.getElementById('f-orig-date') ? document.getElementById('f-orig-date').value.trim() : '';
-  const postDate = origDate || now;
-  const updatedAt = updatedInput && updatedInput !== postDate ? updatedInput : postDate;
-  const post = { id: slug, title, category: cat, excerpt, image, imageCaption: caption, date: postDate, updatedAt, content, tags };
+    const tags = tagsInput ? tagsInput.split(',').map(t=>t.trim()).filter(Boolean).slice(0,4) : [];
+    const updatedInput = document.getElementById('f-updated') ? document.getElementById('f-updated').value.trim() : '';
+    // Preserva data original ao editar; só usa 'now' para posts novos
+    const origDate = document.getElementById('f-orig-date') ? document.getElementById('f-orig-date').value.trim() : '';
+    const postDate = origDate || now;
+    const updatedAt = updatedInput && updatedInput !== postDate ? updatedInput : postDate;
+    const post = { id: slug, title, category: cat, excerpt, image, imageCaption: caption, date: postDate, updatedAt, content, tags };
 
+    await publicarPost(post, pat);
+
+    // Se este post veio de um item agendado editado e publicado manualmente
+    // via "Publicar agora" no formulário, remove ele da fila.
+    const schedId = document.getElementById('f-sched-id') ? document.getElementById('f-sched-id').value.trim() : '';
+    if (schedId) {
+      try { await removerDaFilaAgendados(schedId, pat); } catch(e) { console.warn('Falha ao remover da fila de agendados', e); }
+    }
+
+    toast('✅ Publicado com sucesso!','ok');
+    setTimeout(() => goPage('list'), 2000);
+
+  } catch(e) {
+    toast('Erro: ' + e.message, 'err');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🚀 Publicar no GitHub';
+  }
+}
+
+// Núcleo compartilhado de publicação: recebe um objeto `post` já pronto
+// (venha do formulário ou de um item da fila de agendados) e faz todo o
+// trabalho de gerar o HTML, subir pro GitHub, sincronizar vizinhos,
+// atualizar posts.json/sitemap e notificar indexação. Usado tanto por
+// publicarNoSite() quanto por publicarAgendadoAgora().
+async function publicarPost(post, pat) {
     // 0. Buscar posts.json ANTES de montar o HTML — necessário pro link interno
     // dentro do corpo do artigo (buildLeiaTambemHTML só usa posts que realmente existem).
     toast('Buscando posts existentes...', 'ok');
@@ -2031,15 +2105,266 @@ async function publicarNoSite() {
     const idx = localPosts.findIndex(p=>p.id===post.id);
     if(idx>=0) localPosts[idx]=post; else localPosts.push(post);
     savePosts(localPosts);
+}
 
-    toast('✅ Publicado com sucesso!','ok');
-    setTimeout(() => goPage('list'), 2000);
+// ════════════════════════════════════════
+// AGENDAMENTO DE PUBLICAÇÕES
+// ════════════════════════════════════════
+const AGENDADOS_PATH = 'data/agendados.json';
+let _agendadosCache = [];
+
+async function githubGetJSON(path, pat, fallback) {
+  try {
+    const r = await fetch(
+      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}?ref=${GITHUB_BRANCH}`,
+      { headers: { 'Authorization': `token ${pat}`, 'Accept': 'application/vnd.github.v3+json' } }
+    );
+    if (!r.ok) {
+      if (r.status === 404) return fallback; // arquivo ainda não existe no repo
+      throw new Error(`GitHub API erro ${r.status} ao ler ${path}`);
+    }
+    const d = await r.json();
+    return JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\s/g, '')))));
+  } catch (e) {
+    console.warn(`Falha ao ler ${path}:`, e.message);
+    return fallback;
+  }
+}
+
+// Alterna a exibição do bloco "Programar" no formulário e o texto do botão principal.
+function toggleModoPublicacao() {
+  const modo = document.querySelector('input[name="modo-pub"]:checked')?.value || 'agora';
+  const bloco = document.getElementById('bloco-programar');
+  const btn = document.getElementById('btn-publicar');
+  if (modo === 'programar') {
+    bloco.style.display = 'block';
+    btn.textContent = '🗓️ Programar Publicação';
+  } else {
+    bloco.style.display = 'none';
+    btn.textContent = '🚀 Publicar no GitHub';
+  }
+}
+
+// Dispatcher do botão principal do formulário: decide entre publicar agora ou programar,
+// conforme o rádio selecionado.
+function handlePublicarClick() {
+  const modo = document.querySelector('input[name="modo-pub"]:checked')?.value || 'agora';
+  if (modo === 'programar') programarPost();
+  else publicarNoSite();
+}
+
+// Monta o objeto do item agendado a partir do formulário (compartilhado por criar/editar).
+function montarItemAgendadoDoFormulario() {
+  const title   = document.getElementById('f-title').value.trim();
+  const excerpt = document.getElementById('f-excerpt').value.trim();
+  const content = document.getElementById('editor-area').value.trim();
+  const slug    = document.getElementById('f-slug').value.trim() || slugify(title);
+  const cat     = document.getElementById('f-cat').value;
+  const image   = document.getElementById('f-image').value.trim();
+  const caption = document.getElementById('f-caption').value.trim();
+  const tagsInput = document.getElementById('f-tags') ? document.getElementById('f-tags').value.trim() : '';
+  const tags = tagsInput ? tagsInput.split(',').map(t=>t.trim()).filter(Boolean).slice(0,4) : [];
+
+  const dataStr = document.getElementById('f-sched-date').value;
+  const horaStr = document.getElementById('f-sched-time').value || '09:00';
+
+  if (!title || !excerpt || !content) { toast('Preencha título, resumo e conteúdo.', 'err'); return null; }
+  if (!dataStr) { toast('Escolha a data da publicação.', 'err'); return null; }
+
+  // -03:00 fixo (Brasília). Não varia com horário de verão no Brasil desde 2019.
+  const publicarEm = `${dataStr}T${horaStr}:00-03:00`;
+  if (new Date(publicarEm).getTime() < Date.now() - 5*60*1000) {
+    toast('A data/horário escolhidos já passaram. Escolha um horário futuro.', 'err');
+    return null;
+  }
+
+  return { id: slug, title, category: cat, excerpt, image, imageCaption: caption, tags, content, publicarEm };
+}
+
+// Cria ou atualiza um item na fila data/agendados.json.
+async function programarPost() {
+  const pat = localStorage.getItem(GH_PAT_KEY);
+  if(!pat){ toast('Configure o GitHub PAT nas Configurações primeiro.','err'); goPage('settings'); return; }
+
+  const item = montarItemAgendadoDoFormulario();
+  if (!item) return;
+
+  const btn = document.getElementById('btn-publicar');
+  btn.disabled = true;
+  btn.textContent = '⏳ Programando...';
+
+  try {
+    const agendados = await githubGetJSON(AGENDADOS_PATH, pat, []);
+    const editingId = document.getElementById('f-sched-id').value.trim();
+
+    // Evita agendar um slug que já existe como post publicado.
+    const posts = getPosts();
+    if (posts.some(p => p.id === item.id)) {
+      throw new Error(`Já existe um post publicado com a URL "${item.id}". Altere o slug.`);
+    }
+    // Evita duplicar slug com outro item pendente na fila.
+    const conflito = agendados.find(a => a.id === item.id && a.status === 'pendente' && a.criadoEm !== editingId);
+    if (conflito) throw new Error(`Já existe um agendamento pendente com a URL "${item.id}".`);
+
+    if (editingId) {
+      const idx = agendados.findIndex(a => a.criadoEm === editingId);
+      if (idx >= 0) {
+        agendados[idx] = { ...agendados[idx], ...item, status: 'pendente' };
+      } else {
+        agendados.push({ ...item, status: 'pendente', criadoEm: new Date().toISOString() });
+      }
+    } else {
+      agendados.push({ ...item, status: 'pendente', criadoEm: new Date().toISOString() });
+    }
+
+    await githubUpsertFile(AGENDADOS_PATH, JSON.stringify(agendados, null, 2), `agendamento: ${item.title}`, pat);
+
+    toast('✅ Publicação programada!', 'ok');
+    setTimeout(() => goPage('scheduled'), 1500);
 
   } catch(e) {
     toast('Erro: ' + e.message, 'err');
   } finally {
     btn.disabled = false;
-    btn.textContent = '🚀 Publicar no GitHub';
+    toggleModoPublicacao();
+  }
+}
+
+// Remove um item da fila pelo campo criadoEm (usado como identificador estável do item).
+async function removerDaFilaAgendados(criadoEm, pat) {
+  const agendados = await githubGetJSON(AGENDADOS_PATH, pat, []);
+  const novaFila = agendados.filter(a => a.criadoEm !== criadoEm);
+  if (novaFila.length !== agendados.length) {
+    await githubUpsertFile(AGENDADOS_PATH, JSON.stringify(novaFila, null, 2), 'remocao: item da fila de agendados', pat);
+  }
+}
+
+function formatDateTimeBR(iso) {
+  try {
+    return new Date(iso).toLocaleString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit', timeZone: 'America/Sao_Paulo' });
+  } catch(e) { return iso; }
+}
+
+function statusBadge(status) {
+  const map = {
+    pendente: { label: '🕐 Pendente', bg: 'var(--b50)', color: 'var(--acc)' },
+    publicado: { label: '✅ Publicado', bg: '#ECFDF5', color: '#059669' },
+    erro: { label: '⚠️ Erro', bg: '#FEF2F2', color: '#DC2626' }
+  };
+  const s = map[status] || map.pendente;
+  return `<span style="display:inline-block;padding:3px 10px;border-radius:999px;font-size:.72rem;font-weight:700;background:${s.bg};color:${s.color};">${s.label}</span>`;
+}
+
+async function renderScheduled() {
+  const pat = localStorage.getItem(GH_PAT_KEY);
+  const container = document.getElementById('scheduled-list');
+  if(!pat){
+    container.innerHTML = '<div class="card" style="text-align:center;color:var(--txt-s);padding:40px;">Configure o GitHub PAT nas Configurações para ver a fila de agendados.</div>';
+    return;
+  }
+  container.innerHTML = '<div class="card" style="text-align:center;color:var(--txt-s);padding:40px;">Carregando...</div>';
+
+  const agendados = await githubGetJSON(AGENDADOS_PATH, pat, []);
+  _agendadosCache = agendados;
+
+  if (!agendados.length) {
+    container.innerHTML = '<div class="card" style="text-align:center;color:var(--txt-s);padding:40px;">Nenhum post agendado. Crie um novo post e escolha "Programar publicação".</div>';
+    return;
+  }
+
+  const ordenados = [...agendados].sort((a,b) => new Date(a.publicarEm) - new Date(b.publicarEm));
+
+  container.innerHTML = ordenados.map(item => `
+    <div class="post-item">
+      <div style="flex:1;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap;">
+          <span class="post-cat cat-${item.category}">${catLabel(item.category)}</span>
+          ${statusBadge(item.status)}
+          <span style="font-size:.72rem;color:var(--txt-s);">🗓️ ${formatDateTimeBR(item.publicarEm)}</span>
+        </div>
+        <div class="post-title">${item.title}</div>
+        <div class="post-excerpt">${item.excerpt}</div>
+        ${item.status === 'erro' && item.erro ? `<div style="font-size:.76rem;color:#DC2626;margin-top:4px;">Erro: ${item.erro}</div>` : ''}
+      </div>
+      <div class="post-actions">
+        ${item.status === 'pendente' ? `
+          <button class="btn btn-g btn-sm" onclick="editarAgendado('${item.criadoEm}')">Editar</button>
+          <button class="btn btn-p btn-sm" onclick="publicarAgendadoAgora('${item.criadoEm}')">Publicar agora</button>
+          <button class="btn btn-danger btn-sm" onclick="excluirAgendado('${item.criadoEm}')">Excluir</button>
+        ` : `
+          <a class="btn btn-g btn-sm" href="../blog/${item.id}.html" target="_blank">Ver</a>
+        `}
+      </div>
+    </div>
+  `).join('');
+}
+
+function editarAgendado(criadoEm) {
+  const item = _agendadosCache.find(a => a.criadoEm === criadoEm);
+  if (!item) { toast('Item não encontrado.', 'err'); return; }
+
+  goPage('new');
+  document.getElementById('form-page-title').textContent = 'Editar Agendamento';
+  document.getElementById('edit-id').value = '';
+  document.getElementById('f-title').value = item.title;
+  document.getElementById('f-slug').value = item.id;
+  document.getElementById('f-cat').value = item.category;
+  document.getElementById('f-tags').value = Array.isArray(item.tags) ? item.tags.join(', ') : '';
+  document.getElementById('f-excerpt').value = item.excerpt;
+  document.getElementById('f-image').value = item.image || '';
+  document.getElementById('f-caption').value = item.imageCaption || '';
+  document.getElementById('editor-area').value = item.content || '';
+  countChars(document.getElementById('f-excerpt'), 'exc-count', 160);
+  previewImg();
+
+  document.getElementById('f-sched-id').value = item.criadoEm;
+  const d = new Date(item.publicarEm);
+  const dataLocal = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo', year:'numeric', month:'2-digit', day:'2-digit' }).format(d);
+  const horaLocal = new Intl.DateTimeFormat('pt-BR', { timeZone: 'America/Sao_Paulo', hour:'2-digit', minute:'2-digit', hour12:false }).format(d);
+  document.getElementById('f-sched-date').value = dataLocal;
+  document.getElementById('f-sched-time').value = ['09:00','12:00','15:00','18:00'].includes(horaLocal) ? horaLocal : '09:00';
+
+  document.querySelector('input[name="modo-pub"][value="programar"]').checked = true;
+  toggleModoPublicacao();
+}
+
+async function excluirAgendado(criadoEm) {
+  const item = _agendadosCache.find(a => a.criadoEm === criadoEm);
+  if (!item) return;
+  if (!confirm(`Excluir o agendamento de "${item.title}"? Esta ação não pode ser desfeita.`)) return;
+
+  const pat = localStorage.getItem(GH_PAT_KEY);
+  try {
+    await removerDaFilaAgendados(criadoEm, pat);
+    toast('Agendamento excluído.', 'ok');
+    renderScheduled();
+  } catch(e) {
+    toast('Erro: ' + e.message, 'err');
+  }
+}
+
+async function publicarAgendadoAgora(criadoEm) {
+  const item = _agendadosCache.find(a => a.criadoEm === criadoEm);
+  if (!item) return;
+  if (!confirm(`Publicar "${item.title}" agora, ignorando o horário programado?`)) return;
+
+  const pat = localStorage.getItem(GH_PAT_KEY);
+  if(!pat){ toast('Configure o GitHub PAT nas Configurações primeiro.','err'); goPage('settings'); return; }
+
+  try {
+    toast('Publicando...', 'ok');
+    const now = new Date().toISOString().split('T')[0];
+    const post = {
+      id: item.id, title: item.title, category: item.category, excerpt: item.excerpt,
+      image: item.image || '', imageCaption: item.imageCaption || '',
+      date: now, updatedAt: now, content: item.content, tags: item.tags || []
+    };
+    await publicarPost(post, pat);
+    await removerDaFilaAgendados(criadoEm, pat);
+    toast('✅ Publicado com sucesso!', 'ok');
+    renderScheduled();
+  } catch(e) {
+    toast('Erro: ' + e.message, 'err');
   }
 }
 

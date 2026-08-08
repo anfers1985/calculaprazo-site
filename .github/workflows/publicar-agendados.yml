@@ -1,0 +1,46 @@
+name: Publicar Agendados
+
+on:
+  schedule:
+    # 09h, 12h, 15h, 18h em Brasília (UTC-3) = 12h, 15h, 18h, 21h em UTC
+    # seg-sex (1-5)
+    - cron: '0 12,15,18,21 * * 1-5'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publicacao-conteudo
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Publicar posts agendados vencidos
+        env:
+          WORKER_SECRET: ${{ secrets.WORKER_SECRET }}
+        run: node scripts/09-publicar-agendados.mjs
+
+      - name: Commit e push (se houve publicação)
+        run: |
+          git config user.name "calculaprazo-bot"
+          git config user.email "actions@github.com"
+          git add data/agendados.json data/posts.json sitemap.xml blog/
+          if git diff --cached --quiet; then
+            echo "Nada para publicar neste horário."
+          else
+            git commit -m "publicacao agendada: $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git push
+          fi
