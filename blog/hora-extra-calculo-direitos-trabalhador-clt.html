@@ -95,6 +95,15 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .nav-drop-menu a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:.84rem;font-weight:600;color:var(--txt-m);cursor:pointer;transition:background .15s;white-space:nowrap;}
 .nav-drop-menu a:hover{background:var(--b50);color:var(--acc);}
 .nav-drop-menu a .dm-icon{font-size:1rem;width:24px;text-align:center;flex-shrink:0;}
+.nm-sec{display:flex;align-items:center;gap:10px;padding:9px 14px;font-size:.84rem;font-weight:600;color:var(--txt-m);cursor:pointer;transition:color .15s;}
+.nm-sec:hover{color:var(--acc);}
+.nm-arr{margin-left:auto;font-size:.65rem;opacity:.45;transition:transform .2s;flex-shrink:0;}
+.nm-arr.open{transform:rotate(90deg);}
+.nm-sub-wrap{display:none;background:var(--b50);border-left:3px solid var(--b200);margin:0 10px 6px 10px;border-radius:0 8px 8px 0;}
+.nm-sub-wrap.open{display:block;}
+.nm-sub{display:block;padding:7px 14px 7px 16px;font-size:.8rem;color:var(--txt-m);cursor:pointer;transition:color .15s;text-decoration:none;}
+.nm-sub:hover{color:var(--acc);}
+.nm-outros{color:var(--txt-s);font-style:italic;font-size:.76rem;}
 .nav-drop-divider{height:1px;background:var(--brd);margin:5px 4px;}
 .hdr-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
 .hdr-doacao{font-size:.78rem;font-weight:600;color:var(--txt-m);cursor:pointer;padding:5px 8px;border-radius:8px;white-space:nowrap;}
@@ -1077,8 +1086,76 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       </div>
       <div class="nav-dropdown" id="nav-dropdown-conteudo">
         <a id="nav-conteudo" onclick="toggleConteudo(event)">Conteúdo</a>
-        <div class="nav-drop-menu" id="conteudo-menu" style="min-width:220px;">
+        <div class="nav-drop-menu" id="conteudo-menu" style="min-width:270px;max-height:80vh;overflow-y:auto;">
           <a href="/conteudo"><span class="dm-icon">📰</span>Todos os Artigos</a>
+          <div class="nav-drop-divider"></div>
+
+          <a class="nm-sec" onclick="toggleNavSec('nms-jurisp',event)"><span class="dm-icon">⚖️</span>Jurisprudência<span class="nm-arr" id="nma-jurisp">›</span></a>
+          <div class="nm-sub-wrap" id="nms-jurisp">
+            <a class="nm-sub" href="/conteudo/jurisprudencia-trts">TRT</a>
+            <a class="nm-sub" href="/conteudo/jurisprudencia-tst">TST</a>
+            <a class="nm-sub" href="/conteudo/jurisprudencia-stj">STJ</a>
+            <a class="nm-sub" href="/conteudo/jurisprudencia-stf">STF</a>
+            <a href="/conteudo/jurisprudencia" class="nm-sub nm-outros">+ outros temas</a>
+          </div>
+
+          <a class="nm-sec" onclick="toggleNavSec('nms-orgaos',event)"><span class="dm-icon">🏛️</span>Órgãos Públicos<span class="nm-arr" id="nma-orgaos">›</span></a>
+          <div class="nm-sub-wrap" id="nms-orgaos">
+            <a class="nm-sub" href="/conteudo/noticias-mte">MTE</a>
+            <a class="nm-sub" href="/conteudo/noticias-mpt">MPT</a>
+            <a href="/conteudo/orgaos-publicos" class="nm-sub nm-outros">+ outros órgãos</a>
+          </div>
+
+          <a class="nm-sec" onclick="toggleNavSec('nms-leg',event)"><span class="dm-icon">📋</span>Legislação e Normas<span class="nm-arr" id="nma-leg">›</span></a>
+          <div class="nm-sub-wrap" id="nms-leg">
+            <a class="nm-sub" href="/conteudo/legislacao-clt">CLT</a>
+            <a class="nm-sub" href="/conteudo/legislacao-cf">Constituição Federal</a>
+            <a class="nm-sub" href="/conteudo/esocial">eSocial</a>
+            <a class="nm-sub" href="/conteudo/fgts-digital">FGTS</a>
+            <a class="nm-sub" href="/conteudo/legislacao-previdenciario">Previdenciário</a>
+            <a class="nm-sub" href="/conteudo/legislacao-sindical">Sindical</a>
+            <a class="nm-sub" href="/conteudo/legislacao-portarias">Portarias</a>
+            <a class="nm-sub" href="/conteudo/legislacao-nr">NR</a>
+            <a href="/conteudo/legislacao-normas" class="nm-sub nm-outros">+ outras Legislação e Normas</a>
+          </div>
+
+          <a class="nm-sec" onclick="toggleNavSec('nms-rh',event)"><span class="dm-icon">👥</span>RH e Gestão de Pessoas<span class="nm-arr" id="nma-rh">›</span></a>
+          <div class="nm-sub-wrap" id="nms-rh">
+            <a class="nm-sub" href="/conteudo/rh-folha">Folha de Pagamento</a>
+            <a class="nm-sub" href="/conteudo/rh-jornada">Jornada de Trabalho</a>
+            <a class="nm-sub" href="/conteudo/rh-contrato">Contrato de Trabalho</a>
+            <a class="nm-sub" href="/conteudo/rh-salario">Salário</a>
+            <a class="nm-sub" href="/conteudo/rh-rescisao">Rescisão Contratual</a>
+            <a class="nm-sub" href="/conteudo/saude-seguranca">Saúde e Segurança do Trabalho</a>
+            <a class="nm-sub" href="/conteudo/rh-beneficios">Benefícios</a>
+            <a class="nm-sub" href="/conteudo/rh-ctps">CTPS</a>
+            <a class="nm-sub" href="/conteudo/rh-sindical">Relacionamento Sindical</a>
+            <a class="nm-sub" href="/conteudo/rh-fiscalizacao">Fiscalização</a>
+            <a class="nm-sub" href="/conteudo/rh-inss">INSS</a>
+            <a class="nm-sub" href="/conteudo/rh-modelos">Modelos</a>
+            <a href="/conteudo/rh-gestao" class="nm-sub nm-outros">+ outros temas de RH</a>
+          </div>
+
+          <a class="nm-sec" onclick="toggleNavSec('nms-proc',event)"><span class="dm-icon">📄</span>Processual<span class="nm-arr" id="nma-proc">›</span></a>
+          <div class="nm-sub-wrap" id="nms-proc">
+            <a class="nm-sub" href="/conteudo/processual-peticoes">Petições e Peças</a>
+            <a class="nm-sub" href="/conteudo/processual-pratica">Prática Advocatícia</a>
+            <a class="nm-sub" href="/conteudo/modelos">Modelos</a>
+            <a class="nm-sub" href="/conteudo/artigos">Artigos</a>
+            <a class="nm-sub" href="/conteudo/processual-analises">Análises</a>
+            <a href="/conteudo/processual" class="nm-sub nm-outros">+ outros temas</a>
+          </div>
+
+          <div class="nav-drop-divider"></div>
+          <a class="nm-sec" onclick="toggleNavSec('nms-ess',event)"><span class="dm-icon">⭐</span>Essenciais<span class="nm-arr" id="nma-ess">›</span></a>
+          <div class="nm-sub-wrap" id="nms-ess">
+            <a class="nm-sub" href="/conteudo/essenciais-livros">📚 Livros Jurídicos</a>
+            <a class="nm-sub" href="/conteudo/essenciais-equipamentos">🖥️ Equipamentos de Escritório</a>
+            <a class="nm-sub" href="/conteudo/essenciais-cursos">🎓 Cursos</a>
+            <a class="nm-sub" href="/conteudo/essenciais-outros">📦 Outros</a>
+          </div>
+          <div class="nav-drop-divider"></div>
+          <a href="/conteudo/outros" class="nm-sec"><span class="dm-icon">🔧</span>Outros</a>
         </div>
       </div>
       <div class="nav-dropdown" id="nav-dropdown-sociais">
@@ -1106,7 +1183,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
         <span>›</span>
         <a href="/conteudo">Conteúdo</a>
         <span>›</span>
-        <span style="color:rgba(255,255,255,.75);">Jornada</span>
+        <a href="/conteudo/rh-jornada" style="color:rgba(255,255,255,.75);">Jornada</a>
       </nav>
       <div id="post-tags-display" style="margin-bottom:10px;"></div>
       <h1>Hora extra: como calcular e quando a empresa é obrigada a pagar?</h1>
