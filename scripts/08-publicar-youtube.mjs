@@ -3,21 +3,6 @@ import path from 'node:path';
 import { google } from 'googleapis';
 import { getJob, updateJob, marcarErro, garantirArquivoLocal } from './lib/supabase.mjs';
 
-// Corta o título com segurança se a IA mandar mais do que o combinado no prompt
-// (config/prompts.json pede até 45 caracteres, mas isso não é garantido).
-// Sem essa rede, título comprido corta com "…" no player de Shorts do celular
-// e no app de TV do YouTube — o corte aqui acontece na última palavra inteira
-// antes do limite, nunca no meio de uma palavra.
-const TITULO_MAX_CHARS = 48;
-function truncarTitulo(titulo, max = TITULO_MAX_CHARS) {
-  const t = (titulo || '').trim();
-  if (t.length <= max) return t;
-  const cortado = t.slice(0, max);
-  const ultimoEspaco = cortado.lastIndexOf(' ');
-  const base = ultimoEspaco > 0 ? cortado.slice(0, ultimoEspaco) : cortado;
-  return base.replace(/[,;:.\-–—]+$/, '').trim() + '…';
-}
-
 const oauth2Client = new google.auth.OAuth2(
   process.env.YOUTUBE_CLIENT_ID,
   process.env.YOUTUBE_CLIENT_SECRET
@@ -39,10 +24,6 @@ async function main(jobId) {
   }
 
   const { titulo_seo, descricao, hashtags } = job.roteiro;
-  const tituloFinal = truncarTitulo(titulo_seo);
-  if (tituloFinal !== titulo_seo) {
-    console.warn(`Título cortado por segurança (${titulo_seo.length} → ${tituloFinal.length} caracteres): "${titulo_seo}" → "${tituloFinal}"`);
-  }
 
   const videoLocal = path.resolve('output/video.mp4');
   await garantirArquivoLocal(job.video_path, videoLocal);
@@ -65,7 +46,7 @@ async function main(jobId) {
     part: ['snippet', 'status'],
     requestBody: {
       snippet: {
-        title: tituloFinal,
+        title: titulo_seo,
         description: descricaoFinal,
         tags: hashtagsFinais.map(h => h.replace('#', '')),
         categoryId: '22',
