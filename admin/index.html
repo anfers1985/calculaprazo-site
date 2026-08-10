@@ -887,26 +887,34 @@ function goPage(id){
   document.getElementById('page-'+id).classList.add('on');
   const nav = document.getElementById('nav-'+id);
   if(nav) nav.classList.add('on');
-  if(id==='dashboard') renderDashboard();
-  if(id==='list') renderList();
+  if(id==='dashboard') refreshPostsFromServer().finally(renderDashboard);
+  if(id==='list') refreshPostsFromServer().finally(renderList);
   if(id==='scheduled') renderScheduled();
   if(id==='export') renderExport();
-  if(id==='studio') studioInit();
+  if(id==='studio') refreshPostsFromServer().finally(studioInit);
   if(id==='new'){ resetForm(); document.getElementById('form-page-title').textContent='Novo Conteúdo'; }
 }
 
 // ════════════════════════════════════════
 // INIT
 // ════════════════════════════════════════
+// Busca o posts.json publicado (fonte real: repositório) e sincroniza o
+// cache local (localStorage). Isso é necessário porque publicações feitas
+// pelo workflow agendado do GitHub Actions (server-side) atualizam o
+// posts.json do repositório mas não têm como escrever no localStorage do
+// navegador — sem isso, "Gerenciar Posts" e "IA Content Studio" (que leem
+// só do cache local) ficam presos na última publicação feita manualmente
+// nesse navegador. Cache-bust com timestamp evita pegar uma cópia em cache
+// do CDN/navegador.
+function refreshPostsFromServer(){
+  return fetch('../data/posts.json?_=' + Date.now())
+    .then(r=>r.ok?r.json():null)
+    .then(data=>{ if(Array.isArray(data) && data.length>0){ savePosts(data); } })
+    .catch(()=>{}); // offline ou falha de rede: mantém o que já está em cache
+}
+
 function initApp(){
-  const existing = getPosts();
-  if(existing.length === 0){
-    fetch('../data/posts.json')
-      .then(r=>r.ok?r.json():[])
-      .then(data=>{ if(data.length>0){ savePosts(data); renderDashboard(); } })
-      .catch(()=>{});
-  }
-  renderDashboard();
+  refreshPostsFromServer().finally(renderDashboard);
 }
 
 // ════════════════════════════════════════
