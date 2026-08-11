@@ -2,6 +2,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://calculaprazo.com.br/</loc><lastmod>2026-08-10</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
   <url><loc>https://calculaprazo.com.br/conteudo</loc><lastmod>2026-08-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calculaprazo.com.br/conteudo/orientacoes-praticas</loc><lastmod>2026-08-10</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://calculaprazo.com.br/conteudo/noticias-mte-mpt</loc><lastmod>2026-08-10</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://calculaprazo.com.br/conteudo/processual-outros</loc><lastmod>2026-08-10</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://calculaprazo.com.br/conteudo/geral</loc><lastmod>2026-08-10</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://calculaprazo.com.br/conteudo/artigos</loc><lastmod>2026-08-10</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://calculaprazo.com.br/conteudo/esocial</loc><lastmod>2026-08-10</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://calculaprazo.com.br/conteudo/essenciais</loc><lastmod>2026-08-10</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
@@ -66,6 +70,7 @@
   <url><loc>https://calculaprazo.com.br/blog/riscos-pejotizacao-lei-clt-contratacao-pj</loc><lastmod>2026-08-10</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://calculaprazo.com.br/blog/erro-na-ctps-quando-gera-multa-e-como-evitar-problemas</loc><lastmod>2026-08-10</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://calculaprazo.com.br/blog/tac-recolhimento-inss-direto-lei-15485-2026</loc><lastmod>2026-08-10</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://calculaprazo.com.br/blog/alianca-voto-livre-secreto-assedio-eleitoral-trabalho</loc><lastmod>2026-08-10</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://calculaprazo.com.br/blog/trt-sc-justa-causa-motorista-onibus-sem-habilitacao</loc><lastmod>2026-08-09</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://calculaprazo.com.br/blog/trt-sc-novas-testemunhas-vazamento-audiencia-virtual</loc><lastmod>2026-08-09</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://calculaprazo.com.br/blog/brasil-27-mil-mortes-acidentes-trabalho-dez-anos</loc><lastmod>2026-08-09</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>

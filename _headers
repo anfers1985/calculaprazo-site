@@ -11,17 +11,19 @@
   Cache-Control: public, max-age=300, must-revalidate
   Access-Control-Allow-Origin: *
 
-# CSS e JS externos — cache com revalidação (permite updates ao mudar ?v=N no link)
+# CSS e JS externos — cache longo, pois o versionamento é feito via ?v=N na URL
+# (ao editar app.js/blog.js, rode scripts/11-bump-asset-version.mjs pra atualizar
+# o número de versão em todas as referências do site de uma vez)
 /styles.css
   Cache-Control: public, max-age=86400, must-revalidate
   Content-Type: text/css; charset=utf-8
 
 /app.min.js
-  Cache-Control: public, max-age=300, must-revalidate
+  Cache-Control: public, max-age=31536000, immutable
   Content-Type: application/javascript; charset=utf-8
 
 /blog.min.js
-  Cache-Control: public, max-age=300, must-revalidate
+  Cache-Control: public, max-age=31536000, immutable
   Content-Type: application/javascript; charset=utf-8
 
 # Ícones PWA

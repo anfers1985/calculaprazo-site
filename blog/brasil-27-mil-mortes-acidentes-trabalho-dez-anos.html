@@ -1334,7 +1334,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       </div>
 
       <!-- ── PREV / NEXT NAVIGATION ── -->
-      <nav class="pn-nav" id="pn-nav" aria-label="Navegação entre artigos"><a class="pn-btn pn-prev" href="/blog/termo-quitacao-anual-clt-validade-beneficios.html"><span class="pn-arrow">‹</span><div><div class="pn-label">Artigo anterior</div><div class="pn-title">Termo de Quitação Anual na CLT: regras, validade e benefícios</div><div class="pn-cat">Outros RH</div></div></a><a class="pn-btn pn-next" href="/blog/tac-recolhimento-inss-direto-lei-15485-2026.html"><div><div class="pn-label">Próximo artigo</div><div class="pn-title">TAC poderá recolher INSS diretamente após nova lei</div><div class="pn-cat">INSS</div></div><span class="pn-arrow">›</span></a></nav>
+      <nav class="pn-nav" id="pn-nav" aria-label="Navegação entre artigos"><a class="pn-btn pn-prev" href="/blog/termo-quitacao-anual-clt-validade-beneficios.html"><span class="pn-arrow">‹</span><div><div class="pn-label">Artigo anterior</div><div class="pn-title">Termo de Quitação Anual na CLT: regras, validade e benefícios</div><div class="pn-cat">Outros RH</div></div></a><a class="pn-btn pn-next" href="/blog/alianca-voto-livre-secreto-assedio-eleitoral-trabalho.html"><div><div class="pn-label">Próximo artigo</div><div class="pn-title">Justiça lança aliança nacional contra assédio eleitoral no trabalho</div><div class="pn-cat">Outros RH</div></div><span class="pn-arrow">›</span></a></nav>
 
       <!-- Related posts -->
       <div class="related-section" id="related-section"><h3>Artigos Relacionados</h3><div class="related-grid"><a class="related-card" href="/blog/atestado-medico-empresa-aceitar-conferencia-irregularidades.html"><div class="r-cat">Saúde e Segurança</div><div class="r-title">Atestado médico: quando a empresa deve aceitar e como conferir</div><div class="r-date">5 de ago. de 2026</div></a><a class="related-card" href="/blog/aso-admissional-demissional-importancia-empresa-rh.html"><div class="r-cat">Saúde e Segurança</div><div class="r-title">ASO admissional e demissional: importância para empresas e RH</div><div class="r-date">3 de ago. de 2026</div></a><a class="related-card" href="/blog/brasil-18-milhao-acidentes-trabalho-desde-2023.html"><div class="r-cat">Saúde e Segurança</div><div class="r-title">Brasil registra mais de 1,8 milhão de acidentes de trabalho</div><div class="r-date">2 de ago. de 2026</div></a></div></div>
@@ -1388,6 +1388,17 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
         <li><a href="/privacidade">Privacidade &amp; LGPD</a></li>
         <li><a href="/termos">Termos de Uso</a></li>
       </ul></div>
+      <div class="ftr-col" style="min-width:220px;">
+        <h4>Newsletter</h4>
+        <p style="font-size:.78rem;color:rgba(255,255,255,.5);margin-bottom:10px;line-height:1.5;">Receba novidades do Calcula Prazo por e-mail. Cancelamento automático a qualquer momento, com 1 clique.</p>
+        <form id="nl-signup-form" onsubmit="return newsletterSubscribe(event)" style="display:flex;gap:6px;flex-wrap:wrap;">
+          <input type="text" name="website" style="position:absolute;left:-9999px;" tabindex="-1" autocomplete="off">
+          <input type="email" name="email" required placeholder="seu@email.com" style="flex:1;min-width:140px;padding:8px 12px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:#fff;font-size:.82rem;">
+          <button type="submit" style="padding:8px 14px;border-radius:6px;border:none;background:#2563eb;color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;">Inscrever</button>
+        </form>
+        <p id="nl-signup-msg" style="font-size:.76rem;margin-top:8px;display:none;"></p>
+        <p style="font-size:.7rem;color:rgba(255,255,255,.35);margin-top:8px;">Veja nossa <a href="/privacidade#newsletter" style="color:rgba(255,255,255,.5);text-decoration:underline;">Política de Privacidade</a>.</p>
+      </div>
     </div>
     <div class="ftr-bot">
       <p class="ftr-copy">&copy; <span id="yr"></span> Calcula Prazo. Todos os direitos reservados. Calculadoras jurídicas gratuita para advogados, contadores, profissionais de RH e trabalhadores. Os cálculos e o conteúdo são de caráter informativo e não substituem assessoria especializada.</p>
@@ -1565,6 +1576,45 @@ function toggleFerramentas(e) {
   const dd = document.getElementById('nav-dropdown-ferramentas');
   dd.classList.toggle('open');
 }
+// ─── NEWSLETTER (formulário do rodapé) ─────────────────────────────────
+// Duplicada aqui porque cada post do blog é uma página autocontida, sem
+// script externo. Troque pela URL real depois do deploy no Supabase.
+const NEWSLETTER_SUBSCRIBE_URL = 'https://SEU-PROJETO.supabase.co/functions/v1/newsletter-subscribe';
+function newsletterSubscribe(e) {
+  e.preventDefault();
+  const form = e.target;
+  const email = form.email.value.trim();
+  const website = form.website.value;
+  const msgEl = document.getElementById('nl-signup-msg');
+  const btn = form.querySelector('button[type="submit"]');
+  const originalLabel = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+  fetch(NEWSLETTER_SUBSCRIBE_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, website }),
+  })
+    .then(r => r.json())
+    .then(data => {
+      if (!data.ok) throw new Error(data.error || 'Erro desconhecido');
+      msgEl.style.display = 'block';
+      msgEl.style.color = '#4ade80';
+      msgEl.textContent = '✓ Inscrito! Fique de olho na sua caixa de entrada.';
+      form.reset();
+    })
+    .catch(() => {
+      msgEl.style.display = 'block';
+      msgEl.style.color = '#f87171';
+      msgEl.textContent = 'Não foi possível inscrever agora. Tente novamente em instantes.';
+    })
+    .finally(() => {
+      btn.disabled = false;
+      btn.textContent = originalLabel;
+    });
+  return false;
+}
+
 function toggleConteudo(e) {
   e.preventDefault();
   const dd = document.getElementById('nav-dropdown-conteudo');
