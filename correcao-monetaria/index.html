@@ -280,7 +280,7 @@
 </p>
 <button class="btn btn-p btn-full" onclick="calcCorrecao()">Atualizar Valor →</button>
         </div>
-      <div id="corr-res" aria-live="polite" aria-atomic="true" class="res-box" style="margin-top:8px;"><div class="print-letterhead"><div class="print-letterhead-name">Calcula Prazo — Correção Monetária</div><div class="print-letterhead-date">Gerado em <span class="print-date"></span> · calculaprazo.com.br</div></div>
+      <div id="corr-res" aria-live="polite" aria-atomic="true" class="res-box" style="margin-top:8px;">
         <div class="res-lbl">Valor Atualizado</div>
         <div class="res-val" id="corr-res-val"></div>
         <div class="res-det" id="corr-res-det"></div>
@@ -296,7 +296,7 @@
     </div>
   </div>
 
-  <span class="calc-count" id="cc-correcao"></span><div class="print-btn-row" style="display:flex;gap:8px;"><button type="button" class="btn btn-s btn-sm" onclick="shareCalcResult(['corr-val','corr-ini','corr-fim'],{'corr-idx': corrIdx},this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></svg> Compartilhar</button><button type="button" class="btn btn-s btn-sm btn-print" onclick="exportarCalcPDF()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
+  <span class="calc-count" id="cc-correcao"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
   <!-- ▸ ANÚNCIO: sec-correcao after result (aparece após calcular) -->
   <div class="ad-container ad-rect" id="ad-correcao-result" style="display:none;">
   
@@ -360,17 +360,6 @@
         <li><a href="/privacidade">Privacidade & LGPD</a></li>
         <li><a href="/termos">Termos de Uso</a></li>
       </ul></div>
-      <div class="ftr-col" style="min-width:220px;">
-        <h4>Newsletter</h4>
-        <p style="font-size:.78rem;color:rgba(255,255,255,.5);margin-bottom:10px;line-height:1.5;">Receba novidades do Calcula Prazo por e-mail. Cancelamento automático a qualquer momento, com 1 clique.</p>
-        <form id="nl-signup-form" onsubmit="return newsletterSubscribe(event)" style="display:flex;gap:6px;flex-wrap:wrap;">
-          <input type="text" name="website" style="position:absolute;left:-9999px;" tabindex="-1" autocomplete="off">
-          <input type="email" name="email" required placeholder="seu@email.com" style="flex:1;min-width:140px;padding:8px 12px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:#fff;font-size:.82rem;">
-          <button type="submit" style="padding:8px 14px;border-radius:6px;border:none;background:#2563eb;color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;">Inscrever</button>
-        </form>
-        <p id="nl-signup-msg" style="font-size:.76rem;margin-top:8px;display:none;"></p>
-        <p style="font-size:.7rem;color:rgba(255,255,255,.35);margin-top:8px;">Veja nossa <a href="/privacidade#newsletter" style="color:rgba(255,255,255,.5);text-decoration:underline;">Política de Privacidade</a>.</p>
-      </div>
     </div>
     <div class="ftr-bot">
       <p class="ftr-copy">&copy; <span id="yr"></span> Calcula Prazo. Todos os direitos reservados. Calculadoras jurídicas gratuitas para advogados, contadores, profissionais de RH e trabalhadores. Os cálculos e o conteúdo são de caráter informativo e não substituem assessoria especializada.</p>
@@ -388,7 +377,7 @@
      JAVASCRIPT
 ══════════════════════════════════════ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/app.min.js?v=9" defer></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/app.min.js?v=6" defer></script>
 
 <!-- ══════════ COOKIE BANNER ══════════ -->
 <div id="cookie-banner">
@@ -532,7 +521,7 @@
 <!-- ══════════════════════════════════════
      BLOG / CONTEÚDO — JavaScript
 ══════════════════════════════════════ -->
-<script src="/blog.min.js?v=12" defer></script>
+<script src="/blog.min.js?v=4" defer></script>
 <script src="/js/ads-adsterra.js?v=2" defer></script>
 <script src="/js/analytics.js?v=1" defer></script>
 

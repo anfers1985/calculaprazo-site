@@ -1457,17 +1457,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
         <li><a href="/privacidade">Privacidade &amp; LGPD</a></li>
         <li><a href="/termos">Termos de Uso</a></li>
       </ul></div>
-      <div class="ftr-col" style="min-width:220px;">
-        <h4>Newsletter</h4>
-        <p style="font-size:.78rem;color:rgba(255,255,255,.5);margin-bottom:10px;line-height:1.5;">Receba novidades do Calcula Prazo por e-mail. Cancelamento automático a qualquer momento, com 1 clique.</p>
-        <form id="nl-signup-form" onsubmit="return newsletterSubscribe(event)" style="display:flex;gap:6px;flex-wrap:wrap;">
-          <input type="text" name="website" style="position:absolute;left:-9999px;" tabindex="-1" autocomplete="off">
-          <input type="email" name="email" required placeholder="seu@email.com" style="flex:1;min-width:140px;padding:8px 12px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:#fff;font-size:.82rem;">
-          <button type="submit" style="padding:8px 14px;border-radius:6px;border:none;background:#2563eb;color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;">Inscrever</button>
-        </form>
-        <p id="nl-signup-msg" style="font-size:.76rem;margin-top:8px;display:none;"></p>
-        <p style="font-size:.7rem;color:rgba(255,255,255,.35);margin-top:8px;">Veja nossa <a href="/privacidade#newsletter" style="color:rgba(255,255,255,.5);text-decoration:underline;">Política de Privacidade</a>.</p>
-      </div>
     </div>
     <div class="ftr-bot">
       <p class="ftr-copy">&copy; <span id="yr"></span> Calcula Prazo. Todos os direitos reservados. Calculadoras jurídicas gratuita para advogados, contadores, profissionais de RH e trabalhadores. Os cálculos e o conteúdo são de caráter informativo e não substituem assessoria especializada.</p>
@@ -1641,45 +1630,6 @@ function toggleSociais(e) {
   e.preventDefault();
   const dd = document.getElementById('nav-dropdown-sociais');
   dd.classList.toggle('open');
-}
-
-// ─── NEWSLETTER (formulário do rodapé) ─────────────────────────────────
-// Duplicada aqui porque cada post do blog é uma página autocontida, sem
-// script externo. Troque pela URL real depois do deploy no Supabase.
-const NEWSLETTER_SUBSCRIBE_URL = 'https://SEU-PROJETO.supabase.co/functions/v1/newsletter-subscribe';
-function newsletterSubscribe(e) {
-  e.preventDefault();
-  const form = e.target;
-  const email = form.email.value.trim();
-  const website = form.website.value;
-  const msgEl = document.getElementById('nl-signup-msg');
-  const btn = form.querySelector('button[type="submit"]');
-  const originalLabel = btn.textContent;
-  btn.disabled = true;
-  btn.textContent = 'Enviando...';
-  fetch(NEWSLETTER_SUBSCRIBE_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, website }),
-  })
-    .then(r => r.json())
-    .then(data => {
-      if (!data.ok) throw new Error(data.error || 'Erro desconhecido');
-      msgEl.style.display = 'block';
-      msgEl.style.color = '#4ade80';
-      msgEl.textContent = '✓ Inscrito! Fique de olho na sua caixa de entrada.';
-      form.reset();
-    })
-    .catch(() => {
-      msgEl.style.display = 'block';
-      msgEl.style.color = '#f87171';
-      msgEl.textContent = 'Não foi possível inscrever agora. Tente novamente em instantes.';
-    })
-    .finally(() => {
-      btn.disabled = false;
-      btn.textContent = originalLabel;
-    });
-  return false;
 }
 
 function toggleConteudo(e) {

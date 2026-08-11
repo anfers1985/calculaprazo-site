@@ -1649,7 +1649,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   .sec { display: none !important; }
   .sec.active { display: block !important; }
 
-  /* Resultado da calculadora — destaque (classes genéricas, caso usadas) */
+  /* Resultado da calculadora — destaque */
   .res-box {
     display: block !important;
     border: 1.5pt solid #000;
@@ -1666,22 +1666,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
     font-size: 9pt;
     color: #333 !important;
   }
-
-  /* Resultado da calculadora — IDs reais usados hoje pelas 11 calculadoras
-     com "compartilhar/exportar PDF" (verbas, salário líquido, juros,
-     correção, intermitente, prescrição, prazo processual, porcentagem,
-     datas, IMC, moedas) */
-  #t-res, #sal-res, #j-res-card, #corr-res, #int-res,
-  #presc-res, #p-resultado, #pct-res, #d-res, #imc-res, #moeda-res {
-    border: 1.5pt solid #000 !important;
-    padding: 12pt !important;
-    margin: 12pt 0 !important;
-    page-break-inside: avoid;
-    background: #fff !important;
-  }
-
-  /* Botões de ação (compartilhar / exportar PDF) não fazem sentido no papel */
-  .calc-actions-row { display: none !important; }
 
   /* Tabelas de resultado */
   table { border-collapse: collapse; width: 100%; }
@@ -1701,15 +1685,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   /* Ocultar gráfico (não imprime bem) */
   #j-chart-box, canvas { display: none !important; }
 
-  /* Timbre de impressão — logo/nome + data, só aparece no PDF/papel.
-     A data é preenchida via JS (span#print-date) antes do print. */
-  .print-letterhead { display: block !important; margin-bottom: 14pt; padding-bottom: 8pt; border-bottom: 1.5pt solid #000; }
-  .print-letterhead-name { font-size: 14pt; font-weight: 700; color: #000 !important; }
-  .print-letterhead-date { font-size: 9pt; color: #333 !important; margin-top: 2pt; }
-
   /* Rodapé de impressão com URL */
   body::after {
-    content: "calculaprazo.com.br";
+    content: "calculaprazo.com.br — " attr(data-page);
     display: block;
     text-align: center;
     font-size: 8pt;
@@ -1719,9 +1697,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
     padding-top: 6pt;
   }
 }
-
-/* O timbre de impressão fica invisível na tela normal */
-.print-letterhead { display: none; }
 
 
 /* Componente .post-hero (cabeçalho azul de páginas institucionais/lista):

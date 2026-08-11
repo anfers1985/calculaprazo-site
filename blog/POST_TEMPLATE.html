@@ -1507,45 +1507,6 @@ function toggleFerramentas(e) {
   const dd = document.getElementById('nav-dropdown-ferramentas');
   dd.classList.toggle('open');
 }
-// ─── NEWSLETTER (formulário do rodapé) ─────────────────────────────────
-// Duplicada aqui porque cada post do blog é uma página autocontida, sem
-// script externo. Troque pela URL real depois do deploy no Supabase.
-const NEWSLETTER_SUBSCRIBE_URL = 'https://SEU-PROJETO.supabase.co/functions/v1/newsletter-subscribe';
-function newsletterSubscribe(e) {
-  e.preventDefault();
-  const form = e.target;
-  const email = form.email.value.trim();
-  const website = form.website.value;
-  const msgEl = document.getElementById('nl-signup-msg');
-  const btn = form.querySelector('button[type="submit"]');
-  const originalLabel = btn.textContent;
-  btn.disabled = true;
-  btn.textContent = 'Enviando...';
-  fetch(NEWSLETTER_SUBSCRIBE_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, website }),
-  })
-    .then(r => r.json())
-    .then(data => {
-      if (!data.ok) throw new Error(data.error || 'Erro desconhecido');
-      msgEl.style.display = 'block';
-      msgEl.style.color = '#4ade80';
-      msgEl.textContent = '✓ Inscrito! Fique de olho na sua caixa de entrada.';
-      form.reset();
-    })
-    .catch(() => {
-      msgEl.style.display = 'block';
-      msgEl.style.color = '#f87171';
-      msgEl.textContent = 'Não foi possível inscrever agora. Tente novamente em instantes.';
-    })
-    .finally(() => {
-      btn.disabled = false;
-      btn.textContent = originalLabel;
-    });
-  return false;
-}
-
 function toggleConteudo(e) {
   e.preventDefault();
   const dd = document.getElementById('nav-dropdown-conteudo');
