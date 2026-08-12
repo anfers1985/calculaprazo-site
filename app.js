@@ -1656,6 +1656,68 @@ function calcHero(){
   res.style.display='block';
 }
 
+// NEWSLETTER: a função newsletterSubscribe() e a URL da Edge Function vivem
+// só em blog.js — toda página que carrega app.min.js também carrega
+// blog.min.js, então duplicar aqui causava "Identifier already declared"
+// (SyntaxError que travava o blog.min.js inteiro, inclusive o carregamento
+// dos posts na home). Se um dia existir página que carregue só app.min.js
+// sem blog.min.js, mova a função de volta pra cá.
+
+// Gera um link com os valores atuais dos campos como query string e copia pra
+// área de transferência. `extra` é um objeto opcional pra incluir estado que não
+// vive num <input> comum (ex: o índice de correção selecionado por pill/botão).
+function shareCalcResult(fieldIds, extra, btnEl) {
+  const params = new URLSearchParams();
+  fieldIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.value) params.set(id, el.value);
+  });
+  if (extra) Object.keys(extra).forEach(k => { if (extra[k]) params.set(k, extra[k]); });
+  const url = location.origin + location.pathname + (params.toString() ? '?' + params.toString() : '');
+  const feedback = (ok) => {
+    if (!btnEl) return;
+    const original = btnEl.dataset.origLabel || btnEl.textContent;
+    btnEl.dataset.origLabel = original;
+    btnEl.textContent = ok ? '✓ Link copiado!' : 'Não foi possível copiar';
+    setTimeout(() => { btnEl.textContent = original; }, 2200);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(() => feedback(true)).catch(() => feedback(false));
+  } else {
+    feedback(false);
+  }
+  return url;
+}
+
+// Lê os campos presentes na URL (se houver) e preenche o formulário da
+// calculadora correspondente, disparando o cálculo automaticamente.
+function loadCalcFromURL(fieldIds, triggerFn, onExtra) {
+  const params = new URLSearchParams(location.search);
+  let has = false;
+  fieldIds.forEach(id => {
+    if (params.has(id)) {
+      const el = document.getElementById(id);
+      if (el) { el.value = params.get(id); has = true; }
+    }
+  });
+  if (onExtra) has = onExtra(params) || has;
+  if (has && typeof triggerFn === 'function') {
+    // pequeno delay pra garantir que os listeners/estados iniciais da página já rodaram
+    setTimeout(triggerFn, 60);
+  }
+  return has;
+}
+
+// Exportar o resultado atual em PDF — usa a caixa de impressão do navegador
+// (o CSS @media print, em styles.css, esconde menu/anúncios/rodapé e formata
+// só a calculadora + resultado, com o timbre do Calcula Prazo).
+function exportarCalcPDF() {
+  document.querySelectorAll('.print-date').forEach(el => {
+    el.textContent = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+  });
+  window.print();
+}
+
 // ─── CORREÇÃO: init today ─────────────────────────
 window.addEventListener('load',()=>{
   const t=new Date();
@@ -1667,7 +1729,30 @@ window.addEventListener('load',()=>{
   if(document.getElementById('moeda-val-in')){ calcMoeda(); fetchRatesLive(); }
 });
 
-// FAQ
+// ─── RESTAURAR CÁLCULO COMPARTILHADO VIA URL (roda em qualquer página; só age
+// se os campos da calculadora daquela página existirem no DOM) ───────────────
+window.addEventListener('load', () => {
+  loadCalcFromURL(['t-tipo','t-sal','t-adm','t-dem','t-aviso','t-aviso-pedido','t-fer-venc','t-medias','t-dep'], () => window.calcTrabalhista && calcTrabalhista());
+  loadCalcFromURL(['sal-bruto','sal-dep','sal-outros'], () => window.calcSalario && calcSalario());
+  loadCalcFromURL(['j-cap','j-taxa','j-per','j-aporte','j-multa'], () => window.calcJuros && calcJuros());
+  loadCalcFromURL(['corr-val','corr-ini','corr-fim'], () => window.calcCorrecao && calcCorrecao(), (params) => {
+    if (params.has('corr-idx')) {
+      const idx = params.get('corr-idx');
+      const btn = document.querySelector(`.idx-pill[data-idx="${idx}"]`);
+      if (btn) { setCorrIdx(idx, btn); return true; }
+    }
+    return false;
+  });
+  loadCalcFromURL(['int-hora','int-horas','int-ini','int-fim','int-dep','int-outros'], () => window.calcIntermitente && calcIntermitente());
+  loadCalcFromURL(['presc-tipo','presc-area','presc-data'], () => window.calcPrescricao && calcPrescricao());
+  loadCalcFromURL(['p-ini','p-dias','p-fim','p-fer'], () => { const b = document.getElementById('p-btn-calc'); if (b) b.click(); });
+  loadCalcFromURL(['pct-a1','pct-a2','pct-a3','pct-a4','pct-a5','pct-b1','pct-b2','pct-b3','pct-b4','pct-b5'], () => window.calcPct && calcPct());
+  loadCalcFromURL(['d-a1','d-a2','d-a3','d-a4','d-b1','d-b2','d-b3'], () => window.calcDatas && calcDatas());
+  loadCalcFromURL(['imc-peso','imc-alt'], () => window.calcIMC && calcIMC());
+  loadCalcFromURL(['moeda-de','moeda-para','moeda-val-in'], () => window.calcMoeda && calcMoeda());
+});
+
+
 // FAQ accordion handled in dropdown listener above
 
 // ─── DROPDOWN FERRAMENTAS (clique) ──────────────────

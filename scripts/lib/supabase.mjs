@@ -49,3 +49,41 @@ export async function garantirArquivoLocal(caminhoStorage, caminhoLocalDestino) 
   fs.writeFileSync(caminhoLocalDestino, Buffer.from(await data.arrayBuffer()));
   return caminhoLocalDestino;
 }
+
+// Lista recursivamente todos os arquivos dentro de uma pasta do bucket (o SDK do
+// Supabase Storage só lista 1 nível por chamada, então descemos manualmente em
+// cada subpasta encontrada). Retorna os caminhos completos (relativos ao bucket),
+// prontos pra passar direto pro `.remove()`.
+async function listarArquivosRecursivo(pasta) {
+  const { data, error } = await supabase.storage.from(BUCKET).list(pasta, { limit: 1000 });
+  if (error) throw new Error(`Falha ao listar ${pasta} no Storage: ${error.message}`);
+
+  const arquivos = [];
+  for (const item of data || []) {
+    const caminho = `${pasta}/${item.name}`;
+    // Itens sem metadata (id/size) são subpastas na API do Supabase Storage.
+    if (item.id === null) {
+      arquivos.push(...await listarArquivosRecursivo(caminho));
+    } else {
+      arquivos.push(caminho);
+    }
+  }
+  return arquivos;
+}
+
+// Apaga todos os arquivos de um job (áudio, imagens das cenas, thumbnail, vídeo
+// renderizado) depois que ele já foi publicado no YouTube — nada disso é
+// reaproveitado entre jobs, então não faz sentido continuar ocupando o Storage.
+// Falha aqui nunca deve derrubar o pipeline (o vídeo já está publicado, o que
+// importa), então quem chama deve envolver isso num try/catch e só logar o erro.
+export async function apagarArquivosDoJob(jobId) {
+  const pasta = `jobs/${jobId}`;
+  const arquivos = await listarArquivosRecursivo(pasta);
+  if (!arquivos.length) {
+    console.log(`Limpeza: nenhum arquivo encontrado em ${pasta}/ (já estava limpo).`);
+    return;
+  }
+  const { error } = await supabase.storage.from(BUCKET).remove(arquivos);
+  if (error) throw new Error(`Falha ao apagar arquivos de ${pasta}: ${error.message}`);
+  console.log(`Limpeza: ${arquivos.length} arquivo(s) apagado(s) de ${pasta}/.`);
+}

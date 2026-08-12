@@ -149,6 +149,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
       <a onclick="goPage('new')" id="nav-new"><span class="s-icon">✏️</span> Novo Post</a>
       <a onclick="goPage('list')" id="nav-list"><span class="s-icon">📄</span> Gerenciar Posts</a>
       <a onclick="goPage('scheduled')" id="nav-scheduled"><span class="s-icon">🗓️</span> Agendados</a>
+      <a onclick="goPage('newsletter')" id="nav-newsletter"><span class="s-icon">📧</span> Newsletter</a>
       <div class="s-sep"></div>
       <a onclick="goPage('automation')" id="nav-automation"><span class="s-icon">🤖</span> Automação</a>
       <a onclick="goPage('studio')" id="nav-studio"><span class="s-icon">🚀</span> IA Content Studio</a>
@@ -406,6 +407,86 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
       <div id="scheduled-list"><div class="card" style="text-align:center;color:var(--txt-s);padding:40px;">Carregando...</div></div>
     </div>
 
+    <!-- NEWSLETTER -->
+    <div class="page" id="page-newsletter">
+      <div class="page-header">
+        <div><div class="page-title">Newsletter</div><div class="page-sub">Assinantes e campanhas por e-mail</div></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-g" onclick="renderNewsletter()">🔄 Atualizar</button>
+        </div>
+      </div>
+
+      <div id="nl-config-warning" style="display:none;background:#fef3c7;border:1.5px solid #fbbf24;color:#92400e;padding:14px 16px;border-radius:10px;font-size:.85rem;margin-bottom:20px;">
+        ⚠ Configure a URL do Supabase e o Admin Secret em <a onclick="goPage('settings')" style="color:#92400e;text-decoration:underline;cursor:pointer;">Configurações → Newsletter</a> antes de usar esta aba.
+      </div>
+
+      <div style="display:flex;gap:6px;margin-bottom:20px;border-bottom:1.5px solid var(--brd);">
+        <button class="btn" id="nl-tab-campanhas" onclick="nlSwitchTab('campanhas')" style="border-radius:8px 8px 0 0;background:var(--acc);color:#fff;">📋 Campanhas</button>
+        <button class="btn" id="nl-tab-assinantes" onclick="nlSwitchTab('assinantes')" style="border-radius:8px 8px 0 0;background:var(--b50);color:var(--txt-m);">👥 Assinantes</button>
+      </div>
+
+      <!-- SUB-ABA: CAMPANHAS -->
+      <div id="nl-sub-campanhas">
+        <div id="nl-composer" class="card" style="display:none;margin-bottom:20px;">
+          <div style="font-size:.9rem;font-weight:700;margin-bottom:16px;" id="nl-composer-title">Nova Campanha</div>
+          <input type="hidden" id="nl-c-id">
+          <div class="fg">
+            <label>Assunto do e-mail</label>
+            <input type="text" id="nl-c-subject" placeholder="Ex.: Novidades quinzenais — Calcula Prazo">
+          </div>
+          <div class="fg">
+            <label>Texto (em Markdown — negrito com **texto**, links com [texto](url), etc.)</label>
+            <textarea id="nl-c-body" rows="8" style="width:100%;padding:10px 14px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.88rem;font-family:ui-monospace,monospace;color:var(--txt);box-sizing:border-box;resize:vertical;" placeholder="Fala, pessoal! Essa quinzena rolou..."></textarea>
+          </div>
+
+          <div class="fg">
+            <label>Artigos em destaque</label>
+            <div id="nl-article-picker" style="max-height:260px;overflow-y:auto;border:1.5px solid var(--brd);border-radius:var(--r);padding:8px;"></div>
+          </div>
+
+          <div class="fg">
+            <label>Calculadoras pra indicar</label>
+            <div id="nl-calc-picker" style="max-height:220px;overflow-y:auto;border:1.5px solid var(--brd);border-radius:var(--r);padding:8px;"></div>
+          </div>
+
+          <div class="fg">
+            <label>Quando enviar</label>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:8px;">
+              <label style="display:flex;align-items:center;gap:6px;font-size:.85rem;font-weight:500;cursor:pointer;"><input type="radio" name="nl-when" value="draft" checked onchange="nlToggleSchedule()"> Salvar como rascunho</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:.85rem;font-weight:500;cursor:pointer;"><input type="radio" name="nl-when" value="schedule" onchange="nlToggleSchedule()"> Agendar para...</label>
+            </div>
+            <input type="datetime-local" id="nl-c-schedule" style="display:none;padding:9px 13px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.86rem;">
+            <p style="font-size:.72rem;color:var(--txt-s);margin-top:6px;">O envio agendado sai no próximo horário de checagem (09h ou 15h, horário de Brasília) igual ou depois da data/hora escolhida.</p>
+          </div>
+
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;">
+            <button class="btn btn-p" onclick="nlSaveCampaign()">💾 Salvar</button>
+            <button class="btn btn-g" onclick="nlCloseComposer()">Cancelar</button>
+          </div>
+          <div id="nl-composer-msg" style="margin-top:10px;font-size:.82rem;display:none;"></div>
+        </div>
+
+        <div style="margin-bottom:14px;">
+          <button class="btn btn-p" onclick="nlOpenComposer()">✏️ Nova Campanha</button>
+        </div>
+        <div id="nl-campaigns-list"><div class="card" style="text-align:center;color:var(--txt-s);padding:30px;">Carregando...</div></div>
+      </div>
+
+      <!-- SUB-ABA: ASSINANTES -->
+      <div id="nl-sub-assinantes" style="display:none;">
+        <div class="card" style="margin-bottom:20px;">
+          <div style="font-size:.9rem;font-weight:700;margin-bottom:12px;">➕ Adicionar manualmente</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <input type="email" id="nl-add-email" placeholder="email@exemplo.com" style="flex:1;min-width:220px;padding:9px 13px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.86rem;">
+            <button class="btn btn-p" onclick="nlAddSubscriber()">Adicionar</button>
+          </div>
+          <div id="nl-add-msg" style="margin-top:8px;font-size:.82rem;display:none;"></div>
+        </div>
+        <div id="nl-subscribers-list"><div class="card" style="text-align:center;color:var(--txt-s);padding:30px;">Carregando...</div></div>
+      </div>
+    </div>
+
+
     <!-- AUTOMATION -->
     <div class="page" id="page-automation">
       <div class="page-header">
@@ -536,6 +617,24 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
         </div>
 
         <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--brd);">
+          <div style="font-size:.9rem;font-weight:700;margin-bottom:6px;">📧 Newsletter (Supabase)</div>
+          <p style="font-size:.78rem;color:var(--txt-s);margin-bottom:12px;">Necessário só pra aba Newsletter funcionar. A URL é a do seu projeto Supabase (ex.: <code>https://abcdefgh.supabase.co</code>). O secret é o mesmo valor que você configurou com <code>supabase secrets set ADMIN_SECRET=...</code> — fica só no seu navegador, nunca é commitado no repositório.</p>
+          <div class="fg">
+            <label>URL do Projeto Supabase</label>
+            <input type="text" id="nl-supabase-url-input" placeholder="https://abcdefgh.supabase.co">
+          </div>
+          <div class="fg">
+            <label>Newsletter Admin Secret</label>
+            <input type="password" id="nl-admin-secret-input" placeholder="mesmo valor de ADMIN_SECRET no Supabase">
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+            <button class="btn btn-p" onclick="saveNewsletterSettings()">💾 Salvar</button>
+            <button class="btn btn-g" onclick="testNewsletterSetup()">🔍 Testar Conexão</button>
+          </div>
+          <div id="nl-test-result" style="margin-top:10px;font-size:.82rem;padding:10px 14px;border-radius:8px;display:none;"></div>
+        </div>
+
+        <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--brd);">
           <div style="font-size:.9rem;font-weight:700;margin-bottom:16px;">🔒 Alterar Senha do Painel</div>
           <div class="fg"><label>Nova senha</label><input type="password" id="new-pass" placeholder="Mínimo 8 caracteres"></div>
           <div class="fg"><label>Confirmar nova senha</label><input type="password" id="confirm-pass" placeholder="Repita a senha"></div>
@@ -584,6 +683,8 @@ const GITHUB_BRANCH = 'main';
 const WORKER_URL    = 'https://calculaprazo-views-api.andersonfernand3s.workers.dev';
 const SITE_BASE_URL = 'https://calculaprazo.com.br';
 const AI_KEYS_KEY    = 'cp_ai_keys';
+const NL_SUPABASE_URL_KEY = 'cp_nl_supabase_url';
+const NL_ADMIN_SECRET_KEY = 'cp_nl_admin_secret';
 const AI_DEFAULT_PROVIDER_KEY = 'cp_ai_default_provider';
 const STUDIO_HISTORY_KEY = 'cp_studio_history';
 
@@ -634,6 +735,10 @@ const SITEMAP_STATIC_PAGES = [
   { loc: '/conteudo/rh-salario',               changefreq: 'weekly',  priority: '0.6' },
   { loc: '/conteudo/rh-sindical',              changefreq: 'weekly',  priority: '0.6' },
   { loc: '/conteudo/saude-seguranca',          changefreq: 'weekly',  priority: '0.6' },
+  { loc: '/conteudo/orientacoes-praticas',    changefreq: 'weekly',  priority: '0.6' },
+  { loc: '/conteudo/noticias-mte-mpt',        changefreq: 'weekly',  priority: '0.6' },
+  { loc: '/conteudo/processual-outros',       changefreq: 'weekly',  priority: '0.6' },
+  { loc: '/conteudo/geral',                   changefreq: 'weekly',  priority: '0.6' },
   { loc: '/calculadora-de-prazo-processual',    changefreq: 'monthly', priority: '0.9' },
   { loc: '/calculadora-verbas-trabalhistas',    changefreq: 'monthly', priority: '0.9' },
   { loc: '/correcao-monetaria',                 changefreq: 'monthly', priority: '0.8' },
@@ -786,6 +891,15 @@ window.onload = function(){
   if(savedSecret && document.getElementById('worker-secret-input')){
     document.getElementById('worker-secret-input').value = savedSecret;
   }
+  // Carregar config da Newsletter salva, se houver
+  const savedNlUrl = localStorage.getItem(NL_SUPABASE_URL_KEY);
+  if(savedNlUrl && document.getElementById('nl-supabase-url-input')){
+    document.getElementById('nl-supabase-url-input').value = savedNlUrl;
+  }
+  const savedNlSecret = localStorage.getItem(NL_ADMIN_SECRET_KEY);
+  if(savedNlSecret && document.getElementById('nl-admin-secret-input')){
+    document.getElementById('nl-admin-secret-input').value = savedNlSecret;
+  }
   // Carregar chaves de IA salvas, se houver (Content Studio)
   if(document.getElementById('ai-key-gemini')){
     loadAIKeysIntoInputs();
@@ -890,6 +1004,7 @@ function goPage(id){
   if(id==='dashboard') refreshPostsFromServer().finally(renderDashboard);
   if(id==='list') refreshPostsFromServer().finally(renderList);
   if(id==='scheduled') renderScheduled();
+  if(id==='newsletter') renderNewsletter();
   if(id==='export') renderExport();
   if(id==='studio') refreshPostsFromServer().finally(studioInit);
   if(id==='new'){ resetForm(); document.getElementById('form-page-title').textContent='Novo Conteúdo'; }
@@ -2348,6 +2463,346 @@ async function renderScheduled() {
       </div>
     </div>
   `).join('');
+}
+
+// ════════════════════════════════════════
+// NEWSLETTER
+// ════════════════════════════════════════
+
+// Mesma lista de calculadoras do arquivo supabase/functions/_shared/calculators-list.ts —
+// se criar uma calculadora nova, adicione nos dois lugares.
+const NL_CALCULATORS = [
+  { slug: 'calculadora-verbas-trabalhistas', nome: 'Calculadora de Verbas Rescisórias' },
+  { slug: 'calculadora-salario-liquido', nome: 'Calculadora de Salário Líquido' },
+  { slug: 'calculadora-de-juros', nome: 'Calculadora de Juros' },
+  { slug: 'correcao-monetaria', nome: 'Correção Monetária' },
+  { slug: 'calculadora-salario-intermitente', nome: 'Calculadora de Salário Intermitente' },
+  { slug: 'calculadora-de-prescricao', nome: 'Calculadora de Prescrição' },
+  { slug: 'calculadora-de-prazo-processual', nome: 'Calculadora de Prazo Processual' },
+  { slug: 'calculadora-de-porcentagem', nome: 'Calculadora de Porcentagem' },
+  { slug: 'calculadora-de-datas', nome: 'Calculadora de Datas' },
+  { slug: 'calculadora-imc', nome: 'Calculadora de IMC' },
+  { slug: 'conversor-de-moedas', nome: 'Conversor de Moedas' },
+  { slug: 'gerador-de-qr-code', nome: 'Gerador de QR Code' },
+  { slug: 'gerador-de-senhas', nome: 'Gerador de Senhas' },
+  { slug: 'numero-por-extenso', nome: 'Número por Extenso' },
+  { slug: 'validador-cpf-cnpj', nome: 'Validador de CPF/CNPJ' },
+];
+
+let _nlCampaignsCache = [];
+
+function nlGetConfig() {
+  return {
+    url: (localStorage.getItem(NL_SUPABASE_URL_KEY) || '').trim().replace(/\/$/, ''),
+    secret: (localStorage.getItem(NL_ADMIN_SECRET_KEY) || '').trim(),
+  };
+}
+
+async function callNewsletterAPI(action, payload = {}) {
+  const { url, secret } = nlGetConfig();
+  if (!url || !secret) throw new Error('Configure a URL do Supabase e o Admin Secret em Configurações.');
+  const res = await fetch(`${url}/functions/v1/newsletter-admin`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-admin-secret': secret },
+    body: JSON.stringify({ action, ...payload }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || `Erro ${res.status}`);
+  return data;
+}
+
+function saveNewsletterSettings() {
+  localStorage.setItem(NL_SUPABASE_URL_KEY, document.getElementById('nl-supabase-url-input').value.trim());
+  const secretInput = document.getElementById('nl-admin-secret-input');
+  if (secretInput.value.trim()) localStorage.setItem(NL_ADMIN_SECRET_KEY, secretInput.value.trim());
+  toast('Configurações da Newsletter salvas.', 'ok');
+}
+
+async function testNewsletterSetup() {
+  const el = document.getElementById('nl-test-result');
+  el.style.display = 'block';
+  el.style.background = 'var(--b50)';
+  el.textContent = 'Testando...';
+  try {
+    await callNewsletterAPI('list_campaigns');
+    el.style.background = '#dcfce7';
+    el.style.color = '#166534';
+    el.textContent = '✓ Conexão OK! O painel já consegue falar com o Supabase.';
+  } catch (e) {
+    el.style.background = '#fee2e2';
+    el.style.color = '#991b1b';
+    el.textContent = '✗ Falha: ' + e.message;
+  }
+}
+
+function renderNewsletter() {
+  const { url, secret } = nlGetConfig();
+  document.getElementById('nl-config-warning').style.display = (!url || !secret) ? 'block' : 'none';
+  nlSwitchTab('campanhas');
+}
+
+function nlSwitchTab(tab) {
+  document.getElementById('nl-sub-campanhas').style.display = tab === 'campanhas' ? 'block' : 'none';
+  document.getElementById('nl-sub-assinantes').style.display = tab === 'assinantes' ? 'block' : 'none';
+  const onStyle = 'background:var(--acc);color:#fff;';
+  const offStyle = 'background:var(--b50);color:var(--txt-m);';
+  document.getElementById('nl-tab-campanhas').setAttribute('style', 'border-radius:8px 8px 0 0;' + (tab === 'campanhas' ? onStyle : offStyle));
+  document.getElementById('nl-tab-assinantes').setAttribute('style', 'border-radius:8px 8px 0 0;' + (tab === 'assinantes' ? onStyle : offStyle));
+  if (tab === 'campanhas') nlLoadCampaigns();
+  else nlLoadSubscribers();
+}
+
+function nlStatusBadge(status) {
+  const map = {
+    draft:     { label: 'Rascunho',  bg: '#f1f5f9', fg: '#475569' },
+    scheduled: { label: 'Agendada',  bg: '#dbeafe', fg: '#1d4ed8' },
+    sending:   { label: 'Enviando…', bg: '#fef3c7', fg: '#92400e' },
+    sent:      { label: 'Enviada',   bg: '#dcfce7', fg: '#166534' },
+    failed:    { label: 'Falhou',    bg: '#fee2e2', fg: '#991b1b' },
+  };
+  const s = map[status] || map.draft;
+  return `<span style="display:inline-block;padding:2px 10px;border-radius:999px;font-size:.72rem;font-weight:700;background:${s.bg};color:${s.fg};">${s.label}</span>`;
+}
+
+async function nlLoadCampaigns() {
+  const container = document.getElementById('nl-campaigns-list');
+  const { url, secret } = nlGetConfig();
+  if (!url || !secret) { container.innerHTML = ''; return; }
+  container.innerHTML = '<div class="card" style="text-align:center;color:var(--txt-s);padding:30px;">Carregando...</div>';
+  try {
+    const { campaigns } = await callNewsletterAPI('list_campaigns');
+    _nlCampaignsCache = campaigns;
+    if (!campaigns.length) {
+      container.innerHTML = '<div class="card" style="text-align:center;color:var(--txt-s);padding:30px;">Nenhuma campanha ainda. Clique em "Nova Campanha" pra criar a primeira.</div>';
+      return;
+    }
+    container.innerHTML = campaigns.map(c => `
+      <div class="post-item">
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap;">
+            ${nlStatusBadge(c.status)}
+            ${c.scheduled_for ? `<span style="font-size:.72rem;color:var(--txt-s);">🗓️ ${formatDateTimeBR(c.scheduled_for)}</span>` : ''}
+            ${c.sent_at ? `<span style="font-size:.72rem;color:var(--txt-s);">✅ enviada em ${formatDateTimeBR(c.sent_at)}</span>` : ''}
+          </div>
+          <div class="post-title">${c.subject}</div>
+          ${c.error_message ? `<div style="font-size:.76rem;color:#DC2626;margin-top:4px;">${c.error_message}</div>` : ''}
+        </div>
+        <div class="post-actions">
+          ${c.status === 'draft' || c.status === 'scheduled' ? `
+            <button class="btn btn-g btn-sm" onclick="nlOpenComposer('${c.id}')">Editar</button>
+            <button class="btn btn-p btn-sm" onclick="nlSendNow('${c.id}')">Enviar agora</button>
+            <button class="btn btn-danger btn-sm" onclick="nlDeleteCampaign('${c.id}')">Excluir</button>
+          ` : `
+            <button class="btn btn-danger btn-sm" onclick="nlDeleteCampaign('${c.id}')">Excluir</button>
+          `}
+        </div>
+      </div>
+    `).join('');
+  } catch (e) {
+    container.innerHTML = `<div class="card" style="text-align:center;color:#DC2626;padding:30px;">Erro: ${e.message}</div>`;
+  }
+}
+
+function nlRenderArticlePicker(selectedIds = []) {
+  const posts = [...getPosts()].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 40);
+  const selectedMap = new Map(selectedIds.map(a => [a.id, a.show_image]));
+  const container = document.getElementById('nl-article-picker');
+  if (!posts.length) {
+    container.innerHTML = '<p style="font-size:.82rem;color:var(--txt-s);padding:8px;">Nenhum post carregado ainda — visite "Gerenciar Posts" primeiro.</p>';
+    return;
+  }
+  container.innerHTML = posts.map(p => {
+    const checked = selectedMap.has(p.id);
+    const showImg = selectedMap.get(p.id) !== false; // default true quando marcado
+    return `
+    <label style="display:flex;align-items:center;gap:8px;padding:6px 4px;font-size:.83rem;border-bottom:1px solid var(--brd);cursor:pointer;">
+      <input type="checkbox" class="nl-art-check" value="${p.id}" ${checked ? 'checked' : ''} onchange="document.getElementById('nl-art-img-${p.id}').style.display=this.checked?'inline-flex':'none'">
+      <span style="flex:1;">${p.title}</span>
+      <span id="nl-art-img-${p.id}" style="display:${checked ? 'inline-flex' : 'none'};align-items:center;gap:4px;font-size:.75rem;color:var(--txt-s);white-space:nowrap;">
+        <input type="checkbox" class="nl-art-img-check" data-post="${p.id}" ${showImg ? 'checked' : ''}> imagem
+      </span>
+    </label>`;
+  }).join('');
+}
+
+function nlRenderCalcPicker(selectedSlugs = []) {
+  const container = document.getElementById('nl-calc-picker');
+  container.innerHTML = NL_CALCULATORS.map(c => `
+    <label style="display:flex;align-items:center;gap:8px;padding:6px 4px;font-size:.83rem;border-bottom:1px solid var(--brd);cursor:pointer;">
+      <input type="checkbox" class="nl-calc-check" value="${c.slug}" ${selectedSlugs.includes(c.slug) ? 'checked' : ''}>
+      <span>${c.nome}</span>
+    </label>
+  `).join('');
+}
+
+function nlToggleSchedule() {
+  const isSchedule = document.querySelector('input[name="nl-when"]:checked').value === 'schedule';
+  document.getElementById('nl-c-schedule').style.display = isSchedule ? 'block' : 'none';
+}
+
+function nlOpenComposer(campaignId = null) {
+  document.getElementById('nl-composer').style.display = 'block';
+  document.getElementById('nl-composer-msg').style.display = 'none';
+  document.getElementById('nl-composer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  const campaign = campaignId ? _nlCampaignsCache.find(c => c.id === campaignId) : null;
+
+  document.getElementById('nl-composer-title').textContent = campaign ? 'Editar Campanha' : 'Nova Campanha';
+  document.getElementById('nl-c-id').value = campaign ? campaign.id : '';
+  document.getElementById('nl-c-subject').value = campaign ? campaign.subject : '';
+  document.getElementById('nl-c-body').value = campaign ? campaign.body_markdown : '';
+
+  nlRenderArticlePicker(campaign ? campaign.article_ids : []);
+  nlRenderCalcPicker(campaign ? campaign.calculator_slugs : []);
+
+  const whenSchedule = document.querySelector('input[name="nl-when"][value="schedule"]');
+  const whenDraft = document.querySelector('input[name="nl-when"][value="draft"]');
+  if (campaign && campaign.scheduled_for) {
+    whenSchedule.checked = true;
+    const d = new Date(campaign.scheduled_for);
+    const local = new Intl.DateTimeFormat('sv-SE', { timeZone: 'America/Sao_Paulo', year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' }).format(d).replace(' ', 'T');
+    document.getElementById('nl-c-schedule').value = local;
+  } else {
+    whenDraft.checked = true;
+    document.getElementById('nl-c-schedule').value = '';
+  }
+  nlToggleSchedule();
+}
+
+function nlCloseComposer() {
+  document.getElementById('nl-composer').style.display = 'none';
+}
+
+async function nlSaveCampaign() {
+  const id = document.getElementById('nl-c-id').value;
+  const subject = document.getElementById('nl-c-subject').value.trim();
+  const body_markdown = document.getElementById('nl-c-body').value;
+  const msgEl = document.getElementById('nl-composer-msg');
+
+  if (!subject) {
+    msgEl.style.display = 'block'; msgEl.style.color = '#DC2626';
+    msgEl.textContent = 'O assunto do e-mail é obrigatório.';
+    return;
+  }
+
+  const article_ids = [...document.querySelectorAll('.nl-art-check:checked')].map(chk => {
+    const imgChk = document.querySelector(`.nl-art-img-check[data-post="${chk.value}"]`);
+    return { id: chk.value, show_image: imgChk ? imgChk.checked : true };
+  });
+  const calculator_slugs = [...document.querySelectorAll('.nl-calc-check:checked')].map(chk => chk.value);
+
+  const isSchedule = document.querySelector('input[name="nl-when"]:checked').value === 'schedule';
+  let scheduled_for = null;
+  if (isSchedule) {
+    const raw = document.getElementById('nl-c-schedule').value;
+    if (!raw) {
+      msgEl.style.display = 'block'; msgEl.style.color = '#DC2626';
+      msgEl.textContent = 'Escolha a data/hora do agendamento.';
+      return;
+    }
+    // input datetime-local é sempre no horário local do navegador — assumimos Brasília
+    scheduled_for = new Date(raw + ':00-03:00').toISOString();
+  }
+
+  try {
+    if (id) {
+      await callNewsletterAPI('update_campaign', {
+        id, subject, body_markdown, article_ids, calculator_slugs,
+        scheduled_for, status: isSchedule ? 'scheduled' : 'draft',
+      });
+    } else {
+      await callNewsletterAPI('create_campaign', { subject, body_markdown, article_ids, calculator_slugs, scheduled_for });
+    }
+    toast('Campanha salva.', 'ok');
+    nlCloseComposer();
+    nlLoadCampaigns();
+  } catch (e) {
+    msgEl.style.display = 'block'; msgEl.style.color = '#DC2626';
+    msgEl.textContent = 'Erro: ' + e.message;
+  }
+}
+
+async function nlSendNow(id) {
+  if (!confirm('Enviar esta campanha agora, pra todos os assinantes ativos? Essa ação não pode ser desfeita.')) return;
+  try {
+    toast('Enviando... isso pode levar alguns segundos.', 'ok');
+    const result = await callNewsletterAPI('send_now', { id });
+    toast(`Enviada! ${result.sentCount} com sucesso${result.failedCount ? `, ${result.failedCount} falharam` : ''}.`, result.failedCount ? 'err' : 'ok');
+    nlLoadCampaigns();
+  } catch (e) {
+    toast('Erro ao enviar: ' + e.message, 'err');
+  }
+}
+
+async function nlDeleteCampaign(id) {
+  if (!confirm('Excluir esta campanha? Essa ação não pode ser desfeita.')) return;
+  try {
+    await callNewsletterAPI('delete_campaign', { id });
+    toast('Campanha excluída.', 'ok');
+    nlLoadCampaigns();
+  } catch (e) {
+    toast('Erro: ' + e.message, 'err');
+  }
+}
+
+async function nlLoadSubscribers() {
+  const container = document.getElementById('nl-subscribers-list');
+  const { url, secret } = nlGetConfig();
+  if (!url || !secret) { container.innerHTML = ''; return; }
+  container.innerHTML = '<div class="card" style="text-align:center;color:var(--txt-s);padding:30px;">Carregando...</div>';
+  try {
+    const { subscribers, total, activeCount } = await callNewsletterAPI('list_subscribers', { limit: 500 });
+    const header = `<div class="card" style="margin-bottom:14px;font-size:.85rem;"><strong>${activeCount}</strong> assinante(s) ativo(s) · ${total} no total (incluindo cancelados)</div>`;
+    if (!subscribers.length) {
+      container.innerHTML = header + '<div class="card" style="text-align:center;color:var(--txt-s);padding:30px;">Nenhum assinante ainda.</div>';
+      return;
+    }
+    const rows = subscribers.map(s => `
+      <div class="post-item">
+        <div style="flex:1;">
+          <div style="font-size:.88rem;font-weight:600;">${s.email}</div>
+          <div style="font-size:.76rem;color:var(--txt-s);">
+            ${s.status === 'active' ? '🟢 Ativo' : '⚪ Cancelado'} · inscrito em ${formatDateTimeBR(s.subscribed_at)}
+            ${s.unsubscribed_at ? ` · cancelado em ${formatDateTimeBR(s.unsubscribed_at)}` : ''}
+          </div>
+        </div>
+        <div class="post-actions">
+          <button class="btn btn-danger btn-sm" onclick="nlRemoveSubscriber('${s.id}')">Excluir</button>
+        </div>
+      </div>
+    `).join('');
+    container.innerHTML = header + rows;
+  } catch (e) {
+    container.innerHTML = `<div class="card" style="text-align:center;color:#DC2626;padding:30px;">Erro: ${e.message}</div>`;
+  }
+}
+
+async function nlAddSubscriber() {
+  const input = document.getElementById('nl-add-email');
+  const email = input.value.trim();
+  const msgEl = document.getElementById('nl-add-msg');
+  if (!email) return;
+  try {
+    await callNewsletterAPI('add_subscriber', { email });
+    input.value = '';
+    msgEl.style.display = 'block'; msgEl.style.color = '#166534';
+    msgEl.textContent = '✓ Adicionado.';
+    nlLoadSubscribers();
+  } catch (e) {
+    msgEl.style.display = 'block'; msgEl.style.color = '#DC2626';
+    msgEl.textContent = 'Erro: ' + e.message;
+  }
+}
+
+async function nlRemoveSubscriber(id) {
+  if (!confirm('Remover este assinante da lista?')) return;
+  try {
+    await callNewsletterAPI('remove_subscriber', { id });
+    toast('Assinante removido.', 'ok');
+    nlLoadSubscribers();
+  } catch (e) {
+    toast('Erro: ' + e.message, 'err');
+  }
 }
 
 function editarAgendado(criadoEm) {

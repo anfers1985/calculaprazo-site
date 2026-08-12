@@ -1,5 +1,53 @@
 [
   {
+    "id": "trt-mg-gordofobia-indenizacao-rescisao-indireta",
+    "title": "TRT-MG mantém indenização por gordofobia e rescisão indireta",
+    "category": "jurisprudencia-trts",
+    "category_label": "TRT",
+    "excerpt": "TRT-MG mantém rescisão indireta e indenização de R$ 20 mil a trabalhador vítima de gordofobia e assédio moral praticado por supervisor.",
+    "image": "https://images.unsplash.com/photo-1556097549-e2371517ae20?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-11",
+    "updatedAt": "2026-08-11",
+    "tags": []
+  },
+  {
+    "id": "assedio-eleitoral-trabalho-resolucao-csjt-452-2026",
+    "title": "Assédio eleitoral no trabalho exige prevenção das empresas",
+    "category": "processual-analises",
+    "category_label": "Análises",
+    "excerpt": "Resolução CSJT nº 452/2026 amplia o monitoramento do assédio eleitoral e determina comunicação ao MPT e ao MPE em reclamações trabalhistas.",
+    "image": "https://images.unsplash.com/photo-1714976694720-01c558074a80?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-11",
+    "updatedAt": "2026-08-11",
+    "tags": []
+  },
+  {
+    "id": "erros-comuns-folha-de-ponto-como-evitar",
+    "title": "Os erros mais comuns na folha de ponto e como evitá-los",
+    "category": "rh-jornada",
+    "category_label": "Jornada",
+    "excerpt": "Conheça os principais erros na folha de ponto, os riscos trabalhistas e como evitá-los com base na CLT, Portaria 671/2021 e boas práticas de RH.",
+    "image": "https://images.unsplash.com/photo-1633284377026-12dfd762d4ae?q=80&w=1251&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-11",
+    "updatedAt": "2026-08-11",
+    "tags": []
+  },
+  {
+    "id": "alterar-folha-ponto-crime-fraude-clt",
+    "title": "Alterar a folha de ponto é crime? Entenda quando há fraude",
+    "category": "rh-jornada",
+    "category_label": "Jornada",
+    "excerpt": "Descubra quando alterar a folha de ponto pode configurar fraude ou crime, o que diz a CLT e o Código Penal e como evitar riscos trabalhistas.",
+    "image": "https://images.unsplash.com/photo-1490724500206-cd5482e02b9e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-11",
+    "updatedAt": "2026-08-11",
+    "tags": []
+  },
+  {
     "id": "alianca-voto-livre-secreto-assedio-eleitoral-trabalho",
     "title": "Justiça lança aliança nacional contra assédio eleitoral no trabalho",
     "category": "orientacoes-praticas",

@@ -1,7 +1,18 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { google } from 'googleapis';
-import { getJob, updateJob, marcarErro, garantirArquivoLocal } from './lib/supabase.mjs';
+import { getJob, updateJob, marcarErro, garantirArquivoLocal, apagarArquivosDoJob } from './lib/supabase.mjs';
+
+// Limpeza do Storage nunca deve derrubar o job: o que importa é o vídeo estar
+// publicado no YouTube. Se a limpeza falhar (rede, permissão etc.), só loga e
+// segue — sobra lixo no bucket pra tentar de novo depois, mas não quebra nada.
+async function limparComSeguranca(jobId) {
+  try {
+    await apagarArquivosDoJob(jobId);
+  } catch (e) {
+    console.warn(`Aviso: limpeza do Storage falhou pro job ${jobId}: ${e.message.slice(0, 200)}`);
+  }
+}
 
 const oauth2Client = new google.auth.OAuth2(
   process.env.YOUTUBE_CLIENT_ID,
@@ -20,6 +31,7 @@ async function main(jobId) {
   if (job.youtube_video_id) {
     console.log(`Job ${jobId} já tinha sido publicado antes (${job.youtube_video_id}). Pulando novo upload.`);
     await updateJob(jobId, { status: 'publicado' });
+    await limparComSeguranca(jobId);
     return;
   }
 
@@ -67,6 +79,8 @@ async function main(jobId) {
 
   await updateJob(jobId, { youtube_video_id: videoId, status: 'publicado' });
   console.log(`Publicado: https://youtube.com/watch?v=${videoId}`);
+
+  await limparComSeguranca(jobId);
 }
 
 const jobId = process.argv[2];

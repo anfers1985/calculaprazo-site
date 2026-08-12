@@ -729,6 +729,17 @@
         <li><a href="/privacidade">Privacidade & LGPD</a></li>
         <li><a href="/termos">Termos de Uso</a></li>
       </ul></div>
+      <div class="ftr-col" style="min-width:220px;">
+        <h4>Newsletter</h4>
+        <p style="font-size:.78rem;color:rgba(255,255,255,.5);margin-bottom:10px;line-height:1.5;">Receba novidades do Calcula Prazo por e-mail. Cancelamento automático a qualquer momento, com 1 clique.</p>
+        <form id="nl-signup-form" onsubmit="return newsletterSubscribe(event)" style="display:flex;gap:6px;flex-wrap:wrap;">
+          <input type="text" name="website" style="position:absolute;left:-9999px;" tabindex="-1" autocomplete="off">
+          <input type="email" name="email" required placeholder="seu@email.com" style="flex:1;min-width:140px;padding:8px 12px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:#fff;font-size:.82rem;">
+          <button type="submit" style="padding:8px 14px;border-radius:6px;border:none;background:#2563eb;color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;">Inscrever</button>
+        </form>
+        <p id="nl-signup-msg" style="font-size:.76rem;margin-top:8px;display:none;"></p>
+        <p style="font-size:.7rem;color:rgba(255,255,255,.35);margin-top:8px;">Veja nossa <a href="/privacidade#newsletter" style="color:rgba(255,255,255,.5);text-decoration:underline;">Política de Privacidade</a>.</p>
+      </div>
     </div>
     <div class="ftr-bot">
       <p class="ftr-copy">&copy; <span id="yr"></span> Calcula Prazo. Todos os direitos reservados. Calculadoras jurídicas gratuitas para advogados, contadores, profissionais de RH e trabalhadores. Os cálculos e o conteúdo são de caráter informativo e não substituem assessoria especializada.</p>
@@ -746,7 +757,7 @@
      JAVASCRIPT
 ══════════════════════════════════════ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/app.min.js?v=6" defer></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/app.min.js?v=10" defer></script>
 
 <!-- ══════════ COOKIE BANNER ══════════ -->
 <div id="cookie-banner">
@@ -890,7 +901,7 @@
 <!-- ══════════════════════════════════════
      BLOG / CONTEÚDO — JavaScript
 ══════════════════════════════════════ -->
-<script src="/blog.min.js?v=10" defer></script>
+<script src="/blog.min.js?v=12" defer></script>
 <script src="/js/ads-adsterra.js?v=2" defer></script>
 <script src="/js/analytics.js?v=1" defer></script>
 
