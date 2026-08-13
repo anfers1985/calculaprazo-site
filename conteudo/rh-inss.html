@@ -60,7 +60,7 @@
 <link rel="stylesheet" href="/styles.css?v=30">
 </head>
 <body>
-<script>try{sessionStorage.setItem('cp_nav_filter', JSON.stringify({sec:'rh-gestao',cat:'rh-inss'}));}catch(e){}</script>
+<script>try{sessionStorage.setItem('cp_nav_filter', JSON.stringify({sec:'rh-gestao',cat:'rh-inss',ts:Date.now()}));}catch(e){}</script>
 
 <header id="hdr">
   <div class="hdr-inner">
@@ -413,16 +413,20 @@
         <li><a href="/privacidade">Privacidade &amp; LGPD</a></li>
         <li><a href="/termos">Termos de Uso</a></li>
       </ul></div>
-      <div class="ftr-col" style="min-width:220px;">
+    </div>
+    <div class="ftr-newsletter">
+      <div class="ftr-newsletter-text">
         <h4>Newsletter</h4>
-        <p style="font-size:.78rem;color:rgba(255,255,255,.5);margin-bottom:10px;line-height:1.5;">Receba novidades do Calcula Prazo por e-mail. Cancelamento automático a qualquer momento, com 1 clique.</p>
-        <form id="nl-signup-form" onsubmit="return newsletterSubscribe(event)" style="display:flex;gap:6px;flex-wrap:wrap;">
+        <p>Receba novidades do Calcula Prazo por e-mail. Cancelamento automático a qualquer momento, com 1 clique.</p>
+      </div>
+      <div class="ftr-newsletter-form">
+        <form id="nl-signup-form" onsubmit="return newsletterSubscribe(event)">
           <input type="text" name="website" style="position:absolute;left:-9999px;" tabindex="-1" autocomplete="off">
           <input type="email" name="email" required placeholder="seu@email.com" style="flex:1;min-width:140px;padding:8px 12px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:#fff;font-size:.82rem;">
           <button type="submit" style="padding:8px 14px;border-radius:6px;border:none;background:#2563eb;color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;">Inscrever</button>
         </form>
         <p id="nl-signup-msg" style="font-size:.76rem;margin-top:8px;display:none;"></p>
-        <p style="font-size:.7rem;color:rgba(255,255,255,.35);margin-top:8px;">Veja nossa <a href="/privacidade#newsletter" style="color:rgba(255,255,255,.5);text-decoration:underline;">Política de Privacidade</a>.</p>
+        <p class="ftr-newsletter-privacy">Veja nossa <a href="/privacidade#newsletter">Política de Privacidade</a>.</p>
       </div>
     </div>
     <div class="ftr-bot">
@@ -442,7 +446,7 @@
   </div>
 </footer>
 
-<script src="/blog.min.js?v=12" defer></script>
+<script src="/blog.min.js?v=13" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function(){
   var y = document.getElementById('yr'); if(y) y.textContent = new Date().getFullYear();

@@ -306,7 +306,8 @@ function renderSidebarPosts(){
 function navGoTo(id, sec, cat){
   if(id==='blog'){
     try{
-      if(sec || cat) sessionStorage.setItem('cp_nav_filter', JSON.stringify({sec:sec||'', cat:cat||''}));
+      if(sec || cat) sessionStorage.setItem('cp_nav_filter', JSON.stringify({sec:sec||'', cat:cat||'', ts:Date.now()}));
+      else sessionStorage.removeItem('cp_nav_filter'); // "ver todos" limpa qualquer filtro parado de navegação anterior
     }catch(e){}
     window.location.href = '/conteudo';
     return;
@@ -449,6 +450,12 @@ function toggleSociais(e){
       if(!raw) return;
       sessionStorage.removeItem('cp_nav_filter');
       var f = JSON.parse(raw);
+      // Ignora filtro "velho" — se ficou parado no sessionStorage por mais
+      // de alguns segundos (ex.: usuário visitou uma página de categoria,
+      // depois navegou pra outro lugar sem que o filtro fosse consumido, e
+      // só depois clicou em "Ver todos"), ele não deve valer mais. Sem essa
+      // checagem, "Ver todos os artigos" podia abrir filtrado por engano.
+      if(!f.ts || (Date.now() - f.ts) > 4000) return;
       if(f.cat && f.sec){ filterBlogSub(f.cat, f.sec); }
       else if(f.sec){ filterBlogSection(f.sec); }
     }catch(ex){}
@@ -477,6 +484,8 @@ window.addEventListener('hashchange', function() {
     if (cpFilter) {
       sessionStorage.removeItem('cp_nav_filter');
       var f = JSON.parse(cpFilter);
+      // mesma checagem de recência do applyPendingNavFilter — ver comentário lá
+      if (!f.ts || (Date.now() - f.ts) > 4000) return;
       setTimeout(function(){
         navGoTo('blog');
         setTimeout(function(){
