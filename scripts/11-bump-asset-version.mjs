@@ -1,22 +1,25 @@
 // ════════════════════════════════════════════════════════════════════════
-// BUMP DE VERSÃO DOS ASSETS JS (app.min.js / blog.min.js)
+// BUMP DE VERSÃO DOS ASSETS (app.min.js / blog.min.js / styles.css)
 // ════════════════════════════════════════════════════════════════════════
-// Agora que app.min.js e blog.min.js têm cache de 1 ano (immutable) no
+// Agora que app.min.js, blog.min.js e styles.css têm cache longo no
 // _headers, a ÚNICA forma de forçar o navegador/CDN a buscar uma versão
 // nova depois de você editar o arquivo é mudando a URL — e a URL muda
-// através do "?v=N" que já existe em todas as tags <script>.
+// através do "?v=N" que já existe em todas as tags <link>/<script>.
 //
 // Esse script troca o "?v=N" antigo pelo novo em TODAS as referências do
-// site de uma vez (index.html, os 15 calculadoras, os 364 posts do blog,
-// admin/index.html etc.) — pra evitar o que encontramos hoje: 15 páginas
-// esquecidas numa versão antiga (?v=4) enquanto o resto do site já estava
-// em ?v=10.
+// site de uma vez (index.html, as 15 calculadoras, os posts do blog,
+// admin/index.html etc.) — pra evitar o que já encontramos mais de uma
+// vez: um grupo de páginas esquecido numa versão antiga enquanto o resto
+// do site já tinha sido atualizado (ex.: blog.min.js?v=4 vs v=10;
+// styles.css?v=28 vs v=30).
 //
-// COMO USAR (depois de editar e re-minificar app.js ou blog.js):
+// COMO USAR (depois de editar e re-minificar/salvar o arquivo):
 //   node scripts/11-bump-asset-version.mjs app 7
 //   node scripts/11-bump-asset-version.mjs blog 11
+//   node scripts/11-bump-asset-version.mjs styles 31
 //
-// (o primeiro argumento é "app" ou "blog", o segundo é o novo número de versão)
+// (o primeiro argumento é "app", "blog" ou "styles"; o segundo é o novo
+// número de versão)
 // ════════════════════════════════════════════════════════════════════════
 
 import fs from 'node:fs';
@@ -27,13 +30,13 @@ const ROOT = path.resolve(new URL('.', import.meta.url).pathname, '..');
 const asset = process.argv[2];
 const newVersion = process.argv[3];
 
-if (!['app', 'blog'].includes(asset) || !newVersion || !/^\d+$/.test(newVersion)) {
-  console.error('Uso: node scripts/11-bump-asset-version.mjs <app|blog> <novo-numero-de-versao>');
-  console.error('Exemplo: node scripts/11-bump-asset-version.mjs blog 11');
+if (!['app', 'blog', 'styles'].includes(asset) || !newVersion || !/^\d+$/.test(newVersion)) {
+  console.error('Uso: node scripts/11-bump-asset-version.mjs <app|blog|styles> <novo-numero-de-versao>');
+  console.error('Exemplo: node scripts/11-bump-asset-version.mjs styles 31');
   process.exit(1);
 }
 
-const filename = `${asset}.min.js`;
+const filename = asset === 'styles' ? 'styles.css' : `${asset}.min.js`;
 const pattern = new RegExp(`${filename.replace('.', '\\.')}\\?v=\\d+`, 'g');
 const replacement = `${filename}?v=${newVersion}`;
 
