@@ -1,5 +1,41 @@
 [
   {
+    "id": "trt-go-adicional-periculosidade-tubulacao-gas",
+    "title": "TRT-GO mantém adicional por trabalho próximo a tubulação de gás",
+    "category": "jurisprudencia-trts",
+    "category_label": "TRT",
+    "excerpt": "TRT-GO reconhece adicional de periculosidade a empregado que atuava em galpão fechado próximo a tubulações de GLP em montadora de veículos.",
+    "image": "https://plus.unsplash.com/premium_photo-1682142358040-cc602ecb0366?q=80&w=1187&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-13",
+    "updatedAt": "2026-08-13",
+    "tags": []
+  },
+  {
+    "id": "desvio-de-funcao-como-prevenir-riscos-trabalhistas",
+    "title": "Desvio de função: como prevenir riscos trabalhistas",
+    "category": "rh-contrato",
+    "category_label": "Contrato",
+    "excerpt": "Entenda o desvio de função, os riscos para empresas e como RH e gestores podem prevenir problemas com cargos, atividades e salários.",
+    "image": "https://images.unsplash.com/photo-1753351054379-9577966546ba?q=80&w=1331&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-13",
+    "updatedAt": "2026-08-13",
+    "tags": []
+  },
+  {
+    "id": "auxilio-home-office-o-que-pode-ser-oferecido",
+    "title": "Auxílio home office: o que a empresa pode oferecer?",
+    "category": "rh-beneficios",
+    "category_label": "Benefícios",
+    "excerpt": "Saiba o que pode compor o auxílio home office, quem deve custear despesas e quais regras da CLT se aplicam ao trabalho remoto.",
+    "image": "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-13",
+    "updatedAt": "2026-08-13",
+    "tags": []
+  },
+  {
     "id": "trt-mg-dispensa-violencia-domestica-agosto-lilas",
     "title": "TRT-MG mantém dispensa de empregado condenado por violência doméstica",
     "category": "jurisprudencia-trts",
