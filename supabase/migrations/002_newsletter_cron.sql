@@ -21,10 +21,10 @@ select cron.schedule(
   '0 12,18 * * *',
   $$
   select net.http_post(
-    url := 'https://SEU_PROJECT_REF.supabase.co/functions/v1/newsletter-send',
+    url := 'https://acsksbtmcodfjwaugxnb.supabase.co/functions/v1/newsletter-send',
     headers := jsonb_build_object(
       'Content-Type', 'application/json',
-      'x-cron-secret', 'SEU_CRON_SECRET'
+      'x-cron-secret', 'CP_Cron_2026!8xR4mQ7'
     ),
     body := '{}'::jsonb
   );

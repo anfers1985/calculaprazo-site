@@ -646,7 +646,7 @@ function renderNhTop10(){
 // Mesma função de app.js (duplicada aqui porque as páginas de /conteudo/
 // carregam blog.min.js mas não app.min.js). Troque pela URL real depois
 // do deploy no Supabase (Project Settings → API → Project URL).
-var NEWSLETTER_SUBSCRIBE_URL = 'https://SEU-PROJETO.supabase.co/functions/v1/newsletter-subscribe';
+var NEWSLETTER_SUBSCRIBE_URL = 'https://acsksbtmcodfjwaugxnb.supabase.co/functions/v1/newsletter-subscribe';
 
 function newsletterSubscribe(e) {
   e.preventDefault();
