@@ -38,18 +38,20 @@ async function fetchArticles(articleRefs: ArticleRef[]): Promise<Array<Post & { 
 function articleCardHtml(post: Post & { show_image: boolean }): string {
   const url = `${SITE_URL}/blog/${post.id}.html`;
   const img = post.show_image && post.image
-    ? `<img src="${escapeAttr(post.image)}" alt="" width="560" style="width:100%;max-width:560px;height:auto;border-radius:8px 8px 0 0;display:block;">`
+    ? `<img src="${escapeAttr(post.image)}" alt="" width="88" height="88" style="width:88px;height:88px;object-fit:cover;border-radius:6px;display:block;">`
     : '';
   return `
-  <tr><td style="padding:0 0 16px 0;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;">
-      ${img ? `<tr><td>${img}</td></tr>` : ''}
-      <tr><td style="padding:16px;">
-        ${post.category_label ? `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#2563eb;margin-bottom:6px;">${escapeHtml(post.category_label)}</div>` : ''}
-        <a href="${url}" style="font-size:16px;font-weight:700;color:#0f172a;text-decoration:none;line-height:1.4;">${escapeHtml(post.title)}</a>
-        ${post.excerpt ? `<p style="font-size:14px;color:#475569;margin:8px 0 0 0;line-height:1.5;">${escapeHtml(post.excerpt)}</p>` : ''}
-        <a href="${url}" style="display:inline-block;margin-top:10px;font-size:13px;font-weight:700;color:#2563eb;text-decoration:none;">Ler artigo →</a>
-      </td></tr>
+  <tr><td style="padding:0 0 14px 0;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e2e8f0;border-radius:8px;">
+      <tr>
+        ${img ? `<td width="88" valign="top" style="padding:14px 0 14px 14px;">${img}</td>` : ''}
+        <td valign="top" style="padding:14px 16px;">
+          ${post.category_label ? `<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#2563eb;margin-bottom:4px;">${escapeHtml(post.category_label)}</div>` : ''}
+          <a href="${url}" style="font-size:14px;font-weight:700;color:#0f172a;text-decoration:none;line-height:1.35;">${escapeHtml(post.title)}</a>
+          ${post.excerpt ? `<p style="font-size:12px;color:#64748b;margin:4px 0 0 0;line-height:1.45;">${escapeHtml(truncate(post.excerpt, 90))}</p>` : ''}
+          <div style="margin-top:6px;"><a href="${url}" style="font-size:12px;font-weight:700;color:#2563eb;text-decoration:none;">Ler artigo →</a></div>
+        </td>
+      </tr>
     </table>
   </td></tr>`;
 }
@@ -68,6 +70,11 @@ function calculatorCardHtml(slug: string): string {
       </td></tr>
     </table>
   </td></tr>`;
+}
+
+function truncate(s: string, max: number): string {
+  if (!s || s.length <= max) return s;
+  return s.slice(0, max).trimEnd() + '…';
 }
 
 function escapeHtml(s: string): string {

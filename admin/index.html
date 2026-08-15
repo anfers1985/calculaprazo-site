@@ -452,8 +452,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
           <div class="fg">
             <label>Quando enviar</label>
             <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:8px;">
-              <label style="display:flex;align-items:center;gap:6px;font-size:.85rem;font-weight:500;cursor:pointer;"><input type="radio" name="nl-when" value="draft" checked onchange="nlToggleSchedule()"> Salvar como rascunho</label>
-              <label style="display:flex;align-items:center;gap:6px;font-size:.85rem;font-weight:500;cursor:pointer;"><input type="radio" name="nl-when" value="schedule" onchange="nlToggleSchedule()"> Agendar para...</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:.85rem;font-weight:500;text-transform:none;letter-spacing:normal;cursor:pointer;"><input type="radio" name="nl-when" value="draft" checked onchange="nlToggleSchedule()"> Salvar como rascunho</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:.85rem;font-weight:500;text-transform:none;letter-spacing:normal;cursor:pointer;"><input type="radio" name="nl-when" value="schedule" onchange="nlToggleSchedule()"> Agendar para...</label>
             </div>
             <input type="datetime-local" id="nl-c-schedule" style="display:none;padding:9px 13px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.86rem;">
             <p style="font-size:.72rem;color:var(--txt-s);margin-top:6px;">O envio agendado sai no próximo horário de checagem (09h ou 15h, horário de Brasília) igual ou depois da data/hora escolhida.</p>
@@ -2615,10 +2615,10 @@ function nlRenderArticlePicker(selectedIds = []) {
     const checked = selectedMap.has(p.id);
     const showImg = selectedMap.get(p.id) !== false; // default true quando marcado
     return `
-    <label style="display:flex;align-items:center;gap:8px;padding:6px 4px;font-size:.83rem;border-bottom:1px solid var(--brd);cursor:pointer;">
+    <label style="display:flex;align-items:center;gap:8px;padding:6px 4px;font-size:.83rem;font-weight:400;text-transform:none;letter-spacing:normal;border-bottom:1px solid var(--brd);cursor:pointer;">
       <input type="checkbox" class="nl-art-check" value="${p.id}" ${checked ? 'checked' : ''} onchange="document.getElementById('nl-art-img-${p.id}').style.display=this.checked?'inline-flex':'none'">
-      <span style="flex:1;">${p.title}</span>
-      <span id="nl-art-img-${p.id}" style="display:${checked ? 'inline-flex' : 'none'};align-items:center;gap:4px;font-size:.75rem;color:var(--txt-s);white-space:nowrap;">
+      <span style="flex:1;font-weight:400;text-transform:none;letter-spacing:normal;">${p.title}</span>
+      <span id="nl-art-img-${p.id}" style="display:${checked ? 'inline-flex' : 'none'};align-items:center;gap:4px;font-size:.75rem;font-weight:400;text-transform:none;letter-spacing:normal;color:var(--txt-s);white-space:nowrap;">
         <input type="checkbox" class="nl-art-img-check" data-post="${p.id}" ${showImg ? 'checked' : ''}> imagem
       </span>
     </label>`;
@@ -2628,9 +2628,9 @@ function nlRenderArticlePicker(selectedIds = []) {
 function nlRenderCalcPicker(selectedSlugs = []) {
   const container = document.getElementById('nl-calc-picker');
   container.innerHTML = NL_CALCULATORS.map(c => `
-    <label style="display:flex;align-items:center;gap:8px;padding:6px 4px;font-size:.83rem;border-bottom:1px solid var(--brd);cursor:pointer;">
+    <label style="display:flex;align-items:center;gap:8px;padding:6px 4px;font-size:.83rem;font-weight:400;text-transform:none;letter-spacing:normal;border-bottom:1px solid var(--brd);cursor:pointer;">
       <input type="checkbox" class="nl-calc-check" value="${c.slug}" ${selectedSlugs.includes(c.slug) ? 'checked' : ''}>
-      <span>${c.nome}</span>
+      <span style="font-weight:400;text-transform:none;letter-spacing:normal;">${c.nome}</span>
     </label>
   `).join('');
 }
