@@ -84,6 +84,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
 .fg{margin-bottom:16px;}
 .fg label{display:block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--txt-s);margin-bottom:6px;}
 .fg input,.fg select,.fg textarea{width:100%;padding:9px 13px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.88rem;font-family:var(--fh);color:var(--txt);background:#fff;transition:border-color .18s,box-shadow .18s;}
+.fg input[type="checkbox"],.fg input[type="radio"]{width:auto;padding:0;border:none;flex-shrink:0;}
 .fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(37,99,235,.1);}
 .fg textarea{min-height:120px;resize:vertical;line-height:1.6;}
 .fg-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
@@ -460,11 +461,24 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
           </div>
 
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;">
+            <button class="btn btn-g" onclick="nlPreviewCampaign()">👁️ Pré-visualizar</button>
             <button class="btn btn-p" onclick="nlSaveCampaign()">💾 Salvar</button>
             <button class="btn btn-g" onclick="nlCloseComposer()">Cancelar</button>
           </div>
           <div id="nl-composer-msg" style="margin-top:10px;font-size:.82rem;display:none;"></div>
         </div>
+
+        <!-- MODAL: PRÉ-VISUALIZAÇÃO DO E-MAIL -->
+        <div id="nl-preview-modal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+          <div style="background:#fff;border-radius:12px;width:100%;max-width:680px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--brd);">
+              <div style="font-size:.9rem;font-weight:700;">👁️ Pré-visualização — como o e-mail vai chegar</div>
+              <button class="btn btn-g btn-sm" onclick="document.getElementById('nl-preview-modal').style.display='none'">✕ Fechar</button>
+            </div>
+            <iframe id="nl-preview-iframe" style="flex:1;border:none;width:100%;min-height:60vh;background:#f1f5f9;"></iframe>
+          </div>
+        </div>
+
 
         <div style="margin-bottom:14px;">
           <button class="btn btn-p" onclick="nlOpenComposer()">✏️ Nova Campanha</button>
@@ -2614,11 +2628,19 @@ function nlRenderArticlePicker(selectedIds = []) {
   container.innerHTML = posts.map(p => {
     const checked = selectedMap.has(p.id);
     const showImg = selectedMap.get(p.id) !== false; // default true quando marcado
+    const dataFmt = p.date ? new Date(p.date + 'T12:00:00').toLocaleDateString('pt-BR', { day:'2-digit', month:'short', year:'numeric' }) : '';
+    const thumb = p.image
+      ? `<img src="${p.image}" alt="" width="36" height="36" style="width:36px;height:36px;object-fit:cover;border-radius:5px;flex-shrink:0;">`
+      : `<div style="width:36px;height:36px;border-radius:5px;background:var(--b50);flex-shrink:0;"></div>`;
     return `
-    <label style="display:flex;align-items:center;gap:8px;padding:6px 4px;font-size:.83rem;font-weight:400;text-transform:none;letter-spacing:normal;border-bottom:1px solid var(--brd);cursor:pointer;">
+    <label style="display:flex;align-items:center;gap:10px;padding:7px 4px;font-size:.83rem;font-weight:400;text-transform:none;letter-spacing:normal;border-bottom:1px solid var(--brd);cursor:pointer;">
       <input type="checkbox" class="nl-art-check" value="${p.id}" ${checked ? 'checked' : ''} onchange="document.getElementById('nl-art-img-${p.id}').style.display=this.checked?'inline-flex':'none'">
-      <span style="flex:1;font-weight:400;text-transform:none;letter-spacing:normal;">${p.title}</span>
-      <span id="nl-art-img-${p.id}" style="display:${checked ? 'inline-flex' : 'none'};align-items:center;gap:4px;font-size:.75rem;font-weight:400;text-transform:none;letter-spacing:normal;color:var(--txt-s);white-space:nowrap;">
+      ${thumb}
+      <span style="flex:1;min-width:0;">
+        <span style="display:block;font-weight:400;text-transform:none;letter-spacing:normal;">${p.title}</span>
+        ${dataFmt ? `<span style="display:block;font-size:.72rem;color:var(--txt-s);margin-top:2px;">${dataFmt}${p.category_label ? ' · ' + p.category_label : ''}</span>` : ''}
+      </span>
+      <span id="nl-art-img-${p.id}" style="display:${checked ? 'inline-flex' : 'none'};align-items:center;gap:4px;font-size:.75rem;font-weight:400;text-transform:none;letter-spacing:normal;color:var(--txt-s);white-space:nowrap;flex-shrink:0;">
         <input type="checkbox" class="nl-art-img-check" data-post="${p.id}" ${showImg ? 'checked' : ''}> imagem
       </span>
     </label>`;
@@ -2671,6 +2693,28 @@ function nlOpenComposer(campaignId = null) {
 
 function nlCloseComposer() {
   document.getElementById('nl-composer').style.display = 'none';
+}
+
+async function nlPreviewCampaign() {
+  const subject = document.getElementById('nl-c-subject').value.trim();
+  const body_markdown = document.getElementById('nl-c-body').value;
+  const article_ids = [...document.querySelectorAll('.nl-art-check:checked')].map(chk => {
+    const imgChk = document.querySelector(`.nl-art-img-check[data-post="${chk.value}"]`);
+    return { id: chk.value, show_image: imgChk ? imgChk.checked : true };
+  });
+  const calculator_slugs = [...document.querySelectorAll('.nl-calc-check:checked')].map(chk => chk.value);
+
+  const modal = document.getElementById('nl-preview-modal');
+  const iframe = document.getElementById('nl-preview-iframe');
+  modal.style.display = 'flex';
+  iframe.srcdoc = '<div style="font-family:sans-serif;padding:24px;color:#64748b;">Carregando pré-visualização...</div>';
+
+  try {
+    const { html } = await callNewsletterAPI('preview_campaign', { subject, body_markdown, article_ids, calculator_slugs });
+    iframe.srcdoc = html;
+  } catch (e) {
+    iframe.srcdoc = `<div style="font-family:sans-serif;padding:24px;color:#DC2626;">Erro ao gerar preview: ${e.message}</div>`;
+  }
 }
 
 async function nlSaveCampaign() {

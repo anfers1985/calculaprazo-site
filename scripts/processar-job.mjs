@@ -7,14 +7,17 @@ import { getJob } from './lib/supabase.mjs';
 // (ex: e.script.includes(job.erro_etapa)), e "publicacao" não bate em "08-publicar-youtube.mjs" —
 // isso fazia o job reiniciar do zero (roteiro, narração, etc.) em vez de só retomar a publicação,
 // e como a publicação não checava se já tinha subido, o vídeo ia pro YouTube de novo.
+//
+// A capa (06-thumbnail.mjs) agora roda DEPOIS do render (07-render.mjs), não antes: ela
+// extrai um frame de dentro do vídeo já pronto, então precisa que o vídeo já exista.
 const ETAPAS = [
   { apos: 'queued', etapa: 'roteiro', script: 'scripts/02-gerar-roteiro.mjs' },
   { apos: 'roteiro_ok', etapa: 'narracao', script: 'scripts/03-narracao.py' },
   { apos: 'narracao_ok', etapa: 'legendas', script: 'scripts/04-legendas.py' },
   { apos: 'legendas_ok', etapa: 'imagens', script: 'scripts/05-imagens.mjs' },
-  { apos: 'imagens_ok', etapa: 'thumbnail', script: 'scripts/06-thumbnail.mjs' },
-  { apos: 'thumbnail_ok', etapa: 'render', script: 'scripts/07-render.mjs' },
-  { apos: 'render_ok', etapa: 'publicacao', script: 'scripts/08-publicar-youtube.mjs' },
+  { apos: 'imagens_ok', etapa: 'render', script: 'scripts/07-render.mjs' },
+  { apos: 'render_ok', etapa: 'thumbnail', script: 'scripts/06-thumbnail.mjs' },
+  { apos: 'thumbnail_ok', etapa: 'publicacao', script: 'scripts/08-publicar-youtube.mjs' },
 ];
 
 function statusParaIndice(status) {

@@ -86,6 +86,7 @@ jobs:
           EDGE_TTS_VOICE: ${{ secrets.EDGE_TTS_VOICE }}  # opcional — padrão: pt-BR-FranciscaNeural
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}  # obrigatório pra buscar as fotos das cenas
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}  # opcional — reforço se o Pexels não achar foto
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}  # opcional — mais uma fonte, reduz repetição de foto
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}

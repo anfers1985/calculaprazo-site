@@ -16,6 +16,7 @@
 
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import { sendCampaign } from '../_shared/send-campaign.ts';
+import { renderCampaignHtml } from '../_shared/render-email.ts';
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -113,6 +114,27 @@ Deno.serve(async (req) => {
         if (!body.id) return json({ error: 'id é obrigatório' }, 400);
         const result = await sendCampaign(supabase, body.id, RESEND_API_KEY);
         return json(result, result.ok ? 200 : 500);
+      }
+
+      case 'preview_campaign': {
+        // Gera o HTML do e-mail exatamente como ele sairia de verdade — usa
+        // a MESMA função que o envio real usa (render-email.ts), então o
+        // preview nunca fica dessincronizado do e-mail que chega na caixa
+        // de entrada. Não precisa de campanha salva: funciona com os dados
+        // que estão no formulário no momento, antes até de clicar Salvar.
+        const draft = {
+          subject: body.subject || '(sem assunto)',
+          body_markdown: body.body_markdown || '',
+          article_ids: body.article_ids || [],
+          calculator_slugs: body.calculator_slugs || [],
+        };
+        const fakeUnsubscribeUrl = `${SUPABASE_URL}/functions/v1/newsletter-unsubscribe?token=preview`;
+        try {
+          const html = await renderCampaignHtml(draft, fakeUnsubscribeUrl);
+          return json({ html });
+        } catch (err) {
+          return json({ error: 'Erro ao gerar preview: ' + String(err) }, 500);
+        }
       }
 
       case 'list_subscribers': {

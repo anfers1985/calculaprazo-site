@@ -10,7 +10,7 @@ const CORES = {
   azulClaro: '#60A5FA',
 };
 
-function Cena({ imagem, textoTela, narracao }) {
+function Cena({ imagem, textoTela, narracao, logoSrc }) {
   const frame = useCurrentFrame();
   // Ken Burns: zoom lento e contínuo, dá sensação de movimento numa imagem estática.
   const scale = interpolate(frame, [0, 150], [1, 1.12], { extrapolateRight: 'clamp' });
@@ -36,6 +36,21 @@ function Cena({ imagem, textoTela, narracao }) {
           background: 'linear-gradient(to top, rgba(10,22,40,0.92) 0%, rgba(10,22,40,0.45) 32%, transparent 58%)',
         }}
       />
+      {/* Marca d'água: aparece em toda cena, do início (inclusive a 1ª, que também vira a
+          capa/thumbnail do vídeo) até a penúltima — só não aparece na tela final (CenaFinal),
+          que já tem a logo grande em destaque. Canto superior esquerdo, longe da zona de UI
+          do YouTube Shorts (que fica embaixo e à direita), pequena e semi-transparente pra
+          não competir com o texto_tela/narração. */}
+      {logoSrc && (
+        <Img
+          src={logoSrc}
+          style={{
+            position: 'absolute', top: 56, left: 48,
+            width: 84, height: 84, borderRadius: 18,
+            opacity: 0.85, boxShadow: '0 4px 16px rgba(0,0,0,.35)',
+          }}
+        />
+      )}
       {/* CORREÇÃO (era o bug da legenda sobreposta na UI do Shorts):
           antes, texto_tela e narração tinham cada um seu próprio "bottom" fixo (340 e 250px).
           Numa tela de 1920px de altura, o YouTube Shorts reserva ~380-420px no rodapé pra
@@ -167,7 +182,7 @@ export function VideoDoArtigo({ cenas, narracaoSrc, logoSrc, fps }) {
             {ehUltima ? (
               <CenaFinal textoTela={cena.texto_tela} logoSrc={logoSrc} />
             ) : (
-              <Cena imagem={cena.imagemSrc} textoTela={cena.texto_tela} narracao={cena.narracao} />
+              <Cena imagem={cena.imagemSrc} textoTela={cena.texto_tela} narracao={cena.narracao} logoSrc={logoSrc} />
             )}
           </Sequence>
         );
