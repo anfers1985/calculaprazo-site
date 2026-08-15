@@ -1,5 +1,41 @@
 [
   {
+    "id": "trt-rs-repouso-semanal-pagamento-dobro-sete-dias",
+    "title": "TRT-RS mantém pagamento em dobro por repouso após 7 dias",
+    "category": "jurisprudencia-trts",
+    "category_label": "TRT",
+    "excerpt": "TRT-RS decide que repouso semanal concedido após sete dias consecutivos de trabalho deve ser pago em dobro, mesmo com previsão em norma coletiva.",
+    "image": "https://images.unsplash.com/photo-1547306720-c3550ecab8b7?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-14",
+    "updatedAt": "2026-08-14",
+    "tags": []
+  },
+  {
+    "id": "trt2-indenizacao-assedio-eleitoral-comicio-trabalho",
+    "title": "TRT mantém indenização por assédio eleitoral no trabalho",
+    "category": "jurisprudencia-trts",
+    "category_label": "TRT",
+    "excerpt": "TRT-2 confirma indenização de R$ 10 mil a professora obrigada a participar de comícios eleitorais e reconhece assédio eleitoral e rescisão indireta.",
+    "image": "https://images.unsplash.com/photo-1626125345510-4603468eedfb?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-14",
+    "updatedAt": "2026-08-14",
+    "tags": []
+  },
+  {
+    "id": "ajuda-de-custo-regras-beneficios-cuidados-clt",
+    "title": "Ajuda de custo: regras, benefícios e cuidados na CLT",
+    "category": "rh-beneficios",
+    "category_label": "Benefícios",
+    "excerpt": "Entenda como funciona a ajuda de custo, quando pode ser paga e quais cuidados devem ser observados para evitar problemas trabalhistas.",
+    "image": "https://images.unsplash.com/photo-1556740767-414a9c4860c1?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-14",
+    "updatedAt": "2026-08-14",
+    "tags": []
+  },
+  {
     "id": "trt-go-adicional-periculosidade-tubulacao-gas",
     "title": "TRT-GO mantém adicional por trabalho próximo a tubulação de gás",
     "category": "jurisprudencia-trts",
