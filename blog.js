@@ -26,6 +26,8 @@ function exploreOpenSection(sec,btn){
 function exploreShowAll(){
   showBlogResultsMode();
   filterBlogCat('');
+  var sec = document.getElementById('sec-blog');
+  if(sec) sec.scrollIntoView({behavior:'smooth', block:'start'});
 }
 function handleBlogSearchInput(){
   var se=document.getElementById('blog-search');

@@ -619,7 +619,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .ftr-newsletter-privacy a{color:rgba(255,255,255,.5);text-decoration:underline;}
 @media (max-width:640px){
   .ftr-newsletter{flex-direction:column;gap:16px;}
-  .ftr-newsletter-text,.ftr-newsletter-form{max-width:100%;}
+  .ftr-newsletter-text,.ftr-newsletter-form{max-width:100%;flex:0 0 auto;width:100%;}
 }
 
 /* ── IMC ── */
