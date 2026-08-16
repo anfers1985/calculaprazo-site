@@ -1,5 +1,17 @@
 [
   {
+    "id": "salario-maternidade-pai-regras-inss",
+    "title": "Salário-maternidade: quando o pai pode receber o benefício",
+    "category": "legislacao-previdenciario",
+    "category_label": "Previdenciário",
+    "excerpt": "Salário-maternidade pode alcançar o pai em caso de morte da mãe ou adoção; veja as regras atuais, qualidade de segurado e pedido ao INSS.",
+    "image": "https://images.unsplash.com/photo-1583355866056-21aa618efcb0?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-15",
+    "updatedAt": "2026-08-15",
+    "tags": []
+  },
+  {
     "id": "trt-rs-repouso-semanal-pagamento-dobro-sete-dias",
     "title": "TRT-RS mantém pagamento em dobro por repouso após 7 dias",
     "category": "jurisprudencia-trts",
