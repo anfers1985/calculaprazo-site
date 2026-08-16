@@ -1,54 +1,36 @@
-# Pacote de sincronização — Calcula Prazo
-16/08/2026 · 65 arquivos, gerado a partir da comparação com o site que
-você enviou (calculaprazo-site-main__2_.zip)
+# Correção — posicionamento do compartilhar nas ferramentas/calculadoras
+16/08/2026 · 15 arquivos
 
-## O que eu encontrei ao comparar com o site ao vivo
+## O problema real (confirmado nos seus prints)
+Os dois blocos de compartilhar (início e após o FAQ) estavam sendo
+inseridos **fora de qualquer `.container`** da página — por isso
+grudavam na borda esquerda da tela ("COMPARTILHAR" cortado) e não
+respeitavam a margem/alinhamento que o resto do conteúdo tem. Nos
+artigos do blog isso não acontecia porque lá existe um `.article-wrap`
+envolvendo tudo; nas ferramentas a estrutura é diferente por página, e a
+minha inserção original não levou isso em conta.
 
-**Boas notícias primeiro:** os 387 artigos do blog originais, os 15
-arquivos de ferramenta/calculadora (HTML) e as 46 páginas de `/conteudo`
-já estão publicados exatamente como nos meus pacotes — as correções de
-newsletter, "Ver todos os conteúdos", compartilhar (blog e ferramentas)
-já estão todas no ar. `blog.min.js?v=15` também confirmado.
+## Correção aplicada
+Os dois blocos agora ficam dentro do próprio `<div class="container"
+style="max-width:800px;...">`, com a mesma largura e margens do texto
+explicativo da página (o "O que é a Calculadora de X?"). Isso garante
+alinhamento correto **independente da estrutura interna de cada
+página**, já que cada bloco cria seu próprio container em vez de tentar
+"encaixar" num container existente que varia de página pra página.
 
-**3 coisas realmente precisavam de atualização:**
-
-### 1. `styles.css` ainda em `?v=32`, não `?v=33` (63 arquivos)
-Você publicou até a v8 (que adicionou o CSS do compartilhar nas
-ferramentas), mas a v9 (que corrige a versão do arquivo pra tirar do
-cache) ainda não tinha ido — por isso o botão aparecia "amontoado" nas
-ferramentas/calculadoras. Neste pacote, os 63 arquivos que carregam
-`styles.css` já apontam pra `?v=33`.
-
-### 2. `/ferramentas` sumiu do sitemap de novo
-Confirmado: aconteceu exatamente o que eu tinha avisado — o script de
-publicação (`scripts/09-publicar-agendados.mjs`) regenerou o
-`sitemap.xml` do zero ao publicar o post novo, e como a lista fixa dele
-nunca teve `/ferramentas`, ela sumiu de novo. Recoloquei a URL usando
-como base o seu `sitemap.xml` mais atual (que já tem o post novo e os
-`lastmod` corretos) — 455 URLs agora.
-
-**Isso vai continuar acontecendo a cada novo post publicado**, a menos
-que a lista fixa dentro do `scripts/09-publicar-agendados.mjs` seja
-corrigida na raiz. Você tinha pedido pra eu não mexer nesse arquivo — não
-mexi. Se quiser que eu corrija (é 1 linha), me avise.
-
-### 3. Um post "órfão" (`salario-maternidade-pai-regras-inss.html`)
-Esse post não existia no zip original — foi publicado pelo seu pipeline
-depois, usando uma versão do `POST_TEMPLATE.html` anterior às correções
-de sticky/card (v6/v7). Apliquei manualmente as mesmas correções nele
-(estrutura idêntica aos outros 387 agora): sticky só no mobile, bloco
-final sem card, ícone de "copiado" no tamanho certo.
+Aplicado nas 15 páginas: gerador-de-senhas, calculadora-imc,
+validador-cpf-cnpj, numero-por-extenso, gerador-de-qr-code,
+calculadora-de-datas, calculadora-de-juros, calculadora-de-porcentagem,
+calculadora-de-prazo-processual, calculadora-de-prescricao,
+calculadora-salario-intermitente, calculadora-salario-liquido,
+calculadora-verbas-trabalhistas, conversor-de-moedas, correcao-monetaria.
 
 ## Como usar
-Sobrescreva os 65 arquivos deste pacote no mesmo caminho no seu
-repositório. Depois de publicar, todo post novo do pipeline já vai nascer
-certo (o `POST_TEMPLATE.html` corrigido já está em produção desde os
-pacotes anteriores) — só ficam faltando corrigir manualmente outros
-posts publicados no mesmo intervalo que esse, se houver mais algum (não
-verifiquei além deste, porque foi o único a mais que apareceu no zip que
-você me mandou).
+Sobrescreva os 15 arquivos `index.html` nas respectivas pastas. Nenhum
+outro arquivo do site precisa de atualização nesta rodada — os demais já
+estavam corretos, conforme a última comparação com o site ao vivo.
 
-## Pendente, fora deste pacote
-- Decisão sobre corrigir a lista fixa do sitemap dentro do
-  `scripts/09-publicar-agendados.mjs` (raiz do problema do item 2).
-- Bloco "Mais Acessados / Últimos Adicionados" na página `/conteudo`.
+## Recomendação antes de publicar
+Abrir 2-3 dessas páginas no desktop e no mobile, conferir que o bloco de
+compartilhar (início e após o FAQ) fica alinhado com a mesma margem do
+texto da página, sem cortar na borda da tela.
