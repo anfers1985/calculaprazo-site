@@ -1770,4 +1770,10 @@ img[src*="m.media-amazon.com"] {
 @media(max-width:820px){.blog-articles-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:560px){.blog-articles-grid{grid-template-columns:1fr;}}
 
+/* Compartilhar (ferramentas/calculadoras) — mesmo padrão dos artigos do blog */
+.post-share-final{margin:20px 0;display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-start;}
+.post-share-final-label{font-size:.68rem;font-weight:700;color:var(--txt-s);text-transform:uppercase;letter-spacing:.05em;margin-right:2px;}
+.post-share-final a,.post-share-final button{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;text-decoration:none;flex-shrink:0;cursor:pointer;}
+@media(max-width:640px){.post-share-final{justify-content:center;}.post-share-final-label{font-size:.62rem;margin-right:0;}}
+
 /* build: 20260606145327 */
