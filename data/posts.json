@@ -1,5 +1,29 @@
 [
   {
+    "id": "empresa-condenada-descumprimento-cota-aprendizagem",
+    "title": "Empresa é condenada por descumprir cota de aprendizagem",
+    "category": "jurisprudencia-trts",
+    "category_label": "TRT",
+    "excerpt": "TRT-2 condena empresa a pagar R$ 100 mil por dano moral coletivo por descumprimento da cota de aprendizagem e exclusão indevida de promotores de vendas.",
+    "image": "https://ww2.trt2.jus.br/fileadmin/comunicacao/divulgacao/Ed._Sede_01.JPG",
+    "imageCaption": "Fonte: TRT 2",
+    "date": "2026-08-17",
+    "updatedAt": "2026-08-17",
+    "tags": []
+  },
+  {
+    "id": "empresa-pode-reduzir-vale-refeicao-alimentacao",
+    "title": "Empresa pode reduzir o vale-refeição ou vale-alimentação?",
+    "category": "rh-beneficios",
+    "category_label": "Benefícios",
+    "excerpt": "A empresa pode reduzir o vale-refeição ou alimentação? Veja quando a mudança é permitida e os riscos conforme a CLT, normas coletivas e o PAT.",
+    "image": "https://images.unsplash.com/photo-1553531889-56cc480ac5cb?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-17",
+    "updatedAt": "2026-08-17",
+    "tags": []
+  },
+  {
     "id": "salario-maternidade-pai-regras-inss",
     "title": "Salário-maternidade: quando o pai pode receber o benefício",
     "category": "legislacao-previdenciario",
