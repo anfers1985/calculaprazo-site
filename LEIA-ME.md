@@ -1,36 +1,46 @@
-# Correção — posicionamento do compartilhar nas ferramentas/calculadoras
-16/08/2026 · 15 arquivos
+# Correção — wrap mobile nas ferramentas + newsletter institucional
+16/08/2026 · 68 arquivos
 
-## O problema real (confirmado nos seus prints)
-Os dois blocos de compartilhar (início e após o FAQ) estavam sendo
-inseridos **fora de qualquer `.container`** da página — por isso
-grudavam na borda esquerda da tela ("COMPARTILHAR" cortado) e não
-respeitavam a margem/alinhamento que o resto do conteúdo tem. Nos
-artigos do blog isso não acontecia porque lá existe um `.article-wrap`
-envolvendo tudo; nas ferramentas a estrutura é diferente por página, e a
-minha inserção original não levou isso em conta.
+## 1. Ícone quebrando linha de forma inconsistente no mobile (63 arquivos + styles.css)
+Confirmado no código: os dois blocos de compartilhar (início e após o
+FAQ) das ferramentas/calculadoras usam exatamente o mesmo HTML/CSS — não
+havia diferença real entre eles. O que acontecia é que "COMPARTILHAR" +
+6 ícones fica bem no limite da largura da tela em celulares, e qualquer
+variação mínima fazia o último ícone (copiar link) quebrar pra uma linha
+sozinho, de forma inconsistente entre uma página e outra.
 
-## Correção aplicada
-Os dois blocos agora ficam dentro do próprio `<div class="container"
-style="max-width:800px;...">`, com a mesma largura e margens do texto
-explicativo da página (o "O que é a Calculadora de X?"). Isso garante
-alinhamento correto **independente da estrutura interna de cada
-página**, já que cada bloco cria seu próprio container em vez de tentar
-"encaixar" num container existente que varia de página pra página.
+**Correção:** abaixo de 400px de largura, o rótulo "Compartilhar" agora
+vai para uma linha própria (centralizado, acima dos ícones) e os ícones
+encolhem ligeiramente (29px), garantindo que os 6 sempre caibam numa
+única linha — sem depender de coincidência de largura. Isso deixa o
+comportamento **determinístico e sempre idêntico** entre o bloco do
+início e o do final, em qualquer aparelho.
 
-Aplicado nas 15 páginas: gerador-de-senhas, calculadora-imc,
-validador-cpf-cnpj, numero-por-extenso, gerador-de-qr-code,
-calculadora-de-datas, calculadora-de-juros, calculadora-de-porcentagem,
-calculadora-de-prazo-processual, calculadora-de-prescricao,
-calculadora-salario-intermitente, calculadora-salario-liquido,
-calculadora-verbas-trabalhistas, conversor-de-moedas, correcao-monetaria.
+`styles.css?v=33` → `?v=34` em 63 arquivos.
+
+## 2. Newsletter ausente em 5 páginas institucionais (5 arquivos)
+Confirmado: as páginas Sobre, Contato, Privacidade & LGPD, Termos de Uso
+e Ferramentas tinham rodapé, mas nenhuma carregava o `styles.css` externo
+nem o `blog.min.js` — por isso a seção de newsletter nunca tinha sido
+adicionada (não bastava copiar o HTML, faltava o CSS e a função
+JavaScript do formulário).
+
+**Correção, em cada uma das 5 páginas:**
+- Adicionado o HTML da newsletter (mesmo bloco da home/artigos/ferramentas).
+- Adicionado o CSS `.ftr-newsletter` e variantes (regra normal + mobile),
+  direto no `<style>` embutido de cada página — essas páginas não usam o
+  `styles.css` externo, então precisava estar ali.
+- Adicionada uma versão isolada da função `newsletterSubscribe()` (só ela,
+  não o `blog.min.js` inteiro, pra não carregar código desnecessário
+  nessas páginas institucionais).
+
+Páginas: sobre, contato, privacidade, termos, ferramentas.
 
 ## Como usar
-Sobrescreva os 15 arquivos `index.html` nas respectivas pastas. Nenhum
-outro arquivo do site precisa de atualização nesta rodada — os demais já
-estavam corretos, conforme a última comparação com o site ao vivo.
+Sobrescreva os arquivos nos mesmos caminhos. Nenhum outro arquivo do
+site precisa de atualização nesta rodada.
 
 ## Recomendação antes de publicar
-Abrir 2-3 dessas páginas no desktop e no mobile, conferir que o bloco de
-compartilhar (início e após o FAQ) fica alinhado com a mesma margem do
-texto da página, sem cortar na borda da tela.
+Testar o cadastro de e-mail em pelo menos 1 dessas 5 páginas pra
+confirmar que o formulário envia de verdade (mensagem de sucesso/erro
+deve aparecer abaixo do botão "Inscrever").
