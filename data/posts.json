@@ -1,5 +1,17 @@
 [
   {
+    "id": "tst-define-competencia-acoes-saque-fgts",
+    "title": "TST define competência para ações de saque do FGTS",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "TST estabelece quando ações sobre saque do FGTS devem tramitar na Justiça do Trabalho ou na Justiça comum e cria regra de transição.",
+    "image": "https://images.unsplash.com/photo-1771527253774-34c5c2860fee?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-17",
+    "updatedAt": "2026-08-17",
+    "tags": []
+  },
+  {
     "id": "empresa-condenada-descumprimento-cota-aprendizagem",
     "title": "Empresa é condenada por descumprir cota de aprendizagem",
     "category": "jurisprudencia-trts",
