@@ -6,7 +6,7 @@ on:
       - 'data/posts.json'
   workflow_dispatch: {}
   schedule:
-    - cron: '0 * * * *'
+    - cron: '0 */8 * * *'   # cron de segurança: pega jobs pendentes a cada 8h (o push já cobre o caso normal)
 
 # Evita que duas execuções (push + cron, ou dois cron seguidos) rodem ao mesmo tempo.
 # Isso é o que causava a criação de jobs duplicados/triplicados para o mesmo post:
