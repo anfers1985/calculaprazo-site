@@ -1764,6 +1764,17 @@ img[src*="m.media-amazon.com"] {
   box-sizing: border-box;
 }
 
+/* Exceção: thumbs do widget "Mais Recentes" (home) — mesmo quando a capa do
+   post é uma foto de produto Amazon, aqui é uma miniatura pequena (foto de
+   capa), não a galeria de comparação do artigo. A regra acima (padding:30px
+   + contain) faz a foto encolher para um ícone minúsculo dentro da caixinha
+   de 96x72 no mobile. Aqui sempre preenchemos a caixa normalmente. */
+.nh-art-grid-compact .nh-art-img img[src*="m.media-amazon.com"] {
+  object-fit: cover !important;
+  padding: 0 !important;
+  background: var(--b50);
+}
+
 /* Grid de artigos da página /conteudo (todas as categorias e "Todos os artigos") */
 .blog-articles-grid{grid-template-columns:repeat(4,1fr);}
 @media(max-width:1100px){.blog-articles-grid{grid-template-columns:repeat(3,1fr);}}
