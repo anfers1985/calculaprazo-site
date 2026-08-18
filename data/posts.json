@@ -1,5 +1,41 @@
 [
   {
+    "id": "folguista-contratacao-jornada-direitos-trabalhistas",
+    "title": "Folguista: veja jornada, contratação e direitos trabalhistas",
+    "category": "orientacoes-praticas",
+    "category_label": "Outros RH",
+    "excerpt": "Entenda como funciona o trabalho de folguista, as formas de contratação, regras de jornada e os principais direitos previstos na legislação.",
+    "image": "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-18",
+    "updatedAt": "2026-08-18",
+    "tags": []
+  },
+  {
+    "id": "tst-justa-causa-motorista-recusa-treinamento-cobrador",
+    "title": "TST mantém justa causa de motorista que recusou treinamento",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "Quinta Turma do TST validou a justa causa de motorista que se recusou a realizar treinamento para atuar também como cobrador em Porto Alegre.",
+    "image": "https://images.unsplash.com/photo-1520105072000-f44fc083e508?q=80&w=1331&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-18",
+    "updatedAt": "2026-08-18",
+    "tags": []
+  },
+  {
+    "id": "acidente-de-trajeto-direitos-responsabilidades-empresa",
+    "title": "Acidente de trajeto: direitos e responsabilidades da empresa",
+    "category": "saude-seguranca",
+    "category_label": "Saúde e Segurança",
+    "excerpt": "Acidente de trajeto é equiparado ao acidente de trabalho para fins previdenciários. Entenda a CAT, o FGTS, a estabilidade e os deveres do RH.",
+    "image": "https://plus.unsplash.com/premium_photo-1731263165023-b64cb673f98a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-18",
+    "updatedAt": "2026-08-18",
+    "tags": []
+  },
+  {
     "id": "melhor-apoiador-de-pe-ergonomico-2026",
     "title": "Melhor Apoiador de Pé Ergonômico em 2026: As 5 Melhores",
     "category": "essenciais-equipamentos",
