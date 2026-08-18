@@ -1768,10 +1768,12 @@ img[src*="m.media-amazon.com"] {
    post é uma foto de produto Amazon, aqui é uma miniatura pequena (foto de
    capa), não a galeria de comparação do artigo. A regra acima (padding:30px
    + contain) faz a foto encolher para um ícone minúsculo dentro da caixinha
-   de 96x72 no mobile. Aqui sempre preenchemos a caixa normalmente. */
+   de 96x72 no mobile. Aqui mostramos o produto inteiro (sem cortar
+   lateral/topo/base), com uma margem pequena — nem minúsculo, nem sangrando
+   pra fora da caixa. */
 .nh-art-grid-compact .nh-art-img img[src*="m.media-amazon.com"] {
-  object-fit: cover !important;
-  padding: 0 !important;
+  object-fit: contain !important;
+  padding: 6px !important;
   background: var(--b50);
 }
 
