@@ -1081,36 +1081,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   .ad-mobile-only { display:flex !important; }
   .ad-desktop-only.adst-slot { display:none !important; }
 }
-/* ═══ SIDEBAR + GRID + ADS (rollout) ═══ */
-.pbw-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:36px;align-items:start;}
-.pbw-grid .article-wrap{max-width:none;margin:0;}
-.post-sidebar{display:flex;flex-direction:column;gap:20px;}
-.sidebar-card{background:var(--card);border:1.5px solid var(--brd);border-radius:14px;padding:18px;}
-.sidebar-card h3{font-size:.92rem;font-weight:800;margin-bottom:10px;letter-spacing:-.2px;display:flex;align-items:center;gap:6px;}
-.sidebar-list{display:flex;flex-direction:column;}
-.sidebar-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--brd);text-decoration:none;}
-.sidebar-item:last-child{border-bottom:none;}
-.sidebar-item-thumb{position:relative;flex-shrink:0;width:64px;height:64px;border-radius:8px;overflow:hidden;background:var(--b50);}
-.sidebar-item-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
-.sidebar-item-thumb .sidebar-item-badge{position:absolute;top:3px;left:3px;margin:0;box-shadow:0 1px 4px rgba(0,0,0,.35);}
-.sidebar-item-badge{flex-shrink:0;width:22px;height:22px;border-radius:6px;background:var(--b50);color:var(--acc);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px;}
-.sidebar-item-badge.top{background:var(--acc);color:#fff;}
-.sidebar-item-body{min-width:0;}
-.sidebar-item-title{font-size:.82rem;font-weight:700;color:var(--txt);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.sidebar-item-cat{font-size:.68rem;color:var(--txt-s);margin-top:3px;}
-.ad-eyebrow{display:block;font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--txt-s);opacity:.55;margin-bottom:6px;text-align:center;}
-.ad-block-x{margin:26px 0;}
-.ad-card-wrap{background:var(--card);border:1.5px solid var(--brd);border-radius:14px;padding:14px;}
-.ad-ph{max-width:100%;background:repeating-linear-gradient(45deg,#F1F5F9,#F1F5F9 10px,#E2E8F0 10px,#E2E8F0 20px);border:1px dashed var(--brd);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.72rem;color:var(--txt-s);text-align:center;margin:0 auto;flex-direction:column;gap:2px;line-height:1.4;}
-.ad-ph b{font-size:.78rem;color:var(--txt);}
-.ad-ph small{font-size:.62rem;opacity:.7;}
-.ad-social-bar{position:fixed;right:14px;bottom:14px;z-index:200;background:var(--card);border:1.5px solid var(--brd);border-radius:10px;padding:8px 12px;font-size:.68rem;color:var(--txt-s);box-shadow:var(--sh);display:flex;align-items:center;gap:6px;}
-.ad-smartlink{display:block;text-align:center;font-size:.72rem;color:var(--txt-s);border:1px dashed var(--brd);border-radius:8px;padding:8px;margin:10px 0;text-decoration:none;background:var(--b50);}
-@media(max-width:999px){
-  .pbw-grid{grid-template-columns:1fr;}
-  .pbw-grid .article-wrap{max-width:800px;margin:0 auto;}
-  .post-sidebar{margin-top:32px;max-width:800px;margin-left:auto;margin-right:auto;}
-}
 </style>
 </head>
 <body>
@@ -1243,7 +1213,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
 <!-- POST HERO -->
 <section class="post-hero">
-  <div class="container post-hero-inner pbw-grid">
+  <div class="container post-hero-inner">
     <div class="article-wrap">
       <nav class="post-breadcrumb">
         <a href="/">Início</a>
@@ -1267,7 +1237,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
 <!-- POST BODY -->
 <div class="post-body-wrap">
-  <div class="container pbw-grid">
+  <div class="container">
     <div class="article-wrap">
       <div class="post-reading-area">
       <div class="post-share-sticky">
@@ -1288,7 +1258,12 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
       <!-- Article content -->
         <!-- ▸ ANÚNCIO ADSTERRA: topo do artigo (728x90, desktop) -->
-  <div class="ad-block-x" style="display:flex;justify-content:center;flex-direction:column;align-items:center;"><span class="ad-eyebrow">Publicidade</span><div class="ad-ph" style="width:728px;height:90px;"><b>728×90</b><small>728x90_1 · mobile: 320x50_1</small></div></div>
+  <div class="adst-slot ad-desktop-only" id="ad-post-top-adsterra"
+       data-adst-key="4f5894de8245c23422f7de3e03a1363e" data-adst-w="728" data-adst-h="90"
+       style="width:728px;height:90px;max-width:100%;"></div>
+  <div class="adst-slot ad-mobile-only" id="ad-post-top-mobile-adsterra"
+       data-adst-key="cfa0d125d7dabd435f2b18e5f541bba5" data-adst-w="320" data-adst-h="50"
+       style="width:320px;height:50px;max-width:100%;"></div>
 
       <article class="article-body">
         <div class="resumo-rapido">
@@ -1316,6 +1291,17 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 <p>A NR-1 não define profissão específica para a avaliação dos FRPRT — e essa omissão é técnica e intencional. O profissional responsável pelo PGR (engenheiro de segurança do trabalho, médico do trabalho ou técnico de segurança do trabalho, conforme o porte e grau de risco da empresa) é competente para conduzir a avaliação, desde que utilize metodologias reconhecidas pela literatura científica. A Ficha Informativa da CNI e o Guia MTE 2024 convergem nesse ponto: não há exclusividade de categoria.</p>
 
 <p>A boa prática — especialmente em empresas de grau de risco 3 e 4 ou com grande contingente de trabalhadores — orienta a composição de equipe multidisciplinar com profissionais de ergonomia organizacional e psicologia do trabalho. Isso não é requisito normativo, mas reduz a exposição jurídica e a contestação da qualidade técnica do laudo em eventual processo.</p>
+
+
+  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (300x250 desktop / 320x50 mobile) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="adst-slot ad-desktop-only" id="ad-post-mid-adsterra"
+         data-adst-key="7242c743fc263202cfb43cf35e31e396" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+    <div class="adst-slot ad-mobile-only" id="ad-post-mid-mobile-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
 <h2>Passo 1 — Diagnóstico do PGR existente</h2>
 
 <p>Antes de qualquer intervenção, revise o PGR vigente para identificar o que já contempla e o que está ausente. Verifique se o inventário atual menciona fatores organizacionais — pressão, ritmo, jornada, relações hierárquicas — e se esses elementos foram avaliados apenas dentro da ergonomia (NR-17) sem formalização como FRPRT com probabilidade e severidade. Identifique o grau de risco do estabelecimento: empresas GR 3 e GR 4 são as primeiras no radar da Inspeção do Trabalho.</p>
@@ -1409,17 +1395,23 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       </div>
 
       <!-- ▸ ANÚNCIO ADSTERRA: rodapé da página (728x90 desktop / 320x50 mobile) -->
-      <div class="ad-block-x" style="display:flex;justify-content:center;"><div class="ad-card-wrap" style="display:flex;flex-direction:column;align-items:center;"><span class="ad-eyebrow">Publicidade</span><div class="ad-ph" style="width:728px;height:90px;"><b>728×90</b><small>728x90_2 · mobile: 320x50_2</small></div></div></div>
+      <div style="display:flex;justify-content:center;">
+        <div class="adst-slot ad-desktop-only" id="ad-post-footer-adsterra"
+             data-adst-key="a95b609abad42b5f0da1fd621eefbd64" data-adst-w="728" data-adst-h="90"
+             style="width:728px;height:90px;max-width:100%;margin:20px 0;"></div>
+        <div class="adst-slot ad-mobile-only" id="ad-post-end-adsterra"
+             data-adst-key="f9a6a26e51d4d397ec65d29e8f2ca7a5" data-adst-w="320" data-adst-h="50"
+             style="width:320px;height:50px;max-width:100%;margin:20px 0;"></div>
+      </div>
 
 
       <!-- ── PREV / NEXT NAVIGATION ── -->
       <nav class="pn-nav" id="pn-nav" aria-label="Navegação entre artigos"><a class="pn-btn pn-prev" href="/blog/modelo-agravo-interno-agravo-instrumento-rr-IN40-TST.html"><span class="pn-arrow">‹</span><div><div class="pn-label">Artigo anterior</div><div class="pn-title">Modelo de Agravo Interno e Agravo de Instrumento em RR: peças prontas para usar após a IN nº 40/TST</div><div class="pn-cat">Modelos</div></div></a><a class="pn-btn pn-next" href="/blog/modelo-pgr-riscos-psicossociais-laudo-tecnico-frprt-nr-1.html"><div><div class="pn-label">Próximo artigo</div><div class="pn-title">Modelo de PGR com Riscos Psicossociais e Laudo Técnico de FRPRT: documentos Word gratuitos conforme NR-1</div><div class="pn-cat">Modelos RH</div></div><span class="pn-arrow">›</span></a></nav>
 
       <!-- Related posts -->
-      <div class="related-section" id="related-section"><h3>📚 Continue lendo</h3><div class="related-grid"><a class="related-card" href="/blog/afastamento-da-empregada-gestante-e-lactante-que-trabalha-em-ambiente-insalubridade.html"><img class="r-img" src="https://images.unsplash.com/photo-1470116945706-e6bf5d5a53ca?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><div class="r-cat">Saúde e Segurança</div><div class="r-title">Afastamento da empregada gestante e lactante que trabalha em ambiente insalubridade: como proceder?</div><div class="r-date">30 de mai. de 2026</div></a><a class="related-card" href="/blog/adicional-periculosidade-calculo-atividades-empresa.html"><img class="r-img" src="https://images.unsplash.com/photo-1555963966-b7ae5404b6ed?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><div class="r-cat">Saúde e Segurança</div><div class="r-title">Adicional de periculosidade: quem tem direito e como calcular</div><div class="r-date">26 de mai. de 2026</div></a><a class="related-card" href="/blog/acidente-trabalho-cat-estabilidade-obrigacoes-empresa.html"><img class="r-img" src="https://images.unsplash.com/photo-1633158832532-f71e9c7ac6d6?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><div class="r-cat">Saúde e Segurança</div><div class="r-title">Acidente de trabalho: CAT, estabilidade e obrigações da empresa</div><div class="r-date">22 de mai. de 2026</div></a></div></div>
+      <div class="related-section" id="related-section"><h3>Artigos Relacionados</h3><div class="related-grid"><a class="related-card" href="/blog/afastamento-da-empregada-gestante-e-lactante-que-trabalha-em-ambiente-insalubridade.html"><div class="r-cat">Saúde e Segurança</div><div class="r-title">Afastamento da empregada gestante e lactante que trabalha em ambiente insalubridade: como proceder?</div><div class="r-date">30 de mai. de 2026</div></a><a class="related-card" href="/blog/adicional-periculosidade-calculo-atividades-empresa.html"><div class="r-cat">Saúde e Segurança</div><div class="r-title">Adicional de periculosidade: quem tem direito e como calcular</div><div class="r-date">26 de mai. de 2026</div></a><a class="related-card" href="/blog/acidente-trabalho-cat-estabilidade-obrigacoes-empresa.html"><div class="r-cat">Saúde e Segurança</div><div class="r-title">Acidente de trabalho: CAT, estabilidade e obrigações da empresa</div><div class="r-date">22 de mai. de 2026</div></a></div></div>
 
     </div>
-    <aside class="post-sidebar"><div class="sidebar-card"><h3>🔥 Mais Acessados</h3><div class="sidebar-list"><a class="sidebar-item" href="/blog/aviso-previo-proporcional-como-calcular.html"><span class="sidebar-item-thumb"><img src="https://images.unsplash.com/photo-1506784365847-bbad939e9335?w=1200&q=80" alt="" loading="lazy"><span class="sidebar-item-badge top">1</span></span><span class="sidebar-item-body"><span class="sidebar-item-title">Aviso Prévio Proporcional: Como Calcular e Quais os Direitos em 2026</span><span class="sidebar-item-cat">Rescisão Contratual</span></span></a><a class="sidebar-item" href="/blog/calculadora-de-verbas-trabalhistas-rescisao-clt.html"><span class="sidebar-item-thumb"><img src="https://raw.githubusercontent.com/anfers1985/imagens/main/Imagem%20Encerramento%20Contrato%20de%20Trabalho%20-%20Calculadora%20de%20Verbas.png" alt="" loading="lazy"><span class="sidebar-item-badge top">2</span></span><span class="sidebar-item-body"><span class="sidebar-item-title">Calculadora de Verbas Trabalhistas: Como Calcular sua Rescisão CLT (Guia Completo)</span><span class="sidebar-item-cat">Rescisão Contratual</span></span></a><a class="sidebar-item" href="/blog/estabilidade-emprego-gestante-acidente-trabalho-cipa-stf-tst-normas-coletivas.html"><span class="sidebar-item-thumb"><img src="https://plus.unsplash.com/premium_photo-1663013447756-f645cdec247d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><span class="sidebar-item-badge top">3</span></span><span class="sidebar-item-body"><span class="sidebar-item-title">Estabilidade no Emprego: gestante, acidentado, CIPA, dirigente sindical e as controvérsias no STF e TST</span><span class="sidebar-item-cat">RH e Gestão de Pessoas</span></span></a><a class="sidebar-item" href="/blog/assedio-moral-no-trabalho-como-provar.html"><span class="sidebar-item-thumb"><img src="https://images.unsplash.com/photo-1630091790659-85ec55570e0b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><span class="sidebar-item-badge top">4</span></span><span class="sidebar-item-body"><span class="sidebar-item-title">Assédio moral no trabalho: como provar e reagir</span><span class="sidebar-item-cat">RH e Gestão de Pessoas</span></span></a><a class="sidebar-item" href="/blog/demissao-por-justa-causa-quantas-advertencias-e-suspensoes.html"><span class="sidebar-item-thumb"><img src="https://images.unsplash.com/photo-1752808108278-51aa5e4ee353?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><span class="sidebar-item-badge top">5</span></span><span class="sidebar-item-body"><span class="sidebar-item-title">Demissão por justa causa: quantas advertências e suspensões são necessárias?</span><span class="sidebar-item-cat">Rescisão Contratual</span></span></a></div></div><div class="ad-card-wrap" style="display:flex;flex-direction:column;align-items:center;"><span class="ad-eyebrow">Publicidade</span><div class="ad-ph" style="width:300px;height:250px;"><b>300×250</b><small>300x250_1 (Adsterra)</small></div></div><div class="sidebar-card"><h3>🆕 Últimos Conteúdos</h3><div class="sidebar-list"><a class="sidebar-item" href="/blog/abono-pis-nascidos-novembro-dezembro-2026.html"><span class="sidebar-item-thumb"><img src="https://images.unsplash.com/photo-1556740714-a8395b3bf30f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"></span><span class="sidebar-item-body"><span class="sidebar-item-title">Abono do PIS 2026: nascidos em novembro e dezembro recebem</span><span class="sidebar-item-cat">Legislação e Normas</span></span></a><a class="sidebar-item" href="/blog/folguista-contratacao-jornada-direitos-trabalhistas.html"><span class="sidebar-item-thumb"><img src="https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"></span><span class="sidebar-item-body"><span class="sidebar-item-title">Folguista: veja jornada, contratação e direitos trabalhistas</span><span class="sidebar-item-cat">Outros RH</span></span></a><a class="sidebar-item" href="/blog/tst-justa-causa-motorista-recusa-treinamento-cobrador.html"><span class="sidebar-item-thumb"><img src="https://images.unsplash.com/photo-1520105072000-f44fc083e508?q=80&w=1331&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"></span><span class="sidebar-item-body"><span class="sidebar-item-title">TST mantém justa causa de motorista que recusou treinamento</span><span class="sidebar-item-cat">TST</span></span></a><a class="sidebar-item" href="/blog/acidente-de-trajeto-direitos-responsabilidades-empresa.html"><span class="sidebar-item-thumb"><img src="https://plus.unsplash.com/premium_photo-1731263165023-b64cb673f98a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"></span><span class="sidebar-item-body"><span class="sidebar-item-title">Acidente de trajeto: direitos e responsabilidades da empresa</span><span class="sidebar-item-cat">Saúde e Segurança</span></span></a><a class="sidebar-item" href="/blog/melhor-apoiador-de-pe-ergonomico-2026.html"><span class="sidebar-item-thumb"><img src="https://m.media-amazon.com/images/I/51YcObzyjPL._AC_SY300_SX300_QL70_ML2_.jpg" alt="" loading="lazy"></span><span class="sidebar-item-body"><span class="sidebar-item-title">Melhor Apoiador de Pé Ergonômico em 2026: As 5 Melhores</span><span class="sidebar-item-cat">Equipamentos de Escritório</span></span></a></div></div><div class="ad-card-wrap" style="display:flex;flex-direction:column;align-items:center;"><span class="ad-eyebrow">Publicidade</span><div class="ad-ph" style="width:300px;height:250px;"><b>300×250</b><small>300x250_2 (Adsterra)</small></div></div><a class="ad-smartlink" href="#">🔗 Link patrocinado · Smartlink_1</a></aside>
   </div>
 </div>
 
@@ -1878,7 +1870,5 @@ if (document.readyState !== 'loading') loadRelated();
 })();
 </script>
   <script src="/js/ads-adsterra.js?v=2" defer></script>
-<div class="ad-social-bar">📢 SocialBar_1 (Adsterra)</div>
-<!-- ▸ ADSTERRA Popunder_1: script global, sem elemento visual -->
 </body>
 </html>
