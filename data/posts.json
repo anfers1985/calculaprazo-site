@@ -1,5 +1,53 @@
 [
   {
+    "id": "tst-afasta-justa-causa-recusa-vacina-covid",
+    "title": "TST afasta justa causa por recusa à vacina contra Covid",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "TST afasta justa causa de comissário que recusou vacina contra Covid-19 após apresentar justificativa médica sobre risco de trombose.",
+    "image": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1174&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-19",
+    "updatedAt": "2026-08-19",
+    "tags": []
+  },
+  {
+    "id": "tst-aluguel-motocicleta-leiturista-natureza-indenizatoria",
+    "title": "TST afasta natureza salarial de aluguel de motocicleta",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "TST decide que aluguel de motocicleta usada por leiturista tem natureza indenizatória e não deve integrar o salário do trabalhador.",
+    "image": "https://images.jota.info/wp-content/uploads/2024/10/52344985131-937cc89e6d-k.jpg",
+    "imageCaption": "Crédito: Aldo Dias/TST",
+    "date": "2026-08-19",
+    "updatedAt": "2026-08-19",
+    "tags": []
+  },
+  {
+    "id": "medida-protetiva-cuidados-empresa-violencia-domestica-trabalho",
+    "title": "Medida protetiva exige cuidados da empresa no trabalho",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "Decisão do TST mostra como empresas devem agir diante de medidas protetivas que afetam a rotina de trabalho e podem gerar risco de discriminação.",
+    "image": "https://images.unsplash.com/photo-1548630435-998a2cbbff67?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-19",
+    "updatedAt": "2026-08-19",
+    "tags": []
+  },
+  {
+    "id": "artigo-458-clt-salario-in-natura",
+    "title": "Artigo 458 da CLT: entenda o salário in natura",
+    "category": "rh-salario",
+    "category_label": "Salário",
+    "excerpt": "Saiba o que é o salário in natura previsto no artigo 458 da CLT, quais benefícios podem integrar a remuneração e os impactos trabalhistas.",
+    "image": "https://plus.unsplash.com/premium_photo-1661397029055-2c5da6951c4a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-19",
+    "updatedAt": "2026-08-19",
+    "tags": []
+  },
+  {
     "id": "abono-pis-nascidos-novembro-dezembro-2026",
     "title": "Abono do PIS 2026: nascidos em novembro e dezembro recebem",
     "category": "legislacao-normas",
