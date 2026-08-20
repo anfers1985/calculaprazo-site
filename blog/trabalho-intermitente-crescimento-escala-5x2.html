@@ -1067,6 +1067,36 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   .ad-mobile-only { display:flex !important; }
   .ad-desktop-only.adst-slot { display:none !important; }
 }
+/* ═══ SIDEBAR + GRID + ADS (rollout) ═══ */
+.pbw-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:36px;align-items:start;}
+.pbw-grid .article-wrap{max-width:none;margin:0;}
+.post-sidebar{display:flex;flex-direction:column;gap:20px;}
+.sidebar-card{background:var(--card);border:1.5px solid var(--brd);border-radius:14px;padding:18px;}
+.sidebar-card h3{font-size:.92rem;font-weight:800;margin-bottom:10px;letter-spacing:-.2px;display:flex;align-items:center;gap:6px;}
+.sidebar-list{display:flex;flex-direction:column;}
+.sidebar-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--brd);text-decoration:none;}
+.sidebar-item:last-child{border-bottom:none;}
+.sidebar-item-thumb{position:relative;flex-shrink:0;width:64px;height:64px;border-radius:8px;overflow:hidden;background:var(--b50);}
+.sidebar-item-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.sidebar-item-thumb .sidebar-item-badge{position:absolute;top:3px;left:3px;margin:0;box-shadow:0 1px 4px rgba(0,0,0,.35);}
+.sidebar-item-badge{flex-shrink:0;width:22px;height:22px;border-radius:6px;background:var(--b50);color:var(--acc);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+.sidebar-item-badge.top{background:var(--acc);color:#fff;}
+.sidebar-item-body{min-width:0;}
+.sidebar-item-title{font-size:.82rem;font-weight:700;color:var(--txt);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.sidebar-item-cat{font-size:.68rem;color:var(--txt-s);margin-top:3px;}
+.ad-eyebrow{display:block;font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--txt-s);opacity:.55;margin-bottom:6px;text-align:center;}
+.ad-block-x{margin:26px 0;}
+.ad-card-wrap{background:var(--card);border:1.5px solid var(--brd);border-radius:14px;padding:14px;}
+.ad-ph{max-width:100%;background:repeating-linear-gradient(45deg,#F1F5F9,#F1F5F9 10px,#E2E8F0 10px,#E2E8F0 20px);border:1px dashed var(--brd);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.72rem;color:var(--txt-s);text-align:center;margin:0 auto;flex-direction:column;gap:2px;line-height:1.4;}
+.ad-ph b{font-size:.78rem;color:var(--txt);}
+.ad-ph small{font-size:.62rem;opacity:.7;}
+.ad-social-bar{position:fixed;right:14px;bottom:14px;z-index:200;background:var(--card);border:1.5px solid var(--brd);border-radius:10px;padding:8px 12px;font-size:.68rem;color:var(--txt-s);box-shadow:var(--sh);display:flex;align-items:center;gap:6px;}
+.ad-smartlink{display:block;text-align:center;font-size:.72rem;color:var(--txt-s);border:1px dashed var(--brd);border-radius:8px;padding:8px;margin:10px 0;text-decoration:none;background:var(--b50);}
+@media(max-width:999px){
+  .pbw-grid{grid-template-columns:1fr;}
+  .pbw-grid .article-wrap{max-width:800px;margin:0 auto;}
+  .post-sidebar{margin-top:32px;max-width:800px;margin-left:auto;margin-right:auto;}
+}
 </style>
 </head>
 <body>
@@ -1199,7 +1229,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
 <!-- POST HERO -->
 <section class="post-hero">
-  <div class="container post-hero-inner">
+  <div class="container post-hero-inner pbw-grid">
     <div class="article-wrap">
       <nav class="post-breadcrumb">
         <a href="/">Início</a>
@@ -1224,7 +1254,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
 <!-- POST BODY -->
 <div class="post-body-wrap">
-  <div class="container">
+  <div class="container pbw-grid">
     <div class="article-wrap">
       <div class="post-reading-area">
       <div class="post-share-sticky">
@@ -1248,12 +1278,25 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
       <!-- Article content -->
         <!-- ▸ ANÚNCIO ADSTERRA: topo do artigo (728x90, desktop) -->
-  <div class="adst-slot ad-desktop-only" id="ad-post-top-adsterra"
-       data-adst-key="4f5894de8245c23422f7de3e03a1363e" data-adst-w="728" data-adst-h="90"
-       style="width:728px;height:90px;max-width:100%;"></div>
-  <div class="adst-slot ad-mobile-only" id="ad-post-top-mobile-adsterra"
-       data-adst-key="cfa0d125d7dabd435f2b18e5f541bba5" data-adst-w="320" data-adst-h="50"
-       style="width:320px;height:50px;max-width:100%;"></div>
+  <div class="ad-block-x" style="display:flex;justify-content:center;flex-direction:column;align-items:center;"><span class="ad-eyebrow">Publicidade</span><div class="ad-desktop-only" style="display:flex;justify-content:center;"><script>
+  atOptions = {
+    'key' : '4f5894de8245c23422f7de3e03a1363e',
+    'format' : 'iframe',
+    'height' : 90,
+    'width' : 728,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/4f5894de8245c23422f7de3e03a1363e/invoke.js"></script></div><div class="ad-mobile-only" style="display:flex;justify-content:center;"><script>
+  atOptions = {
+    'key' : 'cfa0d125d7dabd435f2b18e5f541bba5',
+    'format' : 'iframe',
+    'height' : 50,
+    'width' : 320,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/cfa0d125d7dabd435f2b18e5f541bba5/invoke.js"></script></div></div>
 
       <article class="article-body">
         <div class="resumo-rapido">
@@ -1283,17 +1326,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <p>Diferentemente do contrato tradicional, o empregado intermitente recebe remuneração somente pelas horas ou dias efetivamente trabalhados. Ao término de cada período de prestação de serviços, o empregador deve efetuar o pagamento da remuneração e das parcelas proporcionais previstas na legislação.</p>
 
   <p>Entre os valores pagos estão férias acrescidas de um terço, 13º salário proporcional, repouso semanal remunerado (DSR) e demais direitos trabalhistas incidentes sobre o período trabalhado.</p>
-
-  
-  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (300x250 desktop / 320x50 mobile) -->
-  <div style="display:flex;justify-content:center;">
-    <div class="adst-slot ad-desktop-only" id="ad-post-mid-adsterra"
-         data-adst-key="7242c743fc263202cfb43cf35e31e396" data-adst-w="300" data-adst-h="250"
-         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
-    <div class="adst-slot ad-mobile-only" id="ad-post-mid-mobile-adsterra"
-         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
-         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
-  </div>
 <h2>Escala 5x2 pode incentivar maior utilização</h2>
 
   <p>O debate sobre uma possível ampliação da adoção da escala 5x2 tem despertado o interesse de empresas em modelos de contratação mais flexíveis. Caso haja mudanças na organização das jornadas, especialistas avaliam que o contrato intermitente poderá ser utilizado com maior frequência para atender demandas pontuais sem necessidade de ampliar o quadro fixo de empregados.</p>
@@ -1351,23 +1383,53 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       </div>
 
       <!-- ▸ ANÚNCIO ADSTERRA: rodapé da página (728x90 desktop / 320x50 mobile) -->
-      <div style="display:flex;justify-content:center;">
-        <div class="adst-slot ad-desktop-only" id="ad-post-footer-adsterra"
-             data-adst-key="a95b609abad42b5f0da1fd621eefbd64" data-adst-w="728" data-adst-h="90"
-             style="width:728px;height:90px;max-width:100%;margin:20px 0;"></div>
-        <div class="adst-slot ad-mobile-only" id="ad-post-end-adsterra"
-             data-adst-key="f9a6a26e51d4d397ec65d29e8f2ca7a5" data-adst-w="320" data-adst-h="50"
-             style="width:320px;height:50px;max-width:100%;margin:20px 0;"></div>
-      </div>
+      <div class="ad-block-x" style="display:flex;justify-content:center;"><div class="ad-card-wrap" style="display:flex;flex-direction:column;align-items:center;"><span class="ad-eyebrow">Publicidade</span><div class="ad-desktop-only" style="display:flex;justify-content:center;"><script>
+  atOptions = {
+    'key' : 'a95b609abad42b5f0da1fd621eefbd64',
+    'format' : 'iframe',
+    'height' : 90,
+    'width' : 728,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/a95b609abad42b5f0da1fd621eefbd64/invoke.js"></script></div><div class="ad-mobile-only" style="display:flex;justify-content:center;"><script>
+  atOptions = {
+    'key' : 'f9a6a26e51d4d397ec65d29e8f2ca7a5',
+    'format' : 'iframe',
+    'height' : 50,
+    'width' : 320,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/f9a6a26e51d4d397ec65d29e8f2ca7a5/invoke.js"></script></div></div></div>
 
 
       <!-- ── PREV / NEXT NAVIGATION ── -->
       <nav class="pn-nav" id="pn-nav" aria-label="Navegação entre artigos"><a class="pn-btn pn-prev" href="/blog/tst-horas-extras-agente-confins-isonomia-jornada-reduzida.html"><span class="pn-arrow">‹</span><div><div class="pn-label">Artigo anterior</div><div class="pn-title">TST reconhece horas extras para agente de Confins por isonomia</div><div class="pn-cat">TST</div></div></a><a class="pn-btn pn-next" href="/blog/motorista-covid-viagem-indenizacao-tst.html"><div><div class="pn-label">Próximo artigo</div><div class="pn-title">Motorista contaminado por covid em viagem será indenizado pelo TST</div><div class="pn-cat">TST</div></div><span class="pn-arrow">›</span></a></nav>
 
       <!-- Related posts -->
-      <div class="related-section" id="related-section"><h3>Artigos Relacionados</h3><div class="related-grid"><a class="related-card" href="/blog/ia-reduz-vagas-jovens-inicio-carreira-brasil.html"><div class="r-cat">Outros RH</div><div class="r-title">IA reduz vagas para jovens em início de carreira no Brasil</div><div class="r-date">13 de jul. de 2026</div></a><a class="related-card" href="/blog/brasil-alerta-ranking-global-direitos-trabalhistas.html"><div class="r-cat">Outros RH</div><div class="r-title">Brasil segue em alerta em ranking global de direitos trabalhistas</div><div class="r-date">13 de jul. de 2026</div></a><a class="related-card" href="/blog/assinatura-eletronica-documentos-trabalhistas-validade.html"><div class="r-cat">Outros RH</div><div class="r-title">Assinatura eletrônica no DP: validade jurídica e cuidados</div><div class="r-date">27 de jun. de 2026</div></a></div></div>
+      <div class="related-section" id="related-section"><h3>📚 Continue lendo</h3><div class="related-grid"><a class="related-card" href="/blog/ia-reduz-vagas-jovens-inicio-carreira-brasil.html"><img class="r-img" src="https://images.unsplash.com/photo-1533588035103-caac00a4c8ff?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><div class="r-cat">Outros RH</div><div class="r-title">IA reduz vagas para jovens em início de carreira no Brasil</div><div class="r-date">13 de jul. de 2026</div></a><a class="related-card" href="/blog/brasil-alerta-ranking-global-direitos-trabalhistas.html"><img class="r-img" src="https://images.unsplash.com/photo-1662692735672-544412d65934?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><div class="r-cat">Outros RH</div><div class="r-title">Brasil segue em alerta em ranking global de direitos trabalhistas</div><div class="r-date">13 de jul. de 2026</div></a><a class="related-card" href="/blog/assinatura-eletronica-documentos-trabalhistas-validade.html"><img class="r-img" src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><div class="r-cat">Outros RH</div><div class="r-title">Assinatura eletrônica no DP: validade jurídica e cuidados</div><div class="r-date">27 de jun. de 2026</div></a></div></div>
 
     </div>
+    <aside class="post-sidebar"><div class="sidebar-card"><h3>🔥 Mais Acessados</h3><div class="sidebar-list"><a class="sidebar-item" href="/blog/aviso-previo-proporcional-como-calcular.html"><span class="sidebar-item-thumb"><img src="https://images.unsplash.com/photo-1506784365847-bbad939e9335?w=1200&q=80" alt="" loading="lazy"><span class="sidebar-item-badge top">1</span></span><span class="sidebar-item-body"><span class="sidebar-item-title">Aviso Prévio Proporcional: Como Calcular e Quais os Direitos em 2026</span><span class="sidebar-item-cat">Rescisão Contratual</span></span></a><a class="sidebar-item" href="/blog/calculadora-de-verbas-trabalhistas-rescisao-clt.html"><span class="sidebar-item-thumb"><img src="https://raw.githubusercontent.com/anfers1985/imagens/main/Imagem%20Encerramento%20Contrato%20de%20Trabalho%20-%20Calculadora%20de%20Verbas.png" alt="" loading="lazy"><span class="sidebar-item-badge top">2</span></span><span class="sidebar-item-body"><span class="sidebar-item-title">Calculadora de Verbas Trabalhistas: Como Calcular sua Rescisão CLT (Guia Completo)</span><span class="sidebar-item-cat">Rescisão Contratual</span></span></a><a class="sidebar-item" href="/blog/estabilidade-emprego-gestante-acidente-trabalho-cipa-stf-tst-normas-coletivas.html"><span class="sidebar-item-thumb"><img src="https://plus.unsplash.com/premium_photo-1663013447756-f645cdec247d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><span class="sidebar-item-badge top">3</span></span><span class="sidebar-item-body"><span class="sidebar-item-title">Estabilidade no Emprego: gestante, acidentado, CIPA, dirigente sindical e as controvérsias no STF e TST</span><span class="sidebar-item-cat">RH e Gestão de Pessoas</span></span></a><a class="sidebar-item" href="/blog/assedio-moral-no-trabalho-como-provar.html"><span class="sidebar-item-thumb"><img src="https://images.unsplash.com/photo-1630091790659-85ec55570e0b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><span class="sidebar-item-badge top">4</span></span><span class="sidebar-item-body"><span class="sidebar-item-title">Assédio moral no trabalho: como provar e reagir</span><span class="sidebar-item-cat">RH e Gestão de Pessoas</span></span></a><a class="sidebar-item" href="/blog/demissao-por-justa-causa-quantas-advertencias-e-suspensoes.html"><span class="sidebar-item-thumb"><img src="https://images.unsplash.com/photo-1752808108278-51aa5e4ee353?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><span class="sidebar-item-badge top">5</span></span><span class="sidebar-item-body"><span class="sidebar-item-title">Demissão por justa causa: quantas advertências e suspensões são necessárias?</span><span class="sidebar-item-cat">Rescisão Contratual</span></span></a></div></div><div class="ad-card-wrap" style="display:flex;flex-direction:column;align-items:center;"><span class="ad-eyebrow">Publicidade</span><div style="display:flex;justify-content:center;"><script>
+  atOptions = {
+    'key' : '7242c743fc263202cfb43cf35e31e396',
+    'format' : 'iframe',
+    'height' : 250,
+    'width' : 300,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/7242c743fc263202cfb43cf35e31e396/invoke.js"></script></div></div><div class="sidebar-card"><h3>🆕 Últimos Conteúdos</h3><div class="sidebar-list"><a class="sidebar-item" href="/blog/abono-pis-nascidos-novembro-dezembro-2026.html"><span class="sidebar-item-thumb"><img src="https://images.unsplash.com/photo-1556740714-a8395b3bf30f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"></span><span class="sidebar-item-body"><span class="sidebar-item-title">Abono do PIS 2026: nascidos em novembro e dezembro recebem</span><span class="sidebar-item-cat">Legislação e Normas</span></span></a><a class="sidebar-item" href="/blog/folguista-contratacao-jornada-direitos-trabalhistas.html"><span class="sidebar-item-thumb"><img src="https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"></span><span class="sidebar-item-body"><span class="sidebar-item-title">Folguista: veja jornada, contratação e direitos trabalhistas</span><span class="sidebar-item-cat">Outros RH</span></span></a><a class="sidebar-item" href="/blog/tst-justa-causa-motorista-recusa-treinamento-cobrador.html"><span class="sidebar-item-thumb"><img src="https://images.unsplash.com/photo-1520105072000-f44fc083e508?q=80&w=1331&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"></span><span class="sidebar-item-body"><span class="sidebar-item-title">TST mantém justa causa de motorista que recusou treinamento</span><span class="sidebar-item-cat">TST</span></span></a><a class="sidebar-item" href="/blog/acidente-de-trajeto-direitos-responsabilidades-empresa.html"><span class="sidebar-item-thumb"><img src="https://plus.unsplash.com/premium_photo-1731263165023-b64cb673f98a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"></span><span class="sidebar-item-body"><span class="sidebar-item-title">Acidente de trajeto: direitos e responsabilidades da empresa</span><span class="sidebar-item-cat">Saúde e Segurança</span></span></a><a class="sidebar-item" href="/blog/melhor-apoiador-de-pe-ergonomico-2026.html"><span class="sidebar-item-thumb"><img src="https://m.media-amazon.com/images/I/51YcObzyjPL._AC_SY300_SX300_QL70_ML2_.jpg" alt="" loading="lazy"></span><span class="sidebar-item-body"><span class="sidebar-item-title">Melhor Apoiador de Pé Ergonômico em 2026: As 5 Melhores</span><span class="sidebar-item-cat">Equipamentos de Escritório</span></span></a></div></div><div class="ad-card-wrap" style="display:flex;flex-direction:column;align-items:center;"><span class="ad-eyebrow">Publicidade</span><div style="display:flex;justify-content:center;"><script>
+  atOptions = {
+    'key' : 'b4454cd1dba198adabbd5fad568cb2c6',
+    'format' : 'iframe',
+    'height' : 250,
+    'width' : 300,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/b4454cd1dba198adabbd5fad568cb2c6/invoke.js"></script></div></div><a class="ad-smartlink" href="https://www.effectivecpmnetwork.com/pdwwu86e?key=ed4d621459d0e9663ec5959a12c0b4b2" target="_blank" rel="nofollow sponsored">🔗 Conteúdo patrocinado</a></aside>
   </div>
 </div>
 
@@ -1811,5 +1873,6 @@ if (document.readyState !== 'loading') loadRelated();
 })();
 </script>
 <!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6e5715de2d20415d90b9904cb3475c40"}'></script><!-- Cloudflare Pages Analytics -->  <script src="/js/ads-adsterra.js?v=2" defer></script>
-</body>
+<script src="https://pl29266866.effectivecpmnetwork.com/0f/84/d5/0f84d55dea9c436679fbf527b75e7624.js"></script>
+<script src="https://pl29266863.effectivecpmnetwork.com/46/c5/d3/46c5d3ff97b46973c296d51e837433f4.js"></script></body>
 </html>

@@ -1293,6 +1293,52 @@ function injectMidArticleAd(html) {
 // ════════════════════════════════════════
 // SANITIZAÇÃO DO CONTEÚDO GERADO POR IA
 // ════════════════════════════════════════
+// Gera a sidebar (Mais Acessados + Últimos Conteúdos + anúncios) sempre "fresca"
+// no momento da publicação, para que ela nunca fique presa a um snapshot antigo
+// congelado no POST_TEMPLATE.html. "Mais Acessados" usa a mesma lista curada usada
+// no restante do site; "Últimos Conteúdos" é calculado a partir dos posts atuais.
+const NH_TOP5_IDS_ADMIN = [
+  'aviso-previo-proporcional-como-calcular',
+  'calculadora-de-verbas-trabalhistas-rescisao-clt',
+  'estabilidade-emprego-gestante-acidente-trabalho-cipa-stf-tst-normas-coletivas',
+  'assedio-moral-no-trabalho-como-provar',
+  'demissao-por-justa-causa-quantas-advertencias-e-suspensoes',
+];
+
+function buildSidebarItemsHTML(list, numbered) {
+  return list.map((p, i) => {
+    const badge = numbered ? `<span class="sidebar-item-badge top">${i + 1}</span>` : '';
+    const img = p.image || '';
+    const cat = p.category_label || p.category || '';
+    return `<a class="sidebar-item" href="/blog/${p.id}.html"><span class="sidebar-item-thumb"><img src="${img}" alt="" loading="lazy">${badge}</span><span class="sidebar-item-body"><span class="sidebar-item-title">${p.title}</span><span class="sidebar-item-cat">${cat}</span></span></a>`;
+  }).join('');
+}
+
+function buildFreshSidebarHTML(currentPostId, allPosts) {
+  const byId = {};
+  (allPosts || []).forEach(p => { byId[p.id] = p; });
+  const top5 = NH_TOP5_IDS_ADMIN.map(id => byId[id]).filter(Boolean);
+  const latest5 = (allPosts || [])
+    .filter(p => p.id !== currentPostId)
+    .sort((a, b) => (b.date || '').localeCompare(a.date || ''))
+    .slice(0, 5);
+
+  const adCard = (label) => `<div class="ad-card-wrap" style="display:flex;flex-direction:column;align-items:center;"><span class="ad-eyebrow">Publicidade</span><div class="ad-ph" style="width:300px;height:250px;"><b>300×250</b><small>${label} (Adsterra)</small></div></div>`;
+
+  return '<aside class="post-sidebar">'
+    + '<div class="sidebar-card"><h3>🔥 Mais Acessados</h3><div class="sidebar-list">' + buildSidebarItemsHTML(top5, true) + '</div></div>'
+    + adCard('300x250_1')
+    + '<div class="sidebar-card"><h3>🆕 Últimos Conteúdos</h3><div class="sidebar-list">' + buildSidebarItemsHTML(latest5, false) + '</div></div>'
+    + adCard('300x250_2')
+    + '<a class="ad-smartlink" href="#">🔗 Link patrocinado · Smartlink_1</a>'
+    + '</aside>';
+}
+
+function replaceSidebarWithFresh(html, currentPostId, allPosts) {
+  const freshSidebar = buildFreshSidebarHTML(currentPostId, allPosts);
+  return html.replace(/<aside class="post-sidebar">[\s\S]*?<\/aside>/, freshSidebar);
+}
+
 // A IA que gera o conteúdo do artigo às vezes deixa resíduos de markdown
 // (```html ... ```) ou já embrulha o próprio conteúdo num <article class="article-body">
 // redundante — o que duplicava a tag quando o template adicionava o seu próprio wrapper.
@@ -2206,15 +2252,20 @@ async function publicarPost(post, pat) {
       const cards = relatedFinal.map(p => {
         const label = catLabelsMap[p.category] || p.category_label || p.category;
         const dateStr = p.date ? new Date(p.date + 'T12:00:00').toLocaleDateString('pt-BR', {day:'numeric', month:'short', year:'numeric'}) : '';
-        return `<a class="related-card" href="/blog/${p.id}.html"><div class="r-cat">${label}</div><div class="r-title">${p.title}</div><div class="r-date">${dateStr}</div></a>`;
+        const img = p.image ? `<img class="r-img" src="${p.image}" alt="" loading="lazy">` : '';
+        return `<a class="related-card" href="/blog/${p.id}.html">${img}<div class="r-cat">${label}</div><div class="r-title">${p.title}</div><div class="r-date">${dateStr}</div></a>`;
       }).join('');
-      relatedHTML = `<h3>Artigos Relacionados</h3><div class="related-grid">${cards}</div>`;
+      relatedHTML = `<h3>📚 Continue lendo</h3><div class="related-grid">${cards}</div>`;
     }
 
     let postHTMLFinal = relatedHTML
       ? postHTML.replace('<div class="related-section" id="related-section"></div>',
           `<div class="related-section" id="related-section">${relatedHTML}</div>`)
       : postHTML;
+
+    // Sidebar (Mais Acessados + Últimos Conteúdos) sempre recalculada na hora da
+    // publicação, para nunca ficar presa ao snapshot congelado do POST_TEMPLATE.html
+    postHTMLFinal = replaceSidebarWithFresh(postHTMLFinal, post.id, postsAtuais);
 
     // Injetar navegação Anterior/Próximo estática (mesma ordem cronológica usada pelo loadPrevNext() no client)
     const pnList = [...postsAtuais, {
@@ -2992,8 +3043,12 @@ async function baixarHTML() {
       .replace(/\{\{SCHEMA_IMAGE\}\}/g,   image ? `,"image":"${image}"` : '')
       .replace(/\{\{COVER_IMAGE_HTML\}\}/g, coverHTML);
 
+    // Sidebar (Mais Acessados + Últimos Conteúdos) sempre recalculada, mesmo neste
+    // fluxo de download manual — nunca fica presa ao snapshot do POST_TEMPLATE.html
+    const postHTMLFinalDownload = replaceSidebarWithFresh(postHTML, slug, getPosts());
+
     // Download the HTML file
-    const blob = new Blob([postHTML], {type: 'text/html;charset=utf-8'});
+    const blob = new Blob([postHTMLFinalDownload], {type: 'text/html;charset=utf-8'});
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
     a.href = url;
