@@ -1,0 +1,86 @@
+/*
+ * Mais Acessados (real) — usado nas sidebars de artigos e ferramentas.
+ *
+ * A lista que fica "congelada" no HTML no momento da publicação é apenas um
+ * fallback estático (5 posts curados). Este script, ao carregar a página,
+ * busca o ranking REAL de acessos (mesma API/fonte usada na home em
+ * "🔥 CONTEÚDOS MAIS ACESSADOS") e substitui o conteúdo do bloco
+ * #mais-acessados-list pelos 5 posts realmente mais visitados no momento.
+ *
+ * Se a API falhar ou não responder, a lista estática original permanece
+ * visível (nunca deixamos o card vazio).
+ */
+(function () {
+  var VIEWS_API = 'https://calculaprazo-views-api.andersonfernand3s.workers.dev';
+  var FALLBACK_TOP_IDS = [
+    'aviso-previo-proporcional-como-calcular',
+    'calculadora-de-verbas-trabalhistas-rescisao-clt',
+    'estabilidade-emprego-gestante-acidente-trabalho-cipa-stf-tst-normas-coletivas',
+    'assedio-moral-no-trabalho-como-provar',
+    'demissao-por-justa-causa-quantas-advertencias-e-suspensoes'
+  ];
+
+  function fetchJSON(url) {
+    return fetch(url).then(function (r) { return r.ok ? r.json() : null; });
+  }
+
+  function buildItemHTML(post, slug, rank) {
+    var img = post.image || '';
+    var cat = post.category_label || post.category || '';
+    var title = post.title || slug;
+    return '<a class="sidebar-item" href="/blog/' + slug + '.html">'
+      + '<span class="sidebar-item-thumb"><img src="' + img + '" alt="" loading="lazy">'
+      + '<span class="sidebar-item-badge top">' + rank + '</span></span>'
+      + '<span class="sidebar-item-body"><span class="sidebar-item-title">' + title + '</span>'
+      + (cat ? '<span class="sidebar-item-cat">' + cat + '</span>' : '')
+      + '</span></a>';
+  }
+
+  function render(container, slugs, postsById, currentSlug) {
+    var filtered = slugs.filter(function (s) { return s !== currentSlug && postsById[s]; });
+    var top5 = filtered.slice(0, 5);
+    if (!top5.length) return; // mantém o fallback estático já presente no HTML
+
+    container.innerHTML = top5.map(function (s, i) {
+      return buildItemHTML(postsById[s], s, i + 1);
+    }).join('');
+  }
+
+  function init() {
+    var container = document.getElementById('mais-acessados-list');
+    if (!container) return;
+
+    var aside = container.closest('.post-sidebar, .tool-sidebar');
+    var currentSlug = aside ? aside.getAttribute('data-current-slug') || '' : '';
+
+    Promise.all([
+      fetchJSON('/data/posts.json?v=' + Date.now()).catch(function () { return null; }),
+      fetchJSON(VIEWS_API + '/top/30').catch(function () { return null; })
+    ]).then(function (results) {
+      var posts = results[0];
+      var viewsData = results[1];
+
+      if (!Array.isArray(posts) || !posts.length) return; // sem dados de posts, mantém fallback
+
+      var postsById = {};
+      posts.forEach(function (p) {
+        var id = p.id || p.slug;
+        if (id) postsById[id] = p;
+      });
+
+      var rankedSlugs = (viewsData && viewsData.top && viewsData.top.length)
+        ? viewsData.top.map(function (t) { return t.slug || t; })
+        : FALLBACK_TOP_IDS;
+
+      render(container, rankedSlugs, postsById, currentSlug);
+    }).catch(function () {
+      // qualquer erro: mantém a lista estática que já está no HTML
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
