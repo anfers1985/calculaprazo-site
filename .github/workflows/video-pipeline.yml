@@ -6,7 +6,7 @@ on:
       - 'data/posts.json'
   workflow_dispatch: {}
   schedule:
-    - cron: '0 */8 * * *'   # cron de segurança: pega jobs pendentes a cada 8h (o push já cobre o caso normal)
+    - cron: '0 6 * * *'   # cron de segurança: 1x/dia às 03h Brasília, pega jobs presos/pendentes (o push já cobre o caso normal)
 
 # Evita que duas execuções (push + cron, ou dois cron seguidos) rodem ao mesmo tempo.
 # Isso é o que causava a criação de jobs duplicados/triplicados para o mesmo post:
@@ -58,16 +58,44 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
-        with: { node-version: '22' }
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
       - uses: actions/setup-python@v5
         with: { python-version: '3.11' }
 
+      # Cacheia o binário do Chromium baixado pelo Playwright. Sem isso, todo job
+      # (inclusive retries de jobs em erro) baixa o Chromium do zero, o que é a
+      # maior parte do tempo gasto antes de sequer começar a renderizar o vídeo.
+      - name: Cache Chromium (Playwright)
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      # Cacheia o node_modules do Remotion (não tem lockfile próprio, então a chave
+      # usa o package.json — muda só quando as dependências do render mudam de fato).
+      - name: Cache node_modules (Remotion)
+        id: remotion-cache
+        uses: actions/cache@v4
+        with:
+          path: remotion/node_modules
+          key: remotion-modules-${{ runner.os }}-${{ hashFiles('remotion/package.json') }}
+
       - name: Instalar dependências Node
         run: |
-          npm install @supabase/supabase-js googleapis playwright
+          npm ci
           chmod -R +x node_modules/.bin
           node node_modules/playwright/cli.js install --with-deps chromium
-          cd remotion && npm install && chmod -R +x node_modules/.bin
+
+      - name: Instalar dependências do Remotion (só se não veio do cache)
+        if: steps.remotion-cache.outputs.cache-hit != 'true'
+        run: cd remotion && npm install
+
+      - name: Garantir permissão dos binários do Remotion
+        run: chmod -R +x remotion/node_modules/.bin
 
       - name: Instalar dependências Python
         run: pip install edge-tts pydub supabase requests

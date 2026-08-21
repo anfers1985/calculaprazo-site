@@ -1,0 +1,19 @@
+name: Limpar Storage (jobs travados)
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '0 7 * * 1'   # 1x/semana, segunda 04h Brasília — job leve, não precisa rodar todo dia
+
+jobs:
+  limpar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - run: npm install @supabase/supabase-js
+      - run: node scripts/10-limpar-jobs-travados.mjs
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
