@@ -996,11 +996,10 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .related-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; }
 .related-card {
   background:var(--card); border:1.5px solid var(--brd); border-radius:var(--rl);
-  padding:16px; cursor:pointer; text-decoration:none; display:block; overflow:hidden;
+  padding:16px; cursor:pointer; text-decoration:none; display:block;
   transition:all .2s;
 }
 .related-card:hover { border-color:var(--b200); transform:translateY(-2px); box-shadow:var(--sh); }
-.related-card .r-img { display:block; width:calc(100% + 32px); height:120px; object-fit:cover; margin:-16px -16px 12px; background:var(--b50); }
 .related-card .r-cat { font-size:.67rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--acc); margin-bottom:6px; }
 .related-card .r-title { font-size:.85rem; font-weight:700; color:var(--txt); line-height:1.35; margin-bottom:4px; }
 .related-card .r-date { font-size:.72rem; color:var(--txt-s); }
@@ -1074,36 +1073,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 @media (max-width: 768px) {
   .ad-mobile-only { display:flex !important; }
   .ad-desktop-only.adst-slot { display:none !important; }
-}
-/* ═══ SIDEBAR + GRID + ADS (rollout) ═══ */
-.pbw-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:32px;align-items:start;}
-.pbw-grid .article-wrap{max-width:none;margin:0;}
-.post-sidebar{display:flex;flex-direction:column;gap:20px;}
-.sidebar-card{background:var(--card);border:1.5px solid var(--brd);border-radius:14px;padding:18px;}
-.sidebar-card h3{font-size:.92rem;font-weight:800;margin-bottom:10px;letter-spacing:-.2px;display:flex;align-items:center;gap:6px;}
-.sidebar-list{display:flex;flex-direction:column;}
-.sidebar-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--brd);text-decoration:none;}
-.sidebar-item:last-child{border-bottom:none;}
-.sidebar-item-thumb{position:relative;flex-shrink:0;width:64px;height:64px;border-radius:8px;overflow:hidden;background:var(--b50);}
-.sidebar-item-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
-.sidebar-item-thumb .sidebar-item-badge{position:absolute;top:3px;left:3px;margin:0;box-shadow:0 1px 4px rgba(0,0,0,.35);}
-.sidebar-item-badge{flex-shrink:0;width:22px;height:22px;border-radius:6px;background:var(--b50);color:var(--acc);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px;}
-.sidebar-item-badge.top{background:var(--acc);color:#fff;}
-.sidebar-item-body{min-width:0;}
-.sidebar-item-title{font-size:.77rem;font-weight:700;color:var(--txt);line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
-.sidebar-item-cat{font-size:.68rem;color:var(--txt-s);margin-top:3px;}
-.ad-eyebrow{display:block;font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--txt-s);opacity:.55;margin-bottom:6px;text-align:center;}
-.ad-block-x{margin:26px 0;}
-.ad-card-wrap{background:var(--card);border:1.5px solid var(--brd);border-radius:14px;padding:14px;}
-.ad-ph{max-width:100%;background:repeating-linear-gradient(45deg,#F1F5F9,#F1F5F9 10px,#E2E8F0 10px,#E2E8F0 20px);border:1px dashed var(--brd);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.72rem;color:var(--txt-s);text-align:center;margin:0 auto;flex-direction:column;gap:2px;line-height:1.4;}
-.ad-ph b{font-size:.78rem;color:var(--txt);}
-.ad-ph small{font-size:.62rem;opacity:.7;}
-.ad-social-bar{position:fixed;right:14px;bottom:14px;z-index:200;background:var(--card);border:1.5px solid var(--brd);border-radius:10px;padding:8px 12px;font-size:.68rem;color:var(--txt-s);box-shadow:var(--sh);display:flex;align-items:center;gap:6px;}
-.ad-smartlink{display:block;text-align:center;font-size:.72rem;color:var(--txt-s);border:1px dashed var(--brd);border-radius:8px;padding:8px;margin:10px 0;text-decoration:none;background:var(--b50);}
-@media(max-width:767px){
-  .pbw-grid{grid-template-columns:1fr;}
-  .pbw-grid .article-wrap{max-width:800px;margin:0 auto;}
-  .post-sidebar{display:none;}
 }
 </style>
 </head>
@@ -1237,7 +1206,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
 <!-- POST HERO -->
 <section class="post-hero">
-  <div class="container post-hero-inner pbw-grid">
+  <div class="container post-hero-inner">
     <div class="article-wrap">
       <nav class="post-breadcrumb">
         <a href="/">Início</a>
@@ -1261,7 +1230,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
 <!-- POST BODY -->
 <div class="post-body-wrap">
-  <div class="container pbw-grid">
+  <div class="container">
     <div class="article-wrap">
       <div class="post-reading-area">
       <div class="post-share-sticky">
@@ -1282,11 +1251,25 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
       <!-- Article content -->
         <!-- ▸ ANÚNCIO ADSTERRA: topo do artigo (728x90, desktop) -->
-  <div class="ad-block-x" style="display:flex;justify-content:center;flex-direction:column;align-items:center;"><span class="ad-eyebrow">Publicidade</span><div class="ad-desktop-only" style="display:flex;justify-content:center;"><div class="adst-slot" id="ad-slot-1" data-adst-key="4f5894de8245c23422f7de3e03a1363e" data-adst-w="728" data-adst-h="90" style="width:728px;height:90px;max-width:100%;margin:0 auto;"></div></div><div class="ad-mobile-only" style="display:flex;justify-content:center;"><div class="adst-slot" id="ad-slot-2" data-adst-key="cfa0d125d7dabd435f2b18e5f541bba5" data-adst-w="320" data-adst-h="50" style="width:320px;height:50px;max-width:100%;margin:0 auto;"></div></div></div>
+  <div class="adst-slot ad-desktop-only" id="ad-post-top-adsterra"
+       data-adst-key="4f5894de8245c23422f7de3e03a1363e" data-adst-w="728" data-adst-h="90"
+       style="width:728px;height:90px;max-width:100%;"></div>
+  <div class="adst-slot ad-mobile-only" id="ad-post-top-mobile-adsterra"
+       data-adst-key="cfa0d125d7dabd435f2b18e5f541bba5" data-adst-w="320" data-adst-h="50"
+       style="width:320px;height:50px;max-width:100%;"></div>
 
       <article class="article-body">
         <h2>Bloqueio de Bens e Resgate de Trabalhadores em Condições Degradantes</h2><p>Em uma operação recente deflagrada pela Patrulha Rural da Polícia Militar de Minas Gerais (PMMG), sete trabalhadores que viviam em condições análogas à escravidão em uma fazenda na zona rural de Unaí foram resgatados. A ação foi resultado de uma tutela cautelar antecedente proposta pelo Ministério Público do Trabalho (MPT), que visava proteger os direitos desses trabalhadores e garantir seu resgate de condições degradantes.</p><p>O juiz titular da Vara do Trabalho de Unaí, Glauco Rodrigues Becho, determinou o bloqueio urgente de bens dos envolvidos e o custeio imediato do retorno das vítimas às suas cidades de origem. Essa decisão é um marco importante na luta contra o trabalho escravo e em condições degradantes no Brasil, demonstrando a eficácia da atuação do MPT em proteger os direitos dos trabalhadores.</p><h2>Fundamentos Legais e Súmulas Aplicados</h2><p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/resgate-de-trabalhadores-em-condicoes-analogas-a-escravidao-.html" style="color:#2563EB;font-weight:600;">Resgate de Trabalhadores em Condições Análogas à Escravidão em Unaí (MG)</a></p>
 <p>A decisão se baseia em fundamentos legais sólidos, incluindo a Constituição Federal, o Código Civil e a Consolidação das Leis do Trabalho (CLT). Além disso, súmulas do Tribunal Superior do Trabalho (TST) também foram aplicadas, reforçando a importância da proteção dos direitos dos trabalhadores e a necessidade de medidas eficazes contra o trabalho escravo e em condições degradantes.</p><p>Entre os fundamentos legais aplicados, destaca-se o artigo 149 do Código Penal, que define o crime de redução à condição análoga à de escravo, e o artigo 9º da CLT, que estabelece a nulidade dos atos praticados com o objetivo de desvirtuar, impedir ou fraudar a aplicação dos preceitos contidos na legislação trabalhista.</p>
+  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (300x250 desktop / 320x50 mobile) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="adst-slot ad-desktop-only" id="ad-post-mid-adsterra"
+         data-adst-key="7242c743fc263202cfb43cf35e31e396" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+    <div class="adst-slot ad-mobile-only" id="ad-post-mid-mobile-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
 <h2>O que foi Decidido e Por Quê</h2><p>A decisão de bloquear bens e custear o retorno das vítimas às suas cidades de origem foi tomada com base na gravidade das condições em que os trabalhadores se encontravam. A situação configurava trabalho em condições análogas à escravidão, o que é inaceitável e contrário aos direitos humanos fundamentais.</p><p>A medida de bloqueio de bens visa garantir que os responsáveis pelas condições degradantes sejam efetivamente punidos e que os trabalhadores resgatados sejam indenizados pelos danos sofridos. Além disso, o custeio do retorno às cidades de origem é uma medida humanitária essencial para garantir que os trabalhadores possam reconstruir suas vidas longe das condições de exploração.</p><h2>Tese Jurídica e Consequências Práticas</h2><p>A tese jurídica que se extrai dessa decisão é a de que o Estado e a sociedade têm o dever de proteger os trabalhadores contra condições degradantes e o trabalho escravo, utilizando todas as ferramentas legais disponíveis para prevenir e combater essas práticas.</p><p>As consequências práticas para as empresas são claras: elas devem garantir que suas práticas laborais estejam em conformidade com a legislação trabalhista e respeitem os direitos dos trabalhadores. Aqueles que descumprem essas obrigações podem enfrentar sanções legais, incluindo o bloqueio de bens e a responsabilização criminal.</p><p>Para os trabalhadores, a decisão representa uma vitória importante, pois reconhece seus direitos e garante proteção contra a exploração. Além disso, serve como um alerta para que outros trabalhadores em situações semelhantes busquem ajuda e denunciem as irregularidades.</p><h2>Orientações para RH e Jurídico</h2><p>É fundamental que os departamentos de Recursos Humanos (RH) e os setores jurídicos das empresas estejam atentos às implicações dessa decisão. Aqui estão algumas orientações objetivas:</p><ul><li><strong>Auditorias Internas:</strong> Realizem auditorias internas para garantir que as práticas laborais estejam em conformidade com a legislação trabalhista.</li><li><strong>Capacitação:</strong> Ofereçam capacitação regular para os funcionários sobre os direitos dos trabalhadores e as consequências do trabalho escravo e em condições degradantes.</li><li><strong>Denúncias Anônimas:</strong> Estabeleçam canais para denúncias anônimas de irregularidades laborais, garantindo a proteção dos denunciantes.</li><li><strong>Parcerias com ONGs:</strong> Considerem estabelecer parcerias com organizações não governamentais (ONGs) que atuam na prevenção e combate ao trabalho escravo.</li></ul><p>Em resumo, a decisão de bloquear bens e resgatar trabalhadores em condições degradantes em Unaí é um marco importante na luta contra o trabalho escravo e em condições degradantes no Brasil. Empresas e trabalhadores devem estar cientes de seus direitos e obrigações, e os departamentos de RH e jurídico devem tomar medidas proativas para garantir a conformidade com a legislação trabalhista e proteger os direitos dos trabalhadores.</p>
 <p style="font-size:.78rem;color:#64748B;margin-top:28px;padding-top:12px;border-top:1px solid #E2E8F0;"><strong>Fonte:</strong> <a href="https://www.prt3.mpt.mp.br/comunicacao/noticias-do-mpt-mg" target="_blank" rel="noopener noreferrer">MPT-MG (PRT-3)</a> — acesso em 20 de abril de 2026.</p></article></div><!-- /post-reading-area -->
 
@@ -1317,17 +1300,23 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       </div>
 
       <!-- ▸ ANÚNCIO ADSTERRA: rodapé da página (728x90 desktop / 320x50 mobile) -->
-      <div class="ad-block-x" style="display:flex;justify-content:center;"><div class="ad-card-wrap" style="display:flex;flex-direction:column;align-items:center;"><span class="ad-eyebrow">Publicidade</span><div class="ad-desktop-only" style="display:flex;justify-content:center;"><div class="adst-slot" id="ad-slot-3" data-adst-key="a95b609abad42b5f0da1fd621eefbd64" data-adst-w="728" data-adst-h="90" style="width:728px;height:90px;max-width:100%;margin:0 auto;"></div></div><div class="ad-mobile-only" style="display:flex;justify-content:center;"><div class="adst-slot" id="ad-slot-4" data-adst-key="f9a6a26e51d4d397ec65d29e8f2ca7a5" data-adst-w="320" data-adst-h="50" style="width:320px;height:50px;max-width:100%;margin:0 auto;"></div></div></div></div>
+      <div style="display:flex;justify-content:center;">
+        <div class="adst-slot ad-desktop-only" id="ad-post-footer-adsterra"
+             data-adst-key="a95b609abad42b5f0da1fd621eefbd64" data-adst-w="728" data-adst-h="90"
+             style="width:728px;height:90px;max-width:100%;margin:20px 0;"></div>
+        <div class="adst-slot ad-mobile-only" id="ad-post-end-adsterra"
+             data-adst-key="f9a6a26e51d4d397ec65d29e8f2ca7a5" data-adst-w="320" data-adst-h="50"
+             style="width:320px;height:50px;max-width:100%;margin:20px 0;"></div>
+      </div>
 
 
       <!-- ── PREV / NEXT NAVIGATION ── -->
       <nav class="pn-nav" id="pn-nav" aria-label="Navegação entre artigos"><a class="pn-btn pn-prev" href="/blog/jornada-semanal-reduzida.html"><span class="pn-arrow">‹</span><div><div class="pn-label">Artigo anterior</div><div class="pn-title">Jornada Semanal Reduzida: Projeto de Lei Reduz para 40 Horas e Prevê Dois Dias de Descanso</div><div class="pn-cat">Jornada de Trabalho</div></div></a><a class="pn-btn pn-next" href="/blog/aplicacao-do-piso-nacional-para-professores-temporarios-e-de.html"><div><div class="pn-label">Próximo artigo</div><div class="pn-title">Aplicação do Piso Nacional para Professores Temporários é Destaque no STF</div><div class="pn-cat">Jurisprudência STF</div></div><span class="pn-arrow">›</span></a></nav>
 
       <!-- Related posts -->
-      <div class="related-section" id="related-section"><h3>📚 Continue lendo</h3><div class="related-grid"><a class="related-card" href="/blog/mpt-ba-intensifica-combate-a-producao-ilegal-de-fogos-na-bah.html"><img class="r-img" src="https://images.unsplash.com/photo-1774599730788-a74cd9253b56?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzcwNDI5NDN8&ixlib=rb-4.1.0&q=80&w=1080" alt="" loading="lazy"><div class="r-cat">MPT</div><div class="r-title">MPT-BA Intensifica Combate à Produção Ilegal de Fogos na Bahia</div><div class="r-date">24 de abr. de 2026</div></a><a class="related-card" href="/blog/mpt-obtem-condenacao-de-r-400-mil-contra-industria-de-estofa.html"><img class="r-img" src="https://images.unsplash.com/photo-1774599730788-edc1fe2489b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY4ODgxMjl8&ixlib=rb-4.1.0&q=80&w=1080" alt="" loading="lazy"><div class="r-cat">MPT</div><div class="r-title">MPT Obtém Condenação de R$ 400 Mil Contra Indústria de Estofados por Assédio Eleitoral</div><div class="r-date">22 de abr. de 2026</div></a><a class="related-card" href="/blog/mpt-usa-pesquisa-de-clima-em-acao-de-assedio.html"><img class="r-img" src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1170&auto=format&fit=crop" alt="" loading="lazy"><div class="r-cat">MPT</div><div class="r-title">MPT Usa Pesquisa de Clima em Ação de Assédio Moral na Bahia</div><div class="r-date">22 de abr. de 2026</div></a></div></div>
+      <div class="related-section" id="related-section"><h3>Artigos Relacionados</h3><div class="related-grid"><a class="related-card" href="/blog/mpt-ba-intensifica-combate-a-producao-ilegal-de-fogos-na-bah.html"><div class="r-cat">MPT</div><div class="r-title">MPT-BA Intensifica Combate à Produção Ilegal de Fogos na Bahia</div><div class="r-date">24 de abr. de 2026</div></a><a class="related-card" href="/blog/mpt-obtem-condenacao-de-r-400-mil-contra-industria-de-estofa.html"><div class="r-cat">MPT</div><div class="r-title">MPT Obtém Condenação de R$ 400 Mil Contra Indústria de Estofados por Assédio Eleitoral</div><div class="r-date">22 de abr. de 2026</div></a><a class="related-card" href="/blog/mpt-usa-pesquisa-de-clima-em-acao-de-assedio.html"><div class="r-cat">MPT</div><div class="r-title">MPT Usa Pesquisa de Clima em Ação de Assédio Moral na Bahia</div><div class="r-date">22 de abr. de 2026</div></a></div></div>
 
     </div>
-    <aside class="post-sidebar"><div class="sidebar-card"><h3>🔥 Mais Acessados</h3><div class="sidebar-list"><a class="sidebar-item" href="/blog/aviso-previo-proporcional-como-calcular.html"><span class="sidebar-item-thumb"><img src="https://images.unsplash.com/photo-1506784365847-bbad939e9335?w=1200&q=80" alt="" loading="lazy"><span class="sidebar-item-badge top">1</span></span><span class="sidebar-item-body"><span class="sidebar-item-title">Aviso Prévio Proporcional: Como Calcular e Quais os Direitos em 2026</span><span class="sidebar-item-cat">Rescisão Contratual</span></span></a><a class="sidebar-item" href="/blog/calculadora-de-verbas-trabalhistas-rescisao-clt.html"><span class="sidebar-item-thumb"><img src="https://raw.githubusercontent.com/anfers1985/imagens/main/Imagem%20Encerramento%20Contrato%20de%20Trabalho%20-%20Calculadora%20de%20Verbas.png" alt="" loading="lazy"><span class="sidebar-item-badge top">2</span></span><span class="sidebar-item-body"><span class="sidebar-item-title">Calculadora de Verbas Trabalhistas: Como Calcular sua Rescisão CLT (Guia Completo)</span><span class="sidebar-item-cat">Rescisão Contratual</span></span></a><a class="sidebar-item" href="/blog/estabilidade-emprego-gestante-acidente-trabalho-cipa-stf-tst-normas-coletivas.html"><span class="sidebar-item-thumb"><img src="https://plus.unsplash.com/premium_photo-1663013447756-f645cdec247d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><span class="sidebar-item-badge top">3</span></span><span class="sidebar-item-body"><span class="sidebar-item-title">Estabilidade no Emprego: gestante, acidentado, CIPA, dirigente sindical e as controvérsias no STF e TST</span><span class="sidebar-item-cat">RH e Gestão de Pessoas</span></span></a><a class="sidebar-item" href="/blog/assedio-moral-no-trabalho-como-provar.html"><span class="sidebar-item-thumb"><img src="https://images.unsplash.com/photo-1630091790659-85ec55570e0b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><span class="sidebar-item-badge top">4</span></span><span class="sidebar-item-body"><span class="sidebar-item-title">Assédio moral no trabalho: como provar e reagir</span><span class="sidebar-item-cat">RH e Gestão de Pessoas</span></span></a><a class="sidebar-item" href="/blog/demissao-por-justa-causa-quantas-advertencias-e-suspensoes.html"><span class="sidebar-item-thumb"><img src="https://images.unsplash.com/photo-1752808108278-51aa5e4ee353?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><span class="sidebar-item-badge top">5</span></span><span class="sidebar-item-body"><span class="sidebar-item-title">Demissão por justa causa: quantas advertências e suspensões são necessárias?</span><span class="sidebar-item-cat">Rescisão Contratual</span></span></a></div></div><div class="ad-card-wrap" style="display:flex;flex-direction:column;align-items:center;"><span class="ad-eyebrow">Publicidade</span><div style="display:flex;justify-content:center;"><div class="adst-slot" id="ad-slot-5" data-adst-key="7242c743fc263202cfb43cf35e31e396" data-adst-w="300" data-adst-h="250" style="width:300px;height:250px;max-width:100%;margin:0 auto;"></div></div></div><div class="sidebar-card"><h3>🆕 Últimos Conteúdos</h3><div class="sidebar-list"><a class="sidebar-item" href="/blog/vale-alimentacao-afastamento-inss-direitos.html"><span class="sidebar-item-thumb"><img src="https://images.unsplash.com/photo-1633158832532-f71e9c7ac6d6?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"></span><span class="sidebar-item-body"><span class="sidebar-item-title">Vale-alimentação durante afastamento pelo INSS: o que diz a lei</span><span class="sidebar-item-cat">Benefícios</span></span></a><a class="sidebar-item" href="/blog/tst-afasta-justa-causa-recusa-vacina-covid.html"><span class="sidebar-item-thumb"><img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1174&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"></span><span class="sidebar-item-body"><span class="sidebar-item-title">TST afasta justa causa por recusa à vacina contra Covid</span><span class="sidebar-item-cat">TST</span></span></a><a class="sidebar-item" href="/blog/tst-aluguel-motocicleta-leiturista-natureza-indenizatoria.html"><span class="sidebar-item-thumb"><img src="https://images.jota.info/wp-content/uploads/2024/10/52344985131-937cc89e6d-k.jpg" alt="" loading="lazy"></span><span class="sidebar-item-body"><span class="sidebar-item-title">TST afasta natureza salarial de aluguel de motocicleta</span><span class="sidebar-item-cat">TST</span></span></a><a class="sidebar-item" href="/blog/medida-protetiva-cuidados-empresa-violencia-domestica-trabalho.html"><span class="sidebar-item-thumb"><img src="https://images.unsplash.com/photo-1548630435-998a2cbbff67?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"></span><span class="sidebar-item-body"><span class="sidebar-item-title">Medida protetiva exige cuidados da empresa no trabalho</span><span class="sidebar-item-cat">TST</span></span></a><a class="sidebar-item" href="/blog/artigo-458-clt-salario-in-natura.html"><span class="sidebar-item-thumb"><img src="https://plus.unsplash.com/premium_photo-1661397029055-2c5da6951c4a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"></span><span class="sidebar-item-body"><span class="sidebar-item-title">Artigo 458 da CLT: entenda o salário in natura</span><span class="sidebar-item-cat">Salário</span></span></a></div></div><div class="ad-card-wrap" style="display:flex;flex-direction:column;align-items:center;"><span class="ad-eyebrow">Publicidade</span><div style="display:flex;justify-content:center;"><div class="adst-slot" id="ad-slot-6" data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250" style="width:300px;height:250px;max-width:100%;margin:0 auto;"></div></div></div><a class="ad-smartlink" href="https://www.effectivecpmnetwork.com/pdwwu86e?key=ed4d621459d0e9663ec5959a12c0b4b2" target="_blank" rel="nofollow sponsored">🔗 Conteúdo patrocinado</a></aside>
   </div>
 </div>
 
@@ -1684,11 +1673,10 @@ async function loadRelated() {
 
   const catLabels = { direito:'⚖️ Direito', rh:'👥 RH', contabilidade:'📊 Contabilidade', geral:'📌 Geral' };
   section.innerHTML = `
-    <h3>📚 Continue lendo</h3>
+    <h3>Artigos Relacionados</h3>
     <div class="related-grid">
       ${related.map(p => `
         <a class="related-card" href="/blog/${p.id}.html">
-          <img class="r-img" src="${p.image||''}" alt="" loading="lazy">
           <div class="r-cat">${catLabels[p.category]||p.category}</div>
           <div class="r-title">${p.title}</div>
           <div class="r-date">${new Date(p.date+'T12:00:00').toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'})}</div>
