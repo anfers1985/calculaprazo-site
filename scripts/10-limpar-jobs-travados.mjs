@@ -25,7 +25,7 @@ const MAX_TENTATIVAS = 5; // mesmo valor usado em listar-pendentes.mjs
 // seguros à limpeza: não há risco de apagar arquivo que ainda vai ser usado num retry.
 const { data: jobs, error } = await supabase
   .from('video_jobs')
-  .select('id, status, tentativas, erro_etapa, updated_at')
+  .select('id, status, tentativas, erro_etapa, criado_em')
   .eq('status', 'erro')
   .gte('tentativas', MAX_TENTATIVAS);
 
@@ -38,7 +38,7 @@ if (!jobs.length) {
 
 console.log(`Encontrados ${jobs.length} job(s) travado(s) em erro:`);
 for (const job of jobs) {
-  console.log(`  - ${job.id} | etapa: ${job.erro_etapa || '?'} | tentativas: ${job.tentativas} | atualizado em: ${job.updated_at}`);
+  console.log(`  - ${job.id} | etapa: ${job.erro_etapa || '?'} | tentativas: ${job.tentativas} | criado em: ${job.criado_em}`);
 }
 
 if (DRY_RUN) {
