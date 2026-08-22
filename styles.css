@@ -1749,6 +1749,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
    trazido para o CSS compartilhado para páginas que só carregam o styles.css
    externo (ex: /conteudo/) renderizarem exatamente igual às demais. */
 .article-wrap{max-width:800px;margin:0 auto;}
+/* O hero (tarja azul) nunca tem uma 2ª coluna de verdade ao lado do título —
+   por isso o conteúdo dele deve sempre ocupar a largura toda do .container,
+   com ou sem a classe pbw-grid presente. Sem esta regra, remover pbw-grid
+   faz o título "encolher" de volta para 800px centralizado, abrindo um vão
+   à esquerda/direita do título. */
+.post-hero .article-wrap{max-width:none;margin:0;}
 .post-hero{background:linear-gradient(135deg,var(--b900) 0%,var(--b700) 55%,var(--b500) 100%);padding:40px 0 28px;position:relative;overflow:hidden;}
 .post-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,.04);}
 .post-hero::after{content:'';position:absolute;bottom:-50px;left:5%;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.03);}
