@@ -722,7 +722,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 @media(max-width:600px){
   .hdr-nav ul{gap:1px;}
   .hdr-nav a{font-size:.75rem;padding:5px 7px;}
-  .home-hero{padding:44px 0 52px;}
+  .home-hero{padding: 40px 0 28px;}
   .quick-grid{grid-template-columns:1fr;}
   .ftr-grid{grid-template-columns:1fr;gap:22px;}
   .ftr-bot{flex-direction:column;gap:8px;text-align:center;}
@@ -785,6 +785,14 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   padding: 8px 0;
   min-height: 0;           /* sem reserva — colapsa quando sem anuncio */
   box-sizing: border-box;
+}
+/* Sem anúncio carregado (nenhum iframe dentro do slot ainda): não mostra
+   caixa vazia com borda/fundo — evita a "linha branca" quando o anúncio
+   não preenche. O espaço só aparece de verdade quando o anúncio renderiza. */
+.ad-container:not(:has(iframe)) {
+  border: none;
+  background: transparent;
+  padding: 0;
 }
 .ad-container.ad-rect {
   min-height: 0;
@@ -916,8 +924,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   border:1px solid rgba(255,255,255,.2); margin-bottom:14px;
 }
 .post-hero h1 {
-  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-  font-weight: 800; color: #fff; letter-spacing: -.8px;
+  font-size: 2rem;
+  font-weight: 900; color: #fff; letter-spacing: -.8px;
   line-height: 1.15; margin-bottom: 14px; max-width: 740px;
 }
 .post-hero-meta { font-size:.82rem; color:rgba(255,255,255,.5); }
@@ -1243,7 +1251,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
 <!-- POST HERO -->
 <section class="post-hero">
-  <div class="container post-hero-inner pbw-grid">
+  <div class="container post-hero-inner">
     <div class="article-wrap">
       <nav class="post-breadcrumb">
         <a href="/">Início</a>
