@@ -896,9 +896,12 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 .post-hero {
   background: linear-gradient(135deg, var(--b900) 0%, var(--b700) 55%, var(--b500) 100%);
-  padding: 44px 0 52px;
+  padding: 40px 0 28px;
   position: relative;
   overflow: hidden;
+  min-height: 260px;
+  display: flex;
+  align-items: center;
 }
 .post-hero::before { content:''; position:absolute; top:-80px; right:-80px; width:360px; height:360px; border-radius:50%; background:rgba(255,255,255,.04); }
 .post-hero::after  { content:''; position:absolute; bottom:-50px; left:5%; width:220px; height:220px; border-radius:50%; background:rgba(255,255,255,.03); }
@@ -917,11 +920,12 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 .post-hero h1 {
   font-size: 2rem;
-  font-weight: 900; color: #fff; letter-spacing: -.8px;
-  line-height: 1.15; margin-bottom: 14px; max-width: 740px;
+  font-weight: 900; color: #fff; letter-spacing: -.5px;
+  line-height: 1.2; margin-bottom: 14px;
 }
 .post-hero-meta { font-size:.82rem; color:rgba(255,255,255,.5); }
 .post-hero-meta strong { color:rgba(255,255,255,.75); }
+
 
 .post-body-wrap { padding: 20px 0 40px; }
 .post-share-sticky{background:var(--card);border-bottom:1px solid var(--brd);padding:8px 0;margin-bottom:16px;display:flex;align-items:center;justify-content:flex-start;gap:8px;flex-wrap:wrap;}
@@ -1029,7 +1033,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 
 @media(max-width:768px){
-  .post-hero { padding:32px 0 40px; }
+  .post-hero { padding:32px 0 40px; min-height:0; display:block; }
   .post-hero h1 { font-size:1.5rem; }
   
   .post-cta { padding:20px; }
@@ -1262,19 +1266,17 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
         <span>›</span>
         <a href="/conteudo/rh-contrato" style="color:rgba(255,255,255,.75);">Contrato de Trabalho</a>
       </nav>
-      <div id="post-tags-display" style="margin-bottom:10px;"><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">Trabalhador Intermitente</span><span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);margin-right:5px;">Contrato de Trabalho</span></div>
       <h1>Contrato de trabalho intermitente: como funciona</h1>
       <div class="post-hero-meta">
-        <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:3px 12px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:8px;">✍️ Equipe Calcula Prazo</span><br>
-        <strong>Publicado em:</strong> 8 de maio de 2026 &nbsp;·&nbsp; <span style="color:rgba(255,255,255,.4);font-size:.78rem;">Conteúdo informativo — não constitui assessoria jurídica</span>
-        <div style="margin-top:6px;">
+        <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:3px 12px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85);">✍️ Equipe Calcula Prazo</span>
+        <strong>Publicado em:</strong> 8 de maio de 2026
+                <div style="margin-top:6px;">
           <span id="post-view-count" style="display:none;font-size:.75rem;color:rgba(255,255,255,.45);"></span>
         </div>
       </div>
     </div>
   </div>
 </section>
-
 <!-- POST BODY -->
 <div class="post-body-wrap">
   <div class="container pbw-grid">

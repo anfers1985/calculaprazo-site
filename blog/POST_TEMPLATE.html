@@ -906,9 +906,12 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 .post-hero {
   background: linear-gradient(135deg, var(--b900) 0%, var(--b700) 55%, var(--b500) 100%);
-  padding: 44px 0 52px;
+  padding: 40px 0 28px;
   position: relative;
   overflow: hidden;
+  min-height: 260px;
+  display: flex;
+  align-items: center;
 }
 .post-hero::before { content:''; position:absolute; top:-80px; right:-80px; width:360px; height:360px; border-radius:50%; background:rgba(255,255,255,.04); }
 .post-hero::after  { content:''; position:absolute; bottom:-50px; left:5%; width:220px; height:220px; border-radius:50%; background:rgba(255,255,255,.03); }
@@ -926,9 +929,9 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
   border:1px solid rgba(255,255,255,.2); margin-bottom:14px;
 }
 .post-hero h1 {
-  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-  font-weight: 800; color: #fff; letter-spacing: -.8px;
-  line-height: 1.15; margin-bottom: 14px; max-width: 740px;
+  font-size: 2rem;
+  font-weight: 900; color: #fff; letter-spacing: -.5px;
+  line-height: 1.2; margin-bottom: 14px;
 }
 .post-hero-meta { font-size:.82rem; color:rgba(255,255,255,.5); }
 .post-hero-meta strong { color:rgba(255,255,255,.75); }
@@ -1039,7 +1042,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 }
 
 @media(max-width:768px){
-  .post-hero { padding:32px 0 40px; }
+  .post-hero { padding:32px 0 40px; min-height:0; display:block; }
   .post-hero h1 { font-size:1.5rem; }
   
   .post-cta { padding:20px; }

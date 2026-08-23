@@ -195,7 +195,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
 /* ── ARTICLE LAYOUT (igual ao artigo do blog) ── */
 .article-wrap{max-width:800px;margin:0 auto;}
 .post-hero .article-wrap{max-width:none;margin:0;}
-.post-hero{background:linear-gradient(135deg,var(--b900) 0%,var(--b700) 55%,var(--b500) 100%);padding:40px 0 28px;position:relative;overflow:hidden;}
+.post-hero{background:linear-gradient(135deg,var(--b900) 0%,var(--b700) 55%,var(--b500) 100%);padding:40px 0 28px;position:relative;overflow:hidden;min-height:260px;display:flex;align-items:center;}
 .post-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,.04);}
 .post-hero::after{content:'';position:absolute;bottom:-50px;left:5%;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.03);}
 .post-hero-inner{position:relative;z-index:1;}
@@ -221,7 +221,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
 .article-body table th{background:var(--b900);color:#fff;padding:9px 12px;text-align:left;font-weight:700;}
 .article-body table td{padding:8px 12px;border-bottom:1px solid var(--brd);}
 .article-body table tr:nth-child(even) td{background:var(--b50);}
-@media(max-width:600px){.post-hero{padding:32px 0 40px;}.post-hero h1{font-size:1.5rem;}}
+@media(max-width:600px){.post-hero{padding:32px 0 40px;min-height:0;display:block;}.post-hero h1{font-size:1.5rem;}}
 
 .hdr-burger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:44px;height:44px;background:none;border:none;cursor:pointer;padding:8px;border-radius:8px;flex-shrink:0;margin-left:auto;}
 .hdr-burger span{display:block;width:22px;height:2px;background:var(--txt-m,#64748b);border-radius:2px;transition:transform .22s,opacity .18s;}
@@ -440,6 +440,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
       </nav>
       <h1>Sobre o Calcula Prazo</h1>
       <div class="post-hero-meta">Ferramentas jurídicas e trabalhistas gratuitas para advogados, profissionais de RH, contadores e trabalhadores.</div>
+      <div style="margin-top:10px;font-size:.82rem;color:rgba(255,255,255,.55);"><strong style="color:rgba(255,255,255,.8);">Atualizado em:</strong> 03/06/2026</div>
     </div>
   </div>
 </section>
