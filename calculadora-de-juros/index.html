@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link rel="preload" as="style" href="/styles.css?v=41">
+  <link rel="preload" as="style" href="/styles.css?v=42">
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"></noscript>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -81,7 +81,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://calculaprazo.com.br/"},{"@type":"ListItem","position":2,"name":"Calculadora de Juros Simples e Compostos","item":"https://calculaprazo.com.br/calculadora-de-juros"}]}
 </script>
 <style>:root{color-scheme:light}html,body{background:#F8FAFC;color:#0F172A}</style>
-<link rel="stylesheet" href="/styles.css?v=41">
+<link rel="stylesheet" href="/styles.css?v=42">
 
 <!-- Chart.js carregado sob demanda pela calculadora de juros -->
 <script>
@@ -393,13 +393,6 @@
         <li><a href="/calculadora-de-porcentagem">Porcentagem</a></li>
         <li><a href="/conversor-de-moedas">Moedas</a></li>
       </ul></div>
-      <div class="ftr-col"><h4>Utilidades</h4><ul>
-        <li><a href="/validador-cpf-cnpj">Validador CPF/CNPJ</a></li>
-        <li><a href="/gerador-de-qr-code">QR Code</a></li>
-        <li><a href="/gerador-de-senhas">Senhas</a></li>
-        <li><a href="/numero-por-extenso">Número por Extenso</a></li>
-        <li><a href="/calculadora-imc">IMC</a></li>
-      </ul></div>
       <div class="ftr-col"><h4>Informações</h4><ul>
         <li><a href="/sobre">Sobre o Calcula Prazo</a></li>
         <li><a href="/conteudo" style="cursor:pointer;color:rgba(255,255,255,.5);">Conteúdo / Blog</a></li>
@@ -407,20 +400,16 @@
         <li><a href="/privacidade">Privacidade & LGPD</a></li>
         <li><a href="/termos">Termos de Uso</a></li>
       </ul></div>
-    </div>
-    <div class="ftr-newsletter">
-      <div class="ftr-newsletter-text">
+            <div class="ftr-col-newsletter">
         <h4>Newsletter</h4>
         <p>Receba novidades do Calcula Prazo por e-mail. Cancelamento automático a qualquer momento, com 1 clique.</p>
-      </div>
-      <div class="ftr-newsletter-form">
         <form id="nl-signup-form" onsubmit="return newsletterSubscribe(event)">
           <input type="text" name="website" style="position:absolute;left:-9999px;" tabindex="-1" autocomplete="off">
-          <input type="email" name="email" required placeholder="seu@email.com" style="flex:1;min-width:140px;padding:8px 12px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:#fff;font-size:.82rem;">
-          <button type="submit" style="padding:8px 14px;border-radius:6px;border:none;background:#2563eb;color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;">Inscrever</button>
+          <input type="email" name="email" required placeholder="seu@email.com">
+          <button type="submit">Inscrever</button>
         </form>
         <p id="nl-signup-msg" style="font-size:.76rem;margin-top:8px;display:none;"></p>
-        <p class="ftr-newsletter-privacy">Veja nossa <a href="/privacidade#newsletter">Política de Privacidade</a>.</p>
+        <small>Veja nossa <a href="/privacidade#newsletter" style="color:rgba(255,255,255,.5);text-decoration:underline;">Política de Privacidade</a>.</small>
       </div>
     </div>
     <div class="ftr-bot">
