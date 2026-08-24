@@ -1860,8 +1860,15 @@ img[src*="m.media-amazon.com"] {
   .container,.tool-grid{width:82%;max-width:1560px;}
 }
 
-/* Capas dos artigos: a imagem deve manter a proporção original, sem corte.
+/* Capas dos artigos: altura fixa e consistente em todas as páginas.
+   object-fit:contain preserva a imagem sem cortar (a área que sobra vira
+   uma faixa com a cor de fundo --b50), então nenhuma foto — vertical,
+   quadrada ou muito larga — estoura o tamanho do card.
    O seletor alcança as capas legadas que ainda possuem estilos inline. */
-.post-reading-area > div[style*="max-height:380px"]{max-height:none !important;background:var(--b50);}
-.post-reading-area > div[style*="max-height:380px"] > img{display:block;width:100%;height:auto !important;max-height:none !important;object-fit:contain !important;}
-.post-cover{height:auto !important;max-height:none !important;object-fit:contain !important;background:var(--b50);}
+.post-reading-area > div[style*="max-height:380px"]{max-height:440px !important;height:440px !important;background:var(--b50);}
+.post-reading-area > div[style*="max-height:380px"] > img{display:block;width:100%;height:100% !important;max-height:none !important;object-fit:contain !important;}
+.post-cover{width:100%;height:440px !important;max-height:440px !important;object-fit:contain !important;background:var(--b50);}
+@media(max-width:640px){
+  .post-reading-area > div[style*="max-height:380px"]{max-height:260px !important;height:260px !important;}
+  .post-cover{height:260px !important;max-height:260px !important;}
+}
