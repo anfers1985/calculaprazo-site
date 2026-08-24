@@ -12,6 +12,13 @@
  */
 (function () {
   var VIEWS_API = 'https://calculaprazo-views-api.andersonfernand3s.workers.dev';
+  // Muitas páginas de artigo antigas carregam CSS próprio dentro do HTML.
+  // Esta camada final mantém o mesmo ajuste global nelas, sem alterar
+  // celular ou tablet e sem precisar manter centenas de cópias de estilo.
+  var layoutStyle = document.createElement('style');
+  layoutStyle.id = 'cp-desktop-layout-adjustment';
+  layoutStyle.textContent = '@media(min-width:1200px){.container{width:82% !important;max-width:1560px !important;}}.post-reading-area>div[style*="max-height:380px"]{max-height:none !important;background:#EFF6FF;}.post-reading-area>div[style*="max-height:380px"]>img,.post-cover{display:block;width:100%;height:auto !important;max-height:none !important;object-fit:contain !important;}.post-cover{background:#EFF6FF;}';
+  document.head.appendChild(layoutStyle);
   var FALLBACK_TOP_IDS = [
     'aviso-previo-proporcional-como-calcular',
     'calculadora-de-verbas-trabalhistas-rescisao-clt',

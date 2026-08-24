@@ -1857,3 +1857,16 @@ img[src*="m.media-amazon.com"] {
   .pbw-grid{grid-template-columns:1fr;}
   .pbw-grid .article-wrap{max-width:800px;margin:0 auto;}
 }
+
+/* ═══ AJUSTE DE LEITURA EM DESKTOP ═══
+   Mantém celulares e tablets exatamente como estão. Em telas grandes, reduz
+   a largura do conteúdo para criar margens laterais de leitura mais confortáveis. */
+@media(min-width:1200px){
+  .container{width:82%;max-width:1560px;}
+}
+
+/* Capas dos artigos: a imagem deve manter a proporção original, sem corte.
+   O seletor alcança as capas legadas que ainda possuem estilos inline. */
+.post-reading-area > div[style*="max-height:380px"]{max-height:none !important;background:var(--b50);}
+.post-reading-area > div[style*="max-height:380px"] > img{display:block;width:100%;height:auto !important;max-height:none !important;object-fit:contain !important;}
+.post-cover{height:auto !important;max-height:none !important;object-fit:contain !important;background:var(--b50);}
