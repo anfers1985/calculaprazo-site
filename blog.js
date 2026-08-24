@@ -199,8 +199,8 @@ function buildPostCard(p){
   var cb=cl?'<span style="display:inline-block;padding:2px 8px;border-radius:999px;font-size:.65rem;font-weight:700;background:var(--b50);color:var(--acc);border:1px solid var(--b100);margin-right:3px;">'+cl+'</span>':'';
   return '<a href="/blog/'+(p.id||p.slug||'')+'.html" style="display:block;text-decoration:none;background:var(--card);border:1.5px solid var(--brd);border-radius:12px;overflow:hidden;transition:all .2s;box-shadow:var(--sh);" onmouseover="this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'var(--shl)\';this.style.borderColor=\'var(--b200)\'" onmouseout="this.style.transform=\'\';this.style.boxShadow=\'var(--sh)\';this.style.borderColor=\'var(--brd)\'">'
     +ih+'<div style="padding:14px;"><div style="margin-bottom:8px;">'+cb+'</div>'
-    +'<div style="font-size:.88rem;font-weight:700;color:var(--txt);line-height:1.35;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">'+(p.title||'')+'</div>'
-    +'<div style="font-size:.76rem;color:var(--txt-m);line-height:1.5;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;">'+(p.excerpt||'')+'</div>'
+    +'<div style="font-size:.88rem;font-weight:700;color:var(--txt);line-height:1.35;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">'+(p.title||'')+'</div>'
+    +'<div style="font-size:.76rem;color:var(--txt-m);line-height:1.5;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;">'+(p.excerpt||'')+'</div>'
     +'<div style="margin-top:10px;font-size:.75rem;color:var(--txt-s);">'+formatPostDate(p.date)+'</div></div></a>';
 }
 
