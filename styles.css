@@ -1798,6 +1798,13 @@ img[src*="m.media-amazon.com"] {
 .post-share-final a,.post-share-final button{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;text-decoration:none;flex-shrink:0;cursor:pointer;}
 @media(max-width:640px){.post-share-final{justify-content:center;}.post-share-final-label{font-size:.62rem;margin-right:0;}}
 
+/* Compartilhar fixo/sticky (topo do artigo/ferramenta) — acompanha a rolagem
+   no mobile E no desktop, logo abaixo do cabeçalho (que tem 52px de altura). */
+.post-share-sticky{background:var(--card);border-bottom:1px solid var(--brd);padding:8px 0;margin-bottom:16px;display:flex;align-items:center;justify-content:flex-start;gap:8px;flex-wrap:wrap;position:sticky;top:52px;z-index:80;}
+.post-share-sticky-label{font-size:.68rem;font-weight:700;color:var(--txt-s);text-transform:uppercase;letter-spacing:.05em;margin-right:2px;}
+.post-share-sticky a,.post-share-sticky button{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;text-decoration:none;flex-shrink:0;cursor:pointer;}
+@media(max-width:640px){.post-share-sticky{justify-content:center;}.post-share-sticky-label{font-size:.62rem;margin-right:0;}}
+
 /* build: 20260606145327 */
 
 /* ═══ TOOL-GRID + SIDEBAR + ADS (rollout ferramentas/calculadoras) ═══ */

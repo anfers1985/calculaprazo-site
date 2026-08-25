@@ -2218,7 +2218,7 @@ async function publicarPost(post, pat) {
 
     // Imagem de capa
     const coverHTML = post.image
-      ? `<div style="margin-bottom:${post.imageCaption ? '6px' : '24px'};border-radius:12px;overflow:hidden;max-height:380px;"><img src="${post.image}" alt="${post.title}" style="width:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>${post.imageCaption ? `<p style="font-size:.75rem;color:var(--txt-s);margin:0 0 24px;">${post.imageCaption}</p>` : ''}`
+      ? `<div style="margin-bottom:${post.imageCaption ? '6px' : '24px'};border-radius:12px;overflow:hidden;height:440px;background:#eef2f7;display:flex;align-items:center;justify-content:center;"><img src="${post.image}" alt="${post.title}" style="width:100%;height:100%;object-fit:contain;display:block;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>${post.imageCaption ? `<p style="font-size:.75rem;color:var(--txt-s);margin:0 0 24px;">${post.imageCaption}</p>` : ''}`
       : '';
     const ogImageUrl  = post.image || 'https://calculaprazo.com.br/og-image.jpg';
     const ogImageTag  = `<meta property="og:image" content="${ogImageUrl}">`;
@@ -3044,7 +3044,7 @@ async function baixarHTML() {
     ).join('');
 
     const coverHTML = image
-      ? `<div style="margin-bottom:${caption ? '6px' : '24px'};border-radius:12px;overflow:hidden;max-height:380px;"><img src="${image}" alt="${title}" style="width:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display=\'none\'"></div>${caption ? `<p style="font-size:.75rem;color:var(--txt-s);margin:0 0 24px;">${caption}</p>` : ''}`
+      ? `<div style="margin-bottom:${caption ? '6px' : '24px'};border-radius:12px;overflow:hidden;height:440px;background:#eef2f7;display:flex;align-items:center;justify-content:center;"><img src="${image}" alt="${title}" style="width:100%;height:100%;object-fit:contain;display:block;" loading="lazy" onerror="this.parentElement.style.display=\'none\'"></div>${caption ? `<p style="font-size:.75rem;color:var(--txt-s);margin:0 0 24px;">${caption}</p>` : ''}`
       : '';
     const ogImageUrlLocal = image || 'https://calculaprazo.com.br/og-image.jpg';
     const updatedLineBaixar = updatedAtRepost

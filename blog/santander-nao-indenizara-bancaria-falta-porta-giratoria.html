@@ -591,7 +591,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 /* ── FOOTER ── */
 #ftr{background:var(--txt);padding:44px 0 24px;margin-top:0;}
-.ftr-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:36px;margin-bottom:36px;}
+.ftr-grid{display:grid;grid-template-columns:1.3fr .8fr 1fr 1fr 1.3fr;gap:36px;margin-bottom:36px;}
 .ftr-brand .logo{color:var(--acc-l);}
 .ftr-brand .logo-ic{background:var(--acc);}
 .ftr-brand .logo span{color:rgba(255,255,255,.5);}
@@ -600,23 +600,18 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 .ftr-col ul{list-style:none;display:flex;flex-direction:column;gap:7px;}
 .ftr-col a{font-size:.83rem;color:rgba(255,255,255,.5);text-decoration:none;cursor:pointer;transition:color .2s;}
 .ftr-col a:hover{color:#fff;}
-.ftr-bot{border-top:1px solid rgba(255,255,255,.07);padding-top:20px;display:flex;justify-content:space-between;align-items:center;}
+.ftr-col-newsletter h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.3);margin-bottom:12px;}
+.ftr-col-newsletter p{font-size:.8rem;color:rgba(255,255,255,.45);line-height:1.55;margin-bottom:12px;}
+.ftr-col-newsletter form{display:flex;flex-direction:column;gap:8px;}
+.ftr-col-newsletter input{padding:9px 12px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:#fff;font-size:.82rem;width:100%;}
+.ftr-col-newsletter input::placeholder{color:rgba(255,255,255,.35);}
+.ftr-col-newsletter button{padding:9px 14px;border-radius:6px;border:none;background:#2563eb;color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;width:100%;}
+.ftr-col-newsletter small{font-size:.72rem;color:rgba(255,255,255,.32);display:block;}
+.ftr-col-newsletter small a{color:rgba(255,255,255,.5);text-decoration:underline;}
+.ftr-bot{border-top:1px solid rgba(255,255,255,.07);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
 .ftr-copy{font-size:.76rem;color:rgba(255,255,255,.22);}
-
-.ftr-newsletter{display:flex;gap:32px;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07);padding:28px 0;margin-bottom:28px;}
-.ftr-newsletter-text{flex:1 1 320px;max-width:420px;}
-.ftr-newsletter-text h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.3);margin-bottom:8px;}
-.ftr-newsletter-text p{font-size:.83rem;color:rgba(255,255,255,.45);line-height:1.55;}
-.ftr-newsletter-form{flex:1 1 320px;max-width:420px;}
-.ftr-newsletter-form form{display:flex;gap:8px;flex-wrap:wrap;}
-.ftr-newsletter-privacy{font-size:.72rem;color:rgba(255,255,255,.32);margin-top:10px;}
-.ftr-newsletter-privacy a{color:rgba(255,255,255,.5);text-decoration:underline;}
-@media (max-width:640px){
-  .ftr-newsletter{flex-direction:column;gap:16px;}
-  .ftr-newsletter-text,.ftr-newsletter-form{max-width:100%;flex:0 0 auto;width:100%;}
-}
-
-
+@media(max-width:900px){.ftr-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.ftr-grid{grid-template-columns:1fr;gap:22px;}.ftr-bot{flex-direction:column;gap:8px;text-align:center;}}
 /* ── IMC ── */
 .imc-meter{width:100%;height:16px;border-radius:999px;background:linear-gradient(to right,#3B82F6,#22C55E,#EAB308,#EF4444);margin-bottom:6px;position:relative;}
 .imc-ptr{position:absolute;top:-4px;width:6px;height:24px;background:var(--txt);border-radius:3px;transform:translateX(-50%);transition:left .5s;}
@@ -1280,7 +1275,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
 
       <!-- Cover image -->
-      <div style="margin-bottom:24px;border-radius:12px;overflow:hidden;max-height:380px;"><img src="https://images.unsplash.com/photo-1601597111158-2fceff292cdc?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Santander não indenizará bancária por falta de porta giratória" style="width:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+      <div style="margin-bottom:24px;border-radius:12px;overflow:hidden;height:440px;background:#eef2f7;display:flex;align-items:center;justify-content:center;"><img src="https://images.unsplash.com/photo-1601597111158-2fceff292cdc?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Santander não indenizará bancária por falta de porta giratória" loading="lazy" onerror="this.parentElement.style.display='none'" style="width:100%;height:100%;object-fit:contain;display:block;"></div>
 
       <!-- Ad: topo do artigo (mostra apenas quando AdSense aprovado) -->
       <div class="ad-block" id="ad-blog-top" style="overflow:hidden;">
