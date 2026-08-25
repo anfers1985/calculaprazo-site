@@ -1854,9 +1854,11 @@ img[src*="m.media-amazon.com"] {
 /* ═══ HERO GRID (ferramentas) — alinha o hero com a coluna de conteúdo ═══ */
 .pbw-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:32px;align-items:start;}
 .pbw-grid .article-wrap{max-width:none;margin:0;}
+.post-sidebar{display:flex;flex-direction:column;gap:20px;}
 @media(max-width:767px){
   .pbw-grid{grid-template-columns:1fr;}
   .pbw-grid .article-wrap{max-width:800px;margin:0 auto;}
+  .post-sidebar{display:none;}
 }
 
 /* ═══ AJUSTE DE LEITURA EM DESKTOP ═══
