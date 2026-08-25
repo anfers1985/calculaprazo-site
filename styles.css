@@ -272,7 +272,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 /* ════════════════════════════════════════
    CALCULADORA DE PRAZOS — design ref (azul)
 ════════════════════════════════════════ */
-#sec-prazos { background: #F5F5F2; }
 #sec-prazos > .container { padding-top: 0; padding-bottom: 20px; }
 
 /* Main grid */
