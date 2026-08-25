@@ -23,7 +23,7 @@ function aguardar(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function chamarWorkerComRetry(body, workerSecret, tentativas = 5) {
+async function chamarWorkerComRetry(body, workerSecret, tentativas = 8) {
   for (let i = 1; i <= tentativas; i++) {
     const r = await fetch(`${WORKER_URL}/ai-generate`, {
       method: 'POST',
@@ -34,8 +34,13 @@ async function chamarWorkerComRetry(body, workerSecret, tentativas = 5) {
     const vale_retry = !r.ok && /quota|rate.?limit|429|overload|high demand|unavailable|503|try again/i.test(data.error || '');
     if (r.ok && data.text) return data;
     if (vale_retry && i < tentativas) {
-      console.warn(`Erro temporário do Gemini (tentativa ${i}/${tentativas}). Aguardando 30s...`);
-      await aguardar(30000);
+      // Backoff crescente (30s, 45s, 60s...): picos de sobrecarga do Gemini costumam
+      // durar poucos minutos. Isso é seguro de esperar porque essa etapa roda ANTES
+      // das instalações pesadas (Chromium/ffmpeg/Remotion) — uma falha aqui não
+      // desperdiça esse tempo de setup, só o tempo de espera em si.
+      const esperaMs = 15000 * (i + 1);
+      console.warn(`Erro temporário do Gemini (tentativa ${i}/${tentativas}). Aguardando ${esperaMs / 1000}s...`);
+      await aguardar(esperaMs);
       continue;
     }
     throw new Error(data.error || `Erro ${r.status} ao chamar o Worker de IA`);
@@ -44,6 +49,15 @@ async function chamarWorkerComRetry(body, workerSecret, tentativas = 5) {
 
 async function gerarRoteiro(jobId) {
   const job = await getJob(jobId);
+
+  // Idempotente: permite chamar este script logo no início do workflow, antes de
+  // instalar Chromium/ffmpeg/Remotion, sem risco de gerar roteiro em duplicidade
+  // pra um job que já passou dessa etapa (ex: retry que já tinha roteiro_ok).
+  if (job.roteiro) {
+    console.log(`Job ${jobId} já tem roteiro gerado. Pulando.`);
+    return;
+  }
+
   const { titulo, conteudo } = await buscarConteudoDoPost(job.post_url);
 
   const userPrompt = fillTemplate(prompts.roteiro.userPromptTemplate, {

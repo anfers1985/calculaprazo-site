@@ -62,6 +62,27 @@ jobs:
           node-version: '22'
           cache: 'npm'
           cache-dependency-path: package-lock.json
+
+      - name: Instalar dependências Node (leve — necessário pro roteiro)
+        run: |
+          npm ci
+          chmod -R +x node_modules/.bin
+
+      # Roda ANTES das instalações pesadas de propósito: é uma chamada de API (Gemini),
+      # não precisa de Chromium/ffmpeg/Remotion. Se o Gemini estiver instável (erro
+      # temporário de sobrecarga), o job falha aqui e nem chega a instalar o resto —
+      # antes, essa etapa rodava por último no setup e uma falha aqui desperdiçava os
+      # ~4-5min gastos instalando Chromium/ffmpeg/Remotion à toa. É idempotente: se o
+      # job já tem roteiro (retry de uma etapa posterior), só pula.
+      - name: Gerar roteiro (etapa leve, roda antes das instalações pesadas)
+        run: node scripts/02-gerar-roteiro.mjs "${{ matrix.job_id }}"
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          WORKER_SECRET: ${{ secrets.WORKER_SECRET }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          AI_MODEL: ${{ secrets.AI_MODEL }}
+
       - uses: actions/setup-python@v5
         with: { python-version: '3.11' }
 
@@ -84,11 +105,8 @@ jobs:
           path: remotion/node_modules
           key: remotion-modules-${{ runner.os }}-${{ hashFiles('remotion/package.json') }}
 
-      - name: Instalar dependências Node
-        run: |
-          npm ci
-          chmod -R +x node_modules/.bin
-          node node_modules/playwright/cli.js install --with-deps chromium
+      - name: Instalar Chromium (Playwright)
+        run: node node_modules/playwright/cli.js install --with-deps chromium
 
       - name: Instalar dependências do Remotion (só se não veio do cache)
         if: steps.remotion-cache.outputs.cache-hit != 'true'
