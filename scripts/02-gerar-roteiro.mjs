@@ -1,7 +1,6 @@
 import fs from 'node:fs';
 import { getJob, updateJob, marcarErro } from './lib/supabase.mjs';
 
-const WORKER_URL = 'https://calculaprazo-views-api.andersonfernand3s.workers.dev';
 const prompts = JSON.parse(fs.readFileSync(new URL('../config/prompts.json', import.meta.url)));
 
 function fillTemplate(template, vars) {
@@ -23,27 +22,75 @@ function aguardar(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function chamarWorkerComRetry(body, workerSecret, tentativas = 8) {
+// Chamada direta ao Gemini — igual ao padrão já validado em produção no motor-cct
+// (src/services/ai/chamada.js), que nunca falha: mesmo endpoint, mesmo
+// generationConfig (temperature 0.1, maxOutputTokens) e, principalmente, o mesmo
+// thinkingConfig: { thinkingBudget: 0 } para modelos "thinking" (2.5+) — sem isso
+// o modelo gasta tempo "pensando" antes de responder, o que bate direto nos
+// timeouts de gateway (524) que vínhamos vendo. Substitui a chamada anterior via
+// Worker (Cloudflare) — cortar esse intermediário remove um ponto de falha extra
+// (o próprio gateway do Worker podia estourar 524 independente do Gemini).
+async function chamarGeminiComRetry({ apiKey, modelo, systemPrompt, userPrompt }, tentativas = 4) {
+  const isThinking = modelo.includes('2.5') || modelo.includes('thinking');
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${apiKey}`;
+  const body = {
+    systemInstruction: { parts: [{ text: systemPrompt }] },
+    contents: [{ parts: [{ text: userPrompt }] }],
+    generationConfig: {
+      temperature: 0.1,
+      maxOutputTokens: 4096,
+      ...(isThinking ? { thinkingConfig: { thinkingBudget: 0 } } : {}),
+    },
+  };
+
   for (let i = 1; i <= tentativas; i++) {
-    const r = await fetch(`${WORKER_URL}/ai-generate`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Admin-Secret': workerSecret },
-      body: JSON.stringify(body),
-    });
-    const data = await r.json().catch(() => ({}));
-    const vale_retry = !r.ok && /quota|rate.?limit|429|overload|high demand|unavailable|503|try again/i.test(data.error || '');
-    if (r.ok && data.text) return data;
+    const controller = new AbortController();
+    // Timeout próprio de 25s: sem thinking, uma resposta normal do Gemini Flash
+    // é rápida — se passar disso, algo está errado e vale desistir e tentar de novo.
+    const timeoutId = setTimeout(() => controller.abort(), 25000);
+    let r, data;
+    try {
+      r = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        signal: controller.signal,
+      });
+      data = await r.json().catch(() => ({}));
+    } catch (e) {
+      data = { error: { message: e.name === 'AbortError' ? 'Timeout (sem resposta em 25s)' : e.message } };
+      r = { ok: false, status: 0 };
+    } finally {
+      clearTimeout(timeoutId);
+    }
+
+    const mensagemErro = data?.error?.message || data?.error || '';
+    // "Cota excedida" (limite diário/por-minuto do tier gratuito) não se resolve
+    // esperando alguns segundos — insistir só desperdiça minutos do Actions.
+    // Falha na hora e deixa pro job ser retomado depois (ou pro problema de conta
+    // ser resolvido, ex: upgrade de plano).
+    const cota_excedida = !r.ok && /exceeded your current quota|quota exceeded/i.test(mensagemErro);
+    // Instabilidade genuína (sobrecarga momentânea, timeout de gateway) — aí sim
+    // vale tentar de novo com um espaçamento curto.
+    const vale_retry = !cota_excedida && !r.ok && /rate.?limit|429|overload|high demand|unavailable|timeout|gateway|502|503|504|524|try again/i.test(mensagemErro);
+
+    if (r.ok) {
+      const texto = data.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('') || '';
+      if (texto) return { text: texto };
+    }
+    if (cota_excedida) {
+      throw new Error(mensagemErro || 'Cota do Gemini excedida');
+    }
     if (vale_retry && i < tentativas) {
-      // Backoff crescente (30s, 45s, 60s...): picos de sobrecarga do Gemini costumam
-      // durar poucos minutos. Isso é seguro de esperar porque essa etapa roda ANTES
-      // das instalações pesadas (Chromium/ffmpeg/Remotion) — uma falha aqui não
-      // desperdiça esse tempo de setup, só o tempo de espera em si.
-      const esperaMs = 15000 * (i + 1);
-      console.warn(`Erro temporário do Gemini (tentativa ${i}/${tentativas}). Aguardando ${esperaMs / 1000}s...`);
+      // Backoff curto (10s, 15s, 20s): se for uma indisponibilidade persistente
+      // (não uma sobrecarga passageira), o objetivo aqui é falhar rápido e deixar
+      // o job ser retomado depois, não segurar o runner por minutos a fio tentando.
+      const esperaMs = 5000 * (i + 1);
+      console.warn(`Erro temporário do Gemini (tentativa ${i}/${tentativas}: ${mensagemErro}). Aguardando ${esperaMs / 1000}s...`);
       await aguardar(esperaMs);
       continue;
     }
-    throw new Error(data.error || `Erro ${r.status} ao chamar o Worker de IA`);
+    throw new Error(mensagemErro || `Erro ${r.status} ao chamar o Gemini`);
   }
 }
 
@@ -66,17 +113,12 @@ async function gerarRoteiro(jobId) {
     conteudo,
   });
 
-  const workerSecret = process.env.WORKER_SECRET;
-  const data = await chamarWorkerComRetry(
-    {
-      provider: process.env.AI_PROVIDER || 'gemini',
-      apiKey: process.env.GEMINI_API_KEY,
-      model: process.env.AI_MODEL || undefined,
-      systemPrompt: prompts.roteiro.systemPrompt,
-      userPrompt,
-    },
-    workerSecret
-  );
+  const data = await chamarGeminiComRetry({
+    apiKey: process.env.GEMINI_API_KEY,
+    modelo: process.env.AI_MODEL || 'gemini-2.5-flash',
+    systemPrompt: prompts.roteiro.systemPrompt,
+    userPrompt,
+  });
   const { text } = data;
 
   let roteiro;
