@@ -1,5 +1,41 @@
 [
   {
+    "id": "tst-acao-trabalhista-domicilio-tema-215",
+    "title": "TST autoriza ação trabalhista no domicílio em exceções",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "TST fixa tese do Tema 215 e permite ação trabalhista no domicílio do empregado em casos excepcionais, preservando o acesso à Justiça.",
+    "image": "https://images.unsplash.com/photo-1593115057322-e94b77572f20?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-25",
+    "updatedAt": "2026-08-25",
+    "tags": []
+  },
+  {
+    "id": "tst-condena-empresas-assedio-eleitoral-eleicoes",
+    "title": "TST condena empresas por assédio eleitoral nas eleições",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "Sexta Turma do TST condena madeireira e frigoríficos por assédio eleitoral contra trabalhadores e fixa indenizações de até R$ 350 mil.",
+    "image": "https://images.jota.info/wp-content/uploads/2025/03/tst-pejotizacao.jpg",
+    "imageCaption": "Crédito: Fellipe Sampaio/TST",
+    "date": "2026-08-25",
+    "updatedAt": "2026-08-25",
+    "tags": []
+  },
+  {
+    "id": "aviso-previo-pedido-demissao-desconto-rescisao",
+    "title": "Aviso-prévio no pedido de demissão pode ser descontado",
+    "category": "rh-rescisao",
+    "category_label": "Rescisão",
+    "excerpt": "Entenda quando o aviso-prévio pode ser descontado no pedido de demissão e quais cuidados a empresa deve adotar para evitar erros na rescisão.",
+    "image": "https://images.unsplash.com/photo-1521791055366-0d553872125f?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-25",
+    "updatedAt": "2026-08-25",
+    "tags": []
+  },
+  {
     "id": "tst-produtor-rural-lista-suja-trabalho-escravo",
     "title": "TST mantém produtor rural na lista suja do trabalho escravo",
     "category": "jurisprudencia-tst",
