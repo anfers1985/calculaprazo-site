@@ -31,7 +31,7 @@ function aguardar(ms) {
 // Worker (Cloudflare) — cortar esse intermediário remove um ponto de falha extra
 // (o próprio gateway do Worker podia estourar 524 independente do Gemini).
 async function chamarGeminiComRetry({ apiKey, modelo, systemPrompt, userPrompt }, tentativas = 4) {
-  const isThinking = modelo.includes('2.5') || modelo.includes('thinking');
+  const isThinking = /2\.5|3\.\d|thinking/.test(modelo);
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${apiKey}`;
   const body = {
     systemInstruction: { parts: [{ text: systemPrompt }] },
@@ -113,9 +113,11 @@ async function gerarRoteiro(jobId) {
     conteudo,
   });
 
+  const modelo = process.env.AI_MODEL || 'gemini-3.6-flash';
+  console.log(`Gerando roteiro com o modelo: ${modelo}`);
   const data = await chamarGeminiComRetry({
     apiKey: process.env.GEMINI_API_KEY,
-    modelo: process.env.AI_MODEL || 'gemini-2.5-flash',
+    modelo,
     systemPrompt: prompts.roteiro.systemPrompt,
     userPrompt,
   });
