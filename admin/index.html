@@ -1362,6 +1362,13 @@ function replaceSidebarWithFresh(html, currentPostId, allPosts) {
       ? out.replace('</body>', '<script src="/js/mais-acessados-real.js" defer></script>\n</body>')
       : out + '\n<script src="/js/mais-acessados-real.js" defer></script>\n';
   }
+  // Garante que o anúncio Adsterra Social Bar (apenas desktop) esteja incluído no post publicado.
+  if (!out.includes('effectivecpmnetwork.com/0f/84/d5/0f84d55dea9c436679fbf527b75e7624')) {
+    const socialBarSnippet = '<!-- ▸ ANÚNCIO ADSTERRA: Social Bar (apenas desktop) -->\n<script>\nif (window.innerWidth > 767) {\n  var s = document.createElement(\'script\');\n  s.src = \'https://pl29266866.effectivecpmnetwork.com/0f/84/d5/0f84d55dea9c436679fbf527b75e7624.js\';\n  document.body.appendChild(s);\n}\n</script>\n</body>';
+    out = out.includes('</body>')
+      ? out.replace('</body>', socialBarSnippet)
+      : out + '\n' + socialBarSnippet;
+  }
   return out;
 }
 
