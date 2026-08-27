@@ -1105,7 +1105,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 .nh-ver-mais:hover { background:var(--b50);border-color:var(--b300); }
 .nh-sec-head {
-  display:flex;align-items:flex-start;
+  display:flex;align-items:flex-end;
   justify-content:space-between;
   gap:16px;flex-wrap:wrap;
   margin-bottom:18px;
@@ -1239,130 +1239,85 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   background:var(--bg);
   padding:28px 0 40px;
 }
-/* ── Ferramentas em Destaque (faixa fina, entre hero e Artigos) ── */
-/* ── Ferramentas em Destaque (cards reais, mesmo estilo de /ferramentas/, 1 fileira) ── */
-.nh-tools-cards { display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:10px; }
-.nh-tool-card {
-  background:var(--card);border:1px solid var(--brd);border-radius:var(--r);
-  padding:14px;box-shadow:var(--sh);display:flex;flex-direction:column;
-  text-decoration:none;transition:all .2s;cursor:pointer;
+.nh-artigos-grid {
+  display:grid;
+  grid-template-columns:1fr 380px;
+  gap:32px;
+  align-items:start;
 }
-.nh-tool-card:hover { border-color:var(--b300);box-shadow:var(--shl);transform:translateY(-2px); }
-.nh-tool-card:hover .ci-title { color:var(--acc); }
-.nh-tool-card .ci-icon { font-size:1.2rem;margin-bottom:6px;line-height:1; }
-.nh-tool-card .ci-title { font-size:.78rem;font-weight:700;color:var(--txt);margin-bottom:4px;line-height:1.3; }
-.nh-tool-card .ci-desc {
-  font-size:.68rem;color:var(--txt-s);line-height:1.42;
-  display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;
+.nh-col-label {
+  display:flex;align-items:center;gap:8px;
+  font-size:.62rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.12em;
+  color:var(--acc);margin-bottom:10px;
+}
+.nh-col-line { width:16px;height:2px;background:var(--acc);border-radius:2px; }
+
+/* ── Mais Recentes: grade compacta (foto + categoria + título + resumo + data) ── */
+.nh-art-grid-compact { display:grid;grid-template-columns:repeat(5,1fr);gap:16px 14px; }
+.nh-art-grid-compact .nh-art-card {
+  display:flex !important;flex-direction:column !important;
+  grid-template-columns:none !important;margin-bottom:0 !important;min-height:0 !important;
+}
+.nh-art-grid-compact .nh-art-img { width:100% !important;height:auto !important;aspect-ratio:16/9; }
+.nh-art-grid-compact .nh-art-ler { display:none !important; }
+.nh-art-grid-compact .nh-art-badge { font-size:.53rem;padding:2px 7px; }
+.nh-art-grid-compact .nh-art-title {
+  font-size:.75rem;line-height:1.32;
+  display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;
   -webkit-box-orient:vertical;overflow:hidden;
 }
-@media(max-width:1150px){ .nh-tools-cards { grid-template-columns:repeat(3,1fr); } }
-@media(max-width:560px){ .nh-tools-cards { grid-template-columns:repeat(2,1fr); } }
+.nh-art-grid-compact .nh-art-excerpt {
+  font-size:.66rem;min-height:0 !important;line-height:1.45;
+  display:block;overflow:visible;
+}
+.nh-art-grid-compact .nh-art-date { font-size:.62rem; }
+.nh-art-grid-compact .nh-art-body { padding:11px 13px 13px; }
+@media(max-width:1150px){ .nh-art-grid-compact { grid-template-columns:repeat(3,1fr); } }
+@media(max-width:900px){ .nh-art-grid-compact { grid-template-columns:repeat(2,1fr); } }
+@media(max-width:640px){ .nh-art-grid-compact { grid-template-columns:1fr; } }
 
-/* ── Mais Acessados / Vídeos + anúncio skyscraper na lateral ── */
-.nh-strips-outer { display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start; }
-.nh-strips-main { min-width:0; }
-@media(max-width:1150px){
-  .nh-strips-outer { grid-template-columns:1fr; }
-  .nh-strips-ad { display:flex;justify-content:center; }
+/* ── NH DESTAQUES: Mais Acessados / Vídeos / Ferramentas em Destaque ── */
+.nh-destaques { background:#F1F5F9; padding:36px 0; border-top:1px solid var(--brd); }
+.nh-destaques-grid {
+  display:grid;
+  grid-template-columns:1.5fr 1fr;
+  gap:18px;
+  align-items:stretch;
 }
-
-/* ── Pills de categoria (clique filtra os destaques abaixo) ── */
-.nh-cat-pills { display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px; }
-.nh-pill {
-  font-size:.72rem;font-weight:700;padding:7px 14px;border-radius:999px;
-  background:var(--card);border:1.5px solid var(--brd);color:var(--txt-m);
-  cursor:pointer;transition:all .15s;white-space:nowrap;font-family:var(--fh);
-  min-height:32px;
+.nh-dcol { min-width:0;display:flex;flex-direction:column; }
+/* Painel branco padrão — as 3 colunas usam o mesmo enquadramento; a altura de cada uma
+   agora acompanha o próprio conteúdo (não força mais esticar igual às vizinhas) */
+.nh-dcol-panel {
+  display:flex;flex-direction:column;
+  height:100%;
+  background:var(--card);
+  border:1.5px solid var(--brd);
+  border-radius:var(--rl);
+  padding:16px 16px;
 }
-.nh-pill:hover { border-color:var(--b300); }
-.nh-pill.on { background:#0B1437;border-color:#0B1437;color:#fff; }
-
-/* ── Destaque: 1 grande + 4 pequenos + coluna de anúncio ── */
-.nh-feat-outer { display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start; }
-.nh-feat-main { display:grid;grid-template-columns:1.4fr 1fr;gap:14px; }
-.nh-featured-card {
-  position:relative;border-radius:var(--rl);overflow:hidden;
-  min-height:320px;background:#0B1437;text-decoration:none;display:block;
-  transition:transform .2s;
+.nh-dcol-head { display:flex;align-items:center;justify-content:space-between;margin-bottom:12px; }
+.nh-dcol-title { font-size:.76rem;font-weight:800;color:var(--txt);white-space:nowrap; }
+.nh-dcol-more { font-size:.68rem;font-weight:700;color:var(--acc);text-decoration:none;white-space:nowrap; }
+.nh-dcol-more:hover { text-decoration:underline; }
+/* Vídeos: imagem à esquerda, título/data à direita — lista compacta sem espaçamento extra */
+.nh-dcol .nh-yt-grid { display:flex;flex-direction:column;gap:6px;flex:1; }
+.nh-dcol .nh-yt-grid > a:not(.nh-yt-channel-btn) { flex-direction:row !important;align-items:center;gap:10px;border:none !important;box-shadow:none !important;background:transparent !important; }
+.nh-dcol .nh-yt-grid > a:not(.nh-yt-channel-btn) > div:first-child { width:88px !important;aspect-ratio:16/9;flex-shrink:0;border-radius:8px; }
+.nh-dcol .nh-yt-grid > a:not(.nh-yt-channel-btn) > div:last-child { padding:0 !important; }
+.nh-dcol .nh-yt-grid .nh-yt-title { font-size:.72rem !important; line-height:1.32; display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden; }
+.nh-dcol .nh-yt-grid .nh-yt-date { font-size:.64rem !important;margin-top:3px !important; }
+.nh-yt-channel-btn {
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  background:#EEF4FF;border:1.5px solid var(--b200);color:var(--acc);
+  border-radius:10px;padding:11px 14px;
+  font-size:.83rem;font-weight:700;
+  text-decoration:none;transition:all .2s;
+  margin-top:auto;
 }
-.nh-featured-card:hover { transform:translateY(-2px); }
-.nh-featured-card img {
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-}
-.nh-featured-card::after {
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(0deg,rgba(11,20,55,.92) 0%,rgba(11,20,55,.55) 45%,rgba(11,20,55,.1) 75%);
-}
-.nh-featured-badge {
-  position:absolute;top:14px;left:14px;z-index:2;
-  background:rgba(255,255,255,.15);backdrop-filter:blur(4px);
-  color:#fff;font-size:.62rem;font-weight:800;letter-spacing:.06em;
-  padding:4px 10px;border-radius:6px;
-}
-.nh-featured-body { position:absolute;left:18px;right:18px;bottom:16px;z-index:2; }
-.nh-featured-cat { font-size:.68rem;font-weight:800;color:#8FC1F2;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em; }
-.nh-featured-title { font-size:1.15rem;font-weight:800;color:#fff;line-height:1.32;margin-bottom:6px; }
-.nh-featured-date { font-size:.68rem;color:rgba(255,255,255,.65); }
-
-.nh-small-list { display:flex;flex-direction:column;justify-content:space-between;min-height:320px; }
-.nh-small-item {
-  display:flex;gap:10px;text-decoration:none;padding-bottom:12px;
-  border-bottom:1px solid var(--brd);
-}
-.nh-small-item:last-child { border-bottom:none;padding-bottom:0; }
-.nh-small-thumb {
-  width:60px;height:52px;flex-shrink:0;border-radius:8px;overflow:hidden;
-  background:var(--b50);
-}
-.nh-small-thumb img { width:100%;height:100%;object-fit:cover;display:block; }
-.nh-small-text { flex:1;min-width:0; }
-.nh-small-cat { font-size:.6rem;font-weight:800;margin-bottom:3px;text-transform:uppercase;letter-spacing:.03em; }
-.nh-small-title { font-size:.78rem;font-weight:700;color:var(--txt);line-height:1.32;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden; }
-
-/* Cores por categoria (badge + miniatura de fallback) */
-.nh-cat-jurisprudencia { color:#0C447C; } .nh-cat-jurisprudencia-bg { background:#E6F1FB; }
-.nh-cat-orgaos-publicos { color:#6B3FA0; } .nh-cat-orgaos-publicos-bg { background:#EDE1F5; }
-.nh-cat-legislacao-normas { color:#0E7C86; } .nh-cat-legislacao-normas-bg { background:#DFF3F5; }
-.nh-cat-rh-gestao { color:#1D7A46; } .nh-cat-rh-gestao-bg { background:#E0EFE6; }
-.nh-cat-processual { color:#8A5A18; } .nh-cat-processual-bg { background:#F3E4D0; }
-.nh-cat-outros { color:#52606D; } .nh-cat-outros-bg { background:#EEF1F4; }
-
-.nh-feat-ad { display:flex;flex-direction:column; }
-.nh-ad-box {
-  border:1.5px solid var(--brd);border-radius:var(--rl);
-  padding:8px;background:var(--card);
-}
-.nh-ad-label { font-size:.58rem;font-weight:700;letter-spacing:.08em;color:var(--txt-s);text-align:center;margin-bottom:6px; }
-
-@media(max-width:1150px){
-  .nh-feat-outer { grid-template-columns:1fr; }
-  .nh-feat-ad { order:3; }
-  .nh-ad-box { display:flex;justify-content:center; }
-}
-@media(max-width:760px){
-  .nh-feat-main { grid-template-columns:1fr; }
-  .nh-featured-card { min-height:220px; }
-  .nh-small-list { min-height:0;gap:12px; }
-}
-
-/* ── Faixas horizontais: Mais Acessados / Vídeos ── */
-.nh-strip-divider { height:1px;background:var(--brd);margin:26px 0 22px; }
-.nh-strip-head { display:flex;align-items:center;gap:6px;font-size:.85rem;font-weight:800;color:var(--txt);margin-bottom:12px; }
-.nh-strip-row { display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px; }
-.nh-strip-all {
-  display:inline-block;margin-top:10px;font-size:.76rem;font-weight:700;
-  color:var(--acc);text-decoration:none;
-}
-.nh-strip-all:hover { text-decoration:underline; }
-@media(max-width:900px){
-  .nh-strip-row {
-    grid-auto-flow:column;grid-auto-columns:150px;grid-template-columns:none;
-    overflow-x:auto;padding-bottom:6px;scroll-snap-type:x proximity;
-    -webkit-overflow-scrolling:touch;
-  }
-  .nh-strip-row > * { scroll-snap-align:start; }
-}
+.nh-yt-channel-btn:hover { background:#DCE9FF;border-color:var(--b300); }
+/* Ferramentas em Destaque: reaproveita o estilo do Acesso Rápido, em tom claro */
+/* (bloco "Ferramentas em Destaque" volta a existir só para mobile — ver .nh-mobile-only-tools) */
 .nh-mobile-only-tools { display:none; }
 .nh-fdest-list { display:flex;flex-direction:column;gap:8px;margin-bottom:14px; }
 .nh-fdest-item {
@@ -1374,17 +1329,18 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .nh-fdest-item:hover { border-color:var(--b300);box-shadow:var(--sh);transform:translateY(-1px); }
 .nh-fdest-item .nh-quick-name { color:var(--txt);font-size:.78rem; }
 .nh-fdest-item .nh-quick-desc { color:var(--txt-s);font-size:.66rem; }
-.nh-dcol-panel {
-  background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);padding:16px;
-}
 .nh-dcol-panel .nh-quick-all {
   background:#EEF4FF;border:1.5px solid var(--b200);color:var(--acc);
   margin-top:4px;
 }
 .nh-dcol-panel .nh-quick-all:hover { background:#DCE9FF;border-color:var(--b300); }
-.nh-dcol-head { display:flex;align-items:center;justify-content:space-between;margin-bottom:12px; }
-.nh-dcol-title { font-size:.76rem;font-weight:800;color:var(--txt);white-space:nowrap; }
-@media(max-width:900px){ .nh-mobile-only-tools { display:block; } }
+/* Mais Acessados: painel de altura natural, sem vão embaixo da lista */
+.nh-top10-wrap { display:flex;flex-direction:column;height:100%; }
+.nh-top10-wrap > .nh-quick-all { margin-top:auto;padding-top:14px; }
+@media(max-width:900px){
+  .nh-destaques-grid { grid-template-columns:1fr; gap:20px; }
+  .nh-mobile-only-tools { display:block; }
+}
 
 /* Card artigo recente */
 .nh-art-card {
@@ -1478,41 +1434,67 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   letter-spacing:.08em;
   white-space:nowrap;
 }
+/* Duas sub-colunas de 5 itens cada, lado a lado, preenchendo a altura do painel */
+#nh-top10-list {
+  display:grid;
+  grid-template-rows:repeat(5,auto);
+  grid-auto-flow:column;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  column-gap:14px;
+  align-content:start;
+}
 .nh-top10-item {
-  display:flex;flex-direction:column;
-  background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);
-  overflow:hidden;text-decoration:none;transition:all .2s;
+  display:grid;
+  grid-template-columns:16px 56px minmax(0,1fr);
+  align-items:center;
+  gap:9px;
+  padding:8px 0;
+  cursor:pointer;
+  border-bottom:1px solid var(--brd);
+  text-decoration:none;
+  transition:all .15s;
   min-width:0;
 }
-.nh-top10-item:hover { transform:translateY(-3px);box-shadow:var(--shl); }
+.nh-top10-item:nth-child(5),
+.nh-top10-item:nth-child(10) { border-bottom:none; }
 .nh-top10-item:hover .nh-top10-title { color:var(--acc); }
-.nh-top10-thumb {
-  width:100%;aspect-ratio:16/9;flex-shrink:0;
-  overflow:hidden;background:var(--b50);position:relative;
-}
-.nh-top10-thumb img { width:100%;height:100%;object-fit:cover;display:block; }
 .nh-top10-num {
-  position:absolute;top:6px;left:6px;z-index:2;
-  width:20px;height:20px;border-radius:6px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:.66rem;font-weight:800;color:#fff;
-  background:#0B1437;
+  font-size:.63rem;font-weight:800;
+  text-align:center;
 }
-.nh-top10-num.top { background:var(--acc); }
-.nh-top10-info { padding:10px 12px;flex:1;display:flex;flex-direction:column; }
+.nh-top10-num.top { color:var(--acc); }
+.nh-top10-num.rest { color:var(--txt-s); }
+.nh-top10-thumb {
+  width:56px;height:40px;flex-shrink:0;
+  border-radius:6px;overflow:hidden;
+  background:var(--b50);
+  position:relative;
+}
+.nh-top10-thumb img {
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+}
+.nh-top10-info { min-width:0; }
 .nh-top10-title {
-  font-size:.75rem;font-weight:700;color:var(--txt);
-  line-height:1.32;transition:color .15s;
-  display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;
+  font-size:.69rem;font-weight:700;color:var(--txt);
+  line-height:1.32;
+  transition:color .15s;
+  display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;
   -webkit-box-orient:vertical;overflow:hidden;
 }
-.nh-top10-cat { font-size:.6rem;color:var(--txt-s);margin-top:5px; }
+.nh-top10-cat { font-size:.57rem;color:var(--txt-s);margin-top:3px; }
 
 /* ── YOUTUBE ── */
 .nh-youtube {
   background:#fff;
   border-top:1px solid var(--brd);
   padding:64px 0;
+}
+.nh-yt-grid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
 }
 .nh-yt-title { font-size:.85rem;font-weight:700;color:var(--txt);line-height:1.4;flex:1; }
 .nh-yt-date { font-size:.72rem;color:var(--txt-s);margin-top:5px; }
@@ -1630,9 +1612,19 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   .nh-art-grid-compact .nh-art-meta { margin-top:2px; }
   .nh-art-grid-compact .nh-art-date { font-size:12px; }
   .nh-art-grid-compact .nh-art-ler { display:none !important; }
+  /* top10: fonte do título aumentada para o mesmo tamanho do título de
+     "Direito do Trabalho em Destaque" (.nh-art-grid-compact .nh-art-title: 14px),
+     limitado a 3 linhas para caber o texto inteiro sem estourar o card */
+  .nh-top10-title { font-size:14px;line-height:1.3;-webkit-line-clamp:3;line-clamp:3; }
+  /* top10: no mobile volta a ser lista única empilhada, sem foto (a divisão em 2 colunas e a foto são só desktop) */
+  #nh-top10-list { display:block; }
+  .nh-top10-item { grid-template-columns:20px 1fr; }
+  .nh-top10-thumb { display:none; }
+  .nh-top10-item:nth-child(5) { border-bottom:1px solid var(--brd); }
 }
 @media(max-width:480px){
   .nh-yt-grid { grid-template-columns:1fr; }
+  .nh-top10-item { grid-template-columns:18px 1fr; gap:8px; }
   .nh-h1 { font-size:1.18rem; }
   .nh-stat-num { font-size:1.12rem; }
   .nh-quick-btn { padding:9px 4px; }
