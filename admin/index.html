@@ -1341,7 +1341,7 @@ function buildFreshSidebarHTML(currentPostId, allPosts) {
   return `<aside class="post-sidebar" data-current-slug="${currentPostId || ''}">`
     + '<div class="sidebar-card"><h3>🔥 Mais Acessados</h3><div class="sidebar-list" id="mais-acessados-list">' + buildSidebarItemsHTML(top5, true) + '</div></div>'
     + adCard('300x250_1')
-    + '<div class="sidebar-card"><h3>🆕 Últimos Conteúdos</h3><div class="sidebar-list">' + buildSidebarItemsHTML(latest5, false) + '</div></div>'
+    + '<div class="sidebar-card"><h3>🆕 Últimos Conteúdos</h3><div class="sidebar-list" id="ultimos-conteudos-list">' + buildSidebarItemsHTML(latest5, false) + '</div></div>'
     + adCard('300x250_2')
     + '<a class="ad-smartlink" href="#">🔗 Link patrocinado · Smartlink_1</a>'
     + '</aside>';
@@ -1359,12 +1359,12 @@ function replaceSidebarWithFresh(html, currentPostId, allPosts) {
   // Garante que o script do ranking real esteja incluído no post publicado.
   if (!out.includes('mais-acessados-real.js')) {
     out = out.includes('</body>')
-      ? out.replace('</body>', '<script src="/js/mais-acessados-real.js" defer><\/script>\n</body>')
-      : out + '\n<script src="/js/mais-acessados-real.js" defer><\/script>\n';
+      ? out.replace('</body>', '<script src="/js/mais-acessados-real.js" defer></script>\n</body>')
+      : out + '\n<script src="/js/mais-acessados-real.js" defer></script>\n';
   }
   // Garante que o anúncio Adsterra Social Bar (apenas desktop) esteja incluído no post publicado.
   if (!out.includes('effectivecpmnetwork.com/0f/84/d5/0f84d55dea9c436679fbf527b75e7624')) {
-    const socialBarSnippet = '<!-- ▸ ANÚNCIO ADSTERRA: Social Bar (apenas desktop) -->\n<script>\nif (window.innerWidth > 767) {\n  var s = document.createElement(\'script\');\n  s.src = \'https://pl29266866.effectivecpmnetwork.com/0f/84/d5/0f84d55dea9c436679fbf527b75e7624.js\';\n  document.body.appendChild(s);\n}\n<\/script>\n</body>';
+    const socialBarSnippet = '<!-- ▸ ANÚNCIO ADSTERRA: Social Bar (apenas desktop) -->\n<script>\nif (window.innerWidth > 767) {\n  var s = document.createElement(\'script\');\n  s.src = \'https://pl29266866.effectivecpmnetwork.com/0f/84/d5/0f84d55dea9c436679fbf527b75e7624.js\';\n  document.body.appendChild(s);\n}\n</script>\n</body>';
     out = out.includes('</body>')
       ? out.replace('</body>', socialBarSnippet)
       : out + '\n' + socialBarSnippet;

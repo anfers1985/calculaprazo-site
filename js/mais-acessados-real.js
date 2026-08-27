@@ -17,7 +17,7 @@
   // celular ou tablet e sem precisar manter centenas de cópias de estilo.
   var layoutStyle = document.createElement('style');
   layoutStyle.id = 'cp-desktop-layout-adjustment';
-  layoutStyle.textContent = '@media(min-width:1200px){.container{width:82% !important;max-width:1560px !important;}}.post-reading-area>div[style*="max-height:380px"]{max-height:none !important;background:#EFF6FF;}.post-reading-area>div[style*="max-height:380px"]>img,.post-cover{display:block;width:100%;height:auto !important;max-height:none !important;object-fit:contain !important;}.post-cover{background:#EFF6FF;}';
+  layoutStyle.textContent = '@media(min-width:1200px){.container{width:82% !important;max-width:1560px !important;}}.post-reading-area>div[style*="380px"]{max-height:none !important;background:#EFF6FF;}.post-reading-area>div[style*="380px"]>img,.post-cover{display:block;width:100%;height:auto !important;max-height:none !important;object-fit:contain !important;}.post-cover{background:#EFF6FF;}html{overflow-x:hidden;}@media(max-width:767px){.post-reading-area>div[style*="440px"]{height:220px !important;}}';
   document.head.appendChild(layoutStyle);
   var FALLBACK_TOP_IDS = [
     'aviso-previo-proporcional-como-calcular',
@@ -53,6 +53,45 @@
     }).join('');
   }
 
+  function buildLatestItemHTML(post, slug) {
+    var img = post.image || '';
+    var cat = post.category_label || post.category || '';
+    var title = post.title || slug;
+    return '<a class="sidebar-item" href="/blog/' + slug + '.html">'
+      + '<span class="sidebar-item-thumb"><img src="' + img + '" alt="" loading="lazy"></span>'
+      + '<span class="sidebar-item-body"><span class="sidebar-item-title">' + title + '</span>'
+      + (cat ? '<span class="sidebar-item-cat">' + cat + '</span>' : '')
+      + '</span></a>';
+  }
+
+  function initUltimosConteudos() {
+    var container = document.getElementById('ultimos-conteudos-list');
+    if (!container) return;
+
+    var aside = container.closest('.post-sidebar, .tool-sidebar');
+    var currentSlug = aside ? aside.getAttribute('data-current-slug') || '' : '';
+
+    fetchJSON('/data/posts.json?v=' + Date.now()).then(function (posts) {
+      if (!Array.isArray(posts) || !posts.length) return; // sem dados, mantém fallback
+
+      var latest = posts
+        .filter(function (p) {
+          var id = p.id || p.slug;
+          return id && id !== currentSlug && p.date;
+        })
+        .sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); })
+        .slice(0, 5);
+
+      if (!latest.length) return; // mantém o fallback estático já presente no HTML
+
+      container.innerHTML = latest.map(function (p) {
+        return buildLatestItemHTML(p, p.id || p.slug);
+      }).join('');
+    }).catch(function () {
+      // qualquer erro: mantém a lista estática que já está no HTML
+    });
+  }
+
   function init() {
     var container = document.getElementById('mais-acessados-list');
     if (!container) return;
@@ -85,9 +124,14 @@
     });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
+  function initAll() {
     init();
+    initUltimosConteudos();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAll);
+  } else {
+    initAll();
   }
 })();
