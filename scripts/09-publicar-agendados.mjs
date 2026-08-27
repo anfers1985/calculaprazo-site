@@ -318,7 +318,7 @@ function publicarItem(item, template, postsAtuais) {
   const tagsJSON = JSON.stringify(tagsArr);
 
   const coverHTML = post.image
-    ? `<div style="margin-bottom:${post.imageCaption ? '6px' : '24px'};border-radius:12px;overflow:hidden;height:440px;background:#eef2f7;display:flex;align-items:center;justify-content:center;"><img src="${post.image}" alt="${post.title}" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>${post.imageCaption ? `<p style="font-size:.75rem;color:var(--txt-s);margin:0 0 24px;">${post.imageCaption}</p>` : ''}`
+    ? `<div style="margin-bottom:${post.imageCaption ? '6px' : '24px'};border-radius:12px;overflow:hidden;max-height:380px;"><img src="${post.image}" alt="${post.title}" style="width:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>${post.imageCaption ? `<p style="font-size:.75rem;color:var(--txt-s);margin:0 0 24px;">${post.imageCaption}</p>` : ''}`
     : '';
   const ogImageUrl = post.image || 'https://calculaprazo.com.br/og-image.jpg';
   const ogImageTag = `<meta property="og:image" content="${ogImageUrl}">`;
@@ -358,8 +358,7 @@ function publicarItem(item, template, postsAtuais) {
     const cards = relatedFinal.map(p => {
       const label = CAT_LABELS_MAP[p.category] || p.category_label || p.category;
       const dateStr = p.date ? new Date(p.date + 'T12:00:00').toLocaleDateString('pt-BR', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
-      const img = p.image ? `<img class="r-img" src="${p.image}" alt="" loading="lazy">` : '';
-      return `<a class="related-card" href="/blog/${p.id}.html">${img}<div class="r-cat">${label}</div><div class="r-title">${p.title}</div><div class="r-date">${dateStr}</div></a>`;
+      return `<a class="related-card" href="/blog/${p.id}.html"><div class="r-cat">${label}</div><div class="r-title">${p.title}</div><div class="r-date">${dateStr}</div></a>`;
     }).join('');
     relatedHTML = `<h3>Artigos Relacionados</h3><div class="related-grid">${cards}</div>`;
   }
