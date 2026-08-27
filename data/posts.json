@@ -1,5 +1,53 @@
 [
   {
+    "id": "tst-municipio-responsabilidade-fgts-terceirizada-hospital",
+    "title": "TST mantém município responsável por FGTS de terceirizada",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "TST mantém responsabilidade subsidiária de município por FGTS após acordo assumir verbas rescisórias de hospital terceirizado.",
+    "image": "https://images.unsplash.com/photo-1631563018856-81be9c118283?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-26",
+    "updatedAt": "2026-08-26",
+    "tags": []
+  },
+  {
+    "id": "caixa-atualiza-manual-fgts-versao-28-doencas-graves",
+    "title": "Caixa atualiza manual do FGTS com novas regras de saque",
+    "category": "fgts-digital",
+    "category_label": "FGTS",
+    "excerpt": "Caixa publica a versão 28 do Manual de Movimentação do FGTS e inclui saque em casos de doenças graves, mediante perícia médica federal.",
+    "image": "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-26",
+    "updatedAt": "2026-08-26",
+    "tags": []
+  },
+  {
+    "id": "stf-suspensao-multas-nr1-riscos-psicossociais",
+    "title": "STF confirma suspensão de multas da NR-1 por 90 dias",
+    "category": "jurisprudencia-stf",
+    "category_label": "STF",
+    "excerpt": "STF forma maioria e mantém por 90 dias a suspensão de multas da NR-1 sobre riscos psicossociais. Obrigações da norma seguem em vigor.",
+    "image": "https://noticias-stf-wp-prd.s3.sa-east-1.amazonaws.com/wp-content/uploads/wpallimport/uploads/2025/08/01140541/54692979626_c89d5807d0_o-scaled.jpg",
+    "imageCaption": "Créditos: Antonio Augusto/STF",
+    "date": "2026-08-26",
+    "updatedAt": "2026-08-26",
+    "tags": []
+  },
+  {
+    "id": "tst-caixa-horas-extras-sem-cartoes-de-ponto",
+    "title": "TST condena Caixa por horas extras sem controle de ponto",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "Sétima Turma do TST condena a Caixa a pagar horas extras após concluir que a falta de cartões de ponto presume verdadeira a jornada alegada.",
+    "image": "https://www.tst.jus.br/documents/10157/2374827/_O2A3584.jpg/b8e689ed-08eb-0c13-81a8-f64eba4045ef?t=1713797239262",
+    "imageCaption": "Créditos: reprodução/TST",
+    "date": "2026-08-26",
+    "updatedAt": "2026-08-26",
+    "tags": []
+  },
+  {
     "id": "tst-acao-trabalhista-domicilio-tema-215",
     "title": "TST autoriza ação trabalhista no domicílio em exceções",
     "category": "jurisprudencia-tst",
