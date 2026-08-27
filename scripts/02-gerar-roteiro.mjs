@@ -37,7 +37,9 @@ async function chamarGeminiComRetry({ apiKey, modelo, systemPrompt, userPrompt }
     systemInstruction: { parts: [{ text: systemPrompt }] },
     contents: [{ parts: [{ text: userPrompt }] }],
     generationConfig: {
-      temperature: 0.1,
+      // temperature/top_p/top_k foram descontinuados pelo Gemini a partir do
+      // 3.6 Flash (GA em 21/07/2026) e agora causam 400 "Request contains an
+      // invalid argument" em vez de serem apenas ignorados. Removido.
       maxOutputTokens: 4096,
       ...(isThinking ? { thinkingConfig: { thinkingBudget: 0 } } : {}),
     },
