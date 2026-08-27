@@ -1,5 +1,41 @@
 [
   {
+    "id": "justica-trabalho-previdencia-complementar-ato-ilicito",
+    "title": "Justiça do Trabalho julgará perdas em previdência complementar",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "TST reconhece competência da Justiça do Trabalho para julgar indenização por prejuízos na aposentadoria complementar causados por ato ilícito do empregador.",
+    "image": "https://images.unsplash.com/photo-1633158829875-e5316a358c6f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-27",
+    "updatedAt": "2026-08-27",
+    "tags": []
+  },
+  {
+    "id": "aposentado-acidentado-estabilidade-emprego",
+    "title": "Aposentado acidentado tem direito à estabilidade no emprego?",
+    "category": "legislacao-previdenciario",
+    "category_label": "Previdenciário",
+    "excerpt": "Entenda quando o empregado aposentado que sofre acidente de trabalho pode ter estabilidade de 12 meses e o que dizem a Lei 8.213/1991 e o Decreto 3.048/1999.",
+    "image": "https://images.unsplash.com/photo-1593782091314-985683d42aed?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-27",
+    "updatedAt": "2026-08-27",
+    "tags": []
+  },
+  {
+    "id": "rescisao-eletronica-documentos-provas-prazos-guarda",
+    "title": "Rescisão eletrônica: documentos, provas e prazos de guarda",
+    "category": "rh-rescisao",
+    "category_label": "Rescisão",
+    "excerpt": "Entenda o que a legislação exige na rescisão eletrônica, quais documentos têm maior risco jurídico e por quanto tempo devem ser guardados.",
+    "image": "https://images.unsplash.com/photo-1448932223592-d1fc686e76ea?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-27",
+    "updatedAt": "2026-08-27",
+    "tags": []
+  },
+  {
     "id": "tst-municipio-responsabilidade-fgts-terceirizada-hospital",
     "title": "TST mantém município responsável por FGTS de terceirizada",
     "category": "jurisprudencia-tst",
