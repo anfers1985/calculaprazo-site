@@ -64,6 +64,9 @@ async function chamarGeminiComRetry({ apiKey, modelo, systemPrompt, userPrompt }
       clearTimeout(timeoutId);
     }
 
+    if (!r.ok && data?.error) {
+      console.error('Resposta de erro completa do Gemini:', JSON.stringify(data.error));
+    }
     const mensagemErro = data?.error?.message || data?.error || '';
     // "Cota excedida" (limite diário/por-minuto do tier gratuito) não se resolve
     // esperando alguns segundos — insistir só desperdiça minutos do Actions.
