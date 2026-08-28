@@ -1122,7 +1122,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 /* ── HERO ── */
 .nh-hero {
   background:linear-gradient(135deg,#0B1437 0%,#0F2057 50%,#162466 100%);
-  padding:20px 0 18px;
+  padding:18px 0 16px;
 }
 .nh-hero-grid {
   display:grid;
@@ -1234,14 +1234,51 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   transform:translateY(-1px);
 }
 
+/* Botão em destaque: "Calculadora de Prazos" dá nome ao site */
+.nh-quick-btn.nh-quick-featured {
+  background:linear-gradient(135deg,#2563EB,#1D4ED8);
+  border-color:rgba(147,197,253,.55);
+  box-shadow:0 6px 16px rgba(29,78,216,.35);
+}
+.nh-quick-btn.nh-quick-featured:hover {
+  background:linear-gradient(135deg,#3B82F6,#2563EB);
+  border-color:#93C5FD;
+}
+.nh-quick-btn.nh-quick-featured .nh-quick-name,
+.nh-quick-btn.nh-quick-featured .nh-quick-desc { color:#fff; }
+.nh-quick-btn.nh-quick-featured .nh-quick-arr { color:rgba(255,255,255,.7); }
+
+/* Acesso Rápido — fileira única de 4 cards no desktop grande (hero mais fino) */
+@media(min-width:1101px){
+  .nh-hero-grid { grid-template-columns:1fr minmax(560px,660px); }
+  .nh-quick-card { padding:16px 18px; }
+  .nh-quick-label { margin-bottom:10px; }
+  .nh-quick-list { grid-template-columns:repeat(4,1fr); gap:10px; }
+  .nh-quick-btn {
+    flex-direction:column;align-items:flex-start;
+    gap:8px;padding:14px 14px 12px;
+  }
+  .nh-quick-text { width:100%; }
+  .nh-quick-name { white-space:normal; }
+  .nh-quick-desc { white-space:normal; }
+  .nh-quick-arr { display:none; }
+  .nh-quick-all {
+    background:none;border:none;padding:0;margin-top:14px;
+    display:block;text-align:center;width:auto;
+    color:#93C5FD;font-weight:700;text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .nh-quick-all:hover { background:none;border:none;color:#fff;transform:none; }
+}
+
 /* ── ARTIGOS ── */
 .nh-artigos {
   background:var(--bg);
-  padding:28px 0 40px;
+  padding:28px 0 26px;
 }
 /* ── Ferramentas em Destaque (faixa fina, entre hero e Artigos) ── */
 /* ── Ferramentas em Destaque (cards reais, mesmo estilo de /ferramentas/, 1 fileira) ── */
-.nh-tools-cards { display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:10px; }
+.nh-tools-cards { display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:0; }
 .nh-tool-card {
   background:var(--card);border:1px solid var(--brd);border-radius:var(--r);
   padding:14px;box-shadow:var(--sh);display:flex;flex-direction:column;
@@ -1249,22 +1286,27 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 .nh-tool-card:hover { border-color:var(--b300);box-shadow:var(--shl);transform:translateY(-2px); }
 .nh-tool-card:hover .ci-title { color:var(--acc); }
-.nh-tool-card .ci-icon { font-size:1.2rem;margin-bottom:6px;line-height:1; }
+.nh-tool-card .ci-icon {
+  width:36px;height:36px;border-radius:9px;background:var(--b50);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;line-height:1;margin-bottom:8px;
+}
 .nh-tool-card .ci-title { font-size:.78rem;font-weight:700;color:var(--txt);margin-bottom:4px;line-height:1.3; }
 .nh-tool-card .ci-desc {
   font-size:.68rem;color:var(--txt-s);line-height:1.42;
-  display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;
+  display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;
   -webkit-box-orient:vertical;overflow:hidden;
 }
 @media(max-width:1150px){ .nh-tools-cards { grid-template-columns:repeat(3,1fr); } }
 @media(max-width:560px){ .nh-tools-cards { grid-template-columns:repeat(2,1fr); } }
 
-/* ── Mais Acessados / Vídeos + anúncio skyscraper na lateral ── */
-.nh-strips-outer { display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start; }
+/* ── Mais Acessados / Vídeos + anúncio na lateral ── */
+.nh-strips-outer { display:grid;grid-template-columns:1fr 179px;gap:20px;align-items:start; }
 .nh-strips-main { min-width:0; }
+.nh-strips-ad { display:flex;flex-direction:column;gap:12px; }
 @media(max-width:1150px){
   .nh-strips-outer { grid-template-columns:1fr; }
-  .nh-strips-ad { display:flex;justify-content:center; }
+  .nh-strips-ad { justify-content:center; }
 }
 
 /* ── Pills de categoria (clique filtra os destaques abaixo) ── */
@@ -1279,7 +1321,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .nh-pill.on { background:#0B1437;border-color:#0B1437;color:#fff; }
 
 /* ── Destaque: 1 grande + 3 pequenos + coluna de anúncio ── */
-.nh-feat-outer { display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start; }
+.nh-feat-outer { display:grid;grid-template-columns:1fr 179px;gap:20px;align-items:start; }
+.nh-feat-col { min-width:0; }
 .nh-feat-main { display:grid;grid-template-columns:1.4fr 1fr;gap:14px; }
 .nh-featured-card {
   position:relative;border-radius:var(--rl);overflow:hidden;
@@ -1310,12 +1353,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 .nh-featured-date { font-size:.68rem;color:rgba(255,255,255,.65); }
 
-.nh-small-list { display:flex;flex-direction:column;justify-content:space-between;min-height:384px; }
+.nh-small-list { display:flex;flex-direction:column;min-height:384px; }
 .nh-small-item {
-  display:flex;gap:12px;text-decoration:none;padding-bottom:14px;
+  display:flex;gap:12px;text-decoration:none;padding-bottom:16px;
+  margin-bottom:16px;
   border-bottom:1px solid var(--brd);
 }
-.nh-small-item:last-child { border-bottom:none;padding-bottom:0; }
+.nh-small-item:last-child { border-bottom:none;padding-bottom:0;margin-bottom:0; }
 .nh-small-thumb {
   width:108px;height:84px;flex-shrink:0;border-radius:8px;overflow:hidden;
   background:var(--b50);
@@ -1326,7 +1370,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .nh-small-title { font-size:.82rem;font-weight:700;color:var(--txt);line-height:1.32;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden; }
 .nh-small-excerpt {
   font-size:.7rem;color:var(--txt-s);line-height:1.42;
-  display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;
+  display:-webkit-box;-webkit-line-clamp:4;line-clamp:4;
   -webkit-box-orient:vertical;overflow:hidden;
 }
 
@@ -1338,7 +1382,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .nh-cat-processual { color:#8A5A18; } .nh-cat-processual-bg { background:#F3E4D0; }
 .nh-cat-outros { color:#52606D; } .nh-cat-outros-bg { background:#EEF1F4; }
 
-.nh-feat-ad { display:flex;flex-direction:column; }
+.nh-feat-ad { display:flex;flex-direction:column;gap:14px; }
 .nh-ad-box {
   border:1.5px solid var(--brd);border-radius:var(--rl);
   padding:8px;background:var(--card);
@@ -1359,7 +1403,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 /* ── Faixas horizontais: Mais Acessados / Vídeos ── */
 .nh-strip-divider { height:1px;background:var(--brd);margin:26px 0 22px; }
 .nh-strip-head { display:flex;align-items:center;gap:6px;font-size:.85rem;font-weight:800;color:var(--txt);margin-bottom:12px; }
-.nh-strip-row { display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px; }
+.nh-strip-row { display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px; }
 .nh-strip-all {
   display:inline-block;margin-top:10px;font-size:.76rem;font-weight:700;
   color:var(--acc);text-decoration:none;
@@ -1513,7 +1557,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .nh-top10-title {
   font-size:.75rem;font-weight:700;color:var(--txt);
   line-height:1.32;transition:color .15s;
-  display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;
+  display:-webkit-box;-webkit-line-clamp:4;line-clamp:4;
   -webkit-box-orient:vertical;overflow:hidden;
 }
 .nh-top10-cat { font-size:.6rem;color:var(--txt-s);margin-top:5px; }
@@ -1524,8 +1568,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   border-top:1px solid var(--brd);
   padding:64px 0;
 }
-.nh-yt-title { font-size:.85rem;font-weight:700;color:var(--txt);line-height:1.4;flex:1; }
-.nh-yt-date { font-size:.72rem;color:var(--txt-s);margin-top:5px; }
+.nh-yt-title {
+  font-size:.75rem;font-weight:700;color:var(--txt);line-height:1.32;
+  display:-webkit-box;-webkit-line-clamp:4;line-clamp:4;
+  -webkit-box-orient:vertical;overflow:hidden;
+}
+.nh-yt-date { font-size:.6rem;color:var(--txt-s);margin-top:5px; }
 
 /* ── AUTORIDADE ── */
 .nh-autoridade {
