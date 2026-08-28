@@ -1,5 +1,41 @@
 [
   {
+    "id": "tst-extingue-acao-horas-extras-adesao-pdv",
+    "title": "TST extingue ação de horas extras após adesão a PDV",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "TST reconhece quitação geral do contrato após empregado aderir a PDV e extingue ação que discutia horas extras e reflexos salariais.",
+    "image": "https://images.unsplash.com/photo-1468174829941-1d60ae85c487?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-28",
+    "updatedAt": "2026-08-28",
+    "tags": []
+  },
+  {
+    "id": "vale-alimentacao-novas-regras-novembro-2026",
+    "title": "Vale-alimentação: novas regras entram em vigor em novembro",
+    "category": "rh-beneficios",
+    "category_label": "Benefícios",
+    "excerpt": "Regras do PAT mudam em novembro de 2026, com interoperabilidade, limites de taxas e novas exigências para empresas, operadoras e trabalhadores.",
+    "image": "https://images.unsplash.com/photo-1571340910399-354d2ce7f1dd?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-28",
+    "updatedAt": "2026-08-28",
+    "tags": []
+  },
+  {
+    "id": "direitos-trabalhadoras-domesticas-jornada-fgts-ferias",
+    "title": "Trabalhadoras domésticas: veja os principais direitos",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "excerpt": "Jornada, horas extras, descanso, férias, FGTS e outros direitos garantidos às trabalhadoras domésticas pela legislação brasileira vigente.",
+    "image": "https://images.unsplash.com/photo-1647381518264-97ff1835026f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-28",
+    "updatedAt": "2026-08-28",
+    "tags": []
+  },
+  {
     "id": "justica-trabalho-previdencia-complementar-ato-ilicito",
     "title": "Justiça do Trabalho julgará perdas em previdência complementar",
     "category": "jurisprudencia-tst",
