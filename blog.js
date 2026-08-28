@@ -365,7 +365,7 @@ function toggleSociais(e){
       .then(function(j){
         var parser=new DOMParser();
         var doc=parser.parseFromString(j.contents,'text/xml');
-        var entries=Array.from(doc.querySelectorAll('entry')).slice(0,5);
+        var entries=Array.from(doc.querySelectorAll('entry')).slice(0,6);
         if(!entries.length){grid.innerHTML='<p style="color:var(--txt-s);font-size:.85rem;">Nenhum vídeo encontrado.</p>';return;}
         grid.innerHTML=entries.map(function(e){
           var vid=e.querySelector('videoId')&&e.querySelector('videoId').textContent;
@@ -385,7 +385,7 @@ function toggleSociais(e){
           .then(function(t){
             var parser=new DOMParser();
             var doc=parser.parseFromString(t,'text/xml');
-            var entries=Array.from(doc.querySelectorAll('entry')).slice(0,5);
+            var entries=Array.from(doc.querySelectorAll('entry')).slice(0,6);
             if(!entries.length){grid.innerHTML='<p style="color:var(--txt-s);font-size:.85rem;">Nenhum vídeo encontrado.</p>';return;}
             grid.innerHTML=entries.map(function(e){
               var vid=e.querySelector('videoId')&&e.querySelector('videoId').textContent;
@@ -424,7 +424,7 @@ function toggleSociais(e){
         var cid=(d.items&&d.items[0])?d.items[0].id:null;
         if(!cid){loadYouTubeViaRSS(grid);return;}
         // Step 2: busca os últimos vídeos via search.list
-        return fetch('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId='+cid+'&maxResults=5&order=date&type=video&key='+YT_API_KEY);
+        return fetch('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId='+cid+'&maxResults=6&order=date&type=video&key='+YT_API_KEY);
       })
       .then(function(r){if(r)return r.json();})
       .then(function(d){
@@ -535,78 +535,38 @@ function nhFormatDate(d){
   }catch(e){return d;}
 }
 
-var NH_HOME_SEC = ''; // seção ativa nas pills da home ('' = Todos)
-
-// slug de categoria (ex: 'jurisprudencia-tst') → seção topo (ex: 'jurisprudencia')
-function nhSecOfCat(cat){
-  for(var sec in BLOG_SEC_MAP){
-    if(BLOG_SEC_MAP[sec].indexOf(cat)!==-1) return sec;
-  }
-  return 'outros';
-}
-
-function nhFilterSection(sec, btnEl){
-  NH_HOME_SEC = sec;
-  var pills = document.querySelectorAll('#nh-cat-pills .nh-pill');
-  for(var i=0;i<pills.length;i++){
-    pills[i].classList.remove('on');
-    pills[i].setAttribute('aria-pressed','false');
-  }
-  if(btnEl){ btnEl.classList.add('on'); btnEl.setAttribute('aria-pressed','true'); }
-  renderNhRecentes();
-}
-
-function nhBuildFeaturedCard(p){
-  var slug = p.id || p.slug || '';
-  var sec  = nhSecOfCat(p.category);
-  var name = (BLOG_CAT_META[sec] && BLOG_CAT_META[sec].name) || p.category_label || '';
-  var img  = p.image || '';
-  var exc  = p.excerpt || p.description || '';
-  return '<a class="nh-featured-card" href="/blog/'+slug+'.html">'
-    +(img?'<img src="'+img+'" alt="" loading="lazy" onerror="this.remove()">':'')
-    +'<span class="nh-featured-badge">DESTAQUE</span>'
-    +'<div class="nh-featured-body">'
-      +(name?'<div class="nh-featured-cat">'+name+'</div>':'')
-      +'<div class="nh-featured-title">'+(p.title||'')+'</div>'
-      +(exc?'<div class="nh-featured-excerpt">'+exc+'</div>':'')
-      +'<div class="nh-featured-date">'+nhFormatDate(p.date)+'</div>'
-    +'</div></a>';
-}
-
-function nhBuildSmallItem(p){
-  var slug = p.id || p.slug || '';
-  var sec  = nhSecOfCat(p.category);
-  var name = (BLOG_CAT_META[sec] && BLOG_CAT_META[sec].name) || p.category_label || '';
-  var colorCls = 'nh-cat-'+sec;
-  var img  = p.image || '';
-  var exc  = p.excerpt || p.description || '';
-  var imgPart = img
-    ? '<img src="'+img+'" alt="" loading="lazy" onerror="this.parentElement.style.background=\'var(--b50)\'">'
-    : '';
-  return '<a class="nh-small-item" href="/blog/'+slug+'.html">'
-    +'<div class="nh-small-thumb '+colorCls+'-bg">'+imgPart+'</div>'
-    +'<div class="nh-small-text">'
-      +(name?'<div class="nh-small-cat '+colorCls+'">'+name+'</div>':'')
-      +'<div class="nh-small-title">'+(p.title||'')+'</div>'
-      +(exc?'<div class="nh-small-excerpt">'+exc+'</div>':'')
-    +'</div>'
-  +'</a>';
-}
-
 function renderNhRecentes(){
-  var featEl  = document.getElementById('nh-featured-card');
-  var smallEl = document.getElementById('nh-small-list');
-  if(!featEl || !smallEl) return;
-  var posts = BLOG_POSTS.filter(function(p){
-    return !NH_HOME_SEC || nhSecOfCat(p.category)===NH_HOME_SEC;
-  }).sort(function(a,b){return (b.date||'').localeCompare(a.date||'');}).slice(0,4);
+  var list = document.getElementById('nh-recentes-list');
+  if(!list) return;
+  var posts = BLOG_POSTS.slice()
+    .sort(function(a,b){return (b.date||'').localeCompare(a.date||'');})
+    .slice(0,10);
   if(!posts.length){
-    featEl.innerHTML='';
-    smallEl.innerHTML='<p style="font-size:.85rem;color:var(--txt-s);padding:16px 0;">Nenhum artigo nessa categoria ainda.</p>';
+    list.innerHTML='<p style="font-size:.85rem;color:var(--txt-s);padding:16px 0;">Nenhum artigo publicado ainda.</p>';
     return;
   }
-  featEl.innerHTML  = nhBuildFeaturedCard(posts[0]);
-  smallEl.innerHTML = posts.slice(1,4).map(nhBuildSmallItem).join('');
+  list.innerHTML = posts.map(function(p){
+    var slug = p.id || p.slug || '';
+    var cat  = p.category_label || p.category || '';
+    var emoji= NH_CAT_EMOJI[p.category] || '📄';
+    var exc  = p.excerpt || p.description || '';
+    var imgUrl = p.image || '';
+    var imgPart = imgUrl
+      ? '<img src="'+imgUrl+'" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.parentElement.style.background=\'var(--b50)\'">'
+      : '<span class="nh-art-img-emoji">'+emoji+'</span>';
+    return '<a class="nh-art-card" href="/blog/'+slug+'.html">'
+      +'<div class="nh-art-img">'+imgPart+'</div>'
+      +'<div class="nh-art-body">'
+        +(cat?'<span class="nh-art-badge">'+cat+'</span>':'')
+        +'<div class="nh-art-title">'+(p.title||'')+'</div>'
+        +(exc?'<div class="nh-art-excerpt">'+exc+'</div>':'')
+        +'<div class="nh-art-meta">'
+          +'<span class="nh-art-date">'+nhFormatDate(p.date)+'</span>'
+          +'<span class="nh-art-ler">Ler →</span>'
+        +'</div>'
+      +'</div>'
+    +'</a>';
+  }).join('');
 }
 
 function renderNhTop10(){
@@ -651,7 +611,7 @@ function renderNhTop10(){
   // respeita o tamanho real retornado pela API (sem inventar posições
   // com posts recentes só para completar até 10).
   function onlyValid(slugs) {
-    return slugs.filter(function(s){ return !!map[s]; }).slice(0, 5);
+    return slugs.filter(function(s){ return !!map[s]; }).slice(0, 10);
   }
 
   function renderSlugs(slugs) {
