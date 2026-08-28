@@ -300,8 +300,8 @@
           ACESSO RÁPIDO
         </div>
         <div class="nh-quick-list">
-          <button class="nh-quick-btn" onclick="window.location.href='/calculadora-de-prazo-processual'">
-            <div class="nh-quick-icon" style="background:rgba(37,99,235,.25);">⏱️</div>
+          <button class="nh-quick-btn nh-quick-featured" onclick="window.location.href='/calculadora-de-prazo-processual'">
+            <div class="nh-quick-icon" style="background:rgba(255,255,255,.22);">⏱️</div>
             <div class="nh-quick-text">
               <div class="nh-quick-name">Calculadora de Prazos</div>
               <div class="nh-quick-desc">Dias úteis e corridos, CLT e CPC</div>
@@ -332,22 +332,6 @@
             </div>
             <span class="nh-quick-arr">›</span>
           </button>
-          <button class="nh-quick-btn" onclick="window.location.href='/calculadora-de-juros'">
-            <div class="nh-quick-icon" style="background:rgba(16,185,129,.2);">📈</div>
-            <div class="nh-quick-text">
-              <div class="nh-quick-name">Calculadora de Juros</div>
-              <div class="nh-quick-desc">Juros simples e compostos</div>
-            </div>
-            <span class="nh-quick-arr">›</span>
-          </button>
-          <button class="nh-quick-btn" onclick="window.location.href='/calculadora-de-prescricao'">
-            <div class="nh-quick-icon" style="background:rgba(99,102,241,.2);">⌛</div>
-            <div class="nh-quick-text">
-              <div class="nh-quick-name">Calculadora de Prescrição</div>
-              <div class="nh-quick-desc">Prazos trabalhistas e cíveis</div>
-            </div>
-            <span class="nh-quick-arr">›</span>
-          </button>
         </div>
         <a class="nh-quick-all" href="/ferramentas">Conheça todas as nossas ferramentas →</a>
       </div>
@@ -365,37 +349,46 @@
   <!-- ═══════════════ NH ARTIGOS: destaque + categorias ═══════════════ -->
   <section class="nh-artigos">
     <div class="container">
-      <!-- Cabeçalho -->
-      <div class="nh-sec-head">
-        <div>
-          <div class="nh-eyebrow"><span class="nh-eyebrow-line"></span>CONTEÚDO</div>
-          <h2 class="nh-h2">Artigos e Informativos</h2>
-          <p class="nh-sec-sub">Notícias, jurisprudência, orientações práticas, eSocial e folha de pagamento</p>
-        </div>
-        <button class="nh-ver-mais" onclick="navGoTo('blog')">Ver todos os artigos →</button>
-      </div>
-
-      <!-- Pills de categoria (clique filtra os destaques abaixo) -->
-      <div class="nh-cat-pills" id="nh-cat-pills" role="tablist" aria-label="Filtrar artigos por categoria">
-        <button class="nh-pill on" onclick="nhFilterSection('',this)" aria-pressed="true">Todos</button>
-        <button class="nh-pill" onclick="nhFilterSection('jurisprudencia',this)" aria-pressed="false">⚖️ Jurisprudência</button>
-        <button class="nh-pill" onclick="nhFilterSection('legislacao-normas',this)" aria-pressed="false">📋 Legislação e Normas</button>
-        <button class="nh-pill" onclick="nhFilterSection('rh-gestao',this)" aria-pressed="false">👥 RH e Gestão</button>
-        <button class="nh-pill" onclick="nhFilterSection('processual',this)" aria-pressed="false">📄 Processual</button>
-        <button class="nh-pill" onclick="nhFilterSection('orgaos-publicos',this)" aria-pressed="false">🏛️ Órgãos Públicos</button>
-      </div>
-
       <div class="nh-feat-outer">
-        <div class="nh-feat-main">
-          <div id="nh-featured-card"></div>
-          <div id="nh-small-list" class="nh-small-list"></div>
+        <div class="nh-feat-col">
+          <!-- Cabeçalho -->
+          <div class="nh-sec-head">
+            <div>
+              <div class="nh-eyebrow"><span class="nh-eyebrow-line"></span>CONTEÚDO</div>
+              <h2 class="nh-h2">Artigos e Informativos</h2>
+              <p class="nh-sec-sub">Notícias, jurisprudência, orientações práticas, eSocial e folha de pagamento</p>
+            </div>
+            <button class="nh-ver-mais" onclick="navGoTo('blog')">Ver todos os artigos →</button>
+          </div>
+
+          <!-- Pills de categoria (clique filtra os destaques abaixo) -->
+          <div class="nh-cat-pills" id="nh-cat-pills" role="tablist" aria-label="Filtrar artigos por categoria">
+            <button class="nh-pill on" onclick="nhFilterSection('',this)" aria-pressed="true">Todos</button>
+            <button class="nh-pill" onclick="nhFilterSection('jurisprudencia',this)" aria-pressed="false">⚖️ Jurisprudência</button>
+            <button class="nh-pill" onclick="nhFilterSection('legislacao-normas',this)" aria-pressed="false">📋 Legislação e Normas</button>
+            <button class="nh-pill" onclick="nhFilterSection('rh-gestao',this)" aria-pressed="false">👥 RH e Gestão</button>
+            <button class="nh-pill" onclick="nhFilterSection('processual',this)" aria-pressed="false">📄 Processual</button>
+            <button class="nh-pill" onclick="nhFilterSection('orgaos-publicos',this)" aria-pressed="false">🏛️ Órgãos Públicos</button>
+          </div>
+
+          <div class="nh-feat-main">
+            <div id="nh-featured-card"></div>
+            <div id="nh-small-list" class="nh-small-list"></div>
+          </div>
         </div>
         <div class="nh-feat-ad">
-          <!-- ▸ ANÚNCIO ADSTERRA: 300x250 (desktop e mobile) -->
+          <!-- ▸ ANÚNCIO ADSTERRA: 300x250 (1 de 2 empilhados) -->
           <div class="nh-ad-box">
             <div class="nh-ad-label">PUBLICIDADE</div>
             <div class="adst-slot" id="ad-home-mid2-adsterra"
                  data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+                 style="width:300px;height:250px;max-width:100%;margin:0 auto;"></div>
+          </div>
+          <!-- ▸ ANÚNCIO ADSTERRA: 300x250 (2 de 2 empilhados) -->
+          <div class="nh-ad-box">
+            <div class="nh-ad-label">PUBLICIDADE</div>
+            <div class="adst-slot" id="ad-home-mid3-adsterra"
+                 data-adst-key="7242c743fc263202cfb43cf35e31e396" data-adst-w="300" data-adst-h="250"
                  style="width:300px;height:250px;max-width:100%;margin:0 auto;"></div>
           </div>
         </div>
