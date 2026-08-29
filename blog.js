@@ -404,7 +404,7 @@ function toggleSociais(e){
   }
 
   function renderYTCard(vid,title,thumbUrl,dateStr){
-    return '<a class="nh-top10-item" href="https://www.youtube.com/watch?v='+vid+'" target="_blank" rel="noopener noreferrer">'
+    return '<a class="nh-top10-item nh-yt-row" href="https://www.youtube.com/watch?v='+vid+'" target="_blank" rel="noopener noreferrer">'
       +'<div class="nh-top10-thumb">'
       +'<img src="'+thumbUrl+'" alt="'+title+'" loading="lazy"></div>'
       +'<div class="nh-top10-info">'
@@ -551,7 +551,11 @@ function nhFilterSection(sec, btnEl){
     pills[i].classList.remove('on');
     pills[i].setAttribute('aria-pressed','false');
   }
-  if(btnEl){ btnEl.classList.add('on'); btnEl.setAttribute('aria-pressed','true'); }
+  if(btnEl){
+    btnEl.classList.add('on');
+    btnEl.setAttribute('aria-pressed','true');
+    if(btnEl.scrollIntoView){ btnEl.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'}); }
+  }
   renderNhRecentes();
 }
 
