@@ -1255,7 +1255,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   .nh-hero-grid { grid-template-columns:1fr minmax(660px,820px); }
   .nh-quick-card { padding:16px 18px; }
   .nh-quick-label { margin-bottom:10px; }
-  .nh-quick-list { grid-template-columns:repeat(4,1fr); gap:10px;align-items:stretch; }
+  .nh-quick-list { grid-template-columns:1.35fr 1fr 1fr 1fr; gap:10px;align-items:stretch; }
   .nh-quick-btn {
     flex-direction:row;align-items:center;
     gap:8px;padding:10px 12px;min-height:88px;box-sizing:border-box;
