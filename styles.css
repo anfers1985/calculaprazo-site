@@ -850,39 +850,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   .ad-desktop-only.adst-slot { display: none !important; }
   .nh-feat-ad { display: none !important; }
   .nh-strips-ad { display: none !important; }
-
-  /* Mais Acessados / Vídeos: lista empilhada em vez de scroll horizontal */
-  .nh-strip-row {
-    display:flex;flex-direction:column;gap:0;
-    grid-auto-flow:unset;grid-auto-columns:unset;grid-template-columns:none;
-    overflow-x:visible;padding-bottom:0;
-  }
-  .nh-top10-item {
-    flex-direction:row;align-items:center;gap:12px;
-    background:transparent;border:none;border-radius:0;box-shadow:none;
-    border-bottom:1px solid var(--brd);
-    padding-bottom:14px;margin-bottom:14px;
-  }
-  .nh-top10-item:last-child { border-bottom:none;margin-bottom:0;padding-bottom:0; }
-  .nh-top10-item:hover { transform:none;box-shadow:none; }
-  .nh-top10-thumb { width:76px;height:76px;aspect-ratio:auto;flex-shrink:0;border-radius:10px; }
-  .nh-top10-num { position:static;order:-1;width:24px;height:24px;border-radius:50%;flex-shrink:0; }
-  .nh-top10-info { padding:0; }
-  .nh-top10-title { font-size:.82rem;-webkit-line-clamp:2;line-clamp:2; }
-
-  /* Ferramentas em Destaque: lista empilhada em vez de grade */
-  .nh-tools-cards { display:flex;flex-direction:column;gap:0; }
-  .nh-tool-card {
-    flex-direction:row;align-items:center;gap:12px;
-    border:none;border-radius:0;box-shadow:none;
-    border-bottom:1px solid var(--brd);
-    padding:14px 0;
-  }
-  .nh-tool-card:last-child { border-bottom:none; }
-  .nh-tool-card:hover { transform:none;box-shadow:none; }
-  .nh-tool-card .ci-icon { margin-bottom:0;flex-shrink:0; }
-  .nh-tool-card .ci-text { flex:1;min-width:0; }
-  .nh-tool-card .ci-desc { -webkit-line-clamp:2;line-clamp:2; }
 }
 
 /* ════════════════════════════════════════
@@ -1288,10 +1255,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   .nh-hero-grid { grid-template-columns:1fr minmax(560px,660px); }
   .nh-quick-card { padding:16px 18px; }
   .nh-quick-label { margin-bottom:10px; }
-  .nh-quick-list { grid-template-columns:repeat(4,1fr); gap:10px;align-items:stretch; }
+  .nh-quick-list { grid-template-columns:repeat(4,1fr); gap:10px; }
   .nh-quick-btn {
     flex-direction:column;align-items:flex-start;
-    gap:6px;padding:14px;min-height:116px;
+    gap:6px;padding:14px;height:122px;box-sizing:border-box;
   }
   .nh-quick-text { width:100%; }
   .nh-quick-name {
@@ -1299,7 +1266,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
   }
   .nh-quick-desc {
-    white-space:normal;
+    white-space:normal;color:rgba(255,255,255,.65);
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
   }
   .nh-quick-arr { display:none; }
@@ -1330,7 +1297,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .nh-tool-card .ci-icon {
   width:36px;height:36px;border-radius:9px;background:var(--b50);
   display:flex;align-items:center;justify-content:center;
-  font-size:1.1rem;line-height:1;margin-bottom:8px;
+  font-size:1rem;line-height:1;margin-bottom:8px;
 }
 .nh-tool-card .ci-title { font-size:.78rem;font-weight:700;color:var(--txt);margin-bottom:4px;line-height:1.3; }
 .nh-tool-card .ci-desc {
@@ -1425,6 +1392,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .nh-ad-box {
   border:1.5px solid var(--brd);border-radius:var(--rl);
   padding:8px;background:var(--card);
+  overflow:hidden;
 }
 .nh-ad-label { font-size:.58rem;font-weight:700;letter-spacing:.08em;color:var(--txt-s);text-align:center;margin-bottom:6px; }
 
@@ -1984,4 +1952,65 @@ img[src*="m.media-amazon.com"] {
 @media(max-width:640px){
   .post-reading-area > div[style*="max-height:380px"]{max-height:260px !important;height:260px !important;}
   .post-cover{height:260px !important;max-height:260px !important;}
+}
+
+/* ════════════════════════════════════════════════════════════
+   HOME MOBILE — bloco final (propositalmente no fim do arquivo:
+   precisa vencer as regras base de .nh-top10-item, .nh-strip-row,
+   .nh-tools-cards e .nh-tool-card, que não têm media query e por
+   isso ganham de qualquer override escrito ANTES delas no arquivo).
+   ════════════════════════════════════════════════════════════ */
+@media(max-width:768px){
+
+  /* 3º e 4º artigo pequeno: no desktop mostramos só 3, no mobile 4 */
+  .nh-small-item:nth-child(4) { display:flex; }
+
+  /* Pills de categoria: rolagem horizontal, nunca quebra linha */
+  .nh-cat-pills {
+    flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;
+    padding-bottom:4px;margin-bottom:16px;
+    scrollbar-width:none;
+  }
+  .nh-cat-pills::-webkit-scrollbar { display:none; }
+  .nh-pill { flex-shrink:0;white-space:nowrap; }
+
+  /* Mais Acessados / Vídeos: lista empilhada (miniatura à esquerda, texto à direita) */
+  .nh-strip-row {
+    display:flex !important;flex-direction:column !important;gap:0;
+    overflow-x:visible;padding-bottom:0;
+  }
+  .nh-top10-item {
+    flex-direction:row !important;align-items:center;gap:12px;
+    background:transparent;border:none;border-radius:0;box-shadow:none;
+    border-bottom:1px solid var(--brd);
+    padding-bottom:14px;margin-bottom:14px;
+  }
+  .nh-top10-item:last-child { border-bottom:none;margin-bottom:0;padding-bottom:0; }
+  .nh-top10-item:hover { transform:none;box-shadow:none; }
+  .nh-top10-thumb {
+    width:76px;height:76px;aspect-ratio:auto !important;
+    flex-shrink:0;border-radius:10px;
+  }
+  .nh-top10-num { position:static;order:-1;width:24px;height:24px;border-radius:50%;flex-shrink:0; }
+  .nh-top10-info { padding:0; }
+  .nh-top10-title { font-size:.82rem;-webkit-line-clamp:2;line-clamp:2; }
+
+  /* Ferramentas em Destaque: lista empilhada, só ícone + nome (sem descrição) */
+  .nh-tools-cards { display:flex !important;flex-direction:column !important;gap:0; }
+  .nh-tool-card {
+    flex-direction:row !important;align-items:center;gap:12px;
+    border:none;border-radius:0;box-shadow:none;
+    border-bottom:1px solid var(--brd);
+    padding:14px 0;
+  }
+  .nh-tool-card:last-child { border-bottom:none; }
+  .nh-tool-card:hover { transform:none;box-shadow:none; }
+  .nh-tool-card .ci-icon { margin-bottom:0;flex-shrink:0; }
+  .nh-tool-card .ci-text { flex:1;min-width:0; }
+  .nh-tool-card .ci-title { margin-bottom:0; }
+  .nh-tool-card .ci-desc { display:none; }
+}
+@media(min-width:769px){
+  .nh-small-item:nth-child(4) { display:none; }
+  .nh-small-item:nth-child(3) { border-bottom:none;padding-bottom:0;margin-bottom:0; }
 }
