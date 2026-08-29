@@ -404,13 +404,12 @@ function toggleSociais(e){
   }
 
   function renderYTCard(vid,title,thumbUrl,dateStr){
-    return '<a href="https://www.youtube.com/watch?v='+vid+'" target="_blank" rel="noopener noreferrer" style="display:flex;flex-direction:column;background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);overflow:hidden;text-decoration:none;transition:all .2s;box-shadow:var(--sh);" onmouseover="this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'var(--shl)\'" onmouseout="this.style.transform=\'\';this.style.boxShadow=\'var(--sh)\'" >'
-      +'<div style="position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#111;flex-shrink:0;">'
-      +'<img src="'+thumbUrl+'" alt="'+title+'" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;">'
-      +'</div>'
-      +'<div style="padding:10px 12px;flex:1;display:flex;flex-direction:column;">'
-      +'<div class="nh-yt-title">'+title+'</div>'
-      +(dateStr?'<div class="nh-yt-date">'+dateStr+'</div>':'')
+    return '<a class="nh-top10-item" href="https://www.youtube.com/watch?v='+vid+'" target="_blank" rel="noopener noreferrer">'
+      +'<div class="nh-top10-thumb">'
+      +'<img src="'+thumbUrl+'" alt="'+title+'" loading="lazy"></div>'
+      +'<div class="nh-top10-info">'
+      +'<div class="nh-top10-title">'+title+'</div>'
+      +(dateStr?'<div class="nh-top10-cat">'+dateStr+'</div>':'')
       +'</div></a>';
   }
 
@@ -599,14 +598,14 @@ function renderNhRecentes(){
   if(!featEl || !smallEl) return;
   var posts = BLOG_POSTS.filter(function(p){
     return !NH_HOME_SEC || nhSecOfCat(p.category)===NH_HOME_SEC;
-  }).sort(function(a,b){return (b.date||'').localeCompare(a.date||'');}).slice(0,4);
+  }).sort(function(a,b){return (b.date||'').localeCompare(a.date||'');}).slice(0,5);
   if(!posts.length){
     featEl.innerHTML='';
     smallEl.innerHTML='<p style="font-size:.85rem;color:var(--txt-s);padding:16px 0;">Nenhum artigo nessa categoria ainda.</p>';
     return;
   }
   featEl.innerHTML  = nhBuildFeaturedCard(posts[0]);
-  smallEl.innerHTML = posts.slice(1,4).map(nhBuildSmallItem).join('');
+  smallEl.innerHTML = posts.slice(1,5).map(nhBuildSmallItem).join('');
 }
 
 function renderNhTop10(){

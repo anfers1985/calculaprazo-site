@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link rel="preload" as="style" href="/styles.css?v=49">
+  <link rel="preload" as="style" href="/styles.css?v=52">
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"></noscript>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -83,7 +83,7 @@
 </script>
 
 <style>:root{color-scheme:light}html,body{background:#F8FAFC;color:#0F172A}</style>
-<link rel="stylesheet" href="/styles.css?v=49">
+<link rel="stylesheet" href="/styles.css?v=52">
 
 <!-- Chart.js carregado sob demanda pela calculadora de juros -->
 <script>
@@ -339,42 +339,33 @@
     </div>
   </section>
 
-  <!-- ▸ ANÚNCIO ADSTERRA: home-top (320x50 mobile apenas — versão desktop removida a pedido) -->
-  <div class="ad-mobile-only" style="justify-content:center;margin:16px 0;">
-    <div class="adst-slot" id="ad-home-top-mobile"
-         data-adst-key="f9a6a26e51d4d397ec65d29e8f2ca7a5" data-adst-w="320" data-adst-h="50"
-         style="width:320px;height:50px;max-width:100%;"></div>
-  </div>
-
   <!-- ═══════════════ NH ARTIGOS: destaque + categorias ═══════════════ -->
   <section class="nh-artigos">
     <div class="container">
+      <!-- Cabeçalho -->
+      <div class="nh-sec-head">
+        <div>
+          <div class="nh-eyebrow"><span class="nh-eyebrow-line"></span>CONTEÚDO</div>
+          <h2 class="nh-h2">Artigos e Informativos</h2>
+          <p class="nh-sec-sub">Notícias, jurisprudência, orientações práticas, eSocial e folha de pagamento</p>
+        </div>
+        <button class="nh-ver-mais" onclick="navGoTo('blog')">Ver todos os artigos →</button>
+      </div>
+
+      <!-- Pills de categoria (clique filtra os destaques abaixo) -->
+      <div class="nh-cat-pills" id="nh-cat-pills" role="tablist" aria-label="Filtrar artigos por categoria">
+        <button class="nh-pill on" onclick="nhFilterSection('',this)" aria-pressed="true">Todos</button>
+        <button class="nh-pill" onclick="nhFilterSection('jurisprudencia',this)" aria-pressed="false">⚖️ Jurisprudência</button>
+        <button class="nh-pill" onclick="nhFilterSection('legislacao-normas',this)" aria-pressed="false">📋 Legislação e Normas</button>
+        <button class="nh-pill" onclick="nhFilterSection('rh-gestao',this)" aria-pressed="false">👥 RH e Gestão</button>
+        <button class="nh-pill" onclick="nhFilterSection('processual',this)" aria-pressed="false">📄 Processual</button>
+        <button class="nh-pill" onclick="nhFilterSection('orgaos-publicos',this)" aria-pressed="false">🏛️ Órgãos Públicos</button>
+      </div>
+
       <div class="nh-feat-outer">
-        <div class="nh-feat-col">
-          <!-- Cabeçalho -->
-          <div class="nh-sec-head">
-            <div>
-              <div class="nh-eyebrow"><span class="nh-eyebrow-line"></span>CONTEÚDO</div>
-              <h2 class="nh-h2">Artigos e Informativos</h2>
-              <p class="nh-sec-sub">Notícias, jurisprudência, orientações práticas, eSocial e folha de pagamento</p>
-            </div>
-            <button class="nh-ver-mais" onclick="navGoTo('blog')">Ver todos os artigos →</button>
-          </div>
-
-          <!-- Pills de categoria (clique filtra os destaques abaixo) -->
-          <div class="nh-cat-pills" id="nh-cat-pills" role="tablist" aria-label="Filtrar artigos por categoria">
-            <button class="nh-pill on" onclick="nhFilterSection('',this)" aria-pressed="true">Todos</button>
-            <button class="nh-pill" onclick="nhFilterSection('jurisprudencia',this)" aria-pressed="false">⚖️ Jurisprudência</button>
-            <button class="nh-pill" onclick="nhFilterSection('legislacao-normas',this)" aria-pressed="false">📋 Legislação e Normas</button>
-            <button class="nh-pill" onclick="nhFilterSection('rh-gestao',this)" aria-pressed="false">👥 RH e Gestão</button>
-            <button class="nh-pill" onclick="nhFilterSection('processual',this)" aria-pressed="false">📄 Processual</button>
-            <button class="nh-pill" onclick="nhFilterSection('orgaos-publicos',this)" aria-pressed="false">🏛️ Órgãos Públicos</button>
-          </div>
-
-          <div class="nh-feat-main">
-            <div id="nh-featured-card"></div>
-            <div id="nh-small-list" class="nh-small-list"></div>
-          </div>
+        <div class="nh-feat-main">
+          <div id="nh-featured-card"></div>
+          <div id="nh-small-list" class="nh-small-list"></div>
         </div>
         <div class="nh-feat-ad">
           <!-- ▸ ANÚNCIO ADSTERRA: 160x300 -->
@@ -390,9 +381,16 @@
       <!-- home-blog-grid mantido oculto para o JS existente -->
       <div id="home-blog-grid" style="display:none;"></div>
 
+      <!-- ▸ ANÚNCIO ADSTERRA (320x50, mobile) — depois dos 5 artigos -->
+      <div class="ad-mobile-only" style="justify-content:center;margin:16px 0;">
+        <div class="adst-slot" id="ad-home-top-mobile"
+             data-adst-key="f9a6a26e51d4d397ec65d29e8f2ca7a5" data-adst-w="320" data-adst-h="50"
+             style="width:320px;height:50px;max-width:100%;"></div>
+      </div>
+
       <div class="nh-strip-divider"></div>
 
-      <!-- Mais Acessados + Vídeos (esquerda) / anúncio skyscraper (direita) -->
+      <!-- Mais Acessados + Vídeos (esquerda) / anúncio skyscraper (direita, desktop) -->
       <div class="nh-strips-outer">
         <div class="nh-strips-main">
 
@@ -401,13 +399,23 @@
           <div id="nh-top10-list" class="nh-strip-row"></div>
           <a class="nh-strip-all" href="/conteudo">Ver todos os conteúdos →</a>
 
+          <!-- ▸ ANÚNCIO ADSTERRA (300x250, mobile) — entre Mais Acessados e Vídeos -->
+          <div class="ad-mobile-only" style="justify-content:center;margin:18px 0;">
+            <div class="nh-ad-box">
+              <div class="nh-ad-label">PUBLICIDADE</div>
+              <div class="adst-slot" id="ad-home-mid-mobile"
+                   data-adst-key="7242c743fc263202cfb43cf35e31e396" data-adst-w="300" data-adst-h="250"
+                   style="width:300px;height:250px;max-width:100%;margin:0 auto;"></div>
+            </div>
+          </div>
+
           <!-- Vídeos Youtube (faixa horizontal) -->
           <div class="nh-strip-head" style="margin-top:22px;">▶ Vídeos Youtube</div>
           <div id="yt-videos-grid" class="nh-strip-row"></div>
 
         </div>
         <div class="nh-strips-ad">
-          <!-- ▸ ANÚNCIO ADSTERRA: 160x600 -->
+          <!-- ▸ ANÚNCIO ADSTERRA: 160x600 (desktop) -->
           <div class="nh-ad-box">
             <div class="nh-ad-label">PUBLICIDADE</div>
             <div class="adst-slot" id="ad-home-strips-adsterra"
@@ -417,47 +425,57 @@
         </div>
       </div>
 
+      <!-- ▸ ANÚNCIO ADSTERRA (320x50, mobile) — depois dos Vídeos, antes das Ferramentas -->
+      <div class="ad-mobile-only" style="justify-content:center;margin:16px 0;">
+        <div class="adst-slot" id="ad-home-bottom-mobile-adsterra"
+             data-adst-key="cfa0d125d7dabd435f2b18e5f541bba5" data-adst-w="320" data-adst-h="50"
+             style="width:320px;height:50px;max-width:100%;"></div>
+      </div>
+
       <!-- Ferramentas em Destaque -->
       <div class="nh-strip-divider"></div>
       <div class="nh-strip-head">🧰 Ferramentas em Destaque</div>
       <div class="nh-tools-cards">
         <a class="nh-tool-card" href="/calculadora-de-prazo-processual">
           <div class="ci-icon">⏱️</div>
-          <div class="ci-title">Calculadora de Prazo Processual</div>
-          <div class="ci-desc">Dias úteis e corridos, CLT e CPC, com mais de 30 tipos de prazo pré-configurados.</div>
+          <div class="ci-text">
+            <div class="ci-title">Calculadora de Prazo Processual</div>
+            <div class="ci-desc">Dias úteis e corridos, CLT e CPC, com mais de 30 tipos de prazo pré-configurados.</div>
+          </div>
         </a>
         <a class="nh-tool-card" href="/calculadora-verbas-trabalhistas">
           <div class="ci-icon">⚖️</div>
-          <div class="ci-title">Calculadora de Verbas Trabalhistas</div>
-          <div class="ci-desc">Rescisão CLT completa: aviso prévio, férias, 13º, FGTS e multas.</div>
+          <div class="ci-text">
+            <div class="ci-title">Calculadora de Verbas Trabalhistas</div>
+            <div class="ci-desc">Rescisão CLT completa: aviso prévio, férias, 13º, FGTS e multas.</div>
+          </div>
         </a>
         <a class="nh-tool-card" href="/calculadora-salario-liquido">
           <div class="ci-icon">💵</div>
-          <div class="ci-title">Salário Líquido</div>
-          <div class="ci-desc">Simule o holerite com as tabelas de INSS e IRRF 2026.</div>
+          <div class="ci-text">
+            <div class="ci-title">Salário Líquido</div>
+            <div class="ci-desc">Simule o holerite com as tabelas de INSS e IRRF 2026.</div>
+          </div>
         </a>
         <a class="nh-tool-card" href="/correcao-monetaria">
           <div class="ci-icon">💰</div>
-          <div class="ci-title">Correção Monetária</div>
-          <div class="ci-desc">IPCA, IGP-M, INPC e SELIC com dados reais do Banco Central.</div>
+          <div class="ci-text">
+            <div class="ci-title">Correção Monetária</div>
+            <div class="ci-desc">IPCA, IGP-M, INPC e SELIC com dados reais do Banco Central.</div>
+          </div>
         </a>
         <a class="nh-tool-card" href="/calculadora-de-prescricao">
           <div class="ci-icon">⌛</div>
-          <div class="ci-title">Calculadora de Prescrição</div>
-          <div class="ci-desc">Prazos prescricionais trabalhistas e cíveis.</div>
+          <div class="ci-text">
+            <div class="ci-title">Calculadora de Prescrição</div>
+            <div class="ci-desc">Prazos prescricionais trabalhistas e cíveis.</div>
+          </div>
         </a>
       </div>
       <a class="nh-strip-all" href="/ferramentas">Ver todas as ferramentas →</a>
 
     </div>
   </section>
-
-  <!-- ▸ ANÚNCIO ADSTERRA: final da home (320x50, mobile) -->
-  <div class="ad-mobile-only" style="justify-content:center;margin:16px 0;">
-    <div class="adst-slot" id="ad-home-bottom-mobile-adsterra"
-         data-adst-key="cfa0d125d7dabd435f2b18e5f541bba5" data-adst-w="320" data-adst-h="50"
-         style="width:320px;height:50px;max-width:100%;"></div>
-  </div>
 
 </div><!-- /home -->
 
@@ -850,7 +868,7 @@
 <!-- ══════════════════════════════════════
      BLOG / CONTEÚDO — JavaScript
 ══════════════════════════════════════ -->
-<script src="/blog.min.js?v=23" defer></script>
+<script src="/blog.min.js?v=25" defer></script>
 <script src="/js/ads-adsterra.js?v=2" defer></script>
 <script src="/js/analytics.js?v=1" defer></script>
 
