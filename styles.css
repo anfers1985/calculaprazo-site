@@ -1268,8 +1268,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   }
   .nh-quick-featured .nh-quick-name { -webkit-line-clamp:1; }
   .nh-quick-desc {
-    white-space:normal;color:rgba(255,255,255,.65);font-size:.66rem;line-height:1.35;margin-top:2px;
-    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+    white-space:normal;color:rgba(255,255,255,.65);font-size:.63rem;line-height:1.35;margin-top:2px;
+    display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;
   }
   .nh-quick-arr { display:none; }
   .nh-quick-all {
