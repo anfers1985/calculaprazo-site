@@ -354,7 +354,9 @@ function toggleSociais(e){
 
   // Fallback: carrega via RSS (sem API key, via allorigins proxy)
   function renderYTChannelBtn(){
-    return '<a href="https://www.youtube.com/@CalculaPrazo" target="_blank" rel="noopener noreferrer" class="nh-strip-all">Ver canal no YouTube →</a>';
+    var btn=document.getElementById('yt-channel-btn');
+    if(btn) btn.style.display='inline-block';
+    return '';
   }
 
   function loadYouTubeViaRSS(grid){
