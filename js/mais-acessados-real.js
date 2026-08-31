@@ -77,6 +77,7 @@
       var latest = posts
         .filter(function (p) {
           var id = p.id || p.slug;
+          if (p.category === 'processual-sumulas-tst') return false; // não flooda "Últimos Conteúdos" com o lote de súmulas
           return id && id !== currentSlug && p.date;
         })
         .sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); })
