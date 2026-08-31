@@ -107,7 +107,7 @@ var BLOG_SEC_MAP={
   'orgaos-publicos':   ['noticias-mte-mpt','noticias-mte','noticias-mpt','orgaos-outros'],
   'legislacao-normas': ['legislacao-normas','legislacao-clt','legislacao-cf','esocial-fgts-digital','esocial','fgts-digital','legislacao-previdenciario','legislacao-sindical','sindical','legislacao-portarias','legislacao-nr','legislacao-outros'],
   'rh-gestao':         ['orientacoes-praticas','saude-seguranca','rh-folha','rh-jornada','rh-contrato','rh-salario','rh-rescisao','rh-beneficios','rh-ctps','rh-sindical','rh-fiscalizacao','rh-inss','rh-modelos','rh-outros'],
-  'processual':        ['artigos','modelos','processual-peticoes','processual-pratica','processual-analises','processual-outros'],
+  'processual':        ['artigos','modelos','processual-peticoes','processual-pratica','processual-analises','processual-outros','processual-sumulas-tst'],
   'essenciais':        ['essenciais-livros','essenciais-equipamentos','essenciais-cursos','essenciais-outros'],
   'outros':            ['geral']
 };
@@ -116,7 +116,7 @@ var BLOG_SUBSEC_MAP={
   'orgaos-publicos':   [['noticias-mte','MTE'],['noticias-mpt','MPT'],['orgaos-outros','+ outros órgãos']],
   'legislacao-normas': [['legislacao-clt','CLT'],['legislacao-cf','Constituição Federal'],['esocial','eSocial'],['fgts-digital','FGTS'],['legislacao-previdenciario','Previdenciário'],['legislacao-sindical','Sindical'],['legislacao-portarias','Portarias'],['legislacao-nr','NR'],['legislacao-normas','+ outras Legislação']],
   'rh-gestao':         [['rh-folha','Folha de Pagamento'],['rh-jornada','Jornada de Trabalho'],['rh-contrato','Contrato de Trabalho'],['rh-salario','Salário'],['rh-rescisao','Rescisão Contratual'],['saude-seguranca','Saúde e Segurança'],['rh-beneficios','Benefícios'],['rh-ctps','CTPS'],['rh-sindical','Rel. Sindical'],['rh-fiscalizacao','Fiscalização'],['rh-inss','INSS'],['rh-modelos','Modelos'],['orientacoes-praticas','+ outros temas de RH']],
-  'processual':        [['processual-peticoes','Petições e Peças'],['processual-pratica','Prática Advocatícia'],['modelos','Modelos'],['artigos','Artigos'],['processual-analises','Análises'],['processual-outros','+ outros temas']],
+  'processual':        [['processual-peticoes','Petições e Peças'],['processual-pratica','Prática Advocatícia'],['modelos','Modelos'],['artigos','Artigos'],['processual-analises','Análises'],['processual-sumulas-tst','Súmulas TST Comentadas'],['processual-outros','+ outros temas']],
   'essenciais':        [['essenciais-livros','📚 Livros'],['essenciais-equipamentos','🖥️ Equipamentos'],['essenciais-cursos','🎓 Cursos'],['essenciais-outros','📦 Outros']]
 };
 var BLOG_CUR_SEC='';// seção activa
