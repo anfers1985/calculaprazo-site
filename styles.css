@@ -1910,7 +1910,6 @@ img[src*="m.media-amazon.com"] {
 .ad-smartlink{display:block;text-align:center;font-size:.72rem;color:var(--txt-s);border:1px dashed var(--brd);border-radius:8px;padding:8px;margin:10px 0;text-decoration:none;background:var(--b50);}
 @media(max-width:767px){
   .tool-grid{grid-template-columns:1fr;padding:0;}
-  .tool-sidebar{display:none;}
   /* Mobile deve permanecer idêntico à versão original: nada de resumo-rápido
      nem grade de "outras ferramentas" novas abaixo da calculadora no celular. */
   .resumo-rapido{display:none;}
@@ -1937,7 +1936,11 @@ img[src*="m.media-amazon.com"] {
 @media(max-width:767px){
   .pbw-grid{grid-template-columns:1fr;}
   .pbw-grid .article-wrap{max-width:800px;margin:0 auto;}
-  .post-sidebar{display:none;}
+}
+
+/* ═══ CAPA COM MÚLTIPLAS FOTOS DE PRODUTO (artigos "Essenciais" / rankings) ═══ */
+@media(max-width:767px){
+  .prod-cover-row { height:170px !important; }
 }
 
 /* ═══ AJUSTE DE LEITURA EM DESKTOP ═══
