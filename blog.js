@@ -2,6 +2,11 @@
 var BLOG_POSTS=[];var BLOG_CAT='';var BLOG_H_FILTER='';var BLOG_VIEW='grid';var blogPage=1;var BLOG_PER_PAGE=20;var BLOG_MAX_PAGES=Infinity;
 var BLOG_MODE='explore'; // 'explore' (cards de categoria) ou 'list' (resultados filtrados)
 
+// Categorias que existem como conteúdo próprio (com seção/hub dedicado), mas
+// NÃO devem aparecer nas vitrines gerais de "artigos" (home, /conteudo "Todos",
+// sidebar de recentes) — só aparecem quando a categoria é filtrada diretamente.
+var BLOG_EXCLUDE_FROM_GENERAL=['processual-sumulas-tst'];
+
 // ── Alternância Explorar ⇄ Resultados (página /conteudo) ──────
 function showBlogResultsMode(){
   BLOG_MODE='list';
@@ -195,7 +200,7 @@ function buildPostCard(p){
   var iu=p.image||'';
   var ih=iu
     ?'<div style="aspect-ratio:16/9;overflow:hidden;border-radius:10px 10px 0 0;margin:-1px -1px 0;"><img src="'+iu+'" alt="" style="width:100%;height:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display=\'none\'"></div>'
-    :'<div style="height:72px;background:linear-gradient(135deg,var(--b50),#fff);border-radius:10px 10px 0 0;margin:-1px -1px 0;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">&#x1F4F0;</div>';
+    :'';
   var cb=cl?'<span style="display:inline-block;padding:2px 8px;border-radius:999px;font-size:.65rem;font-weight:700;background:var(--b50);color:var(--acc);border:1px solid var(--b100);margin-right:3px;">'+cl+'</span>':'';
   return '<a href="/blog/'+(p.id||p.slug||'')+'.html" style="display:block;text-decoration:none;background:var(--card);border:1.5px solid var(--brd);border-radius:12px;overflow:hidden;transition:all .2s;box-shadow:var(--sh);" onmouseover="this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'var(--shl)\';this.style.borderColor=\'var(--b200)\'" onmouseout="this.style.transform=\'\';this.style.boxShadow=\'var(--sh)\';this.style.borderColor=\'var(--brd)\'">'
     +ih+'<div style="padding:14px;"><div style="margin-bottom:8px;">'+cb+'</div>'
@@ -251,7 +256,7 @@ function renderBlogSection(){
   var posts=BLOG_POSTS.filter(function(p){
     var secCats=BLOG_CUR_SEC?BLOG_BLOG_SEC_MAP_CATS(BLOG_CUR_SEC):null;
     var mc;
-    if(!BLOG_CAT){mc=true;}
+    if(!BLOG_CAT){mc=BLOG_EXCLUDE_FROM_GENERAL.indexOf(p.category)===-1;}
     else if(BLOG_CAT.indexOf('__sec__')===0){mc=secCats?secCats.indexOf(p.category)>=0:true;}
     else{mc=p.category===BLOG_CAT;}
     var mt=!search||(p.title||'').toLowerCase().indexOf(search)>=0||(p.excerpt||'').toLowerCase().indexOf(search)>=0;
@@ -279,7 +284,7 @@ function filterHomeBlog(tag){BLOG_H_FILTER=tag;renderHomeBlog();}
 
 function renderHomeBlog(){
   var grid=document.getElementById('home-blog-grid');if(!grid)return;
-  var posts=BLOG_POSTS.filter(function(p){return!BLOG_H_FILTER||p.category===BLOG_H_FILTER;})
+  var posts=BLOG_POSTS.filter(function(p){return(!BLOG_H_FILTER||p.category===BLOG_H_FILTER)&&(BLOG_H_FILTER||BLOG_EXCLUDE_FROM_GENERAL.indexOf(p.category)===-1);})
     .sort(function(a,b){return(b.date||'').localeCompare(a.date||'');}).slice(0,15);
   if(!posts.length){
     grid.innerHTML='<div style="grid-column:1/-1;text-align:center;color:var(--txt-s);padding:40px 0;font-size:.88rem;">Nenhum artigo publicado ainda. Em breve!</div>';
@@ -290,7 +295,7 @@ function renderHomeBlog(){
 
 function renderSidebarPosts(){
   var list=document.getElementById('sidebar-posts-list');if(!list)return;
-  var posts=BLOG_POSTS.slice().sort(function(a,b){return(b.date||'').localeCompare(a.date||'');}).slice(0,6);
+  var posts=BLOG_POSTS.filter(function(p){return BLOG_EXCLUDE_FROM_GENERAL.indexOf(p.category)===-1;}).sort(function(a,b){return(b.date||'').localeCompare(a.date||'');}).slice(0,6);
   if(!posts.length)return;
   list.innerHTML=posts.map(function(p){
     var cl=p.category_label||'';
@@ -603,7 +608,7 @@ function renderNhRecentes(){
   var smallEl = document.getElementById('nh-small-list');
   if(!featEl || !smallEl) return;
   var posts = BLOG_POSTS.filter(function(p){
-    return !NH_HOME_SEC || nhSecOfCat(p.category)===NH_HOME_SEC;
+    return NH_HOME_SEC ? nhSecOfCat(p.category)===NH_HOME_SEC : BLOG_EXCLUDE_FROM_GENERAL.indexOf(p.category)===-1;
   }).sort(function(a,b){return (b.date||'').localeCompare(a.date||'');}).slice(0,5);
   if(!posts.length){
     featEl.innerHTML='';
