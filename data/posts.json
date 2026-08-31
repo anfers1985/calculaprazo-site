@@ -1,5 +1,29 @@
 [
   {
+    "id": "justa-causa-trabalhador-outro-emprego-licenca-medica",
+    "title": "Trabalhador tem justa causa mantida após atuar afastado",
+    "category": "jurisprudencia-trts",
+    "category_label": "TRT",
+    "excerpt": "TRT-MG manteve justa causa de trabalhador que prestou serviços a outro empregador durante licença médica. Postagens no WhatsApp serviram de prova.",
+    "image": "https://images.unsplash.com/photo-1600859343194-a5fae9ef9f66?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-31",
+    "updatedAt": "2026-08-31",
+    "tags": []
+  },
+  {
+    "id": "tst-indenizacao-caseiro-baleado-assalto-fazenda",
+    "title": "TST mantém indenização a caseiro baleado em assalto rural",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "TST confirma indenização a caseiro baleado durante assalto em fazenda que já registrava ocorrências criminosas anteriores.",
+    "image": "https://images.unsplash.com/photo-1723900517234-e2aa38e7361c?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-08-31",
+    "updatedAt": "2026-08-31",
+    "tags": []
+  },
+  {
     "id": "salario-minimo-1741-2027-projecao-governo",
     "title": "Salário mínimo pode chegar a R$ 1.741 em 2027",
     "category": "legislacao-normas",
