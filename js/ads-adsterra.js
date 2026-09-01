@@ -29,23 +29,63 @@
     el.appendChild(iframe);
   }
 
+  /* ── Native Banner: altura dinâmica, isolado via /ads/adsterra-native-slot.html ── */
+  function loadNativeSlot(el) {
+    if (el.getAttribute('data-adst-loaded')) return;
+    el.setAttribute('data-adst-loaded', '1');
+
+    var iframe = document.createElement('iframe');
+    iframe.title = 'Publicidade';
+    iframe.setAttribute('scrolling', 'no');
+    iframe.setAttribute('loading', 'lazy');
+    iframe.setAttribute('aria-hidden', 'true');
+    iframe.style.cssText = 'width:100%;height:0;border:none;display:block;';
+    iframe.src = '/ads/adsterra-native-slot.html';
+    el.appendChild(iframe);
+  }
+
+  window.addEventListener('message', function (ev) {
+    if (!ev.data || typeof ev.data.adsterraNativeHeight !== 'number') return;
+    var frames = document.querySelectorAll('.adst-native-slot iframe');
+    for (var i = 0; i < frames.length; i++) {
+      if (frames[i].contentWindow === ev.source) {
+        frames[i].style.height = ev.data.adsterraNativeHeight + 'px';
+        break;
+      }
+    }
+  });
+
   function init() {
     var slots = document.querySelectorAll('.adst-slot[data-adst-key]');
-    if (!slots.length) return;
+    var nativeSlots = document.querySelectorAll('.adst-native-slot');
 
     if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            loadSlot(entry.target);
-            io.unobserve(entry.target);
-          }
-        });
-      }, { rootMargin: '200px 0px' });
-      slots.forEach(function (el) { io.observe(el); });
+      if (slots.length) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              loadSlot(entry.target);
+              io.unobserve(entry.target);
+            }
+          });
+        }, { rootMargin: '200px 0px' });
+        slots.forEach(function (el) { io.observe(el); });
+      }
+      if (nativeSlots.length) {
+        var ioN = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              loadNativeSlot(entry.target);
+              ioN.unobserve(entry.target);
+            }
+          });
+        }, { rootMargin: '200px 0px' });
+        nativeSlots.forEach(function (el) { ioN.observe(el); });
+      }
     } else {
       // Fallback sem IntersectionObserver: carrega tudo direto
       slots.forEach(loadSlot);
+      nativeSlots.forEach(loadNativeSlot);
     }
   }
 

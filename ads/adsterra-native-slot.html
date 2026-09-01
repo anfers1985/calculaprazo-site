@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<title>ad</title>
+<style>
+  html, body { margin: 0; padding: 0; overflow: hidden; background: transparent; }
+</style>
+</head>
+<body>
+<!-- ════════════════════════════════════════════════════
+     Calcula Prazo — slot isolado do Adsterra NATIVE BANNER
+     Carregado via <iframe src="/ads/adsterra-native-slot.html">
+     a partir de js/ads-adsterra.js (classe .adst-native-slot).
+
+     Diferente do banner de tamanho fixo (adsterra-slot.html, que usa
+     highperformanceformat.com + atOptions), o Native Banner injeta
+     HTML diretamente no <body> via um <script src> próprio por zona
+     (profitableratecpmnetwork.com), e sua altura varia com o número
+     de itens renderizados — por isso este arquivo mede a altura do
+     conteúdo e avisa a página pai via postMessage para redimensionar
+     o iframe (evita corte ou espaço em branco).
+
+     Este arquivo herda o CSP permissivo definido em _headers para
+     /ads/* (script-src com wildcard https:), então funciona mesmo
+     que o domínio da Adsterra mude.
+     ════════════════════════════════════════════════════ -->
+<script async="async" data-cfasync="false" src="https://pl29266864.profitableratecpmnetwork.com/176ae08f6ed23b4817e85379056ba7b6/invoke.js"></script>
+<div id="container-176ae08f6ed23b4817e85379056ba7b6"></div>
+<script>
+  (function () {
+    'use strict';
+
+    function reportHeight() {
+      var h = document.body.scrollHeight;
+      if (h > 0) {
+        parent.postMessage({ adsterraNativeHeight: h }, '*');
+      }
+    }
+
+    // O invoke.js injeta o conteúdo de forma assíncrona; faz polling
+    // curto no início e depois observa mutações no DOM.
+    var tries = 0;
+    var iv = setInterval(function () {
+      tries += 1;
+      reportHeight();
+      if (tries > 20) clearInterval(iv);
+    }, 300);
+
+    if ('MutationObserver' in window) {
+      new MutationObserver(reportHeight).observe(document.body, { childList: true, subtree: true });
+    }
+
+    window.addEventListener('load', reportHeight);
+  })();
+</script>
+</body>
+</html>
