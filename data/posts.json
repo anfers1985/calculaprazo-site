@@ -1,5 +1,17 @@
 [
   {
+    "id": "tema-136-tst-assinatura-cartao-ponto-controle-jornada",
+    "title": "Tema 136 do TST: assinatura não é exigida no cartão de ponto",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "TST define no Tema 136 que a falta de assinatura do empregado não invalida, por si só, os controles de jornada registrados pelo empregador.",
+    "image": "https://images.unsplash.com/photo-1785088561596-a22c8ade7fc1?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-01",
+    "updatedAt": "2026-09-01",
+    "tags": []
+  },
+  {
     "id": "tst-empresa-condenada-falha-freio-motorista",
     "title": "TST condena empresa por risco causado por falha em freio",
     "category": "geral",
