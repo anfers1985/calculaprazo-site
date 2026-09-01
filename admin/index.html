@@ -2222,7 +2222,7 @@ async function publicarPost(post, pat) {
     // 1. Gerar HTML do post
     toast('Gerando HTML do post...', 'ok');
     let template = '';
-    const respTemp = await fetch('/blog/POST_TEMPLATE.html');
+    const respTemp = await fetch('/blog/POST_TEMPLATE.html', { cache: 'no-store' });
     if(respTemp.ok) template = await respTemp.text();
     else throw new Error('Template não encontrado em /blog/POST_TEMPLATE.html');
 
@@ -3062,7 +3062,7 @@ async function baixarHTML() {
       'geral':'Geral'
     };
 
-    const respTemp = await fetch('/blog/POST_TEMPLATE.html');
+    const respTemp = await fetch('/blog/POST_TEMPLATE.html', { cache: 'no-store' });
     if(!respTemp.ok) throw new Error('Template não encontrado');
     const template = await respTemp.text();
 
