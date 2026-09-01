@@ -1,5 +1,41 @@
 [
   {
+    "id": "tst-empresa-condenada-falha-freio-motorista",
+    "title": "TST condena empresa por risco causado por falha em freio",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "TST condena transportadora a indenizar motorista que foi obrigado a seguir viagem com defeito no sistema de freios, mesmo sem acidente.",
+    "image": "https://images.unsplash.com/photo-1577075473292-5f62dfae5522?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-01",
+    "updatedAt": "2026-09-01",
+    "tags": []
+  },
+  {
+    "id": "tst-anula-pericia-perito-socio-assistente-tecnico",
+    "title": "TST anula perícia após perito virar sócio",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "TST anulou perícia após perito se tornar sócio de assistente técnico da empresa, pois a relação poderia comprometer a imparcialidade da prova.",
+    "image": "https://images.unsplash.com/photo-1654588834754-33346e3ee095?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-01",
+    "updatedAt": "2026-09-01",
+    "tags": []
+  },
+  {
+    "id": "tst-tema-001-antecedentes-criminais-dano-moral",
+    "title": "TST Tema 001: quando antecedentes criminais geram dano moral",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "Entenda a tese vinculante do TST sobre exigência de antecedentes criminais na contratação, hipóteses permitidas e impactos na prática trabalhista.",
+    "image": "https://images.unsplash.com/photo-1629904888780-8de0c7aeed28?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-01",
+    "updatedAt": "2026-09-01",
+    "tags": []
+  },
+  {
     "id": "justa-causa-trabalhador-outro-emprego-licenca-medica",
     "title": "Trabalhador tem justa causa mantida após atuar afastado",
     "category": "jurisprudencia-trts",
