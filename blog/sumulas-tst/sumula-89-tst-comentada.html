@@ -1410,8 +1410,8 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     <aside class="post-sidebar" data-current-slug="sumulas-tst/sumula-89-tst-comentada"><div class="sidebar-card">
         <h3>🔎 Navegue pelas Súmulas do TST</h3>
         <div style="display:flex;gap:6px;margin-bottom:12px;">
-          <input type="text" placeholder="Nº da súmula..." style="flex:1;padding:8px 10px;border:1.5px solid var(--brd);border-radius:8px;font-size:.82rem;font-family:var(--fh);">
-          <button style="background:var(--acc);color:#fff;border:none;border-radius:8px;padding:8px 12px;font-size:.85rem;cursor:pointer;">🔍</button>
+          <input type="text" id="sumula-search-input" placeholder="Nº da súmula..." style="flex:1;padding:8px 10px;border:1.5px solid var(--brd);border-radius:8px;font-size:.82rem;font-family:var(--fh);" onkeypress="if(event.key===&#39;Enter&#39;){sumulaGoTo();}">
+          <button onclick="sumulaGoTo()" style="background:var(--acc);color:#fff;border:none;border-radius:8px;padding:8px 12px;font-size:.85rem;cursor:pointer;">🔍</button>
         </div>
         <div class="sidebar-list" style="gap:0;">
           <a class="sidebar-item" href="/blog/sumulas-tst/sumula-87-tst-comentada.html" style="border-bottom:1px solid var(--brd);"><span class="sidebar-item-body"><span class="sidebar-item-title">Súmula 87</span></span></a><a class="sidebar-item" href="/blog/sumulas-tst/sumula-88-tst-comentada.html" style="border-bottom:1px solid var(--brd);"><span class="sidebar-item-body"><span class="sidebar-item-title">Súmula 88 (cancelada)</span></span></a><a class="sidebar-item" href="/blog/sumulas-tst/sumula-89-tst-comentada.html" style="border-bottom:1px solid var(--brd);background:var(--b50);border-radius:8px;"><span class="sidebar-item-body"><span class="sidebar-item-title" style="color:var(--acc);">▸ Súmula 89</span></span></a><a class="sidebar-item" href="/blog/sumulas-tst/sumula-90-tst-comentada.html" style="border-bottom:1px solid var(--brd);"><span class="sidebar-item-body"><span class="sidebar-item-title">Súmula 90 (cancelada)</span></span></a><a class="sidebar-item" href="/blog/sumulas-tst/sumula-91-tst-comentada.html" style="border-bottom:1px solid var(--brd);"><span class="sidebar-item-body"><span class="sidebar-item-title">Súmula 91</span></span></a>
@@ -1620,6 +1620,17 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
 
 <script>
+function sumulaGoTo(){
+  var el = document.getElementById("sumula-search-input");
+  if(!el) return;
+  var n = parseInt((el.value||"").replace(/\D/g,""), 10);
+  if(!n || n < 1 || n > 463){
+    el.style.borderColor = "#DC2626";
+    setTimeout(function(){ el.style.borderColor = ""; }, 1500);
+    return;
+  }
+  window.location.href = "/blog/sumulas-tst/sumula-" + n + "-tst-comentada.html";
+}
 // ── READING PROGRESS ──────────────────────────
 window.addEventListener('scroll', function() {
   const doc = document.documentElement;

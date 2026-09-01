@@ -1938,11 +1938,6 @@ img[src*="m.media-amazon.com"] {
   .pbw-grid .article-wrap{max-width:800px;margin:0 auto;}
 }
 
-/* ═══ CAPA COM MÚLTIPLAS FOTOS DE PRODUTO (artigos "Essenciais" / rankings) ═══ */
-@media(max-width:767px){
-  .prod-cover-row { height:170px !important; }
-}
-
 /* ═══ AJUSTE DE LEITURA EM DESKTOP ═══
    Mantém celulares e tablets exatamente como estão. Em telas grandes, reduz
    a largura do conteúdo para criar margens laterais de leitura mais confortáveis. */
