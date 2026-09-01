@@ -176,11 +176,11 @@ function injectInlineRelatedLinks(html, post, allPosts) {
   return html.slice(0, insertPos) + buildLeiaTambemHTML(related[0]) + html.slice(insertPos);
 }
 
-const AD_MID_HTML = '\n  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (300x250 desktop / 300x250 mobile) -->\n'
+const AD_MID_HTML = '\n  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (native desktop / 300x250 mobile) -->\n'
   + '  <div style="display:flex;justify-content:center;">\n'
-  + '    <div class="adst-slot ad-desktop-only" id="ad-post-mid-adsterra"\n'
-  + '         data-adst-key="7242c743fc263202cfb43cf35e31e396" data-adst-w="300" data-adst-h="250"\n'
-  + '         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>\n'
+  + '    <div class="ad-desktop-only" id="ad-post-mid-native" style="width:100%;max-width:100%;margin:20px 0;">\n'
+  + '      <div class="adst-native-slot" style="width:100%;"></div>\n'
+  + '    </div>\n'
   + '    <div class="adst-slot ad-mobile-only" id="ad-post-mid-mobile-adsterra"\n'
   + '         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"\n'
   + '         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>\n'
@@ -201,6 +201,20 @@ function injectMidArticleAd(html) {
   if (!pMatches.length) return html;
   const mid = pMatches[Math.floor(pMatches.length / 2)];
   return html.slice(0, mid.index + mid[0].length) + AD_MID_HTML + html.slice(mid.index + mid[0].length);
+}
+
+const AD_NATIVE_AFTER_RESUMO_HTML = '\n  <!-- ▸ ANÚNCIO ADSTERRA NATIVE BANNER: abaixo do resumo rápido (desktop) -->\n'
+  + '  <div class="ad-desktop-only" style="display:flex;justify-content:center;flex-direction:column;align-items:center;margin:20px 0;">\n'
+  + '    <span class="ad-eyebrow">Publicidade</span>\n'
+  + '    <div class="adst-native-slot" style="width:100%;"></div>\n'
+  + '  </div>\n';
+
+function injectNativeAdAfterResumo(html) {
+  const resumoRegex = /<div class="resumo-rapido">[\s\S]*?<\/ul>\s*<\/div>/;
+  const m = resumoRegex.exec(html);
+  if (!m) return html;
+  const insertPos = m.index + m[0].length;
+  return html.slice(0, insertPos) + AD_NATIVE_AFTER_RESUMO_HTML + html.slice(insertPos);
 }
 
 function buildPnPrevSlot(p) {
@@ -335,7 +349,7 @@ function publicarItem(item, template, postsAtuais) {
     .replace(/\{\{UPDATED_DATE\}\}/g, post.updatedAt || post.date)
     .replace(/\{\{UPDATED_DATE_BR\}\}/g, '')
     .replace(/\{\{UPDATED_LINE\}\}/g, '')
-    .replace(/\{\{CONTENT\}\}/g, injectMidArticleAd(injectInlineRelatedLinks(sanitizeArticleContent(post.content), post, postsAtuais)))
+    .replace(/\{\{CONTENT\}\}/g, injectNativeAdAfterResumo(injectMidArticleAd(injectInlineRelatedLinks(sanitizeArticleContent(post.content), post, postsAtuais))))
     .replace(/\{\{TAGS_BADGES\}\}/g, tagsBadgesHTML)
     .replace(/\{\{TAGS_JSON\}\}/g, tagsJSON)
     .replace(/\{\{OG_IMAGE\}\}/g, ogImageTag)
