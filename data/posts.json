@@ -1,5 +1,29 @@
 [
   {
+    "id": "tema-003-tst-honorarios-advocaticios-reforma-trabalhista",
+    "title": "Tema 003 do TST: honorários advocatícios antes da Reforma",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "Entenda a tese vinculante do Tema 003 do TST sobre honorários advocatícios em ações trabalhistas ajuizadas antes de 11/11/2017.",
+    "image": "https://images.unsplash.com/photo-1423592707957-3b212afa6733?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-03",
+    "updatedAt": "2026-09-03",
+    "tags": []
+  },
+  {
+    "id": "enquadramento-sindical-instituicoes-pagamento-passivo-trabalhista",
+    "title": "Enquadramento sindical de IPs exige análise criteriosa",
+    "category": "rh-sindical",
+    "category_label": "Rel. Sindical",
+    "excerpt": "Enquadramento sindical de instituições de pagamento exige análise da atividade preponderante e pode evitar diferenças salariais e passivos trabalhistas.",
+    "image": "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-03",
+    "updatedAt": "2026-09-03",
+    "tags": []
+  },
+  {
     "id": "tst-férias-13-proporcionais-justa-causa-atestado-adulterado",
     "title": "TST afasta férias e 13º proporcionais após justa causa",
     "category": "jurisprudencia-tst",
