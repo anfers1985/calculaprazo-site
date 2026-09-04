@@ -50,7 +50,7 @@ const PRAZOS = {
     {nome:"Recurso de Embargos (SDI)",dias:8,tipoDias:"uteis",lei:"Art. 894, CLT",cont:"Da publicação do acórdão da Turma TST",obs:"Para uniformização de jurisprudência interna no TST, perante SDI-1 ou SDI-2."},
     {nome:"Ação Rescisória",dias:730,tipoDias:"corridos",lei:"Art. 975 CPC c/c Art. 836 CLT",cont:"Do trânsito em julgado da decisão",obs:"Prazo decadencial de 2 anos (730 dias corridos). Improrrogável."},
     {nome:"Depósito Recursal",dias:8,tipoDias:"uteis",lei:"Art. 899, CLT",cont:"Coincide com o prazo do recurso",obs:"Pressuposto de admissibilidade. Dispensado para Entes Públicos e beneficiários da JG."},
-    {nome:"Contestação (Reclamação)",dias:5,tipoDias:"uteis",lei:"Art. 841, §1º, CLT",cont:"Da notificação para audiência",obs:"A contestação pode ser apresentada na própria audiência inaugural."},
+    {nome:"Contestação (Reclamação)",dias:5,tipoDias:"corridos",lei:"Art. 841, CLT",cont:"Intervalo mínimo entre a notificação e a audiência (não é prazo de protocolo)",obs:"Atenção: na CLT, a contestação é apresentada oralmente na própria audiência (Art. 847), não por protocolo em um prazo contado da notificação como no CPC. O Art. 841 exige apenas um intervalo mínimo de 5 dias entre a notificação e a data marcada para a audiência."},
   ],
   civil:[
     {nome:"Contestação",dias:15,tipoDias:"uteis",lei:"Art. 335, CPC",cont:"Da citação do réu",obs:"Fazenda Pública, MP e Defensoria têm 30 dias úteis (Arts. 183 e 186, CPC)."},
@@ -71,8 +71,7 @@ const PRAZOS = {
     {nome:"Reclamação – Simples Nacional",dias:30,tipoDias:"corridos",lei:"Art. 109, Res. CGSN 140/2018",cont:"Da ciência do ato impugnado",obs:"Para débitos apurados no Simples Nacional."},
     {nome:"Prescrição Crédito Tributário",dias:1825,tipoDias:"corridos",lei:"Art. 174, CTN",cont:"Da constituição definitiva do crédito",obs:"O Fisco tem 5 anos para ajuizar Execução Fiscal. Após este prazo, o crédito está prescrito."},
     {nome:"Ação Anulatória de Débito Fiscal",dias:1825,tipoDias:"corridos",lei:"Art. 169 CTN c/c Decreto 20.910/1932",cont:"Da constituição definitiva do crédito",obs:"Prazo de 5 anos para o contribuinte discutir o débito judicialmente."},
-    {nome:"DCTF – Entrega",dias:15,tipoDias:"uteis",lei:"IN RFB 2.005/2021",cont:"Até 15º dia útil do 2º mês subsequente",obs:"Pessoas jurídicas em geral. Verificar exceções para optantes do Simples Nacional."},
-    {nome:"PER/DCOMP – Compensação",dias:5,tipoDias:"uteis",lei:"Art. 74, Lei 9.430/1996",cont:"Verificar prazo do indébito",obs:"Crédito deve ser líquido, certo e não prescrito. Há vedações específicas (Art. 74, §3º)."},
+    {nome:"PER/DCOMP – Compensação",dias:1825,tipoDias:"corridos",lei:"Art. 74, §5º, Lei 9.430/1996",cont:"Da entrega da declaração de compensação (ou do trânsito em julgado, se o crédito vier de decisão judicial)",obs:"Prazo prescricional de 5 anos para transmitir a PER/DCOMP. Se a compensação não for homologada, o contribuinte tem 30 dias (Art. 74, §7º) para pagar o débito indevidamente compensado."},
   ],
   rh:[
     {nome:"Aviso Prévio (mínimo)",dias:30,tipoDias:"corridos",lei:"Art. 487, CLT",cont:"Da comunicação da rescisão",obs:"Aumenta 3 dias por ano completo de serviço (Lei 12.506/2011), até 90 dias. Fórmula: 30 + (anos × 3)."},
@@ -82,7 +81,6 @@ const PRAZOS = {
     {nome:"Entrega da CTPS",dias:5,tipoDias:"uteis",lei:"Art. 29, CLT",cont:"Da admissão do empregado",obs:"Empregador deve anotar e devolver a CTPS em até 5 dias úteis. Atraso gera indenização."},
     {nome:"FGTS – Depósito Mensal",dias:7,tipoDias:"corridos",lei:"Art. 15, Lei 8.036/1990",cont:"Até o dia 7 do mês seguinte",obs:"Alíquota de 8% sobre a remuneração (2% para aprendizes). Não recolhimento gera multa e juros."},
     {nome:"eSocial – Admissão",dias:1,tipoDias:"corridos",lei:"Resolução CCESOCIAL 001/2021",cont:"Antes do início das atividades",obs:"Evento S-2200 deve ser enviado até o dia anterior ao início. Para domésticos, até o dia da admissão."},
-    {nome:"PPP – Entrega na Rescisão",dias:15,tipoDias:"corridos",lei:"Art. 58-A, Lei 8.213/1991",cont:"Da rescisão do contrato",obs:"Perfil Profissiográfico Previdenciário. Obrigatório para atividades com exposição a agentes nocivos."},
     {nome:"Período Aquisitivo (Férias)",dias:365,tipoDias:"corridos",lei:"Art. 130, CLT",cont:"Da data de admissão",obs:"Após 12 meses de contrato. O empregador tem mais 12 meses para conceder (período concessivo)."},
     {nome:"Depósito CCT/ACT no MTE",dias:8,tipoDias:"uteis",lei:"Art. 614, CLT",cont:"Da assinatura do instrumento coletivo",obs:"CCTs e ACTs devem ser depositados no MTE em até 8 dias da assinatura."},
   ]
@@ -321,11 +319,15 @@ async function buscarIndicesBCB(serie, dataIni, dataFim) {
 function calcCorrecaoFallback(val, iniStr, fimStr, idx) {
   // Cálculo por taxas anuais quando API indisponível
   const taxas = TAXAS_FALLBACK[idx] || TAXAS_FALLBACK.ipca;
+  const anosConhecidos = Object.keys(taxas).map(Number);
+  const ultimoAnoConhecido = Math.max(...anosConhecidos);
   const ini = new Date(iniStr + 'T12:00:00');
   const fim = new Date(fimStr + 'T12:00:00');
   let fator = 1;
   for (let y = ini.getFullYear(); y <= fim.getFullYear(); y++) {
-    const rate = (taxas[y] || 5) / 100;
+    // Para anos ainda não cadastrados (ex.: ano corrente, que só fecha em janeiro seguinte),
+    // usa a taxa do último ano fechado disponível como estimativa, em vez de um valor genérico fixo.
+    const rate = (taxas[y] !== undefined ? taxas[y] : taxas[ultimoAnoConhecido]) / 100;
     let meses = 12;
     if (y === ini.getFullYear() && y === fim.getFullYear()) meses = Math.max(1, fim.getMonth() - ini.getMonth() + 1);
     else if (y === ini.getFullYear()) meses = 12 - ini.getMonth();
@@ -1025,7 +1027,10 @@ function calcTrabalhista(){
     ? (base / 12 * avosFerProp) * (4/3) : 0;
 
   // ── 13º proporcional ─────────────────────────────────
-  const avos13  = dem.getMonth() + (diasUltimoMes >= 15 ? 1 : 0);
+  // Conta a partir de 1º de janeiro do ano da demissão, OU da data de admissão,
+  // o que for posterior (caso admissão e demissão sejam no mesmo ano civil).
+  const mesInicio13 = (adm.getFullYear() === dem.getFullYear()) ? adm.getMonth() : 0;
+  const avos13  = (dem.getMonth() - mesInicio13) + (diasUltimoMes >= 15 ? 1 : 0);
   const decTerc = (tipo !== 'comjusta' && avos13 > 0) ? base / 12 * avos13 : 0;
 
   // ── Multa FGTS (Multa é verba rescisória — paga no TRCT) ─
@@ -1266,6 +1271,189 @@ function calcIntermitente(){
     ['ir-rem','ir-dsr','ir-ferias','ir-terco','ir-13','ir-fgts','ir-inss','ir-irrf','ir-bruto','ir-liquido'].forEach(id=>{document.getElementById(id).textContent='—';});
   }
 }
+
+// ─── HORAS EXTRAS ────────────────────────────────────
+function calcHorasExtras(){
+  const rb = document.getElementById('he-res'); rb.classList.remove('show','err');
+  try{
+    const sal      = parseFloat(document.getElementById('he-sal').value);
+    const divisor  = parseFloat(document.getElementById('he-div').value) || 220;
+    const horasDU  = parseFloat(document.getElementById('he-horas-du').value) || 0;
+    const pctDU    = parseFloat(document.getElementById('he-pct-du').value);
+    const horasDSF = parseFloat(document.getElementById('he-horas-dsf').value) || 0;
+    const pctDSF   = parseFloat(document.getElementById('he-pct-dsf').value);
+    const habitual = document.getElementById('he-habitual').checked;
+    const diasUteis   = parseFloat(document.getElementById('he-dias-uteis').value) || 0;
+    const diasRepouso = parseFloat(document.getElementById('he-dias-repouso').value) || 0;
+
+    if(isNaN(sal) || sal<=0) throw new Error('Informe o salário base.');
+    if(horasDU<=0 && horasDSF<=0) throw new Error('Informe ao menos uma quantidade de horas extras.');
+
+    const pDU  = isNaN(pctDU)  ? 50  : pctDU;
+    const pDSF = isNaN(pctDSF) ? 100 : pctDSF;
+
+    const valorHoraNormal = sal / divisor;
+    const valorHoraDU  = valorHoraNormal * (1 + pDU/100);
+    const valorHoraDSF = valorHoraNormal * (1 + pDSF/100);
+    const totalDU  = valorHoraDU  * horasDU;
+    const totalDSF = valorHoraDSF * horasDSF;
+    const totalHE  = totalDU + totalDSF;
+
+    let dsr = 0;
+    if(habitual && diasUteis>0 && diasRepouso>0){
+      dsr = (totalHE / diasUteis) * diasRepouso;
+    }
+    const totalGeral = totalHE + dsr;
+
+    const v = fmtBRL(totalGeral);
+    let d = `Hora normal: ${fmtBRL(valorHoraNormal)} · `;
+    const partes = [];
+    if(horasDU>0)  partes.push(`${fmtN(horasDU)}h em dia útil a ${fmtBRL(valorHoraDU)} (+${fmtN(pDU)}%) = ${fmtBRL(totalDU)}`);
+    if(horasDSF>0) partes.push(`${fmtN(horasDSF)}h em domingo/feriado a ${fmtBRL(valorHoraDSF)} (+${fmtN(pDSF)}%) = ${fmtBRL(totalDSF)}`);
+    d += partes.join(' · ');
+    if(dsr>0) d += ` · Reflexo no DSR: ${fmtBRL(dsr)}`;
+    else if(habitual) d += ' · Preencha dias úteis e dias de repouso do mês para calcular o reflexo no DSR.';
+
+    document.getElementById('he-res-val').textContent = v;
+    document.getElementById('he-res-det').textContent = d;
+    rb.classList.add('show');
+    showAdAfterResult('ad-horas-extras-result');
+    trackCalcUsage('horas-extras','cc-horas-extras');
+  }catch(e){
+    document.getElementById('he-res-val').textContent = 'Erro: ' + e.message;
+    rb.classList.add('show','err');
+  }
+}
+
+// ─── SEGURO-DESEMPREGO (tabela 2026 — Decreto 12.797/2025 / Lei 7.998/1990) ──
+function calcSeguroDesemprego(){
+  const rb = document.getElementById('sd-res'); rb.classList.remove('show','err');
+  try{
+    const sal1 = parseFloat(document.getElementById('sd-sal1').value);
+    const sal2 = parseFloat(document.getElementById('sd-sal2').value);
+    const sal3 = parseFloat(document.getElementById('sd-sal3').value);
+    const meses = parseFloat(document.getElementById('sd-meses').value) || 0;
+    const solicitacao = parseInt(document.getElementById('sd-solicitacao').value);
+    const semJustaCausa = document.getElementById('sd-justa-causa').value === 'sim';
+
+    if(!semJustaCausa) throw new Error('Dispensa sem justa causa é requisito para o benefício (Lei 7.998/1990).');
+    if(isNaN(sal1) || isNaN(sal2) || isNaN(sal3)) throw new Error('Informe os 3 últimos salários.');
+    if(meses<=0) throw new Error('Informe os meses trabalhados no período de referência.');
+
+    const media = (sal1 + sal2 + sal3) / 3;
+
+    // Tabela 2026
+    const PISO = 1621.00, TETO = 2518.65, LIM1 = 2222.17, LIM2 = 3703.99, BASE2 = 1777.74;
+    let parcela;
+    if (media <= LIM1) parcela = media * 0.8;
+    else if (media <= LIM2) parcela = BASE2 + (media - LIM1) * 0.5;
+    else parcela = TETO;
+    if (parcela < PISO) parcela = PISO;
+    if (parcela > TETO) parcela = TETO;
+
+    // Nº de parcelas + requisito mínimo de meses
+    let minMeses, faixasTexto;
+    if (solicitacao === 1) { minMeses = 12; }
+    else if (solicitacao === 2) { minMeses = 9; }
+    else { minMeses = 6; }
+
+    if (meses < minMeses) {
+      throw new Error(`Com ${meses} meses trabalhados, o tempo mínimo exigido para a ${solicitacao}ª solicitação é de ${minMeses} meses — não há direito ao benefício neste caso.`);
+    }
+
+    let parcelas;
+    if (meses >= 24) parcelas = 5;
+    else if (meses >= 12) parcelas = 4;
+    else parcelas = 3; // só possível na 2ª (9-11) ou 3ª+ (6-11) solicitação
+
+    const total = parcela * parcelas;
+
+    document.getElementById('sd-res-val').textContent = fmtBRL(parcela) + ' / parcela';
+    document.getElementById('sd-res-det').textContent =
+      `Média salarial: ${fmtBRL(media)} · Número de parcelas: ${parcelas} · Total estimado: ${fmtBRL(total)} · Tabela 2026 (piso ${fmtBRL(PISO)} / teto ${fmtBRL(TETO)})`;
+    rb.classList.add('show');
+    showAdAfterResult('ad-seguro-desemprego-result');
+    trackCalcUsage('seguro-desemprego','cc-seguro-desemprego');
+  }catch(e){
+    document.getElementById('sd-res-val').textContent = 'Erro: ' + e.message;
+    rb.classList.add('show','err');
+  }
+}
+
+// ─── RESCISÃO EMPREGADA DOMÉSTICA (LC 150/2015) ──────
+function calcRescisaoDomestica(){
+  const rb = document.getElementById('d-res'); rb.classList.remove('show','err');
+  try{
+    const sal    = parseFloat(document.getElementById('d-sal').value);
+    const admStr = document.getElementById('d-adm').value;
+    const demStr = document.getElementById('d-dem').value;
+    const tipo   = document.getElementById('d-tipo').value;
+    const ferVenc= parseInt(document.getElementById('d-fer-venc').value) || 0;
+
+    if(isNaN(sal) || sal<=0 || !admStr || !demStr) throw new Error('Preencha salário, admissão e demissão.');
+
+    const adm = new Date(admStr+'T12:00:00');
+    const dem = new Date(demStr+'T12:00:00');
+    if(dem < adm) throw new Error('A data de demissão não pode ser anterior à admissão.');
+
+    const mesesTotal        = (dem.getFullYear()-adm.getFullYear())*12 + (dem.getMonth()-adm.getMonth());
+    const anos               = Math.floor(mesesTotal/12);
+    const mesesPeriodoAtual  = mesesTotal % 12;
+    const diasUltimoMes      = dem.getDate();
+    const mesesTrabalhados   = mesesTotal + (diasUltimoMes >= 15 ? 1 : 0);
+
+    // ── Aviso prévio (Lei 12.506/2011, aplicável ao doméstico) ──
+    const diasAviso = Math.min(90, 30 + anos*3);
+    let avisoVal = 0, descontoAviso = 0;
+    if(tipo === 'semjusta'){
+      avisoVal = sal * (diasAviso/30);
+    } else if(tipo === 'pedido'){
+      descontoAviso = sal * (30/30); // desconta 30 dias se não cumprido — simplificação
+    }
+    // comjusta: sem aviso
+
+    // ── Saldo de salário ──────────────────────────────
+    const saldoSal = sal / 30 * diasUltimoMes;
+
+    // ── Férias vencidas ───────────────────────────────
+    const ferVencVal = ferVenc > 0 ? sal * ferVenc * (4/3) : 0;
+
+    // ── Férias proporcionais ──────────────────────────
+    const avosAquis   = mesesPeriodoAtual + (diasUltimoMes >= 15 ? 1 : 0);
+    const avosFerProp = Math.min(11, avosAquis);
+    const ferPropVal  = (tipo !== 'comjusta' && avosFerProp > 0) ? (sal / 12 * avosFerProp) * (4/3) : 0;
+
+    // ── 13º proporcional ───────────────────────────────
+    const mesInicio13 = (adm.getFullYear() === dem.getFullYear()) ? adm.getMonth() : 0;
+    const avos13 = Math.min(12, Math.max(0, (dem.getMonth() - mesInicio13) + (diasUltimoMes >= 15 ? 1 : 0)));
+    const decTerc = (tipo !== 'comjusta' && avos13 > 0) ? sal / 12 * avos13 : 0;
+
+    // ── Indenização compensatória FGTS (3,2%, art. 22 LC 150/2015) ──
+    // Estimativa: 3,2% do salário acumulado mês a mês ao longo do contrato.
+    // Só é devida/liberada à trabalhadora em dispensa sem justa causa.
+    const reservaAcumulada = sal * 0.032 * Math.max(1, mesesTrabalhados);
+    const indenizacaoFgts = (tipo === 'semjusta') ? reservaAcumulada : 0;
+
+    const total = saldoSal + ferVencVal + ferPropVal + decTerc + avisoVal + indenizacaoFgts - descontoAviso;
+
+    document.getElementById('d-res-val').textContent = fmtBRL(total);
+    let det = `Saldo de salário: ${fmtBRL(saldoSal)} · `;
+    if(ferVencVal>0) det += `Férias vencidas: ${fmtBRL(ferVencVal)} · `;
+    det += `Férias proporcionais (${avosFerProp}/12): ${fmtBRL(ferPropVal)} · 13º proporcional (${avos13}/12): ${fmtBRL(decTerc)}`;
+    if(avisoVal>0) det += ` · Aviso prévio (${diasAviso} dias): ${fmtBRL(avisoVal)}`;
+    if(descontoAviso>0) det += ` · Desconto aviso não cumprido: -${fmtBRL(descontoAviso)}`;
+    if(indenizacaoFgts>0) det += ` · Indenização FGTS (3,2% acumulado, estimativa): ${fmtBRL(indenizacaoFgts)}`;
+    else if(tipo!=='semjusta') det += ' · Sem indenização FGTS (o saldo de 3,2% retorna ao empregador neste tipo de rescisão)';
+    document.getElementById('d-res-det').textContent = det;
+    rb.classList.add('show');
+    showAdAfterResult('ad-rescisao-domestica-result');
+    trackCalcUsage('rescisao-domestica','cc-rescisao-domestica');
+  }catch(e){
+    document.getElementById('d-res-val').textContent = 'Erro: ' + e.message;
+    rb.classList.add('show','err');
+  }
+}
+
 
 // ─── PRESCRIÇÃO (trabalhista / cível / tributária) ─────────────
 // Regras gerais — sempre informativas; suspensão/interrupção depende do caso concreto.
@@ -1614,6 +1802,7 @@ function getFeriadosNacionais(ano){
     new Date(Date.UTC(ano,9,12)),  // 12/10 N.Sra.Aparecida
     new Date(Date.UTC(ano,10,2)),  // 02/11 Finados
     new Date(Date.UTC(ano,10,15)), // 15/11 Proclamação República
+    new Date(Date.UTC(ano,10,20)), // 20/11 Dia Nac. de Zumbi e da Consciência Negra (Lei 14.759/2023, a partir de 2024)
     new Date(Date.UTC(ano,11,25)), // 25/12 Natal
     // Móveis (relativos à Páscoa)
     add(pascoa,-48), // Carnaval (2ª)
@@ -1989,6 +2178,30 @@ const SEO = {
     desc:  'Calcule a remuneração do trabalho intermitente: salário-hora × horas trabalhadas, DSR, férias + 1/3, 13º proporcional, FGTS, INSS e IRRF. Confira se o valor pago está correto.',
     h1:    'Calculadora de Salário Intermitente',
     kw:    'calculadora salário intermitente, trabalho intermitente clt, dsr intermitente, como calcular salário intermitente',
+    schemaType: 'SoftwareApplication',
+  },
+  horasextras: {
+    slug: 'calculadora-horas-extras',
+    title: 'Calculadora de Horas Extras Online – Adicional 50% e 100%, DSR – Calcula Prazo',
+    desc:  'Calcule o valor das horas extras com adicional de 50% (dia útil) e 100% (domingo/feriado), reflexo no DSR e total a receber. Grátis, conforme CLT.',
+    h1:    'Calculadora de Horas Extras',
+    kw:    'calculadora de horas extras, calcular hora extra, adicional hora extra 50, hora extra domingo feriado, dsr horas extras',
+    schemaType: 'SoftwareApplication',
+  },
+  segurodesemprego: {
+    slug: 'calculadora-seguro-desemprego',
+    title: 'Calculadora de Seguro-Desemprego 2026 – Parcelas e Valor – Calcula Prazo',
+    desc:  'Calcule o valor e o número de parcelas do seguro-desemprego 2026 com base na média salarial e no tempo trabalhado. Tabela oficial atualizada. Grátis.',
+    h1:    'Calculadora de Seguro-Desemprego',
+    kw:    'calculadora de seguro desemprego, seguro desemprego 2026, valor seguro desemprego, tabela seguro desemprego, quantas parcelas seguro desemprego',
+    schemaType: 'SoftwareApplication',
+  },
+  rescisaodomestica: {
+    slug: 'calculadora-rescisao-domestica',
+    title: 'Calculadora de Rescisão de Empregada Doméstica (LC 150/2015) – Calcula Prazo',
+    desc:  'Calcule a rescisão de empregada doméstica conforme a LC 150/2015: saldo de salário, férias, 13º e a indenização compensatória do FGTS (3,2%). Grátis.',
+    h1:    'Calculadora de Rescisão de Empregada Doméstica',
+    kw:    'calculadora rescisão empregada doméstica, LC 150/2015, fgts doméstica 3.2%, indenização compensatória doméstica, rescisão trabalho doméstico',
     schemaType: 'SoftwareApplication',
   },
   prescricao: {
