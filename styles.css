@@ -2040,6 +2040,3 @@ img[src*="m.media-amazon.com"] {
   .nh-small-item:nth-child(4) { display:none; }
   .nh-small-item:nth-child(3) { border-bottom:none;padding-bottom:0;margin-bottom:0; }
 }
-
-/* Ícones em vidro translúcido — substituem os emojis do site */
-.cp-ic{width:1em;height:1em;display:inline-block;vertical-align:-0.125em;flex-shrink:0;}
