@@ -1767,7 +1767,7 @@ async function loadRelated() {
     if (cached && cached.ts && (Date.now() - cached.ts) < 900000 && Array.isArray(cached.data)) {
       posts = cached.data;
     } else {
-      const r = await fetch('../data/posts.json');
+      const r = await fetch('../../data/posts.json');
       if (r.ok) posts = await r.json();
       try { localStorage.setItem('cp_posts_cache', JSON.stringify({ data: posts, ts: Date.now() })); } catch(e){}
     }
