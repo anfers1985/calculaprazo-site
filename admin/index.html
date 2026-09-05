@@ -1357,7 +1357,17 @@ function buildFreshSidebarHTML(currentPostId, allPosts) {
     .sort((a, b) => (b.date || '').localeCompare(a.date || ''))
     .slice(0, 5);
 
-  const adCard = (label) => `<div class="ad-card-wrap" style="display:flex;flex-direction:column;align-items:center;"><span class="ad-eyebrow">Publicidade</span><div class="ad-ph" style="width:300px;height:250px;"><b>300×250</b><small>${label} (Adsterra)</small></div></div>`;
+  const AD_SLOT_MAP = {
+    '300x250_1': { id: 'ad-slot-5', key: '7242c743fc263202cfb43cf35e31e396' },
+    '300x250_2': { id: 'ad-slot-6', key: 'b4454cd1dba198adabbd5fad568cb2c6' },
+  };
+  const adCard = (label) => {
+    const slot = AD_SLOT_MAP[label];
+    const slotHTML = slot
+      ? `<div style="display:flex;justify-content:center;"><div class="adst-slot" id="${slot.id}" data-adst-key="${slot.key}" data-adst-w="300" data-adst-h="250" style="width:300px;height:250px;max-width:100%;margin:0 auto;"></div></div>`
+      : `<div class="ad-ph" style="width:300px;height:250px;"><b>300×250</b><small>${label} (Adsterra)</small></div>`;
+    return `<div class="ad-card-wrap" style="display:flex;flex-direction:column;align-items:center;"><span class="ad-eyebrow">Publicidade</span>${slotHTML}</div>`;
+  };
 
   return `<aside class="post-sidebar" data-current-slug="${currentPostId || ''}">`
     + '<div class="sidebar-card"><h3>🔥 Mais Acessados</h3><div class="sidebar-list" id="mais-acessados-list">' + buildSidebarItemsHTML(top5, true) + '</div></div>'

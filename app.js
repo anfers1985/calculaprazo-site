@@ -4,7 +4,8 @@ const NAV_MAP = {
   home:'home',prazos:'prazos',blog:'blog',calc:'calc',correcao:'correcao',juros:'juros',
   trabalhista:'trabalhista',salario:'salario',intermitente:'intermitente',prescricao:'prescricao',porcentagem:'porcentagem',
   moedas:'moedas',valid:'valid',qrcode:'qrcode',senhas:'senhas',
-  extenso:'extenso',imc:'imc',datas:'datas',util:'util',gerador:'valid'
+  extenso:'extenso',imc:'imc',datas:'datas',util:'util',gerador:'valid',
+  horasextras:'horas-extras',segurodesemprego:'seguro-desemprego',rescisaodomestica:'rescisao-domestica'
 };
 const NAV_ACTIVE = {
   home:'home',prazos:'prazos',
