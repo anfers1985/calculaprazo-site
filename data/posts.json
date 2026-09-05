@@ -1,5 +1,29 @@
 [
   {
+    "id": "stf-r-5-mil-justica-gratuita-trabalhista",
+    "title": "STF fixa R$ 5 mil para Justiça gratuita trabalhista",
+    "category": "jurisprudencia-stf",
+    "category_label": "STF",
+    "excerpt": "STF define renda de até R$ 5 mil como parâmetro para presunção de hipossuficiência na Justiça gratuita e amplia regra para todo o Judiciário.",
+    "image": "https://noticias-stf-wp-prd.s3.sa-east-1.amazonaws.com/wp-content/uploads/wpallimport/uploads/2024/10/15204925/Antonio-Augusto-24-scaled.jpg",
+    "imageCaption": "Crédito: Antonio Augusto/STF",
+    "date": "2026-09-04",
+    "updatedAt": "2026-09-04",
+    "tags": []
+  },
+  {
+    "id": "aposentadoria-por-idade-requisitos-pedido-cnis",
+    "title": "Aposentadoria por idade: requisitos, pedido e cuidados",
+    "category": "legislacao-previdenciario",
+    "category_label": "Previdenciário",
+    "excerpt": "Aposentadoria por idade exige idade mínima e contribuições. Veja regras, documentos, CNIS e cuidados antes de solicitar o benefício ao INSS.",
+    "image": "https://images.unsplash.com/photo-1508963493744-76fce69379c0?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-04",
+    "updatedAt": "2026-09-04",
+    "tags": []
+  },
+  {
     "id": "tema-003-tst-honorarios-advocaticios-reforma-trabalhista",
     "title": "Tema 003 do TST: honorários advocatícios antes da Reforma",
     "category": "processual-pratica",
