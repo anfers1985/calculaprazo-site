@@ -1,0 +1,504 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+<symbol id="ic-tool-all" viewBox="0 0 64 64">
+        <defs><linearGradient id="a1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="56" rx="18" ry="3.6" fill="#1D4ED8" opacity=".18"/>
+        <rect x="8" y="28" width="48" height="24" rx="5" fill="url(#a1)"/>
+        <rect x="8" y="28" width="48" height="24" rx="5" fill="none" stroke="#93C5FD" stroke-opacity=".5" stroke-width="1"/>
+        <path d="M22 28V17.5a5.5 5.5 0 0 1 5.5-5.5h9a5.5 5.5 0 0 1 5.5 5.5V28" fill="none" stroke="url(#a1)" stroke-width="5.4"/>
+        <rect x="8" y="35" width="48" height="7" fill="#1D4ED8" opacity=".5"/>
+        <rect x="27" y="33" width="10" height="9" rx="2.4" fill="#fff"/>
+        <circle cx="16" cy="33" r="1.4" fill="#93C5FD"/>
+        <circle cx="48" cy="46" r="1.4" fill="#93C5FD"/>
+      </symbol>
+<symbol id="ic-correcao-monetaria" viewBox="0 0 64 64">
+        <defs><linearGradient id="a2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient><radialGradient id="a2h" cx="30%" cy="25%" r="70%"><stop offset="0" stop-color="#93C5FD" stop-opacity=".9"/><stop offset="1" stop-color="#93C5FD" stop-opacity="0"/></radialGradient></defs>
+        <ellipse cx="32" cy="55" rx="17" ry="4" fill="#1D4ED8" opacity=".18"/>
+        <circle cx="18" cy="45" r="10.5" fill="url(#a2)"/><circle cx="18" cy="45" r="10.5" fill="url(#a2h)"/>
+        <text x="18" y="49.5" font-size="10.5" font-weight="800" text-anchor="middle" fill="#fff">R$</text>
+        <path d="M22 38 45 15" stroke="url(#a2)" stroke-width="5.5" stroke-linecap="round"/>
+        <path d="M32 15h13v13" fill="none" stroke="url(#a2)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="48" cy="14" r="7.5" fill="url(#a2)"/><text x="48" y="17.3" font-size="8" font-weight="800" text-anchor="middle" fill="#fff">%</text>
+      </symbol>
+<symbol id="ic-juros" viewBox="0 0 64 64">
+        <defs><linearGradient id="a3" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#1D4ED8"/><stop offset="1" stop-color="#60A5FA"/></linearGradient></defs>
+        <ellipse cx="32" cy="57" rx="19" ry="3.6" fill="#1D4ED8" opacity=".18"/>
+        <rect x="9" y="38" width="8" height="16" rx="2" fill="url(#a3)" opacity=".55"/>
+        <rect x="21" y="28" width="8" height="26" rx="2" fill="url(#a3)" opacity=".75"/>
+        <rect x="33" y="18" width="8" height="36" rx="2" fill="url(#a3)"/>
+        <path d="M35 12 51 12 51 28" fill="none" stroke="url(#a3)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M51 12 35 28" stroke="url(#a3)" stroke-width="4.5" stroke-linecap="round"/>
+        <ellipse cx="46" cy="16" rx="2.6" ry="1.3" fill="#fff" opacity=".4"/>
+      </symbol>
+<symbol id="ic-verbas-trabalhistas" viewBox="0 0 64 64">
+        <defs><linearGradient id="a4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient><linearGradient id="a4d" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1D4ED8"/><stop offset="1" stop-color="#1E3A8A"/></linearGradient></defs>
+        <ellipse cx="32" cy="56" rx="19" ry="4" fill="#1D4ED8" opacity=".18"/>
+        <path d="M24 24V17.5a5.5 5.5 0 0 1 5.5-5.5h5A5.5 5.5 0 0 1 40 17.5V24" fill="none" stroke="url(#a4)" stroke-width="5"/>
+        <rect x="9" y="24" width="46" height="29" rx="6" fill="url(#a4)"/>
+        <rect x="9" y="34" width="46" height="7" fill="url(#a4d)" opacity=".6"/>
+        <rect x="27" y="31" width="10" height="9" rx="2.4" fill="#fff"/>
+        <text x="32" y="38.3" font-size="6.6" font-weight="800" text-anchor="middle" fill="#1D4ED8">R$</text>
+        <circle cx="15" cy="30" r="1.6" fill="#93C5FD"/><circle cx="49" cy="47" r="1.6" fill="#93C5FD"/>
+      </symbol>
+<symbol id="ic-salario-liquido" viewBox="0 0 64 64">
+        <defs><linearGradient id="a5" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient><linearGradient id="a5d" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1D4ED8"/><stop offset="1" stop-color="#1E3A8A"/></linearGradient></defs>
+        <ellipse cx="32" cy="53" rx="19" ry="4" fill="#1D4ED8" opacity=".18"/>
+        <rect x="6" y="16" width="52" height="33" rx="6.5" fill="url(#a5)"/>
+        <rect x="6" y="34" width="52" height="8" fill="url(#a5d)" opacity=".55"/>
+        <circle cx="32" cy="32.5" r="8.5" fill="#fff"/>
+        <text x="32" y="36" font-size="9" font-weight="800" text-anchor="middle" fill="#1D4ED8">R$</text>
+        <circle cx="14" cy="24" r="1.7" fill="#93C5FD"/><circle cx="50" cy="43" r="1.7" fill="#93C5FD"/>
+      </symbol>
+<symbol id="ic-salario-intermitente" viewBox="0 0 64 64">
+        <defs><linearGradient id="a6" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="17" ry="3.6" fill="#1D4ED8" opacity=".18"/>
+        <circle cx="32" cy="32" r="22" fill="url(#a6)"/>
+        <circle cx="32" cy="32" r="22" fill="none" stroke="#93C5FD" stroke-opacity=".5" stroke-width="1.4"/>
+        <circle cx="32" cy="32" r="16.5" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="1"/>
+        <path d="M32 20v12l8.4 5" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="24" y="7" width="16" height="5.5" rx="2.6" fill="url(#a6)"/>
+        <circle cx="32" cy="32" r="2" fill="#fff"/>
+      </symbol>
+<symbol id="ic-prescricao" viewBox="0 0 64 64">
+        <defs><linearGradient id="a7" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient><linearGradient id="a7s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FDE68A"/><stop offset="1" stop-color="#F59E0B"/></linearGradient></defs>
+        <ellipse cx="32" cy="57" rx="16" ry="3.6" fill="#1D4ED8" opacity=".18"/>
+        <rect x="16" y="6" width="32" height="5.5" rx="2.6" fill="#1D4ED8"/>
+        <rect x="16" y="52.5" width="32" height="5.5" rx="2.6" fill="#1D4ED8"/>
+        <path d="M20.5 11.5h23L30.5 26a3.6 3.6 0 0 0 0 3.6L43.5 42.5V52.5h-23V42.5L33.5 29.6a3.6 3.6 0 0 0 0-3.6z" fill="url(#a7)"/>
+        <path d="M26 46.5h12l-3.6-6.2h-4.8z" fill="url(#a7s)"/>
+        <ellipse cx="32" cy="21" rx="3.4" ry="2" fill="#fff" opacity=".4"/>
+      </symbol>
+<symbol id="ic-porcentagem" viewBox="0 0 64 64">
+        <defs><linearGradient id="a8" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="17" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <circle cx="19" cy="19" r="9.5" fill="url(#a8)"/><text x="19" y="23.3" font-size="9.6" font-weight="800" text-anchor="middle" fill="#fff">%</text>
+        <line x1="13" y1="49" x2="49" y2="13" stroke="url(#a8)" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="44" cy="44" r="9.5" fill="url(#a8)"/><circle cx="44" cy="44" r="2.8" fill="#fff"/>
+        <ellipse cx="16" cy="16" rx="2.6" ry="1.4" fill="#fff" opacity=".4"/>
+      </symbol>
+<symbol id="ic-conversor-moedas" viewBox="0 0 64 64">
+        <defs><linearGradient id="a9" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="18" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <circle cx="24" cy="24" r="15" fill="url(#a9)"/><text x="24" y="29.5" font-size="15" font-weight="800" text-anchor="middle" fill="#fff">$</text>
+        <circle cx="41" cy="41" r="15" fill="url(#a9)" opacity=".82"/><text x="41" y="46.5" font-size="15" font-weight="800" text-anchor="middle" fill="#fff">€</text>
+        <ellipse cx="19" cy="18" rx="3" ry="1.6" fill="#fff" opacity=".35"/>
+      </symbol>
+<symbol id="ic-datas" viewBox="0 0 64 64">
+        <defs><linearGradient id="a10" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="59" rx="19" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <rect x="8" y="12" width="48" height="43" rx="6.5" fill="url(#a10)"/>
+        <rect x="8" y="12" width="48" height="12" rx="6.5" fill="#1D4ED8"/>
+        <rect x="17.5" y="6.5" width="4.5" height="10" rx="2" fill="url(#a10)"/>
+        <rect x="42" y="6.5" width="4.5" height="10" rx="2" fill="url(#a10)"/>
+        <rect x="21" y="34" width="11" height="11" rx="2.4" fill="#fff"/>
+        <circle cx="45" cy="18" r="1.4" fill="#93C5FD"/>
+      </symbol>
+<symbol id="ic-cpf-cnpj" viewBox="0 0 64 64">
+        <defs><linearGradient id="a11" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="19" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <rect x="6" y="13" width="52" height="37" rx="6.5" fill="url(#a11)"/>
+        <circle cx="21.5" cy="31.5" r="6.4" fill="#fff"/>
+        <rect x="34" y="26" width="16" height="4" rx="2" fill="#fff" fill-opacity=".85"/>
+        <rect x="34" y="34.5" width="16" height="4" rx="2" fill="#fff" fill-opacity=".85"/>
+        <circle cx="44.5" cy="44" r="8.5" fill="#22C55E" stroke="#fff" stroke-width="2.4"/>
+        <path d="M41 44 43.5 46.5 48.5 41.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </symbol>
+<symbol id="ic-qrcode" viewBox="0 0 64 64">
+        <defs><linearGradient id="a12" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="59" rx="18" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <rect x="7" y="7" width="50" height="50" rx="7" fill="url(#a12)"/>
+        <rect x="12.5" y="12.5" width="12" height="12" rx="2.4" fill="#fff"/>
+        <rect x="39.5" y="12.5" width="12" height="12" rx="2.4" fill="#fff"/>
+        <rect x="12.5" y="39.5" width="12" height="12" rx="2.4" fill="#fff"/>
+        <rect x="38.5" y="38.5" width="5" height="5" fill="#fff"/>
+        <rect x="46" y="38.5" width="4" height="4" fill="#fff"/>
+        <rect x="38.5" y="46" width="4" height="4" fill="#fff"/>
+        <rect x="45" y="45.5" width="6" height="6" fill="#fff"/>
+      </symbol>
+<symbol id="ic-senhas" viewBox="0 0 64 64">
+        <defs><linearGradient id="a13" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="59" rx="18" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <path d="M18 27V19a14 14 0 0 1 28 0v8" fill="none" stroke="url(#a13)" stroke-width="7" stroke-linecap="round"/>
+        <rect x="10" y="27" width="44" height="29" rx="7" fill="url(#a13)"/>
+        <circle cx="32" cy="38" r="4.6" fill="#fff"/>
+        <rect x="29.5" y="41.5" width="5" height="8.5" rx="2.4" fill="#fff"/>
+        <ellipse cx="20" cy="33" rx="2.6" ry="1.4" fill="#fff" opacity=".35"/>
+      </symbol>
+<symbol id="ic-numero-extenso" viewBox="0 0 64 64">
+        <defs><linearGradient id="a14" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="17" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <rect x="12" y="7" width="40" height="50" rx="6" fill="url(#a14)"/>
+        <text x="32" y="27" font-size="14" font-weight="900" text-anchor="middle" fill="#fff">123</text>
+        <line x1="19" y1="33" x2="45" y2="33" stroke="#fff" stroke-opacity=".4" stroke-width="1.6"/>
+        <path d="M18 41c3-2.5 5 2.5 8 0s5 2.5 8 0 5 2.5 8 0" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" opacity=".9"/>
+        <path d="M18 48c3-2.5 5 2.5 8 0s5 2.5 8 0 5 2.5 8 0" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" opacity=".6"/>
+      </symbol>
+<symbol id="ic-imc" viewBox="0 0 64 64">
+        <defs><linearGradient id="a15" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <path d="M8 46A24 24 0 0 1 56 46" fill="none" stroke="url(#a15)" stroke-width="9" stroke-linecap="round"/>
+        <path d="M8 46A24 24 0 0 1 24 24.4" fill="none" stroke="#4ADE80" stroke-width="9" stroke-linecap="round"/>
+        <path d="M40 24.4A24 24 0 0 1 56 46" fill="none" stroke="#F87171" stroke-width="9" stroke-linecap="round"/>
+        <line x1="32" y1="46" x2="44" y2="30" stroke="#1D4ED8" stroke-width="3.4" stroke-linecap="round"/>
+        <circle cx="32" cy="46" r="4" fill="#1D4ED8"/>
+      </symbol>
+<symbol id="ic-artigos" viewBox="0 0 64 64">
+        <defs><linearGradient id="b1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="19" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <path d="M10 14h35a6.5 6.5 0 0 1 6.5 6.5v28H17a6.5 6.5 0 0 1-6.5-6.5z" fill="url(#b1)"/>
+        <path d="M10 14v22.5a6.5 6.5 0 0 0 6.5 6.5" fill="none" stroke="url(#b1)" stroke-width="4.6"/>
+        <rect x="19.5" y="22" width="22" height="5" rx="1.6" fill="#fff" fill-opacity=".9"/>
+        <rect x="19.5" y="30" width="22" height="3.6" rx="1.4" fill="#fff" fill-opacity=".6"/>
+        <rect x="19.5" y="36.5" width="14" height="3.6" rx="1.4" fill="#fff" fill-opacity=".6"/>
+      </symbol>
+<symbol id="ic-jurisprudencia" viewBox="0 0 64 64">
+        <defs><linearGradient id="b2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="17" ry="3.2" fill="#1D4ED8" opacity=".18"/>
+        <rect x="10" y="14" width="26" height="34" rx="3" fill="url(#b2)" opacity=".55"/>
+        <rect x="16" y="9" width="26" height="34" rx="3" fill="url(#b2)"/>
+        <rect x="20" y="16" width="18" height="2.6" rx="1.2" fill="#fff" fill-opacity=".85"/>
+        <rect x="20" y="21.5" width="18" height="2.6" rx="1.2" fill="#fff" fill-opacity=".6"/>
+        <rect x="20" y="27" width="11" height="2.6" rx="1.2" fill="#fff" fill-opacity=".6"/>
+        <circle cx="41" cy="41" r="12.5" fill="none" stroke="url(#b2)" stroke-width="6"/>
+        <line x1="50" y1="50" x2="58" y2="58" stroke="url(#b2)" stroke-width="6.4" stroke-linecap="round"/>
+      </symbol>
+<symbol id="ic-orgaos-publicos" viewBox="0 0 64 64">
+        <defs><linearGradient id="b3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="19" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <polygon points="32 6 55 18 9 18" fill="url(#b3)"/>
+        <rect x="10" y="22" width="6" height="24" fill="url(#b3)"/>
+        <rect x="20" y="22" width="6" height="24" fill="url(#b3)"/>
+        <rect x="29" y="22" width="6" height="24" fill="url(#b3)"/>
+        <rect x="38" y="22" width="6" height="24" fill="url(#b3)"/>
+        <rect x="48" y="22" width="6" height="24" fill="url(#b3)"/>
+        <rect x="7" y="48" width="50" height="6" rx="1.6" fill="url(#b3)"/>
+        <ellipse cx="32" cy="12" rx="4" ry="1.8" fill="#fff" opacity=".35"/>
+      </symbol>
+<symbol id="ic-legislacao" viewBox="0 0 64 64">
+        <defs><linearGradient id="b4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="20" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <path d="M10 13.5c0-3.2 2.6-4.9 5.7-4.2L32 13v34l-16.3-3.7C12.6 42.6 10 40.7 10 37.5z" fill="url(#b4)"/>
+        <path d="M54 13.5c0-3.2-2.6-4.9-5.7-4.2L32 13v34l16.3-3.7c3.1-.7 5.7-2.6 5.7-5.8z" fill="url(#b4)" opacity=".85"/>
+        <line x1="32" y1="13" x2="32" y2="47" stroke="#1D4ED8" stroke-width="1.6"/>
+        <rect x="16" y="20" width="10" height="3" rx="1.3" fill="#fff" fill-opacity=".7"/>
+        <rect x="38" y="20" width="10" height="3" rx="1.3" fill="#fff" fill-opacity=".55"/>
+        <rect x="16" y="27" width="10" height="3" rx="1.3" fill="#fff" fill-opacity=".5"/>
+      </symbol>
+<symbol id="ic-rh" viewBox="0 0 64 64">
+        <defs><linearGradient id="b5" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="59" rx="17" ry="3.2" fill="#1D4ED8" opacity=".18"/>
+        <circle cx="32" cy="12" r="7.4" fill="url(#b5)"/>
+        <line x1="32" y1="19.4" x2="32" y2="30" stroke="url(#b5)" stroke-width="3.6"/>
+        <line x1="16" y1="30" x2="48" y2="30" stroke="url(#b5)" stroke-width="3.6"/>
+        <line x1="16" y1="30" x2="16" y2="38" stroke="url(#b5)" stroke-width="3.6"/>
+        <line x1="32" y1="30" x2="32" y2="38" stroke="url(#b5)" stroke-width="3.6"/>
+        <line x1="48" y1="30" x2="48" y2="38" stroke="url(#b5)" stroke-width="3.6"/>
+        <circle cx="16" cy="44" r="6" fill="url(#b5)" opacity=".8"/>
+        <circle cx="32" cy="44" r="6" fill="url(#b5)" opacity=".8"/>
+        <circle cx="48" cy="44" r="6" fill="url(#b5)" opacity=".8"/>
+      </symbol>
+<symbol id="ic-processual" viewBox="0 0 64 64">
+        <defs><linearGradient id="b6" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="17" ry="3.2" fill="#1D4ED8" opacity=".2"/>
+        <rect x="29" y="10" width="6" height="36" rx="3" fill="url(#b6)"/>
+        <rect x="13" y="14" width="38" height="6" rx="3" fill="url(#b6)"/>
+        <circle cx="32" cy="17" r="6" fill="url(#b6)"/>
+        <circle cx="32" cy="17" r="2.4" fill="#fff"/>
+        <path d="M6 26h18l-9 12z" fill="url(#b6)"/>
+        <path d="M40 26h18l-9 12z" fill="url(#b6)"/>
+        <rect x="6" y="24.5" width="18" height="3.6" rx="1.8" fill="url(#b6)"/>
+        <rect x="40" y="24.5" width="18" height="3.6" rx="1.8" fill="url(#b6)"/>
+        <rect x="18" y="47" width="28" height="7" rx="2.6" fill="url(#b6)"/>
+        <rect x="23" y="41.5" width="18" height="7" rx="2.6" fill="url(#b6)" opacity=".85"/>
+      </symbol>
+<symbol id="ic-essenciais" viewBox="0 0 64 64">
+        <defs><linearGradient id="b7" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBBF24"/><stop offset=".5" stop-color="#F59E0B"/><stop offset="1" stop-color="#D97706"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="18" ry="3.4" fill="#D97706" opacity=".2"/>
+        <polygon points="32 6 39 24.5 58 25.5 43 37.5 48 56 32 45.8 16 56 21 37.5 6 25.5 25 24.5" fill="url(#b7)"/>
+        <polygon points="32 6 39 24.5 58 25.5 43 37.5 48 56 32 45.8" fill="#fff" fill-opacity=".18"/>
+        <ellipse cx="28" cy="17" rx="3" ry="1.6" fill="#fff" opacity=".4"/>
+      </symbol>
+<symbol id="ic-outros" viewBox="0 0 64 64">
+        <defs><linearGradient id="b8" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <circle cx="32" cy="32" r="25.5" fill="url(#b8)"/>
+        <circle cx="18" cy="32" r="4.6" fill="#fff"/>
+        <circle cx="32" cy="32" r="4.6" fill="#fff"/>
+        <circle cx="46" cy="32" r="4.6" fill="#fff"/>
+      </symbol>
+<symbol id="ic-geral-filtro" viewBox="0 0 64 64">
+        <defs><linearGradient id="b9" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="18" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <polygon points="32 10 54 22 32 34 10 22" fill="url(#b9)"/>
+        <polygon points="32 24 54 36 32 48 10 36" fill="url(#b9)" opacity=".78"/>
+        <polygon points="32 38 54 50 32 62 10 50" fill="url(#b9)" opacity=".55"/>
+        <ellipse cx="26" cy="17" rx="3" ry="1.5" fill="#fff" opacity=".4"/>
+      </symbol>
+<symbol id="ic-livros" viewBox="0 0 64 64">
+        <defs><linearGradient id="c1x" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="19" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <rect x="10" y="10" width="13" height="44" rx="2.4" fill="url(#c1x)" opacity=".7" transform="rotate(-8 16.5 32)"/>
+        <rect x="25" y="9" width="13" height="45" rx="2.4" fill="url(#c1x)"/>
+        <rect x="40" y="10" width="13" height="44" rx="2.4" fill="url(#c1x)" opacity=".85" transform="rotate(8 46.5 32)"/>
+        <rect x="28" y="16" width="7" height="2" rx="1" fill="#fff" fill-opacity=".7"/>
+        <rect x="28" y="21" width="7" height="2" rx="1" fill="#fff" fill-opacity=".5"/>
+      </symbol>
+<symbol id="ic-equipamentos" viewBox="0 0 64 64">
+        <defs><linearGradient id="c2x" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="19" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <rect x="7" y="9" width="50" height="32" rx="4" fill="url(#c2x)"/>
+        <rect x="11.5" y="13.5" width="41" height="22.5" rx="1.6" fill="#fff" fill-opacity=".9"/>
+        <rect x="25" y="45" width="14" height="6" fill="#1D4ED8"/>
+        <rect x="17" y="49.5" width="30" height="5" rx="2.4" fill="url(#c2x)"/>
+      </symbol>
+<symbol id="ic-cursos" viewBox="0 0 64 64">
+        <defs><linearGradient id="c3x" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="19" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <polygon points="32 12 56 23.5 32 35 8 23.5" fill="url(#c3x)"/>
+        <path d="M17 27v13c0 3.6 6.6 6.4 15 6.4s15-2.8 15-6.4V27" fill="none" stroke="url(#c3x)" stroke-width="4"/>
+        <line x1="53" y1="24" x2="53" y2="41" stroke="url(#c3x)" stroke-width="3.6" stroke-linecap="round"/>
+        <circle cx="53" cy="44" r="2.4" fill="url(#c3x)"/>
+        <ellipse cx="27" cy="20" rx="3" ry="1.4" fill="#fff" opacity=".4"/>
+      </symbol>
+<symbol id="ic-outros-submenu" viewBox="0 0 64 64">
+        <defs><linearGradient id="c4x" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <rect x="8" y="8" width="20" height="20" rx="4" fill="url(#c4x)"/>
+        <rect x="36" y="8" width="20" height="20" rx="4" fill="url(#c4x)" opacity=".8"/>
+        <rect x="8" y="36" width="20" height="20" rx="4" fill="url(#c4x)" opacity=".8"/>
+        <rect x="36" y="36" width="20" height="20" rx="4" fill="url(#c4x)" opacity=".6"/>
+      </symbol>
+<symbol id="ic-inicio" viewBox="0 0 64 64">
+        <defs><linearGradient id="d1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="18" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <path d="M10 29 32 10l22 19" fill="none" stroke="url(#d1)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M15 26v27h34V26" fill="url(#d1)"/>
+        <rect x="26" y="37" width="12" height="16" fill="#fff"/>
+        <ellipse cx="20" cy="24" rx="2.6" ry="1.4" fill="#fff" opacity=".4"/>
+      </symbol>
+<symbol id="ic-contato" viewBox="0 0 64 64">
+        <defs><linearGradient id="d2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="18" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <rect x="7" y="13" width="50" height="38" rx="6.4" fill="url(#d2)"/>
+        <path d="M10 17 32 34 54 17" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <ellipse cx="16" cy="20" rx="2.6" ry="1.4" fill="#fff" opacity=".3"/>
+      </symbol>
+<symbol id="ic-doacao" viewBox="0 0 64 64">
+        <defs><linearGradient id="d3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="30" cy="59" rx="19" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <path d="M12 24h33v15.5a13 13 0 0 1-13 13H25a13 13 0 0 1-13-13z" fill="url(#d3)"/>
+        <path d="M45 27.5h4.6a7.4 7.4 0 0 1 0 14.8H45" fill="none" stroke="url(#d3)" stroke-width="5.4"/>
+        <path d="M22 17.5c0-3 2.2-3 2.2-6M31 17.5c0-3 2.2-3 2.2-6" stroke="#1D4ED8" stroke-opacity=".5" stroke-width="3.4" stroke-linecap="round"/>
+        <ellipse cx="27" cy="33" rx="10" ry="3.6" fill="#fff" opacity=".25"/>
+      </symbol>
+<symbol id="ic-menu-mobile" viewBox="0 0 64 64">
+        <defs><linearGradient id="d4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="18" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <rect x="9" y="14" width="46" height="8" rx="4" fill="url(#d4)"/>
+        <rect x="9" y="28" width="46" height="8" rx="4" fill="url(#d4)" opacity=".82"/>
+        <rect x="9" y="42" width="46" height="8" rx="4" fill="url(#d4)" opacity=".64"/>
+      </symbol>
+<symbol id="ic-fechar" viewBox="0 0 64 64">
+        <defs><linearGradient id="d5" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="17" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <circle cx="32" cy="32" r="24" fill="url(#d5)"/>
+        <circle cx="32" cy="32" r="24" fill="none" stroke="#93C5FD" stroke-opacity=".5" stroke-width="1.4"/>
+        <line x1="22" y1="22" x2="42" y2="42" stroke="#fff" stroke-width="5.6" stroke-linecap="round"/>
+        <line x1="42" y1="22" x2="22" y2="42" stroke="#fff" stroke-width="5.6" stroke-linecap="round"/>
+        <ellipse cx="24" cy="20" rx="3.2" ry="1.6" fill="#fff" opacity=".3"/>
+      </symbol>
+<symbol id="ic-mais-acessados" viewBox="0 0 64 64">
+        <defs><linearGradient id="e1" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#1D4ED8"/><stop offset=".5" stop-color="#F59E0B"/><stop offset="1" stop-color="#FDE68A"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="17" ry="3.4" fill="#B45309" opacity=".18"/>
+        <path d="M32 6c3.2 9-5.8 12.2-5.8 20.7A11.2 11.2 0 0 0 38 38c4.2-3 5.8-8.8 5.8-13 4.2 3 5.8 8.8 5.8 13a19.6 19.6 0 1 1-39.2 0c0-11.4 8.8-14.4 8.8-23.2 2.6 0 5.2 1.4 8-1.4-1.4-2.8-1.4-5.8.6-7.4z" fill="url(#e1)"/>
+        <ellipse cx="26" cy="30" rx="3.4" ry="2" fill="#fff" opacity=".3"/>
+      </symbol>
+<symbol id="ic-ultimos-conteudos" viewBox="0 0 64 64">
+        <defs><linearGradient id="e2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="18" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <polygon points="32 6 37.5 22 54 24.5 42 36 45 53 32 44.5 19 53 22 36 10 24.5 26.5 22" fill="url(#e2)"/>
+        <circle cx="52" cy="12" r="4.4" fill="url(#e2)"/>
+        <circle cx="11" cy="10" r="2.6" fill="url(#e2)" opacity=".7"/>
+        <ellipse cx="27" cy="17" rx="2.8" ry="1.4" fill="#fff" opacity=".4"/>
+      </symbol>
+<symbol id="ic-busca" viewBox="0 0 64 64">
+        <defs><linearGradient id="e3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="17" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <circle cx="27" cy="27" r="18" fill="none" stroke="url(#e3)" stroke-width="6.4"/>
+        <circle cx="27" cy="27" r="10" fill="none" stroke="#93C5FD" stroke-opacity=".4" stroke-width="1.4"/>
+        <line x1="40" y1="40" x2="55" y2="55" stroke="url(#e3)" stroke-width="7" stroke-linecap="round"/>
+      </symbol>
+<symbol id="ic-patrocinado" viewBox="0 0 64 64">
+        <defs><linearGradient id="e4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <path d="M10 30 30 10a4 4 0 0 1 5.7 0l18.3 18.3a4 4 0 0 1 0 5.7L34 54a4 4 0 0 1-5.7 0L10 35.7a4 4 0 0 1 0-5.7Z" fill="url(#e4)"/>
+        <circle cx="22" cy="22" r="4.2" fill="#fff"/>
+        <text x="34" y="38" font-size="13" font-weight="900" text-anchor="middle" fill="#fff">R$</text>
+      </symbol>
+<symbol id="ic-vazio" viewBox="0 0 64 64">
+        <defs><linearGradient id="e5" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="18" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <path d="M9 30 20 12h24l11 18" fill="none" stroke="url(#e5)" stroke-width="5.4" stroke-linejoin="round"/>
+        <path d="M9 30h15l4 6h8l4-6h15v16a4 4 0 0 1-4 4H13a4 4 0 0 1-4-4z" fill="url(#e5)"/>
+        <circle cx="32" cy="38" r="2" fill="url(#e5)"/>
+        <path d="M25 46h14" stroke="#fff" stroke-opacity=".4" stroke-width="2" stroke-linecap="round" stroke-dasharray="1 4.5"/>
+      </symbol>
+<symbol id="ic-doacao-simbolico" viewBox="0 0 64 64">
+        <defs><linearGradient id="f1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="16" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <path d="M32 52C16 41 9 32 9 22.5 9 14.9 15 9 22.4 9c4 0 7.7 2 9.6 5.4C34 11 37.7 9 41.6 9 49 9 55 14.9 55 22.5 55 32 48 41 32 52z" fill="url(#f1)"/>
+        <ellipse cx="20" cy="20" rx="4" ry="2.2" fill="#fff" opacity=".35"/>
+      </symbol>
+<symbol id="ic-doacao-cafe" viewBox="0 0 64 64">
+        <defs><linearGradient id="f2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient><linearGradient id="f2d" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1D4ED8"/><stop offset="1" stop-color="#1E3A8A"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="19" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <path d="M11 24h33v15.5a13 13 0 0 1-13 13H25a13 13 0 0 1-13-13z" fill="url(#f2)"/>
+        <path d="M11 24h33v9H11z" fill="url(#f2d)" opacity=".4"/>
+        <path d="M44 27.5h4.6a7.4 7.4 0 0 1 0 14.8H44" fill="none" stroke="url(#f2)" stroke-width="5.4"/>
+        <path d="M21 17.5c0-3 2.2-3 2.2-6M30 17.5c0-3 2.2-3 2.2-6" stroke="#1D4ED8" stroke-opacity=".5" stroke-width="3.2" stroke-linecap="round"/>
+        <ellipse cx="26" cy="33" rx="10" ry="3.6" fill="#fff" opacity=".22"/>
+      </symbol>
+<symbol id="ic-doacao-apoiador" viewBox="0 0 64 64">
+        <defs><linearGradient id="f3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBBF24"/><stop offset=".5" stop-color="#F59E0B"/><stop offset="1" stop-color="#D97706"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="18" ry="3.4" fill="#D97706" opacity=".2"/>
+        <polygon points="32 6 39 24.5 58 25.5 43 37.5 48 56 32 45.8 16 56 21 37.5 6 25.5 25 24.5" fill="url(#f3)"/>
+        <ellipse cx="28" cy="17" rx="3" ry="1.6" fill="#fff" opacity=".4"/>
+      </symbol>
+<symbol id="ic-doacao-apoiador-plus" viewBox="0 0 64 64">
+        <defs><linearGradient id="f4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="59" rx="15" ry="3.2" fill="#1D4ED8" opacity=".18"/>
+        <path d="M32 5c8 6 12.5 16.5 11 27l-4.5 12h-13L21 32C19.5 21.5 24 11 32 5z" fill="url(#f4)"/>
+        <path d="M22 34 12 40l4-13z" fill="url(#f4)" opacity=".85"/>
+        <path d="M42 34 52 40l-4-13z" fill="url(#f4)" opacity=".85"/>
+        <path d="M27 44 24 55l8-5 8 5-3-11z" fill="#F59E0B"/>
+        <circle cx="32" cy="23" r="5" fill="#fff"/>
+        <ellipse cx="27" cy="17" rx="2.6" ry="1.4" fill="#fff" opacity=".35"/>
+      </symbol>
+<symbol id="ic-pix-copiar" viewBox="0 0 64 64">
+        <defs><linearGradient id="f5" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <rect x="4" y="18" width="40" height="28" rx="8" fill="url(#f5)"/>
+        <text x="24" y="39" font-size="17" font-weight="900" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif">PIX</text>
+        <rect x="40" y="6" width="17" height="17" rx="4" fill="#fff" stroke="url(#f5)" stroke-width="2.6"/>
+        <rect x="45" y="1.5" width="17" height="17" rx="4" fill="url(#f5)"/>
+      </symbol>
+<symbol id="ic-admin-dashboard" viewBox="0 0 64 64">
+        <defs><linearGradient id="g1x" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#1D4ED8"/><stop offset="1" stop-color="#60A5FA"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="18" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <rect x="9" y="34" width="9" height="19" rx="2.4" fill="url(#g1x)" opacity=".6"/>
+        <rect x="23.5" y="18" width="9" height="35" rx="2.4" fill="url(#g1x)" opacity=".85"/>
+        <rect x="38" y="8" width="9" height="45" rx="2.4" fill="url(#g1x)"/>
+        <circle cx="47" cy="8" r="2.6" fill="#93C5FD"/>
+      </symbol>
+<symbol id="ic-admin-novo-post" viewBox="0 0 64 64">
+        <defs><linearGradient id="g2x" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="17" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <path d="M41 8.5a6 6 0 0 1 8.5 8.5L21.5 45 9 48l3-12.5z" fill="url(#g2x)"/>
+        <rect x="35" y="12" width="10" height="5.4" rx="1.2" fill="#fff" fill-opacity=".45" transform="rotate(45 40 14.7)"/>
+        <ellipse cx="15" cy="42" rx="3" ry="1.6" fill="#1D4ED8" opacity=".5"/>
+      </symbol>
+<symbol id="ic-admin-index" viewBox="0 0 64 64">
+        <defs><linearGradient id="g3x" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="17" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <circle cx="27" cy="27" r="18" fill="none" stroke="url(#g3x)" stroke-width="6.4"/>
+        <path d="M27 17v10l7 4" fill="none" stroke="url(#g3x)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="40" y1="40" x2="55" y2="55" stroke="url(#g3x)" stroke-width="7" stroke-linecap="round"/>
+      </symbol>
+<symbol id="ic-admin-automacao" viewBox="0 0 64 64">
+        <defs><linearGradient id="g4x" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBBF24"/><stop offset=".5" stop-color="#F59E0B"/><stop offset="1" stop-color="#D97706"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="15" ry="3.4" fill="#D97706" opacity=".2"/>
+        <polygon points="34.5 5 11 37.5 28 37.5 26 58 51.5 24 34 24" fill="url(#g4x)"/>
+        <polygon points="34.5 5 22 22.5 34 24 26 37.5" fill="#fff" fill-opacity=".2"/>
+      </symbol>
+<symbol id="ic-leia-tambem" viewBox="0 0 64 64">
+        <defs><linearGradient id="g5x" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="19" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <path d="M10 12A3.8 3.8 0 0 1 13.8 8.2H31V52H13.8A3.8 3.8 0 0 1 10 48.2Z" fill="url(#g5x)"/>
+        <path d="M54 12a3.8 3.8 0 0 0-3.8-3.8H33V52h17.2a3.8 3.8 0 0 0 3.8-3.8z" fill="url(#g5x)" opacity=".78"/>
+        <line x1="32" y1="8" x2="32" y2="52" stroke="#fff" stroke-opacity=".4" stroke-width="1.3"/>
+        <rect x="14" y="16" width="12" height="2.6" rx="1.2" fill="#fff" fill-opacity=".7"/>
+      </symbol>
+<symbol id="ic-autoria" viewBox="0 0 64 64">
+        <defs><linearGradient id="h1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="17" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <circle cx="32" cy="21" r="11" fill="url(#h1)"/>
+        <path d="M10 54c0-11.6 9.6-19.4 22-19.4S54 42.4 54 54" fill="url(#h1)"/>
+        <path d="M40.5 15a5.6 5.6 0 0 1 8-8l-7.7 7.7-5-1.3z" fill="#fff"/>
+        <ellipse cx="27" cy="17" rx="2.8" ry="1.5" fill="#fff" opacity=".3"/>
+      </symbol>
+<symbol id="ic-pontos-fortes" viewBox="0 0 64 64">
+        <defs><linearGradient id="h2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4ADE80"/><stop offset=".5" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="17" ry="3.4" fill="#166534" opacity=".2"/>
+        <circle cx="32" cy="32" r="24.5" fill="url(#h2)"/>
+        <circle cx="32" cy="32" r="24.5" fill="none" stroke="#fff" stroke-opacity=".2" stroke-width="1.5"/>
+        <path d="M20 33 27.5 40.5 44 22" fill="none" stroke="#fff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <ellipse cx="24" cy="20" rx="3.2" ry="1.6" fill="#fff" opacity=".3"/>
+      </symbol>
+<symbol id="ic-atencao" viewBox="0 0 64 64">
+        <defs><linearGradient id="h3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBBF24"/><stop offset=".5" stop-color="#F59E0B"/><stop offset="1" stop-color="#D97706"/></linearGradient></defs>
+        <ellipse cx="32" cy="58" rx="16" ry="3.4" fill="#B45309" opacity=".2"/>
+        <path d="M32 6 57 51H7Z" fill="url(#h3)"/>
+        <path d="M32 6 57 51H32Z" fill="#fff" fill-opacity=".12"/>
+        <rect x="29" y="24" width="6" height="15" rx="2.8" fill="#fff"/>
+        <circle cx="32" cy="44" r="3.4" fill="#fff"/>
+      </symbol>
+<symbol id="ic-texto-oficial" viewBox="0 0 64 64">
+        <defs><linearGradient id="h4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="30" cy="58" rx="19" ry="3.4" fill="#1D4ED8" opacity=".18"/>
+        <path d="M13 9h30a4 4 0 0 1 4 4v34l-8-5-7 5-7-5-8 5-8-5V13a4 4 0 0 1 4-4Z" fill="url(#h4)"/>
+        <rect x="18.5" y="17.5" width="20" height="3" rx="1.4" fill="#fff" fill-opacity=".85"/>
+        <rect x="18.5" y="24" width="20" height="3" rx="1.4" fill="#fff" fill-opacity=".6"/>
+        <circle cx="45" cy="41" r="10.5" fill="#1D4ED8"/>
+        <circle cx="45" cy="41" r="10.5" fill="none" stroke="#fff" stroke-width="2"/>
+        <path d="M40.5 41 43.5 44 49.5 36" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </symbol>
+<symbol id="ic-ranking-medalha" viewBox="0 0 64 64">
+        <defs><linearGradient id="h5" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FDE68A"/><stop offset=".5" stop-color="#FBBF24"/><stop offset="1" stop-color="#D97706"/></linearGradient></defs>
+        <ellipse cx="32" cy="59" rx="16" ry="3.2" fill="#D97706" opacity=".2"/>
+        <path d="M22 34 15 58l17-8.6 17 8.6-7-24" fill="url(#h5)" opacity=".92"/>
+        <circle cx="32" cy="21" r="17.5" fill="url(#h5)"/>
+        <circle cx="32" cy="21" r="17.5" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1.6"/>
+        <text x="32" y="28" font-size="17" font-weight="900" text-anchor="middle" fill="#fff">1</text>
+        <ellipse cx="25" cy="14" rx="3.6" ry="1.8" fill="#fff" opacity=".4"/>
+      </symbol>
+<symbol id="ic-comprar-carrinho" viewBox="0 0 64 64">
+        <defs><linearGradient id="h6" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="59" rx="17" ry="3.2" fill="#1D4ED8" opacity=".18"/>
+        <circle cx="21" cy="52" r="4" fill="url(#h6)"/><circle cx="44" cy="52" r="4" fill="url(#h6)"/>
+        <path d="M7 11h5l6 30a5 5 0 0 0 5 4h20a5 5 0 0 0 5-4l4-19H14" fill="none" stroke="url(#h6)" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <ellipse cx="20" cy="18" rx="2.8" ry="1.4" fill="#fff" opacity=".35"/>
+      </symbol>
+<symbol id="ic-comprar-carrinho-ml" viewBox="0 0 64 64">
+        <defs><linearGradient id="h7" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+        <ellipse cx="32" cy="59" rx="17" ry="3.2" fill="#1D4ED8" opacity=".18"/>
+        <circle cx="21" cy="52" r="4" fill="url(#h7)"/><circle cx="44" cy="52" r="4" fill="url(#h7)"/>
+        <path d="M7 11h5l6 30a5 5 0 0 0 5 4h20a5 5 0 0 0 5-4l4-19H14" fill="none" stroke="url(#h7)" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <ellipse cx="20" cy="18" rx="2.8" ry="1.4" fill="#fff" opacity=".35"/>
+      </symbol>
+
+<symbol id="ic-horas-extras" viewBox="0 0 64 64">
+<defs><linearGradient id="nx1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+<ellipse cx="30" cy="58" rx="17" ry="3.2" fill="#1D4ED8" opacity=".18"/>
+<circle cx="28" cy="32" r="22" fill="url(#nx1)"/>
+<circle cx="28" cy="32" r="22" fill="none" stroke="#93C5FD" stroke-opacity=".5" stroke-width="1.4"/>
+<path d="M28 20v12l8 5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="20" y="7" width="16" height="5.5" rx="2.6" fill="url(#nx1)"/>
+<circle cx="50" cy="44" r="11" fill="#1D4ED8"/>
+<circle cx="50" cy="44" r="11" fill="none" stroke="#fff" stroke-width="2"/>
+<line x1="50" y1="38.5" x2="50" y2="49.5" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+<line x1="44.5" y1="44" x2="55.5" y2="44" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+</symbol>
+<symbol id="ic-seguro-desemprego" viewBox="0 0 64 64">
+<defs><linearGradient id="nx2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+<ellipse cx="30" cy="58" rx="18" ry="3.2" fill="#1D4ED8" opacity=".18"/>
+<path d="M13 9h30a4 4 0 0 1 4 4v34l-8-5-7 5-7-5-8 5-8-5V13a4 4 0 0 1 4-4Z" fill="url(#nx2)"/>
+<rect x="18.5" y="17.5" width="20" height="3" rx="1.4" fill="#fff" fill-opacity=".85"/>
+<rect x="18.5" y="24" width="20" height="3" rx="1.4" fill="#fff" fill-opacity=".6"/>
+<circle cx="45" cy="41" r="10.5" fill="#1D4ED8"/>
+<circle cx="45" cy="41" r="10.5" fill="none" stroke="#fff" stroke-width="2"/>
+<text x="45" y="45" font-size="9.5" font-weight="900" text-anchor="middle" fill="#fff">R$</text>
+</symbol>
+<symbol id="ic-rescisao-domestica" viewBox="0 0 64 64">
+<defs><linearGradient id="nx3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+<ellipse cx="27" cy="58" rx="17" ry="3.2" fill="#1D4ED8" opacity=".18"/>
+<path d="M8 27 27 11l19 16" fill="none" stroke="url(#nx3)" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M13 24v23h28V24" fill="url(#nx3)"/>
+<rect x="22" y="34" width="10" height="13" fill="#fff"/>
+<path d="M44 34h9a6 6 0 0 1 0 12h-3.5" fill="none" stroke="#1D4ED8" stroke-width="3.4" stroke-linecap="round"/>
+<path d="M47.5 41.5 51 45 47.5 48.5" fill="none" stroke="#1D4ED8" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+</svg>

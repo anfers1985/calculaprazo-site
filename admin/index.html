@@ -146,15 +146,15 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
   <div class="sidebar">
     <div class="s-logo"><div class="s-logo-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><path d="M5 21h14"/><path d="M5 8l-3 5h6l-3-5z"/><path d="M19 8l-3 5h6l-3-5z"/><line x1="5" y1="8" x2="19" y2="8"/></svg></div>Calcula<span>Prazo</span></div>
     <nav class="s-nav">
-      <a onclick="goPage('dashboard')" id="nav-dashboard" class="on"><span class="s-icon">📊</span> Dashboard</a>
-      <a onclick="goPage('new')" id="nav-new"><span class="s-icon">✏️</span> Novo Post</a>
-      <a onclick="goPage('list')" id="nav-list"><span class="s-icon">📄</span> Gerenciar Posts</a>
+      <a onclick="goPage('dashboard')" id="nav-dashboard" class="on"><span class="s-icon"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-admin-dashboard"></use></svg></span> Dashboard</a>
+      <a onclick="goPage('new')" id="nav-new"><span class="s-icon"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-admin-novo-post"></use></svg></span> Novo Post</a>
+      <a onclick="goPage('list')" id="nav-list"><span class="s-icon"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-processual"></use></svg></span> Gerenciar Posts</a>
       <a onclick="goPage('scheduled')" id="nav-scheduled"><span class="s-icon">🗓️</span> Agendados</a>
       <a onclick="goPage('newsletter')" id="nav-newsletter"><span class="s-icon">📧</span> Newsletter</a>
       <div class="s-sep"></div>
       <a onclick="goPage('automation')" id="nav-automation"><span class="s-icon">🤖</span> Automação</a>
-      <a onclick="goPage('studio')" id="nav-studio"><span class="s-icon">🚀</span> IA Content Studio</a>
-      <a onclick="goPage('export')" id="nav-export"><span class="s-icon">📦</span> Exportar Dados</a>
+      <a onclick="goPage('studio')" id="nav-studio"><span class="s-icon"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-doacao-apoiador-plus"></use></svg></span> IA Content Studio</a>
+      <a onclick="goPage('export')" id="nav-export"><span class="s-icon"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-outros-submenu"></use></svg></span> Exportar Dados</a>
       <a onclick="goPage('settings')" id="nav-settings"><span class="s-icon">⚙️</span> Configurações</a>
     </nav>
     <div class="s-bottom">
@@ -170,7 +170,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
     <div class="page on" id="page-dashboard">
       <div class="page-header">
         <div><div class="page-title">Dashboard</div><div class="page-sub">Visão geral do conteúdo do site</div></div>
-        <button class="btn btn-p" onclick="goPage('new')">✏️ Novo Post</button>
+        <button class="btn btn-p" onclick="goPage('new')"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-admin-novo-post"></use></svg> Novo Post</button>
       </div>
       <div class="stats-grid" id="stats-grid"></div>
       <div class="card">
@@ -186,7 +186,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button class="btn btn-g" onclick="goPage('list')">Cancelar</button>
           <button class="btn btn-g" id="btn-baixar" onclick="baixarHTML()">⬇️ Baixar HTML</button>
-          <button class="btn btn-p" id="btn-publicar" onclick="handlePublicarClick()">🚀 Publicar no GitHub</button>
+          <button class="btn btn-p" id="btn-publicar" onclick="handlePublicarClick()"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-doacao-apoiador-plus"></use></svg> Publicar no GitHub</button>
         </div>
       </div>
 
@@ -226,19 +226,19 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
           <div class="fg">
             <label>Categoria</label>
             <select id="f-cat">
-              <optgroup label="⚖️ Jurisprudência">
+              <optgroup label="<svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-jurisprudencia"></use></svg> Jurisprudência">
                 <option value="jurisprudencia-trts">TRT</option>
                 <option value="jurisprudencia-tst">TST</option>
                 <option value="jurisprudencia-stj">STJ</option>
                 <option value="jurisprudencia-stf">STF</option>
                 <option value="jurisprudencia">Outros temas</option>
               </optgroup>
-              <optgroup label="🏛️ Órgãos Públicos">
+              <optgroup label="<svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-orgaos-publicos"></use></svg> Órgãos Públicos">
                 <option value="noticias-mte">MTE</option>
                 <option value="noticias-mpt">MPT</option>
                 <option value="noticias-mte-mpt">Outros órgãos</option>
               </optgroup>
-              <optgroup label="📋 Legislação e Normas">
+              <optgroup label="<svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-legislacao"></use></svg> Legislação e Normas">
                 <option value="legislacao-clt">CLT</option>
                 <option value="legislacao-cf">Constituição Federal</option>
                 <option value="esocial">eSocial</option>
@@ -250,7 +250,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
                 <option value="legislacao-nr">NR</option>
                 <option value="legislacao-normas">Outras Legislação e Normas</option>
               </optgroup>
-              <optgroup label="👥 RH e Gestão de Pessoas">
+              <optgroup label="<svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-rh"></use></svg> RH e Gestão de Pessoas">
                 <option value="rh-folha">Folha de Pagamento</option>
                 <option value="rh-jornada">Jornada de Trabalho</option>
                 <option value="rh-contrato">Contrato de Trabalho</option>
@@ -265,7 +265,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
                 <option value="rh-modelos">Modelos RH</option>
                 <option value="orientacoes-praticas">Outros temas de RH</option>
               </optgroup>
-              <optgroup label="📄 Processual">
+              <optgroup label="<svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-processual"></use></svg> Processual">
                 <option value="processual-peticoes">Petições e Peças</option>
                 <option value="processual-pratica">Prática Advocatícia</option>
                 <option value="modelos">Modelos</option>
@@ -274,10 +274,10 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
                 <option value="processual-outros">Outros temas</option>
               </optgroup>
               <optgroup label="⭐ Essenciais">
-                <option value="essenciais-livros">📚 Livros Jurídicos</option>
-                <option value="essenciais-equipamentos">🖥️ Equipamentos de Escritório</option>
-                <option value="essenciais-cursos">🎓 Cursos</option>
-                <option value="essenciais-outros">📦 Outros</option>
+                <option value="essenciais-livros"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-livros"></use></svg> Livros Jurídicos</option>
+                <option value="essenciais-equipamentos"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-equipamentos"></use></svg> Equipamentos de Escritório</option>
+                <option value="essenciais-cursos"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-cursos"></use></svg> Cursos</option>
+                <option value="essenciais-outros"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-outros-submenu"></use></svg> Outros</option>
               </optgroup>
               <optgroup label="🔧 Outros">
                 <option value="geral">Outros (Ferramentas e Utilitários)</option>
@@ -329,25 +329,25 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
     <div class="page" id="page-list">
       <div class="page-header">
         <div><div class="page-title">Gerenciar Posts</div><div class="page-sub">Edite ou remova conteúdo publicado</div></div>
-        <button class="btn btn-p" onclick="goPage('new')">✏️ Novo Post</button>
+        <button class="btn btn-p" onclick="goPage('new')"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-admin-novo-post"></use></svg> Novo Post</button>
       </div>
       <div style="display:flex;gap:10px;margin-bottom:16px;">
         <input type="text" id="search-posts" placeholder="🔍 Buscar posts..." style="flex:1;padding:9px 13px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.86rem;font-family:var(--fh);color:var(--txt);" oninput="renderList()">
         <select id="filter-cat" style="padding:9px 13px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.86rem;font-family:var(--fh);color:var(--txt);" onchange="renderList()">
           <option value="">Todas as categorias</option>
-          <optgroup label="⚖️ Jurisprudência">
+          <optgroup label="<svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-jurisprudencia"></use></svg> Jurisprudência">
             <option value="jurisprudencia-trts">TRT</option>
             <option value="jurisprudencia-tst">TST</option>
             <option value="jurisprudencia-stj">STJ</option>
             <option value="jurisprudencia-stf">STF</option>
             <option value="jurisprudencia">Outros</option>
           </optgroup>
-          <optgroup label="🏛️ Órgãos Públicos">
+          <optgroup label="<svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-orgaos-publicos"></use></svg> Órgãos Públicos">
             <option value="noticias-mte">MTE</option>
             <option value="noticias-mpt">MPT</option>
             <option value="noticias-mte-mpt">Outros órgãos</option>
           </optgroup>
-          <optgroup label="📋 Legislação e Normas">
+          <optgroup label="<svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-legislacao"></use></svg> Legislação e Normas">
             <option value="legislacao-clt">CLT</option>
             <option value="legislacao-cf">Constituição Federal</option>
             <option value="esocial">eSocial</option>
@@ -359,7 +359,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
             <option value="legislacao-nr">NR</option>
             <option value="legislacao-normas">Outras Legislação</option>
           </optgroup>
-          <optgroup label="👥 RH e Gestão de Pessoas">
+          <optgroup label="<svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-rh"></use></svg> RH e Gestão de Pessoas">
             <option value="rh-folha">Folha de Pagamento</option>
             <option value="rh-jornada">Jornada de Trabalho</option>
             <option value="rh-contrato">Contrato de Trabalho</option>
@@ -374,7 +374,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
             <option value="rh-modelos">Modelos RH</option>
             <option value="orientacoes-praticas">Outros temas de RH</option>
           </optgroup>
-          <optgroup label="📄 Processual">
+          <optgroup label="<svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-processual"></use></svg> Processual">
             <option value="processual-peticoes">Petições e Peças</option>
             <option value="processual-pratica">Prática Advocatícia</option>
             <option value="modelos">Modelos</option>
@@ -383,10 +383,10 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
             <option value="processual-outros">Outros temas</option>
           </optgroup>
           <optgroup label="⭐ Essenciais">
-            <option value="essenciais-livros">📚 Livros Jurídicos</option>
-            <option value="essenciais-equipamentos">🖥️ Equipamentos</option>
-            <option value="essenciais-cursos">🎓 Cursos</option>
-            <option value="essenciais-outros">📦 Outros</option>
+            <option value="essenciais-livros"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-livros"></use></svg> Livros Jurídicos</option>
+            <option value="essenciais-equipamentos"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-equipamentos"></use></svg> Equipamentos</option>
+            <option value="essenciais-cursos"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-cursos"></use></svg> Cursos</option>
+            <option value="essenciais-outros"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-outros-submenu"></use></svg> Outros</option>
           </optgroup>
           <optgroup label="🔧 Outros">
             <option value="geral">Outros (Ferramentas e Utilitários)</option>
@@ -402,7 +402,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
         <div><div class="page-title">Agendados</div><div class="page-sub">Conteúdo programado — publicado automaticamente às 09h/12h/15h/18h (seg-sex)</div></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button class="btn btn-g" onclick="renderScheduled()">🔄 Atualizar</button>
-          <button class="btn btn-p" onclick="goPage('new')">✏️ Novo Post</button>
+          <button class="btn btn-p" onclick="goPage('new')"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-admin-novo-post"></use></svg> Novo Post</button>
         </div>
       </div>
       <div id="scheduled-list"><div class="card" style="text-align:center;color:var(--txt-s);padding:40px;">Carregando...</div></div>
@@ -422,8 +422,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
       </div>
 
       <div style="display:flex;gap:6px;margin-bottom:20px;border-bottom:1.5px solid var(--brd);">
-        <button class="btn" id="nl-tab-campanhas" onclick="nlSwitchTab('campanhas')" style="border-radius:8px 8px 0 0;background:var(--acc);color:#fff;">📋 Campanhas</button>
-        <button class="btn" id="nl-tab-assinantes" onclick="nlSwitchTab('assinantes')" style="border-radius:8px 8px 0 0;background:var(--b50);color:var(--txt-m);">👥 Assinantes</button>
+        <button class="btn" id="nl-tab-campanhas" onclick="nlSwitchTab('campanhas')" style="border-radius:8px 8px 0 0;background:var(--acc);color:#fff;"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-legislacao"></use></svg> Campanhas</button>
+        <button class="btn" id="nl-tab-assinantes" onclick="nlSwitchTab('assinantes')" style="border-radius:8px 8px 0 0;background:var(--b50);color:var(--txt-m);"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-rh"></use></svg> Assinantes</button>
       </div>
 
       <!-- SUB-ABA: CAMPANHAS -->
@@ -473,7 +473,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
           <div style="background:#fff;border-radius:12px;width:100%;max-width:680px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;">
             <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--brd);">
               <div style="font-size:.9rem;font-weight:700;">👁️ Pré-visualização — como o e-mail vai chegar</div>
-              <button class="btn btn-g btn-sm" onclick="document.getElementById('nl-preview-modal').style.display='none'">✕ Fechar</button>
+              <button class="btn btn-g btn-sm" onclick="document.getElementById('nl-preview-modal').style.display='none'"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-fechar"></use></svg> Fechar</button>
             </div>
             <iframe id="nl-preview-iframe" style="flex:1;border:none;width:100%;min-height:60vh;background:#f1f5f9;"></iframe>
           </div>
@@ -481,7 +481,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
 
 
         <div style="margin-bottom:14px;">
-          <button class="btn btn-p" onclick="nlOpenComposer()">✏️ Nova Campanha</button>
+          <button class="btn btn-p" onclick="nlOpenComposer()"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-admin-novo-post"></use></svg> Nova Campanha</button>
         </div>
         <div id="nl-campaigns-list"><div class="card" style="text-align:center;color:var(--txt-s);padding:30px;">Carregando...</div></div>
       </div>
@@ -515,7 +515,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
           <div style="font-size:.84rem;font-weight:700;color:var(--acc);margin-bottom:6px;">Status da Automação</div>
           <p style="font-size:.82rem;color:var(--txt-m);">O workflow configurado é: <code>post-generator.yml</code></p>
         </div>
-        <button class="btn btn-p" id="btn-trigger-action" onclick="triggerGitHubAction()">⚡ Disparar Automação Agora</button>
+        <button class="btn btn-p" id="btn-trigger-action" onclick="triggerGitHubAction()"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-admin-automacao"></use></svg> Disparar Automação Agora</button>
         <p style="font-size:.75rem;color:var(--txt-s);margin-top:12px;">
           * Nota: O processo leva cerca de 2-3 minutos para completar e atualizar o site.
         </p>
@@ -525,7 +525,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
     <!-- IA CONTENT STUDIO -->
     <div class="page" id="page-studio">
       <div class="page-header">
-        <div><div class="page-title">🚀 IA Content Studio</div><div class="page-sub">Gere prompts e textos prontos a partir de um artigo já publicado</div></div>
+        <div><div class="page-title"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-doacao-apoiador-plus"></use></svg> IA Content Studio</div><div class="page-sub">Gere prompts e textos prontos a partir de um artigo já publicado</div></div>
       </div>
 
       <div class="card" style="margin-bottom:16px;">
@@ -545,7 +545,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
         <div style="font-size:.9rem;font-weight:700;margin-bottom:14px;">2. Selecione o que quer gerar</div>
         <p style="font-size:.8rem;color:var(--txt-s);margin-bottom:14px;">Marque os formatos desejados e clique em "Gerar Selecionados". Cada bloco usa o provedor de IA configurado em Configurações → Provedores de IA. As imagens não são geradas aqui — copie o prompt de imagem e cole no Grok/ChatGPT/Gemini como você já faz.</p>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
-          <button class="btn btn-p" id="btn-gerar-selecionados" onclick="studioGerarSelecionados()">⚡ Gerar Selecionados</button>
+          <button class="btn btn-p" id="btn-gerar-selecionados" onclick="studioGerarSelecionados()"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-admin-automacao"></use></svg> Gerar Selecionados</button>
           <button class="btn btn-g" onclick="studioToggleSelectAll()">☑️ Selecionar Todos</button>
         </div>
         <div id="studio-checkbox-list" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
@@ -585,12 +585,12 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
           <button class="btn btn-p" onclick="saveGitHubSettings()">💾 Salvar Token</button>
-          <button class="btn btn-g" onclick="testGitHubPAT()">🔍 Testar Token</button>
+          <button class="btn btn-g" onclick="testGitHubPAT()"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-busca"></use></svg> Testar Token</button>
         </div>
         <div id="pat-test-result" style="margin-top:10px;font-size:.82rem;padding:10px 14px;border-radius:8px;display:none;"></div>
 
         <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--brd);">
-          <div style="font-size:.9rem;font-weight:700;margin-bottom:6px;">🔎 Indexação Automática + Content Studio</div>
+          <div style="font-size:.9rem;font-weight:700;margin-bottom:6px;"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-admin-index"></use></svg> Indexação Automática + Content Studio</div>
           <p style="font-size:.78rem;color:var(--txt-s);margin-bottom:12px;">Este secret autoriza o painel a usar o Worker <code>calculaprazo-views-api</code> para: (1) atualizar o <code>sitemap.xml</code> e notificar o Google automaticamente ao publicar, e (2) gerar conteúdo no IA Content Studio. Configure o mesmo valor da variável <code>ADMIN_SECRET</code> no Worker. Bing/Yandex são notificados separadamente pelo <strong>Crawler Hints</strong> nativo do Cloudflare (Painel do domínio → Cache → Crawler Hints) — ative lá uma única vez, não depende deste secret.</p>
           <div class="fg">
             <label>Worker Admin Secret</label>
@@ -598,7 +598,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
             <button class="btn btn-p" onclick="saveWorkerSecret()">💾 Salvar Secret</button>
-            <button class="btn btn-g" onclick="testIndexingSetup()">🔍 Testar Indexação</button>
+            <button class="btn btn-g" onclick="testIndexingSetup()"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-busca"></use></svg> Testar Indexação</button>
           </div>
           <div id="indexing-test-result" style="margin-top:10px;font-size:.82rem;padding:10px 14px;border-radius:8px;display:none;"></div>
         </div>
@@ -643,7 +643,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
             <button class="btn btn-p" onclick="saveNewsletterSettings()">💾 Salvar</button>
-            <button class="btn btn-g" onclick="testNewsletterSetup()">🔍 Testar Conexão</button>
+            <button class="btn btn-g" onclick="testNewsletterSetup()"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-busca"></use></svg> Testar Conexão</button>
           </div>
           <div id="nl-test-result" style="margin-top:10px;font-size:.82rem;padding:10px 14px;border-radius:8px;display:none;"></div>
         </div>
@@ -868,7 +868,7 @@ async function testGitHubPAT(){
       const d = await r.json();
       const perms = d.permissions ? Object.entries(d.permissions).filter(([k,v])=>v).map(([k])=>k).join(', ') : 'ok';
       div.style.background='#F0FDF4';
-      div.innerHTML=`<span style="color:#059669;">✅ Token válido! Repo: <strong>${d.full_name}</strong> — permissões: ${perms}</span>`;
+      div.innerHTML=`<span style="color:#059669;"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-pontos-fortes"></use></svg> Token válido! Repo: <strong>${d.full_name}</strong> — permissões: ${perms}</span>`;
     } else if(r.status===401){
       div.style.background='#FFF5F5';
       div.innerHTML='<span style="color:#DC2626;">❌ Token inválido ou expirado (401). Gere novo em <strong>github.com/settings/tokens</strong> com escopo <strong>repo</strong>.</span>';
@@ -976,7 +976,7 @@ function formatDate(dateStr){
 function catLabel(c){
   const map = {
     'jurisprudencia-trts':'⚖️ TRT','jurisprudencia-tst':'⚖️ TST',
-    'jurisprudencia-stj':'⚖️ STJ','jurisprudencia-stf':'⚖️ STF','jurisprudencia':'⚖️ Jurisprudência',
+    'jurisprudencia-stj':'⚖️ STJ','jurisprudencia-stf':'⚖️ STF','jurisprudencia':'<svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-jurisprudencia"></use></svg> Jurisprudência',
     'noticias-mte':'🏛️ MTE','noticias-mpt':'🏛️ MPT','noticias-mte-mpt':'🏛️ Outros órgãos',
     'legislacao-clt':'📋 CLT','legislacao-cf':'📋 CF/88',
     'esocial':'📋 eSocial','fgts-digital':'📋 FGTS','esocial-fgts-digital':'📋 eSocial/FGTS',
@@ -989,7 +989,7 @@ function catLabel(c){
     'orientacoes-praticas':'👥 RH',
     'processual-peticoes':'📄 Petições','processual-pratica':'📄 Prática',
     'modelos':'📄 Modelos','artigos':'📄 Artigos',
-    'processual-analises':'📄 Análises','processual-outros':'📄 Processual',
+    'processual-analises':'📄 Análises','processual-outros':'<svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-processual"></use></svg> Processual',
     'essenciais-livros':'⭐ Livros','essenciais-equipamentos':'⭐ Equipamentos',
     'essenciais-cursos':'⭐ Cursos','essenciais-outros':'⭐ Outros',
     'geral':'🔧 Outros'
@@ -1065,8 +1065,8 @@ function renderDashboard(){
   document.getElementById('stats-grid').innerHTML = `
     <div class="stat-card"><div class="stat-icon">📄</div><div class="stat-num">${posts.length}</div><div class="stat-lbl">Total de Posts</div></div>
     <div class="stat-card"><div class="stat-icon">⚖️</div><div class="stat-num">${cats['jurisprudencia-tst']}</div><div class="stat-lbl">TST</div></div>
-    <div class="stat-card"><div class="stat-icon">🔎</div><div class="stat-num">${cats['noticias-mte-mpt']}</div><div class="stat-lbl">MTE/MPT</div></div>
-    <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-num">${cats['legislacao-normas']}</div><div class="stat-lbl">Legislação</div></div>
+    <div class="stat-card"><div class="stat-icon"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-admin-index"></use></svg></div><div class="stat-num">${cats['noticias-mte-mpt']}</div><div class="stat-lbl">MTE/MPT</div></div>
+    <div class="stat-card"><div class="stat-icon"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-legislacao"></use></svg></div><div class="stat-num">${cats['legislacao-normas']}</div><div class="stat-lbl">Legislação</div></div>
   `;
   
   const recent = [...posts].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
@@ -1237,7 +1237,7 @@ function pickRelatedForInlineLinks(post, allPosts, max) {
 }
 
 function buildLeiaTambemHTML(p) {
-  return `\n<p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/${p.id}.html" style="color:#2563EB;font-weight:600;">${p.title}</a></p>\n`;
+  return `\n<p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-leia-tambem"></use></svg> <strong>Leia também:</strong> <a href="/blog/${p.id}.html" style="color:#2563EB;font-weight:600;">${p.title}</a></p>\n`;
 }
 
 // Insere UM link "Leia também" dentro do corpo, logo após o 2º <h2> (ou o 1º,
@@ -1370,11 +1370,11 @@ function buildFreshSidebarHTML(currentPostId, allPosts) {
   };
 
   return `<aside class="post-sidebar" data-current-slug="${currentPostId || ''}">`
-    + '<div class="sidebar-card"><h3>🔥 Mais Acessados</h3><div class="sidebar-list" id="mais-acessados-list">' + buildSidebarItemsHTML(top5, true) + '</div></div>'
+    + '<div class="sidebar-card"><h3><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-mais-acessados"></use></svg> Mais Acessados</h3><div class="sidebar-list" id="mais-acessados-list">' + buildSidebarItemsHTML(top5, true) + '</div></div>'
     + adCard('300x250_1')
-    + '<div class="sidebar-card"><h3>🆕 Últimos Conteúdos</h3><div class="sidebar-list" id="ultimos-conteudos-list">' + buildSidebarItemsHTML(latest5, false) + '</div></div>'
+    + '<div class="sidebar-card"><h3><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-ultimos-conteudos"></use></svg> Últimos Conteúdos</h3><div class="sidebar-list" id="ultimos-conteudos-list">' + buildSidebarItemsHTML(latest5, false) + '</div></div>'
     + adCard('300x250_2')
-    + '<a class="ad-smartlink" href="#">🔗 Link patrocinado · Smartlink_1</a>'
+    + '<a class="ad-smartlink" href="#"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-patrocinado"></use></svg> Link patrocinado · Smartlink_1</a>'
     + '</aside>';
 }
 
@@ -2036,7 +2036,7 @@ function studioRenderResultCard(key, text, providerUsed, error){
       <div style="font-size:.9rem;font-weight:700;">${tpl.label} <span style="font-weight:400;color:var(--txt-s);font-size:.74rem;">via ${AI_PROVIDER_LABELS[providerUsed]}</span></div>
       <div style="display:flex;gap:8px;align-items:center;">
         ${studioProviderSelectHTML(key, providerUsed)}
-        <button class="btn btn-g" onclick="studioCopyResult('${textareaId}')">📋 Copiar</button>
+        <button class="btn btn-g" onclick="studioCopyResult('${textareaId}')"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-legislacao"></use></svg> Copiar</button>
         <button class="btn btn-g" onclick="studioGerarUm('${key}')">🔄 Regerar</button>
       </div>
     </div>
@@ -2319,7 +2319,7 @@ async function publicarPost(post, pat) {
         const img = p.image ? `<img class="r-img" src="${p.image}" alt="" loading="lazy">` : '';
         return `<a class="related-card" href="/blog/${p.id}.html">${img}<div class="r-cat">${label}</div><div class="r-title">${p.title}</div><div class="r-date">${dateStr}</div></a>`;
       }).join('');
-      relatedHTML = `<h3>📚 Continue lendo</h3><div class="related-grid">${cards}</div>`;
+      relatedHTML = `<h3><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-livros"></use></svg> Continue lendo</h3><div class="related-grid">${cards}</div>`;
     }
 
     let postHTMLFinal = relatedHTML
@@ -2711,7 +2711,7 @@ async function nlLoadCampaigns() {
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap;">
             ${nlStatusBadge(c.status)}
             ${c.scheduled_for ? `<span style="font-size:.72rem;color:var(--txt-s);">🗓️ ${formatDateTimeBR(c.scheduled_for)}</span>` : ''}
-            ${c.sent_at ? `<span style="font-size:.72rem;color:var(--txt-s);">✅ enviada em ${formatDateTimeBR(c.sent_at)}</span>` : ''}
+            ${c.sent_at ? `<span style="font-size:.72rem;color:var(--txt-s);"><svg class="cp-ic" viewBox="0 0 64 64" aria-hidden="true"><use href="/assets/icons.svg#ic-pontos-fortes"></use></svg> enviada em ${formatDateTimeBR(c.sent_at)}</span>` : ''}
           </div>
           <div class="post-title">${c.subject}</div>
           ${c.error_message ? `<div style="font-size:.76rem;color:#DC2626;margin-top:4px;">${c.error_message}</div>` : ''}
