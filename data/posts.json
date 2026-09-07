@@ -1,5 +1,41 @@
 [
   {
+    "id": "nr35-treinamento-altura-escadas-verticais",
+    "title": "NR-35 muda treinamento em altura e escadas verticais",
+    "category": "legislacao-nr",
+    "category_label": "NR",
+    "excerpt": "Portaria 1.259/2026 altera a NR-35, torna obrigatórios treinamentos presenciais e define regras e prazos para adequação de escadas fixas.",
+    "image": "https://images.unsplash.com/photo-1635909773909-8b93f0b53078?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-07",
+    "updatedAt": "2026-09-07",
+    "tags": []
+  },
+  {
+    "id": "tema-005-tst-telemarketing-adicional-insalubridade",
+    "title": "Tema 005 do TST: telemarketing e adicional de insalubridade",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "Entenda a tese vinculante do Tema 005 do TST sobre o adicional de insalubridade para operadores de telemarketing que utilizam fones de ouvido.",
+    "image": "https://images.unsplash.com/photo-1612447733386-a93717f1fb2a?q=80&w=1174&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-07",
+    "updatedAt": "2026-09-07",
+    "tags": []
+  },
+  {
+    "id": "prisao-empregado-suspensao-contrato-rescisao",
+    "title": "Prisão do empregado: suspensão do contrato e rescisão",
+    "category": "rh-contrato",
+    "category_label": "Contrato",
+    "excerpt": "Entenda como a prisão do empregado afeta o contrato, salários, férias, 13º, FGTS, rescisão, eSocial e auxílio-reclusão em 2026.",
+    "image": "https://images.unsplash.com/photo-1516024693578-e0623769b752?q=80&w=1181&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-07",
+    "updatedAt": "2026-09-07",
+    "tags": []
+  },
+  {
     "id": "stf-r-5-mil-justica-gratuita-trabalhista",
     "title": "STF fixa R$ 5 mil para Justiça gratuita trabalhista",
     "category": "jurisprudencia-stf",
