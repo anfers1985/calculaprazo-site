@@ -2792,7 +2792,10 @@ async function loadVideos() {
   container.innerHTML = '<div class="card" style="text-align:center;color:var(--txt-s);padding:30px;">Carregando...</div>';
   try {
     const { videos, retencao_dias } = await callVideosAPI('list_videos');
-    _videosCache = videos;
+    _videosCache = videos.map(v => ({
+      ...v,
+      legenda_completa: `${v.titulo}\n\n${v.descricao_completa}`
+    }));
     if (retencao_dias) document.getElementById('videos-retencao-label').textContent = `${retencao_dias} dias`;
 
     if (!videos.length) {
@@ -2815,8 +2818,7 @@ async function loadVideos() {
           <div class="post-actions" style="flex-wrap:wrap;">
             ${v.video_url ? `<a class="btn btn-p btn-sm" href="${v.video_url}" download target="_blank">⬇️ Vídeo</a>` : '<span class="btn btn-sm" style="opacity:.5;">Vídeo indisponível</span>'}
             ${v.thumbnail_url ? `<a class="btn btn-g btn-sm" href="${v.thumbnail_url}" download target="_blank">⬇️ Capa</a>` : ''}
-            <button class="btn btn-g btn-sm" onclick="copiarTexto(_videosCache[${i}].titulo, 'Título')">📋 Título</button>
-            <button class="btn btn-g btn-sm" onclick="copiarTexto(_videosCache[${i}].descricao_completa, 'Descrição')">📋 Descrição + hashtags</button>
+            <button class="btn btn-g btn-sm" onclick="copiarTexto(_videosCache[${i}].legenda_completa, 'Legenda')">📋 Copiar legenda (título + descrição)</button>
           </div>
         </div>
       </div>
