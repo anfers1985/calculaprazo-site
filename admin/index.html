@@ -151,6 +151,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
       <a onclick="goPage('list')" id="nav-list"><span class="s-icon">📄</span> Gerenciar Posts</a>
       <a onclick="goPage('scheduled')" id="nav-scheduled"><span class="s-icon">🗓️</span> Agendados</a>
       <a onclick="goPage('newsletter')" id="nav-newsletter"><span class="s-icon">📧</span> Newsletter</a>
+      <a onclick="goPage('videos')" id="nav-videos"><span class="s-icon">🎬</span> Vídeos p/ Redes</a>
       <div class="s-sep"></div>
       <a onclick="goPage('automation')" id="nav-automation"><span class="s-icon">🤖</span> Automação</a>
       <a onclick="goPage('studio')" id="nav-studio"><span class="s-icon">🚀</span> IA Content Studio</a>
@@ -500,6 +501,20 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
       </div>
     </div>
 
+
+    <!-- VÍDEOS P/ REDES -->
+    <div class="page" id="page-videos">
+      <div class="page-header">
+        <div><div class="page-title">🎬 Vídeos p/ Redes</div><div class="page-sub">Vídeo, capa, título e descrição dos Shorts publicados no YouTube — baixe aqui pra postar manualmente no X, Instagram, Facebook, LinkedIn e TikTok</div></div>
+      </div>
+      <div id="videos-config-warning" style="display:none;background:#FEF3C7;border:1px solid #FDE68A;color:#92400E;padding:12px 16px;border-radius:10px;font-size:.84rem;margin-bottom:16px;">
+        ⚠️ Configure a URL do Supabase e o Admin Secret na aba <strong>Configurações</strong> (mesma configuração usada pela Newsletter) pra esta aba funcionar.
+      </div>
+      <div style="background:var(--b50);padding:14px 16px;border-radius:10px;border:1px solid var(--b200);margin-bottom:16px;font-size:.82rem;color:var(--txt-m);">
+        Os arquivos ficam disponíveis aqui por <strong id="videos-retencao-label">5 dias</strong> após a publicação no YouTube. Depois disso, são apagados automaticamente do Storage (pra não estourar a cota do Supabase) — o vídeo continua no YouTube normalmente.
+      </div>
+      <div id="videos-list"><div class="card" style="text-align:center;color:var(--txt-s);padding:30px;">Carregando...</div></div>
+    </div>
 
     <!-- AUTOMATION -->
     <div class="page" id="page-automation">
@@ -1019,6 +1034,7 @@ function goPage(id){
   if(id==='list') refreshPostsFromServer().finally(renderList);
   if(id==='scheduled') renderScheduled();
   if(id==='newsletter') renderNewsletter();
+  if(id==='videos') renderVideos();
   if(id==='export') renderExport();
   if(id==='studio') refreshPostsFromServer().finally(studioInit);
   if(id==='new'){ resetForm(); document.getElementById('form-page-title').textContent='Novo Conteúdo'; }
@@ -2727,6 +2743,85 @@ async function nlLoadCampaigns() {
         </div>
       </div>
     `).join('');
+  } catch (e) {
+    container.innerHTML = `<div class="card" style="text-align:center;color:#DC2626;padding:30px;">Erro: ${e.message}</div>`;
+  }
+}
+
+// ════════════════════════════════════════
+// VÍDEOS P/ REDES (Shorts publicados, disponíveis pra baixar e postar manualmente)
+// ════════════════════════════════════════
+
+async function callVideosAPI(action, payload = {}) {
+  const { url, secret } = nlGetConfig(); // mesma configuração usada pela Newsletter
+  if (!url || !secret) throw new Error('Configure a URL do Supabase e o Admin Secret em Configurações.');
+  const res = await fetch(`${url}/functions/v1/videos-admin`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-admin-secret': secret },
+    body: JSON.stringify({ action, ...payload }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || `Erro ${res.status}`);
+  return data;
+}
+
+function diasRestantes(expiraIso) {
+  const ms = new Date(expiraIso).getTime() - Date.now();
+  return Math.max(0, Math.ceil(ms / (24 * 60 * 60 * 1000)));
+}
+
+function copiarTexto(texto, label) {
+  navigator.clipboard.writeText(texto)
+    .then(() => toast(`${label} copiado(a)!`, 'ok'))
+    .catch(() => toast('Não foi possível copiar. Selecione e copie manualmente.', 'err'));
+}
+
+// Guarda os vídeos carregados (pra não escapar mal strings grandes de
+// título/descrição em atributos onclick — chamamos por índice).
+let _videosCache = [];
+
+function renderVideos() {
+  const { url, secret } = nlGetConfig();
+  document.getElementById('videos-config-warning').style.display = (!url || !secret) ? 'block' : 'none';
+  if (!url || !secret) { document.getElementById('videos-list').innerHTML = ''; return; }
+  loadVideos();
+}
+
+async function loadVideos() {
+  const container = document.getElementById('videos-list');
+  container.innerHTML = '<div class="card" style="text-align:center;color:var(--txt-s);padding:30px;">Carregando...</div>';
+  try {
+    const { videos, retencao_dias } = await callVideosAPI('list_videos');
+    _videosCache = videos;
+    if (retencao_dias) document.getElementById('videos-retencao-label').textContent = `${retencao_dias} dias`;
+
+    if (!videos.length) {
+      container.innerHTML = '<div class="card" style="text-align:center;color:var(--txt-s);padding:30px;">Nenhum vídeo disponível no momento. Os Shorts publicados hoje aparecem aqui em alguns minutos.</div>';
+      return;
+    }
+
+    container.innerHTML = videos.map((v, i) => {
+      const dias = diasRestantes(v.expira_em);
+      const corDias = dias <= 1 ? '#DC2626' : (dias <= 2 ? '#B45309' : 'var(--txt-s)');
+      return `
+      <div class="post-item" style="align-items:flex-start;">
+        ${v.thumbnail_url ? `<img src="${v.thumbnail_url}" style="width:96px;height:170px;object-fit:cover;border-radius:8px;flex-shrink:0;" alt="Capa">` : ''}
+        <div style="flex:1;min-width:0;">
+          <div class="post-title" style="white-space:normal;">${v.titulo}</div>
+          <div style="font-size:.76rem;color:${corDias};font-weight:600;margin:2px 0 8px;">
+            ${dias > 0 ? `⏳ expira em ${dias} dia(s)` : '⚠️ expira hoje'}
+            ${v.youtube_url ? ` · <a href="${v.youtube_url}" target="_blank" style="color:var(--acc);">ver no YouTube</a>` : ''}
+          </div>
+          <div class="post-actions" style="flex-wrap:wrap;">
+            ${v.video_url ? `<a class="btn btn-p btn-sm" href="${v.video_url}" download target="_blank">⬇️ Vídeo</a>` : '<span class="btn btn-sm" style="opacity:.5;">Vídeo indisponível</span>'}
+            ${v.thumbnail_url ? `<a class="btn btn-g btn-sm" href="${v.thumbnail_url}" download target="_blank">⬇️ Capa</a>` : ''}
+            <button class="btn btn-g btn-sm" onclick="copiarTexto(_videosCache[${i}].titulo, 'Título')">📋 Título</button>
+            <button class="btn btn-g btn-sm" onclick="copiarTexto(_videosCache[${i}].descricao_completa, 'Descrição')">📋 Descrição + hashtags</button>
+          </div>
+        </div>
+      </div>
+    `;
+    }).join('');
   } catch (e) {
     container.innerHTML = `<div class="card" style="text-align:center;color:#DC2626;padding:30px;">Erro: ${e.message}</div>`;
   }

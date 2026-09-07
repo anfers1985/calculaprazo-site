@@ -6,23 +6,14 @@ import {
   getJob,
   updateJob,
   marcarErro,
-  garantirArquivoLocal,
-  apagarArquivosDoJob
+  garantirArquivoLocal
 } from './lib/supabase.mjs';
 
-async function limparComSeguranca(jobId) {
-  try {
-    await apagarArquivosDoJob(jobId);
-  } catch (e) {
-    const mensagem = String(e?.message || e).slice(0, 200);
-    console.warn(
-      'Aviso: limpeza do Storage falhou para o job ' +
-      jobId +
-      ': ' +
-      mensagem
-    );
-  }
-}
+// NOTA: este script NÃO apaga mais os arquivos do Storage logo após publicar.
+// Vídeo, capa, título e descrição ficam guardados por alguns dias (retenção
+// controlada em scripts/10-limpar-jobs-travados.mjs, usando o campo
+// `publicado_em`) pra você poder baixá-los no admin (aba "Vídeos p/ Redes")
+// e postar manualmente no X, Instagram, Facebook, LinkedIn e TikTok.
 
 async function prepararThumbnail(inputPath, outputPath) {
   await sharp(inputPath)
@@ -90,10 +81,10 @@ async function main(jobId) {
     );
 
     await updateJob(jobId, {
-      status: 'publicado'
+      status: 'publicado',
+      publicado_em: job.publicado_em || new Date().toISOString()
     });
 
-    await limparComSeguranca(jobId);
     return;
   }
 
@@ -218,7 +209,8 @@ async function main(jobId) {
 
   await updateJob(jobId, {
     youtube_video_id: videoId,
-    status: 'publicado'
+    status: 'publicado',
+    publicado_em: new Date().toISOString()
   });
 
   console.log(
@@ -226,7 +218,9 @@ async function main(jobId) {
     videoId
   );
 
-  await limparComSeguranca(jobId);
+  console.log(
+    'Arquivos mantidos no Storage por alguns dias para download manual (aba "Vídeos p/ Redes" no admin).'
+  );
 }
 
 const jobId = process.argv[2];
