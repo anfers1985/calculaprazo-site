@@ -93,12 +93,13 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
 .content a{color:var(--acc);}
 .content strong{color:var(--txt);font-weight:600;}
 .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:18px 0;}
-.card-item{background:var(--card);border:1px solid var(--brd);border-radius:var(--r);padding:16px;box-shadow:var(--sh);}
-.card-item[href]{display:block;text-decoration:none;transition:all .2s;cursor:pointer;}
+.card-item{background:var(--card);border:1px solid var(--brd);border-radius:var(--r);padding:16px;box-shadow:var(--sh);min-height:150px;}
+.card-item[href]{display:flex;flex-direction:column;text-decoration:none;transition:all .2s;cursor:pointer;}
 .card-item[href]:hover{border-color:var(--b300);box-shadow:var(--shl);transform:translateY(-2px);}
 .card-item[href]:hover .ci-title{color:var(--acc);}
-.card-item .ci-icon{font-size:1.4rem;margin-bottom:8px;}
-.card-item .ci-title{font-size:.85rem;font-weight:700;color:var(--txt);margin-bottom:4px;}
+.card-item .ci-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.card-item .ci-icon{font-size:1.3rem;line-height:1;flex-shrink:0;}
+.card-item .ci-title{font-size:.85rem;font-weight:700;color:var(--txt);}
 .card-item .ci-desc{font-size:.78rem;color:var(--txt-s);line-height:1.5;}
 .faq-item{border:1px solid var(--brd);border-radius:var(--r);margin-bottom:7px;background:var(--card);}
 .faq-q{padding:14px 18px;font-weight:600;font-size:.88rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
@@ -426,36 +427,36 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
 
         <h2>Prazos e datas</h2>
         <div class="card-grid">
-          <a class="card-item" href="/calculadora-de-prazo-processual"><div class="ci-icon">⏱️</div><div class="ci-title">Calculadora de Prazo Processual</div><div class="ci-desc">Dias úteis e corridos, CLT e CPC, com mais de 30 tipos de prazo pré-configurados.</div></a>
-          <a class="card-item" href="/calculadora-de-datas"><div class="ci-icon">📅</div><div class="ci-title">Operações com Datas</div><div class="ci-desc">Some, subtraia ou calcule a diferença entre duas datas.</div></a>
-          <a class="card-item" href="/calculadora-de-prescricao"><div class="ci-icon">⌛</div><div class="ci-title">Calculadora de Prescrição</div><div class="ci-desc">Prazos prescricionais trabalhistas e cíveis.</div></a>
+          <a class="card-item" href="/calculadora-de-prazo-processual"><div class="ci-head"><span class="ci-icon">⏱️</span><span class="ci-title">Calculadora de Prazo Processual</span></div><div class="ci-desc">Dias úteis e corridos, CLT e CPC, com mais de 30 tipos de prazo pré-configurados.</div></a>
+          <a class="card-item" href="/calculadora-de-datas"><div class="ci-head"><span class="ci-icon">📅</span><span class="ci-title">Operações com Datas</span></div><div class="ci-desc">Some, subtraia ou calcule a diferença entre duas datas.</div></a>
+          <a class="card-item" href="/calculadora-de-prescricao"><div class="ci-head"><span class="ci-icon">⌛</span><span class="ci-title">Calculadora de Prescrição</span></div><div class="ci-desc">Prazos prescricionais trabalhistas e cíveis.</div></a>
         </div>
 
         <h2>Trabalhista e folha de pagamento</h2>
         <div class="card-grid">
-          <a class="card-item" href="/calculadora-verbas-trabalhistas"><div class="ci-icon">⚖️</div><div class="ci-title">Calculadora de Verbas Trabalhistas</div><div class="ci-desc">Rescisão CLT completa: aviso prévio, férias, 13º, FGTS e multas.</div></a>
-          <a class="card-item" href="/calculadora-salario-liquido"><div class="ci-icon">💵</div><div class="ci-title">Salário Líquido</div><div class="ci-desc">Simule o holerite com as tabelas de INSS e IRRF 2026.</div></a>
-          <a class="card-item" href="/calculadora-salario-intermitente"><div class="ci-icon">🕒</div><div class="ci-title">Salário Intermitente</div><div class="ci-desc">Cálculo do contrato de trabalho intermitente (CLT).</div></a>
-          <a class="card-item" href="/calculadora-horas-extras"><div class="ci-icon">⏱️</div><div class="ci-title">Horas Extras</div><div class="ci-desc">Adicional de 50%/100% e reflexo no DSR.</div></a>
-          <a class="card-item" href="/calculadora-seguro-desemprego"><div class="ci-icon">📄</div><div class="ci-title">Seguro-Desemprego</div><div class="ci-desc">Valor da parcela e número de parcelas 2026.</div></a>
-          <a class="card-item" href="/calculadora-rescisao-domestica"><div class="ci-icon">🏡</div><div class="ci-title">Rescisão Doméstica</div><div class="ci-desc">LC 150/2015 — FGTS 3,2%, férias, 13º.</div></a>
+          <a class="card-item" href="/calculadora-verbas-trabalhistas"><div class="ci-head"><span class="ci-icon">⚖️</span><span class="ci-title">Calculadora de Verbas Trabalhistas</span></div><div class="ci-desc">Rescisão CLT completa: aviso prévio, férias, 13º, FGTS e multas.</div></a>
+          <a class="card-item" href="/calculadora-salario-liquido"><div class="ci-head"><span class="ci-icon">💵</span><span class="ci-title">Salário Líquido</span></div><div class="ci-desc">Simule o holerite com as tabelas de INSS e IRRF 2026.</div></a>
+          <a class="card-item" href="/calculadora-salario-intermitente"><div class="ci-head"><span class="ci-icon">🕒</span><span class="ci-title">Salário Intermitente</span></div><div class="ci-desc">Cálculo do contrato de trabalho intermitente (CLT).</div></a>
+          <a class="card-item" href="/calculadora-horas-extras"><div class="ci-head"><span class="ci-icon">⏱️</span><span class="ci-title">Horas Extras</span></div><div class="ci-desc">Adicional de 50%/100% e reflexo no DSR.</div></a>
+          <a class="card-item" href="/calculadora-seguro-desemprego"><div class="ci-head"><span class="ci-icon">📄</span><span class="ci-title">Seguro-Desemprego</span></div><div class="ci-desc">Valor da parcela e número de parcelas 2026.</div></a>
+          <a class="card-item" href="/calculadora-rescisao-domestica"><div class="ci-head"><span class="ci-icon">🏡</span><span class="ci-title">Rescisão Doméstica</span></div><div class="ci-desc">LC 150/2015 — FGTS 3,2%, férias, 13º.</div></a>
         </div>
 
         <h2>Financeiro</h2>
         <div class="card-grid">
-          <a class="card-item" href="/correcao-monetaria"><div class="ci-icon">💰</div><div class="ci-title">Correção Monetária</div><div class="ci-desc">IPCA, IGP-M, INPC e SELIC com dados reais do Banco Central.</div></a>
-          <a class="card-item" href="/calculadora-de-juros"><div class="ci-icon">📈</div><div class="ci-title">Calculadora de Juros</div><div class="ci-desc">Juros simples e compostos.</div></a>
-          <a class="card-item" href="/calculadora-de-porcentagem"><div class="ci-icon">🧮</div><div class="ci-title">Calculadora de Porcentagem</div><div class="ci-desc">Cálculos percentuais rápidos.</div></a>
-          <a class="card-item" href="/conversor-de-moedas"><div class="ci-icon">💱</div><div class="ci-title">Conversor de Moedas</div><div class="ci-desc">Cotações e conversão entre moedas.</div></a>
+          <a class="card-item" href="/correcao-monetaria"><div class="ci-head"><span class="ci-icon">💰</span><span class="ci-title">Correção Monetária</span></div><div class="ci-desc">IPCA, IGP-M, INPC e SELIC com dados reais do Banco Central.</div></a>
+          <a class="card-item" href="/calculadora-de-juros"><div class="ci-head"><span class="ci-icon">📈</span><span class="ci-title">Calculadora de Juros</span></div><div class="ci-desc">Juros simples e compostos.</div></a>
+          <a class="card-item" href="/calculadora-de-porcentagem"><div class="ci-head"><span class="ci-icon">🧮</span><span class="ci-title">Calculadora de Porcentagem</span></div><div class="ci-desc">Cálculos percentuais rápidos.</div></a>
+          <a class="card-item" href="/conversor-de-moedas"><div class="ci-head"><span class="ci-icon">💱</span><span class="ci-title">Conversor de Moedas</span></div><div class="ci-desc">Cotações e conversão entre moedas.</div></a>
         </div>
 
         <h2>Utilidades</h2>
         <div class="card-grid">
-          <a class="card-item" href="/validador-cpf-cnpj"><div class="ci-icon">🪪</div><div class="ci-title">Validador CPF / CNPJ</div><div class="ci-desc">Verifique a validade de documentos.</div></a>
-          <a class="card-item" href="/gerador-de-qr-code"><div class="ci-icon">📱</div><div class="ci-title">Gerador de QR Code</div><div class="ci-desc">Crie QR Codes gratuitamente.</div></a>
-          <a class="card-item" href="/gerador-de-senhas"><div class="ci-icon">🔐</div><div class="ci-title">Gerador de Senhas</div><div class="ci-desc">Senhas fortes e seguras.</div></a>
-          <a class="card-item" href="/numero-por-extenso"><div class="ci-icon">🔢</div><div class="ci-title">Número por Extenso</div><div class="ci-desc">Converta valores numéricos em texto.</div></a>
-          <a class="card-item" href="/calculadora-imc"><div class="ci-icon">🏃</div><div class="ci-title">Calculadora de IMC</div><div class="ci-desc">Índice de Massa Corporal.</div></a>
+          <a class="card-item" href="/validador-cpf-cnpj"><div class="ci-head"><span class="ci-icon">🪪</span><span class="ci-title">Validador CPF / CNPJ</span></div><div class="ci-desc">Verifique a validade de documentos.</div></a>
+          <a class="card-item" href="/gerador-de-qr-code"><div class="ci-head"><span class="ci-icon">📱</span><span class="ci-title">Gerador de QR Code</span></div><div class="ci-desc">Crie QR Codes gratuitamente.</div></a>
+          <a class="card-item" href="/gerador-de-senhas"><div class="ci-head"><span class="ci-icon">🔐</span><span class="ci-title">Gerador de Senhas</span></div><div class="ci-desc">Senhas fortes e seguras.</div></a>
+          <a class="card-item" href="/numero-por-extenso"><div class="ci-head"><span class="ci-icon">🔢</span><span class="ci-title">Número por Extenso</span></div><div class="ci-desc">Converta valores numéricos em texto.</div></a>
+          <a class="card-item" href="/calculadora-imc"><div class="ci-head"><span class="ci-icon">🏃</span><span class="ci-title">Calculadora de IMC</span></div><div class="ci-desc">Índice de Massa Corporal.</div></a>
         </div>
 
         <h2>Os resultados têm validade jurídica?</h2>

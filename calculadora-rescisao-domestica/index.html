@@ -280,7 +280,10 @@
       <div class="fg-row"><div class="fg"><label>Períodos de férias vencidas (não gozadas)</label><input type="number" id="d-fer-venc" aria-label="Períodos de férias vencidas" placeholder="0" value="0"></div><div class="fg"></div></div>
       <button class="btn btn-p btn-full" onclick="calcRescisaoDomestica()">Calcular →</button>
         </div>
-      <div id="d-res" aria-live="polite" aria-atomic="true" class="res-box" style="margin-top:8px;"><div class="print-letterhead"><div class="print-letterhead-name">Calcula Prazo — Calculadora de Rescisão de Empregada Doméstica</div><div class="print-letterhead-date">Gerado em <span class="print-date"></span> · calculaprazo.com.br</div></div><div class="res-lbl">Resultado</div><div class="res-val" id="d-res-val"></div><div class="res-det" id="d-res-det"></div></div></div>
+      <div id="d-res" aria-live="polite" aria-atomic="true" style="display:none;margin-top:10px;"><div class="print-letterhead"><div class="print-letterhead-name">Calcula Prazo — Calculadora de Rescisão de Empregada Doméstica</div><div class="print-letterhead-date">Gerado em <span class="print-date"></span> · calculaprazo.com.br</div></div>
+        <h3 style="font-size:.82rem;font-weight:700;margin-bottom:8px;color:var(--txt-s);text-transform:uppercase;letter-spacing:.05em;">Resultado da Rescisão</h3>
+        <div id="d-grid" class="ri-grid"></div>
+      </div></div>
 
   <span class="calc-count" id="cc-rescisao-domestica"></span><div class="print-btn-row" style="display:flex;gap:8px;"><button type="button" class="btn btn-s btn-sm" onclick="shareCalcResult(['d-sal','d-adm','d-dem'],null,this)">Compartilhar</button><button type="button" class="btn btn-s btn-sm btn-print" onclick="exportarCalcPDF()">Imprimir / Salvar PDF</button></div>
   <!-- ▸ ANÚNCIO: sec-rescisao-domestica after result (aparece após calcular) -->

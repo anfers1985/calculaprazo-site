@@ -1328,131 +1328,119 @@ function calcHorasExtras(){
 
 // ─── SEGURO-DESEMPREGO (tabela 2026 — Decreto 12.797/2025 / Lei 7.998/1990) ──
 function calcSeguroDesemprego(){
-  const rb = document.getElementById('sd-res'); rb.classList.remove('show','err');
-  try{
-    const sal1 = parseFloat(document.getElementById('sd-sal1').value);
-    const sal2 = parseFloat(document.getElementById('sd-sal2').value);
-    const sal3 = parseFloat(document.getElementById('sd-sal3').value);
-    const meses = parseFloat(document.getElementById('sd-meses').value) || 0;
-    const solicitacao = parseInt(document.getElementById('sd-solicitacao').value);
-    const semJustaCausa = document.getElementById('sd-justa-causa').value === 'sim';
+  const sal1 = parseVal(document.getElementById('sd-sal1').value);
+  const sal2 = parseVal(document.getElementById('sd-sal2').value);
+  const sal3 = parseVal(document.getElementById('sd-sal3').value);
+  const meses = parseFloat(document.getElementById('sd-meses').value) || 0;
+  const solicitacao = parseInt(document.getElementById('sd-solicitacao').value);
+  const semJustaCausa = document.getElementById('sd-justa-causa').value === 'sim';
 
-    if(!semJustaCausa) throw new Error('Dispensa sem justa causa é requisito para o benefício (Lei 7.998/1990).');
-    if(isNaN(sal1) || isNaN(sal2) || isNaN(sal3)) throw new Error('Informe os 3 últimos salários.');
-    if(meses<=0) throw new Error('Informe os meses trabalhados no período de referência.');
+  if(!semJustaCausa){ alert('Dispensa sem justa causa é requisito para o benefício (Lei 7.998/1990).'); return; }
+  if(isNaN(sal1) || isNaN(sal2) || isNaN(sal3)){ alert('Informe os 3 últimos salários.'); return; }
+  if(meses<=0){ alert('Informe os meses trabalhados no período de referência.'); return; }
 
-    const media = (sal1 + sal2 + sal3) / 3;
+  const media = (sal1 + sal2 + sal3) / 3;
+  const PISO = 1621.00, TETO = 2518.65, LIM1 = 2222.17, LIM2 = 3703.99, BASE2 = 1777.74;
+  let parcela;
+  if (media <= LIM1) parcela = media * 0.8;
+  else if (media <= LIM2) parcela = BASE2 + (media - LIM1) * 0.5;
+  else parcela = TETO;
+  if (parcela < PISO) parcela = PISO;
+  if (parcela > TETO) parcela = TETO;
 
-    // Tabela 2026
-    const PISO = 1621.00, TETO = 2518.65, LIM1 = 2222.17, LIM2 = 3703.99, BASE2 = 1777.74;
-    let parcela;
-    if (media <= LIM1) parcela = media * 0.8;
-    else if (media <= LIM2) parcela = BASE2 + (media - LIM1) * 0.5;
-    else parcela = TETO;
-    if (parcela < PISO) parcela = PISO;
-    if (parcela > TETO) parcela = TETO;
+  const minMeses = solicitacao === 1 ? 12 : solicitacao === 2 ? 9 : 6;
+  if (meses < minMeses){ alert(`Com ${meses} meses trabalhados, o tempo mínimo exigido para a ${solicitacao}ª solicitação é de ${minMeses} meses — não há direito ao benefício neste caso.`); return; }
 
-    // Nº de parcelas + requisito mínimo de meses
-    let minMeses, faixasTexto;
-    if (solicitacao === 1) { minMeses = 12; }
-    else if (solicitacao === 2) { minMeses = 9; }
-    else { minMeses = 6; }
+  const parcelas = meses >= 24 ? 5 : meses >= 12 ? 4 : 3;
+  const total = parcela * parcelas;
+  const faixaLabel = media <= LIM1 ? '80% da média salarial' : media <= LIM2 ? 'faixa intermediária (R$1.777,74 + 50% do excedente)' : 'teto (média acima de R$3.703,99)';
 
-    if (meses < minMeses) {
-      throw new Error(`Com ${meses} meses trabalhados, o tempo mínimo exigido para a ${solicitacao}ª solicitação é de ${minMeses} meses — não há direito ao benefício neste caso.`);
-    }
+  const linhas = [
+    {n:'Média salarial (últimos 3 meses)', v: fmtBRL(media)},
+    {n:`Faixa aplicada`, v: faixaLabel},
+    {n:'Valor de cada parcela', v: fmtBRL(parcela)},
+    {n:`Número de parcelas (${solicitacao}ª solicitação, ${meses} meses trabalhados)`, v: parcelas + (parcelas===1?' parcela':' parcelas')},
+  ];
+  document.getElementById('sd-grid').innerHTML = linhas.map(l =>
+    `<div class="ri"><div class="ri-lbl">${l.n}</div><div class="ri-val">${l.v}</div></div>`
+  ).join('') + `<div class="ri span2" style="background:var(--b100);border-color:var(--b200);">
+       <div class="ri-lbl">TOTAL ESTIMADO A RECEBER</div>
+       <div class="ri-val">${fmtBRL(total)}</div>
+     </div>`;
 
-    let parcelas;
-    if (meses >= 24) parcelas = 5;
-    else if (meses >= 12) parcelas = 4;
-    else parcelas = 3; // só possível na 2ª (9-11) ou 3ª+ (6-11) solicitação
-
-    const total = parcela * parcelas;
-
-    document.getElementById('sd-res-val').textContent = fmtBRL(parcela) + ' / parcela';
-    document.getElementById('sd-res-det').textContent =
-      `Média salarial: ${fmtBRL(media)} · Número de parcelas: ${parcelas} · Total estimado: ${fmtBRL(total)} · Tabela 2026 (piso ${fmtBRL(PISO)} / teto ${fmtBRL(TETO)})`;
-    rb.classList.add('show');
-    showAdAfterResult('ad-seguro-desemprego-result');
-    trackCalcUsage('seguro-desemprego','cc-seguro-desemprego');
-  }catch(e){
-    document.getElementById('sd-res-val').textContent = 'Erro: ' + e.message;
-    rb.classList.add('show','err');
-  }
+  document.getElementById('sd-res').style.display = 'block';
+  showAdAfterResult('ad-seguro-desemprego-result');
+  trackCalcUsage('seguro-desemprego','cc-seguro-desemprego');
+  document.getElementById('sd-res').scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 // ─── RESCISÃO EMPREGADA DOMÉSTICA (LC 150/2015) ──────
 function calcRescisaoDomestica(){
-  const rb = document.getElementById('d-res'); rb.classList.remove('show','err');
-  try{
-    const sal    = parseFloat(document.getElementById('d-sal').value);
-    const admStr = document.getElementById('d-adm').value;
-    const demStr = document.getElementById('d-dem').value;
-    const tipo   = document.getElementById('d-tipo').value;
-    const ferVenc= parseInt(document.getElementById('d-fer-venc').value) || 0;
+  const sal    = parseVal(document.getElementById('d-sal').value);
+  const admStr = document.getElementById('d-adm').value;
+  const demStr = document.getElementById('d-dem').value;
+  const tipo   = document.getElementById('d-tipo').value;
+  const ferVenc= parseInt(document.getElementById('d-fer-venc').value) || 0;
 
-    if(isNaN(sal) || sal<=0 || !admStr || !demStr) throw new Error('Preencha salário, admissão e demissão.');
+  if(isNaN(sal) || sal<=0 || !admStr || !demStr){ alert('Preencha salário, admissão e demissão.'); return; }
 
-    const adm = new Date(admStr+'T12:00:00');
-    const dem = new Date(demStr+'T12:00:00');
-    if(dem < adm) throw new Error('A data de demissão não pode ser anterior à admissão.');
+  const adm = new Date(admStr+'T12:00:00');
+  const dem = new Date(demStr+'T12:00:00');
+  if(dem < adm){ alert('A data de demissão não pode ser anterior à admissão.'); return; }
 
-    const mesesTotal        = (dem.getFullYear()-adm.getFullYear())*12 + (dem.getMonth()-adm.getMonth());
-    const anos               = Math.floor(mesesTotal/12);
-    const mesesPeriodoAtual  = mesesTotal % 12;
-    const diasUltimoMes      = dem.getDate();
-    const mesesTrabalhados   = mesesTotal + (diasUltimoMes >= 15 ? 1 : 0);
+  const mesesTotal        = (dem.getFullYear()-adm.getFullYear())*12 + (dem.getMonth()-adm.getMonth());
+  const anos               = Math.floor(mesesTotal/12);
+  const mesesPeriodoAtual  = mesesTotal % 12;
+  const diasUltimoMes      = dem.getDate();
+  const mesesTrabalhados   = mesesTotal + (diasUltimoMes >= 15 ? 1 : 0);
 
-    // ── Aviso prévio (Lei 12.506/2011, aplicável ao doméstico) ──
-    const diasAviso = Math.min(90, 30 + anos*3);
-    let avisoVal = 0, descontoAviso = 0;
-    if(tipo === 'semjusta'){
-      avisoVal = sal * (diasAviso/30);
-    } else if(tipo === 'pedido'){
-      descontoAviso = sal * (30/30); // desconta 30 dias se não cumprido — simplificação
-    }
-    // comjusta: sem aviso
+  const diasAviso = Math.min(90, 30 + anos*3);
+  let avisoVal = 0, descontoAviso = 0;
+  if(tipo === 'semjusta'){ avisoVal = sal * (diasAviso/30); }
+  else if(tipo === 'pedido'){ descontoAviso = sal; }
 
-    // ── Saldo de salário ──────────────────────────────
-    const saldoSal = sal / 30 * diasUltimoMes;
+  const saldoSal = sal / 30 * diasUltimoMes;
+  const ferVencVal = ferVenc > 0 ? sal * ferVenc * (4/3) : 0;
+  const avosAquis   = mesesPeriodoAtual + (diasUltimoMes >= 15 ? 1 : 0);
+  const avosFerProp = Math.min(11, avosAquis);
+  const ferPropVal  = (tipo !== 'comjusta' && avosFerProp > 0) ? (sal / 12 * avosFerProp) * (4/3) : 0;
 
-    // ── Férias vencidas ───────────────────────────────
-    const ferVencVal = ferVenc > 0 ? sal * ferVenc * (4/3) : 0;
+  const mesInicio13 = (adm.getFullYear() === dem.getFullYear()) ? adm.getMonth() : 0;
+  const avos13 = Math.min(12, Math.max(0, (dem.getMonth() - mesInicio13) + (diasUltimoMes >= 15 ? 1 : 0)));
+  const decTerc = (tipo !== 'comjusta' && avos13 > 0) ? sal / 12 * avos13 : 0;
 
-    // ── Férias proporcionais ──────────────────────────
-    const avosAquis   = mesesPeriodoAtual + (diasUltimoMes >= 15 ? 1 : 0);
-    const avosFerProp = Math.min(11, avosAquis);
-    const ferPropVal  = (tipo !== 'comjusta' && avosFerProp > 0) ? (sal / 12 * avosFerProp) * (4/3) : 0;
+  const reservaAcumulada = sal * 0.032 * Math.max(1, mesesTrabalhados);
+  const indenizacaoFgts = (tipo === 'semjusta') ? reservaAcumulada : 0;
 
-    // ── 13º proporcional ───────────────────────────────
-    const mesInicio13 = (adm.getFullYear() === dem.getFullYear()) ? adm.getMonth() : 0;
-    const avos13 = Math.min(12, Math.max(0, (dem.getMonth() - mesInicio13) + (diasUltimoMes >= 15 ? 1 : 0)));
-    const decTerc = (tipo !== 'comjusta' && avos13 > 0) ? sal / 12 * avos13 : 0;
+  const total = saldoSal + ferVencVal + ferPropVal + decTerc + avisoVal + indenizacaoFgts - descontoAviso;
 
-    // ── Indenização compensatória FGTS (3,2%, art. 22 LC 150/2015) ──
-    // Estimativa: 3,2% do salário acumulado mês a mês ao longo do contrato.
-    // Só é devida/liberada à trabalhadora em dispensa sem justa causa.
-    const reservaAcumulada = sal * 0.032 * Math.max(1, mesesTrabalhados);
-    const indenizacaoFgts = (tipo === 'semjusta') ? reservaAcumulada : 0;
+  const linhas = [
+    {n:`Saldo de Salário (${diasUltimoMes} dias)`, v: saldoSal},
+  ];
+  if(ferVencVal>0) linhas.push({n:`Férias Vencidas + 1/3 (${ferVenc} período${ferVenc!==1?'s':''})`, v: ferVencVal});
+  linhas.push({n:`Férias Proporcionais + 1/3 (${avosFerProp}/12 avos)`, v: ferPropVal});
+  linhas.push({n:`13º Proporcional (${avos13}/12 avos)`, v: decTerc});
+  if(avisoVal>0) linhas.push({n:`Aviso Prévio Indenizado (${diasAviso} dias)`, v: avisoVal});
+  if(descontoAviso>0) linhas.push({n:'(-) Desconto aviso prévio não cumprido', v: -descontoAviso});
+  if(indenizacaoFgts>0) linhas.push({n:'Indenização FGTS 3,2% (acumulado, estimativa)', v: indenizacaoFgts});
 
-    const total = saldoSal + ferVencVal + ferPropVal + decTerc + avisoVal + indenizacaoFgts - descontoAviso;
+  const grid = document.getElementById('d-grid');
+  grid.innerHTML = linhas.filter(l=>l.v!==0).map(l => {
+    const cor = l.v<0 ? 'color:var(--err)' : '';
+    return `<div class="ri"><div class="ri-lbl">${l.n}</div><div class="ri-val" style="${cor}">${fmtBRL(l.v)}</div></div>`;
+  }).join('') + `<div class="ri span2" style="background:var(--b100);border-color:var(--b200);">
+       <div class="ri-lbl">TOTAL ESTIMADO</div>
+       <div class="ri-val">${fmtBRL(total)}</div>
+     </div>`;
 
-    document.getElementById('d-res-val').textContent = fmtBRL(total);
-    let det = `Saldo de salário: ${fmtBRL(saldoSal)} · `;
-    if(ferVencVal>0) det += `Férias vencidas: ${fmtBRL(ferVencVal)} · `;
-    det += `Férias proporcionais (${avosFerProp}/12): ${fmtBRL(ferPropVal)} · 13º proporcional (${avos13}/12): ${fmtBRL(decTerc)}`;
-    if(avisoVal>0) det += ` · Aviso prévio (${diasAviso} dias): ${fmtBRL(avisoVal)}`;
-    if(descontoAviso>0) det += ` · Desconto aviso não cumprido: -${fmtBRL(descontoAviso)}`;
-    if(indenizacaoFgts>0) det += ` · Indenização FGTS (3,2% acumulado, estimativa): ${fmtBRL(indenizacaoFgts)}`;
-    else if(tipo!=='semjusta') det += ' · Sem indenização FGTS (o saldo de 3,2% retorna ao empregador neste tipo de rescisão)';
-    document.getElementById('d-res-det').textContent = det;
-    rb.classList.add('show');
-    showAdAfterResult('ad-rescisao-domestica-result');
-    trackCalcUsage('rescisao-domestica','cc-rescisao-domestica');
-  }catch(e){
-    document.getElementById('d-res-val').textContent = 'Erro: ' + e.message;
-    rb.classList.add('show','err');
+  if(tipo!=='semjusta' && indenizacaoFgts===0){
+    grid.innerHTML += `<div class="ri span2" style="font-size:.75rem;color:var(--txt-s);background:none;border:none;box-shadow:none;padding-top:0;">ℹ️ Sem indenização FGTS de 3,2% neste tipo de rescisão — o saldo acumulado retorna ao empregador.</div>`;
   }
+
+  document.getElementById('d-res').style.display = 'block';
+  showAdAfterResult('ad-rescisao-domestica-result');
+  trackCalcUsage('rescisao-domestica','cc-rescisao-domestica');
+  document.getElementById('d-res').scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 

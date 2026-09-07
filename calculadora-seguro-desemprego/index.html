@@ -280,7 +280,10 @@
       <div class="fg-row"><div class="fg"><label>Número desta solicitação</label><select id="sd-solicitacao" aria-label="Número da solicitação"><option value="1">1ª vez</option><option value="2">2ª vez</option><option value="3">3ª vez ou mais</option></select></div><div class="fg"><label>Dispensa sem justa causa?</label><select id="sd-justa-causa" aria-label="Tipo de dispensa"><option value="sim">Sim</option><option value="nao">Não (sem direito ao benefício)</option></select></div></div>
       <button class="btn btn-p btn-full" onclick="calcSeguroDesemprego()">Calcular →</button>
         </div>
-      <div id="sd-res" aria-live="polite" aria-atomic="true" class="res-box" style="margin-top:8px;"><div class="print-letterhead"><div class="print-letterhead-name">Calcula Prazo — Calculadora de Seguro-Desemprego</div><div class="print-letterhead-date">Gerado em <span class="print-date"></span> · calculaprazo.com.br</div></div><div class="res-lbl">Resultado</div><div class="res-val" id="sd-res-val"></div><div class="res-det" id="sd-res-det"></div></div></div>
+      <div id="sd-res" aria-live="polite" aria-atomic="true" style="display:none;margin-top:10px;"><div class="print-letterhead"><div class="print-letterhead-name">Calcula Prazo — Calculadora de Seguro-Desemprego</div><div class="print-letterhead-date">Gerado em <span class="print-date"></span> · calculaprazo.com.br</div></div>
+        <h3 style="font-size:.82rem;font-weight:700;margin-bottom:8px;color:var(--txt-s);text-transform:uppercase;letter-spacing:.05em;">Resultado do Seguro-Desemprego</h3>
+        <div id="sd-grid" class="ri-grid"></div>
+      </div></div>
 
   <span class="calc-count" id="cc-seguro-desemprego"></span><div class="print-btn-row" style="display:flex;gap:8px;"><button type="button" class="btn btn-s btn-sm" onclick="shareCalcResult(['sd-sal1','sd-sal2','sd-sal3','sd-meses'],null,this)">Compartilhar</button><button type="button" class="btn btn-s btn-sm btn-print" onclick="exportarCalcPDF()">Imprimir / Salvar PDF</button></div>
   <!-- ▸ ANÚNCIO: sec-seguro-desemprego after result (aparece após calcular) -->
