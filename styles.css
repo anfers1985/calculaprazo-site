@@ -1636,9 +1636,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   /* Faixa 1101–1400px: sem isso, a coluna direita do hero (min. 660px)
      espremia a coluna esquerda e quebrava o H1 em 3 linhas. */
   .nh-hero-grid { grid-template-columns:1fr; }
-  .nh-quick-card { max-width:480px; }
-  .nh-quick-list { display:flex;flex-direction:column;gap:7px; }
-  .nh-quick-btn { gap:12px;padding:9px 12px; }
+  /* Grade 2×2 compacta em vez de lista vertical de 4 — evita o hero virar
+     um bloco alto demais quando empilha (visual "amador"). */
+  .nh-quick-card { max-width:640px; }
+  .nh-quick-list { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+  .nh-quick-btn { gap:12px;padding:10px 14px; }
 }
 @media(max-width:1100px){
   .nh-artigos-grid { grid-template-columns:1fr 340px; }
