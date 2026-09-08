@@ -474,7 +474,14 @@ async function main() {
 
   fs.writeFileSync(POSTS_JSON_PATH, JSON.stringify(postsAtuais, null, 2), 'utf-8');
   fs.writeFileSync(SITEMAP_PATH, buildSitemapXML(postsAtuais), 'utf-8');
-  fs.writeFileSync(AGENDADOS_PATH, JSON.stringify(agendados, null, 2), 'utf-8');
+
+  // Itens já publicados não precisam continuar em agendados.json — o post já
+  // existe em posts.json e aparece em "Gerenciar Posts" no admin. Manter eles
+  // aqui só fazia o arquivo crescer sem limite (chegou a passar de 1MB, o que
+  // quebrava a leitura no admin, já que a Contents API do GitHub só devolve o
+  // conteúdo em base64 pra arquivos até 1MB). Mantém só pendente/erro.
+  const agendadosFinal = agendados.filter(a => a.status !== 'publicado');
+  fs.writeFileSync(AGENDADOS_PATH, JSON.stringify(agendadosFinal, null, 2), 'utf-8');
 
   await notifyIndexing(urlsParaIndexar);
 
