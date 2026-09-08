@@ -2004,7 +2004,7 @@ img[src*="m.media-amazon.com"] {
   .nh-top10-item:last-child { border-bottom:none;margin-bottom:0;padding-bottom:0; }
   .nh-top10-item:hover { transform:none;box-shadow:none; }
   .nh-top10-thumb {
-    width:76px;height:76px;aspect-ratio:auto !important;
+    width:108px;height:80px;aspect-ratio:auto !important;
     flex-shrink:0;border-radius:10px;
   }
   /* Vídeos: mantém a proporção real do YouTube (16:9), não recorta em quadrado */
