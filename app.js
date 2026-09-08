@@ -159,6 +159,30 @@ pRUteis.addEventListener('change',    () => { if(pRUteis.checked)   pUteisOpts.c
 pRCorridos.addEventListener('change', () => { if(pRCorridos.checked) pUteisOpts.classList.remove('show'); });
 
 // Date utils
+// Recesso forense (art. 220 CPC): suspende o prazo entre 20/dez e 20/jan, inclusive,
+// todo ano — regra fixa em lei, sem depender de decreto/portaria anual (diferente de
+// feriado estadual/municipal). Retorna todos os dias corridos do período que começa
+// em 20/dez/ano.
+function getRecessoForense(ano){
+  const dias=[];
+  let cur = new Date(Date.UTC(ano,11,20));
+  const fim = new Date(Date.UTC(ano+1,0,20));
+  while(cur<=fim){ dias.push(new Date(cur.getTime())); cur=new Date(cur.getTime()+864e5); }
+  return dias;
+}
+// Monta a lista de feriados a considerar no cálculo: nacionais automáticos (se
+// habilitado) + recesso forense (se habilitado) + feriados estaduais/municipais
+// digitados manualmente. anoIni/anoFim delimitam os anos civis relevantes ao período
+// calculado, para não gerar feriados de anos fora do intervalo.
+function montarFeriados(anoIni, anoFim, considerarNac, considerarRecesso, manuais){
+  let out = manuais.slice();
+  for(let a=anoIni-1; a<=anoFim+1; a++){
+    if(considerarNac) out = out.concat(getFeriadosNacionais(a));
+    if(considerarRecesso) out = out.concat(getRecessoForense(a));
+  }
+  const seen = new Set();
+  return out.filter(d=>{const t=d.getTime();if(seen.has(t))return false;seen.add(t);return true;});
+}
 function parseFer(str){if(!str||!str.trim())return[];return str.split(',').map(s=>{const p=s.trim().split('/');if(p.length!==3)return null;const[d,m,a]=p.map(Number);if(isNaN(d)||isNaN(m)||isNaN(a))return null;return new Date(Date.UTC(a,m-1,d));}).filter(Boolean);}
 function isFer(dt,fl){return fl.some(f=>f.getTime()===dt.getTime());}
 function isNU(dt,eS,eD,fl){const ds=dt.getUTCDay();return(eD&&ds===0)||(eS&&ds===6)||isFer(dt,fl);}
@@ -168,7 +192,7 @@ function somarU(ref,n,t,eS,eD,fl,iR){if(t==='corridos'){const o=iR?Math.max(0,n-
 function subU(ref,n,t,eS,eD,fl,iR){if(t==='corridos'){const o=iR?Math.max(0,n-1):n;return new Date(ref.getTime()-o*864e5);}let c=0,cur=new Date(ref.getTime());if(iR&&!isNU(cur,eS,eD,fl))c=1;if(c>=n)return cur;while(c<n){cur=new Date(cur.getTime()-864e5);if(!isNU(cur,eS,eD,fl))c++;}return cur;}
 
 // Calcular
-document.getElementById('p-btn-calc').addEventListener('click', function(){ }); document.getElementById('p-btn-calc').addEventListener('click', () => {
+document.getElementById('p-btn-calc').addEventListener('click', () => {
   const resDiv = document.getElementById('p-resultado');
   const resFer = document.getElementById('p-res-feriados');
   resDiv.classList.remove('show','err');
@@ -180,7 +204,9 @@ document.getElementById('p-btn-calc').addEventListener('click', function(){ }); 
     const tipoDias = document.querySelector("input[name='p-tipo-dias']:checked").value;
     const eS = document.getElementById('p-sab').checked;
     const eD = document.getElementById('p-dom').checked;
-    const fl = parseFer(document.getElementById('p-fer').value);
+    const considerarNac = document.getElementById('p-fer-nac').checked;
+    const considerarRecesso = document.getElementById('p-recesso').checked;
+    const manuais = parseFer(document.getElementById('p-fer').value);
     const iI = document.getElementById('p-incl-ini').checked;
     const iF = document.getElementById('p-incl-fim').checked;
     let txt='', resumo='', ferTxt='';
@@ -190,6 +216,7 @@ document.getElementById('p-btn-calc').addEventListener('click', function(){ }); 
       if(!fim) throw new Error('Data final é obrigatória.');
       const isReg = ini > fim;
       const [a,b] = isReg ? [fim,ini] : [ini,fim];
+      const fl = montarFeriados(a.getUTCFullYear(), b.getUTCFullYear(), considerarNac, considerarRecesso, manuais);
       if(tipoDias === 'corridos'){
         txt    = `${isReg?'−':''}${corrEntre(a,b,iI,iF)} dias corridos`;
         resumo = `De ${fd(ini)} (${dsem(ini)}) a ${fd(fim)} (${dsem(fim)}).`;
@@ -197,17 +224,21 @@ document.getElementById('p-btn-calc').addEventListener('click', function(){ }); 
         const {count,feriados} = uteisEntre(a,b,iI,iF,eS,eD,fl);
         txt    = `${isReg?'−':''}${count} dias úteis`;
         resumo = `De ${fd(ini)} a ${fd(fim)}.`;
-        if(feriados.length) ferTxt = `🗓 ${feriados.length} feriado(s) descontado(s): ${feriados.join(', ')}`;
+        if(feriados.length) ferTxt = `🗓 ${feriados.length} dia(s) não útil(is) descontado(s): ${feriados.join(', ')}`;
       }
     } else if(tipo === 'somar_dias'){
       const n = parseInt(document.getElementById('p-dias').value);
       if(isNaN(n)||n<0) throw new Error('Número de dias inválido.');
+      const anoFimEstimado = ini.getUTCFullYear() + Math.ceil(n/180) + 1;
+      const fl = montarFeriados(ini.getUTCFullYear(), anoFimEstimado, considerarNac, considerarRecesso, manuais);
       const df = somarU(ini,n,tipoDias,eS,eD,fl,iI);
       txt    = `${fd(df)}  (${dsem(df)})`;
       resumo = `${n} dia(s) ${tipoDias==='uteis'?'úteis':'corridos'} a partir de ${fd(ini)}.`;
     } else {
       const n = parseInt(document.getElementById('p-dias').value);
       if(isNaN(n)||n<0) throw new Error('Número de dias inválido.');
+      const anoIniEstimado = ini.getUTCFullYear() - Math.ceil(n/180) - 1;
+      const fl = montarFeriados(anoIniEstimado, ini.getUTCFullYear(), considerarNac, considerarRecesso, manuais);
       const df = subU(ini,n,tipoDias,eS,eD,fl,iI);
       txt    = `${fd(df)}  (${dsem(df)})`;
       resumo = `${n} dia(s) ${tipoDias==='uteis'?'úteis':'corridos'} antes de ${fd(ini)}.`;
