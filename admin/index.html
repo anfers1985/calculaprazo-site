@@ -2428,14 +2428,19 @@ async function githubGetJSON(path, pat, fallback) {
   try {
     const r = await fetch(
       `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}?ref=${GITHUB_BRANCH}`,
-      { headers: { 'Authorization': `token ${pat}`, 'Accept': 'application/vnd.github.v3+json' } }
+      // 'raw' devolve o conteúdo puro do arquivo, sem passar pelo campo `content`
+      // em base64 — esse campo só vem preenchido para arquivos até 1MB; acima
+      // disso a Contents API o devolve vazio, e o JSON.parse quebrava com
+      // "Unexpected end of JSON input" mesmo com o arquivo intacto no GitHub.
+      { headers: { 'Authorization': `token ${pat}`, 'Accept': 'application/vnd.github.raw+json' } }
     );
     if (!r.ok) {
       if (r.status === 404) return fallback; // arquivo ainda não existe no repo
       throw new Error(`GitHub API erro ${r.status} ao ler ${path}`);
     }
-    const d = await r.json();
-    return JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\s/g, '')))));
+    const texto = await r.text();
+    if (!texto.trim()) return fallback; // arquivo existe mas está vazio de verdade
+    return JSON.parse(texto);
   } catch (e) {
     console.warn(`Falha ao ler ${path}:`, e.message);
     return fallback;
