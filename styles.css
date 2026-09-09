@@ -1899,7 +1899,7 @@ img[src*="m.media-amazon.com"] {
 .sidebar-list{display:flex;flex-direction:column;}
 .sidebar-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--brd);text-decoration:none;}
 .sidebar-item:last-child{border-bottom:none;}
-.sidebar-item-thumb{position:relative;flex-shrink:0;width:64px;height:64px;border-radius:8px;overflow:hidden;background:var(--b50);}
+.sidebar-item-thumb{position:relative;flex-shrink:0;width:108px;height:84px;border-radius:8px;overflow:hidden;background:var(--b50);}
 .sidebar-item-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
 .sidebar-item-thumb .sidebar-item-badge{position:absolute;top:3px;left:3px;margin:0;box-shadow:0 1px 4px rgba(0,0,0,.35);}
 .sidebar-item-badge{flex-shrink:0;width:22px;height:22px;border-radius:6px;background:var(--b50);color:var(--acc);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px;}
@@ -1980,15 +1980,25 @@ img[src*="m.media-amazon.com"] {
   .nh-cat-pills {
     flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;
     padding-bottom:4px;margin-bottom:16px;
+    /* padding lateral extra: dá "folga" para centralizar um pill perto do início/fim
+       sem que o scroll seja travado no limite (clamping) antes de centralizar de fato */
+    padding-left:28px;padding-right:28px;scroll-padding-inline:28px;
     scrollbar-width:none;scroll-snap-type:x proximity;
   }
   .nh-cat-pills::-webkit-scrollbar { display:none; }
-  .nh-pill { flex-shrink:0;white-space:nowrap;scroll-snap-align:start; }
+  .nh-pill { flex-shrink:0;white-space:nowrap;scroll-snap-align:center; }
   .nh-cat-pills-wrap::after {
     content:"";position:absolute;top:0;right:0;bottom:4px;width:36px;
     background:linear-gradient(to right,rgba(255,255,255,0),var(--bg));
-    pointer-events:none;
+    pointer-events:none;opacity:0;transition:opacity .2s;
   }
+  .nh-cat-pills-wrap::before {
+    content:"";position:absolute;top:0;left:0;bottom:4px;width:36px;z-index:1;
+    background:linear-gradient(to left,rgba(255,255,255,0),var(--bg));
+    pointer-events:none;opacity:0;transition:opacity .2s;
+  }
+  .nh-cat-pills-wrap.has-scroll-right::after { opacity:1; }
+  .nh-cat-pills-wrap.has-scroll-left::before { opacity:1; }
 
   /* Mais Acessados / Vídeos: lista empilhada (miniatura à esquerda, texto à direita) */
   .nh-strip-row {

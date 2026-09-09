@@ -1291,7 +1291,12 @@ function calcIntermitente(){
     document.getElementById('ir-nota').innerHTML =
       `FGTS (${fmtBRL(fgts)}) é depositado pelo empregador na conta vinculada — não é descontado do trabalhador. ` +
       `13º proporcional tem INSS (${fmtBRL(inss13)}) e IRRF (${fmtBRL(irrf13)}) próprios, com tributação exclusiva na fonte. ` +
-      `Dependentes considerados: ${dep} (dedução de ${fmtBRL(DEP_IRRF)} cada).`;
+      `Dependentes considerados: ${dep} (dedução de ${fmtBRL(DEP_IRRF)} cada). ` +
+      `<br><span style="opacity:.85;">⚠️ A base do FGTS acima inclui as férias proporcionais + 1/3 constitucional. ` +
+      `Isso segue a prática mais comum de recolhimento no intermitente, mas é um ponto discutido: a OJ 195 da SDI-1 ` +
+      `do TST afasta a incidência do FGTS sobre férias indenizadas (simples ou proporcionais), e há quem defenda que ` +
+      `a parcela paga ao final de cada período no intermitente se enquadraria nessa hipótese, sem gerar FGTS sobre ` +
+      `ela. Na dúvida sobre um caso concreto, vale consultar um profissional.</span>`;
 
     rb.style.display='block';
     showAdAfterResult('ad-intermitente-result');trackCalcUsage('intermitente','cc-intermitente');

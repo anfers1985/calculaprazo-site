@@ -69,6 +69,15 @@
 # artigo novo, ela passa a redirecionar para a versão canônica.
 /blog/stf-encerra-reviso-da-vida-toda-e-mantm-regra-do-inss /blog/stf-encerra-revisao-vida-toda-inss 301
 
+# Redirect 301 — arquivo tinha um artefato de encoding no nome
+# ("tst-f#U00e9rias..." em vez de "tst-ferias..."), embora o posts.json e
+# o sitemap.xml já usassem a grafia acentuada correta "tst-férias...".
+# Renomeado para o padrão ASCII do restante do site. A URL acentuada
+# abaixo ficou publicada no sitemap.xml entre 02/09/2026 e 09/09/2026 e
+# pode já ter sido rastreada pelo Google — por isso o redirect, em vez de
+# simplesmente descartar a URL antiga.
+/blog/tst-férias-13-proporcionais-justa-causa-atestado-adulterado /blog/tst-ferias-13-proporcionais-justa-causa-atestado-adulterado 301
+
 # /blog redireciona para página de conteúdo real
 /blog             /conteudo         301
 /blog/            /conteudo         301

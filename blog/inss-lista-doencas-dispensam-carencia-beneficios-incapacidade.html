@@ -1106,7 +1106,14 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 @media(max-width:767px){
   .pbw-grid{grid-template-columns:1fr;}
   .pbw-grid .article-wrap{max-width:800px;margin:0 auto;}
-  .r-img{display:none;}
+  .related-grid{display:flex;flex-direction:column;gap:0;}
+  .related-card{display:grid;grid-template-columns:104px 1fr;column-gap:10px;padding:10px 0;border:none;border-radius:0;border-bottom:1px solid var(--brd);background:transparent;}
+  .related-card:last-child{border-bottom:none;}
+  .related-card:hover{transform:none;box-shadow:none;}
+  .related-card .r-img{display:block;width:104px;height:80px;grid-column:1;grid-row:1/-1;object-fit:cover;border-radius:8px;margin:0;}
+  .related-card .r-cat{grid-column:2;grid-row:1;margin-bottom:2px;}
+  .related-card .r-title{grid-column:2;grid-row:2;-webkit-line-clamp:3;margin-bottom:0;}
+  .related-card .r-date{grid-column:2;grid-row:3;}
 }
 </style>
 </head>
@@ -1449,7 +1456,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       <div class="ad-block-x" style="display:flex;justify-content:center;"><div class="ad-card-wrap" style="display:flex;flex-direction:column;align-items:center;"><span class="ad-eyebrow">Publicidade</span><div class="ad-desktop-only" style="display:flex;justify-content:center;"><div class="adst-slot" id="ad-slot-3" data-adst-key="a95b609abad42b5f0da1fd621eefbd64" data-adst-w="728" data-adst-h="90" style="width:728px;height:90px;max-width:100%;margin:0 auto;"></div></div><div class="ad-mobile-only" style="display:flex;justify-content:center;"><div class="adst-slot" id="ad-slot-4" data-adst-key="f9a6a26e51d4d397ec65d29e8f2ca7a5" data-adst-w="320" data-adst-h="50" style="width:320px;height:50px;max-width:100%;margin:0 auto;"></div></div></div></div>
 
       <!-- ── PREV / NEXT NAVIGATION ── -->
-      <nav class="pn-nav" id="pn-nav" aria-label="Navegação entre artigos"><a class="pn-btn pn-prev" href="/blog/tst-férias-13-proporcionais-justa-causa-atestado-adulterado.html"><span class="pn-arrow">‹</span><div><div class="pn-label">Artigo anterior</div><div class="pn-title">TST afasta férias e 13º proporcionais após justa causa</div><div class="pn-cat">TST</div></div></a><div class="pn-btn pn-next" style="opacity:.35;pointer-events:none;"><div><div class="pn-label">Próximo artigo</div><div class="pn-title">Fim da lista</div></div><span class="pn-arrow">›</span></div></nav>
+      <nav class="pn-nav" id="pn-nav" aria-label="Navegação entre artigos"><a class="pn-btn pn-prev" href="/blog/tst-ferias-13-proporcionais-justa-causa-atestado-adulterado.html"><span class="pn-arrow">‹</span><div><div class="pn-label">Artigo anterior</div><div class="pn-title">TST afasta férias e 13º proporcionais após justa causa</div><div class="pn-cat">TST</div></div></a><div class="pn-btn pn-next" style="opacity:.35;pointer-events:none;"><div><div class="pn-label">Próximo artigo</div><div class="pn-title">Fim da lista</div></div><span class="pn-arrow">›</span></div></nav>
 
       <!-- Related posts -->
       <div class="related-section" id="related-section"><h3>Artigos Relacionados</h3><div class="related-grid"><a class="related-card" href="/blog/tac-recolhimento-inss-direto-lei-15485-2026.html"><img class="r-img" src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><div class="r-cat">INSS</div><div class="r-title">TAC poderá recolher INSS diretamente após nova lei</div><div class="r-date">10 de ago. de 2026</div></a><a class="related-card" href="/blog/inss-empresa-rh-sst-medicina-trabalho-lgpd.html"><img class="r-img" src="https://images.unsplash.com/photo-1700050554945-393740dc6a65?q=80&w=1043&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><div class="r-cat">INSS</div><div class="r-title">INSS Empresa: o que muda a partir de 15 de maio de 2026</div><div class="r-date">7 de mai. de 2026</div></a><a class="related-card" href="/blog/inss-descontos-folha-pagamento-tabela-2026-base-calculo-beneficios.html"><img class="r-img" src="https://images.unsplash.com/photo-1614526261628-295d39158f96?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><div class="r-cat">INSS</div><div class="r-title">INSS e descontos em folha: o que pode ser deduzido, tabela progressiva 2026 e impacto nos benefícios</div><div class="r-date">1 de mai. de 2026</div></a></div></div>

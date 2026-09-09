@@ -561,9 +561,34 @@ function nhFilterSection(sec, btnEl){
   if(btnEl){
     btnEl.classList.add('on');
     btnEl.setAttribute('aria-pressed','true');
-    if(btnEl.scrollIntoView){ btnEl.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'}); }
+    nhCenterPill(btnEl);
   }
   renderNhRecentes();
+}
+
+// Centraliza o pill clicado dentro do container de rolagem horizontal,
+// garantindo (com cálculo manual, sem depender só do scrollIntoView do
+// navegador) que sempre sobre uma "pontinha" visível dos pills vizinhos
+// dos dois lados — sinal intuitivo de que há mais opções para rolar.
+function nhCenterPill(btnEl){
+  var track = document.getElementById('nh-cat-pills');
+  var wrap = track ? track.closest('.nh-cat-pills-wrap') : null;
+  if(!track) return;
+  var target = btnEl.offsetLeft + (btnEl.offsetWidth/2) - (track.clientWidth/2);
+  var maxScroll = track.scrollWidth - track.clientWidth;
+  target = Math.max(0, Math.min(target, maxScroll));
+  if(track.scrollTo){ track.scrollTo({left:target, behavior:'smooth'}); }
+  else { track.scrollLeft = target; }
+  function updateFade(){
+    if(!wrap) return;
+    wrap.classList.toggle('has-scroll-left', track.scrollLeft > 4);
+    wrap.classList.toggle('has-scroll-right', track.scrollLeft < (track.scrollWidth - track.clientWidth - 4));
+  }
+  updateFade();
+  setTimeout(updateFade, 350); // após o smooth-scroll terminar
+  if(track._nhFadeBound) return;
+  track._nhFadeBound = true;
+  track.addEventListener('scroll', updateFade, {passive:true});
 }
 
 function nhBuildFeaturedCard(p){
