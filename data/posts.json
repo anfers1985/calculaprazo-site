@@ -1,5 +1,41 @@
 [
   {
+    "id": "fim-escala-6x1-guia-empresas-preparacao",
+    "title": "Fim da escala 6x1: guia completo para empresas se prepararem",
+    "category": "rh-jornada",
+    "category_label": "Jornada",
+    "excerpt": "Entenda o impacto da PEC da escala 6x1 e veja como empresas podem preparar RH, DP, escalas, contratos e controle de jornada.",
+    "image": "https://images.unsplash.com/photo-1643424975787-f134e78ecbc8?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-09",
+    "updatedAt": "2026-09-09",
+    "tags": []
+  },
+  {
+    "id": "trt2-nega-vinculo-nora-cuidadora-sogra-alzheimer",
+    "title": "TRT-2 nega vínculo de emprego entre nora e sogra com Alzheimer",
+    "category": "jurisprudencia-trts",
+    "category_label": "TRT",
+    "excerpt": "TRT-2 decide que cuidados prestados por nora à sogra com Alzheimer decorreram de assistência familiar, afastando o reconhecimento de vínculo de emprego.",
+    "image": "https://images.unsplash.com/photo-1498872270484-7ffbfa6951ed?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "",
+    "date": "2026-09-09",
+    "updatedAt": "2026-09-09",
+    "tags": []
+  },
+  {
+    "id": "tema-009-tst-reflexos-dsr-horas-extras",
+    "title": "Tema 009 do TST: reflexos do DSR sobre horas extras",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "Entenda a tese vinculante do Tema 009 do TST sobre os reflexos do DSR majorado por horas extras em férias, 13º, aviso prévio e FGTS.",
+    "image": "https://images.unsplash.com/photo-1646082276009-bb35409086ed?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-09",
+    "updatedAt": "2026-09-09",
+    "tags": []
+  },
+  {
     "id": "governo-notifica-115-empresas-irregularidades-vale-alimentacao",
     "title": "Governo notifica 115 empresas por irregularidades em vale-alimentação",
     "category": "noticias-mte",
