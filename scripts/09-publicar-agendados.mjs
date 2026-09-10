@@ -373,7 +373,7 @@ function publicarItem(item, template, postsAtuais) {
       const label = CAT_LABELS_MAP[p.category] || p.category_label || p.category;
       const dateStr = p.date ? new Date(p.date + 'T12:00:00').toLocaleDateString('pt-BR', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
       const img = p.image ? `<img class="r-img" src="${p.image}" alt="" loading="lazy">` : '';
-      return `<a class="related-card" href="/blog/${p.id}.html">${img}<div class="r-cat">${label}</div><div class="r-title">${p.title}</div><div class="r-date">${dateStr}</div></a>`;
+      return `<a class="related-card" href="/blog/${p.id}.html">${img}<div class="r-body"><div class="r-cat">${label}</div><div class="r-title">${p.title}</div><div class="r-date">${dateStr}</div></div></a>`;
     }).join('');
     relatedHTML = `<h3>Artigos Relacionados</h3><div class="related-grid">${cards}</div>`;
   }
