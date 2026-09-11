@@ -1105,15 +1105,21 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 .ad-smartlink{display:block;text-align:center;font-size:.72rem;color:var(--txt-s);border:1px dashed var(--brd);border-radius:8px;padding:8px;margin:10px 0;text-decoration:none;background:var(--b50);}
 @media(max-width:767px){
   .pbw-grid{grid-template-columns:1fr;}
-  .pbw-grid .article-wrap{max-width:800px;margin:0 auto;}
+  /* width:100%+min-width:0 aqui SÃO OBRIGATÓRIOS: sem eles, este item de grid
+     não encolhe para caber na tela quando o artigo tem conteúdo largo (ex.:
+     grade de imagens de comparação de produto), causando overflow horizontal
+     no mobile. Bug pré-existente identificado e corrigido em set/2026 — não
+     remover essas duas propriedades numa futura edição deste bloco. */
+  .pbw-grid .article-wrap{max-width:800px;width:100%;margin:0 auto;min-width:0;}
   .related-grid{display:flex;flex-direction:column;gap:0;}
-  .related-card{display:grid;grid-template-columns:104px 1fr;column-gap:10px;padding:10px 0;border:none;border-radius:0;border-bottom:1px solid var(--brd);background:transparent;}
+  .related-card{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border:none;border-radius:0;border-bottom:1px solid var(--brd);background:transparent;}
   .related-card:last-child{border-bottom:none;}
   .related-card:hover{transform:none;box-shadow:none;}
-  .related-card .r-img{display:block;width:104px;height:80px;grid-column:1;grid-row:1/-1;object-fit:cover;border-radius:8px;margin:0;}
-  .related-card .r-cat{grid-column:2;grid-row:1;margin-bottom:2px;}
-  .related-card .r-title{grid-column:2;grid-row:2;-webkit-line-clamp:3;margin-bottom:0;}
-  .related-card .r-date{grid-column:2;grid-row:3;}
+  .related-card .r-img{display:block;width:108px;height:84px;flex-shrink:0;object-fit:cover;border-radius:8px;margin:0;}
+  .related-card .r-body{min-width:0;}
+  .related-card .r-cat{margin-bottom:2px;}
+  .related-card .r-title{-webkit-line-clamp:3;margin-bottom:0;}
+  .related-card .r-date{}
 }
 </style>
 </head>
@@ -1681,7 +1687,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       <div class="ad-block-x" style="display:flex;justify-content:center;"><div class="ad-card-wrap" style="display:flex;flex-direction:column;align-items:center;"><span class="ad-eyebrow">Publicidade</span><div class="ad-desktop-only" style="display:flex;justify-content:center;"><div class="adst-slot" id="ad-slot-3" data-adst-key="a95b609abad42b5f0da1fd621eefbd64" data-adst-w="728" data-adst-h="90" style="width:728px;height:90px;max-width:100%;margin:0 auto;"></div></div><div class="ad-mobile-only" style="display:flex;justify-content:center;"><div class="adst-slot" id="ad-slot-4" data-adst-key="f9a6a26e51d4d397ec65d29e8f2ca7a5" data-adst-w="320" data-adst-h="50" style="width:320px;height:50px;max-width:100%;margin:0 auto;"></div></div></div></div>
 
       <!-- ── PREV / NEXT NAVIGATION ── -->
-      <nav class="pn-nav" id="pn-nav" aria-label="Navegação entre artigos"><a class="pn-btn pn-prev" href="/blog/governo-notifica-115-empresas-irregularidades-vale-alimentacao.html"><span class="pn-arrow">‹</span><div><div class="pn-label">Artigo anterior</div><div class="pn-title">Governo notifica 115 empresas por irregularidades em vale-alimentação</div><div class="pn-cat">MTE</div></div></a><a class="pn-btn pn-next" href="/blog/tema-009-tst-reflexos-dsr-horas-extras.html"><div><div class="pn-label">Próximo artigo</div><div class="pn-title">Tema 009 do TST: reflexos do DSR sobre horas extras</div><div class="pn-cat">Prática Advocatícia</div></div><span class="pn-arrow">›</span></a></nav>
+      <nav class="pn-nav" id="pn-nav" aria-label="Navegação entre artigos"><a class="pn-btn pn-prev" href="/blog/governo-notifica-115-empresas-irregularidades-vale-alimentacao.html"><span class="pn-arrow">‹</span><div><div class="pn-label">Artigo anterior</div><div class="pn-title">Governo notifica 115 empresas por irregularidades em vale-alimentação</div><div class="pn-cat">MTE</div></div></a><a class="pn-btn pn-next" href="/blog/tst-justa-causa-engenheiro-assedio-pornografia.html"><div><div class="pn-label">Próximo artigo</div><div class="pn-title">TST mantém justa causa de engenheiro por assédio e pornografia</div><div class="pn-cat">TST</div></div><span class="pn-arrow">›</span></a></nav>
 
       <!-- Related posts -->
       <div class="related-section" id="related-section"><h3>Artigos Relacionados</h3><div class="related-grid"><a class="related-card" href="/blog/erros-comuns-folha-de-ponto-como-evitar.html"><img class="r-img" src="https://images.unsplash.com/photo-1633284377026-12dfd762d4ae?q=80&w=1251&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><div class="r-cat">Jornada</div><div class="r-title">Os erros mais comuns na folha de ponto e como evitá-los</div><div class="r-date">11 de ago. de 2026</div></a><a class="related-card" href="/blog/alterar-folha-ponto-crime-fraude-clt.html"><img class="r-img" src="https://images.unsplash.com/photo-1490724500206-cd5482e02b9e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><div class="r-cat">Jornada</div><div class="r-title">Alterar a folha de ponto é crime? Entenda quando há fraude</div><div class="r-date">11 de ago. de 2026</div></a><a class="related-card" href="/blog/ponto-por-excecao-como-funciona-clt.html"><img class="r-img" src="https://images.unsplash.com/photo-1592495981488-073153776d9a?q=80&w=1212&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><div class="r-cat">Jornada</div><div class="r-title">Ponto por exceção: entenda como funciona e quando pode ser adotado</div><div class="r-date">6 de ago. de 2026</div></a></div></div>
@@ -2057,9 +2063,11 @@ async function loadRelated() {
       ${related.map(p => `
         <a class="related-card" href="/blog/${p.id}.html">
           <img class="r-img" src="${p.image||''}" alt="" loading="lazy">
+          <div class="r-body">
           <div class="r-cat">${catLabels[p.category]||p.category}</div>
           <div class="r-title">${p.title}</div>
           <div class="r-date">${new Date(p.date+'T12:00:00').toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'})}</div>
+          </div>
         </a>`).join('')}
     </div>`;
 }

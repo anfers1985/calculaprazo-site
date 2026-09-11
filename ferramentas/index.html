@@ -270,7 +270,12 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.7
 .ad-card-wrap{background:var(--card);border:1.5px solid var(--brd);border-radius:14px;padding:14px;}
 @media(max-width:767px){
   .pbw-grid{grid-template-columns:1fr;}
-  .pbw-grid .article-wrap{max-width:800px;margin:0 auto;}
+  /* width:100%+min-width:0 aqui SÃO OBRIGATÓRIOS: sem eles, este item de grid
+     não encolhe para caber na tela quando o artigo tem conteúdo largo (ex.:
+     grade de imagens de comparação de produto), causando overflow horizontal
+     no mobile. Bug pré-existente identificado e corrigido em set/2026 — não
+     remover essas duas propriedades numa futura edição deste bloco. */
+  .pbw-grid .article-wrap{max-width:800px;width:100%;margin:0 auto;min-width:0;}
   
 }
 </style>

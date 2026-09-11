@@ -1126,8 +1126,13 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 .ad-social-bar{position:fixed;right:14px;bottom:14px;z-index:200;background:var(--card);border:1.5px solid var(--brd);border-radius:10px;padding:8px 12px;font-size:.68rem;color:var(--txt-s);box-shadow:var(--sh);display:flex;align-items:center;gap:6px;}
 .ad-smartlink{display:block;text-align:center;font-size:.72rem;color:var(--txt-s);border:1px dashed var(--brd);border-radius:8px;padding:8px;margin:10px 0;text-decoration:none;background:var(--b50);}
 @media(max-width:767px){
-  .pbw-grid{grid-template-columns:1fr;}
-  .pbw-grid .article-wrap{max-width:800px;margin:0 auto;}
+  .pbw-grid{grid-template-columns:minmax(0,1fr);}
+  /* width:100%+min-width:0 aqui SÃO OBRIGATÓRIOS: sem eles, este item de grid
+     não encolhe para caber na tela quando o artigo tem conteúdo largo (ex.:
+     grade de imagens de comparação de produto), causando overflow horizontal
+     no mobile. Bug pré-existente identificado e corrigido em set/2026 — não
+     remover essas duas propriedades numa futura edição deste bloco. */
+  .pbw-grid .article-wrap{max-width:800px;width:100%;margin:0 auto;min-width:0;}
   .related-grid{display:flex;flex-direction:column;gap:0;}
   .related-card{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border:none;border-radius:0;border-bottom:1px solid var(--brd);background:transparent;}
   .related-card:last-child{border-bottom:none;}
@@ -2070,9 +2075,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       <p style="text-align:center;font-size:.8rem;color:var(--txt-s);">A partir de R$ 1 — qualquer valor faz diferença. Obrigado!</p>
   </div>
 </div>
-
-
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
