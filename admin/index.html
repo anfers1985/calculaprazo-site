@@ -1232,17 +1232,20 @@ function editPost(id){
 // GITHUB API
 // ════════════════════════════════════════
 async function githubGetFileSha(path, pat) {
-  try {
-    const r = await fetch(
-      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}?ref=${GITHUB_BRANCH}`,
-      { headers: { 'Authorization': `token ${pat}`, 'Accept': 'application/vnd.github.v3+json' } }
-    );
-    if (r.ok) {
-      const d = await r.json();
-      return d.sha || null;
-    }
-  } catch(e) {}
-  return null;
+  const r = await fetch(
+    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}?ref=${GITHUB_BRANCH}`,
+    { headers: { 'Authorization': `token ${pat}`, 'Accept': 'application/vnd.github.v3+json' } }
+  );
+  if (r.ok) {
+    const d = await r.json();
+    return d.sha || null;
+  }
+  if (r.status === 404) return null; // arquivo realmente ainda não existe — ok criar
+  // Qualquer outra falha (401/403/429/5xx/etc) precisa aparecer, nunca ser tratada
+  // como "arquivo não existe" — foi isso que causava o 422 "sha wasn't supplied".
+  let detalhe = '';
+  try { const e = await r.json(); detalhe = e.message || JSON.stringify(e); } catch(_){}
+  throw new Error(`Falha ao buscar sha de "${path}": GitHub ${r.status} ${detalhe}`);
 }
 
 async function githubUpsertFile(path, content, commitMsg, pat) {
