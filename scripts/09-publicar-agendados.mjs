@@ -320,8 +320,27 @@ function publicarItem(item, template, postsAtuais) {
     date: postDate,
     updatedAt,
     content: item.content,
-    tags: Array.isArray(item.tags) ? item.tags.slice(0, 4) : []
+    tags: Array.isArray(item.tags) ? item.tags.slice(0, 4) : [],
+    author: item.author || 'anderson-fernandes'
   };
+
+  // Autores conhecidos por este script (roda no GitHub Actions, sem acesso ao
+  // localStorage do navegador — por isso não enxerga autores cadastrados
+  // depois no admin. Se um post agendado usar um autor novo, cai no padrão
+  // Anderson Fernandes aqui. Mantenha esta lista em sincronia manualmente se
+  // cadastrar autores adicionais que também publicam via agendamento.
+  const AUTHORS_DEFAULT = {
+    'anderson-fernandes': {
+      name: 'Anderson Fernandes',
+      title: 'Advogado | Especialista em Direito do Trabalho e Processo do Trabalho',
+      spec: 'Atuação em direito do trabalho contencioso e consultivo, instrumentos coletivos e gestão de riscos trabalhistas',
+      initials: 'AF'
+    }
+  };
+  function getAuthorInfo(id) {
+    return AUTHORS_DEFAULT[id] || AUTHORS_DEFAULT['anderson-fernandes'];
+  }
+  const authorInfo = getAuthorInfo(post.author);
 
   const dateBR = new Date(post.date + 'T12:00:00').toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
 
@@ -354,7 +373,11 @@ function publicarItem(item, template, postsAtuais) {
     .replace(/\{\{TAGS_JSON\}\}/g, tagsJSON)
     .replace(/\{\{OG_IMAGE\}\}/g, ogImageTag)
     .replace(/\{\{SCHEMA_IMAGE\}\}/g, schemaImage)
-    .replace(/\{\{COVER_IMAGE_HTML\}\}/g, coverHTML);
+    .replace(/\{\{COVER_IMAGE_HTML\}\}/g, coverHTML)
+    .replace(/\{\{AUTHOR_NAME\}\}/g, authorInfo.name)
+    .replace(/\{\{AUTHOR_TITLE\}\}/g, authorInfo.title)
+    .replace(/\{\{AUTHOR_SPEC\}\}/g, authorInfo.spec)
+    .replace(/\{\{AUTHOR_INITIALS\}\}/g, authorInfo.initials);
 
   // Relacionados estáticos
   const relatedExact = postsAtuais

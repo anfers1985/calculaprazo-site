@@ -1,5 +1,53 @@
 [
   {
+    "id": "periodo-graca-inss-prazos-qualidade-segurado",
+    "title": "Período de graça do INSS: veja os prazos e regras",
+    "category": "legislacao-previdenciario",
+    "category_label": "Previdenciário",
+    "excerpt": "Entenda quanto tempo o segurado do INSS mantém essa condição sem contribuir e quais situações podem ampliar ou alterar o período de graça.",
+    "image": "https://images.unsplash.com/photo-1758691737217-77302c5f988f?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-11",
+    "updatedAt": "2026-09-11",
+    "tags": []
+  },
+  {
+    "id": "tst-afasta-indenizacao-fala-advogado-audiencia",
+    "title": "TST afasta indenização por fala de advogado em audiência",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "Terceira Turma do TST entendeu que críticas feitas por advogado durante audiência estavam ligadas ao direito de defesa e não geraram dano indenizável.",
+    "image": "https://plus.unsplash.com/premium_photo-1661542759930-9cf315dae451?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-11",
+    "updatedAt": "2026-09-11",
+    "tags": []
+  },
+  {
+    "id": "tema-014-tst-reducao-infima-intervalo-intrajornada",
+    "title": "Tema 014 do TST: redução ínfima do intervalo intrajornada",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "Entenda a tese vinculante do Tema 014 do TST sobre a redução de até 5 minutos do intervalo intrajornada e seus efeitos na jornada de trabalho.",
+    "image": "https://images.unsplash.com/photo-1550534791-2677533605ab?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-11",
+    "updatedAt": "2026-09-11",
+    "tags": []
+  },
+  {
+    "id": "congresso-promulga-convencao-187-oit-sst",
+    "title": "Congresso promulga Convenção 187 da OIT sobre SST",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "excerpt": "Congresso aprova Convenção 187 da OIT, que estabelece diretrizes para políticas nacionais de segurança e saúde no trabalho e prevenção de riscos.",
+    "image": "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-11",
+    "updatedAt": "2026-09-11",
+    "tags": []
+  },
+  {
     "id": "tst-justa-causa-engenheiro-assedio-pornografia",
     "title": "TST mantém justa causa de engenheiro por assédio e pornografia",
     "category": "jurisprudencia-tst",

@@ -222,6 +222,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
       <div class="form-card">
         <input type="hidden" id="edit-id">
         <div class="fg"><label>Título do Post</label><input type="text" id="f-title" placeholder="Ex: Como calcular prazos processuais no CPC" oninput="autoSlug()"></div>
+        <div class="fg"><label>Autor</label><div style="display:flex;gap:8px;align-items:center;"><select id="f-author" style="flex:1;"></select><button type="button" class="btn btn-g btn-sm" onclick="addNewAuthorPrompt()">+ Novo autor</button></div></div>
         <div class="fg-row">
           <div class="fg"><label>URL Amigável (Slug)</label><input type="text" id="f-slug" placeholder="como-calcular-prazos-processuais"></div>
           <div class="fg">
@@ -935,6 +936,55 @@ window.onload = function(){
   }
 };
 
+
+// ════════════════════════════════════════
+// AUTORES
+// ════════════════════════════════════════
+const AUTHORS_KEY = 'cp_authors_v1';
+function getAuthors(){
+  try {
+    const raw = localStorage.getItem(AUTHORS_KEY);
+    if (raw) { const parsed = JSON.parse(raw); if (Array.isArray(parsed) && parsed.length) return parsed; }
+  } catch(e) {}
+  const defaults = [{
+    id: 'anderson-fernandes',
+    name: 'Anderson Fernandes',
+    title: 'Advogado | Especialista em Direito do Trabalho e Processo do Trabalho',
+    spec: 'Atuação em direito do trabalho contencioso e consultivo, instrumentos coletivos e gestão de riscos trabalhistas',
+    initials: 'AF'
+  }];
+  localStorage.setItem(AUTHORS_KEY, JSON.stringify(defaults));
+  return defaults;
+}
+function saveAuthorsList(list){ localStorage.setItem(AUTHORS_KEY, JSON.stringify(list)); }
+function getAuthorById(id){
+  const list = getAuthors();
+  return list.find(a => a.id === id) || list[0];
+}
+function initialsFromName(name){
+  return name.trim().split(/\s+/).map(w => w[0]).join('').slice(0,2).toUpperCase();
+}
+function populateAuthorSelect(selectedId){
+  const sel = document.getElementById('f-author');
+  if(!sel) return;
+  const authors = getAuthors();
+  sel.innerHTML = authors.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
+  if (selectedId && authors.some(a => a.id === selectedId)) sel.value = selectedId;
+}
+function addNewAuthorPrompt(){
+  const name = prompt('Nome do novo autor:');
+  if(!name || !name.trim()) return;
+  const title = prompt('Cargo/título (ex: Advogado | Especialista em ...):', '') || '';
+  const spec = prompt('Linha de especialização (texto curto):', '') || '';
+  const authors = getAuthors();
+  const id = slugify(name);
+  if (authors.some(a => a.id === id)) { toast('Já existe um autor com esse nome.', 'err'); return; }
+  authors.push({ id, name: name.trim(), title: title.trim(), spec: spec.trim(), initials: initialsFromName(name) });
+  saveAuthorsList(authors);
+  populateAuthorSelect(id);
+  toast('Autor adicionado!', 'ok');
+}
+
 // ════════════════════════════════════════
 // UTILS
 // ════════════════════════════════════════
@@ -1137,6 +1187,7 @@ function resetForm(){
   document.getElementById('f-title').value='';
   document.getElementById('f-slug').value='';
   document.getElementById('f-cat').value='geral';
+  populateAuthorSelect();
   document.getElementById('f-excerpt').value='';
   document.getElementById('f-image').value='';
   document.getElementById('f-caption').value='';
@@ -1164,6 +1215,7 @@ function editPost(id){
   document.getElementById('f-title').value=p.title;
   document.getElementById('f-slug').value=p.id;
   document.getElementById('f-cat').value=p.category;
+  populateAuthorSelect(p.author);
   document.getElementById('f-tags').value=Array.isArray(p.tags)?p.tags.join(', '):(p.tags||'');
   document.getElementById('f-excerpt').value=p.excerpt;
   document.getElementById('f-image').value=p.image||'';
@@ -1390,7 +1442,6 @@ function buildFreshSidebarHTML(currentPostId, allPosts) {
     + adCard('300x250_1')
     + '<div class="sidebar-card"><h3>🆕 Últimos Conteúdos</h3><div class="sidebar-list" id="ultimos-conteudos-list">' + buildSidebarItemsHTML(latest5, false) + '</div></div>'
     + adCard('300x250_2')
-    + '<a class="ad-smartlink" href="#">🔗 Link patrocinado · Smartlink_1</a>'
     + '</aside>';
 }
 
@@ -2186,6 +2237,7 @@ async function publicarNoSite() {
   const cat     = document.getElementById('f-cat').value;
   const image   = document.getElementById('f-image').value.trim();
   const caption = document.getElementById('f-caption').value.trim();
+  const authorId = document.getElementById('f-author') ? document.getElementById('f-author').value : 'anderson-fernandes';
   
   if (!title || !excerpt || !content) { toast('Preencha título, resumo e conteúdo.', 'err'); return; }
 
@@ -2202,7 +2254,7 @@ async function publicarNoSite() {
     const origDate = document.getElementById('f-orig-date') ? document.getElementById('f-orig-date').value.trim() : '';
     const postDate = origDate || now;
     const updatedAt = updatedInput && updatedInput !== postDate ? updatedInput : postDate;
-    const post = { id: slug, title, category: cat, excerpt, image, imageCaption: caption, date: postDate, updatedAt, content, tags };
+    const post = { id: slug, title, category: cat, excerpt, image, imageCaption: caption, date: postDate, updatedAt, content, tags, author: authorId };
 
     await publicarPost(post, pat);
 
@@ -2298,7 +2350,11 @@ async function publicarPost(post, pat) {
       .replace(/\{\{TAGS_JSON\}\}/g,      tagsJSON)
       .replace(/\{\{OG_IMAGE\}\}/g,       ogImageTag)
       .replace(/\{\{SCHEMA_IMAGE\}\}/g,   schemaImage)
-      .replace(/\{\{COVER_IMAGE_HTML\}\}/g, coverHTML);
+      .replace(/\{\{COVER_IMAGE_HTML\}\}/g, coverHTML)
+      .replace(/\{\{AUTHOR_NAME\}\}/g,     getAuthorById(post.author || 'anderson-fernandes').name)
+      .replace(/\{\{AUTHOR_TITLE\}\}/g,    getAuthorById(post.author || 'anderson-fernandes').title)
+      .replace(/\{\{AUTHOR_SPEC\}\}/g,     getAuthorById(post.author || 'anderson-fernandes').spec)
+      .replace(/\{\{AUTHOR_INITIALS\}\}/g, getAuthorById(post.author || 'anderson-fernandes').initials);
 
     // 2. Buscar posts.json antes de enviar o HTML (necessário para injetar relacionados estáticos)
     toast('Buscando posts existentes...', 'ok');
@@ -2494,7 +2550,8 @@ function montarItemAgendadoDoFormulario() {
     return null;
   }
 
-  return { id: slug, title, category: cat, excerpt, image, imageCaption: caption, tags, content, publicarEm };
+  const authorId = document.getElementById('f-author') ? document.getElementById('f-author').value : 'anderson-fernandes';
+  return { id: slug, title, category: cat, excerpt, image, imageCaption: caption, tags, content, publicarEm, author: authorId };
 }
 
 // Cria ou atualiza um item na fila data/agendados.json.
@@ -3084,6 +3141,7 @@ function editarAgendado(criadoEm) {
   countChars(document.getElementById('f-excerpt'), 'exc-count', 160);
   previewImg();
 
+  populateAuthorSelect(item.author);
   document.getElementById('f-sched-id').value = item.criadoEm;
   const d = new Date(item.publicarEm);
   const dataLocal = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo', year:'numeric', month:'2-digit', day:'2-digit' }).format(d);
@@ -3124,7 +3182,8 @@ async function publicarAgendadoAgora(criadoEm) {
     const post = {
       id: item.id, title: item.title, category: item.category, excerpt: item.excerpt,
       image: item.image || '', imageCaption: item.imageCaption || '',
-      date: now, updatedAt: now, content: item.content, tags: item.tags || []
+      date: now, updatedAt: now, content: item.content, tags: item.tags || [],
+      author: item.author || 'anderson-fernandes'
     };
     await publicarPost(post, pat);
     await removerDaFilaAgendados(criadoEm, pat);

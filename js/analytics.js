@@ -12,7 +12,7 @@
   /* ── Extrair slug da URL ─────────────────────────────────── */
   function slugFromPath(path) {
     // Aceita: /blog/meu-artigo  /blog/meu-artigo.html  /blog/meu-artigo/
-    var m = path.match(/^\/blog\/([^/?#]+?)(?:\.html)?(?:\/)?(?:[?#]|$)/);
+    var m = path.match(/^\/blog\/(.+?)(?:\.html)?(?:\/)?(?:[?#]|$)/);
     return m ? m[1] : null;
   }
 

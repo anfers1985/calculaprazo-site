@@ -12,7 +12,7 @@
 
 O Calcula Prazo é uma SPA (Single Page Application) em HTML/JS puro com blog estático.
 - **Frontend:** `index.html` (SPA completa) + páginas estáticas em `/privacidade`, `/termos`, `/contato`
-- **Blog:** Arquivos HTML em `/blog/` gerados pelos agentes ou manualmente
+- **Blog:** Arquivos HTML em `/blog/` gerados pelo painel admin (`/admin`)
 - **Dados:** `data/posts.json` — índice de posts para o blog
 - **Deploy:** Cloudflare Pages (push na `main` → deploy automático)
 
@@ -26,16 +26,19 @@ calculaprazo-site/
 ├── og-image.png                # Imagem Open Graph padrão
 ├── ads.txt                     # Verificação Google AdSense
 ├── robots.txt                  # Instruções para rastreadores
-├── sitemap.xml                 # Mapa do site (atualizado pelos agentes)
+├── sitemap.xml                 # Mapa do site
 ├── _redirects                  # Regras Cloudflare Pages
 ├── rebuild_posts_json.py       # Reconstrói data/posts.json manualmente
 │
 ├── blog/
-│   ├── POST_TEMPLATE.html      # Template base para novos posts
+│   ├── POST_TEMPLATE.html      # Template base para novos posts (usado pelo admin)
 │   └── *.html                  # Posts publicados
 │
 ├── data/
 │   └── posts.json              # Índice de posts (gerado automaticamente)
+│
+├── admin/
+│   └── index.html              # Painel administrativo — é aqui que todo o conteúdo é criado/editado/publicado
 │
 ├── privacidade/
 │   └── index.html              # Página de Política de Privacidade
@@ -47,68 +50,33 @@ calculaprazo-site/
 │   └── index.html              # Página de Contato
 │
 ├── scripts/
-│   └── agentes/
-│       ├── agente_base.py      # ⭐ Módulo compartilhado (validação, salvar, sitemap)
-│       ├── agente_tst_stf.py   # Agente TST + STF
-│       ├── agente_trts.py      # Agente TRTs regionais
-│       ├── agente_mpt.py       # Agente MPT
-│       ├── agente_mte.py       # Agente MTE
-│       └── agente_noticias_gerais.py  # Agente notícias gerais
+│   └── 09-publicar-agendados.mjs   # Publica posts pré-preparados no horário agendado (via GitHub Actions)
 │
 └── .github/
-    ├── pull_request_template.md    # Checklist de revisão editorial
     └── workflows/
-        ├── agente-tst-stf.yml
-        ├── agente-trts.yml
-        ├── agente-mpt.yml
-        ├── agente-mte.yml
-        ├── agente-noticias-gerais.yml
-        └── post-generator.yml      # Fallback manual
+        └── publicar-agendados.yml  # Roda o publicador agendado periodicamente
 ```
 
 ---
 
-## 🤖 Pipeline de Publicação de Conteúdo
+## ✍️ Como o Conteúdo é Gerado
 
-### Fluxo Atual (com revisão humana)
+Todo o conteúdo do site — artigos, súmulas comentadas e itens essenciais — é criado e publicado manualmente por **Anderson Fernandes** através do painel administrativo (`/admin`). O admin oferece:
 
-```
-GitHub Actions (schedule)
-        ↓
-  Agente IA coleta conteúdo da fonte
-        ↓
-  Validação automática de qualidade
-  (wordcount ≥ 300, tem H2, sem título genérico)
-        ↓
-  [REPROVADO] → log de erro, nada publicado
-  [APROVADO]  → salva em blog/ + atualiza posts.json + sitemap
-        ↓
-  Push para branch: draft/agentes
-        ↓
-  ⚠️ REVISÃO HUMANA OBRIGATÓRIA
-  Abrir Pull Request de draft/agentes → main
-  Verificar checklist em .github/pull_request_template.md
-        ↓
-  Merge → Cloudflare Pages deploy automático em produção
-```
+- Editor de posts com categorias, tags, imagem de capa e agendamento de publicação.
+- Geração automática do HTML final a partir de `blog/POST_TEMPLATE.html`, preenchendo título, data, categoria, conteúdo e autoria.
+- Seletor de autor: por padrão publica como **Anderson Fernandes**, com opção de cadastrar outros autores caso haja parcerias futuras.
+- Suporte a "Content Studio" — um proxy de IA (via Cloudflare Worker) usado como apoio na produção de conteúdo, mas sempre com revisão e publicação manual pelo próprio Anderson.
 
-### Taxonomia de Categorias
+Conteúdo publicado em lote para projetos específicos (ex: as 463 súmulas comentadas do TST, itens da seção "Essenciais") segue o mesmo padrão de autoria, mas foi inserido diretamente nos arquivos HTML — esses itens não passam pelo fluxo padrão do admin.
 
-| Categoria (ID) | Label | Agente |
-|---|---|---|
-| `jurisprudencia-tst` | Jurisprudência TST/STF | agente_tst_stf |
-| `jurisprudencia-trts` | Jurisprudência TRTs | agente_trts |
-| `noticias-mte-mpt` | MTE & MPT | agente_mpt, agente_mte |
-| `legislacao-normas` | Legislação e Normas | agente_mte |
-| `esocial-fgts-digital` | eSocial e FGTS Digital | agente_noticias_gerais |
-| `orientacoes-praticas` | Orientações Práticas RH | agente_noticias_gerais |
-| `saude-seguranca` | Saúde e Segurança | qualquer agente |
+Não existe mais nenhum pipeline automatizado de coleta/geração de conteúdo por agentes de IA sem supervisão — uma arquitetura desse tipo chegou a ser usada no início do projeto, mas foi descontinuada por problemas de qualidade no conteúdo gerado.
 
 ---
 
-## 📝 Padrão Editorial Obrigatório
+## 📝 Padrão Editorial
 
-Todo artigo publicado **deve** ter:
+Todo artigo publicado segue:
 
 1. **Título técnico e específico** — sem "novas tendências", "análise pós-X"
 2. **Fonte verificável** — número de processo, portaria, lei ou URL linkada
@@ -120,27 +88,12 @@ Todo artigo publicado **deve** ter:
    - H2: Impacto Prático
    - H2: Recomendação Imediata
 5. **Disclaimer jurídico** ao final (inserido automaticamente pelo template)
-6. **Autoria:** "Equipe Editorial Calcula Prazo" (inserida automaticamente)
+6. **Autoria:** Anderson Fernandes (selecionável no admin; outros autores podem ser cadastrados)
 7. **Link interno** para a calculadora relevante
-
-### ❌ Artigos que devem ser REJEITADOS no PR
-
-- Conteúdo genérico sem fato concreto (ex: "O direito do trabalho está evoluindo...")
-- Sem fonte verificável
-- Dados inventados pelo agente (não presentes no conteúdo coletado)
-- Menos de 300 palavras
 
 ---
 
 ## 🔧 Configuração e Deploy
-
-### Segredos necessários no GitHub
-
-Acesse: **Settings → Secrets and variables → Actions**
-
-| Secret | Descrição |
-|---|---|
-| `OPENROUTER_KEY` | Chave da API OpenRouter (para Gemini 2.5 Flash) |
 
 ### Configurar Cloudflare Pages
 
@@ -148,17 +101,7 @@ Acesse: **Settings → Secrets and variables → Actions**
 2. Build command: *(deixe vazio — site estático)*
 3. Output directory: `/` (raiz)
 4. A branch `main` é deployed automaticamente
-5. A branch `draft/agentes` gera um **Preview URL** para revisão
-
-### Executar agentes localmente
-
-```bash
-# Instalar dependências
-pip install requests python-slugify
-
-# Executar um agente específico (da raiz do projeto)
-OPENROUTER_KEY=sua_chave python scripts/agentes/agente_tst_stf.py
-```
+5. A branch `main` recebe o output do publicador agendado (`scripts/09-publicar-agendados.mjs`)
 
 ### Reconstruir posts.json manualmente
 
