@@ -1232,9 +1232,15 @@ function editPost(id){
 // GITHUB API
 // ════════════════════════════════════════
 async function githubGetFileSha(path, pat) {
+  // cache: 'no-store' é ESSENCIAL aqui: o GitHub não varia a resposta em cache
+  // pelo header Accept, então sem isso o navegador pode devolver uma resposta
+  // em cache de uma chamada anterior a este MESMO endpoint feita com Accept
+  // diferente (ex.: githubGetJSON, que usa 'application/vnd.github.raw+json'
+  // pra ler a fila de agendados) — aí d.sha vem undefined e a publicação
+  // falha com "sha wasn't supplied", mesmo com o arquivo existindo.
   const r = await fetch(
     `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}?ref=${GITHUB_BRANCH}`,
-    { headers: { 'Authorization': `token ${pat}`, 'Accept': 'application/vnd.github.v3+json' } }
+    { headers: { 'Authorization': `token ${pat}`, 'Accept': 'application/vnd.github.v3+json' }, cache: 'no-store' }
   );
   if (r.ok) {
     const d = await r.json();
@@ -1511,7 +1517,7 @@ async function atualizarVizinhoPN(neighborId, side, newPostRef, pat) {
   try {
     const rj = await fetch(
       `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}?ref=${GITHUB_BRANCH}`,
-      { headers: { 'Authorization': `token ${pat}`, 'Accept': 'application/vnd.github.v3+json' } }
+      { headers: { 'Authorization': `token ${pat}`, 'Accept': 'application/vnd.github.v3+json' }, cache: 'no-store' }
     );
     if (!rj.ok) return false;
     const dj = await rj.json();
@@ -2491,7 +2497,12 @@ async function githubGetJSON(path, pat, fallback) {
       // em base64 — esse campo só vem preenchido para arquivos até 1MB; acima
       // disso a Contents API o devolve vazio, e o JSON.parse quebrava com
       // "Unexpected end of JSON input" mesmo com o arquivo intacto no GitHub.
-      { headers: { 'Authorization': `token ${pat}`, 'Accept': 'application/vnd.github.raw+json' } }
+      // cache: 'no-store' evita que o navegador reaproveite (ou "envenene") o
+      // cache HTTP deste mesmo endpoint com a resposta de outro Accept header
+      // (ex.: githubGetFileSha, que usa v3+json) — o GitHub não varia a
+      // resposta em cache por Accept, então sem isso as duas chamadas podiam
+      // se confundir e devolver o conteúdo errado uma pra outra.
+      { headers: { 'Authorization': `token ${pat}`, 'Accept': 'application/vnd.github.raw+json' }, cache: 'no-store' }
     );
     if (!r.ok) {
       if (r.status === 404) return fallback; // arquivo ainda não existe no repo
