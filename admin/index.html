@@ -2337,7 +2337,7 @@ async function publicarPost(post, pat) {
       : '';
     const ogImageUrl  = post.image || 'https://calculaprazo.com.br/og-image.jpg';
     const ogImageTag  = `<meta property="og:image" content="${ogImageUrl}">`;
-    const schemaImage = post.image ? `,"image":"${post.image}"` : '';
+    const schemaImage = ',"image":"https://calculaprazo.com.br/schema-default-image.jpg"';
 
     const postHTML = template
       .replace(/\{\{TITLE\}\}/g,          post.title)
@@ -3279,7 +3279,7 @@ async function baixarHTML() {
       .replace(/\{\{TAGS_BADGES\}\}/g,    tagsBadgesHTML)
       .replace(/\{\{TAGS_JSON\}\}/g,      JSON.stringify(tagsArr))
       .replace(/\{\{OG_IMAGE\}\}/g,       `<meta property="og:image" content="${ogImageUrlLocal}">`)
-      .replace(/\{\{SCHEMA_IMAGE\}\}/g,   image ? `,"image":"${image}"` : '')
+      .replace(/{{SCHEMA_IMAGE}}/g,   ',"image":"https://calculaprazo.com.br/schema-default-image.jpg"')
       .replace(/\{\{COVER_IMAGE_HTML\}\}/g, coverHTML);
 
     // Sidebar (Mais Acessados + Últimos Conteúdos) sempre recalculada, mesmo neste

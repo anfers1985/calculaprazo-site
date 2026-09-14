@@ -355,7 +355,7 @@ function publicarItem(item, template, postsAtuais) {
     : '';
   const ogImageUrl = post.image || 'https://calculaprazo.com.br/og-image.jpg';
   const ogImageTag = `<meta property="og:image" content="${ogImageUrl}">`;
-  const schemaImage = post.image ? `,"image":"${post.image}"` : '';
+  const schemaImage = ',"image":"https://calculaprazo.com.br/schema-default-image.jpg"';
 
   const postHTML = template
     .replace(/\{\{TITLE\}\}/g, post.title)

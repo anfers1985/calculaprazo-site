@@ -1,5 +1,41 @@
 [
   {
+    "id": "tst-contrato-experiencia-renovacao-automatica",
+    "title": "TST valida contrato de experiência com renovação automática",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "Quarta Turma do TST reconhece a validade de contrato de experiência prorrogado até 89 dias quando houver previsão de renovação e limite legal de 90 dias.",
+    "image": "https://images.unsplash.com/photo-1635859890085-ec8cb5466806?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-14",
+    "updatedAt": "2026-09-14",
+    "tags": []
+  },
+  {
+    "id": "codefat-amplia-parcelas-seguro-desemprego-resgatados",
+    "title": "Codefat amplia parcelas do seguro-desemprego para resgatados",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "excerpt": "Codefat amplia de três para até seis parcelas o seguro-desemprego de trabalhadores resgatados de trabalho forçado ou condição análoga à escravidão.",
+    "image": "https://images.unsplash.com/photo-1626906722163-bd4c03cb3b9b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-14",
+    "updatedAt": "2026-09-14",
+    "tags": []
+  },
+  {
+    "id": "tema-017-tst-cumulacao-insalubridade-periculosidade",
+    "title": "Tema 017 do TST: cumulação de insalubridade e periculosidade",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "Entenda a tese vinculante do Tema 017 do TST que proíbe a cumulação dos adicionais de insalubridade e periculosidade, mesmo com fatos geradores distintos.",
+    "image": "https://images.unsplash.com/photo-1695561324569-5e47c76dc0a3?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-14",
+    "updatedAt": "2026-09-14",
+    "tags": []
+  },
+  {
     "id": "periodo-graca-inss-prazos-qualidade-segurado",
     "title": "Período de graça do INSS: veja os prazos e regras",
     "category": "legislacao-previdenciario",
