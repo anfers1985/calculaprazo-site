@@ -82,6 +82,16 @@ jobs:
           WORKER_SECRET: ${{ secrets.WORKER_SECRET }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           AI_MODEL: ${{ secrets.AI_MODEL }}
+          # Cadeia de fallback gratuita: se o Gemini estourar a cota do free tier (ou
+          # falhar), o script tenta, nessa ordem, uma 2ª chave do Gemini, depois um
+          # modelo :free do OpenRouter, depois um modelo gratuito da NVIDIA NIM. Cada
+          # etapa só roda se a respectiva chave estiver configurada — nenhuma delas é
+          # obrigatória.
+          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}  # opcional — 2ª chave/projeto do Gemini, mesmo modelo
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          OPENROUTER_MODEL: ${{ secrets.OPENROUTER_MODEL }}  # opcional — padrão: nvidia/nemotron-3.5-lightning:free
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}      # opcional — chave gratuita da NVIDIA NIM (build.nvidia.com)
+          NVIDIA_MODEL: ${{ secrets.NVIDIA_MODEL }}          # opcional — padrão: nvidia/nemotron-3.5-lightning-30b-a3b
 
       - uses: actions/setup-python@v5
         with: { python-version: '3.11' }
@@ -129,6 +139,15 @@ jobs:
           WORKER_SECRET: ${{ secrets.WORKER_SECRET }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           AI_MODEL: ${{ secrets.AI_MODEL }}  # opcional — nome do modelo Gemini, se seu Worker exigir
+          # processar-job.mjs roda 02-gerar-roteiro.mjs como uma das suas etapas (via
+          # execFileSync, que herda este env) — precisa das mesmas chaves de fallback
+          # do step "Gerar roteiro" acima, senão a cadeia de fallback fica sem efeito
+          # quando o job é retomado por aqui.
+          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}  # opcional — 2ª chave/projeto do Gemini
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}  # opcional — fallback gratuito
+          OPENROUTER_MODEL: ${{ secrets.OPENROUTER_MODEL }}  # opcional — padrão: nvidia/nemotron-3.5-lightning:free
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}      # opcional — fallback gratuito (NVIDIA NIM)
+          NVIDIA_MODEL: ${{ secrets.NVIDIA_MODEL }}          # opcional — padrão: nvidia/nemotron-3.5-lightning-30b-a3b
           EDGE_TTS_VOICE: ${{ secrets.EDGE_TTS_VOICE }}  # opcional — padrão: pt-BR-FranciscaNeural
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}  # obrigatório pra buscar as fotos das cenas
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}  # opcional — reforço se o Pexels não achar foto
