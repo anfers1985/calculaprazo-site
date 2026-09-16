@@ -1,5 +1,41 @@
 [
   {
+    "id": "tst-adicional-insalubridade-frio-pausa-termica-frigorifico",
+    "title": "TST garante adicional por frio sem pausa térmica em frigorífico",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "Terceira Turma do TST aplica o Tema 80 e reconhece adicional de insalubridade a trabalhadora de frigorífico por pausas térmicas irregulares.",
+    "image": "https://plus.unsplash.com/premium_photo-1682147918022-4d34d499494b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-16",
+    "updatedAt": "2026-09-16",
+    "tags": []
+  },
+  {
+    "id": "vale-alimentacao-rh-revisar-contratos-fornecedores",
+    "title": "Vale-alimentação: RH deve revisar contratos de fornecedores",
+    "category": "rh-beneficios",
+    "category_label": "Benefícios",
+    "excerpt": "Decreto 12.712/2025 exige revisão de contratos de VA e VR. Veja o que o RH deve conferir sobre taxas, prazos, rebates e uso do benefício.",
+    "image": "https://plus.unsplash.com/premium_photo-1748158250768-f08d7de756bf?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-16",
+    "updatedAt": "2026-09-16",
+    "tags": []
+  },
+  {
+    "id": "tema-021-tst-justica-gratuita-declaracao-pobreza",
+    "title": "Tema 021 do TST: justiça gratuita e declaração de pobreza",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "Entenda a tese vinculante do Tema 021 do TST sobre justiça gratuita, declaração de pobreza e comprovação de hipossuficiência.",
+    "image": "https://images.unsplash.com/photo-1603712725038-e9334ae8f39f?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-16",
+    "updatedAt": "2026-09-16",
+    "tags": []
+  },
+  {
     "id": "esocial-nota-tecnica-07-2026-mudancas-2027",
     "title": "eSocial: Nota Técnica 07/2026 prevê mudanças até 2027",
     "category": "esocial",
