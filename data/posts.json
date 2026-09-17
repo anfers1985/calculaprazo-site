@@ -1,5 +1,29 @@
 [
   {
+    "id": "contribuicao-abaixo-minimo-aposentadoria-inss",
+    "title": "Contribuição abaixo do mínimo pode afetar aposentadoria",
+    "category": "legislacao-previdenciario",
+    "category_label": "Previdenciário",
+    "excerpt": "Entenda quando contribuições inferiores ao salário mínimo podem ser desconsideradas pelo INSS e quais ajustes podem preservar o tempo previdenciário.",
+    "image": "https://images.unsplash.com/photo-1579389083078-4e7018379f7e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-17",
+    "updatedAt": "2026-09-17",
+    "tags": []
+  },
+  {
+    "id": "stf-mantem-limite-taxas-vale-refeicao-pat",
+    "title": "STF mantém limite de taxas do vale-refeição em 3,6%",
+    "category": "jurisprudencia-stf",
+    "category_label": "STF",
+    "excerpt": "Cármen Lúcia arquiva ADI sobre regras do PAT, mantendo limite de 3,6% nas taxas de VA e VR e prazo de até 15 dias para repasses.",
+    "image": "https://images.unsplash.com/photo-1681369737372-465b7780d7a6?q=80&w=1331&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-17",
+    "updatedAt": "2026-09-17",
+    "tags": []
+  },
+  {
     "id": "tst-adicional-insalubridade-frio-pausa-termica-frigorifico",
     "title": "TST garante adicional por frio sem pausa térmica em frigorífico",
     "category": "jurisprudencia-tst",
