@@ -31,18 +31,6 @@
     return fetch(url).then(function (r) { return r.ok ? r.json() : null; });
   }
 
-  // Compartilha uma única busca de posts.json com blog.min.js (evita 2-3
-  // requisições idênticas na mesma página — ver window.__cpFetchPosts).
-  window.__cpFetchPosts = window.__cpFetchPosts || function () {
-    return window.__cpPostsPromise || (window.__cpPostsPromise = fetch('/data/posts.json?v=' + Date.now()).then(function (r) {
-      if (!r.ok) throw new Error('status ' + r.status);
-      return r.json();
-    }));
-  };
-  function fetchPostsShared() {
-    return window.__cpFetchPosts().catch(function () { return null; });
-  }
-
   function buildItemHTML(post, slug, rank) {
     var img = post.image || '';
     var cat = post.category_label || post.category || '';
@@ -83,7 +71,7 @@
     var aside = container.closest('.post-sidebar, .tool-sidebar');
     var currentSlug = aside ? aside.getAttribute('data-current-slug') || '' : '';
 
-    fetchPostsShared().then(function (posts) {
+    fetchJSON('/data/posts.json?v=' + Date.now()).then(function (posts) {
       if (!Array.isArray(posts) || !posts.length) return; // sem dados, mantém fallback
 
       var latest = posts
@@ -113,7 +101,7 @@
     var currentSlug = aside ? aside.getAttribute('data-current-slug') || '' : '';
 
     Promise.all([
-      fetchPostsShared(),
+      fetchJSON('/data/posts.json?v=' + Date.now()).catch(function () { return null; }),
       fetchJSON(VIEWS_API + '/top/30').catch(function () { return null; })
     ]).then(function (results) {
       var posts = results[0];
