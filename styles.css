@@ -77,7 +77,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 #hdr{background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--brd);position:sticky;top:0;z-index:900;}
 .hdr-inner{display:flex;align-items:center;height:52px;padding:0 14px;gap:4px;}
 .logo{font-family:var(--fh);font-weight:800;font-size:1.05rem;color:var(--acc);text-decoration:none;letter-spacing:-.5px;display:flex;align-items:center;gap:7px;flex-shrink:0;white-space:nowrap;margin-right:4px;}
-.logo-ic{width:26px;height:26px;background:var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.78rem;}
+.logo-ic{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.logo-ic img{width:100%;height:100%;object-fit:cover;display:block;}
 .logo span{color:var(--txt);}
 .hdr-nav{display:flex;align-items:center;gap:2px;flex:1;}
 .hdr-nav a{font-size:.8rem;font-weight:600;color:var(--txt-m);text-decoration:none;padding:5px 9px;border-radius:8px;transition:all .15s;white-space:nowrap;cursor:pointer;display:flex;align-items:center;}
@@ -95,6 +96,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .hdr-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
 /* Hamburger: oculto em desktop, visível via @media mobile */
 .hdr-burger { display: none; }
+
+/* ── Busca: ícone desktop (ao lado de Contato) ── */
+#hdr-search-btn-desktop{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;color:var(--txt-m);cursor:pointer;flex-shrink:0;background:none;border:none;padding:0;}
+#hdr-search-btn-desktop:hover{background:var(--b50);color:var(--acc);}
+
+/* ── Busca: botão mobile (esquerda do header, mesmo tamanho do hamburger) ── */
+.hdr-search-btn{display:none;}
 .hdr-doacao{font-size:.78rem;font-weight:600;color:var(--txt-m);cursor:pointer;padding:5px 8px;border-radius:8px;white-space:nowrap;}
 .hdr-doacao:hover{background:var(--b50);color:var(--acc);}
 .btn-calc-nav{background:var(--acc);color:#fff !important;border-radius:8px;padding:7px 12px !important;font-size:.78rem !important;font-weight:700;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:4px;flex-shrink:0;}
@@ -598,7 +606,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 #ftr{background:var(--txt);padding:44px 0 24px;margin-top:0;}
 .ftr-grid{display:grid;grid-template-columns:1.3fr .8fr 1fr 1fr 1.3fr;gap:36px;margin-bottom:36px;}
 .ftr-brand .logo{color:var(--acc-l);}
-.ftr-brand .logo-ic{background:var(--acc);}
+.ftr-brand .logo-ic{}
 .ftr-brand .logo span{color:rgba(255,255,255,.5);}
 .ftr-desc{font-size:.83rem;color:rgba(255,255,255,.4);margin-top:10px;line-height:1.6;}
 .ftr-col h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.3);margin-bottom:12px;}
@@ -741,15 +749,21 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 #p-right-panel { display: none !important; }
 #p-calc-card { position: static !important; max-width: 520px; margin: 0 auto; }
 
-/* ── Cookie Banner ── */
-#cookie-banner{position:fixed;bottom:0;left:0;right:0;z-index:9998;background:#1A1A2E;color:#fff;padding:16px 24px;display:none;align-items:center;justify-content:space-between;gap:16px;box-shadow:0 -4px 20px rgba(0,0,0,.25);flex-wrap:wrap;}
-#cookie-banner p{font-size:.82rem;color:rgba(255,255,255,.8);line-height:1.5;margin:0;flex:1;min-width:200px;}
+/* ── Cookie Banner (slim: must never cover a calculator's "Calcular" button or a card CTA) ── */
+#cookie-banner{position:fixed;bottom:0;left:0;right:0;z-index:9998;background:#1A1A2E;color:#fff;padding:9px 16px;display:none;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 -2px 12px rgba(0,0,0,.2);flex-wrap:wrap;max-height:140px;overflow:hidden;}
+#cookie-banner p{font-size:.74rem;color:rgba(255,255,255,.8);line-height:1.4;margin:0;flex:1;min-width:160px;}
 #cookie-banner p a{color:var(--acc-l);text-decoration:underline;cursor:pointer;}
-.cookie-btns{display:flex;gap:8px;flex-shrink:0;}
-.cookie-btn-ok{background:var(--acc);color:#fff;border:none;padding:9px 20px;border-radius:var(--r);font-size:.83rem;font-weight:700;cursor:pointer;}
+.cookie-btns{display:flex;gap:6px;flex-shrink:0;}
+.cookie-btn-ok{background:var(--acc);color:#fff;border:none;padding:7px 16px;border-radius:var(--r);font-size:.76rem;font-weight:700;cursor:pointer;white-space:nowrap;}
 .cookie-btn-ok:hover{background:var(--b600);}
-.cookie-btn-no{background:transparent;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.2);padding:9px 16px;border-radius:var(--r);font-size:.83rem;cursor:pointer;}
+.cookie-btn-no{background:transparent;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.2);padding:7px 14px;border-radius:var(--r);font-size:.76rem;cursor:pointer;white-space:nowrap;}
 .cookie-btn-no:hover{color:#fff;border-color:rgba(255,255,255,.5);}
+@media(max-width:480px){
+  #cookie-banner{padding:8px 12px;gap:6px;}
+  #cookie-banner p{font-size:.7rem;min-width:0;flex-basis:100%;line-height:1.35;}
+  .cookie-btns{width:100%;}
+  .cookie-btn-ok,.cookie-btn-no{flex:1;text-align:center;padding:8px 10px;}
+}
 
 /* ── Tooltip médias salariais ── */
 .t-tip{position:relative;display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;background:var(--b200);color:var(--acc);font-size:.68rem;font-weight:800;cursor:help;flex-shrink:0;}
@@ -879,6 +893,49 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   line-height: 1.65;
 }
 .seo-p strong { color: var(--txt); }
+
+/* ── Rodapé em acordeão (só a home: as 3 caixas de texto institucional/SEO,
+   fechadas por padrão — conteúdo continua indexável pelo Google, só não
+   compete visualmente com o resto da página). Não afeta o .seo-grid das
+   calculadoras, que é conteúdo instrucional e deve continuar sempre visível. ── */
+.seo-grid-acc {
+  grid-template-columns: repeat(3, minmax(0,1fr));
+}
+details.seo-acc {
+  border-top: 1px solid var(--brd);
+}
+details.seo-acc summary.seo-h2 {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 0;
+  margin-bottom: 0;
+}
+details.seo-acc summary.seo-h2::-webkit-details-marker { display: none; }
+details.seo-acc summary.seo-h2::after {
+  content: "";
+  flex-shrink: 0;
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid var(--txt-m);
+  border-bottom: 2px solid var(--txt-m);
+  transform: rotate(45deg);
+  transition: transform .15s;
+  margin-top: -4px;
+}
+details.seo-acc[open] summary.seo-h2::after {
+  transform: rotate(-135deg);
+  margin-top: 2px;
+}
+details.seo-acc .seo-p {
+  padding-bottom: 14px;
+}
+@media (max-width: 700px) {
+  .seo-grid-acc { grid-template-columns: 1fr; }
+}
 .faq-list { margin-top: 8px; }
 .faq-item { border: 1px solid var(--brd); border-radius: var(--r); margin-bottom: 6px; background: var(--card); overflow: hidden; }
 .faq-q { padding: 11px 14px; font-weight: 600; font-size: .82rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; transition: background .15s; }
@@ -947,14 +1004,29 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   .hdr-burger.is-open span:nth-child(2) { opacity: 0; }
   .hdr-burger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-  /* ── Header: linha única logo + burger ── */
+  /* ── Header: lupa (esq.) + logo (centro) + burger (dir.) ── */
   #hdr { height: auto !important; }
   .hdr-inner {
-    flex-direction: row !important;
-    height: 52px !important;
-    padding: 0 12px !important;
+    display: grid !important;
+    grid-template-columns: 44px 1fr 44px !important;
     align-items: center !important;
+    height: 52px !important;
+    padding: 0 6px !important;
     gap: 0 !important;
+  }
+  .logo { justify-self: center; margin-right: 0; }
+  .hdr-search-btn{
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: none;
+    border: none;
+    color: var(--txt-m);
+    cursor: pointer;
+    border-radius: 8px;
+    justify-self: start;
   }
 
   /* Esconde botão Doação do header */
@@ -978,6 +1050,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   }
   .hdr-nav.mob-open {
     display: flex !important;
+  }
+  body:has(.hdr-nav.mob-open)::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    z-index: 898;
   }
   .hdr-nav > a,
   .hdr-nav > .nav-dropdown {
@@ -2055,4 +2134,28 @@ img[src*="m.media-amazon.com"] {
 @media(min-width:769px){
   .nh-small-item:nth-child(4) { display:none; }
   .nh-small-item:nth-child(3) { border-bottom:none;padding-bottom:0;margin-bottom:0; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   Busca global (modal) — item 9
+   ══════════════════════════════════════════════════════════════ */
+#site-search-overlay{position:fixed;inset:0;z-index:10000;background:rgba(15,23,42,.55);display:flex;align-items:flex-start;justify-content:center;padding:12vh 16px 0;opacity:0;pointer-events:none;transition:opacity .15s;}
+#site-search-overlay.open{opacity:1;pointer-events:all;}
+#site-search-modal{background:var(--card);border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.35);width:100%;max-width:560px;max-height:70vh;display:flex;flex-direction:column;overflow:hidden;transform:translateY(-8px);transition:transform .15s;}
+#site-search-overlay.open #site-search-modal{transform:translateY(0);}
+.ssm-bar{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--brd);color:var(--txt-m);flex-shrink:0;}
+#site-search-input{flex:1;border:none;outline:none;font-size:1rem;font-family:var(--fh);color:var(--txt);background:transparent;}
+#site-search-close{background:none;border:none;color:var(--txt-m);cursor:pointer;font-size:1rem;padding:4px 6px;border-radius:6px;flex-shrink:0;}
+#site-search-close:hover{background:var(--b50);color:var(--acc);}
+#site-search-results{overflow-y:auto;padding:6px;}
+.ssm-hint,.ssm-loading{padding:20px 14px;color:var(--txt-m);font-size:.85rem;text-align:center;}
+.ssm-group-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--txt-m);padding:10px 10px 4px;}
+.ssm-item{display:flex;flex-direction:column;gap:2px;padding:9px 10px;border-radius:9px;text-decoration:none;}
+.ssm-item:hover{background:var(--b50);}
+.ssm-item-title{font-size:.88rem;font-weight:700;color:var(--txt);}
+.ssm-item-desc{font-size:.78rem;color:var(--txt-m);}
+@media(max-width:600px){
+  #site-search-overlay{padding:0;align-items:stretch;}
+  #site-search-modal{max-width:none;max-height:none;height:100%;border-radius:0;}
+  #site-search-results{flex:1;}
 }
