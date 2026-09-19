@@ -105,7 +105,8 @@ strong{color:var(--txt);font-weight:700;}
 #hdr{background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--brd);position:sticky;top:0;z-index:900;}
 .hdr-inner{display:flex;align-items:center;height:52px;padding:0 14px;gap:4px;}
 .logo{font-family:var(--fh);font-weight:800;font-size:1.05rem;color:var(--acc);text-decoration:none;letter-spacing:-.5px;display:flex;align-items:center;gap:7px;flex-shrink:0;white-space:nowrap;margin-right:4px;}
-.logo-ic{width:26px;height:26px;background:var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.78rem;}
+.logo-ic{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.logo-ic img{width:100%;height:100%;object-fit:cover;display:block;}
 .logo span{color:var(--txt);}
 .hdr-nav{display:flex;align-items:center;gap:2px;flex:1;}
 .hdr-nav a{font-size:.8rem;font-weight:600;color:var(--txt-m);text-decoration:none;padding:5px 9px;border-radius:8px;transition:all .15s;white-space:nowrap;cursor:pointer;display:flex;align-items:center;}
@@ -154,7 +155,7 @@ strong{color:var(--txt);font-weight:700;}
 #ftr{background:var(--txt);padding:44px 0 24px;margin-top:0;}
 .ftr-grid{display:grid;grid-template-columns:1.3fr .8fr 1fr 1fr 1.3fr;gap:36px;margin-bottom:36px;}
 .ftr-brand .logo{color:var(--acc-l);}
-.ftr-brand .logo-ic{background:var(--acc);}
+.ftr-brand .logo-ic{}
 .ftr-brand .logo span{color:rgba(255,255,255,.5);}
 .ftr-desc{font-size:.83rem;color:rgba(255,255,255,.4);margin-top:10px;line-height:1.6;}
 .ftr-col h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.3);margin-bottom:12px;}
@@ -248,14 +249,76 @@ strong{color:var(--txt);font-weight:700;}
      remover essas duas propriedades numa futura edição deste bloco. */
   .pbw-grid .article-wrap{max-width:800px;width:100%;margin:0 auto;min-width:0;}
 }
+
+/* ══════════════════════════════════════════════════════════════
+   Busca global — injetada nesta página (mesma funcionalidade das
+   páginas principais do site: home, calculadoras e /conteudo)
+   ══════════════════════════════════════════════════════════════ */
+#hdr-search-btn-desktop{display:inline-flex;align-items:center;gap:6px;width:150px;height:32px;padding:0 12px;border-radius:999px;background:var(--b50);border:1.5px solid var(--brd);color:var(--txt-m);cursor:pointer;flex-shrink:0;font-family:var(--fh);font-size:.78rem;transition:border-color .15s,background .15s;}
+#hdr-search-btn-desktop:hover{border-color:var(--acc);background:#fff;}
+#hdr-search-btn-desktop svg{flex-shrink:0;opacity:.7;}
+#hdr-search-btn-desktop span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+@media(max-width:1100px){ #hdr-search-btn-desktop{width:36px;padding:0;justify-content:center;} #hdr-search-btn-desktop span{display:none;} }
+.hdr-search-btn{display:none;}
+@media(max-width:768px){
+  #hdr { height: auto !important; }
+  .hdr-inner {
+    display: grid !important;
+    grid-template-columns: 44px 1fr 44px !important;
+    align-items: center !important;
+    height: 52px !important;
+    padding: 0 6px !important;
+    gap: 0 !important;
+  }
+  .logo { justify-self: center; margin-right: 0; }
+  .hdr-search-btn{
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: none;
+    border: none;
+    color: var(--txt-m);
+    cursor: pointer;
+    border-radius: 8px;
+    justify-self: start;
+  }
+}
+#site-search-overlay{position:fixed;inset:0;z-index:10000;background:rgba(15,23,42,.55);display:flex;align-items:flex-start;justify-content:center;padding:12vh 16px 0;opacity:0;pointer-events:none;transition:opacity .15s;}
+#site-search-overlay.open{opacity:1;pointer-events:all;}
+#site-search-modal{background:var(--card);border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.35);width:100%;max-width:560px;max-height:70vh;display:flex;flex-direction:column;overflow:hidden;transform:translateY(-8px);transition:transform .15s;}
+#site-search-overlay.open #site-search-modal{transform:translateY(0);}
+.ssm-topbar{display:none;}
+.ssm-bar{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--brd);color:var(--txt-m);flex-shrink:0;}
+#site-search-input{flex:1;border:none;outline:none;font-size:1rem;font-family:var(--fh);color:var(--txt);background:transparent;}
+#site-search-close{background:none;border:none;color:var(--txt-m);cursor:pointer;font-size:1rem;padding:4px 6px;border-radius:6px;flex-shrink:0;}
+#site-search-close:hover{background:var(--b50);color:var(--acc);}
+#site-search-results{overflow-y:auto;padding:6px;}
+.ssm-hint,.ssm-loading{padding:20px 14px;color:var(--txt-m);font-size:.85rem;text-align:center;}
+.ssm-group-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--txt-m);padding:10px 10px 4px;}
+.ssm-item{display:flex;flex-direction:column;gap:2px;padding:9px 10px;border-radius:9px;text-decoration:none;}
+.ssm-item:hover{background:var(--b50);}
+.ssm-item-title{font-size:.88rem;font-weight:700;color:var(--txt);}
+.ssm-item-desc{font-size:.78rem;color:var(--txt-m);}
+@media(max-width:600px){
+  #site-search-overlay{padding:0;align-items:stretch;}
+  #site-search-modal{max-width:none;max-height:none;height:100%;border-radius:0;}
+  #site-search-results{flex:1;}
+  .ssm-topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--brd);flex-shrink:0;}
+  .ssm-topbar-brand{display:flex;align-items:center;gap:8px;font-family:var(--fh);font-weight:800;font-size:.95rem;color:var(--acc);}
+  .ssm-topbar-brand img{border-radius:6px;flex-shrink:0;}
+  #site-search-close-top{background:none;border:none;color:var(--txt-m);cursor:pointer;font-size:1.1rem;padding:4px 6px;}
+}
 </style>
 </head>
 <body>
 
 <header id="hdr">
   <div class="hdr-inner">
+    <button class="hdr-search-btn" aria-label="Buscar" onclick="openSiteSearch()"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
     <a class="logo" href="/" title="Ir para página inicial">
-      <div class="logo-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 7h18"/></svg></div><span class="logo-text">Calcula</span><span>Prazo</span>
+      <div class="logo-ic"><img src="/icon-192.png" alt="" width="26" height="26"></div><span class="logo-text">Calcula</span><span>Prazo</span>
     </a>
     <button id="hdr-burger" class="hdr-burger" aria-label="Abrir menu" aria-expanded="false" onclick="
       var nav=document.querySelector('.hdr-nav');
@@ -373,6 +436,7 @@ strong{color:var(--txt);font-weight:700;}
       </div>
       <a href="/sobre">Sobre</a>
       <a href="/contato">✉ Contato</a>
+      <div id="hdr-search-btn-desktop" onclick="openSiteSearch()" aria-label="Buscar no site" role="button" tabindex="0"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Buscar...</span></div>
       <a class="hdr-doacao" onclick="document.getElementById('modal-doacao').style.display='flex'" aria-label="Apoiar o Calcula Prazo via Pix">☕ Doação</a>
     </nav>
   </div>
@@ -453,7 +517,7 @@ strong{color:var(--txt);font-weight:700;}
   <div class="container">
     <div class="ftr-grid">
       <div class="ftr-brand">
-        <a class="logo" href="/"><div class="logo-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 7h18"/></svg></div><span class="logo-text">Calcula</span><span>Prazo</span></a>
+        <a class="logo" href="/"><div class="logo-ic"><img src="/icon-192.png" alt="" width="26" height="26"></div><span class="logo-text">Calcula</span><span>Prazo</span></a>
         <p class="ftr-desc">Calculadoras jurídicas gratuitas e conteúdo especializado em Direito do Trabalho para advogados, contadores, profissionais de RH e trabalhadores.</p>
         <p style="margin-top:12px;font-size:.8rem;color:rgba(255,255,255,.45);line-height:1.6;">✉ Dúvidas, sugestões ou elogios?<br><a href="mailto:contato@calculaprazo.com.br" style="color:rgba(255,255,255,.6);text-decoration:underline;">contato@calculaprazo.com.br</a></p>
       </div>
@@ -590,5 +654,6 @@ function newsletterSubscribe(e){e.preventDefault();var o=e.target,t=o.email.valu
 </script>
 <script src="/js/ads-adsterra.js?v=3" defer></script>
 <script src="/js/mais-acessados-real.js" defer></script>
+<script src="/js/search.js" defer></script>
 </body>
 </html>

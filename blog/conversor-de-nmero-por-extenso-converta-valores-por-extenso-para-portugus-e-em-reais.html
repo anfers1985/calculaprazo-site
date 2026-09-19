@@ -1134,6 +1134,67 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   .related-card .r-title{-webkit-line-clamp:3;margin-bottom:0;}
   .related-card .r-date{}
 }
+
+/* ══════════════════════════════════════════════════════════════
+   Busca global — injetada nesta página (mesma funcionalidade das
+   páginas principais do site: home, calculadoras e /conteudo)
+   ══════════════════════════════════════════════════════════════ */
+#hdr-search-btn-desktop{display:inline-flex;align-items:center;gap:6px;width:150px;height:32px;padding:0 12px;border-radius:999px;background:var(--b50);border:1.5px solid var(--brd);color:var(--txt-m);cursor:pointer;flex-shrink:0;font-family:var(--fh);font-size:.78rem;transition:border-color .15s,background .15s;}
+#hdr-search-btn-desktop:hover{border-color:var(--acc);background:#fff;}
+#hdr-search-btn-desktop svg{flex-shrink:0;opacity:.7;}
+#hdr-search-btn-desktop span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+@media(max-width:1100px){ #hdr-search-btn-desktop{width:36px;padding:0;justify-content:center;} #hdr-search-btn-desktop span{display:none;} }
+.hdr-search-btn{display:none;}
+@media(max-width:768px){
+  #hdr { height: auto !important; }
+  .hdr-inner {
+    display: grid !important;
+    grid-template-columns: 44px 1fr 44px !important;
+    align-items: center !important;
+    height: 52px !important;
+    padding: 0 6px !important;
+    gap: 0 !important;
+  }
+  .logo { justify-self: center; margin-right: 0; }
+  .hdr-search-btn{
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: none;
+    border: none;
+    color: var(--txt-m);
+    cursor: pointer;
+    border-radius: 8px;
+    justify-self: start;
+  }
+}
+#site-search-overlay{position:fixed;inset:0;z-index:10000;background:rgba(15,23,42,.55);display:flex;align-items:flex-start;justify-content:center;padding:12vh 16px 0;opacity:0;pointer-events:none;transition:opacity .15s;}
+#site-search-overlay.open{opacity:1;pointer-events:all;}
+#site-search-modal{background:var(--card);border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.35);width:100%;max-width:560px;max-height:70vh;display:flex;flex-direction:column;overflow:hidden;transform:translateY(-8px);transition:transform .15s;}
+#site-search-overlay.open #site-search-modal{transform:translateY(0);}
+.ssm-topbar{display:none;}
+.ssm-bar{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--brd);color:var(--txt-m);flex-shrink:0;}
+#site-search-input{flex:1;border:none;outline:none;font-size:1rem;font-family:var(--fh);color:var(--txt);background:transparent;}
+#site-search-close{background:none;border:none;color:var(--txt-m);cursor:pointer;font-size:1rem;padding:4px 6px;border-radius:6px;flex-shrink:0;}
+#site-search-close:hover{background:var(--b50);color:var(--acc);}
+#site-search-results{overflow-y:auto;padding:6px;}
+.ssm-hint,.ssm-loading{padding:20px 14px;color:var(--txt-m);font-size:.85rem;text-align:center;}
+.ssm-group-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--txt-m);padding:10px 10px 4px;}
+.ssm-item{display:flex;flex-direction:column;gap:2px;padding:9px 10px;border-radius:9px;text-decoration:none;}
+.ssm-item:hover{background:var(--b50);}
+.ssm-item-title{font-size:.88rem;font-weight:700;color:var(--txt);}
+.ssm-item-desc{font-size:.78rem;color:var(--txt-m);}
+@media(max-width:600px){
+  #site-search-overlay{padding:0;align-items:stretch;}
+  #site-search-modal{max-width:none;max-height:none;height:100%;border-radius:0;}
+  #site-search-results{flex:1;}
+  .ssm-topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--brd);flex-shrink:0;}
+  .ssm-topbar-brand{display:flex;align-items:center;gap:8px;font-family:var(--fh);font-weight:800;font-size:.95rem;color:var(--acc);}
+  .ssm-topbar-brand img{border-radius:6px;flex-shrink:0;}
+  #site-search-close-top{background:none;border:none;color:var(--txt-m);cursor:pointer;font-size:1.1rem;padding:4px 6px;}
+}
 </style>
 </head>
 <body>
@@ -1143,6 +1204,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
 <header id="hdr">
   <div class="hdr-inner">
+    <button class="hdr-search-btn" aria-label="Buscar" onclick="openSiteSearch()"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
     <a class="logo" href="/" aria-label="Calcula Prazo — Página inicial">
       <div class="logo-ic"><img src="/icon-192.png" alt="" width="26" height="26"></div><span class="logo-text">Calcula</span><span>Prazo</span>
     </a>
@@ -1263,6 +1325,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       </div>
       <a href="/sobre">Sobre</a>
       <a href="/contato">✉ Contato</a>
+      <div id="hdr-search-btn-desktop" onclick="openSiteSearch()" aria-label="Buscar no site" role="button" tabindex="0"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Buscar...</span></div>
       <a class="hdr-doacao" onclick="document.getElementById('modal-doacao').style.display='flex'">☕ Doação</a>
     </nav>
   </div>
@@ -1915,5 +1978,6 @@ if (window.innerWidth > 767) {
   document.body.appendChild(s);
 }
 </script>
+<script src="/js/search.js" defer></script>
 </body>
 </html>
