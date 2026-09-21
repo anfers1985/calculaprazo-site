@@ -1,4 +1,20 @@
 
+// ─── ÍCONES SVG (sprite injetado) ──────────────────
+// Injeta o sprite /assets/icons.svg inline no <body> uma vez, pra <use href="#ic-x">
+// resolver localmente (evita bugs de <use> cross-file em alguns navegadores/Safari).
+(function loadIconSprite(){
+  if(document.getElementById('cp-icon-sprite'))return;
+  fetch('/assets/icons.svg').then(r => r.ok ? r.text() : '').then(svgText => {
+    if (!svgText || document.getElementById('cp-icon-sprite')) return;
+    const wrap = document.createElement('div');
+    wrap.id = 'cp-icon-sprite';
+    wrap.style.display = 'none';
+    wrap.setAttribute('aria-hidden', 'true');
+    wrap.innerHTML = svgText;
+    document.body.insertBefore(wrap, document.body.firstChild);
+  }).catch(()=>{});
+})();
+
 // ─── NAVIGATION ────────────────────────────────────
 const NAV_MAP = {
   home:'home',prazos:'prazos',blog:'blog',calc:'calc',correcao:'correcao',juros:'juros',

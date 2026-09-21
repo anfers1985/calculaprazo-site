@@ -2170,3 +2170,30 @@ img[src*="m.media-amazon.com"] {
   .ssm-topbar-brand img{border-radius:6px;flex-shrink:0;}
   #site-search-close-top{background:none;border:none;color:var(--txt-m);cursor:pointer;font-size:1.1rem;padding:4px 6px;}
 }
+
+/* ══════════════════════════════════════════════════════════════
+   Ícones SVG em vidro translúcido — substitui emojis (item 6)
+   ══════════════════════════════════════════════════════════════ */
+.icon-tile{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;
+  flex-shrink:0;overflow:hidden;
+  background:linear-gradient(160deg, rgba(255,255,255,.80), rgba(255,255,255,.30));
+  -webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);
+  border:1px solid rgba(255,255,255,.85);
+  box-shadow:0 8px 18px rgba(15,23,42,.13), inset 0 1px 1px rgba(255,255,255,.95), inset 0 -10px 12px -8px rgba(15,23,42,.08);
+}
+.icon-tile::before{
+  content:"";position:absolute;top:5px;left:8px;width:36%;height:22%;border-radius:50%;
+  background:rgba(255,255,255,.9);filter:blur(5px);opacity:.9;
+}
+.icon-tile svg{position:relative;z-index:2;width:60%;height:60%;}
+/* Tamanhos por contexto */
+.nh-quick-icon.icon-tile{width:44px;height:44px;border-radius:13px;}
+.ci-icon.icon-tile{width:52px;height:52px;border-radius:15px;}
+.tc-icon.icon-tile{width:48px;height:48px;border-radius:14px;}
+
+/* Ícones inline pequenos (sem vidro) — pills, dropdown, botões de fechar */
+.inline-ic{display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:-2px;margin-right:4px;}
+.inline-ic svg{width:100%;height:100%;}
+button .inline-ic, a .inline-ic{margin-right:5px;}
+.hdr-doacao .inline-ic, footer .inline-ic{width:.95em;height:.95em;}
