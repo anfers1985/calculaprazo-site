@@ -1,5 +1,41 @@
 [
   {
+    "id": "tst-mantm-obrigao-de-creche-em-shopping-para-lactantes",
+    "title": "TST mantém obrigação de creche em shopping para lactantes",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "Segunda Turma do TST mantém obrigação de shopping oferecer creche ou auxílio-creche a trabalhadoras de lojas durante o período de amamentação.",
+    "image": "https://images.unsplash.com/photo-1533481405265-e9ce0c044abb?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-21",
+    "updatedAt": "2026-09-21",
+    "tags": []
+  },
+  {
+    "id": "primeira-folha-pagamento-checklist-fechamento-esocial",
+    "title": "Primeira folha de pagamento: confira tudo antes do fechamento",
+    "category": "rh-folha",
+    "category_label": "Folha de Pagamento",
+    "excerpt": "Saiba o que validar na primeira folha de pagamento, incluindo salário, jornada, eSocial e FGTS Digital, para evitar erros no fechamento mensal.",
+    "image": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-21",
+    "updatedAt": "2026-09-21",
+    "tags": []
+  },
+  {
+    "id": "tema-052-tst-multa-artigo-477-rescisao-indireta",
+    "title": "Tema 052 do TST: multa do art. 477 na rescisão indireta",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "Entenda a tese vinculante do Tema 052 do TST que garante a multa do art. 477, §8º, da CLT quando a rescisão indireta é reconhecida em juízo.",
+    "image": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-21",
+    "updatedAt": "2026-09-21",
+    "tags": []
+  },
+  {
     "id": "norma-coletiva-substituir-horas-extras-limites",
     "title": "Norma coletiva pode substituir horas extras? Entenda os limites",
     "category": "geral",
