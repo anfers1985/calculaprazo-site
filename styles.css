@@ -2170,3 +2170,32 @@ img[src*="m.media-amazon.com"] {
   .ssm-topbar-brand img{border-radius:6px;flex-shrink:0;}
   #site-search-close-top{background:none;border:none;color:var(--txt-m);cursor:pointer;font-size:1.1rem;padding:4px 6px;}
 }
+
+/* ══════════════════════════════════════════════════════════════
+   Ícones SVG — badges de vidro colorido (.icon-tile) + inline (.inline-ic)
+   ══════════════════════════════════════════════════════════════ */
+.icon-tile{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;
+  flex-shrink:0;overflow:hidden;
+  -webkit-backdrop-filter:blur(14px) saturate(180%);backdrop-filter:blur(14px) saturate(180%);
+  border:1px solid rgba(255,255,255,.5);
+  box-shadow:0 6px 14px rgba(15,23,42,.18), inset 0 1.5px 1px rgba(255,255,255,.6);
+}
+.icon-tile::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(145deg, rgba(255,255,255,.5) 0%, rgba(255,255,255,.06) 35%, rgba(255,255,255,0) 55%);
+  pointer-events:none;
+}
+.icon-tile svg{position:relative;z-index:2;width:62%;height:62%;}
+/* Tamanhos por contexto */
+.nh-quick-icon.icon-tile{width:44px;height:44px;border-radius:13px;}
+.ci-icon.icon-tile{width:52px;height:52px;border-radius:15px;}
+.tc-icon.icon-tile{width:48px;height:48px;border-radius:14px;}
+.trc-icon.icon-tile{width:44px;height:44px;border-radius:13px;}
+.cec-ic.icon-tile{width:48px;height:48px;border-radius:14px;}
+
+/* Ícones inline pequenos (sem badge) — pills, dropdown, botões de fechar */
+.inline-ic{display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:-2px;margin-right:4px;}
+.inline-ic svg{width:100%;height:100%;}
+button .inline-ic, a .inline-ic{margin-right:5px;}
+.hdr-doacao .inline-ic, footer .inline-ic{width:.95em;height:.95em;}
