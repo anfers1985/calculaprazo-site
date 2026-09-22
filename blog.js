@@ -1,20 +1,6 @@
 
 var BLOG_POSTS=[];var BLOG_CAT='';var BLOG_H_FILTER='';var BLOG_VIEW='grid';var blogPage=1;var BLOG_PER_PAGE=20;var BLOG_MAX_PAGES=Infinity;
-var BLOG_MODE='explore';
-
-(function loadIconSpriteBlog(){
-  if(document.getElementById('cp-icon-sprite'))return;
-  fetch('/assets/icons.svg').then(function(r){return r.ok?r.text():'';}).then(function(svgText){
-    if(!svgText || document.getElementById('cp-icon-sprite'))return;
-    var wrap=document.createElement('div');
-    wrap.id='cp-icon-sprite';
-    wrap.style.display='none';
-    wrap.setAttribute('aria-hidden','true');
-    wrap.innerHTML=svgText;
-    document.body.insertBefore(wrap, document.body.firstChild);
-  }).catch(function(){});
-})();
- // 'explore' (cards de categoria) ou 'list' (resultados filtrados)
+var BLOG_MODE='explore'; // 'explore' (cards de categoria) ou 'list' (resultados filtrados)
 
 // Categorias que existem como conteúdo próprio (com seção/hub dedicado), mas
 // NÃO devem aparecer nas vitrines gerais de "artigos" (home, /conteudo "Todos",
