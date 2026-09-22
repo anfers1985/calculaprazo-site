@@ -1,5 +1,29 @@
 [
   {
+    "id": "tst-isenta-sindicato-honorarios-acao-civil-publica",
+    "title": "TST isenta sindicato de honorários após perder ação coletiva",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "TST decidiu que sindicato autor de ação civil pública só deve pagar custas e honorários se houver comprovação de má-fé na atuação processual.",
+    "image": "https://images.unsplash.com/photo-1598552060530-faee27321377?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-22",
+    "updatedAt": "2026-09-22",
+    "tags": []
+  },
+  {
+    "id": "tst-valida-custas-pagas-fora-bb-caixa",
+    "title": "TST valida pagamento de custas feito fora do BB e Caixa",
+    "category": "processual-outros",
+    "category_label": "Outros Processual",
+    "excerpt": "Sexta Turma do TST afasta deserção e valida custas pagas via GRU no Sicredi, pois o código de barras garante o repasse à União.",
+    "image": "https://images.unsplash.com/photo-1618771623063-6c3faa854a61?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-22",
+    "updatedAt": "2026-09-22",
+    "tags": []
+  },
+  {
     "id": "tst-reintegra-trabalhador-cancer-dispensa-discriminatoria",
     "title": "TST restabelece reintegração de trabalhador com câncer",
     "category": "jurisprudencia-tst",
