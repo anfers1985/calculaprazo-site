@@ -1,5 +1,41 @@
 [
   {
+    "id": "tst-afasta-dispensa-discriminatoria-doenca-comum",
+    "title": "TST afasta dispensa discriminatória por doença comum",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "TST entende que doenças comuns e afastamentos curtos não geram presunção automática de dispensa discriminatória por motivo de saúde.",
+    "image": "https://plus.unsplash.com/premium_photo-1716987526513-6174f2f34ff9?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-23",
+    "updatedAt": "2026-09-23",
+    "tags": []
+  },
+  {
+    "id": "enquadramento-sindical-qual-convencao-coletiva-aplicar",
+    "title": "Enquadramento sindical: qual convenção coletiva aplicar?",
+    "category": "legislacao-sindical",
+    "category_label": "Sindical",
+    "excerpt": "Entenda como definir a convenção coletiva correta, considerando atividade preponderante, categoria profissional, terceirização, base territorial e Súmulas do TST.",
+    "image": "https://images.unsplash.com/photo-1785140629116-e941b2a9180f?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-23",
+    "updatedAt": "2026-09-23",
+    "tags": []
+  },
+  {
+    "id": "tema-057-tst-comissoes-vendas-prazo-juros-encargos",
+    "title": "Tema 057 do TST: comissões sobre vendas a prazo",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "Tema 057 do TST define que comissões sobre vendas a prazo incidem sobre o valor total da operação, incluindo juros e encargos, salvo acordo contrário.",
+    "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-23",
+    "updatedAt": "2026-09-23",
+    "tags": []
+  },
+  {
     "id": "tst-isenta-sindicato-honorarios-acao-civil-publica",
     "title": "TST isenta sindicato de honorários após perder ação coletiva",
     "category": "jurisprudencia-tst",
