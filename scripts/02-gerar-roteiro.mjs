@@ -292,11 +292,7 @@ const chamarNvidiaComRetry = ({ apiKey, modelo, systemPrompt, userPrompt }) =>
 // tiver chave é pulado silenciosamente (com um aviso no log). Só lança erro se
 // TODAS as etapas configuradas falharem.
 async function gerarRoteiroTexto({ systemPrompt, userPrompt }) {
-  // gemini-3.5-flash-lite: 500 req/dia no free tier, contra só 20/dia dos
-  // modelos Flash "cheios" (3.6/3.7/3.8) — foi o que causou o esgotamento de
-  // cota mesmo com uso baixo. Ver AI_MODEL nos secrets do GitHub Actions pra
-  // sobrescrever, se um dia precisar de mais capacidade de raciocínio.
-  const modeloGemini = process.env.AI_MODEL || 'gemini-3.5-flash-lite';
+  const modeloGemini = process.env.AI_MODEL || 'gemini-3.6-flash';
 
   const etapas = [
     {

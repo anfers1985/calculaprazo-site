@@ -1,6 +1,6 @@
 (function(){
   if(document.getElementById('cp-icon-sprite'))return;
-  fetch('/assets/icons.svg').then(function(r){return r.ok?r.text():'';}).then(function(svgText){
+  fetch('/assets/icons.svg?v=2').then(function(r){return r.ok?r.text():'';}).then(function(svgText){
     if(!svgText || document.getElementById('cp-icon-sprite'))return;
     var wrap=document.createElement('div');
     wrap.id='cp-icon-sprite';

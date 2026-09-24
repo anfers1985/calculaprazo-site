@@ -1,4 +1,18 @@
 
+// ─── ÍCONES SVG (sprite injetado) ──────────────────
+(function loadIconSprite(){
+  if(document.getElementById('cp-icon-sprite'))return;
+  fetch('/assets/icons.svg?v=2').then(r => r.ok ? r.text() : '').then(svgText => {
+    if (!svgText || document.getElementById('cp-icon-sprite')) return;
+    const wrap = document.createElement('div');
+    wrap.id = 'cp-icon-sprite';
+    wrap.style.display = 'none';
+    wrap.setAttribute('aria-hidden', 'true');
+    wrap.innerHTML = svgText;
+    document.body.insertBefore(wrap, document.body.firstChild);
+  }).catch(()=>{});
+})();
+
 // ─── NAVIGATION ────────────────────────────────────
 const NAV_MAP = {
   home:'home',prazos:'prazos',blog:'blog',calc:'calc',correcao:'correcao',juros:'juros',
