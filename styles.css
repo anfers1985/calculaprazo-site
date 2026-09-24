@@ -2170,34 +2170,3 @@ img[src*="m.media-amazon.com"] {
   .ssm-topbar-brand img{border-radius:6px;flex-shrink:0;}
   #site-search-close-top{background:none;border:none;color:var(--txt-m);cursor:pointer;font-size:1.1rem;padding:4px 6px;}
 }
-
-/* ══════════════════════════════════════════════════════════════
-   Ícones SVG — badges de vidro colorido (.icon-tile) + inline (.inline-ic)
-   ══════════════════════════════════════════════════════════════ */
-.icon-tile{
-  position:relative;display:inline-flex;align-items:center;justify-content:center;
-  flex-shrink:0;overflow:hidden;
-  -webkit-backdrop-filter:blur(14px) saturate(180%);backdrop-filter:blur(14px) saturate(180%);
-  border:1.5px solid rgba(255,255,255,.65);
-  box-shadow:0 8px 16px rgba(15,23,42,.28), inset 0 2px 2px rgba(255,255,255,.85), inset 0 -3px 4px rgba(0,0,0,.18);
-}
-.icon-tile::before{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:
-    linear-gradient(20deg, transparent 40%, rgba(255,255,255,.35) 48%, transparent 56%),
-    radial-gradient(ellipse at 30% 20%, rgba(255,255,255,.85), rgba(255,255,255,0) 70%),
-    linear-gradient(0deg, rgba(0,0,0,.15), rgba(0,0,0,0) 35%);
-}
-.icon-tile svg{position:relative;z-index:2;width:62%;height:62%;}
-/* Tamanhos por contexto */
-.nh-quick-icon.icon-tile{width:44px;height:44px;border-radius:13px;}
-.ci-icon.icon-tile{width:52px;height:52px;border-radius:15px;}
-.tc-icon.icon-tile{width:48px;height:48px;border-radius:14px;}
-.trc-icon.icon-tile{width:44px;height:44px;border-radius:13px;}
-.cec-ic.icon-tile{width:48px;height:48px;border-radius:14px;}
-
-/* Ícones inline pequenos (sem badge) — pills, dropdown, botões de fechar */
-.inline-ic{display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:-2px;margin-right:4px;}
-.inline-ic svg{width:100%;height:100%;}
-button .inline-ic, a .inline-ic{margin-right:5px;}
-.hdr-doacao .inline-ic, footer .inline-ic{width:.95em;height:.95em;}
