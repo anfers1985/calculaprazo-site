@@ -1,0 +1,32 @@
+name: Newsletter Semanal
+
+on:
+  schedule:
+    # 10h em Brasília (13h UTC) — roda depois da publicação das 9h (ver
+    # publicar-agendados.yml, que publica às 9h/12h/15h/18h BRT), então
+    # pega qualquer post publicado nessa primeira leva da sexta, e ainda
+    # sobra 1h de folga antes do envio manual às 11h no painel admin.
+    - cron: '0 13 * * 5'
+  workflow_dispatch: {}
+
+jobs:
+  gerar-rascunho:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - run: npm install --omit=dev
+
+      - name: Gerar rascunho da newsletter semanal
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+        run: node scripts/12-gerar-newsletter-semanal.mjs
