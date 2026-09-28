@@ -1,5 +1,29 @@
 [
   {
+    "id": "minerador-mina-subterranea-adicional-periculosidade-gas-explosivo",
+    "title": "Minerador de mina subterrânea receberá adicional de periculosidade",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "TST reconhece adicional de periculosidade de 30% a minerador exposto a bolsões de gás explosivo em mina subterrânea da Vale em Sergipe.",
+    "image": "https://images.unsplash.com/photo-1509689266740-ecc1b3c3de2a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-28",
+    "updatedAt": "2026-09-28",
+    "tags": []
+  },
+  {
+    "id": "fgts-digital-emissao-antecipada-nao-altera-vencimento",
+    "title": "FGTS Digital: emissão antecipada não muda vencimento",
+    "category": "noticias-mte",
+    "category_label": "MTE",
+    "excerpt": "MTE orienta empregadores a emitir a guia do FGTS Digital com antecedência, sem alterar a data limite para o recolhimento dos valores.",
+    "image": "https://images.unsplash.com/photo-1625297670911-8311cd5e7832?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-28",
+    "updatedAt": "2026-09-28",
+    "tags": []
+  },
+  {
     "id": "stf-prorroga-suspensao-sancoes-riscos-psicossociais-nr1",
     "title": "STF prorroga suspensão de sanções sobre riscos da NR-1",
     "category": "legislacao-nr",
