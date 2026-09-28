@@ -1,5 +1,41 @@
 [
   {
+    "id": "stf-prorroga-suspensao-sancoes-riscos-psicossociais-nr1",
+    "title": "STF prorroga suspensão de sanções sobre riscos da NR-1",
+    "category": "legislacao-nr",
+    "category_label": "NR",
+    "excerpt": "STF prorroga por 90 dias a suspensão de multas ligadas aos riscos psicossociais da NR-1 e mantém discussão sobre critérios para empresas.",
+    "image": "https://images.unsplash.com/photo-1618771623063-6c3faa854a61?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-28",
+    "updatedAt": "2026-09-28",
+    "tags": []
+  },
+  {
+    "id": "como-organizar-ferias-coletivas-fim-ano",
+    "title": "Como organizar férias coletivas sem erros no fim do ano",
+    "category": "orientacoes-praticas",
+    "category_label": "Outros RH",
+    "excerpt": "Veja como planejar férias coletivas, definir os empregados abrangidos, cumprir prazos legais e organizar pagamentos antes da paralisação.",
+    "image": "https://images.unsplash.com/photo-1542391085-dd1c64a52bd5?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-28",
+    "updatedAt": "2026-09-28",
+    "tags": []
+  },
+  {
+    "id": "tema-060-tst-ausencia-registro-ctps-dano-moral",
+    "title": "Tema 060 do TST: falta de registro na CTPS gera dano moral?",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "TST define que falta de registro na CTPS não gera dano moral automático e exige prova de constrangimento ou prejuízo ao patrimônio imaterial.",
+    "image": "https://www.tst.jus.br/documents/10157/2374827/Fachada+Justi%C3%A7a+Social+%282%29.png/e1e1804a-7e25-ec10-3e83-9447d17b0b02?t=1743067268097",
+    "imageCaption": "Fonte: TST",
+    "date": "2026-09-28",
+    "updatedAt": "2026-09-28",
+    "tags": []
+  },
+  {
     "id": "inss-prorroga-365-dias-auxilio-sem-pericia",
     "title": "INSS prorroga por 365 dias auxílio sem perícia",
     "category": "legislacao-previdenciario",
