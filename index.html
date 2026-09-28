@@ -109,6 +109,31 @@
 </noscript>
 </head>
 <body>
+<!-- ══════════ SPLASH (só aparece quando o app é aberto instalado — modo
+     standalone; em aba de navegador normal fica escondido, sem flash) ══════════ -->
+<div id="pwa-splash" style="display:none;position:fixed;inset:0;z-index:99999;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 30%, #0D2154 0%, #0A1628 70%);">
+  <img src="/icon-192.png" width="120" height="120" style="width:120px;height:120px;border-radius:27px;box-shadow:0 12px 40px rgba(0,0,0,.4);" alt="">
+  <div style="margin-top:18px;font-family:'Outfit',system-ui,-apple-system,sans-serif;font-weight:800;font-size:30px;color:#fff;letter-spacing:-0.3px;">Calcula Prazo</div>
+  <div style="margin-top:4px;font-family:system-ui,-apple-system,sans-serif;font-weight:600;font-size:15px;color:#60A5FA;">calculaprazo.com.br</div>
+</div>
+<script>
+(function () {
+  var standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  if (!standalone) return;
+  var el = document.getElementById('pwa-splash');
+  el.style.display = 'flex';
+  function esconder() {
+    el.style.transition = 'opacity .35s ease';
+    el.style.opacity = '0';
+    setTimeout(function () { el.remove(); }, 400);
+  }
+  if (document.readyState === 'complete') {
+    setTimeout(esconder, 500);
+  } else {
+    window.addEventListener('load', function () { setTimeout(esconder, 500); });
+  }
+})();
+</script>
 <a class="skip-link" href="#main-content">Pular para o conteúdo principal</a>
 <noscript><p style="background:#FEF3C7;color:#92400E;padding:12px 20px;margin:0;text-align:center;font-size:.9rem;">⚠️ Este site usa JavaScript. Ative-o para usar as ferramentas.</p></noscript>
 
