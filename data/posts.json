@@ -1,5 +1,41 @@
 [
   {
+    "id": "empresa-demite-trabalhador-surdo-sem-libras",
+    "title": "Empresa é condenada por demitir trabalhador surdo sem Libras",
+    "category": "jurisprudencia-trts",
+    "category_label": "TRT",
+    "excerpt": "TRT-MG anulou pedido de demissão de trabalhador surdo e condenou empresa a pagar R$ 30 mil por danos morais e verbas rescisórias.",
+    "image": "https://plus.unsplash.com/premium_photo-1707146618442-b6c9bda49947?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-30",
+    "updatedAt": "2026-09-30",
+    "tags": []
+  },
+  {
+    "id": "tema-39-do-tst-regras-para-prescrio-intercorrente-trabalhista",
+    "title": "Tema 39 do TST: regras para prescrição intercorrente trabalhista",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "TST define quando a prescrição intercorrente pode extinguir a execução trabalhista e exige ordem judicial específica e intimação pessoal do credor.",
+    "image": "https://plus.unsplash.com/premium_photo-1661542759930-9cf315dae451?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-30",
+    "updatedAt": "2026-09-30",
+    "tags": []
+  },
+  {
+    "id": "tema-063-tst-intervalo-15-minutos-mulher",
+    "title": "Tema 063 do TST: intervalo de 15 minutos para mulheres",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "TST define que a falta do intervalo do art. 384 da CLT gera 15 minutos extras antes da Reforma, sem exigir tempo mínimo de sobrejornada.",
+    "image": "https://images.unsplash.com/photo-1553028826-f4804a6dba3b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-09-30",
+    "updatedAt": "2026-09-30",
+    "tags": []
+  },
+  {
     "id": "tema-27-do-tst-tribunal-reconhece-atuao-sindical-em-ao-de-um-trabalhador",
     "title": "Tema 27 do TST: Tribunal reconhece atuação sindical em ação de um trabalhador",
     "category": "processual-pratica",
