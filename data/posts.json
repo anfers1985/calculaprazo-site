@@ -1,5 +1,41 @@
 [
   {
+    "id": "justica-rejeita-vinculo-multa-ma-fe-processual",
+    "title": "Justiça rejeita vínculo e aplica multa por má-fé processual",
+    "category": "jurisprudencia-trts",
+    "category_label": "TRT",
+    "excerpt": "Justiça do Trabalho rejeitou vínculo de emprego e aplicou multa a importadora que negou relação comercial comprovada entre empresas no processo.",
+    "image": "https://images.unsplash.com/photo-1580053852056-f3992ab1e5e5?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-01",
+    "updatedAt": "2026-10-01",
+    "tags": []
+  },
+  {
+    "id": "13-salario-2026-prazos-calculo-regras-pagamento",
+    "title": "13º salário 2026: prazos, cálculo e regras do pagamento",
+    "category": "rh-salario",
+    "category_label": "Salário",
+    "excerpt": "Veja os prazos do 13º salário em 2026, como calcular o benefício, regras para adiantamento nas férias, afastamentos, médias e pagamento proporcional.",
+    "image": "https://images.unsplash.com/photo-1646324554833-f0b6a479fa5d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-01",
+    "updatedAt": "2026-10-01",
+    "tags": []
+  },
+  {
+    "id": "tema-065-tst-estorno-comissoes-inadimplencia-cliente",
+    "title": "Tema 065 do TST: estorno de comissões por inadimplência",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "TST define que inadimplência ou cancelamento da compra pelo cliente não permite ao empregador estornar comissões já devidas ao empregado.",
+    "image": "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-01",
+    "updatedAt": "2026-10-01",
+    "tags": []
+  },
+  {
     "id": "trt2-condenacao-exigencia-teste-gravidez-cruzeiro",
     "title": "Justiça mantém condenação por exigência de teste de gravidez",
     "category": "jurisprudencia-trts",
