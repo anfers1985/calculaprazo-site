@@ -28,62 +28,20 @@ async function main() {
     return;
   }
 
-  // Todos os slugs que já têm job (qualquer data) — usado tanto pros posts de hoje quanto pro backlog.
-  const { data: existentes, error } = await supabase.from('video_jobs').select('post_slug, criado_em');
+  // Slugs que já têm job (qualquer data) — evita criar vídeo duplicado do mesmo post.
+  const { data: existentes, error } = await supabase.from('video_jobs').select('post_slug');
   if (error) throw new Error(error.message);
   const jaTemJob = new Set((existentes || []).map(r => r.post_slug));
 
-  // Prioridade 1: posts publicados HOJE (mais antigos primeiro, como antes).
-  const deHoje = posts
+  // SÓ posts publicados HOJE (mais antigos primeiro). Não há backlog: se hoje saírem menos
+  // artigos do que o limite diário, sai menos vídeo — conteúdo antigo/desatualizado não entra.
+  const escolhidos = posts
     .filter(p => dataDe(p) >= inicioDoDia.getTime() && !jaTemJob.has(idDe(p)))
-    .sort((a, b) => dataDe(a) - dataDe(b));
-
-  const escolhidos = deHoje.slice(0, vagasRestantes);
-
-  // Prioridade 2 (NOVO): se sobrou vaga, completa com o backlog (posts antigos sem vídeo).
-  // Antes, sem post novo no dia, o pipeline ficava parado mesmo com ~970 posts no blog.
-  // Pra não gerar vídeos repetitivos, o backlog é escolhido em rodízio de CATEGORIA:
-  // no máximo 1 vídeo por categoria no dia, começando pelas categorias menos usadas
-  // nos últimos 14 dias; dentro da categoria, o post mais recente primeiro.
-  let faltam = vagasRestantes - escolhidos.length;
-  if (faltam > 0) {
-    const catDe = Object.fromEntries(posts.map(p => [idDe(p), p.category || 'geral']));
-    const limite14d = Date.now() - 14 * 24 * 3600 * 1000;
-    const usoRecente = {};
-    for (const r of existentes || []) {
-      if (new Date(r.criado_em).getTime() >= limite14d) {
-        const c = catDe[r.post_slug] || 'geral';
-        usoRecente[c] = (usoRecente[c] || 0) + 1;
-      }
-    }
-    const jaEscolhidos = new Set(escolhidos.map(idDe));
-    const catsDoDia = new Set(escolhidos.map(p => p.category || 'geral'));
-
-    const porCategoria = {};
-    posts
-      .filter(p => !jaTemJob.has(idDe(p)) && !jaEscolhidos.has(idDe(p)))
-      .sort((a, b) => dataDe(b) - dataDe(a))
-      .forEach(p => { (porCategoria[p.category || 'geral'] ||= []).push(p); });
-
-    const categorias = Object.keys(porCategoria)
-      .filter(c => !catsDoDia.has(c))
-      .sort((a, b) => (usoRecente[a] || 0) - (usoRecente[b] || 0) || Math.random() - 0.5);
-
-    for (const c of categorias) {
-      if (faltam <= 0) break;
-      escolhidos.push(porCategoria[c][0]);
-      faltam--;
-    }
-    // Se há menos categorias do que vagas, completa sem a regra de 1 por categoria.
-    if (faltam > 0) {
-      const restantes = categorias.flatMap(c => porCategoria[c].slice(1))
-        .sort((a, b) => dataDe(b) - dataDe(a));
-      escolhidos.push(...restantes.slice(0, faltam));
-    }
-  }
+    .sort((a, b) => dataDe(a) - dataDe(b))
+    .slice(0, vagasRestantes);
 
   if (escolhidos.length === 0) {
-    console.log('Nenhum post elegível (todos já têm vídeo).');
+    console.log('Nenhum post de hoje sem vídeo. Nada a fazer.');
     return;
   }
 
