@@ -1447,9 +1447,9 @@ function buildFreshSidebarHTML(currentPostId, allPosts) {
   };
 
   return `<aside class="post-sidebar" data-current-slug="${currentPostId || ''}">`
-    + '<div class="sidebar-card"><h3>🔥 Mais Acessados</h3><div class="sidebar-list" id="mais-acessados-list">' + buildSidebarItemsHTML(top5, true) + '</div></div>'
+    + '<div class="sidebar-card"><h3><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-mais-acessados"/></svg></span>Mais Acessados</h3><div class="sidebar-list" id="mais-acessados-list">' + buildSidebarItemsHTML(top5, true) + '</div></div>'
     + adCard('300x250_1')
-    + '<div class="sidebar-card"><h3>🆕 Últimos Conteúdos</h3><div class="sidebar-list" id="ultimos-conteudos-list">' + buildSidebarItemsHTML(latest5, false) + '</div></div>'
+    + '<div class="sidebar-card"><h3><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-ultimos-conteudos"/></svg></span>Últimos Conteúdos</h3><div class="sidebar-list" id="ultimos-conteudos-list">' + buildSidebarItemsHTML(latest5, false) + '</div></div>'
     + adCard('300x250_2')
     + '</aside>';
 }
