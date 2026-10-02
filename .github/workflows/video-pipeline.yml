@@ -26,6 +26,7 @@ jobs:
       - run: npm install @supabase/supabase-js
       - run: node scripts/01-detectar-post.mjs
         env:
+          VIDEOS_POR_DIA: '5'   # meta diária de vídeos (posts de hoje primeiro, depois backlog com rodízio de categoria)
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
 
@@ -126,7 +127,7 @@ jobs:
         run: chmod -R +x remotion/node_modules/.bin
 
       - name: Instalar dependências Python
-        run: pip install edge-tts pydub supabase requests
+        run: pip install edge-tts pydub supabase requests num2words
 
       - name: Instalar ffmpeg e Tesseract OCR
         run: sudo apt-get update && sudo apt-get install -y ffmpeg tesseract-ocr tesseract-ocr-por

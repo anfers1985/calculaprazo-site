@@ -53,29 +53,79 @@ OUTPUT_DIR = Path("output/audio")
 # esse corte, esses valores se somavam ao silêncio nativo e o áudio saía bem mais pausado
 # do que o configurado (medido: 1,2 a 2,9s reais contra 380/550ms configurados).
 PAUSA_PONTO_FINAL = 260   # depois de "." "!" "?"
-PAUSA_VIRGULA = 110       # depois de ","
+PAUSA_INTERROGACAO = 420  # depois de "?" — respiro maior pra pergunta "assentar"
 PAUSA_ENTRE_CENAS = 380   # respiro extra no fim de cada cena
 
 # Variação de ritmo por posição da cena, em % de velocidade pro parâmetro
 # `rate` do edge-tts (ex: "+4%" fala mais rápido, "-6%" mais devagar).
-RATE_GANCHO = "+4%"
+RATE_GANCHO = "+0%"
 RATE_CTA = "-6%"
 RATE_PADRAO = "+0%"
 
 _SPLIT_FRASES = re.compile(r"(?<=[.!?])\s+")
-_SPLIT_VIRGULA = re.compile(r",\s*")
+
+# Siglas que o TTS costuma ler soletrando de forma estranha ou errada.
+PRONUNCIAS = {
+    "TST": "Tribunal Superior do Trabalho",
+    "TRT": "Tribunal Regional do Trabalho",
+    "FGTS": "éfe gê tê ésse",
+    "INSS": "í ene ésse ésse",
+    "CLT": "cê éle tê",
+    "CCT": "Convenção Coletiva de Trabalho",
+    "ACT": "Acordo Coletivo de Trabalho",
+    "MTE": "Ministério do Trabalho e Emprego",
+}
+
+
+def normalizar_texto_fala(texto: str) -> str:
+    """Rede de segurança: se o roteiro vier com dígitos/R$/%/ª/º apesar do prompt,
+    converte pra extenso em pt-BR e ajusta siglas que o TTS lê errado."""
+    try:
+        from num2words import num2words
+    except ImportError:
+        num2words = None
+
+    t = texto
+    t = re.sub(r"R\$\s*(\d+(?:\.\d{3})*),(\d{2})", lambda m: f"{m.group(1)} reais e {m.group(2)} centavos", t)
+    t = re.sub(r"R\$\s*(\d+(?:\.\d{3})*)", lambda m: f"{m.group(1)} reais", t)
+    t = re.sub(r"\b13\s*[ºª°]?\s*(?=sal[áa]rio)", "décimo terceiro ", t, flags=re.I)
+    t = re.sub(r"(\d+)\s*%", r"\1 por cento", t)
+    t = re.sub(r"(\d+)\s*[ºª]", r"\1", t)
+    if num2words:
+        def _num(m):
+            bruto = m.group(0).replace(".", "")
+            try:
+                return num2words(int(bruto), lang="pt_BR")
+            except Exception:
+                return m.group(0)
+        t = re.sub(r"\d+(?:\.\d{3})*", _num, t)
+    for sigla, falado in PRONUNCIAS.items():
+        t = re.sub(rf"\b{sigla}\b", falado, t)
+    return re.sub(r"\s+", " ", t).strip()
 
 
 def dividir_em_trechos(texto: str):
-    """Divide o texto da cena em (trecho, pausa_depois_em_ms), respeitando pontuação."""
+    """Divide a cena em frases COMPLETAS (terminadas em . ! ?).
+
+    CORREÇÃO da entonação de interrogação: antes cada frase era quebrada também nas
+    vírgulas e cada pedaço virava uma chamada separada ao TTS. O trecho final (que
+    carrega o '?') chegava ao motor como um fragmento solto, sem o contexto da pergunta,
+    e a voz lia com entonação de afirmação. Agora a frase inteira vai de uma vez — a vírgula
+    continua dentro do texto e o próprio motor faz a pausa/curva melódica certa, e o '?' final
+    muda a entonação de verdade. A pausa entre frases continua sendo controlada aqui.
+    """
     trechos = []
-    frases = [f.strip() for f in _SPLIT_FRASES.split(texto.strip()) if f.strip()]
+    frases = [f.strip() for f in _SPLIT_FRASES.split(normalizar_texto_fala(texto)) if f.strip()]
     for frase in frases:
-        partes_virgula = [p.strip() for p in _SPLIT_VIRGULA.split(frase) if p.strip()]
-        for idx, parte in enumerate(partes_virgula):
-            ultima_da_frase = idx == len(partes_virgula) - 1
-            pausa = PAUSA_PONTO_FINAL if ultima_da_frase else PAUSA_VIRGULA
-            trechos.append((parte, pausa))
+        if frase[-1] not in ".!?":
+            frase += "."
+        if frase.endswith("?"):
+            pausa = PAUSA_INTERROGACAO
+        elif frase.endswith("!"):
+            pausa = PAUSA_PONTO_FINAL
+        else:
+            pausa = PAUSA_PONTO_FINAL
+        trechos.append((frase, pausa))
     return trechos
 
 
