@@ -92,13 +92,13 @@ function formatPostDate(d){
 }
 
 var BLOG_CAT_META={
-  'jurisprudencia':   {icon:'⚖️', name:'Jurisprudência',    desc:'Decisões e entendimentos dos tribunais que impactam o Direito do Trabalho.'},
-  'orgaos-publicos':  {icon:'🏛️', name:'Órgãos Públicos',   desc:'Normas, atos e posicionamentos do MTE, MPT e demais órgãos públicos.'},
-  'legislacao-normas':{icon:'📋', name:'Legislação e Normas',desc:'CLT, eSocial, FGTS Digital, portarias e normas regulamentadoras.'},
-  'rh-gestao':        {icon:'👥', name:'RH e Gestão',        desc:'Folha de pagamento, rescisão, jornada e rotinas do departamento pessoal.'},
-  'processual':       {icon:'📄', name:'Processual',         desc:'Ações, prazos, petições e prática no processo do trabalho.'},
-  'essenciais':       {icon:'⭐', name:'Essenciais',         desc:'Guias, modelos e checklists indispensáveis no dia a dia.'},
-  'outros':           {icon:'🔧', name:'Outros',             desc:'Diversos temas relacionados ao Direito do Trabalho.'}
+  'jurisprudencia':   {icon:'jurisprudencia', name:'Jurisprudência',    desc:'Decisões e entendimentos dos tribunais que impactam o Direito do Trabalho.'},
+  'orgaos-publicos':  {icon:'orgaos-publicos', name:'Órgãos Públicos',   desc:'Normas, atos e posicionamentos do MTE, MPT e demais órgãos públicos.'},
+  'legislacao-normas':{icon:'legislacao', name:'Legislação e Normas',desc:'CLT, eSocial, FGTS Digital, portarias e normas regulamentadoras.'},
+  'rh-gestao':        {icon:'rh', name:'RH e Gestão',        desc:'Folha de pagamento, rescisão, jornada e rotinas do departamento pessoal.'},
+  'processual':       {icon:'processual', name:'Processual',         desc:'Ações, prazos, petições e prática no processo do trabalho.'},
+  'essenciais':       {icon:'essenciais', name:'Essenciais',         desc:'Guias, modelos e checklists indispensáveis no dia a dia.'},
+  'outros':           {icon:'outros', name:'Outros',             desc:'Diversos temas relacionados ao Direito do Trabalho.'}
 };
 
 // ── MAPA seção → categorias ──────────────────────────────────
@@ -117,7 +117,7 @@ var BLOG_SUBSEC_MAP={
   'legislacao-normas': [['legislacao-clt','CLT'],['legislacao-cf','Constituição Federal'],['esocial','eSocial'],['fgts-digital','FGTS'],['legislacao-previdenciario','Previdenciário'],['legislacao-sindical','Sindical'],['legislacao-portarias','Portarias'],['legislacao-nr','NR'],['legislacao-normas','+ outras Legislação']],
   'rh-gestao':         [['rh-folha','Folha de Pagamento'],['rh-jornada','Jornada de Trabalho'],['rh-contrato','Contrato de Trabalho'],['rh-salario','Salário'],['rh-rescisao','Rescisão Contratual'],['saude-seguranca','Saúde e Segurança'],['rh-beneficios','Benefícios'],['rh-ctps','CTPS'],['rh-sindical','Rel. Sindical'],['rh-fiscalizacao','Fiscalização'],['rh-inss','INSS'],['rh-modelos','Modelos'],['orientacoes-praticas','+ outros temas de RH']],
   'processual':        [['processual-peticoes','Petições e Peças'],['processual-pratica','Prática Advocatícia'],['modelos','Modelos'],['artigos','Artigos'],['processual-analises','Análises'],['processual-sumulas-tst','Súmulas TST Comentadas'],['processual-outros','+ outros temas']],
-  'essenciais':        [['essenciais-livros','📚 Livros'],['essenciais-equipamentos','🖥️ Equipamentos'],['essenciais-cursos','🎓 Cursos'],['essenciais-outros','📦 Outros']]
+  'essenciais':        [['essenciais-livros','<span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-livros"/></svg></span>Livros'],['essenciais-equipamentos','<span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-equipamentos"/></svg></span>Equipamentos'],['essenciais-cursos','<span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-cursos"/></svg></span>Cursos'],['essenciais-outros','<span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-outros-submenu"/></svg></span>Outros']]
 };
 var BLOG_CUR_SEC='';// seção activa
 
@@ -141,7 +141,7 @@ function filterBlogSection(sec,btn){
   var ch=document.getElementById('blog-cat-header');
   if(ch&&meta){
     document.getElementById('blog-cat-header-crumb').textContent=meta.name;
-    document.getElementById('blog-cat-header-icon').textContent=meta.icon;
+    document.getElementById('blog-cat-header-icon').innerHTML='<svg class="ic-svg" viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-'+meta.icon+'"/></svg>';
     document.getElementById('blog-cat-header-title').textContent=meta.name;
     document.getElementById('blog-cat-header-desc').textContent=meta.desc;
     ch.style.display='block';

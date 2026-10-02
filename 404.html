@@ -41,7 +41,7 @@ p{font-size:.95rem;color:var(--m);margin-bottom:32px;line-height:1.7;}
 .links{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px;}
 .link-card{background:var(--card);border:1.5px solid var(--brd);border-radius:12px;padding:14px 16px;text-decoration:none;display:flex;align-items:center;gap:10px;transition:all .15s;}
 .link-card:hover{border-color:var(--acc);background:var(--acc-l);}
-.lc-ic{font-size:1.2rem;flex-shrink:0;}
+.lc-ic{font-size:1.2rem;flex-shrink:0;color:var(--txt);display:flex;align-items:center;}
 .lc-t{font-size:.85rem;font-weight:700;color:var(--txt);}
 .lc-d{font-size:.73rem;color:var(--s);}
 .btn-home{display:inline-flex;align-items:center;gap:6px;background:var(--acc);color:#fff;border-radius:10px;padding:12px 24px;font-size:.9rem;font-weight:700;text-decoration:none;transition:all .2s;}
@@ -52,6 +52,18 @@ p{font-size:.95rem;color:var(--m);margin-bottom:32px;line-height:1.7;}
 .hdr-doacao{font-size:.78rem;font-weight:600;color:var(--txt-m);cursor:pointer;padding:5px 8px;border-radius:8px;white-space:nowrap;}
 
 .hdr-doacao:hover{background:var(--b50);color:var(--acc);}
+/* ═ Ícones novos — linha fina, cor herdada (currentColor). Tamanho = 1.25em = largura do emoji que substituem ═ */
+.inline-ic{display:inline-flex;align-items:center;justify-content:center;width:1.25em;height:1.25em;vertical-align:-.25em;margin-right:.3em;flex-shrink:0;line-height:1;}
+.inline-ic svg{width:100%;height:100%;display:block;overflow:visible;}
+.ic-svg{width:1.25em;height:1.25em;display:block;flex-shrink:0;overflow:visible;}
+.nav-drop-menu a .dm-icon .ic-svg{margin:0 auto;}
+.nh-strip-head .inline-ic{margin-right:0;}
+.nh-quick-icon{color:#fff;}
+.ci-icon,.tc-icon,.trc-icon,.cec-ic{color:var(--txt);}
+.nh-pill .inline-ic,.ctab .inline-ic{margin-right:.3em;}
+#ferramentas-menu a:not(.nm-sub),#conteudo-menu a:not(.nm-sub){min-height:46px;}
+.hdr-nav > a[href="/"] .inline-ic{margin-right:0;}
+
 </style>
 </head>
 <body>
@@ -70,27 +82,27 @@ p{font-size:.95rem;color:var(--m);margin-bottom:32px;line-height:1.7;}
 
     <div class="links">
       <a class="link-card" href="/calculadora-de-prazo-processual">
-        <span class="lc-ic">⏱️</span>
+        <span class="lc-ic"><svg class="ic-svg" viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-processual"/></svg></span>
         <div><div class="lc-t">Prazos Processuais</div><div class="lc-d">CPC/2015 · CLT · dias úteis</div></div>
       </a>
       <a class="link-card" href="/calculadora-verbas-trabalhistas">
-        <span class="lc-ic">💼</span>
+        <span class="lc-ic"><svg class="ic-svg" viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-verbas-trabalhistas"/></svg></span>
         <div><div class="lc-t">Verbas Rescisórias</div><div class="lc-d">FGTS · férias · aviso prévio</div></div>
       </a>
       <a class="link-card" href="/correcao-monetaria">
-        <span class="lc-ic">📈</span>
+        <span class="lc-ic"><svg class="ic-svg" viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-correcao-monetaria"/></svg></span>
         <div><div class="lc-t">Correção Monetária</div><div class="lc-d">IPCA · SELIC · IGP-M · BCB</div></div>
       </a>
       <a class="link-card" href="/calculadora-salario-liquido">
-        <span class="lc-ic">💵</span>
+        <span class="lc-ic"><svg class="ic-svg" viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-salario-liquido"/></svg></span>
         <div><div class="lc-t">Salário Líquido 2026</div><div class="lc-d">INSS · IRRF Lei 15.270/2025</div></div>
       </a>
       <a class="link-card" href="/conteudo">
-        <span class="lc-ic">📰</span>
+        <span class="lc-ic"><svg class="ic-svg" viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-artigos"/></svg></span>
         <div><div class="lc-t">Conteúdo Jurídico</div><div class="lc-d">TST · TRTs · MTE · eSocial</div></div>
       </a>
       <a class="link-card" href="/sobre">
-        <span class="lc-ic">ℹ️</span>
+        <span class="lc-ic"><svg class="ic-svg" viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-sobre"/></svg></span>
         <div><div class="lc-t">Sobre o Calcula Prazo</div><div class="lc-d">Quem somos · OAB/SC 44.858</div></div>
       </a>
     </div>
@@ -118,9 +130,9 @@ p{font-size:.95rem;color:var(--m);margin-bottom:32px;line-height:1.7;}
 </footer>
 <div id="modal-doacao" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this)this.style.display='none'">
     <div style="background:#fff;border-radius:var(--rx);padding:36px;max-width:480px;width:100%;box-shadow:var(--shxl);position:relative;">
-    <button onclick="document.getElementById('modal-doacao').style.display='none'" style="position:absolute;top:16px;right:16px;background:var(--bg);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--txt-s);">✕</button>
+    <button onclick="document.getElementById('modal-doacao').style.display='none'" style="position:absolute;top:16px;right:16px;background:var(--bg);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--txt-s);"><svg class="ic-svg" viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-fechar"/></svg></button>
     <div style="text-align:center;margin-bottom:20px;">
-      <div style="font-size:2.5rem;margin-bottom:8px;">☕</div>
+      <div style="font-size:2.5rem;margin-bottom:8px;color:var(--acc);"><svg class="ic-svg" style="width:1.1em;height:1.1em;margin:0 auto" viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-doacao-cafe"/></svg></div>
       <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:6px;">Apoie o Calcula Prazo</h2>
       <p style="font-size:.88rem;color:var(--txt-m);line-height:1.6;">Este site é 100% gratuito e feito com dedicação. Se ele te ajudou, considere contribuir com qualquer valor para mantê-lo no ar e em constante melhoria.</p>
     </div>
@@ -134,21 +146,22 @@ p{font-size:.95rem;color:var(--m);margin-bottom:32px;line-height:1.7;}
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
       <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd);border-radius:var(--r);cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''">
-        <div style="font-size:.85rem;font-weight:800;color:var(--acc);">R$ 1</div><div style="font-size:.68rem;color:var(--txt-s);">🤝 Simbólico</div>
+        <div style="font-size:.85rem;font-weight:800;color:var(--acc);">R$ 1</div><div style="font-size:.68rem;color:var(--txt-s);"><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-doacao-simbolico"/></svg></span>Simbólico</div>
       </div>
       <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd);border-radius:var(--r);cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''">
-        <div style="font-size:.85rem;font-weight:800;color:var(--acc);">R$ 5</div><div style="font-size:.68rem;color:var(--txt-s);">☕ Um café</div>
+        <div style="font-size:.85rem;font-weight:800;color:var(--acc);">R$ 5</div><div style="font-size:.68rem;color:var(--txt-s);"><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-doacao-cafe"/></svg></span>Um café</div>
       </div>
       <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd);border-radius:var(--r);cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''">
-        <div style="font-size:.85rem;font-weight:800;color:var(--acc);">R$ 15</div><div style="font-size:.68rem;color:var(--txt-s);">⭐ Apoiador</div>
+        <div style="font-size:.85rem;font-weight:800;color:var(--acc);">R$ 15</div><div style="font-size:.68rem;color:var(--txt-s);"><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-doacao-apoiador"/></svg></span>Apoiador</div>
       </div>
       <div style="text-align:center;padding:12px 6px;border:1.5px solid var(--brd);border-radius:var(--r);cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='var(--acc)';this.style.background='var(--b50)'" onmouseout="this.style.borderColor='var(--brd)';this.style.background=''">
-        <div style="font-size:.85rem;font-weight:800;color:var(--acc);">R$ 30</div><div style="font-size:.68rem;color:var(--txt-s);">🚀 Apoiador</div>
+        <div style="font-size:.85rem;font-weight:800;color:var(--acc);">R$ 30</div><div style="font-size:.68rem;color:var(--txt-s);"><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-doacao-apoiador-plus"/></svg></span>Apoiador</div>
       </div>
     </div>
       <p style="text-align:center;font-size:.8rem;color:var(--txt-s);">A partir de R$ 1 — qualquer valor faz diferença. Obrigado!</p>
   </div>
 </div>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6e5715de2d20415d90b9904cb3475c40"}'></script>
+<script src="/js/icon-sprite-loader.js?v=4"></script>
 </body>
 </html>

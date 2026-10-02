@@ -2170,3 +2170,15 @@ img[src*="m.media-amazon.com"] {
   .ssm-topbar-brand img{border-radius:6px;flex-shrink:0;}
   #site-search-close-top{background:none;border:none;color:var(--txt-m);cursor:pointer;font-size:1.1rem;padding:4px 6px;}
 }
+
+/* ═ Ícones novos — linha fina, cor herdada (currentColor). Tamanho = 1.25em = largura do emoji que substituem ═ */
+.inline-ic{display:inline-flex;align-items:center;justify-content:center;width:1.25em;height:1.25em;vertical-align:-.25em;margin-right:.3em;flex-shrink:0;line-height:1;}
+.inline-ic svg{width:100%;height:100%;display:block;overflow:visible;}
+.ic-svg{width:1.25em;height:1.25em;display:block;flex-shrink:0;overflow:visible;}
+.nav-drop-menu a .dm-icon .ic-svg{margin:0 auto;}
+.nh-strip-head .inline-ic{margin-right:0;}
+.nh-quick-icon{color:#fff;}
+.ci-icon,.tc-icon,.trc-icon,.cec-ic{color:var(--txt);}
+.nh-pill .inline-ic,.ctab .inline-ic{margin-right:.3em;}
+#ferramentas-menu a:not(.nm-sub),#conteudo-menu a:not(.nm-sub){min-height:46px;}
+.hdr-nav > a[href="/"] .inline-ic{margin-right:0;}
