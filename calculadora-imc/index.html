@@ -278,7 +278,7 @@
   <div class="container" style="max-width:900px;">
          <div style="display:flex;flex-direction:column;gap:18px;">
       <div class="card">
-        <h2><span aria-hidden="true">🏃</span> Calcular IMC</h2>
+        <h2><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-imc"/></svg></span>Calcular IMC</h2>
         <p class="sub">Informe peso e altura para calcular seu IMC</p>
         <div class="fg-row">
           <div class="fg"><label>Peso (kg)</label><div class="sfx"><input type="number" id="imc-peso" aria-label="Peso em quilogramas" placeholder="70" min="1" step="0.1"><span class="sfx-s">kg</span></div></div>
@@ -290,7 +290,7 @@
       <!-- Resultado abaixo do formulário -->
       <div id="imc-res" aria-live="polite" aria-atomic="true" style="display:none;"><div class="print-letterhead"><div class="print-letterhead-name">Calcula Prazo — Calculadora de IMC</div><div class="print-letterhead-date">Gerado em <span class="print-date"></span> · calculaprazo.com.br</div></div>
         <div class="card">
-          <h2>📊 Resultado</h2>
+          <h2><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-admin-dashboard"/></svg></span>Resultado</h2>
           <div class="ri-grid">
             <div class="ri span2"><div class="ri-lbl">Seu IMC</div><div class="ri-val" id="imc-val" style="font-size:2rem;">—</div></div>
             <div class="ri"><div class="ri-lbl">Classificação</div><div class="ri-val" id="imc-class" style="font-size:1rem;">—</div></div>
@@ -306,7 +306,7 @@
 
       <!-- Tabela de classificação -->
       <div class="card-sm">
-        <h3 style="font-size:.9rem;font-weight:700;margin-bottom:12px;">📊 Classificação OMS</h3>
+        <h3 style="font-size:.9rem;font-weight:700;margin-bottom:12px;"><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-admin-dashboard"/></svg></span>Classificação OMS</h3>
         <table style="width:100%;border-collapse:collapse;font-size:.82rem;">
           <tr style="background:var(--b900);color:#fff;"><th style="padding:8px 10px;text-align:left;">IMC</th><th style="padding:8px 10px;text-align:left;">Classificação</th></tr>
           <tr><td style="padding:7px 10px;border-bottom:1px solid var(--brd);">Abaixo de 18,5</td><td style="padding:7px 10px;border-bottom:1px solid var(--brd);color:#3B82F6;">Abaixo do peso</td></tr>
@@ -421,7 +421,7 @@
      JAVASCRIPT
 ══════════════════════════════════════ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/app.min.js?v=13" defer></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/app.min.js?v=14" defer></script>
 
 <!-- ══════════ COOKIE BANNER ══════════ -->
 <div id="cookie-banner">
@@ -610,6 +610,6 @@ if (window.innerWidth > 767) {
   document.body.appendChild(s);
 }
 </script>
-<script src="/js/icon-sprite-loader.js?v=4"></script>
+<script src="/js/icon-sprite-loader.js?v=5"></script>
 </body>
 </html>

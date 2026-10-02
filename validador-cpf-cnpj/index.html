@@ -279,7 +279,7 @@
        <div class="inner-2col" style="align-items:start;">
     <div style="display:flex;flex-direction:column;gap:18px;">
       <div class="card">
-        <h2><span aria-hidden="true">🪪</span> Validar CPF</h2>
+        <h2><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-cpf-cnpj"/></svg></span>Validar CPF</h2>
         <p class="sub">11 dígitos — com ou sem pontuação</p>
         <div class="big-input"><input type="text" id="cpf-in" aria-label="Número de CPF" placeholder="000.000.000-00" maxlength="14" autocomplete="off" oninput="validCPF()"></div>
         <div class="vr" id="cpf-vr">
@@ -292,11 +292,11 @@
           <button class="btn btn-g btn-sm" onclick="fmtCPF()">Formatar</button>
           <button class="btn btn-g btn-sm" onclick="clearV('cpf-in','cpf-vr')">Limpar</button>
           <button class="btn btn-s btn-sm" onclick="gerarCPF()">Gerar de teste</button>
-          <button class="btn btn-s btn-sm btn-print" onclick="window.print()">🖨️ Imprimir / PDF</button>
+          <button class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg class="ic-svg" viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-imprimir"/></svg>Imprimir / PDF</button>
         </div>
       </div>
       <div class="card">
-        <h2><span aria-hidden="true">🏢</span> Validar CNPJ</h2>
+        <h2><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-cpf-cnpj"/></svg></span>Validar CNPJ</h2>
         <p class="sub">14 dígitos — com ou sem pontuação</p>
         <div class="big-input"><input type="text" id="cnpj-in" aria-label="Número de CNPJ" placeholder="00.000.000/0000-00" maxlength="18" autocomplete="off" oninput="validCNPJ()"></div>
         <div class="vr" id="cnpj-vr">
@@ -309,19 +309,19 @@
           <button class="btn btn-g btn-sm" onclick="fmtCNPJ()">Formatar</button>
           <button class="btn btn-g btn-sm" onclick="clearV('cnpj-in','cnpj-vr')">Limpar</button>
           <button class="btn btn-s btn-sm" onclick="gerarCNPJ()">Gerar de teste</button>
-          <button class="btn btn-s btn-sm btn-print" onclick="window.print()">🖨️ Imprimir / PDF</button>
+          <button class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg class="ic-svg" viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-imprimir"/></svg>Imprimir / PDF</button>
         </div>
       </div>
       <div style="text-align:center;"><span class="calc-count" id="cc-valid"></span></div>
         </div>
     <div class="card-sm" style="position:sticky;top:76px;">
-      <h3 style="font-size:.9rem;font-weight:700;margin-bottom:12px;">🔬 Como funciona</h3>
+      <h3 style="font-size:.9rem;font-weight:700;margin-bottom:12px;"><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-sobre"/></svg></span>Como funciona</h3>
       <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:12px;">
         <div style="display:flex;gap:9px;"><div style="flex-shrink:0;width:22px;height:22px;background:var(--b50);color:var(--acc);border-radius:50%;font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;">1</div><p style="font-size:.82rem;color:var(--txt-m);">Remove não-numéricos e verifica comprimento.</p></div>
         <div style="display:flex;gap:9px;"><div style="flex-shrink:0;width:22px;height:22px;background:var(--b50);color:var(--acc);border-radius:50%;font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;">2</div><p style="font-size:.82rem;color:var(--txt-m);">Rejeita sequências com todos os dígitos iguais.</p></div>
         <div style="display:flex;gap:9px;"><div style="flex-shrink:0;width:22px;height:22px;background:var(--b50);color:var(--acc);border-radius:50%;font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;">3</div><p style="font-size:.82rem;color:var(--txt-m);">Calcula os 2 dígitos verificadores via módulo 11 e compara.</p></div>
       </div>
-      <div style="background:var(--b50);border:1.5px solid var(--b200);border-radius:var(--r);padding:12px;margin-top:14px;font-size:.8rem;color:var(--txt-m);line-height:1.55;"><strong style="color:var(--acc);">⚠</strong> Verifica apenas a estrutura matemática, não a existência na Receita Federal.</div>
+      <div style="background:var(--b50);border:1.5px solid var(--b200);border-radius:var(--r);padding:12px;margin-top:14px;font-size:.8rem;color:var(--txt-m);line-height:1.55;"><strong style="color:var(--acc);"><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-atencao"/></svg></span></strong> Verifica apenas a estrutura matemática, não a existência na Receita Federal.</div>
       <div id="v-gerador-res" aria-live="polite" aria-atomic="true" style="margin-top:14px;display:none;background:var(--bg);border-radius:var(--r);padding:13px;font-family:'Courier New',monospace;font-size:1rem;font-weight:700;color:var(--acc);letter-spacing:.06em;text-align:center;"></div>
     </div>
   </div>
@@ -425,7 +425,7 @@
      JAVASCRIPT
 ══════════════════════════════════════ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/app.min.js?v=13" defer></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/app.min.js?v=14" defer></script>
 
 <!-- ══════════ COOKIE BANNER ══════════ -->
 <div id="cookie-banner">
@@ -614,6 +614,6 @@ if (window.innerWidth > 767) {
   document.body.appendChild(s);
 }
 </script>
-<script src="/js/icon-sprite-loader.js?v=4"></script>
+<script src="/js/icon-sprite-loader.js?v=5"></script>
 </body>
 </html>

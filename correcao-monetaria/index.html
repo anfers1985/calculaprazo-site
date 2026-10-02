@@ -280,7 +280,7 @@
   <div class="ad-container" id="ad-correcao-top" style="min-height:0;">
   <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="5261026571" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div><div style="display:flex;flex-direction:column;gap:18px;"><div class="card"><h2><span aria-hidden="true">💰</span> Correção Monetária</h2>
+</div><div style="display:flex;flex-direction:column;gap:18px;"><div class="card"><h2><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-correcao-monetaria"/></svg></span>Correção Monetária</h2>
       <p class="sub">Dados oficiais em tempo real via API do Banco Central do Brasil — sempre atualizados</p>
       <div class="flbl" style="margin-bottom:7px;">Índice de correção</div>
       <div class="idx-pills">
@@ -295,7 +295,7 @@
       </div>
       <div class="fg"><label>Data de atualização (fim)</label><input type="date" id="corr-fim" aria-label="Data de atualização (fim)" required aria-required="true"></div>
       <p style="font-size:.71rem;color:var(--txt-s);margin-bottom:8px;">
-  📡 Índices buscados em tempo real na API oficial do <strong>Banco Central do Brasil</strong>.
+  <span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-tempo-real"/></svg></span>Índices buscados em tempo real na API oficial do <strong>Banco Central do Brasil</strong>.
   Requer conexão com a internet.
 </p>
 <button class="btn btn-p btn-full" onclick="calcCorrecao()">Atualizar Valor →</button>
@@ -305,8 +305,8 @@
         <div class="res-val" id="corr-res-val"></div>
         <div class="res-det" id="corr-res-det"></div>
       </div>
-      <div class="note-box" id="corr-fallback-note" style="display:none;"><strong>⚠ Dados offline:</strong> Não foi possível buscar os índices em tempo real. O cálculo usou taxas de referência locais. Para valores exatos em processos judiciais, consulte as tabelas oficiais do IBGE/FGV ou sistemas do tribunal.<div class="card-sm">
-        <h3 style="font-size:.9rem;font-weight:700;margin-bottom:12px;">📊 Sobre os índices</h3>
+      <div class="note-box" id="corr-fallback-note" style="display:none;"><strong><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-atencao"/></svg></span>Dados offline:</strong> Não foi possível buscar os índices em tempo real. O cálculo usou taxas de referência locais. Para valores exatos em processos judiciais, consulte as tabelas oficiais do IBGE/FGV ou sistemas do tribunal.<div class="card-sm">
+        <h3 style="font-size:.9rem;font-weight:700;margin-bottom:12px;"><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-admin-dashboard"/></svg></span>Sobre os índices</h3>
         <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:12px;">
           <div style="padding:10px;background:var(--bg);border-radius:var(--r);"><p style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--txt-s);margin-bottom:3px;">IPCA</p><p style="font-size:.81rem;color:var(--txt-m);">Índice de inflação oficial do Brasil (IBGE). Usado em contratos e atualização judicial.</p></div>
           <div style="padding:10px;background:var(--bg);border-radius:var(--r);"><p style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--txt-s);margin-bottom:3px;">IGP-M</p><p style="font-size:.81rem;color:var(--txt-m);">Índice da FGV. Muito usado em contratos de aluguel.</p></div>
@@ -416,7 +416,7 @@
      JAVASCRIPT
 ══════════════════════════════════════ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/app.min.js?v=13" defer></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/app.min.js?v=14" defer></script>
 
 <!-- ══════════ COOKIE BANNER ══════════ -->
 <div id="cookie-banner">
@@ -605,6 +605,6 @@ if (window.innerWidth > 767) {
   document.body.appendChild(s);
 }
 </script>
-<script src="/js/icon-sprite-loader.js?v=4"></script>
+<script src="/js/icon-sprite-loader.js?v=5"></script>
 </body>
 </html>

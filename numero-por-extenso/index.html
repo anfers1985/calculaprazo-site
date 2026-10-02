@@ -277,7 +277,7 @@
 
   <div class="container" style="padding:10px 0 20px;max-width:680px;">
          <div class="card">
-      <h2><span aria-hidden="true">🔢</span> Converter para Extenso</h2>
+      <h2><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-numero-extenso"/></svg></span>Converter para Extenso</h2>
       <p class="sub">Converta números e valores monetários para texto por extenso</p>
       <div class="pill-tabs" id="ext-mode" style="margin-bottom:16px;">
         <button class="ptab on" onclick="extSetMode('num',this)">Número</button>
@@ -285,7 +285,7 @@
       </div>
       <div class="fg"><label id="ext-lbl">Número</label><input type="text" id="ext-val" aria-label="Valor numérico a converter por extenso" inputmode="decimal" placeholder="Ex: 1.234.567,89 ou 1234567.89" autocomplete="off" oninput="calcExtenso()"></div>
       <div id="ext-res" aria-live="polite" aria-atomic="true" class="res-box" style="margin-top:14px;"><div class="res-lbl">Por extenso</div><div style="font-size:1.1rem;font-weight:700;color:var(--txt);line-height:1.5;" id="ext-res-val"></div></div>
-      <button class="btn btn-g" style="margin-top:12px;width:100%;" onclick="cpExt()">📋 Copiar texto</button>
+      <button class="btn btn-g" style="margin-top:12px;width:100%;" onclick="cpExt()"><svg class="ic-svg" viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-copiar"/></svg>Copiar texto</button>
         </div></div>
 
   <span class="calc-count" id="cc-extenso"></span><div class="print-btn-row"><button type="button" class="btn btn-s btn-sm btn-print" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / Salvar PDF</button></div>
@@ -387,7 +387,7 @@
      JAVASCRIPT
 ══════════════════════════════════════ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/app.min.js?v=13" defer></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/app.min.js?v=14" defer></script>
 
 <!-- ══════════ COOKIE BANNER ══════════ -->
 <div id="cookie-banner">
@@ -576,6 +576,6 @@ if (window.innerWidth > 767) {
   document.body.appendChild(s);
 }
 </script>
-<script src="/js/icon-sprite-loader.js?v=4"></script>
+<script src="/js/icon-sprite-loader.js?v=5"></script>
 </body>
 </html>

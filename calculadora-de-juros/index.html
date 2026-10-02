@@ -279,7 +279,7 @@
          <div style="display:flex;flex-direction:column;gap:18px;">
       <!-- Formulário da Calculadora -->
       <div class="card">
-        <h2><span aria-hidden="true">📈</span> Calculadora de Juros</h2>
+        <h2><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-juros"/></svg></span>Calculadora de Juros</h2>
         <p class="sub">Juros simples, compostos ou de mora</p>
         <div class="pill-tabs" id="j-tipo-tabs" style="margin-bottom:18px;">
           <button class="ptab on" onclick="jSetTipo('simples',this)">Simples</button>
@@ -305,19 +305,19 @@
 
       <!-- Resultado (Aparece abaixo do formulário) -->
       <div class="card" id="j-res-card" aria-live="polite" aria-atomic="true" style="display:none;"><div class="print-letterhead"><div class="print-letterhead-name">Calcula Prazo — Calculadora de Juros Compostos</div><div class="print-letterhead-date">Gerado em <span class="print-date"></span> · calculaprazo.com.br</div></div>
-        <h2><span aria-hidden="true">📊</span> Resultado</h2>
+        <h2><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-admin-dashboard"/></svg></span>Resultado</h2>
         <div class="ri-grid" id="j-ri-grid"></div>
 
         <!-- IR sobre rendimentos de renda fixa -->
         <div id="j-ir-box" style="display:none;margin-top:14px;padding:14px 16px;background:#FFF7ED;border:1.5px solid #FED7AA;border-radius:var(--r);">
-          <p style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#92400E;margin-bottom:8px;">💰 Imposto de Renda sobre Rendimentos (Renda Fixa)</p>
+          <p style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#92400E;margin-bottom:8px;"><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-juros"/></svg></span>Imposto de Renda sobre Rendimentos (Renda Fixa)</p>
           <div class="ri-grid" id="j-ir-grid" style="grid-template-columns:1fr 1fr;"></div>
           <p id="j-ir-aliq" style="font-size:.75rem;color:#78350F;margin-top:8px;"></p>
         </div>
 
         <!-- Gráfico comparativo -->
         <div id="j-chart-box" style="display:none;margin-top:18px;">
-          <p class="flbl" style="margin-bottom:10px;">📈 Comparação com outros investimentos</p>
+          <p class="flbl" style="margin-bottom:10px;"><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-juros"/></svg></span>Comparação com outros investimentos</p>
           <div style="position:relative;max-width:100%;">
             <canvas id="j-chart" height="220"></canvas>
           </div>
@@ -438,7 +438,7 @@
      JAVASCRIPT
 ══════════════════════════════════════ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/app.min.js?v=13" defer></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/app.min.js?v=14" defer></script>
 
 <!-- ══════════ COOKIE BANNER ══════════ -->
 <div id="cookie-banner">
@@ -627,6 +627,6 @@ if (window.innerWidth > 767) {
   document.body.appendChild(s);
 }
 </script>
-<script src="/js/icon-sprite-loader.js?v=4"></script>
+<script src="/js/icon-sprite-loader.js?v=5"></script>
 </body>
 </html>

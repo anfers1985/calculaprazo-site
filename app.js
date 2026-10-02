@@ -1692,7 +1692,7 @@ function _genPWCore(){
   document.getElementById('str-l').textContent='Força: '+cfg.l;document.getElementById('str-l').style.color=cfg.c;
 }
 function genPW(){ _genPWCore(); }
-function cpPW(){const pw=document.getElementById('pw-val').textContent;if(pw==='Clique em Gerar →')return;navigator.clipboard.writeText(pw).then(()=>{const b=document.getElementById('pw-copy-btn');b.textContent='✅';setTimeout(()=>b.textContent='📋',1400);}).catch(()=>{});}
+function cpPW(){const pw=document.getElementById('pw-val').textContent;if(pw==='Clique em Gerar →')return;navigator.clipboard.writeText(pw).then(()=>{const b=document.getElementById('pw-copy-btn'),o=b.innerHTML;b.textContent='✅',setTimeout(()=>{b.innerHTML=o},1400);}).catch(()=>{});}
 // Corrigido: _genPWCore() NÃO deve rodar automaticamente ao carregar o script.
 // Antes, chamada sem guarda, quebrava com erro fatal em QUALQUER página que não
 // tivesse o campo #pw-len (ou seja, todas as páginas exceto /gerador-de-senhas),
