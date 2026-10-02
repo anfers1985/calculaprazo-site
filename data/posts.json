@@ -1,5 +1,41 @@
 [
   {
+    "id": "stf-iguala-licenca-maternidade-maes-biologicas-adotivas",
+    "title": "STF iguala licença-maternidade de mães biológicas e adotivas",
+    "category": "jurisprudencia-stf",
+    "category_label": "STF",
+    "excerpt": "STF determina licença-maternidade de 120 dias para mães biológicas e adotantes, com regras iguais sobre afastamento e prorrogação.",
+    "image": "https://images.unsplash.com/photo-1619453942238-c388f1c11575?q=80&w=1331&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-02",
+    "updatedAt": "2026-10-02",
+    "tags": []
+  },
+  {
+    "id": "tst-pagamento-dobro-domingos-trabalhados-mulher",
+    "title": "TST garante pagamento em dobro por domingos trabalhados",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "TST reconhece direito de atendente a receber em dobro pelos domingos trabalhados sem folga quinzenal, conforme proteção prevista na CLT para mulheres.",
+    "image": "https://images.unsplash.com/photo-1788230548191-9e1ba2942569?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-02",
+    "updatedAt": "2026-10-02",
+    "tags": []
+  },
+  {
+    "id": "tema-068-tst-fgts-conta-vinculada-multa-40",
+    "title": "Tema 068 do TST: FGTS deve ser depositado em conta vinculada",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "Tema 068 do TST determina que valores de FGTS e multa de 40% reconhecidos em ações trabalhistas sejam depositados na conta vinculada do empregado.",
+    "image": "https://images.unsplash.com/photo-1618771623063-6c3faa854a61?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-02",
+    "updatedAt": "2026-10-02",
+    "tags": []
+  },
+  {
     "id": "eleicoes-2026-feriado-regras-empresas-trabalhadores",
     "title": "Eleições 2026 são feriado? Veja regras para empresas",
     "category": "orientacoes-praticas",
