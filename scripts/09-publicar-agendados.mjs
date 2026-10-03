@@ -203,18 +203,10 @@ function injectMidArticleAd(html) {
   return html.slice(0, mid.index + mid[0].length) + AD_MID_HTML + html.slice(mid.index + mid[0].length);
 }
 
-const AD_NATIVE_AFTER_RESUMO_HTML = '\n  <!-- ▸ ANÚNCIO ADSTERRA NATIVE BANNER: abaixo do resumo rápido (desktop) -->\n'
-  + '  <div class="ad-desktop-only" style="display:flex;justify-content:center;flex-direction:column;align-items:center;margin:20px 0;">\n'
-  + '    <span class="ad-eyebrow">Publicidade</span>\n'
-  + '    <div class="adst-native-slot" style="width:100%;"></div>\n'
-  + '  </div>\n';
 
 function injectNativeAdAfterResumo(html) {
-  const resumoRegex = /<div class="resumo-rapido">[\s\S]*?<\/ul>\s*<\/div>/;
-  const m = resumoRegex.exec(html);
-  if (!m) return html;
-  const insertPos = m.index + m[0].length;
-  return html.slice(0, insertPos) + AD_NATIVE_AFTER_RESUMO_HTML + html.slice(insertPos);
+  // Anúncio nativo abaixo do "Resumo rápido" REMOVIDO (decisão 03/10/2026): não inserir nada.
+  return html;
 }
 
 function buildPnPrevSlot(p) {

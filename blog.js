@@ -256,7 +256,7 @@ function renderBlogSection(){
   var posts=BLOG_POSTS.filter(function(p){
     var secCats=BLOG_CUR_SEC?BLOG_BLOG_SEC_MAP_CATS(BLOG_CUR_SEC):null;
     var mc;
-    if(!BLOG_CAT){mc=BLOG_EXCLUDE_FROM_GENERAL.indexOf(p.category)===-1;}
+    if(!BLOG_CAT){mc=true;} /* "Todos" e busca em /conteudo/ incluem as Súmulas TST Comentadas (03/10/2026) */
     else if(BLOG_CAT.indexOf('__sec__')===0){mc=secCats?secCats.indexOf(p.category)>=0:true;}
     else{mc=p.category===BLOG_CAT;}
     var mt=!search||(p.title||'').toLowerCase().indexOf(search)>=0||(p.excerpt||'').toLowerCase().indexOf(search)>=0;

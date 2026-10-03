@@ -30,6 +30,9 @@
 /icon-192.png
   Cache-Control: public, max-age=31536000, immutable
 
+/icon-splash-384.png
+  Cache-Control: public, max-age=31536000, immutable
+
 /icon-512.png
   Cache-Control: public, max-age=31536000, immutable
 

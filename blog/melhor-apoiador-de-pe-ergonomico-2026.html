@@ -2,7 +2,10 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/manifest.json">
@@ -1209,6 +1212,15 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 .nh-pill .inline-ic,.ctab .inline-ic{margin-right:.3em;}
 #ferramentas-menu a:not(.nm-sub),#conteudo-menu a:not(.nm-sub){min-height:46px;}
 .hdr-nav > a[href="/"] .inline-ic{margin-right:0;}
+/* print-fix-2026-10-03 */
+@media print{
+  #hdr,.post-sidebar,.post-share-sticky,#progress-bar,.ad-block,.ad-block-x,.ad-container,.ad-card-wrap,.adst-slot,.adst-native-slot,.ad-eyebrow,.ad-desktop-only,.ad-mobile-only{display:none !important;}
+  .post-hero{background:none !important;padding:0 0 10pt !important;min-height:0 !important;border-bottom:1pt solid #000;}
+  .post-hero::before,.post-hero::after{display:none !important;}
+  .post-hero,.post-hero *{color:#000 !important;}
+  .pbw-grid{display:block !important;}
+  .article-wrap{max-width:100% !important;}
+}
 </style>
 <style>
 .prod-card{background:var(--card);border:1.5px solid var(--brd);border-radius:var(--rl);overflow:hidden;margin:28px 0;box-shadow:var(--sh);transition:box-shadow .25s,transform .25s;}
@@ -1485,11 +1497,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
           <strong>Resumo do ranking — os 5 melhores apoiadores de pé ergonômicos em 2026</strong>
           <ul><li><strong>#1 Souza &amp; Cia 3704</strong> — melhor overall — MDF com acabamento black piano, o mais vendido e avaliado do mercado</li><li><strong>#2 Multivisão Regulável</strong> — melhor para ajuste fino — múltiplos níveis de altura e inclinação</li><li><strong>#3 Reliza Magnético</strong> — melhor para circulação — esferas massageadoras e pontos magnéticos</li><li><strong>#4 Multilaser</strong> — melhor custo-benefício com marca nacional consolidada</li><li><strong>#5 GShield Compacto</strong> — melhor portabilidade — leve, em poliestireno, fácil de guardar</li></ul>
         </div>
-  <!-- ▸ ANÚNCIO ADSTERRA NATIVE BANNER: abaixo do resumo rápido (desktop) -->
-  <div class="ad-desktop-only" style="display:flex;justify-content:center;flex-direction:column;align-items:center;margin:20px 0;">
-    <span class="ad-eyebrow">Publicidade</span>
-    <div class="adst-native-slot" style="width:100%;"></div>
-  </div>
 
 
         <p>Ficar sentado por horas com os pés soltos, sem apoio no chão, é uma das causas mais comuns (e mais ignoradas) de má circulação, inchaço e dores na lombar durante a jornada de trabalho. Isso acontece porque cadeiras e mesas de escritório raramente são ajustadas exatamente para a altura de cada pessoa — e um apoiador de pé corrige esse desalinhamento sem precisar trocar de móveis.</p>

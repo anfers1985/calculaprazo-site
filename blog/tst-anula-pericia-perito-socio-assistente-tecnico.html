@@ -2,7 +2,10 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <meta name="theme-color" content="#2563EB">
@@ -1195,6 +1198,15 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 .nh-pill .inline-ic,.ctab .inline-ic{margin-right:.3em;}
 #ferramentas-menu a:not(.nm-sub),#conteudo-menu a:not(.nm-sub){min-height:46px;}
 .hdr-nav > a[href="/"] .inline-ic{margin-right:0;}
+/* print-fix-2026-10-03 */
+@media print{
+  #hdr,.post-sidebar,.post-share-sticky,#progress-bar,.ad-block,.ad-block-x,.ad-container,.ad-card-wrap,.adst-slot,.adst-native-slot,.ad-eyebrow,.ad-desktop-only,.ad-mobile-only{display:none !important;}
+  .post-hero{background:none !important;padding:0 0 10pt !important;min-height:0 !important;border-bottom:1pt solid #000;}
+  .post-hero::before,.post-hero::after{display:none !important;}
+  .post-hero,.post-hero *{color:#000 !important;}
+  .pbw-grid{display:block !important;}
+  .article-wrap{max-width:100% !important;}
+}
 </style>
 </head>
 <body>
@@ -1398,11 +1410,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   </ul>
 </div>
 
-  <!-- ▸ ANÚNCIO ADSTERRA NATIVE BANNER: abaixo do resumo rápido (desktop) -->
-  <div class="ad-desktop-only" style="display:flex;justify-content:center;flex-direction:column;align-items:center;margin:20px 0;">
-    <span class="ad-eyebrow">Publicidade</span>
-    <div class="adst-native-slot" style="width:100%;"></div>
-  </div>
   <p>A Primeira Turma do Tribunal Superior do Trabalho (TST) anulou uma perícia realizada em processo trabalhista após reconhecer a suspeição do perito judicial. O profissional havia apresentado o primeiro laudo e, posteriormente, tornou-se sócio de um dos assistentes técnicos contratados pela empresa.</p>
 
   <p>Para o colegiado, a imparcialidade e a independência técnica do perito precisam ser preservadas durante toda a produção da prova. Como a perícia ainda não havia sido encerrada quando surgiu a relação societária, o processo deverá passar por nova avaliação técnica.</p>

@@ -1829,6 +1829,17 @@ details.seo-acc .seo-p {
     font-size: 11pt;
   }
 
+  /* Páginas /conteudo/*: o conteúdo inteiro mora em <main id="sec-blog">; a regra
+     "#sec-blog {display:none}" acima serve só à seção de blog da home e deixava
+     essas páginas em branco no papel. Aqui ele precisa aparecer. */
+  main#sec-blog { display: block !important; }
+  main#sec-blog .conteudo-filters, main#sec-blog #blog-pagination { display: none !important; }
+  /* Cabeçalho azul: o navegador não imprime fundos por padrão, e o texto é branco */
+  .post-hero { background: none !important; padding: 0 0 10pt !important; border-bottom: 1pt solid #000; min-height: 0 !important; }
+  .post-hero::before, .post-hero::after { display: none !important; }
+  .post-hero, .post-hero h1, .post-hero * { color: #000 !important; }
+  .post-sidebar { display: none !important; }
+
   /* Imprimir apenas a seção/ferramenta atualmente ativa na SPA —
      nunca todas as seções ao mesmo tempo (mesma regra da tela). */
   .sec { display: none !important; }
@@ -2125,7 +2136,7 @@ img[src*="m.media-amazon.com"] {
   .nh-tool-card:hover { transform:none;box-shadow:none; }
   .nh-tool-card .ci-icon { margin-bottom:0;flex-shrink:0; }
   .nh-tool-card .ci-text { flex:1;min-width:0; }
-  .nh-tool-card .ci-title { margin-bottom:0; }
+  .nh-tool-card .ci-title { margin-bottom:0;font-size:.84rem; }
   .nh-tool-card .ci-desc { display:none; }
 
   /* Anúncios mobile: centraliza de fato o que a rede injetar, mesmo que o
@@ -2182,3 +2193,6 @@ img[src*="m.media-amazon.com"] {
 .nh-pill .inline-ic,.ctab .inline-ic{margin-right:.3em;}
 #ferramentas-menu a:not(.nm-sub),#conteudo-menu a:not(.nm-sub){min-height:46px;}
 .hdr-nav > a[href="/"] .inline-ic{margin-right:0;}
+
+/* Ferramentas em Destaque (mobile): telas muito estreitas mantêm o título em uma linha */
+@media(max-width:340px){ .nh-tool-card .ci-title { font-size:.76rem; } }
