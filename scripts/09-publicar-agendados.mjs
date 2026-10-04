@@ -347,7 +347,13 @@ function publicarItem(item, template, postsAtuais) {
     : '';
   const ogImageUrl = post.image || 'https://calculaprazo.com.br/og-image.jpg';
   const ogImageTag = `<meta property="og:image" content="${ogImageUrl}">`;
-  const schemaImage = ',"image":"https://calculaprazo.com.br/schema-default-image.jpg"';
+  // JSON-LD: usa a mesma capa visível/og:image do post; sem capa, mantém o logo padrão
+  const schemaImage = (() => {
+    const u = String(post.image || '').trim();
+    if (!u) return ',"image":"https://calculaprazo.com.br/schema-default-image.jpg"';
+    const abs = /^https?:\/\//i.test(u) ? u : (u.charAt(0) === '/' ? 'https://calculaprazo.com.br' + u : 'https://calculaprazo.com.br/schema-default-image.jpg');
+    return ',"image":"' + abs.replace(/["\\]/g, '') + '"';
+  })();
 
   const postHTML = template
     .replace(/\{\{TITLE\}\}/g, post.title)
