@@ -1493,7 +1493,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
       <!-- Aviso afiliado -->
       <div style="background:#FFFBEB;border-left:4px solid #D97706;border-radius:0 var(--r) var(--r) 0;padding:12px 18px;margin-bottom:28px;font-size:.81rem;color:#78350F;line-height:1.6;">
-        <strong>ℹ️ Transparência editorial:</strong> Este ranking foi elaborado de forma independente pela equipe Calcula Prazo com base em critérios técnicos, conformidade com a NR-17 e análise de avaliações de usuários. Os links levam à <strong>Amazon.com.br</strong>, ao <strong>Mercado Livre</strong> e à <strong>Shopee</strong> — se você comprar por eles, podemos receber uma comissão <em>sem custo adicional para você</em>. Isso nos ajuda a manter o site 100% gratuito.
+        <strong>ℹ️ Transparência editorial:</strong> Este ranking foi elaborado de forma independente pelo site Calcula Prazo com base em critérios técnicos, conformidade com a NR-17 e análise de avaliações de usuários. Os links levam à <strong>Amazon.com.br</strong>, ao <strong>Mercado Livre</strong> e à <strong>Shopee</strong> — se você comprar por eles, podemos receber uma comissão <em>sem custo adicional para você</em>. Isso nos ajuda a manter o site 100% gratuito.
       </div>
 
         <!-- ▸ ANÚNCIO ADSTERRA: topo do artigo (728x90, desktop) -->
@@ -2102,8 +2102,8 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
         <h4>Newsletter</h4>
         <p>Receba novidades do Calcula Prazo por e-mail. Cancelamento automático a qualquer momento, com 1 clique.</p>
         <form id="nl-signup-form" onsubmit="return newsletterSubscribe(event)">
-          <input type="text" name="website" style="position:absolute;left:-9999px;" tabindex="-1" autocomplete="off">
-          <input type="email" name="email" required placeholder="seu@email.com">
+          <input type="text" name="website" style="position:absolute;left:-9999px;" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <input type="email" name="email" required placeholder="seu@email.com" aria-label="Seu e-mail">
           <button type="submit">Inscrever</button>
         </form>
         <p id="nl-signup-msg" style="font-size:.76rem;margin-top:8px;display:none;"></p>
@@ -2139,7 +2139,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
     <div style="background:var(--b50);border:1.5px solid var(--b200);border-radius:var(--rl);padding:18px;margin-bottom:20px;">
       <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--acc);margin-bottom:8px;">Pix — Chave e-mail</p>
       <div style="display:flex;align-items:center;gap:10px;">
-        <div id="pix-key-display" style="font-family:var(--fh);font-size:.85rem;font-weight:700;color:var(--txt);flex:1;background:#fff;border:1.5px solid var(--brd);border-radius:var(--r);padding:10px 12px;white-space:nowrap;overflow:visible;text-align:center;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="22414d4c5643564d6241434e41574e43525043584d0c414d4f0c4050">[email&#160;protected]</a></div>
+        <div id="pix-key-display" style="font-family:var(--fh);font-size:.85rem;font-weight:700;color:var(--txt);flex:1;background:#fff;border:1.5px solid var(--brd);border-radius:var(--r);padding:10px 12px;white-space:nowrap;overflow:visible;text-align:center;">contato@calculaprazo.com.br</div>
         <button onclick="navigator.clipboard.writeText('contato@calculaprazo.com.br').then(()=>{this.textContent='✅';setTimeout(()=>this.textContent='📋',1500)})" style="background:var(--acc);color:#fff;border:none;border-radius:var(--r);padding:10px 13px;cursor:pointer;font-size:.85rem;flex-shrink:0;">📋</button>
       </div>
       <p style="font-size:.73rem;color:var(--txt-s);margin-top:8px;"></p>
@@ -2163,7 +2163,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 </div>
 
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ── READING PROGRESS ──────────────────────────
 window.addEventListener('scroll', function() {
   const doc = document.documentElement;

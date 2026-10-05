@@ -1582,8 +1582,8 @@ Diante dessa mudança legislativa, que absorveu e superou a lógica do verbete, 
         <h4>Newsletter</h4>
         <p>Receba novidades do Calcula Prazo por e-mail. Cancelamento automático a qualquer momento, com 1 clique.</p>
         <form id="nl-signup-form" onsubmit="return newsletterSubscribe(event)">
-          <input type="text" name="website" style="position:absolute;left:-9999px;" tabindex="-1" autocomplete="off">
-          <input type="email" name="email" required placeholder="seu@email.com">
+          <input type="text" name="website" style="position:absolute;left:-9999px;" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <input type="email" name="email" required placeholder="seu@email.com" aria-label="Seu e-mail">
           <button type="submit">Inscrever</button>
         </form>
         <p id="nl-signup-msg" style="font-size:.76rem;margin-top:8px;display:none;"></p>

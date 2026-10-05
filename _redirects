@@ -78,6 +78,40 @@
 # simplesmente descartar a URL antiga.
 /blog/tst-férias-13-proporcionais-justa-causa-atestado-adulterado /blog/tst-ferias-13-proporcionais-justa-causa-atestado-adulterado 301
 
+# Redirect 301 — endereços antigos de ferramentas/páginas (404 no Search Console em 04/10/2026).
+/calculadora-correcao-monetaria  /correcao-monetaria  301
+/calculadora-jornada-intermitente  /calculadora-salario-intermitente  301
+/calculadora-verbas-trabalhistas-rescisorias  /calculadora-verbas-trabalhistas  301
+/juros  /calculadora-de-juros  301
+/juros/  /calculadora-de-juros  301
+/imc  /calculadora-imc  301
+/imc/  /calculadora-imc  301
+/senhas  /gerador-de-senhas  301
+/senhas/  /gerador-de-senhas  301
+/calcular-prazo  /calculadora-de-prazo-processual  301
+/sitemap  /sitemap.xml  301
+
+# Redirect 301 — posts antigos que o Google ainda rastreia (404 no Search Console em 04/10/2026).
+# Cada endereço antigo aponta para o post atual de mesmo assunto, com e sem .html.
+/blog/contrato-trabalho-intermitente-como-funciona-clt  /blog/contrato-trabalho-intermitente-clt-reforma-trabalhista  301
+/blog/contrato-trabalho-intermitente-como-funciona-clt.html  /blog/contrato-trabalho-intermitente-clt-reforma-trabalhista  301
+/blog/biogesp-justica-determina-apresentacao-de-documentos-trabalh  /blog/justica-determina-apresentacao-de-documentos  301
+/blog/biogesp-justica-determina-apresentacao-de-documentos-trabalh.html  /blog/justica-determina-apresentacao-de-documentos  301
+/blog/ccfgts-altera-regra  /blog/ccfgts-altera-regras-saque-fgts-pago-maior-menor  301
+/blog/ccfgts-altera-regra.html  /blog/ccfgts-altera-regras-saque-fgts-pago-maior-menor  301
+/blog/teletrabalho-contrato-controle-custos  /blog/teletrabalho-contrato-controle-custos-clt  301
+/blog/teletrabalho-contrato-controle-custos.html  /blog/teletrabalho-contrato-controle-custos-clt  301
+/blog/trt-15-mantem-penhora-de-salario  /blog/trt-15-mantem-penhora-de-30  301
+/blog/trt-15-mantem-penhora-de-salario.html  /blog/trt-15-mantem-penhora-de-30  301
+/blog/mpt-ba-pesquisa-de-clima-como-prova-de-assedio-organizaciona  /blog/mpt-usa-pesquisa-de-clima-em-acao-de-assedio  301
+/blog/mpt-ba-pesquisa-de-clima-como-prova-de-assedio-organizaciona.html  /blog/mpt-usa-pesquisa-de-clima-em-acao-de-assedio  301
+/blog/calculadora-salario-liquido  /blog/calculadora-de-salario-liquido-inss-irrf-2026  301
+/blog/calculadora-salario-liquido.html  /blog/calculadora-de-salario-liquido-inss-irrf-2026  301
+/blog/pl-extingue-escala-6x1-e-reduz-jornada-para-40h-sem-reducao-  /blog/projeto-que-acaba-com-a-escala-6x1-reduz-jornada-para-40-horas-semanais  301
+/blog/pl-extingue-escala-6x1-e-reduz-jornada-para-40h-sem-reducao-.html  /blog/projeto-que-acaba-com-a-escala-6x1-reduz-jornada-para-40-horas-semanais  301
+/blog/calculadora-de-prazos-processuais-tutorial-completo-para-usar-o-calculaprazocombr.html  /blog/calculadora-de-prazos-processuais-dias-uteis-corridos  301
+/blog/stf-encerra-reviso-da-vida-toda-e-mantm-regra-do-inss.html  /blog/stf-encerra-revisao-vida-toda-inss  301
+
 # /blog redireciona para página de conteúdo real
 /blog             /conteudo         301
 /blog/            /conteudo         301
