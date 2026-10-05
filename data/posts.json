@@ -1,5 +1,41 @@
 [
   {
+    "id": "mte-altera-nr-28-fiscalizacao-penalidades",
+    "title": "MTE atualiza NR-28 sobre fiscalização e penalidades",
+    "category": "legislacao-nr",
+    "category_label": "NR",
+    "excerpt": "Portaria do MTE altera o Anexo II da NR-28 e revoga códigos de ementas relacionados a diversas normas regulamentadoras de segurança do trabalho.",
+    "image": "https://plus.unsplash.com/premium_photo-1723672826070-9a0369df78ea?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-05",
+    "updatedAt": "2026-10-05",
+    "tags": []
+  },
+  {
+    "id": "dois-empregos-como-evitar-desconto-inss",
+    "title": "Empregado com dois empregos: como evitar INSS a mais",
+    "category": "legislacao-previdenciario",
+    "category_label": "Previdenciário",
+    "excerpt": "Quem tem dois empregos no RGPS deve somar as remunerações até o teto do INSS de 2026 e informar os vínculos para evitar descontos acima do limite.",
+    "image": "https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-05",
+    "updatedAt": "2026-10-05",
+    "tags": []
+  },
+  {
+    "id": "tema-070-tst-fgts-rescisao-indireta",
+    "title": "Tema 070 do TST: FGTS irregular permite rescisão indireta",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "Tema 070 do TST estabelece que o FGTS não recolhido ou irregular permite rescisão indireta, sem necessidade de imediatidade pelo empregado.",
+    "image": "https://images.unsplash.com/photo-1654588834754-33346e3ee095?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-05",
+    "updatedAt": "2026-10-05",
+    "tags": []
+  },
+  {
     "id": "stf-iguala-licenca-maternidade-maes-biologicas-adotivas",
     "title": "STF iguala licença-maternidade de mães biológicas e adotivas",
     "category": "jurisprudencia-stf",
