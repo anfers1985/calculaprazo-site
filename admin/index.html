@@ -990,6 +990,7 @@ function addNewAuthorPrompt(){
 // ════════════════════════════════════════
 function slugify(text) {
   return text.toString().toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')  // Remove acentos mantendo a letra (ç→c, ã→a, é→e)
     .replace(/\s+/g, '-')           // Substitui espaços por -
     .replace(/[^\w\-]+/g, '')       // Remove caracteres não alfanuméricos
     .replace(/\-\-+/g, '-')         // Substitui múltiplos - por um único -
@@ -1000,6 +1001,17 @@ function slugify(text) {
 function autoSlug(){
   const title = document.getElementById('f-title').value;
   document.getElementById('f-slug').value = slugify(title);
+}
+
+// Aspas duplas retas (") no título, resumo ou legenda quebram os dados estruturados (JSON-LD)
+// e as meta tags da página, porque esses campos são gravados dentro de atributos/JSON sem escape.
+// Use aspas curvas “ ” ou aspas simples '.
+function temAspasRetas(title, excerpt, caption){
+  const campos = [['título', title], ['resumo', excerpt], ['legenda da imagem', caption]]
+    .filter(([, v]) => v && v.indexOf('"') !== -1).map(([n]) => n);
+  if (!campos.length) return false;
+  toast('⚠️ Aspas duplas retas (") no ' + campos.join(', ') + '. Troque por aspas curvas “ ” ou aspas simples \'. Elas quebram o JSON-LD e as meta tags da página.', 'err');
+  return true;
 }
 
 function countChars(el, targetId, max){
@@ -2241,6 +2253,7 @@ async function publicarNoSite() {
   const authorId = document.getElementById('f-author') ? document.getElementById('f-author').value : 'anderson-fernandes';
   
   if (!title || !excerpt || !content) { toast('Preencha título, resumo e conteúdo.', 'err'); return; }
+  if (temAspasRetas(title, excerpt, caption)) return;
 
   const btn = document.getElementById('btn-publicar');
   btn.disabled = true;
@@ -2553,6 +2566,7 @@ function montarItemAgendadoDoFormulario() {
   const horaStr = document.getElementById('f-sched-time').value || '09:00';
 
   if (!title || !excerpt || !content) { toast('Preencha título, resumo e conteúdo.', 'err'); return null; }
+  if (temAspasRetas(title, excerpt, caption)) return null;
   if (!dataStr) { toast('Escolha a data da publicação.', 'err'); return null; }
 
   // -03:00 fixo (Brasília). Não varia com horário de verão no Brasil desde 2019.
@@ -3220,6 +3234,7 @@ async function baixarHTML() {
   const tagsRaw = document.getElementById('f-tags') ? document.getElementById('f-tags').value.trim() : '';
 
   if (!title || !content) { toast('Preencha título e conteúdo.', 'err'); return; }
+  if (temAspasRetas(title, excerpt, caption)) return;
 
   const btn = document.getElementById('btn-baixar');
   btn.disabled = true;

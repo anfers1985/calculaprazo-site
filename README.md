@@ -70,6 +70,16 @@ Todo o conteúdo do site — artigos, súmulas comentadas e itens essenciais —
 
 Conteúdo publicado em lote para projetos específicos (ex: as 463 súmulas comentadas do TST, itens da seção "Essenciais") segue o mesmo padrão de autoria, mas foi inserido diretamente nos arquivos HTML — esses itens não passam pelo fluxo padrão do admin.
 
+### ⚠️ Aspas duplas (") em título, resumo e legenda — regra para todo post
+
+O título, o resumo (descrição) e a legenda da imagem são gravados **sem escape** dentro de atributos HTML (`<meta ... content="...">`) e de blocos JSON-LD (`Article` e `BreadcrumbList`). Uma aspa dupla reta (`"`) nesses campos fecha o atributo/texto no meio: o JSON-LD fica inválido (o Google deixa de ler os dados estruturados) e as meta tags `og:title`, `twitter:title`, `og:description` e `description` saem cortadas.
+
+- **Regra:** nunca usar `"` nesses três campos. Usar aspas curvas “ ” (ou aspas simples `'`).
+- **Pelo `/admin`:** publicar, programar e baixar HTML são bloqueados com um aviso quando algum desses campos tiver `"`.
+- **Posts criados por outro método** (súmulas, essenciais, inserção direta nos arquivos HTML, outros geradores): não há essa trava. Quem gera deve trocar `"` por `“ ”` no título/descrição, ou escapar (`&quot;` nos atributos HTML e `\"` dentro do JSON-LD). O texto visível do `<h1>` e do `<title>` aceita `"`, mas o melhor é manter igual nos demais campos.
+- **Conferência rápida:** colar a URL no Teste de Resultados Aprimorados do Google, ou validar cada `<script type="application/ld+json">` com um `JSON.parse`.
+- Histórico: 13 súmulas (90, 207, 312, 319, 320, 324, 325, 367, 396, 407, 408, 413, 454) tinham esse defeito e foram corrigidas em 04/10/2026.
+
 Não existe mais nenhum pipeline automatizado de coleta/geração de conteúdo por agentes de IA sem supervisão — uma arquitetura desse tipo chegou a ser usada no início do projeto, mas foi descontinuada por problemas de qualidade no conteúdo gerado.
 
 ---
