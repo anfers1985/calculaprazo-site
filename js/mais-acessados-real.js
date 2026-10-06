@@ -43,12 +43,34 @@
     return window.__cpFetchPosts().catch(function () { return null; });
   }
 
+  // Miniaturas da sidebar aparecem em ~125-150px. Para fotos do Unsplash que já
+  // trazem w=NNNN na URL, pede uma largura menor (3x a de exibição, nítido em
+  // telas de alta densidade). Mesma foto e mesmo enquadramento. Qualquer outra
+  // URL (site, JOTA, Amazon, gov.br…) ou URL sem w= fica exatamente como está.
+  // Se a versão reduzida falhar ao carregar, volta sozinha para a URL original.
+  var THUMB_W = 450;
+  function thumbImgHTML(url) {
+    var small = url;
+    try {
+      if (/^https:\/\/(images|plus)\.unsplash\.com\//.test(url)) {
+        var m = url.match(/([?&])w=(\d+)/);
+        if (m && parseInt(m[2], 10) > THUMB_W) {
+          small = url.replace(/([?&])w=\d+/, '$1w=' + THUMB_W);
+        }
+      }
+    } catch (e) { small = url; }
+    var fb = (small !== url)
+      ? ' data-full="' + url + '" onerror="this.onerror=null;this.src=this.getAttribute(\'data-full\')"'
+      : '';
+    return '<img src="' + small + '" alt="" loading="lazy"' + fb + '>';
+  }
+
   function buildItemHTML(post, slug, rank) {
     var img = post.image || '';
     var cat = post.category_label || post.category || '';
     var title = post.title || slug;
     return '<a class="sidebar-item" href="/blog/' + slug + '.html">'
-      + '<span class="sidebar-item-thumb"><img src="' + img + '" alt="" loading="lazy">'
+      + '<span class="sidebar-item-thumb">' + thumbImgHTML(img)
       + '<span class="sidebar-item-badge top">' + rank + '</span></span>'
       + '<span class="sidebar-item-body"><span class="sidebar-item-title">' + title + '</span>'
       + (cat ? '<span class="sidebar-item-cat">' + cat + '</span>' : '')
@@ -70,7 +92,7 @@
     var cat = post.category_label || post.category || '';
     var title = post.title || slug;
     return '<a class="sidebar-item" href="/blog/' + slug + '.html">'
-      + '<span class="sidebar-item-thumb"><img src="' + img + '" alt="" loading="lazy"></span>'
+      + '<span class="sidebar-item-thumb">' + thumbImgHTML(img) + '</span>'
       + '<span class="sidebar-item-body"><span class="sidebar-item-title">' + title + '</span>'
       + (cat ? '<span class="sidebar-item-cat">' + cat + '</span>' : '')
       + '</span></a>';

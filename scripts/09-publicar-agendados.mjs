@@ -343,7 +343,7 @@ function publicarItem(item, template, postsAtuais) {
   const tagsJSON = JSON.stringify(tagsArr);
 
   const coverHTML = post.image
-    ? `<div style="margin-bottom:${post.imageCaption ? '6px' : '24px'};border-radius:12px;overflow:hidden;height:440px;background:#eef2f7;display:flex;align-items:center;justify-content:center;"><img src="${post.image}" alt="${post.title}" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>${post.imageCaption ? `<p style="font-size:.75rem;color:var(--txt-s);margin:0 0 24px;">${post.imageCaption}</p>` : ''}`
+    ? `<div style="margin-bottom:${post.imageCaption ? '6px' : '24px'};border-radius:12px;overflow:hidden;height:440px;background:#eef2f7;display:flex;align-items:center;justify-content:center;"><img src="${post.image}" alt="${post.title}" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.parentElement.style.display='none'"></div>${post.imageCaption ? `<p style="font-size:.75rem;color:#64748B;margin:0 0 24px;">${post.imageCaption}</p>` : ''}`
     : '';
   const ogImageUrl = post.image || 'https://calculaprazo.com.br/og-image.jpg';
   const ogImageTag = `<meta property="og:image" content="${ogImageUrl}">`;

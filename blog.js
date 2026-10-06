@@ -598,7 +598,7 @@ function nhBuildFeaturedCard(p){
   var img  = p.image || '';
   var exc  = p.excerpt || p.description || '';
   return '<a class="nh-featured-card" href="/blog/'+slug+'.html">'
-    +(img?'<img src="'+img+'" alt="" loading="lazy" onerror="this.remove()">':'')
+    +(img?'<img src="'+img+'" alt="" loading="eager" fetchpriority="high" onerror="this.remove()">':'')
     +'<span class="nh-featured-badge">DESTAQUE</span>'
     +'<div class="nh-featured-body">'
       +(name?'<div class="nh-featured-cat">'+name+'</div>':'')
