@@ -1,5 +1,41 @@
 [
   {
+    "id": "trt-mg-mantem-justa-causa-arquivos-sigilosos",
+    "title": "TRT mantém justa causa por envio de arquivos sigilosos",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "TRT-MG manteve justa causa de trabalhador que transferiu arquivos sigilosos da empresa para contas externas sem autorização.",
+    "image": "https://images.unsplash.com/photo-1594398985750-3b54ec074a0a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-06",
+    "updatedAt": "2026-10-06",
+    "tags": []
+  },
+  {
+    "id": "tst-reconvencao-horas-extras-concorrencia-desleal",
+    "title": "TST admite reconvenção em ação sobre horas extras",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "SDI-1 do TST considera válida reconvenção por concorrência desleal apresentada pela empresa no mesmo processo de pedido de horas extras.",
+    "image": "https://plus.unsplash.com/premium_photo-1733259707122-c8d827ce298f?q=80&w=1434&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-06",
+    "updatedAt": "2026-10-06",
+    "tags": []
+  },
+  {
+    "id": "tema-073-tst-onus-prova-jornada-trabalho-externo",
+    "title": "Tema 073 do TST: ônus da prova no trabalho externo",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "Tema 073 do TST define que cabe ao empregador provar a impossibilidade de controle da jornada externa, conforme os artigos 62 e 818 da CLT.",
+    "image": "https://images.unsplash.com/photo-1550534791-2677533605ab?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-06",
+    "updatedAt": "2026-10-06",
+    "tags": []
+  },
+  {
     "id": "fap-2027-consulta-empresas-portal",
     "title": "FAP 2027 já pode ser consultado pelas empresas no portal",
     "category": "legislacao-normas",
