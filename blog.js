@@ -608,6 +608,27 @@ function nhBuildFeaturedCard(p){
     +'</div></a>';
 }
 
+// Miniaturas da home: fotos do Unsplash que pedem largura bem maior que a exibida
+// passam a pedir w=maxW (mesma foto, mesmo enquadramento). Se a versão reduzida
+// falhar, volta sozinha para a URL original e só depois aplica o tratamento de
+// erro de cada lugar. Outras URLs (site, JOTA, YouTube...) ficam como estão.
+function nhThumbImg(url, maxW, onErrCode){
+  var small = url;
+  try {
+    if (/^https:\/\/(images|plus)\.unsplash\.com\//.test(url)) {
+      var m = url.match(/([?&])w=(\d+)/);
+      if (m && parseInt(m[2], 10) > maxW) { small = url.replace(/([?&])w=\d+/, '$1w=' + maxW); }
+    }
+  } catch(e) { small = url; }
+  var attrs = ' src="'+small+'" alt="" loading="lazy"';
+  if (small !== url) {
+    attrs += ' data-full="'+url+'" onerror="var f=this.getAttribute(\'data-full\');if(f){this.removeAttribute(\'data-full\');this.src=f;return;}'+onErrCode+'"';
+  } else {
+    attrs += ' onerror="'+onErrCode+'"';
+  }
+  return '<img'+attrs+'>';
+}
+
 function nhBuildSmallItem(p){
   var slug = p.id || p.slug || '';
   var sec  = nhSecOfCat(p.category);
@@ -616,7 +637,7 @@ function nhBuildSmallItem(p){
   var img  = p.image || '';
   var exc  = p.excerpt || p.description || '';
   var imgPart = img
-    ? '<img src="'+img+'" alt="" loading="lazy" onerror="this.parentElement.style.background=\'var(--b50)\'">'
+    ? nhThumbImg(img, 400, "this.parentElement.style.background=\'var(--b50)\'")
     : '';
   return '<a class="nh-small-item" href="/blog/'+slug+'.html">'
     +'<div class="nh-small-thumb '+colorCls+'-bg">'+imgPart+'</div>'
@@ -669,7 +690,7 @@ function renderNhTop10(){
       var cat = p.category_label || p.category || '';
       var imgUrl = p.image || '';
       var thumbPart = imgUrl
-        ? '<div class="nh-top10-thumb"><img src="'+imgUrl+'" alt="" loading="lazy" onerror="this.parentElement.style.display=\'none\'"></div>'
+        ? '<div class="nh-top10-thumb">'+nhThumbImg(imgUrl, 640, "this.parentElement.style.display=\'none\'")+'</div>'
         : '';
       return '<a class="nh-top10-item" href="/blog/'+slug+'.html">'
         +'<span class="nh-top10-num '+numCls+'">'+(i+1)+'</span>'
