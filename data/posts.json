@@ -1,5 +1,41 @@
 [
   {
+    "id": "esocial-falta-s-2200-admissao-preliminar",
+    "title": "eSocial: o que ocorre sem o envio do S-2200?",
+    "category": "esocial",
+    "category_label": "eSocial",
+    "excerpt": "Entenda os efeitos da falta do S-2200 após o S-2190, os prazos do eSocial, impactos na folha e como regularizar a admissão.",
+    "image": "https://images.unsplash.com/photo-1448932223592-d1fc686e76ea?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-07",
+    "updatedAt": "2026-10-07",
+    "tags": []
+  },
+  {
+    "id": "inss-como-cumprir-exigencia-enviar-documentos",
+    "title": "INSS: como cumprir exigência e enviar documentos online",
+    "category": "legislacao-previdenciario",
+    "category_label": "Previdenciário",
+    "excerpt": "Saiba como cumprir exigências do INSS, enviar documentos pelo Meu INSS, observar prazos e evitar problemas com arquivos e golpes.",
+    "image": "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-07",
+    "updatedAt": "2026-10-07",
+    "tags": []
+  },
+  {
+    "id": "tema-080-tst-frio-pausa-insalubridade",
+    "title": "Tema 080 do TST: frio sem pausa gera insalubridade",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "Tema 080 do TST define que trabalho em ambiente artificialmente frio sem pausa do art. 253 da CLT gera direito ao adicional de insalubridade.",
+    "image": "https://plus.unsplash.com/premium_photo-1764099530176-58a8342c5fbe?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-07",
+    "updatedAt": "2026-10-07",
+    "tags": []
+  },
+  {
     "id": "trt-mg-mantem-justa-causa-arquivos-sigilosos",
     "title": "TRT mantém justa causa por envio de arquivos sigilosos",
     "category": "jurisprudencia-tst",
