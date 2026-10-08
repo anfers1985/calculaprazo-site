@@ -891,7 +891,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 /* ── BLOG POST OVERRIDES ── */
 .container { max-width: 1560px; }
 .article-wrap { max-width: 800px; margin: 0 auto; }
-.post-hero .article-wrap{max-width:none;margin:0;}
+
 
 .post-hero {
   background: linear-gradient(135deg, var(--b900) 0%, var(--b700) 55%, var(--b500) 100%);
@@ -1041,7 +1041,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 /* ── AdSense: colapsa blocos vazios até aprovação ── */
 ins.adsbygoogle:not([data-ad-status="filled"]) { min-height: 0 !important; }
-.ad-block, .ad-container { min-height: 90px; } /* Reserva espaço → reduz CLS */
 ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !important; }
 
 /* ── Nav menu seções expansíveis ── */
@@ -1147,6 +1146,8 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 #hdr-search-btn-desktop svg{flex-shrink:0;opacity:.7;}
 #hdr-search-btn-desktop span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 @media(max-width:1100px){ #hdr-search-btn-desktop{width:36px;padding:0;justify-content:center;} #hdr-search-btn-desktop span{display:none;} }
+/* Mobile: a lupa fica só no topo (esquerda); a pílula de busca do desktop não aparece dentro do menu */
+@media(max-width:768px){ #hdr-search-btn-desktop{display:none !important;} }
 .hdr-search-btn{display:none;}
 @media(max-width:768px){
   #hdr { height: auto !important; }
@@ -1368,7 +1369,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       </nav>
       <h1>Agravo Interno e Agravo de Instrumento: como elaborar as peças após a IN nº 40/TST atualizada</h1>
       <div class="post-hero-meta">
-        <a href="/sobre" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:3px 12px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85);text-decoration:none;"><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-autoria"/></svg></span>Por Anderson Fernandes</a>
+        <a href="/sobre" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:3px 12px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:8px;text-decoration:none;"><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-autoria"/></svg></span>Por Anderson Fernandes</a><br>
         <strong>Publicado em:</strong> 28 de abril de 2026
                 <div style="margin-top:6px;">
           <span id="post-view-count" style="display:none;font-size:.75rem;color:rgba(255,255,255,.45);"></span>
@@ -1394,7 +1395,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
 
       <!-- Cover image -->
-      <div style="margin-bottom:24px;border-radius:12px;overflow:hidden;height:440px;background:#eef2f7;display:flex;align-items:center;justify-content:center;"><img src="https://images.unsplash.com/photo-1734640672449-0d65faceb323?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Agravo Interno e Agravo de Instrumento: como elaborar as peças após a IN nº 40/TST atualizada" loading="lazy" onerror="this.parentElement.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+      <div style="margin-bottom:6px;border-radius:12px;overflow:hidden;height:440px;background:#eef2f7;display:flex;align-items:center;justify-content:center;"><img src="https://images.unsplash.com/photo-1734640672449-0d65faceb323?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Agravo Interno e Agravo de Instrumento: como elaborar as peças após a IN nº 40/TST atualizada" loading="lazy" onerror="this.parentElement.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;"></div><p style="font-size:.75rem;color:#64748B;margin:0 0 24px;">Fonte: unsplash</p>
 
       <!-- Ad: topo do artigo (mostra apenas quando AdSense aprovado) -->
 
@@ -1436,6 +1437,16 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 <p>A estrutura técnica do agravo interno deve conter, obrigatoriamente: (i) endereçamento ao TRT com identificação do processo, das partes e da decisão impugnada; (ii) tempestividade expressamente demonstrada, com indicação da data de publicação da decisão denegatória e do termo final do prazo de 8 dias; (iii) identificação precisa do fundamento da negativa — o tema do IRR, IRDR ou IAC aplicado — e o número do precedente na tabela do TST; (iv) argumentação demonstrando que o acórdão regional <em>não está</em> em conformidade com o precedente invocado, seja porque os fatos ou o direito aplicável são distintos (distinguishing), seja porque houve erro na identificação do tema vinculante, seja porque o precedente foi aplicado de forma equivocada; (v) pedido de provimento e de processamento do recurso de revista.</p>
 
 <p>A fundamentação do agravo interno não é o mérito do recurso de revista em si. O objeto do agravo interno é estritamente a <strong>incorreção do juízo de admissibilidade</strong> — demonstrar que o acórdão regional não se enquadra na tese vinculante apontada. Se o advogado simplesmente reproduz as razões do recurso de revista sem enfrentar especificamente o precedente qualificado que embasou a negativa, o agravo interno não será conhecido.</p>
+
+  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (native desktop / 300x250 mobile) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="ad-desktop-only" id="ad-post-mid-native" style="width:100%;max-width:100%;margin:20px 0;">
+      <div class="adst-native-slot" style="width:100%;"></div>
+    </div>
+    <div class="adst-slot ad-mobile-only" id="ad-post-mid-mobile-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
 <h2>3. Agravo de instrumento: estrutura e requisitos técnicos</h2>
 
 <p>O agravo de instrumento em recurso de revista — AIRR — está previsto no art. 897, "b", da CLT e se destina a destrancar o recurso de revista cujo seguimento foi negado por fundamentos distintos dos precedentes qualificados do TST. Sua natureza é instrumental: não se discute o mérito do recurso de revista, mas sim a correção do juízo de admissibilidade que lhe barrou o caminho.</p>

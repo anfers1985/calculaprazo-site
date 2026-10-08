@@ -1135,6 +1135,8 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 #hdr-search-btn-desktop svg{flex-shrink:0;opacity:.7;}
 #hdr-search-btn-desktop span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 @media(max-width:1100px){ #hdr-search-btn-desktop{width:36px;padding:0;justify-content:center;} #hdr-search-btn-desktop span{display:none;} }
+/* Mobile: a lupa fica só no topo (esquerda); a pílula de busca do desktop não aparece dentro do menu */
+@media(max-width:768px){ #hdr-search-btn-desktop{display:none !important;} }
 .hdr-search-btn{display:none;}
 @media(max-width:768px){
   #hdr { height: auto !important; }
@@ -1535,12 +1537,10 @@ O item II enfrenta um argumento de defesa comum: a alegação de que, se a cláu
   </div>
 </div>
 
-<!-- Ad: footer -->
+<!-- Ad: artigo-final -->
 <div class="ad-container ad-footer">
-  <div class="ad-placeholder">
-    
-    
-  </div>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="4989563836" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
 <footer id="ftr">

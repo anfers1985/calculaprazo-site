@@ -891,7 +891,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 /* ── BLOG POST OVERRIDES ── */
 .container { max-width: 1560px; }
 .article-wrap { max-width: 800px; margin: 0 auto; }
-.post-hero .article-wrap{max-width:none;margin:0;}
+
 
 .post-hero {
   background: linear-gradient(135deg, var(--b900) 0%, var(--b700) 55%, var(--b500) 100%);
@@ -1041,7 +1041,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 /* ── AdSense: colapsa blocos vazios até aprovação ── */
 ins.adsbygoogle:not([data-ad-status="filled"]) { min-height: 0 !important; }
-.ad-block, .ad-container { min-height: 90px; } /* Reserva espaço → reduz CLS */
 ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !important; }
 
 /* ── Nav menu seções expansíveis ── */
@@ -1147,6 +1146,8 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 #hdr-search-btn-desktop svg{flex-shrink:0;opacity:.7;}
 #hdr-search-btn-desktop span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 @media(max-width:1100px){ #hdr-search-btn-desktop{width:36px;padding:0;justify-content:center;} #hdr-search-btn-desktop span{display:none;} }
+/* Mobile: a lupa fica só no topo (esquerda); a pílula de busca do desktop não aparece dentro do menu */
+@media(max-width:768px){ #hdr-search-btn-desktop{display:none !important;} }
 .hdr-search-btn{display:none;}
 @media(max-width:768px){
   #hdr { height: auto !important; }
@@ -1368,7 +1369,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       </nav>
       <h1>INSS e descontos em folha: o que pode ser deduzido, tabela progressiva 2026 e impacto nos benefícios</h1>
       <div class="post-hero-meta">
-        <a href="/sobre" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:3px 12px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85);text-decoration:none;"><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-autoria"/></svg></span>Por Anderson Fernandes</a>
+        <a href="/sobre" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:3px 12px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:8px;text-decoration:none;"><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-autoria"/></svg></span>Por Anderson Fernandes</a><br>
         <strong>Publicado em:</strong> 1 de maio de 2026
                 <div style="margin-top:6px;">
           <span id="post-view-count" style="display:none;font-size:.75rem;color:rgba(255,255,255,.45);"></span>
@@ -1394,7 +1395,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
 
       <!-- Cover image -->
-      <div style="margin-bottom:24px;border-radius:12px;overflow:hidden;height:440px;background:#eef2f7;display:flex;align-items:center;justify-content:center;"><img src="https://images.unsplash.com/photo-1614526261628-295d39158f96?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="INSS e descontos em folha: o que pode ser deduzido, tabela progressiva 2026 e impacto nos benefícios" loading="lazy" onerror="this.parentElement.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+      <div style="margin-bottom:6px;border-radius:12px;overflow:hidden;height:440px;background:#eef2f7;display:flex;align-items:center;justify-content:center;"><img src="https://images.unsplash.com/photo-1614526261628-295d39158f96?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="INSS e descontos em folha: o que pode ser deduzido, tabela progressiva 2026 e impacto nos benefícios" loading="lazy" onerror="this.parentElement.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;"></div><p style="font-size:.75rem;color:#64748B;margin:0 0 24px;">Fonte: unsplash</p>
 
       <!-- Ad: topo do artigo -->
       <div class="ad-block" id="ad-blog-top" style="overflow:hidden;">
@@ -1438,6 +1439,16 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 <p>São descontos obrigatórios por lei: <strong>INSS</strong> (contribuição previdenciária conforme a tabela progressiva) e <strong>IRRF</strong> (Imposto de Renda Retido na Fonte, quando o salário supera a faixa de isenção vigente). São descontos autorizados por dispositivo legal específico: <strong>pensão alimentícia</strong> determinada judicialmente; e <strong>cota-parte do vale-transporte</strong>, limitada a 6% do salário-base (não incide sobre adicionais ou horas extras).</p>
 
 <p>São descontos permitidos com autorização expressa e individual do empregado, preferencialmente por escrito: plano de saúde coletivo empresarial; previdência privada complementar; mensalidade de associação ou sindicato (quando há autorização formal); e adiantamentos salariais contratados por escrito com prazo e valor definidos. Para danos causados pelo empregado ao empregador, o desconto exige <strong>autorização escrita prévia</strong> e só é legítimo quando há <strong>dolo</strong> — dano causado por culpa simples não autoriza desconto sem previsão contratual específica (CLT, art. 462, §1º).</p>
+
+  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (native desktop / 300x250 mobile) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="ad-desktop-only" id="ad-post-mid-native" style="width:100%;max-width:100%;margin:20px 0;">
+      <div class="adst-native-slot" style="width:100%;"></div>
+    </div>
+    <div class="adst-slot ad-mobile-only" id="ad-post-mid-mobile-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
 <h2>O que não pode ser descontado em folha — vedações expressas</h2>
 
 <p>A jurisprudência e a doutrina trabalhista identificam com clareza as condutas vedadas. O empregador não pode descontar em folha, sob nenhuma circunstância: <strong>multas e punições disciplinares</strong> — o poder disciplinar do empregador não inclui penalidade pecuniária sobre o salário; <strong>custo de uniforme, EPI ou ferramentas de trabalho</strong> — trata-se de responsabilidade exclusiva do empregador, nos termos da NR-6 e do art. 166 da CLT; <strong>qualquer desconto que reduza o salário líquido abaixo do salário mínimo legal</strong>; e <strong>danos causados por culpa simples</strong> sem autorização contratual prévia.</p>

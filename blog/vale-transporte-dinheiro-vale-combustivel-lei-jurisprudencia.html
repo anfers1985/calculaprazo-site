@@ -891,7 +891,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 /* ── BLOG POST OVERRIDES ── */
 .container { max-width: 1560px; }
 .article-wrap { max-width: 800px; margin: 0 auto; }
-.post-hero .article-wrap{max-width:none;margin:0;}
+
 
 .post-hero {
   background: linear-gradient(135deg, var(--b900) 0%, var(--b700) 55%, var(--b500) 100%);
@@ -1041,7 +1041,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 /* ── AdSense: colapsa blocos vazios até aprovação ── */
 ins.adsbygoogle:not([data-ad-status="filled"]) { min-height: 0 !important; }
-.ad-block, .ad-container { min-height: 90px; } /* Reserva espaço → reduz CLS */
 ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !important; }
 
 /* ── Nav menu seções expansíveis ── */
@@ -1147,6 +1146,8 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 #hdr-search-btn-desktop svg{flex-shrink:0;opacity:.7;}
 #hdr-search-btn-desktop span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 @media(max-width:1100px){ #hdr-search-btn-desktop{width:36px;padding:0;justify-content:center;} #hdr-search-btn-desktop span{display:none;} }
+/* Mobile: a lupa fica só no topo (esquerda); a pílula de busca do desktop não aparece dentro do menu */
+@media(max-width:768px){ #hdr-search-btn-desktop{display:none !important;} }
 .hdr-search-btn{display:none;}
 @media(max-width:768px){
   #hdr { height: auto !important; }
@@ -1368,7 +1369,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       </nav>
       <h1>Vale Transporte em Dinheiro ou Vale Combustível: o que a lei permite, o que a jurisprudência diz e quais os riscos</h1>
       <div class="post-hero-meta">
-        <a href="/sobre" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:3px 12px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85);text-decoration:none;"><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-autoria"/></svg></span>Por Anderson Fernandes</a>
+        <a href="/sobre" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:3px 12px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:8px;text-decoration:none;"><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-autoria"/></svg></span>Por Anderson Fernandes</a><br>
         <strong>Publicado em:</strong> 29 de abril de 2026
                 <div style="margin-top:6px;">
           <span id="post-view-count" style="display:none;font-size:.75rem;color:rgba(255,255,255,.45);"></span>
@@ -1433,6 +1434,16 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 <p>Contudo, o <strong>TST</strong> e o <strong>STF</strong> pacificaram que a irregularidade de forma <strong>não altera a natureza jurídica indenizatória da parcela</strong>. O STF, no julgamento do RE nº 478.410/SP, estabeleceu que "pago o benefício em vale-transporte ou em moeda, isso não afeta o caráter não salarial do benefício". O TST, em numerosos precedentes de suas turmas e da SDI-1, acompanha esse entendimento: a concessão do benefício em pecúnia não tem o condão de transmudar a natureza indenizatória do vale-transporte, nem de justificar a integração ao salário ou a incidência de FGTS e INSS sobre o valor.</p>
 
 <p>O fundamento é simples: o pagamento visa cobrir uma despesa real do trabalhador com o deslocamento residência-trabalho. O modo pelo qual o crédito é transferido — cartão, papel ou dinheiro — não altera o propósito do benefício nem sua natureza legal. O risco para a empresa, ao pagar em dinheiro, é probatório: como demonstrar que o valor foi efetivamente destinado ao custeio do transporte e não à remuneração do trabalho? Por isso, a boa prática exige documentação formal — declaração do trabalhador quanto ao trajeto e ao valor da passagem, e registro do pagamento com identificação do fim específico.</p>
+
+  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (native desktop / 300x250 mobile) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="ad-desktop-only" id="ad-post-mid-native" style="width:100%;max-width:100%;margin:20px 0;">
+      <div class="adst-native-slot" style="width:100%;"></div>
+    </div>
+    <div class="adst-slot ad-mobile-only" id="ad-post-mid-mobile-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
 <h2>Trabalhador que usa veículo próprio: tem direito ao vale-transporte?</h2>
 
 <p>A lei é clara: o vale-transporte destina-se ao custeio do deslocamento por <strong>transporte coletivo público</strong>. O trabalhador que utiliza veículo próprio e não necessita de transporte público para chegar ao trabalho <strong>não tem direito ao vale-transporte</strong> na sua forma legal. O empregador está desobrigado de fornecê-lo nessa hipótese.</p>

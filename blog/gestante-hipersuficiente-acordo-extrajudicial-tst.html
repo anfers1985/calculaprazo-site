@@ -894,7 +894,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 /* ── BLOG POST OVERRIDES ── */
 .container { max-width: 1560px; }
 .article-wrap { max-width: 800px; margin: 0 auto; }
-.post-hero .article-wrap{max-width:none;margin:0;}
+
 
 .post-hero {
   background: linear-gradient(135deg, var(--b900) 0%, var(--b700) 55%, var(--b500) 100%);
@@ -1034,7 +1034,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 /* ── AdSense: colapsa blocos vazios até aprovação ── */
 ins.adsbygoogle:not([data-ad-status="filled"]) { min-height: 0 !important; }
-.ad-block, .ad-container { min-height: 90px; } /* Reserva espaço → reduz CLS */
 ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !important; }
 
 /* ── Nav menu seções expansíveis ── */
@@ -1140,6 +1139,8 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 #hdr-search-btn-desktop svg{flex-shrink:0;opacity:.7;}
 #hdr-search-btn-desktop span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 @media(max-width:1100px){ #hdr-search-btn-desktop{width:36px;padding:0;justify-content:center;} #hdr-search-btn-desktop span{display:none;} }
+/* Mobile: a lupa fica só no topo (esquerda); a pílula de busca do desktop não aparece dentro do menu */
+@media(max-width:768px){ #hdr-search-btn-desktop{display:none !important;} }
 .hdr-search-btn{display:none;}
 @media(max-width:768px){
   #hdr { height: auto !important; }
@@ -1361,7 +1362,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       </nav>
       <h1>TST Homologa Acordo Extrajudicial com Gestante Hipersuficiente: Entenda os Limites</h1>
       <div class="post-hero-meta">
-        <a href="/sobre" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:3px 12px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85);text-decoration:none;"><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-autoria"/></svg></span>Por Anderson Fernandes</a>
+        <a href="/sobre" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:3px 12px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:8px;text-decoration:none;"><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-autoria"/></svg></span>Por Anderson Fernandes</a><br>
         <strong>Publicado em:</strong> 7 de abril de 2026
                 <div style="margin-top:6px;">
           <span id="post-view-count" style="display:none;font-size:.75rem;color:rgba(255,255,255,.45);"></span>
@@ -1403,6 +1404,16 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 <h2>O conceito de empregado hipersuficiente</h2><p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/toyota-condenada-xenofobia-lider-baiano-assedio-moral.html" style="color:#2563EB;font-weight:600;">Toyota é condenada por xenofobia contra líder baiano no trabalho</a></p>
 
 <p>A <strong>Reforma Trabalhista (Lei 13.467/2017)</strong> introduziu no art. 444, parágrafo único da CLT o conceito de <strong>empregado hipersuficiente</strong>: aquele que possui diploma de nível superior e percebe salário mensal igual ou superior a <strong>duas vezes o limite máximo dos benefícios do RGPS</strong> (em 2026: 2 × R$ 8.157,41 = R$ 16.314,82). Para esses empregados, o legislador reconheceu capacidade plena de negociação individual, permitindo acordos diretos com o empregador com a mesma eficácia de convenção coletiva.</p>
+
+  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (native desktop / 300x250 mobile) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="ad-desktop-only" id="ad-post-mid-native" style="width:100%;max-width:100%;margin:20px 0;">
+      <div class="adst-native-slot" style="width:100%;"></div>
+    </div>
+    <div class="adst-slot ad-mobile-only" id="ad-post-mid-mobile-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
 <h2>A decisão do TST: quitação geral com gestante hipossuficiente</h2>
 <p>Em caso submetido ao TST envolvendo advogada com salário superior ao dobro do teto previdenciário, que firmou acordo extrajudicial com quitação ampla do contrato de trabalho durante a gravidez, o Tribunal homologou o ajuste. O fundamento: a empregada, como hipersuficiente nos termos do art. 444, parágrafo único da CLT, tem plena capacidade de negociação e pode transacionar direitos trabalhistas individualmente — incluindo verbas decorrentes da estabilidade gestante — desde que o acordo seja firmado de forma livre e informada, sem vício de consentimento.</p>
 

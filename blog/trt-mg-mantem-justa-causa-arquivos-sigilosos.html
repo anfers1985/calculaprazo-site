@@ -1135,6 +1135,8 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 #hdr-search-btn-desktop svg{flex-shrink:0;opacity:.7;}
 #hdr-search-btn-desktop span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 @media(max-width:1100px){ #hdr-search-btn-desktop{width:36px;padding:0;justify-content:center;} #hdr-search-btn-desktop span{display:none;} }
+/* Mobile: a lupa fica só no topo (esquerda); a pílula de busca do desktop não aparece dentro do menu */
+@media(max-width:768px){ #hdr-search-btn-desktop{display:none !important;} }
 .hdr-search-btn{display:none;}
 @media(max-width:768px){
   #hdr { height: auto !important; }
@@ -1502,7 +1504,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       <div class="ad-block-x" style="display:flex;justify-content:center;"><div class="ad-card-wrap" style="display:flex;flex-direction:column;align-items:center;"><span class="ad-eyebrow">Publicidade</span><div class="ad-desktop-only" style="display:flex;justify-content:center;"><div class="adst-slot" id="ad-slot-3" data-adst-key="a95b609abad42b5f0da1fd621eefbd64" data-adst-w="728" data-adst-h="90" style="width:728px;height:90px;max-width:100%;margin:0 auto;"></div></div><div class="ad-mobile-only" style="display:flex;justify-content:center;"><div class="adst-slot" id="ad-slot-4" data-adst-key="f9a6a26e51d4d397ec65d29e8f2ca7a5" data-adst-w="320" data-adst-h="50" style="width:320px;height:50px;max-width:100%;margin:0 auto;"></div></div></div></div>
 
       <!-- ── PREV / NEXT NAVIGATION ── -->
-      <nav class="pn-nav" id="pn-nav" aria-label="Navegação entre artigos"><a class="pn-btn pn-prev" href="/blog/fap-2027-consulta-empresas-portal.html"><span class="pn-arrow">‹</span><div><div class="pn-label">Artigo anterior</div><div class="pn-title">FAP 2027 já pode ser consultado pelas empresas no portal</div><div class="pn-cat">Legislação e Normas</div></div></a><a class="pn-btn pn-next" href="/blog/tema-073-tst-onus-prova-jornada-trabalho-externo.html"><div><div class="pn-label">Próximo artigo</div><div class="pn-title">Tema 073 do TST: ônus da prova no trabalho externo</div><div class="pn-cat">Prática Advocatícia</div></div><span class="pn-arrow">›</span></a></nav>
+      <nav class="pn-nav" id="pn-nav" aria-label="Navegação entre artigos"><a class="pn-btn pn-prev" href="/blog/fap-2027-consulta-empresas-portal.html"><span class="pn-arrow">‹</span><div><div class="pn-label">Artigo anterior</div><div class="pn-title">FAP 2027 já pode ser consultado pelas empresas no portal</div><div class="pn-cat">Legislação e Normas</div></div></a><a class="pn-btn pn-next" href="/blog/esocial-falta-s-2200-admissao-preliminar.html"><div><div class="pn-label">Próximo artigo</div><div class="pn-title">eSocial: o que ocorre sem o envio do S-2200?</div><div class="pn-cat">eSocial</div></div><span class="pn-arrow">›</span></a></nav>
 
       <!-- Related posts -->
       <div class="related-section" id="related-section"><h3>Artigos Relacionados</h3><div class="related-grid"><a class="related-card" href="/blog/tst-reconvencao-horas-extras-concorrencia-desleal.html"><img class="r-img" src="https://plus.unsplash.com/premium_photo-1733259707122-c8d827ce298f?q=80&w=1434&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><div class="r-body"><div class="r-cat">TST</div><div class="r-title">TST admite reconvenção em ação sobre horas extras</div><div class="r-date">6 de out. de 2026</div></div></a><a class="related-card" href="/blog/tst-pagamento-dobro-domingos-trabalhados-mulher.html"><img class="r-img" src="https://images.unsplash.com/photo-1788230548191-9e1ba2942569?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><div class="r-body"><div class="r-cat">TST</div><div class="r-title">TST garante pagamento em dobro por domingos trabalhados</div><div class="r-date">2 de out. de 2026</div></div></a><a class="related-card" href="/blog/tst-ifood-responsabilidade-dividas-operador-logistico.html"><img class="r-img" src="https://images.unsplash.com/photo-1617347454431-f49d7ff5c3b1?q=80&w=1115&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" loading="lazy"><div class="r-body"><div class="r-cat">TST</div><div class="r-title">TST responsabiliza iFood por dívidas de operador logístico</div><div class="r-date">30 de set. de 2026</div></div></a></div></div>
@@ -1512,12 +1514,10 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   </div>
 </div>
 
-<!-- Ad: footer -->
+<!-- Ad: artigo-final -->
 <div class="ad-container ad-footer">
-  <div class="ad-placeholder">
-    
-    
-  </div>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="4989563836" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
 <footer id="ftr">

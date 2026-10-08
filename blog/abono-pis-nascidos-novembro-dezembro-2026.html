@@ -911,7 +911,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 /* ── BLOG POST OVERRIDES ── */
 .container { max-width: 1560px; }
 .article-wrap { max-width: 800px; margin: 0 auto; }
-.post-hero .article-wrap{max-width:none;margin:0;}
+
 
 .post-hero {
   background: linear-gradient(135deg, var(--b900) 0%, var(--b700) 55%, var(--b500) 100%);
@@ -1145,6 +1145,8 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 #hdr-search-btn-desktop svg{flex-shrink:0;opacity:.7;}
 #hdr-search-btn-desktop span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 @media(max-width:1100px){ #hdr-search-btn-desktop{width:36px;padding:0;justify-content:center;} #hdr-search-btn-desktop span{display:none;} }
+/* Mobile: a lupa fica só no topo (esquerda); a pílula de busca do desktop não aparece dentro do menu */
+@media(max-width:768px){ #hdr-search-btn-desktop{display:none !important;} }
 .hdr-search-btn{display:none;}
 @media(max-width:768px){
   #hdr { height: auto !important; }
@@ -1366,7 +1368,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       </nav>
       <h1>Abono do PIS 2026: nascidos em novembro e dezembro recebem</h1>
       <div class="post-hero-meta">
-        <a href="/sobre" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:3px 12px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85);text-decoration:none;"><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-autoria"/></svg></span>Por Anderson Fernandes</a>
+        <a href="/sobre" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:3px 12px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:8px;text-decoration:none;"><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-autoria"/></svg></span>Por Anderson Fernandes</a><br>
         <strong>Publicado em:</strong> 18 de agosto de 2026
                 <div style="margin-top:6px;">
           <span id="post-view-count" style="display:none;font-size:.75rem;color:rgba(255,255,255,.45);"></span>
@@ -1441,6 +1443,16 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   <p>Além disso, as informações do trabalhador precisam ter sido corretamente declaradas pelo empregador no eSocial, pois esses dados são utilizados para verificar o direito ao benefício.</p>
 
   <p>O abono salarial foi instituído pela Lei nº 7.998/1990 e é custeado pelo Fundo de Amparo ao Trabalhador (FAT). O benefício pode alcançar o equivalente a um salário mínimo, mas o valor é calculado proporcionalmente à quantidade de meses trabalhados no ano-base.</p>
+
+  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (native desktop / 300x250 mobile) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="ad-desktop-only" id="ad-post-mid-native" style="width:100%;max-width:100%;margin:20px 0;">
+      <div class="adst-native-slot" style="width:100%;"></div>
+    </div>
+    <div class="adst-slot ad-mobile-only" id="ad-post-mid-mobile-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
 <h2>Como funciona o pagamento do PIS</h2>
 
   <p>Para os trabalhadores da iniciativa privada inscritos no PIS, a Caixa Econômica Federal realiza o pagamento prioritariamente por meio de crédito em conta corrente, poupança ou Conta Digital.</p>
@@ -1515,12 +1527,10 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
   </div>
 </div>
 
-<!-- Ad: footer -->
+<!-- Ad: artigo-final -->
 <div class="ad-container ad-footer">
-  <div class="ad-placeholder">
-    
-    
-  </div>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3280539734623058" data-ad-slot="4989563836" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
 <footer id="ftr">

@@ -103,6 +103,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 #hdr-search-btn-desktop svg{flex-shrink:0;opacity:.7;}
 #hdr-search-btn-desktop span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 @media(max-width:1100px){ #hdr-search-btn-desktop{width:36px;padding:0;justify-content:center;} #hdr-search-btn-desktop span{display:none;} }
+/* Mobile: a lupa fica só no topo (esquerda); a pílula de busca do desktop não aparece dentro do menu */
+@media(max-width:768px){ #hdr-search-btn-desktop{display:none !important;} }
 #hdr-search-btn-desktop:hover{background:var(--b50);color:var(--acc);}
 
 /* ── Busca: botão mobile (esquerda do header, mesmo tamanho do hamburger) ── */

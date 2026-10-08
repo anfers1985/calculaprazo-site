@@ -894,7 +894,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 /* ── BLOG POST OVERRIDES ── */
 .container { max-width: 1560px; }
 .article-wrap { max-width: 800px; margin: 0 auto; }
-.post-hero .article-wrap{max-width:none;margin:0;}
+
 
 .post-hero {
   background: linear-gradient(135deg, var(--b900) 0%, var(--b700) 55%, var(--b500) 100%);
@@ -1034,7 +1034,6 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);line-height:1.6
 
 /* ── AdSense: colapsa blocos vazios até aprovação ── */
 ins.adsbygoogle:not([data-ad-status="filled"]) { min-height: 0 !important; }
-.ad-block, .ad-container { min-height: 90px; } /* Reserva espaço → reduz CLS */
 ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !important; }
 
 /* ── Nav menu seções expansíveis ── */
@@ -1140,6 +1139,8 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 #hdr-search-btn-desktop svg{flex-shrink:0;opacity:.7;}
 #hdr-search-btn-desktop span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 @media(max-width:1100px){ #hdr-search-btn-desktop{width:36px;padding:0;justify-content:center;} #hdr-search-btn-desktop span{display:none;} }
+/* Mobile: a lupa fica só no topo (esquerda); a pílula de busca do desktop não aparece dentro do menu */
+@media(max-width:768px){ #hdr-search-btn-desktop{display:none !important;} }
 .hdr-search-btn{display:none;}
 @media(max-width:768px){
   #hdr { height: auto !important; }
@@ -1361,7 +1362,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       </nav>
       <h1>Justiça reconhece dispensa discriminatória e determina reintegração de empregada com leucemia</h1>
       <div class="post-hero-meta">
-        <a href="/sobre" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:3px 12px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85);text-decoration:none;"><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-autoria"/></svg></span>Por Anderson Fernandes</a>
+        <a href="/sobre" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:3px 12px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:8px;text-decoration:none;"><span class="inline-ic"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-autoria"/></svg></span>Por Anderson Fernandes</a><br>
         <strong>Publicado em:</strong> 20 de abril de 2026
                 <div style="margin-top:6px;">
           <span id="post-view-count" style="display:none;font-size:.75rem;color:rgba(255,255,255,.45);"></span>
@@ -1387,7 +1388,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
 
 
       <!-- Cover image -->
-      <div style="margin-bottom:24px;border-radius:12px;overflow:hidden;height:440px;background:#eef2f7;display:flex;align-items:center;justify-content:center;"><img src="https://images.unsplash.com/photo-1758598306493-99e22e718e08?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY2NTA4MTl8&ixlib=rb-4.1.0&q=80&w=1080" alt="Justiça reconhece dispensa discriminatória e determina reintegração de empregada com leucemia" width="1200" height="630" loading="lazy" onerror="this.parentElement.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+      <div style="margin-bottom:6px;border-radius:12px;overflow:hidden;height:440px;background:#eef2f7;display:flex;align-items:center;justify-content:center;"><img src="https://images.unsplash.com/photo-1758598306493-99e22e718e08?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjU3NTN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzY2NTA4MTl8&ixlib=rb-4.1.0&q=80&w=1080" alt="Justiça reconhece dispensa discriminatória e determina reintegração de empregada com leucemia" width="1200" height="630" loading="lazy" onerror="this.parentElement.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;"></div><p style="font-size:.75rem;color:#64748B;margin:0 0 24px;">Fonte: unsplash</p>
 
       <!-- Ad: topo do artigo (mostra apenas quando AdSense aprovado) -->
 
@@ -1398,6 +1399,16 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; height:0 !
       <article class="article-body">
         <h2>Justiça reconhece dispensa discriminatória e determina reintegração de empregada com leucemia</h2><p>O Tribunal Regional do Trabalho da 3ª Região (TRT-MG) recentemente decidiu um caso que reforça a importância da proteção contra a discriminação no ambiente de trabalho. A decisão foi proferida em uma reclamação trabalhista apresentada por uma empregada que sofre de leucemia e foi dispensada de sua função cinco dias após apresentar atestado médico.</p><p>A empregada, que trabalhava como funcionária de uma empresa de serviços, foi diagnosticada com leucemia e apresentou atestado médico para justificar sua ausência do trabalho. No entanto, cinco dias após a apresentação do atestado, a empresa decidiu dispensá-la de sua função, alegando que a doença da empregada era um obstáculo para o desempenho de suas funções.</p><p>A empregada entrou com uma reclamação trabalhista contra a empresa, alegando que a dispensa foi discriminatória e que ela foi vítima de discriminação por motivo de doença. A reclamação foi analisada pelo TRT-MG, que decidiu que a dispensa da empregada foi discriminatória e que ela tem direito à reintegração ao trabalho.</p><h2>Fundamentos legais e súmulas aplicados</h2><p style="margin:24px 0;padding:14px 18px;background:var(--card);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;font-size:.92rem;">📖 <strong>Leia também:</strong> <a href="/blog/assedio-eleitoral-multa-400-mil-carmo-do-cajuru.html" style="color:#2563EB;font-weight:600;">Assédio eleitoral rende multa de R$ 400 mil em MG</a></p>
 <p>A decisão do TRT-MG foi baseada nos seguintes fundamentos legais e súmulas:</p><ul><li>Artigo 5º, inciso I, da Constituição Federal, que garante a igualdade de todos perante a lei;</li><li>Artigo 7º, inciso XXX, da Constituição Federal, que proíbe a discriminação no ambiente de trabalho;</li><li>Súmula 443 do Tribunal Superior do Trabalho (TST), que estabelece que a discriminação por motivo de doença é considerada uma violação dos direitos trabalhistas;</li><li>Súmula 354 do TST, que estabelece que a reintegração ao trabalho é uma das formas de reparação dos danos causados pela discriminação.</ul>
+
+  <!-- ▸ ANÚNCIO ADSTERRA: meio do artigo (native desktop / 300x250 mobile) -->
+  <div style="display:flex;justify-content:center;">
+    <div class="ad-desktop-only" id="ad-post-mid-native" style="width:100%;max-width:100%;margin:20px 0;">
+      <div class="adst-native-slot" style="width:100%;"></div>
+    </div>
+    <div class="adst-slot ad-mobile-only" id="ad-post-mid-mobile-adsterra"
+         data-adst-key="b4454cd1dba198adabbd5fad568cb2c6" data-adst-w="300" data-adst-h="250"
+         style="width:300px;height:250px;max-width:100%;margin:20px 0;"></div>
+  </div>
 <h2>O que foi decidido e por quê</h2><p>A decisão do TRT-MG determinou a reintegração da empregada ao trabalho e a indenização por danos morais. A justificativa para a decisão foi a de que a dispensa da empregada foi discriminatória e que ela tem direito à reintegração ao trabalho de acordo com a Constituição Federal e as súmulas do TST.</p><h2>Tese jurídica que se extrai</h2><p>A tese jurídica que se extrai da decisão do TRT-MG é que a discriminação no ambiente de trabalho é considerada uma violação dos direitos trabalhistas e que a reintegração ao trabalho é uma das formas de reparação dos danos causados pela discriminação.</p><h2>Consequências práticas para empresas e trabalhadores</h2><p>A decisão do TRT-MG tem consequências práticas importantes para as empresas e os trabalhadores. Para as empresas, a decisão significa que elas devem evitar a discriminação no ambiente de trabalho e respeitar os direitos trabalhistas dos empregados. Para os trabalhadores, a decisão significa que eles têm direito à reintegração ao trabalho em caso de discriminação e que podem buscar reparação dos danos causados pela discriminação.</p><h2>Orientações objetivas para RH e jurídico</h2><p>As orientações objetivas para RH e jurídico são as seguintes:</p><ul><li>As empresas devem evitar a discriminação no ambiente de trabalho e respeitar os direitos trabalhistas dos empregados;</li><li>Os empregados têm direito à reintegração ao trabalho em caso de discriminação e podem buscar reparação dos danos causados pela discriminação;</li><li>As empresas devem ter políticas de igualdade e não discriminação em vigor e treinar os funcionários sobre essas políticas;</li><li>Os empregados devem estar cientes de seus direitos trabalhistas e buscar ajuda de um advogado se forem vítimas de discriminação.</ul>
 <p style="font-size:.78rem;color:#64748B;margin-top:28px;padding-top:12px;border-top:1px solid #E2E8F0;"><strong>Fonte:</strong> <a href="https://portal.trt3.jus.br/internet/conheca-o-trt/comunicacao/noticias-juridicas" target="_blank" rel="noopener noreferrer">TRT-3 (MG)</a> — acesso em 20 de abril de 2026.</p>
       
