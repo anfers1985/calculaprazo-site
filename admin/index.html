@@ -2369,6 +2369,7 @@ async function publicarPost(post, pat) {
       .replace(/\{\{TAGS_BADGES\}\}/g,    tagsBadgesHTML)
       .replace(/\{\{TAGS_JSON\}\}/g,      tagsJSON)
       .replace(/\{\{OG_IMAGE\}\}/g,       ogImageTag)
+      .replace(/\{\{OG_IMAGE_URL\}\}/g,   ogImageUrl)
       .replace(/\{\{SCHEMA_IMAGE\}\}/g,   schemaImage)
       .replace(/\{\{COVER_IMAGE_HTML\}\}/g, coverHTML)
       .replace(/\{\{AUTHOR_NAME\}\}/g,     getAuthorById(post.author || 'anderson-fernandes').name)
@@ -3299,6 +3300,7 @@ async function baixarHTML() {
       .replace(/\{\{TAGS_BADGES\}\}/g,    tagsBadgesHTML)
       .replace(/\{\{TAGS_JSON\}\}/g,      JSON.stringify(tagsArr))
       .replace(/\{\{OG_IMAGE\}\}/g,       `<meta property="og:image" content="${ogImageUrlLocal}">`)
+      .replace(/\{\{OG_IMAGE_URL\}\}/g,   ogImageUrlLocal)
       .replace(/{{SCHEMA_IMAGE}}/g,   schemaImageLocal)
       .replace(/\{\{COVER_IMAGE_HTML\}\}/g, coverHTML);
 

@@ -370,6 +370,7 @@ function publicarItem(item, template, postsAtuais) {
     .replace(/\{\{TAGS_BADGES\}\}/g, tagsBadgesHTML)
     .replace(/\{\{TAGS_JSON\}\}/g, tagsJSON)
     .replace(/\{\{OG_IMAGE\}\}/g, ogImageTag)
+    .replace(/\{\{OG_IMAGE_URL\}\}/g, ogImageUrl)
     .replace(/\{\{SCHEMA_IMAGE\}\}/g, schemaImage)
     .replace(/\{\{COVER_IMAGE_HTML\}\}/g, coverHTML)
     .replace(/\{\{AUTHOR_NAME\}\}/g, authorInfo.name)
