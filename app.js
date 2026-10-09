@@ -1710,7 +1710,7 @@ function extSetMode(m,btn){
   document.getElementById('ext-lbl').textContent=m==='num'?'Número':'Valor em Reais (R$)';
   // Atualizar placeholder conforme o modo
   const inp=document.getElementById('ext-val');
-  inp.placeholder=m==='num'?'Ex: 1234567':'Ex: 1.234,56 ou 1234.56';
+  inp.placeholder=m==='num'?'Ex: 1.234,56 ou -235,15':'Ex: 1.234,56 ou 1234.56';
   // Recalcular com o novo modo se já houver valor digitado
   const val=inp.value.trim();
   if(val!=='') calcExtenso();
@@ -1722,13 +1722,14 @@ const DEZ=['','','vinte','trinta','quarenta','cinquenta','sessenta','setenta','o
 const CENT=['','cento','duzentos','trezentos','quatrocentos','quinhentos','seiscentos','setecentos','oitocentos','novecentos'];
 function ext100(n){if(n===0)return'';if(n===100)return'cem';let s='';if(n>=100){s=CENT[Math.floor(n/100)];n%=100;if(n>0)s+=' e ';}if(n>=20){s+=DEZ[Math.floor(n/10)];if(n%10>0)s+=' e '+UNID[n%10];}else if(n>0)s+=UNID[n];return s;}
 function numExt(n){
-  if(n===0)return'zero';
-  let neg=n<0;n=Math.abs(Math.round(n));
-  const tri=Math.floor(n/1e12);n%=1e12;
-  const bi=Math.floor(n/1e9);n%=1e9;
-  const mi=Math.floor(n/1e6);n%=1e6;
-  const mi2=Math.floor(n/1000);n%=1000;
-  const resto=n;
+  n=BigInt(n);
+  if(n===0n)return'zero';
+  let neg=n<0n;if(neg)n=-n;
+  const tri=Number(n/1000000000000n);n%=1000000000000n;
+  const bi=Number(n/1000000000n);n%=1000000000n;
+  const mi=Number(n/1000000n);n%=1000000n;
+  const mi2=Number(n/1000n);n%=1000n;
+  const resto=Number(n);
   let partes=[];
   if(tri>0)partes.push({t:tri===1?'um trilhão':ext100(tri)+' trilhões',grandeza:true,raw:tri});
   if(bi>0) partes.push({t:bi===1?'um bilhão':ext100(bi)+' bilhões',grandeza:true,raw:bi});
@@ -1740,43 +1741,87 @@ function numExt(n){
     if(i===0){s=partes[i].t;continue;}
     const p=partes[i],ehUltimo=i===partes.length-1;
     const usaE=ehUltimo&&((!p.grandeza&&(p.raw<100||p.raw%100===0))||(p.isMil&&p.raw===1)||(p.grandeza&&!p.isMil&&p.raw<100));
-    s+=(usaE?' e ':', ')+p.t;
+    s+=(usaE?' e ':(partes[i-1].isMil?' ':', '))+p.t;
   }
   if(neg)s='menos '+s;return s;
 }
-function calcExtenso(){
-  // Aceita formato BR (1.234,56) e US (1234.56)
-  let raw=document.getElementById('ext-val').value.trim();
-  // Detectar formato BR: tem ponto de milhar E vírgula decimal
-  if(/^-?[\d.]+,\d{1,2}$/.test(raw.replace(/\s/g,''))) {
-    raw = raw.replace(/\./g,'').replace(',','.');  // 1.234,56 → 1234.56
-  } else {
-    raw = raw.replace(',','.');  // 1234,56 → 1234.56
+// Interpreta o texto digitado (formato BR 1.234,56 ou US 1,234.56 ou 1234.56) sem usar float.
+// Retorna {neg, ip, dp} (ip = parte inteira, dp = parte decimal, ambos só dígitos) ou null se inválido.
+function extParse(raw){
+  let s=String(raw).replace(/\s/g,'').replace(/^([-+\u2212\u2013]?)R\$/i,'$1');
+  let neg=false;
+  if(/^[-\u2212\u2013]/.test(s)){neg=true;s=s.slice(1);}else if(s[0]==='+')s=s.slice(1);
+  if(!s||!/^[\d.,]+$/.test(s)||!/\d/.test(s))return null;
+  const lc=s.lastIndexOf(','),ld=s.lastIndexOf('.');
+  let decSep=null;
+  if(lc>=0&&ld>=0)decSep=lc>ld?',':'.';                       // o último separador é o decimal
+  else if(lc>=0)decSep=(s.split(',').length===2)?',':null;    // uma vírgula = decimal (padrão BR)
+  else if(ld>=0){
+    const pt=s.split('.');
+    // "1.234" (grupo de 3 dígitos) é milhar no padrão BR; "12.5" ou "1234.56" é decimal
+    if(pt.length===2&&!(pt[1].length===3&&pt[0].length>=1&&pt[0].length<=3&&pt[0]!=='0'))decSep='.';
   }
-  const v=parseFloat(raw);
+  let ip=s,dp='';
+  if(decSep){const i=s.lastIndexOf(decSep);ip=s.slice(0,i);dp=s.slice(i+1);}
+  if(!/^\d*$/.test(dp))return null;
+  if(/[.,]/.test(ip)){
+    // separadores de milhar: todos iguais e em grupos de 3 dígitos
+    if(!/^\d{1,3}(?:([.,])\d{3}(?:\1\d{3})*)$/.test(ip))return null;
+    ip=ip.replace(/[.,]/g,'');
+  }
+  ip=ip.replace(/^0+(?=\d)/,'');
+  if(ip==='')ip='0';
+  return {neg,ip,dp};
+}
+// Parte decimal do modo "Número": ≤3 dígitos lê como número (zeros à esquerda viram "zero"); >3 lê dígito a dígito.
+function extDecTexto(dp){
+  if(!dp||/^0*$/.test(dp))return'';  // 485,00 = 485
+  if(dp.length>3){
+    return dp.split('').map(d=>d==='0'?'zero':UNID[+d]||'').join(' ');
+  }
+  const z=dp.match(/^0*/)[0].length;
+  const rest=dp.slice(z);
+  return Array(z).fill('zero').join(' ')+(z&&rest?' ':'')+(rest?numExt(BigInt(rest)):'');
+}
+const EXT_MAX_INT=15; // até 999 trilhões
+function calcExtenso(){
   const res=document.getElementById('ext-res');
-  if(raw===''||isNaN(v)){res.classList.remove('show');return;}
+  const out=document.getElementById('ext-res-val');
+  const raw=document.getElementById('ext-val').value.trim();
+  const P=extParse(raw);
+  if(raw===''||!P){res.classList.remove('show');return;}
+  if(P.ip.length>EXT_MAX_INT||P.dp.length>EXT_MAX_INT){
+    out.textContent='Número muito grande: o limite é 999 trilhões (15 dígitos na parte inteira).';
+    res.classList.add('show');return;
+  }
   let txt;
   if(extMode==='brl'){
-    const neg=v<0,abs=Math.abs(v);
-    const reais=Math.floor(abs);
-    const cents=Math.round((abs-reais)*100);
+    // arredonda para centavos (meio para cima) usando só inteiros
+    const c2=(P.dp+'00').slice(0,2);
+    let total=BigInt(P.ip+c2);
+    if(P.dp.length>2&&P.dp.charCodeAt(2)>=53)total+=1n;   // 3º dígito ≥ 5
+    const reais=total/100n,cents=Number(total%100n);
+    if(reais>=1000000000000000n){ // o arredondamento passou do limite
+      out.textContent='Número muito grande: o limite é 999 trilhões (15 dígitos na parte inteira).';
+      res.classList.add('show');return;
+    }
     let partes=[];
-    if(reais>0){
+    if(reais>0n){
       const s=numExt(reais);
       // 'de reais' após múltiplos exatos de milhão/bilhão/trilhão
-      const ehExato=(reais>=1e6&&reais%1e6===0)||(reais>=1e9&&reais%1e9===0)||(reais>=1e12&&reais%1e12===0);
-      partes.push(s+(ehExato?' de reais':reais===1?' real':' reais'));
+      const ehExato=reais>=1000000n&&reais%1000000n===0n;
+      partes.push(s+(ehExato?' de reais':reais===1n?' real':' reais'));
     }
-    if(cents>0) partes.push(numExt(cents)+(cents===1?' centavo':' centavos'));
-    if(!partes.length) partes.push('zero reais');
-    txt=(neg?'menos ':'')+partes.join(' e ');
-    txt=txt.charAt(0).toUpperCase()+txt.slice(1);
-  } else {
-    txt=numExt(Math.round(v));
-    txt=txt.charAt(0).toUpperCase()+txt.slice(1);
+    if(cents>0)partes.push(numExt(cents)+(cents===1?' centavo':' centavos'));
+    if(!partes.length)partes.push('zero reais');
+    txt=((P.neg&&total>0n)?'menos ':'')+partes.join(' e ');
+  }else{
+    const dec=extDecTexto(P.dp);
+    const zero=(P.ip==='0'&&!dec);
+    txt=((P.neg&&!zero)?'menos ':'')+numExt(BigInt(P.ip))+(dec?' vírgula '+dec:'');
   }
-  document.getElementById('ext-res-val').textContent=txt;
+  txt=txt.charAt(0).toUpperCase()+txt.slice(1);
+  out.textContent=txt;
   res.classList.add('show');
   showAdAfterResult('ad-extenso-result');trackCalcUsage('extenso','cc-extenso');
 }

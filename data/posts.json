@@ -1,5 +1,29 @@
 [
   {
+    "id": "salario-complessivo-como-identificar-riscos-trabalhistas",
+    "title": "Salário complessivo: como identificar e evitar riscos",
+    "category": "orientacoes-praticas",
+    "category_label": "Outros RH",
+    "excerpt": "Pagamento global de salário pode ocultar horas extras e adicionais. Entenda o salário complessivo e os cuidados exigidos pela legislação trabalhista.",
+    "image": "https://plus.unsplash.com/premium_photo-1678567671940-64eeefe22e5b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-09",
+    "updatedAt": "2026-10-09",
+    "tags": []
+  },
+  {
+    "id": "tema-085-tst-horas-extras-rescisao-indireta",
+    "title": "Tema 085 do TST: horas extras e rescisão indireta",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "TST define que o não pagamento habitual de horas extras e a falta ou redução do intervalo intrajornada podem gerar rescisão indireta.",
+    "image": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-09",
+    "updatedAt": "2026-10-09",
+    "tags": []
+  },
+  {
     "id": "inss-pagara-afastamento-de-mulheres-vitimas-de-violencia",
     "title": "INSS pagará afastamento de mulheres vítimas de violência",
     "category": "legislacao-previdenciario",
