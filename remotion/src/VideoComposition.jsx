@@ -10,6 +10,16 @@ const CORES = {
   azulClaro: '#60A5FA',
 };
 
+// Sino em SVG inline (emoji não é confiável no Chrome headless do runner: depende de fonte instalada).
+function Sino({ tamanho = 28, cor = '#fff' }) {
+  return (
+    <svg width={tamanho} height={tamanho} viewBox="0 0 24 24" fill="none" stroke={cor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+      <path d="M13.7 21a2 2 0 0 1-3.4 0" />
+    </svg>
+  );
+}
+
 function Cena({ imagem, textoTela, narracao, logoSrc }) {
   const frame = useCurrentFrame();
   // Ken Burns: zoom lento e contínuo, dá sensação de movimento numa imagem estática.
@@ -50,6 +60,22 @@ function Cena({ imagem, textoTela, narracao, logoSrc }) {
             opacity: 0.85, boxShadow: '0 4px 16px rgba(0,0,0,.35)',
           }}
         />
+      )}
+      {/* Selo "Inscreva-se": ao lado da logo, no canto superior ESQUERDO — a lateral direita e o
+          rodapé são zona de UI do Shorts; o topo direito tem os ícones de busca/câmera. */}
+      {logoSrc && (
+        <div
+          style={{
+            position: 'absolute', top: 76, left: 150,
+            display: 'flex', alignItems: 'center', gap: 10,
+            background: 'rgba(10,22,40,0.72)', borderRadius: 999, padding: '10px 22px 10px 16px',
+            fontFamily: 'Outfit, sans-serif', fontWeight: 700, fontSize: 28, color: '#fff',
+            border: `2px solid ${CORES.dourado}`,
+          }}
+        >
+          <Sino tamanho={28} cor={CORES.dourado} />
+          Inscreva-se no canal
+        </div>
       )}
       {/* CORREÇÃO (era o bug da legenda sobreposta na UI do Shorts):
           antes, texto_tela e narração tinham cada um seu próprio "bottom" fixo (340 e 250px).
@@ -155,7 +181,18 @@ function CenaFinal({ textoTela, logoSrc }) {
       )}
       <div
         style={{
-          marginTop: 44, background: CORES.dourado, color: CORES.navyEscuro,
+          marginTop: 44, display: 'flex', alignItems: 'center', gap: 14,
+          background: 'transparent', color: '#fff', border: `3px solid ${CORES.dourado}`,
+          fontFamily: 'Outfit, sans-serif', fontWeight: 700, fontSize: 32,
+          padding: '18px 44px', borderRadius: 999,
+        }}
+      >
+        <Sino tamanho={34} cor={CORES.dourado} />
+        Inscreva-se no canal
+      </div>
+      <div
+        style={{
+          marginTop: 24, background: CORES.dourado, color: CORES.navyEscuro,
           fontFamily: 'Outfit, sans-serif', fontWeight: 700, fontSize: 32,
           padding: '20px 52px', borderRadius: 999, transform: `scale(${pulso})`,
           boxShadow: '0 8px 30px rgba(244,197,66,0.35)',

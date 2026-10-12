@@ -27,6 +27,7 @@ import asyncio
 import os
 import re
 import sys
+import time
 from pathlib import Path
 
 import edge_tts
@@ -129,9 +130,36 @@ def dividir_em_trechos(texto: str):
     return trechos
 
 
+# O Edge TTS é um canal gratuito "emprestado" do navegador Edge, sem contrato: a Microsoft
+# às vezes responde 403/429/5xx de forma intermitente (principalmente a IPs de datacenter,
+# como o runner do GitHub Actions). Por isso cada trecho é tentado algumas vezes, com espera
+# crescente, antes de o job falhar. O IP do runner muda a cada execução, então uma nova
+# tentativa tem boa chance de passar.
+TENTATIVAS_TTS = 5
+ESPERAS_TTS_SEG = [3, 6, 12, 20]   # espera antes da 2ª, 3ª, 4ª e 5ª tentativa
+PAUSA_ENTRE_CHAMADAS_SEG = 0.4     # respiro entre trechos pra não rajadar o serviço
+
+
 async def sintetizar_trecho(texto: str, rate: str, destino_mp3: Path):
-    comunicador = edge_tts.Communicate(texto, voice=EDGE_VOICE, rate=rate)
-    await comunicador.save(str(destino_mp3))
+    ultimo_erro = None
+    for tentativa in range(1, TENTATIVAS_TTS + 1):
+        try:
+            comunicador = edge_tts.Communicate(texto, voice=EDGE_VOICE, rate=rate)
+            await comunicador.save(str(destino_mp3))
+            if destino_mp3.exists() and destino_mp3.stat().st_size > 0:
+                return
+            raise RuntimeError("Edge TTS devolveu áudio vazio.")
+        except Exception as e:  # noqa: BLE001 — qualquer falha de rede/serviço entra na repetição
+            ultimo_erro = e
+            if tentativa == TENTATIVAS_TTS:
+                break
+            espera = ESPERAS_TTS_SEG[min(tentativa - 1, len(ESPERAS_TTS_SEG) - 1)]
+            print(
+                f"  Edge TTS falhou (tentativa {tentativa}/{TENTATIVAS_TTS}): "
+                f"{type(e).__name__}: {str(e)[:120]} — nova tentativa em {espera}s"
+            )
+            await asyncio.sleep(espera)
+    raise ultimo_erro
 
 
 def cortar_silencio_das_pontas(segmento: AudioSegment, limiar_db: int = -42) -> AudioSegment:
@@ -175,6 +203,7 @@ def main(job_id: str):
         for j, (texto_trecho, pausa_depois_ms) in enumerate(trechos):
             trecho_mp3 = tmp_dir / f"cena_{i:02d}_trecho_{j:02d}.mp3"
             asyncio.run(sintetizar_trecho(texto_trecho, rate, trecho_mp3))
+            time.sleep(PAUSA_ENTRE_CHAMADAS_SEG)
             audio_trecho = AudioSegment.from_file(trecho_mp3, format="mp3")
             audio_trecho = cortar_silencio_das_pontas(audio_trecho)
             cena_audio += audio_trecho

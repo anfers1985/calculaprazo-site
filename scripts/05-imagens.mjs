@@ -27,7 +27,7 @@ const PIXABAY_API_KEY = process.env.PIXABAY_API_KEY;
 const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
 const LARGURA = 1080;
 const ALTURA = 1920;
-const MAX_PALAVRAS_OCR = 2; // era 5 — uma placa "CLOSED" tem 1 palavra e passava; agora o limite é bem menor
+const MAX_PALAVRAS_OCR = 1; // palavras legíveis (confiança >= 60) toleradas na foto; 2 ou mais reprova
 const PAGINAS_SORTEIO = 3;  // sorteia a página de resultados (1..3) pra variar além das primeiras fotos
 
 // Relevância pro público brasileiro: se os metadados da foto (descrição/tags do banco)
@@ -35,7 +35,10 @@ const PAGINAS_SORTEIO = 3;  // sorteia a página de resultados (1..3) pra variar
 const BLOQUEIO_METADADOS = /\b(dollars?|usd|euros?|pounds?|banknotes?|cash|money|currency|us flag|american flag|usa|united states|new york|london|washington|canada|australia|turban|sikh|hindu|india|indian|arab|ramadan|chinese|china|japan|korea|christmas|halloween|thanksgiving|stock market|bitcoin|crypto|casino|gambling|nude|bikini)\b|dólar|dolar|euro|libra|nota de dinheiro/i;
 
 // Palavras que, se o OCR achar na foto, indicam texto em inglês visível (placas, telas, papéis).
-const OCR_PALAVRAS_EN = /\b(the|and|for|you|with|your|open|closed|sale|welcome|office|exit|stop|united|states|america|federal|reserve|dollar|bank|note|legal|law|justice|court|contract|agreement|business|company|sign|news|free|new|hello|home|service|about|contact)\b/i;
+// Lista ampliada: além de palavras de placa, inclui palavras funcionais do inglês (the, you,
+// this...), que aparecem em qualquer frase — assim um texto inglês qualquer é pego mesmo que
+// não seja uma palavra "de placa". Evitei palavras que também existem em português.
+const OCR_PALAVRAS_EN = /\b(the|and|for|you|with|your|open|closed|sale|welcome|office|exit|stop|united|states|america|federal|reserve|dollar|bank|note|legal|law|justice|court|contract|agreement|business|company|sign|news|free|new|hello|home|service|about|contact|this|that|from|have|will|more|best|our|are|was|not|all|can|get|how|who|why|what|please|sorry|coffee|shop|store|market|street|hotel|cafe|pizza|team|work|time|life|love|day|now|one|out|off|sun|menu|parking|only|today)\b/i;
 const CANDIDATAS_POR_BUSCA = 12; // era 6 — pool maior ajuda o sorteio a variar de verdade
 
 function aguardar(ms) {
@@ -152,19 +155,47 @@ async function baixarUrl(url, destinoBruto) {
   fs.writeFileSync(destinoBruto, buffer);
 }
 
-// Roda OCR na foto baixada e conta quantas "palavras" de verdade (3+ letras) o Tesseract
-// reconheceu. Foto de pessoa/ambiente comum não tem texto real, então o OCR só acha ruído
-// (0-2 palavras). Foto com tela/documento/placa legível passa fácil de 5. Retorna true se
-// a foto está limpa o suficiente pra usar.
-function fotoEstaLimpaDeTexto(caminhoImagem) {
+// Roda OCR na foto baixada e decide se ela está "limpa" de texto legível. Regras (mais
+// rígidas que a versão anterior, que só comparava com uma lista curta de palavras):
+//  - lê o TSV do Tesseract (palavra + confiança), então ruído de baixa confiança não conta;
+//  - analisa a foto em 2 passagens: original e ampliada/realçada (letreiro pequeno, tela de
+//    notebook e capa de documento só aparecem na ampliada);
+//  - reprova se achar 2+ palavras legíveis (3+ letras, confiança >= 60), OU qualquer palavra
+//    longa com confiança alta (>= 80), OU qualquer palavra inglesa conhecida (confiança >= 40).
+// Foto de pessoa/ambiente comum não tem texto real, então passa.
+function palavrasDoOcr(caminhoImagem) {
+  const tsv = execFileSync('tesseract', [caminhoImagem, 'stdout', '-l', 'por+eng', '--psm', '11', 'tsv'], {
+    stdio: ['ignore', 'pipe', 'ignore'],
+    timeout: 30000,
+    maxBuffer: 20 * 1024 * 1024,
+  }).toString();
+  const palavras = [];
+  for (const linha of tsv.split('\n').slice(1)) {
+    const c = linha.split('\t');
+    if (c.length < 12) continue;
+    const conf = parseFloat(c[10]);
+    const texto = (c[11] || '').trim();
+    if (conf >= 0 && /^[A-Za-zÀ-ÿ]{3,}$/.test(texto)) palavras.push({ texto, conf });
+  }
+  return palavras;
+}
+
+async function fotoEstaLimpaDeTexto(caminhoImagem) {
   try {
-    const texto = execFileSync('tesseract', [caminhoImagem, 'stdout', '-l', 'por+eng', '--psm', '11'], {
-      stdio: ['ignore', 'pipe', 'ignore'],
-      timeout: 20000,
-    }).toString();
-    const palavras = texto.match(/[A-Za-zÀ-ÿ]{3,}/g) || [];
-    if (OCR_PALAVRAS_EN.test(texto)) return false;       // achou palavra inglesa de placa/tela/papel
-    return palavras.length <= MAX_PALAVRAS_OCR;
+    const ampliada = caminhoImagem + '.ocr.png';
+    await sharp(caminhoImagem).resize({ width: 2400, withoutEnlargement: false }).grayscale().normalise().sharpen().toFile(ampliada);
+    let palavras = [];
+    try {
+      palavras = [...palavrasDoOcr(caminhoImagem), ...palavrasDoOcr(ampliada)];
+    } finally {
+      if (fs.existsSync(ampliada)) fs.rmSync(ampliada);
+    }
+    const legiveis = palavras.filter(p => p.conf >= 60);
+    const ingles = palavras.find(p => p.conf >= 40 && OCR_PALAVRAS_EN.test(p.texto));
+    const longaForte = palavras.find(p => p.conf >= 80 && p.texto.length >= 4);
+    if (ingles) { console.warn(`    OCR: palavra inglesa "${ingles.texto}"`); return false; }
+    if (longaForte) { console.warn(`    OCR: palavra legível "${longaForte.texto}"`); return false; }
+    return legiveis.length <= MAX_PALAVRAS_OCR;
   } catch (e) {
     console.warn(`  OCR indisponível/falhou (${e.message.slice(0, 100)}) — aceitando sem checar texto.`);
     return true;
@@ -202,7 +233,11 @@ async function gerarFallbackDeMarca(destinoPng) {
 async function resolverFotoDaCena(cena, destinoBruto, memoria) {
   const termos = [cena.prompt_imagem, cena.prompt_imagem_alternativo].filter(Boolean);
   // Pexels e Pixabay primeiro (entendem português); Unsplash só como reforço.
-  const buscadores = [buscarPexels, buscarPixabay, buscarUnsplash];
+  // Unsplash é indexado em inglês e foi a principal porta de entrada de fotos com texto
+  // estrangeiro; agora só entra se UNSPLASH_AUTO=1 estiver configurado (opt-in).
+  const buscadores = process.env.UNSPLASH_AUTO === '1'
+    ? [buscarPexels, buscarPixabay, buscarUnsplash]
+    : [buscarPexels, buscarPixabay];
 
   for (const buscar of buscadores) {
     for (const termo of termos) {
@@ -222,7 +257,7 @@ async function resolverFotoDaCena(cena, destinoBruto, memoria) {
         }
         try {
           await baixarUrl(foto.url, destinoBruto);
-          if (!fotoEstaLimpaDeTexto(destinoBruto)) {
+          if (!(await fotoEstaLimpaDeTexto(destinoBruto))) {
             console.warn(`  Descartada (texto detectado na foto): ${foto.id}`);
             memoria.ids.add(foto.id);
             continue;

@@ -75,6 +75,19 @@ function validarRoteiro(r) {
   const cenasCliche = cenas.filter(c => CLICHE.test(c.prompt_imagem || '')).length;
   if (cenasCliche > 2) problemas.push(`${cenasCliche} cenas usam imagem de balança/martelo/tribunal/livros — use no máximo 2 e varie o resto (pessoas trabalhando, ambientes de trabalho, objetos do dia a dia)`);
 
+  // Neutralidade: o canal é informativo e imparcial. Reprova fala dirigida a um dos lados
+  // ("você", "seu contrato"), termos carregados ("patrão", "chefe") e adjetivos de julgamento.
+  // Vale para narração E texto_tela, porque os dois aparecem no vídeo.
+  const NAO_NEUTRO = /(?<![\p{L}])(voc[êe]s?|seus?|suas?|teu|tua|patr[ãa]o|patr[õo]es|chefe|abusiv[oa]s?|injust[oa]s?|absurd[oa]s?|vergonhos[oa]s?|explora[çc][ãa]o)(?![\p{L}])/iu;
+  cenas.forEach((c, i) => {
+    const ehUltima = i === cenas.length - 1;
+    const alvo = ehUltima ? `${c.texto_tela || ''}` : `${c.narracao || ''} ${c.texto_tela || ''}`;
+    const achou = alvo.match(NAO_NEUTRO);
+    if (achou) problemas.push(`cena ${i + 1}: linguagem não neutra ("${achou[0]}") — narre em terceira pessoa (o empregado / o empregador), sem "você", "seu", "patrão" ou adjetivos de julgamento`);
+  });
+  if (/^\s*voc[êe]\s+sabia/i.test(cenas[0]?.narracao || ''))
+    problemas.push('cena 1: o gancho não pode começar com "Você sabia" — faça uma pergunta neutra sobre o tema');
+
   const gancho = cenas[0]?.narracao || '';
   if (!gancho.includes('?')) problemas.push('a cena 1 (gancho) precisa terminar com pergunta');
   return problemas;

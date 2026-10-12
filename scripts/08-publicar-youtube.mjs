@@ -133,6 +133,7 @@ async function main(jobId) {
     descricao +
     '\n\nSaiba mais: ' +
     job.post_url +
+    '\n\n🔔 Inscreva-se no canal Calcula Prazo para acompanhar mais conteúdos sobre Direito do Trabalho.' +
     '\n\n' +
     hashtagsFinais.join(' ') +
     '\n\n' +
