@@ -150,6 +150,8 @@ jobs:
           NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}      # opcional — fallback gratuito (NVIDIA NIM)
           NVIDIA_MODEL: ${{ secrets.NVIDIA_MODEL }}          # opcional — padrão: nvidia/nemotron-3.5-lightning-30b-a3b
           EDGE_TTS_VOICE: ${{ secrets.EDGE_TTS_VOICE }}  # opcional — padrão: pt-BR-FranciscaNeural
+          AZURE_SPEECH_KEY: ${{ secrets.AZURE_SPEECH_KEY }}        # opcional — voz de reserva (Azure Speech), usada se o Edge TTS falhar
+          AZURE_SPEECH_REGION: ${{ secrets.AZURE_SPEECH_REGION }}  # região do recurso Speech (ex.: eastus)
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}  # obrigatório pra buscar as fotos das cenas
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}  # opcional — reforço se o Pexels não achar foto
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}  # opcional — mais uma fonte, reduz repetição de foto

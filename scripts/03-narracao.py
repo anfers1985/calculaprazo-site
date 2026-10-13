@@ -16,6 +16,9 @@ com o Kokoro — quebramos a narração em frases/orações e inserimos silênci
 verdade entre elas. Isso continua garantindo que ponto final e vírgula virem
 pausa real na fala, independente do motor de TTS por baixo.
 
+Reserva: se o Edge TTS falhar, usa o Azure Speech (mesma voz, API oficial) quando os secrets
+AZURE_SPEECH_KEY e AZURE_SPEECH_REGION estiverem configurados.
+
 Requisitos (instalados no workflow do GitHub Actions):
     pip install edge-tts pydub soundfile supabase requests
     ffmpeg (usado pelo pydub e para concatenar/medir os áudios)
@@ -29,8 +32,10 @@ import re
 import sys
 import time
 from pathlib import Path
+from xml.sax.saxutils import escape as xml_escape
 
 import edge_tts
+import requests
 from pydub import AudioSegment
 from pydub.silence import detect_leading_silence
 from supabase import create_client
@@ -130,17 +135,82 @@ def dividir_em_trechos(texto: str):
     return trechos
 
 
-# O Edge TTS é um canal gratuito "emprestado" do navegador Edge, sem contrato: a Microsoft
-# às vezes responde 403/429/5xx de forma intermitente (principalmente a IPs de datacenter,
-# como o runner do GitHub Actions). Por isso cada trecho é tentado algumas vezes, com espera
-# crescente, antes de o job falhar. O IP do runner muda a cada execução, então uma nova
-# tentativa tem boa chance de passar.
-TENTATIVAS_TTS = 5
+# ---------------------------------------------------------------------------------------
+# Motores de voz: Edge TTS (principal, gratuito) + Azure Speech (reserva, oficial).
+#
+# O Edge TTS é um canal gratuito "emprestado" do navegador Edge, sem contrato nem chave: a
+# Microsoft pode mudar ou bloquear a qualquer momento (o que ocorreu em 10/10/2026, quando
+# TODAS as chamadas passaram a dar 403 — não é bloqueio de IP, a autenticação do serviço mudou
+# e a biblioteca ainda não acompanhou). Por isso há uma reserva: o Azure Speech, que usa as
+# MESMAS vozes neurais (a pt-BR-FranciscaNeural soa igual) por API oficial, com plano gratuito
+# F0 (0,5 milhão de caracteres/mês).
+#
+# Funcionamento:
+#  - Edge TTS continua sendo o motor principal. Funcionando, nada muda e o Azure não é usado
+#    (não gasta a cota gratuita).
+#  - Se o Edge falhar em um trecho, tenta o Azure e, dando certo, o RESTO DO JOB continua no
+#    Azure (não perde ~40 s por trecho esperando o Edge falhar de novo).
+#  - A reserva só liga se AZURE_SPEECH_KEY e AZURE_SPEECH_REGION estiverem configurados
+#    (secrets do GitHub). Sem eles, o comportamento é só Edge TTS, com repetições.
+# ---------------------------------------------------------------------------------------
+AZURE_KEY = (os.environ.get("AZURE_SPEECH_KEY") or "").strip()
+AZURE_REGION = (os.environ.get("AZURE_SPEECH_REGION") or "").strip().lower()
+AZURE_CONFIGURADO = bool(AZURE_KEY and AZURE_REGION)
+
+# Com reserva configurada, não vale esperar 40 s no Edge antes de trocar: 2 tentativas bastam.
+TENTATIVAS_TTS = 2 if AZURE_CONFIGURADO else 5
 ESPERAS_TTS_SEG = [3, 6, 12, 20]   # espera antes da 2ª, 3ª, 4ª e 5ª tentativa
 PAUSA_ENTRE_CHAMADAS_SEG = 0.4     # respiro entre trechos pra não rajadar o serviço
 
+AZURE_TENTATIVAS = 3
+AZURE_ESPERAS_SEG = [2, 5]
 
-async def sintetizar_trecho(texto: str, rate: str, destino_mp3: Path):
+# Estado do job: depois que o Edge falha e o Azure responde, o resto do job fica no Azure.
+_estado_tts = {"usar_azure": False, "avisou_troca": False}
+
+
+def sintetizar_azure(texto: str, rate: str, destino_mp3: Path):
+    """Sintetiza um trecho pela API REST oficial do Azure Speech (voz neural, mp3)."""
+    url = f"https://{AZURE_REGION}.tts.speech.microsoft.com/cognitiveservices/v1"
+    ssml = (
+        "<speak version='1.0' xml:lang='pt-BR' xmlns='http://www.w3.org/2001/10/synthesis'>"
+        f"<voice xml:lang='pt-BR' name='{EDGE_VOICE}'>"
+        f"<prosody rate='{rate}'>{xml_escape(texto)}</prosody>"
+        "</voice></speak>"
+    )
+    headers = {
+        "Ocp-Apim-Subscription-Key": AZURE_KEY,
+        "Content-Type": "application/ssml+xml",
+        "X-Microsoft-OutputFormat": "audio-24khz-48kbitrate-mono-mp3",
+        "User-Agent": "calculaprazo-shorts",
+    }
+    ultimo_erro = None
+    for tentativa in range(1, AZURE_TENTATIVAS + 1):
+        resp = None
+        try:
+            resp = requests.post(url, headers=headers, data=ssml.encode("utf-8"), timeout=40)
+        except requests.RequestException as e:
+            ultimo_erro = e
+        if resp is not None:
+            if resp.status_code == 200 and resp.content:
+                destino_mp3.write_bytes(resp.content)
+                return
+            if resp.status_code in (401, 403):
+                # Chave errada/expirada ou região diferente da do recurso: repetir não adianta.
+                raise RuntimeError(
+                    f"Azure Speech recusou a chave (HTTP {resp.status_code}). Confira os secrets "
+                    f"AZURE_SPEECH_KEY e AZURE_SPEECH_REGION (região do recurso, ex.: eastus)."
+                )
+            ultimo_erro = RuntimeError(f"Azure Speech HTTP {resp.status_code}: {resp.text[:150]}")
+        if tentativa < AZURE_TENTATIVAS:
+            espera = AZURE_ESPERAS_SEG[min(tentativa - 1, len(AZURE_ESPERAS_SEG) - 1)]
+            print(f"  Azure Speech falhou (tentativa {tentativa}/{AZURE_TENTATIVAS}): "
+                  f"{str(ultimo_erro)[:150]} — nova tentativa em {espera}s")
+            time.sleep(espera)
+    raise ultimo_erro
+
+
+async def sintetizar_edge(texto: str, rate: str, destino_mp3: Path):
     ultimo_erro = None
     for tentativa in range(1, TENTATIVAS_TTS + 1):
         try:
@@ -160,6 +230,23 @@ async def sintetizar_trecho(texto: str, rate: str, destino_mp3: Path):
             )
             await asyncio.sleep(espera)
     raise ultimo_erro
+
+
+async def sintetizar_trecho(texto: str, rate: str, destino_mp3: Path):
+    if AZURE_CONFIGURADO and _estado_tts["usar_azure"]:
+        sintetizar_azure(texto, rate, destino_mp3)
+        return
+    try:
+        await sintetizar_edge(texto, rate, destino_mp3)
+    except Exception as erro_edge:  # noqa: BLE001
+        if not AZURE_CONFIGURADO:
+            raise
+        if not _estado_tts["avisou_troca"]:
+            print(f"  Edge TTS indisponível ({type(erro_edge).__name__}) — usando Azure Speech "
+                  f"(mesma voz {EDGE_VOICE}) pelo resto deste job.")
+            _estado_tts["avisou_troca"] = True
+        sintetizar_azure(texto, rate, destino_mp3)
+        _estado_tts["usar_azure"] = True
 
 
 def cortar_silencio_das_pontas(segmento: AudioSegment, limiar_db: int = -42) -> AudioSegment:
