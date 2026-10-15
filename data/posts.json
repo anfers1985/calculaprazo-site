@@ -1,5 +1,41 @@
 [
   {
+    "id": "lideranca-desafio-aplicacao-nr-1-riscos-psicossociais",
+    "title": "Liderança é principal desafio para aplicar a NR-1 nas empresas",
+    "category": "legislacao-nr",
+    "category_label": "NR",
+    "excerpt": "Levantamento da EXEC aponta capacitação de líderes como principal desafio para aplicar regras da NR-1 sobre riscos psicossociais no trabalho.",
+    "image": "https://images.unsplash.com/photo-1758518728641-8668e601cce1?q=80&w=1331&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-15",
+    "updatedAt": "2026-10-15",
+    "tags": []
+  },
+  {
+    "id": "exame-periodico-periodicidade-nr-7-pcmso",
+    "title": "Exame periódico: quando a NR-7 exige nova avaliação?",
+    "category": "legislacao-nr",
+    "category_label": "NR",
+    "excerpt": "A NR-7 define a periodicidade dos exames periódicos conforme os riscos ocupacionais, condições de saúde e regras do PCMSO. Entenda as exigências.",
+    "image": "https://images.unsplash.com/photo-1560264280-88b68371db39?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-15",
+    "updatedAt": "2026-10-15",
+    "tags": []
+  },
+  {
+    "id": "tema-120-tst-multa-artigo-467-vinculo-emprego",
+    "title": "Tema 120 do TST: multa do artigo 467 da CLT",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "TST afasta a multa do artigo 467 da CLT quando o vínculo de emprego é reconhecido em juízo após a relação jurídica ser contestada.",
+    "image": "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-15",
+    "updatedAt": "2026-10-15",
+    "tags": []
+  },
+  {
     "id": "tst-afasta-estabilidade-dirigente-sindical-reintegrado",
     "title": "TST afasta estabilidade de dirigente sindical reintegrado",
     "category": "jurisprudencia-tst",
