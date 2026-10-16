@@ -1907,6 +1907,12 @@ img[src*="m.media-amazon.com"] {
 .nh-ad-stage{flex:1;width:100%;display:flex;align-items:center;justify-content:center;}
 .nh-ad-stage .adst-slot{flex:0 0 auto;}
 
+/* Cabeçalho de Artigos: o botão "Ver todos os artigos" termina na borda direita da ÁREA
+   PRINCIPAL (não da página), ficando sobre os artigos e nunca sobre a coluna do banner. */
+@media(min-width:1151px){
+  .nh-artigos .nh-sec-head{padding-right:calc(var(--nh-ad-w) + var(--nh-gap));}
+}
+
 /* ── Painéis (Mais Acessados / Vídeos / Ferramentas) ── */
 .nh-panel{border-radius:var(--nh-radius);padding:var(--nh-pad);border:1px solid transparent;}
 .nh-panel-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px 16px;margin-bottom:16px;}
@@ -1972,7 +1978,8 @@ img[src*="m.media-amazon.com"] {
 /* Cartões (Mais Acessados e Vídeos usam exatamente o mesmo cartão):
    5 colunas iguais, miniatura 16:9 SEMPRE reservada (mesmo sem imagem ou se ela
    falhar), título em até 3 linhas e data/categoria colada na base. */
-.nh-card-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--nh-gap-s);align-items:stretch;}
+.nh-card-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;align-items:stretch;}
+.nh-panel-top,.nh-panel-yt{padding:20px 18px 18px;}   /* cartões mais largos = menos quebras no título */
 .nh-card-row > :nth-child(n+6){display:none;}
 .nh-card-row > p{grid-column:1 / -1;font-size:.85rem;color:var(--txt-m);padding:8px 2px;}
 .nh-panel-top .nh-card-row > p{color:#C7D7F5;}
@@ -1996,8 +2003,8 @@ img[src*="m.media-amazon.com"] {
   display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:800;color:#fff;background:#0B1437;
 }
 .nh-top10-num.top{background:var(--acc);}
-.nh-top10-info{flex:1;display:flex;flex-direction:column;gap:6px;padding:12px 14px 13px;}
-.nh-top10-title{font-size:.8rem;font-weight:700;color:var(--txt);line-height:1.35;min-height:4.05em;transition:color .15s;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.nh-top10-info{flex:1;display:flex;flex-direction:column;gap:6px;padding:10px 12px 12px;}
+.nh-top10-title{text-wrap:pretty;font-size:.75rem;font-weight:700;color:var(--txt);line-height:1.32;transition:color .15s;display:-webkit-box;-webkit-line-clamp:4;line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;}
 .nh-top10-cat{margin-top:auto;padding-top:2px;font-size:.68rem;font-weight:600;color:#64748B;}
 
 /* ── Linha 3: Ferramentas em Destaque (largura total, 5 cartões iguais) ── */
@@ -2045,11 +2052,37 @@ img[src*="m.media-amazon.com"] {
 /* ── Celular (≤768px) ── */
 @media(max-width:768px){
   .nh-artigos{--nh-gap:18px;--nh-gap-s:10px;--nh-pad:14px;--nh-radius:18px;padding:26px 0 34px;}
+  /* Pills de categoria: uma linha com rolagem horizontal e indício visual de que há mais itens
+     (a cor do degradê acompanha o fundo da seção: #F1F5FB) */
+  .nh-cat-pills-wrap{position:relative;}
+  .nh-cat-pills{
+    flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;
+    padding-bottom:4px;margin-bottom:16px;
+    padding-left:28px;padding-right:28px;scroll-padding-inline:28px;
+    scrollbar-width:none;scroll-snap-type:x proximity;
+  }
+  .nh-cat-pills::-webkit-scrollbar{display:none;}
+  .nh-pill{flex-shrink:0;white-space:nowrap;scroll-snap-align:center;}
+  .nh-cat-pills-wrap::after{
+    content:"";position:absolute;top:0;right:0;bottom:4px;width:36px;
+    background:linear-gradient(to right,rgba(241,245,251,0),#F1F5FB);
+    pointer-events:none;opacity:0;transition:opacity .2s;
+  }
+  .nh-cat-pills-wrap::before{
+    content:"";position:absolute;top:0;left:0;bottom:4px;width:36px;z-index:1;
+    background:linear-gradient(to left,rgba(241,245,251,0),#F1F5FB);
+    pointer-events:none;opacity:0;transition:opacity .2s;
+  }
+  .nh-cat-pills-wrap.has-scroll-right::after{opacity:1;}
+  .nh-cat-pills-wrap.has-scroll-left::before{opacity:1;}
+
   .nh-ad-box{padding:8px;}
   .ad-mobile-only .nh-ad-box{flex:0 0 auto;}
   .nh-small-item:nth-child(4){display:flex;}
   .nh-small-item{flex:0 0 auto;padding:10px 12px 10px 10px;}
-  .nh-small-thumb{flex-basis:108px;min-height:80px;}
+  /* miniatura idêntica nos 3 blocos (artigos, mais acessados, vídeos): 120px, 16:9 */
+  .nh-artigos{--nh-thumb-w:120px;}
+  .nh-small-thumb{flex:0 0 var(--nh-thumb-w);width:var(--nh-thumb-w);aspect-ratio:16/9;min-height:0;align-self:center;border-radius:9px;}
   .nh-small-excerpt{-webkit-line-clamp:3;line-clamp:3;}
   .nh-featured-title{font-size:1.15rem;}
   .nh-featured-body{left:16px;right:16px;bottom:16px;}
@@ -2062,10 +2095,10 @@ img[src*="m.media-amazon.com"] {
   .nh-card-row > :nth-child(n+6){display:none;}
   .nh-top10-item{flex-direction:row;align-items:center;gap:12px;padding:10px;min-height:96px;}
   .nh-top10-item::before{display:none;}
-  .nh-top10-thumb{position:relative;flex:0 0 118px;width:118px;aspect-ratio:16/9;border-radius:9px;}
-  .nh-top10-num{top:calc(50% - 27px);left:16px;width:20px;height:20px;border-radius:6px;font-size:.64rem;}  /* canto da miniatura (centralizada na linha) */
+  .nh-top10-thumb{position:relative;flex:0 0 var(--nh-thumb-w);width:var(--nh-thumb-w);aspect-ratio:16/9;border-radius:9px;}
+  .nh-top10-num{top:calc(50% - 28px);left:16px;width:20px;height:20px;border-radius:6px;font-size:.64rem;}  /* canto da miniatura (centralizada na linha) */
   .nh-top10-info{padding:0;gap:4px;}
-  .nh-top10-title{font-size:.82rem;min-height:0;}
+  .nh-top10-title{font-size:.82rem;-webkit-line-clamp:3;line-clamp:3;}
   .nh-top10-cat{margin-top:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
   /* Ferramentas: lista de cartões, só ícone + nome em UMA linha (sem descrição) */
