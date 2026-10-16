@@ -1,5 +1,77 @@
 [
   {
+    "id": "tst-mantem-justa-causa-recreadora-maus-tratos-criancas",
+    "title": "TST mantém justa causa de recreadora acusada de maus-tratos",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "TST mantém justa causa de recreadora acusada de maus-tratos a crianças após concluir que ela teve oportunidade de se defender na apuração interna.",
+    "image": "https://images.unsplash.com/photo-1763753743781-313e93737d46?q=80&w=1173&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-16",
+    "updatedAt": "2026-10-16",
+    "tags": []
+  },
+  {
+    "id": "salario-maternidade-concessao-automatica-prazo-30-dias",
+    "title": "Salário-maternidade terá concessão automática após 30 dias",
+    "category": "legislacao-portarias",
+    "category_label": "Portarias",
+    "excerpt": "Portaria conjunta do MPS e do INSS prevê salário-maternidade automático e provisório quando a análise do pedido ultrapassar 30 dias.",
+    "image": "https://images.unsplash.com/photo-1493894473891-10fc1e5dbd22?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-16",
+    "updatedAt": "2026-10-16",
+    "tags": []
+  },
+  {
+    "id": "contrato-experiencia-prazos-direitos-rescisao",
+    "title": "Contrato de experiência: prazos, direitos e rescisão",
+    "category": "geral",
+    "category_label": "Geral",
+    "excerpt": "Entenda o prazo do contrato de experiência, os direitos do trabalhador, as regras de rescisão antecipada e as situações de estabilidade.",
+    "image": "https://images.unsplash.com/photo-1646296066880-c61cac79470b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-16",
+    "updatedAt": "2026-10-16",
+    "tags": []
+  },
+  {
+    "id": "ota-aprendizagem-cumprimento-alternativo",
+    "title": "Cota de aprendizagem: como cumprir de forma alternativa",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "excerpt": "Empresas com dificuldades para cumprir a cota de aprendizagem podem utilizar modalidade alternativa prevista na legislação trabalhista.",
+    "image": "https://images.unsplash.com/photo-1606857521015-7f9fcf423740?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-16",
+    "updatedAt": "2026-10-16",
+    "tags": []
+  },
+  {
+    "id": "tema-121-tst-auxilio-alimentacao-natureza-salarial",
+    "title": "Tema 121 do TST: auxílio-alimentação e natureza salarial",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "Entenda a tese vinculante do Tema 121 do TST que define que o auxílio-alimentação não tem natureza salarial quando há coparticipação do empregado.",
+    "image": "https://images.unsplash.com/photo-1516594798947-e65505dbb29d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-16",
+    "updatedAt": "2026-10-16",
+    "tags": []
+  },
+  {
+    "id": "fim-escala-6x1-nova-jornada-trabalho",
+    "title": "Fim da escala 6x1: veja quando a nova jornada começa",
+    "category": "rh-jornada",
+    "category_label": "Jornada",
+    "excerpt": "Entenda as regras da PEC que prevê o fim da escala 6x1, a redução da jornada para 40 horas semanais e os prazos de transição.",
+    "image": "https://images.unsplash.com/photo-1723744910051-da35a92321af?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-16",
+    "updatedAt": "2026-10-16",
+    "tags": []
+  },
+  {
     "id": "tst-multa-empresa-limpeza-descumprimento-cota-pcd",
     "title": "TST mantém multa por descumprimento de cota PCD",
     "category": "jurisprudencia-tst",
