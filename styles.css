@@ -823,6 +823,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   max-height: 100px;
   overflow: hidden;
 }
+/* Desktop: se o anúncio do rodapé da home ainda não renderizou (ou não preencheu), não reserva a faixa
+   em branco de 90px entre a seção de artigos e o rodapé. Quando o iframe do anúncio aparece, volta ao normal. */
+@media(min-width:769px){
+  .ad-container.ad-footer:not(:has(iframe)){min-height:0;padding:0;}
+}
 /* placeholder visual (substitua pela tag <ins> do AdSense) */
 .ad-placeholder {
   width: 100%;
