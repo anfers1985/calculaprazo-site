@@ -35,7 +35,8 @@
       })
       .then(function(r) {
         if (tid) clearTimeout(tid);
-        if (r.ok) renderViewCount(slug);
+        // contagem pública removida — a leitura continua sendo registrada no Worker
+        // e fica visível só no painel /admin (Gerenciar Posts)
       })
       .catch(function(e) {
         if (tid) clearTimeout(tid);
@@ -64,17 +65,11 @@
       .catch(function()  { callback([]); });
   }
 
-  /* ── Exibir contagem no artigo ───────────────────────────── */
-  function renderViewCount(slug) {
-    var el = document.getElementById('post-view-count');
-    if (!el) return;
-    getViews(slug, function(n) {
-      if (n > 0) {
-        el.textContent = n.toLocaleString('pt-BR') + (n === 1 ? ' leitura' : ' leituras');
-        el.style.display = 'inline';
-      }
-    });
-  }
+  /* ── Contagem de leituras NÃO é mais exibida no artigo ─────
+     O número continua sendo gravado no Worker (POST /view/:slug) e pode ser
+     consultado no admin. Mantida como função vazia só para compatibilidade
+     com chamadas antigas (CPViews.render). */
+  function renderViewCount() { /* intencionalmente vazio */ }
 
   /* ── Contador de uso de calculadoras (todo clique conta) ──── */
   /* Diferente de trackView: sem dedup por sessão e sem delay —
@@ -121,15 +116,6 @@
   if (currentSlug) {
     // Track imediato (o setTimeout interno já tem delay de 8s)
     trackView(currentSlug);
-
-    // Renderizar contagem: aguardar DOM se necessário
-    function doRender() { renderViewCount(currentSlug); }
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', doRender);
-    } else {
-      // DOM já disponível (script carregado com defer após parse)
-      doRender();
-    }
   }
 
 })();

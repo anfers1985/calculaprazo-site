@@ -77,6 +77,8 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
 .post-info{flex:1;}
 .post-title{font-size:.92rem;font-weight:700;margin-bottom:3px;}
 .post-date{font-size:.75rem;color:var(--txt-s);}
+.post-views{display:inline-flex;align-items:center;gap:4px;font-size:.72rem;font-weight:700;color:var(--txt-m);background:var(--b50,#EFF6FF);border-radius:999px;padding:2px 9px;white-space:nowrap;}
+.post-views.is-empty{opacity:.55;font-weight:600;}
 .post-excerpt{font-size:.8rem;color:var(--txt-m);margin-top:4px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .post-actions{display:flex;gap:6px;flex-shrink:0;}
 /* FORM */
@@ -333,7 +335,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
         <div><div class="page-title">Gerenciar Posts</div><div class="page-sub">Edite ou remova conteúdo publicado</div></div>
         <button class="btn btn-p" onclick="goPage('new')">✏️ Novo Post</button>
       </div>
-      <div style="display:flex;gap:10px;margin-bottom:16px;">
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
         <input type="text" id="search-posts" placeholder="🔍 Buscar posts..." style="flex:1;padding:9px 13px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.86rem;font-family:var(--fh);color:var(--txt);" oninput="renderList()">
         <select id="filter-cat" style="padding:9px 13px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.86rem;font-family:var(--fh);color:var(--txt);" onchange="renderList()">
           <option value="">Todas as categorias</option>
@@ -394,7 +396,13 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
             <option value="geral">Outros (Ferramentas e Utilitários)</option>
           </optgroup>
         </select>
+        <select id="sort-posts" style="padding:9px 13px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:.86rem;font-family:var(--fh);color:var(--txt);" onchange="renderList()" title="Ordenar a lista">
+          <option value="date">Mais recentes</option>
+          <option value="views">Mais lidos</option>
+        </select>
+        <button type="button" class="btn btn-g" id="btn-load-views" onclick="loadAllViews()" title="Busca no contador (Cloudflare) as leituras de todos os posts da lista">📊 Carregar leituras</button>
       </div>
+      <div id="views-status" style="font-size:.78rem;color:var(--txt-s);margin:-6px 0 12px;"></div>
       <div class="posts-list" id="posts-list"></div>
     </div>
 
@@ -1093,7 +1101,7 @@ function goPage(id){
   const nav = document.getElementById('nav-'+id);
   if(nav) nav.classList.add('on');
   if(id==='dashboard') refreshPostsFromServer().finally(renderDashboard);
-  if(id==='list') refreshPostsFromServer().finally(renderList);
+  if(id==='list'){ refreshPostsFromServer().finally(renderList); loadTopViews(); }
   if(id==='scheduled') renderScheduled();
   if(id==='newsletter') renderNewsletter();
   if(id==='videos') renderVideos();
@@ -1159,6 +1167,77 @@ function renderDashboard(){
 }
 
 // ════════════════════════════════════════
+// LEITURAS (contador do Worker) — só aparece aqui no admin; o site público não exibe mais
+// ════════════════════════════════════════
+const VIEWS_CACHE = {};          // slug -> nº de leituras (só os já carregados)
+let   VIEWS_LOADING = false;
+let   VIEWS_TOP_DONE = false;
+
+function viewsLabel(n){ return n.toLocaleString('pt-BR') + (n === 1 ? ' leitura' : ' leituras'); }
+function viewsChipHTML(slug){
+  const n = VIEWS_CACHE[slug];
+  const safe = String(slug).replace(/"/g,'&quot;');
+  return n === undefined
+    ? `<span class="post-views is-empty" data-views-slug="${safe}" title="Clique em &quot;Carregar leituras&quot;">👁 —</span>`
+    : `<span class="post-views" data-views-slug="${safe}">👁 ${viewsLabel(n)}</span>`;
+}
+function paintViewsChip(slug){
+  const n = VIEWS_CACHE[slug];
+  if(n === undefined) return;
+  document.querySelectorAll('[data-views-slug]').forEach(el=>{
+    if(el.getAttribute('data-views-slug') !== slug) return;
+    el.classList.remove('is-empty');
+    el.textContent = '👁 ' + viewsLabel(n);
+  });
+}
+// 1 requisição só: os 50 mais lidos (limite do endpoint /top do Worker)
+async function loadTopViews(){
+  if(VIEWS_TOP_DONE) return;
+  VIEWS_TOP_DONE = true;
+  try{
+    const r = await fetch(`${WORKER_URL}/top/50`);
+    if(!r.ok) return;
+    const d = await r.json();
+    (d.top||[]).forEach(it=>{ if(it && it.slug) VIEWS_CACHE[it.slug] = it.views||0; });
+    renderList();
+  }catch(e){ /* offline/Worker fora do ar: chips ficam com "—" */ }
+}
+// Busca a contagem de cada post da lista atual (respeita busca e categoria), 8 por vez
+async function loadAllViews(){
+  if(VIEWS_LOADING) return;
+  const btn = document.getElementById('btn-load-views');
+  const status = document.getElementById('views-status');
+  const search = (document.getElementById('search-posts')?.value||'').toLowerCase();
+  const cat    = document.getElementById('filter-cat')?.value||'';
+  const ids = getPosts().filter(p=>{
+    const matchS = !search || p.title.toLowerCase().includes(search) || p.excerpt.toLowerCase().includes(search);
+    return matchS && (!cat || p.category === cat);
+  }).map(p=>p.id);
+  VIEWS_LOADING = true; if(btn) btn.disabled = true;
+  let done = 0, fail = 0, i = 0;
+  const tick = ()=>{ if(status) status.textContent = `Carregando leituras… ${done}/${ids.length}` + (fail?` (${fail} falhas)`:''); };
+  tick();
+  async function worker(){
+    while(i < ids.length){
+      const slug = ids[i++];
+      try{
+        const r = await fetch(`${WORKER_URL}/view/${encodeURIComponent(slug)}`);
+        if(!r.ok) throw new Error(r.status);
+        const d = await r.json();
+        VIEWS_CACHE[slug] = d.views||0;
+        paintViewsChip(slug);
+      }catch(e){ fail++; }
+      done++; if(done % 10 === 0 || done === ids.length) tick();
+    }
+  }
+  await Promise.all(Array.from({length:8}, worker));
+  VIEWS_LOADING = false; if(btn) btn.disabled = false;
+  const total = ids.reduce((t,id)=>t+(VIEWS_CACHE[id]||0),0);
+  if(status) status.textContent = `${ids.length-fail} posts carregados · ${total.toLocaleString('pt-BR')} leituras no total` + (fail?` · ${fail} falharam (tente de novo)`:'');
+  if((document.getElementById('sort-posts')?.value||'date') === 'views') renderList();
+}
+
+// ════════════════════════════════════════
 // POST LIST
 // ════════════════════════════════════════
 function renderList(){
@@ -1170,7 +1249,13 @@ function renderList(){
     const matchS = !search || p.title.toLowerCase().includes(search) || p.excerpt.toLowerCase().includes(search);
     const matchC = !cat || p.category === cat;
     return matchS && matchC;
-  }).sort((a,b)=>b.date.localeCompare(a.date));
+  });
+  if((document.getElementById('sort-posts')?.value||'date') === 'views'){
+    // sem contagem carregada = vai para o fim (desempate: mais recente primeiro)
+    filtered.sort((a,b)=>((VIEWS_CACHE[b.id]??-1)-(VIEWS_CACHE[a.id]??-1)) || b.date.localeCompare(a.date));
+  } else {
+    filtered.sort((a,b)=>b.date.localeCompare(a.date));
+  }
   
   document.getElementById('posts-list').innerHTML = filtered.length ? filtered.map(p=>`
     <div class="post-item">
@@ -1178,6 +1263,7 @@ function renderList(){
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
           <span class="post-cat cat-${p.category}">${catLabel(p.category)}</span>
           <span style="font-size:.72rem;color:var(--txt-s);">${formatDate(p.date)}</span>
+          ${viewsChipHTML(p.id)}
         </div>
         <div class="post-title">${p.title}</div>
         <div class="post-excerpt">${p.excerpt}</div>

@@ -2023,6 +2023,12 @@ img[src*="m.media-amazon.com"] {
 .nh-tool-card .ci-desc{font-size:.76rem;color:var(--txt-m);line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
 .nh-tool-card::after{content:"Acessar →";font-size:.78rem;font-weight:700;color:var(--acc);}
 
+/* Desktop/tablet (≥769px): "Ferramentas em Destaque" não aparece (só no celular). Com display:none o
+   espaço entre blocos (gap do .nh-flow) também some. */
+@media(min-width:769px){
+  .nh-panel-tools{display:none;}
+}
+
 /* ── ≤1150px: uma coluna; o anúncio de cada linha vai para baixo do bloco, centralizado ── */
 @media(max-width:1150px){
   .nh-row{grid-template-columns:minmax(0,1fr);}
@@ -2100,6 +2106,17 @@ img[src*="m.media-amazon.com"] {
   .nh-top10-info{padding:0;gap:4px;}
   .nh-top10-title{font-size:.82rem;-webkit-line-clamp:3;line-clamp:3;}
   .nh-top10-cat{margin-top:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+  /* Mais Acessados e Vídeos no celular: sem a caixa colorida (azul-marinho / azul-céu) em volta.
+     Os cartões brancos ficam direto sobre o fundo do site, exatamente como em "Últimos conteúdos"
+     (mesma largura, mesmo respiro entre miniatura e texto, mesma borda/sombra/raio). */
+  .nh-panel-top,.nh-panel-yt{background:none;border:0;box-shadow:none;padding:0;border-radius:0;}
+  .nh-panel-top .nh-panel-title,.nh-panel-yt .nh-panel-title{color:var(--txt);}
+  .nh-panel-top .nh-panel-more,.nh-panel-yt .nh-panel-more{color:var(--acc);}
+  .nh-panel-top .nh-card-row > p{color:var(--txt-m);}
+  .nh-top10-item,.nh-panel-yt .nh-top10-item{
+    gap:14px;padding:10px 12px 10px 10px;border:1px solid var(--brd);border-radius:16px;box-shadow:var(--sh);
+  }
 
   /* Ferramentas: lista de cartões, só ícone + nome em UMA linha (sem descrição) */
   .nh-panel-tools{--nh-pad:10px;}
