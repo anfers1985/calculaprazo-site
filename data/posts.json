@@ -1,5 +1,65 @@
 [
   {
+    "id": "stf-determina-novo-julgamento-sobre-folga-dominical-feminina",
+    "title": "STF determina novo julgamento sobre folga dominical feminina",
+    "category": "jurisprudencia-stf",
+    "category_label": "STF",
+    "excerpt": "Gilmar Mendes anula decisão do TRT-2 sobre folga dominical de mulheres e determina nova análise à luz do Tema 1.046 do STF.",
+    "image": "https://noticias-stf-wp-prd.s3.sa-east-1.amazonaws.com/wp-content/uploads/wpallimport/uploads/2024/06/20153150/Gilmar-Mendes_12.06.2024-Andressa-Anholete-scaled.jpg",
+    "imageCaption": "Créditos: Andressa Anholete/STF",
+    "date": "2026-10-19",
+    "updatedAt": "2026-10-19",
+    "tags": []
+  },
+  {
+    "id": "tst-mantem-justa-causa-motorista-alcoolizado",
+    "title": "TST mantém justa causa de motorista flagrado alcoolizado",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "TST mantém justa causa de motorista de carreta flagrado sob efeito de álcool. Tribunal considerou a conduta grave e incompatível com a segurança.",
+    "image": "https://images.unsplash.com/photo-1695222833131-54ee679ae8e5?q=80&w=1141&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-19",
+    "updatedAt": "2026-10-19",
+    "tags": []
+  },
+  {
+    "id": "inss-beneficio-afastamento-violencia-domestica",
+    "title": "INSS regulamenta benefício para mulher afastada por violência doméstica",
+    "category": "legislacao-portarias",
+    "category_label": "Portarias",
+    "excerpt": "Portaria do INSS regulamenta benefício para mulheres afastadas do trabalho por violência doméstica, com pagamento de até seis meses e sem carência.",
+    "image": "https://images.unsplash.com/photo-1473861646675-0252edc45daa?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-19",
+    "updatedAt": "2026-10-19",
+    "tags": []
+  },
+  {
+    "id": "banco-de-horas-controles-essenciais-rh",
+    "title": "Banco de horas: 9 controles essenciais para o RH",
+    "category": "rh-jornada",
+    "category_label": "Jornada",
+    "excerpt": "Saiba quais registros o RH deve acompanhar no banco de horas, como controlar saldos, compensações e prazos conforme a legislação trabalhista.",
+    "image": "https://plus.unsplash.com/premium_photo-1733306694155-6df3c54d620b?q=80&w=1267&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-19",
+    "updatedAt": "2026-10-19",
+    "tags": []
+  },
+  {
+    "id": "tema-122-tst-jornada-domestico-sem-controle-ponto",
+    "title": "Tema 122 do TST: jornada de doméstico sem controle de ponto",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "Entenda a tese vinculante do Tema 122 do TST sobre a presunção da jornada alegada quando o empregador doméstico não apresenta os registros de ponto.",
+    "image": "https://images.unsplash.com/photo-1653233797467-1a528819fd4f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-19",
+    "updatedAt": "2026-10-19",
+    "tags": []
+  },
+  {
     "id": "tst-mantem-justa-causa-recreadora-maus-tratos-criancas",
     "title": "TST mantém justa causa de recreadora acusada de maus-tratos",
     "category": "jurisprudencia-tst",
