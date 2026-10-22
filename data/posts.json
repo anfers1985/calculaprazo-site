@@ -1,5 +1,29 @@
 [
   {
+    "id": "fim-escala-6x1-alternativas-reorganizacao-jornadas",
+    "title": "Fim da escala 6x1: como reorganizar as jornadas",
+    "category": "rh-jornada",
+    "category_label": "Jornada",
+    "excerpt": "Conheça alternativas para reorganizar as escalas 5x2, 6x2, semana espanhola e 12x36, considerando os limites de jornada e as novas regras constitucionais.",
+    "image": "https://images.unsplash.com/photo-1645342867031-267d2ad63733?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-22",
+    "updatedAt": "2026-10-22",
+    "tags": []
+  },
+  {
+    "id": "tema-134-tst-gestante-recusa-retorno-estabilidade",
+    "title": "Tema 134 do TST: gestante pode recusar retorno ao emprego",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "Entenda a tese vinculante do Tema 134 do TST: a recusa da gestante em retornar ao trabalho não elimina a estabilidade nem a indenização substitutiva.",
+    "image": "https://images.unsplash.com/photo-1676466136470-8df848f84a28?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-22",
+    "updatedAt": "2026-10-22",
+    "tags": []
+  },
+  {
     "id": "seguro-defeso-prazo-ampliado-solicitacao-pescadores",
     "title": "Seguro-Defeso tem prazo ampliado para solicitação",
     "category": "legislacao-normas",
