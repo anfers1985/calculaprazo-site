@@ -1,0 +1,73 @@
+name: Vídeo do admin (slides)
+
+# Pipeline SEPARADO do "Video Pipeline" (Shorts automáticos em Remotion).
+# É disparado pelo painel admin (função videos-gerar) com o id do job; processa só esse job.
+
+on:
+  workflow_dispatch:
+    inputs:
+      job_id:
+        description: 'ID do job em video_admin_jobs'
+        required: true
+        type: string
+
+concurrency:
+  group: video-admin
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  gerar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências do sistema (ffmpeg)
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y ffmpeg
+
+      - name: Instalar dependências Node
+        run: npm ci
+
+      - name: Instalar Chromium do Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Instalar dependências Python (narração)
+        run: pip install edge-tts pydub supabase requests num2words
+
+      - name: Gerar o vídeo
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}        # opcional
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          OPENROUTER_MODEL: ${{ secrets.OPENROUTER_MODEL }}        # opcional
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}            # opcional
+          NVIDIA_MODEL: ${{ secrets.NVIDIA_MODEL }}                # opcional
+          AZURE_SPEECH_KEY: ${{ secrets.AZURE_SPEECH_KEY }}
+          AZURE_SPEECH_REGION: ${{ secrets.AZURE_SPEECH_REGION }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: node scripts/video-admin/processar.mjs "${{ inputs.job_id }}"
+
+      - name: Limpar arquivos antigos do Storage (admin-videos/)
+        if: always()
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: node scripts/video-admin/limpar.mjs

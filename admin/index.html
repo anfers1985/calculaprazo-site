@@ -126,6 +126,79 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
   .main{margin-left:0;padding:16px;}
   .fg-row{grid-template-columns:1fr;}
 }
+/* GERAR VÍDEO — formulário e fila (pipeline separado: video-admin) */
+.vg-card{background:var(--card);border:1px solid var(--brd);border-radius:12px;box-shadow:var(--sh);padding:24px;margin-bottom:20px;}
+.vg-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:20px;}
+.vg-title{font-size:1.05rem;font-weight:800;letter-spacing:-.3px;}
+.vg-sub{font-size:.82rem;color:var(--txt-m);margin-top:3px;line-height:1.5;max-width:680px;}
+.vg-proto{flex-shrink:0;font-size:.7rem;font-weight:700;color:#92400E;background:#FEF3C7;border:1px solid #FDE68A;padding:4px 10px;border-radius:999px;}
+.vg-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;}
+.vg-search{position:relative;}
+.vg-res{display:none;position:absolute;left:0;right:0;top:100%;margin-top:4px;background:#fff;border:1px solid var(--brd);border-radius:10px;box-shadow:0 12px 32px rgba(15,23,42,.14);z-index:20;max-height:260px;overflow:auto;}
+.vg-res.open{display:block;}
+.vg-res button{display:block;width:100%;text-align:left;padding:10px 13px;border:none;background:none;font-family:var(--fh);cursor:pointer;border-bottom:1px solid var(--brd);}
+.vg-res button:last-child{border-bottom:none;}
+.vg-res button:hover{background:var(--b50);}
+.vg-res b{display:block;font-size:.84rem;font-weight:700;color:var(--txt);}
+.vg-res small{font-size:.72rem;color:var(--txt-s);}
+.vg-sel{margin-top:10px;border:1.5px solid var(--b200);background:var(--b50);border-radius:10px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;}
+.vg-sel .t{flex:1;font-size:.86rem;font-weight:700;line-height:1.4;}
+.vg-sel .m{font-size:.72rem;color:var(--txt-m);margin-top:4px;font-weight:600;}
+.vg-sel .x{border:none;background:none;color:var(--txt-s);cursor:pointer;font-size:1rem;font-family:var(--fh);}
+.vg-seg{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.vg-seg button{display:flex;gap:10px;align-items:center;text-align:left;padding:11px 13px;border:1.5px solid var(--brd);border-radius:10px;background:#fff;font-family:var(--fh);cursor:pointer;transition:all .15s;}
+.vg-seg button:hover{border-color:var(--acc);}
+.vg-seg button.on{border-color:var(--acc);background:var(--b50);box-shadow:0 0 0 3px rgba(37,99,235,.1);}
+.vg-seg .fm{flex-shrink:0;border:2px solid var(--txt-s);border-radius:4px;background:#fff;}
+.vg-seg button.on .fm{border-color:var(--acc);}
+.vg-seg b{display:block;font-size:.84rem;font-weight:800;}
+.vg-seg small{font-size:.72rem;color:var(--txt-s);font-weight:600;}
+.vg-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.vg-chips button{padding:7px 14px;border:1.5px solid var(--brd);border-radius:999px;background:#fff;font-family:var(--fh);font-weight:700;font-size:.8rem;color:var(--txt-m);cursor:pointer;transition:all .15s;}
+.vg-chips button:hover{border-color:var(--acc);color:var(--acc);}
+.vg-chips button.on{background:var(--acc);border-color:var(--acc);color:#fff;}
+.vg-hint{font-size:.74rem;color:var(--txt-s);margin-top:7px;line-height:1.5;font-weight:500;}
+.vg-tones{display:grid;gap:8px;}
+.vg-tones button{display:flex;gap:12px;align-items:flex-start;text-align:left;padding:11px 13px;border:1.5px solid var(--brd);border-radius:10px;background:#fff;font-family:var(--fh);cursor:pointer;transition:all .15s;}
+.vg-tones button:hover{border-color:var(--acc);}
+.vg-tones button.on{border-color:var(--acc);background:var(--b50);box-shadow:0 0 0 3px rgba(37,99,235,.1);}
+.vg-tones .ic{font-size:1.15rem;line-height:1.3;}
+.vg-tones b{display:block;font-size:.84rem;font-weight:800;}
+.vg-tones small{display:block;font-size:.74rem;color:var(--txt-m);line-height:1.45;margin-top:2px;font-weight:500;}
+.vg-tag{display:inline-block;margin-left:6px;font-size:.62rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--ok);background:#ECFDF5;border-radius:999px;padding:1px 7px;vertical-align:middle;}
+.vg-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:6px;padding-top:18px;border-top:1px solid var(--brd);}
+.vg-summary{font-size:.8rem;color:var(--txt-m);font-weight:600;line-height:1.6;}
+.vg-summary b{color:var(--txt);}
+.vg-go{padding:11px 22px;font-size:.88rem;}
+.vg-go:disabled{opacity:.45;cursor:not-allowed;}
+
+.vg-info{margin-top:12px;border:1px solid var(--brd);border-radius:10px;background:#F8FAFC;padding:4px 14px;}
+.vg-row{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--brd);font-size:.8rem;line-height:1.5;}
+.vg-row:last-child{border-bottom:none;}
+.vg-row .k{flex:0 0 118px;font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--txt-s);padding-top:2px;}
+.vg-row .v{flex:1;color:var(--txt-m);font-weight:600;}
+.vg-row .v small{display:block;font-size:.72rem;color:var(--txt-s);font-weight:500;}
+.vg-st{display:inline-block;font-size:.66rem;font-weight:800;border-radius:999px;padding:1px 8px;margin-right:6px;}
+.vg-st.ok{color:var(--ok);background:#ECFDF5;}
+.vg-st.warn{color:var(--warn);background:#FFFBEB;}
+.vg-st.err{color:var(--err);background:#FEF2F2;}
+.vg-link{border:none;background:none;color:var(--acc);font-family:var(--fh);font-weight:800;font-size:.78rem;cursor:pointer;padding:0;margin-left:8px;text-decoration:underline;}
+.vg-min{display:inline-flex;align-items:center;gap:6px;margin-left:4px;font-size:.8rem;font-weight:700;color:var(--txt-m);}
+.vg-min input{width:70px;padding:6px 9px;border:1.5px solid var(--acc);border-radius:8px;font-family:var(--fh);font-weight:700;font-size:.82rem;}
+
+.vg-fila-item{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--brd);}
+.vg-fila-item:last-child{border-bottom:none;}
+.vg-fila-tit{font-size:.88rem;font-weight:800;line-height:1.4;}
+.vg-fila-meta{font-size:.74rem;color:var(--txt-m);margin-top:4px;font-weight:600;display:flex;flex-wrap:wrap;gap:6px 12px;}
+.vg-stt{display:inline-block;font-size:.68rem;font-weight:800;border-radius:999px;padding:2px 10px;}
+.vg-stt.andamento{color:var(--acc-d);background:var(--b50);border:1px solid var(--b200);}
+.vg-stt.ok{color:var(--ok);background:#ECFDF5;border:1px solid #A7F3D0;}
+.vg-stt.err{color:var(--err);background:#FEF2F2;border:1px solid #FECACA;}
+.vg-fila-erro{margin-top:6px;font-size:.74rem;color:var(--err);font-weight:600;line-height:1.5;word-break:break-word;}
+.vg-fila-acoes{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;}
+.vg-fila-acoes a,.vg-fila-acoes button{font-size:.74rem;}
+.vg-vazio{padding:22px;text-align:center;color:var(--txt-s);font-size:.84rem;}
+@media(max-width:900px){.vg-grid{grid-template-columns:1fr;}.vg-fila-item{grid-template-columns:1fr;}.vg-fila-acoes{justify-content:flex-start;}.vg-foot{flex-direction:column;align-items:stretch;}}
 </style>
 </head>
 <body>
@@ -515,6 +588,80 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
     <div class="page" id="page-videos">
       <div class="page-header">
         <div><div class="page-title">🎬 Vídeos p/ Redes</div><div class="page-sub">Vídeo, capa, título e descrição dos Shorts publicados no YouTube — baixe aqui pra postar manualmente no X, Instagram, Facebook, LinkedIn e TikTok</div></div>
+      </div>
+      <div class="vg-card" id="vg-card">
+        <div class="vg-head">
+          <div>
+            <div class="vg-title">Gerar novo vídeo</div>
+            <div class="vg-sub">Escolha o artigo, o formato e o tom. O roteiro é escrito a partir do texto do artigo; artigos de lei e súmulas só entram no vídeo se estiverem escritos no artigo.</div>
+          </div>
+        </div>
+        <div class="vg-grid">
+          <div>
+            <div class="fg">
+              <label>Artigo</label>
+              <div class="vg-search">
+                <input id="vg-q" type="text" placeholder="Buscar artigo pelo título…" autocomplete="off" oninput="vgBuscar()" onfocus="vgBuscar()">
+                <div id="vg-res" class="vg-res"></div>
+              </div>
+              <div id="vg-sel"></div>
+            </div>
+            <div class="fg">
+              <label>Formato</label>
+              <div class="vg-seg" id="vg-fmt">
+                <button type="button" data-f="short" onclick="vgFmt('short')"><span class="fm" style="width:16px;height:28px"></span><span><b>Short</b><small>Vertical 9:16 · YouTube Shorts</small></span></button>
+                <button type="button" data-f="longo" onclick="vgFmt('longo')"><span class="fm" style="width:30px;height:18px"></span><span><b>Vídeo longo</b><small>Horizontal 16:9 · canal</small></span></button>
+              </div>
+            </div>
+            <div class="fg">
+              <label>Duração</label>
+              <div class="vg-chips" id="vg-dur"></div>
+              <div class="vg-info" id="vg-info"></div>
+            </div>
+          </div>
+          <div>
+            <div class="fg">
+              <label>Tom do roteiro</label>
+              <div class="vg-tones" id="vg-tone">
+                <button type="button" data-t="neutro" onclick="vgTom('neutro')"><span class="ic">⚖️</span><span><b>Neutro e informativo <span class="vg-tag">padrão do canal</span></b><small>Explica o que a lei e o tribunal dizem, sem tomar partido de nenhum dos lados.</small></span></button>
+                <button type="button" data-t="empresa" onclick="vgTom('empresa')"><span class="ic">🏢</span><span><b>Pró-empresa</b><small>Mesmos fatos, com foco no que o empregador deve observar e em como evitar riscos.</small></span></button>
+                <button type="button" data-t="empregado" onclick="vgTom('empregado')"><span class="ic">👷</span><span><b>Pró-empregado</b><small>Mesmos fatos, com foco nos direitos do empregado e no que ele pode pedir.</small></span></button>
+              </div>
+              <div class="vg-hint">Os fatos, os números e as referências legais são os mesmos nos três tons; muda só a perspectiva.</div>
+            </div>
+            <div class="fg-row">
+              <div class="fg"><label>Voz</label>
+                <select id="vg-voz" onchange="vgSum()">
+                  <option value="francisca">Francisca (Azure padrão)</option>
+                  <option value="thalita-hd">Thalita (Azure HD)</option>
+                  <option value="gemini">Gemini TTS (experimental)</option>
+                </select>
+              </div>
+              <div class="fg"><label>Publicação</label>
+                <select id="vg-pub" onchange="vgPub()">
+                  <option value="privado">Privado, para revisar</option>
+                  <option value="publico">Público ao terminar</option>
+                  <option value="agendado">Agendar data e hora</option>
+                </select>
+              </div>
+            </div>
+            <div class="fg" id="vg-when" style="display:none"><label>Data e hora</label><input type="datetime-local" id="vg-quando" onchange="vgSum()"></div>
+          </div>
+        </div>
+        <div class="vg-foot">
+          <div class="vg-summary" id="vg-sum"></div>
+          <button class="btn btn-p vg-go" id="vg-go" type="button" onclick="vgGerar()">🎬 Gerar vídeo</button>
+        </div>
+      </div>
+      <div class="vg-card" id="vg-fila-card">
+        <div class="vg-head">
+          <div>
+            <div class="vg-title">Vídeos gerados pelo admin</div>
+            <div class="vg-sub">Acompanhe cada geração (roteiro, narração, vídeo e publicação). A página atualiza sozinha enquanto houver vídeo em andamento. Os arquivos ficam aqui por 7 dias; o vídeo continua no YouTube.</div>
+          </div>
+          <button class="btn btn-g btn-sm" type="button" onclick="vgFila()">↻ Atualizar</button>
+        </div>
+        <div id="vg-fila"><div class="vg-vazio">Carregando...</div></div>
       </div>
       <div id="videos-config-warning" style="display:none;background:#FEF3C7;border:1px solid #FDE68A;color:#92400E;padding:12px 16px;border-radius:10px;font-size:.84rem;margin-bottom:16px;">
         ⚠️ Configure a URL do Supabase e o Admin Secret na aba <strong>Configurações</strong> (mesma configuração usada pela Newsletter) pra esta aba funcionar.
@@ -2968,6 +3115,7 @@ function copiarTexto(texto, label) {
 let _videosCache = [];
 
 function renderVideos() {
+  vgIniciar(); // formulário "Gerar novo vídeo" (pipeline separado)
   const { url, secret } = nlGetConfig();
   document.getElementById('videos-config-warning').style.display = (!url || !secret) ? 'block' : 'none';
   if (!url || !secret) { document.getElementById('videos-list').innerHTML = ''; return; }
@@ -3473,6 +3621,167 @@ function toast(msg, type='ok'){
   const t = document.getElementById('toast');
   t.textContent=msg; t.className='toast '+type+' show';
   setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ════════════════════════════════════════
+// GERAR VÍDEO (pipeline separado: scripts/video-admin + workflow video-admin.yml + função videos-gerar)
+// ════════════════════════════════════════
+const VG={posts:[],words:{},sel:null,fmt:'short',dur:60,tom:'neutro',outro:false,timer:null,iniciado:false};
+const VG_DUR={short:[30,45,60,90],longo:[120,180,300,480]};
+const VG_PUB_ROT={privado:'Privado, para revisar',publico:'Público ao terminar',agendado:'Agendado'};
+const VG_VOZ_ROT={francisca:'Francisca (Azure)','thalita-hd':'Thalita (Azure HD)',gemini:'Gemini TTS'};
+const VG_TOM_ROT={neutro:'Neutro',empresa:'Pró-empresa',empregado:'Pró-empregado'};
+function vgFmtDur(s){return s<120?Math.round(s)+' s':(Math.round(s/6)/10).toString().replace('.',',')+' min';}
+function vgEsc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+async function callVideosGerar(action,payload={}){
+  const {url,secret}=nlGetConfig();
+  if(!url||!secret) throw new Error('Configure a URL do Supabase e o Admin Secret em Configurações.');
+  const res=await fetch(`${url}/functions/v1/videos-gerar`,{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':secret},body:JSON.stringify({action,...payload})});
+  const data=await res.json().catch(()=>({}));
+  if(!res.ok){const e=new Error(data.error||`Erro ${res.status}`);e.data=data;throw e;}
+  return data;
+}
+function vgIniciar(){
+  VG.posts=getPosts();
+  refreshPostsFromServer().finally(()=>{VG.posts=getPosts();});
+  if(!VG.iniciado){VG.iniciado=true;vgFmt('short');vgTom('neutro');vgSelRender();}
+  vgFila();
+  if(!VG.timer)VG.timer=setInterval(()=>{const pg=document.getElementById('page-videos');if(pg&&pg.classList.contains('on')&&VG.temAtivo)vgFila(true);},15000);
+}
+function vgBuscar(){
+  const q=document.getElementById('vg-q').value.trim().toLowerCase(),box=document.getElementById('vg-res');
+  if(!q){box.classList.remove('open');return;}
+  const r=VG.posts.filter(p=>(p.title||'').toLowerCase().includes(q)).slice(0,8);
+  box.innerHTML=r.length?r.map((p,i)=>`<button type="button" data-id="${vgEsc(p.id)}" onclick="vgPick(this.dataset.id)"><b>${vgEsc(p.title)}</b><small>${vgEsc(p.category_label||'')} · ${vgEsc(p.date||'')}</small></button>`).join(''):'<button type="button" disabled><b>Nenhum artigo encontrado</b></button>';
+  box.classList.add('open');
+}
+document.addEventListener('click',e=>{if(!e.target.closest('.vg-search')){const b=document.getElementById('vg-res');if(b)b.classList.remove('open');}});
+// Conta as palavras do artigo publicado (mesma regra do pipeline: <article> sem anúncios, scripts, "Leia também"...).
+async function vgContarPalavras(slug){
+  if(VG.words[slug]!==undefined) return VG.words[slug];
+  try{
+    const r=await fetch(`/blog/${slug}`,{cache:'no-store'});
+    if(!r.ok) throw new Error('indisponível');
+    const doc=new DOMParser().parseFromString(await r.text(),'text/html');
+    const art=doc.querySelector('article'); if(!art) throw new Error('sem article');
+    art.querySelectorAll('script,style,svg,noscript,iframe,form,button,nav,aside,[class*="ad-"],[class*="adst"]').forEach(n=>n.remove());
+    art.querySelectorAll('p').forEach(p=>{if(/Leia também/i.test(p.textContent))p.remove();});
+    let t=(art.textContent||'').replace(/\s+/g,' ').trim();
+    VG.words[slug]=(t.match(/\S+/g)||[]).length;
+  }catch(e){VG.words[slug]=null;}
+  return VG.words[slug];
+}
+async function vgPick(id){
+  VG.sel=VG.posts.find(p=>p.id===id)||null;
+  document.getElementById('vg-q').value='';document.getElementById('vg-res').classList.remove('open');
+  vgSelRender();
+  if(VG.sel){await vgContarPalavras(VG.sel.id);vgSelRender();}
+}
+function vgSelRender(){
+  const el=document.getElementById('vg-sel'),w=VG.sel?VG.words[VG.sel.id]:null;
+  el.innerHTML=VG.sel?`<div class="vg-sel"><div class="t">${vgEsc(VG.sel.title)}<div class="m">${vgEsc(VG.sel.category_label||'')} · ${vgEsc(VG.sel.date||'')}${w?' · ~'+w.toLocaleString('pt-BR')+' palavras':''}</div></div><button class="x" type="button" onclick="VG.sel=null;vgSelRender()" title="Trocar artigo">✕</button></div>`:'<div class="vg-hint">Nenhum artigo selecionado.</div>';
+  vgSum();
+}
+function vgFmt(f){
+  if(f!==VG.fmt){VG.fmt=f;VG.outro=false;VG.dur=f==='short'?60:180;}
+  VG.fmt=f;
+  document.querySelectorAll('#vg-fmt button').forEach(b=>b.classList.toggle('on',b.dataset.f===f));
+  vgChips();vgSum();
+}
+function vgChips(){
+  let h=VG_DUR[VG.fmt].map(d=>`<button type="button" class="${!VG.outro&&d===VG.dur?'on':''}" onclick="vgDur(${d})">${vgFmtDur(d)}</button>`).join('');
+  if(VG.fmt==='longo'){
+    h+=`<button type="button" class="${VG.outro?'on':''}" onclick="vgOutroOn()">Outro</button>`;
+    if(VG.outro)h+=`<span class="vg-min"><input type="number" min="1" max="15" step="0.5" value="${Math.round(VG.dur/6)/10}" oninput="vgMin(this.value)"> minutos (1 a 15)</span>`;
+  }
+  document.getElementById('vg-dur').innerHTML=h;
+}
+function vgDur(d){VG.outro=false;VG.dur=d;vgChips();vgSum();}
+function vgOutroOn(){VG.outro=true;vgChips();vgSum();}
+function vgMin(v){const m=Math.min(15,Math.max(1,parseFloat(String(v).replace(',','.'))||1));VG.dur=Math.round(m*60);vgSum();}
+function vgUsar(sec){VG.outro=!VG_DUR[VG.fmt].includes(sec);VG.dur=sec;vgChips();vgSum();}
+function vgTom(t){VG.tom=t;document.querySelectorAll('#vg-tone button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));vgSum();}
+function vgPub(){document.getElementById('vg-when').style.display=document.getElementById('vg-pub').value==='agendado'?'block':'none';vgSum();}
+function vgInfo(){
+  const pal=Math.round(VG.dur*2.5),cenas=Math.max(3,Math.round(VG.dur/(VG.fmt==='short'?5:8)));
+  const frames=VG.dur*24,lo=Math.round(frames*.3/4/60+3),hi=Math.round(frames*.3/2/60+3);
+  const w=VG.sel?VG.words[VG.sel.id]:null;let st='',cov;
+  if(!VG.sel)cov='<span class="v">Selecione um artigo.</span>';
+  else if(!w)cov='<span class="v">Não consegui medir o tamanho do artigo agora; o pipeline confere na hora de gerar.</span>';
+  else{
+    const max=Math.max(30,Math.floor(w*.8/2.5/30)*30),nome=vgFmtDur(max);
+    if(VG.dur<=max){st='ok';cov=`<span class="v"><span class="vg-st ok">CABE</span>O artigo tem ~${w.toLocaleString('pt-BR')} palavras e sustenta até ~${nome} sem repetir conteúdo.</span>`;}
+    else if(VG.dur<=max*1.15){st='warn';cov=`<span class="v"><span class="vg-st warn">NO LIMITE</span>O artigo tem ~${w.toLocaleString('pt-BR')} palavras e sustenta ~${nome}. Acima disso o roteiro tende a repetir pontos.<button class="vg-link" type="button" onclick="vgUsar(${max})">Usar ${nome}</button></span>`;}
+    else{st='err';cov=`<span class="v"><span class="vg-st err">NÃO CABE</span>O artigo tem ~${w.toLocaleString('pt-BR')} palavras e só sustenta ~${nome}. Para ${vgFmtDur(VG.dur)} seria preciso repetir ou inventar conteúdo, o que não faremos em texto jurídico.<button class="vg-link" type="button" onclick="vgUsar(${max})">Usar ${nome}</button></span>`;}
+  }
+  document.getElementById('vg-info').innerHTML=
+   `<div class="vg-row"><span class="k">Roteiro</span><span class="v">~${pal.toLocaleString('pt-BR')} palavras · ~${cenas} cenas<small>Narração a cerca de 2,5 palavras por segundo. A duração real é medida na voz; o vídeo sempre acompanha a narração.</small></span></div>`+
+   `<div class="vg-row"><span class="k">Cobertura</span>${cov}</div>`+
+   `<div class="vg-row"><span class="k">Geração</span><span class="v">≈ ${lo}–${hi} min até o vídeo ficar pronto<small>Estimativa; depende da fila do GitHub Actions.</small></span></div>`;
+  return st;
+}
+function vgSum(){
+  const st=vgInfo(),pal=Math.round(VG.dur*2.5);
+  const sm=document.getElementById('vg-sum');if(!sm)return;
+  const vz=document.getElementById('vg-voz').value,pb=document.getElementById('vg-pub').value;
+  sm.innerHTML=`<b>${VG.fmt==='short'?'Short':'Vídeo longo'}</b> · <b>${vgFmtDur(VG.dur)}</b> · ~${pal.toLocaleString('pt-BR')} palavras · Tom <b>${VG_TOM_ROT[VG.tom]}</b><br>Voz ${VG_VOZ_ROT[vz]} · ${VG_PUB_ROT[pb]}`;
+  document.getElementById('vg-go').disabled=!VG.sel||st==='err'||VG.enviando;
+}
+async function vgGerar(){
+  if(!VG.sel||VG.enviando)return;
+  const pub=document.getElementById('vg-pub').value;let agendar=null;
+  if(pub==='agendado'){
+    const v=document.getElementById('vg-quando').value;
+    if(!v){toast('Escolha a data e a hora do agendamento.','err');return;}
+    agendar=new Date(v).toISOString();
+  }
+  VG.enviando=true;vgSum();
+  try{
+    const r=await callVideosGerar('criar',{slug:VG.sel.id,tipo:VG.fmt,duracao_seg:VG.dur,tom:VG.tom,voz:document.getElementById('vg-voz').value,publicacao:pub,agendar_em:agendar});
+    toast('Vídeo na fila! Acompanhe abaixo.','ok');
+  }catch(e){
+    toast(e.message||'Não foi possível criar o vídeo.','err');
+  }
+  VG.enviando=false;vgSum();vgFila();
+}
+function vgStatus(j){
+  const et=j.etapa_atual;
+  if(j.status==='erro')return{cls:'err',txt:`Erro${j.erro_etapa?' em '+({roteiro:'roteiro',narracao:'narração',render:'vídeo',publicacao:'publicação',disparo:'disparo do GitHub'}[j.erro_etapa]||j.erro_etapa):''}`};
+  if(j.status==='publicado'){
+    if(j.publicacao==='agendado'&&j.agendar_em&&new Date(j.agendar_em)>new Date())return{cls:'ok',txt:'Agendado para '+new Date(j.agendar_em).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})};
+    return{cls:'ok',txt:j.publicacao==='privado'?'Enviado como privado':'Publicado'};
+  }
+  const m={roteiro:'Escrevendo o roteiro',narracao:'Gerando a narração',render:'Renderizando o vídeo',publicacao:'Publicando no YouTube'};
+  return{cls:'andamento',txt:m[et]||({na_fila:'Na fila',roteiro_ok:'Roteiro pronto',narracao_ok:'Narração pronta',render_ok:'Vídeo pronto'}[j.status]||j.status)};
+}
+async function vgFila(silencioso){
+  const box=document.getElementById('vg-fila');if(!box)return;
+  try{
+    const {jobs}=await callVideosGerar('listar',{limite:20});
+    VG.temAtivo=jobs.some(j=>j.status!=='publicado'&&j.status!=='erro');
+    if(!jobs.length){box.innerHTML='<div class="vg-vazio">Nenhum vídeo gerado por aqui ainda.</div>';return;}
+    window._vgJobs=jobs;
+    box.innerHTML=jobs.map(j=>{
+      const st=vgStatus(j),dur=j.duracao_real_seg?vgFmtDur(Number(j.duracao_real_seg)):vgFmtDur(j.duracao_alvo_seg)+' (alvo)';
+      const acoes=[];
+      if(j.youtube_url)acoes.push(`<a class="btn btn-p btn-sm" href="${vgEsc(j.youtube_url)}" target="_blank" rel="noopener">Abrir no YouTube</a>`);
+      if(j.video_url)acoes.push(`<a class="btn btn-g btn-sm" href="${vgEsc(j.video_url)}" target="_blank" rel="noopener">Baixar vídeo</a>`);
+      if(j.thumbnail_url)acoes.push(`<a class="btn btn-g btn-sm" href="${vgEsc(j.thumbnail_url)}" target="_blank" rel="noopener">Baixar capa</a>`);
+      if(j.github_run_url)acoes.push(`<a class="btn btn-g btn-sm" href="${vgEsc(j.github_run_url)}" target="_blank" rel="noopener">Ver execução</a>`);
+      if(j.status==='erro')acoes.push(`<button class="btn btn-danger btn-sm" type="button" onclick="vgRetomar('${vgEsc(j.id)}')">Tentar de novo</button>`);
+      return `<div class="vg-fila-item"><div>
+        <div class="vg-fila-tit">${vgEsc(j.titulo_youtube||j.post_titulo||j.post_slug)}</div>
+        <div class="vg-fila-meta"><span class="vg-stt ${st.cls}">${vgEsc(st.txt)}</span><span>${j.tipo==='short'?'Short':'Vídeo longo'} · ${vgEsc(dur)}</span><span>Tom ${vgEsc(VG_TOM_ROT[j.tom]||j.tom)}</span><span>${vgEsc(VG_VOZ_ROT[j.voz]||j.voz)}${j.voz_usada&&/reserva/.test(j.voz_usada)?' (usou a voz reserva)':''}</span><span>${new Date(j.criado_em).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</span></div>
+        ${j.status==='erro'&&j.erro_mensagem?`<div class="vg-fila-erro">${vgEsc(j.erro_mensagem.slice(0,400))}</div>`:''}
+      </div><div class="vg-fila-acoes">${acoes.join('')}</div></div>`;
+    }).join('');
+  }catch(e){
+    if(!silencioso)box.innerHTML=`<div class="vg-vazio">${vgEsc(e.message)}</div>`;
+  }
+}
+async function vgRetomar(id){
+  try{await callVideosGerar('retomar',{id});toast('Reiniciando o vídeo...','ok');}catch(e){toast(e.message,'err');}
+  vgFila();
 }
 </script>
 </body>
