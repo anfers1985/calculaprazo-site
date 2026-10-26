@@ -1,5 +1,53 @@
 [
   {
+    "id": "intervalo-intrajornada-fracionado-regras-clt",
+    "title": "Intervalo intrajornada fracionado: regras e cuidados legais",
+    "category": "rh-jornada",
+    "category_label": "Jornada",
+    "excerpt": "Saiba quando o intervalo intrajornada pode ser fracionado, o que diz a CLT e quais cuidados as empresas devem observar na negociação coletiva.",
+    "image": "https://plus.unsplash.com/premium_photo-1673605603709-8599cbbd1a74?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-26",
+    "updatedAt": "2026-10-26",
+    "tags": []
+  },
+  {
+    "id": "tema-143-tst-atraso-verbas-rescisorias-dano-moral",
+    "title": "Tema 143 do TST: atraso rescisório não gera dano moral, só",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "TST define que atraso ou falta de pagamento de verbas rescisórias, isoladamente, não gera dano moral. É necessária prova de lesão concreta ao trabalhador.",
+    "image": "https://images.unsplash.com/photo-1774898988393-5c752e4d55e9?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-26",
+    "updatedAt": "2026-10-26",
+    "tags": []
+  },
+  {
+    "id": "tema-142-tst-multa-art-477-verbas-salariais",
+    "title": "Tema 142 do TST: multa do art. 477 inclui verbas salariais",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "Tema 142 do TST define que a multa do art. 477, §8º, da CLT deve considerar todas as parcelas salariais, e não apenas o salário-base.",
+    "image": "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-26",
+    "updatedAt": "2026-10-26",
+    "tags": []
+  },
+  {
+    "id": "tema-138-tst-reducao-jornada-filho-autista",
+    "title": "Tema 138 do TST: jornada reduzida para pais de autistas",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "TST garante a empregado público com filho autista redução de jornada sem redução salarial e sem compensação, por aplicação analógica da Lei 8.112/90.",
+    "image": "https://images.unsplash.com/photo-1700303677481-26d63494e9a1?q=80&w=1344&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-26",
+    "updatedAt": "2026-10-26",
+    "tags": []
+  },
+  {
     "id": "declaracao-acompanhamento-filho-abono-falta-trabalho",
     "title": "Declaração para acompanhar filho abona falta no trabalho?",
     "category": "rh-jornada",
