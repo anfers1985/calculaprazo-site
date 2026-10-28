@@ -1,5 +1,29 @@
 [
   {
+    "id": "contrato-domestico-jornada-horarios-e-registro",
+    "title": "Contrato doméstico: jornada, horários e registro",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "excerpt": "Saiba como formalizar o contrato doméstico, controlar a jornada, calcular horas extras e respeitar intervalos e descansos previstos na lei.",
+    "image": "https://images.unsplash.com/photo-1646980241033-cd7abda2ee88?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-28",
+    "updatedAt": "2026-10-28",
+    "tags": []
+  },
+  {
+    "id": "tema-163-tst-estabilidade-gestante-contrato-experiencia",
+    "title": "Tema 163 do TST: gestante tem estabilidade no contrato de experiência",
+    "category": "processual-pratica",
+    "category_label": "Prática Advocatícia",
+    "excerpt": "Tema 163 do TST reconhece a estabilidade da gestante durante contrato de experiência, conforme garantia prevista no art. 10, II, “b”, do ADCT.",
+    "image": "https://images.unsplash.com/photo-1676466136470-8df848f84a28?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-10-28",
+    "updatedAt": "2026-10-28",
+    "tags": []
+  },
+  {
     "id": "diarista-ou-empregada-domestica-como-distinguir",
     "title": "Diarista ou empregada doméstica: como distinguir?",
     "category": "legislacao-normas",
