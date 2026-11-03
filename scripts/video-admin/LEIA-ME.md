@@ -48,3 +48,19 @@ Apague `scripts/video-admin/`, `.github/workflows/video-admin.yml`, `supabase/fu
 
 ## Onde ajustar
 - Prompt, tons, limites e regras: `lib/roteiro-regras.mjs`. · Ícones permitidos: `slides/icones_lucide_lista.txt` (+ SVG em `slides/lucide/`) e `slides/icons.svg` (ícones do site). · Visual: `slides/template.html`. · Vozes: `narracao.py`.
+
+
+---
+## Short ilustrado e "Par do dia" (novo)
+- **Short ilustrado** (padrão do Short no admin): uma ilustração por cena gerada por IA (Gemini imagens), fundo de papel pontilhado, legenda manuscrita em blocos de 1–3 palavras. Estilo visual fixo em `lib/roteiro-ilustrado.mjs` (`ESTILO_IMAGEM`); template em `slides/short-ilustrado.html`. O Short em **Slides** continua disponível no seletor "Estilo do Short".
+- **Par do dia**: botão "⚡ Gerar o par do dia" cria o vídeo longo (slides) + o Short ilustrado do mesmo artigo numa **única** execução do GitHub (um depois do outro; evita o GitHub cancelar uma execução pendente). O admin avisa se hoje já existe vídeo do mesmo formato.
+- As imagens são geradas dentro da etapa "render" e ficam no Storage: **"Tentar de novo" gera só as que faltam**. Cena sem imagem vira cartão de papel.
+- **Tempos** (no `video-admin.yml`): texto 4 min/chamada, imagem 8 min/tentativa × 5, job até 300 min.
+- **Implantação extra**: rode `supabase/migrations/006_video_admin_ilustrado.sql`, faça `supabase functions deploy videos-gerar --no-verify-jwt` e suba os arquivos. Depois dê **hard-refresh** no admin.
+- O **app do computador** (voz clonada, 9router, sem admin) é um pacote SEPARADO (`CalculaPrazo-Videos-App`), que não vai para o GitHub.
+- Atenção: o pipeline antigo "Video Pipeline" (Shorts automáticos em Remotion, `VIDEOS_POR_DIA: '5'`) continua ativo e divide a cota do YouTube. Se quiser só 1 Short por dia, escolhido por você, desative-o (Actions → Video Pipeline → ⋯ → Disable workflow).
+
+## Voz do Google (Gemini 3.8 TTS) no admin (novo)
+- No formulário, escolha a voz **"Gemini 3.8 TTS (voz do Google)"**. Usa o secret `GEMINI_API_KEY` que já existe (e `GEMINI_API_KEY_2`, se houver, em rodízio). Modelo padrão `gemini-3.8-flash-tts`, voz padrão `Kore`.
+- Para mudar modelo/voz/estilo sem editar arquivos: GitHub → Settings → Secrets and variables → Actions → aba **Variables** → crie `GEMINI_TTS_MODEL` (ex.: `gemini-3.8-flash-lite-tts`), `GEMINI_TTS_VOICE` (ex.: `Puck`, ou o ID `voice_...` de uma voz sua criada no AI Studio), `GEMINI_TTS_STYLE`, `GEMINI_TTS_RESERVA` (`francisca` = se o Google falhar, refaz o vídeo inteiro com a Francisca em vez de parar). Para escolher a voz com calma, use o app do computador (Configurações → "Buscar vozes em português" / "Ouvir amostra").
+- Gratuito no plano gratuito, mas os limites só aparecem no seu AI Studio. O pipeline espera o que o Google mandar, para com mensagem clara se a cota **diária** acabar e **nunca mistura vozes**: se parar, use "Tentar de novo" (no GitHub as cenas já feitas não ficam salvas entre execuções; no app do computador ficam).

@@ -1,7 +1,8 @@
-name: Vídeo do admin (slides)
+name: Vídeo do admin (slides + Short ilustrado)
 
 # Pipeline SEPARADO do "Video Pipeline" (Shorts automáticos em Remotion).
 # É disparado pelo painel admin (função videos-gerar) com o id do job; processa só esse job.
+# Quando o admin usa "Gerar o par do dia", vem também job_id_2: o 2º job roda logo depois do 1º, na mesma execução.
 
 on:
   workflow_dispatch:
@@ -9,6 +10,11 @@ on:
       job_id:
         description: 'ID do job em video_admin_jobs'
         required: true
+        type: string
+      job_id_2:
+        description: '(opcional) 2º job, processado depois do primeiro'
+        required: false
+        default: ''
         type: string
 
 concurrency:
@@ -18,10 +24,26 @@ concurrency:
 permissions:
   contents: read
 
+env:
+  # ── Tempos de espera GENEROSOS (o Google pode levar minutos sob demanda alta; abortar cedo só gasta a cota) ──
+  IA_TIMEOUT_MS: '240000'      # texto (Gemini/OpenRouter/NVIDIA): 4 min por chamada (antes: 60–90 s)
+  IA_MAX_TOKENS: '16384'       # roteiros longos não podem ser cortados no meio do JSON
+  IA_RODADAS: '3'              # se todos os provedores de texto falharem, espera 1 min e repete a cadeia (até 3 rodadas)
+  IMG_TIMEOUT_MS: '480000'     # imagem: 8 min por tentativa
+  IMG_TENTATIVAS: '5'          # tentativas por provedor, com espera crescente entre elas
+  IMG_INTERVALO_MS: '8000'     # pausa entre imagens (plano gratuito ≈ 10 pedidos/min)
+  IMG_ORDEM: 'gemini'          # no GitHub não há 9router; só Google
+  # ── Voz Gemini 3.8 TTS (opcional): defina em Settings → Secrets and variables → Actions → aba "Variables". Vazio = padrão do código.
+  GEMINI_TTS_MODEL: ${{ vars.GEMINI_TTS_MODEL }}       # gemini-3.8-flash-tts (padrão) ou gemini-3.8-flash-lite-tts
+  GEMINI_TTS_VOICE: ${{ vars.GEMINI_TTS_VOICE }}       # Kore (padrão), Puck... ou o ID voice_... de uma voz sua criada no AI Studio
+  GEMINI_TTS_STYLE: ${{ vars.GEMINI_TTS_STYLE }}       # vazio = "narração clara, calma e profissional, em português do Brasil"
+  GEMINI_TTS_RESERVA: ${{ vars.GEMINI_TTS_RESERVA }}   # "francisca" = se o Google falhar, refaz o vídeo INTEIRO com a Francisca (em vez de parar)
+  # GEMINI_IMAGE_MODELS: 'gemini-2.5-flash-image,gemini-3.1-flash-image-preview'   # (padrão do código; descomente para trocar)
+
 jobs:
   gerar:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 300      # teto do job (o máximo do GitHub é 360)
     steps:
       - uses: actions/checkout@v4
 
@@ -48,7 +70,10 @@ jobs:
       - name: Instalar dependências Python (narração)
         run: pip install edge-tts pydub supabase requests num2words
 
-      - name: Gerar o vídeo
+      # Um passo só: processar.mjs aceita "id1,id2" e roda um depois do outro (cada um com a sua pasta de trabalho);
+      # se o 1º falhar o 2º roda mesmo assim, e o que falhou fica com "Tentar de novo" no admin.
+      - name: Gerar o(s) vídeo(s)
+        timeout-minutes: 280
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
@@ -63,7 +88,8 @@ jobs:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
-        run: node scripts/video-admin/processar.mjs "${{ inputs.job_id }}"
+          IDS: ${{ inputs.job_id }}${{ inputs.job_id_2 != '' && format(',{0}', inputs.job_id_2) || '' }}
+        run: node scripts/video-admin/processar.mjs "$IDS"
 
       - name: Limpar arquivos antigos do Storage (admin-videos/)
         if: always()

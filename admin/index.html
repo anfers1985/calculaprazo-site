@@ -171,6 +171,12 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
 .vg-summary b{color:var(--txt);}
 .vg-go{padding:11px 22px;font-size:.88rem;}
 .vg-go:disabled{opacity:.45;cursor:not-allowed;}
+.vg-par{margin-top:18px;border:1.5px dashed var(--b200);background:var(--b50);border-radius:12px;padding:16px 18px;display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;}
+.vg-par .tt{flex:1 1 280px;font-size:.8rem;color:var(--txt-m);line-height:1.55;font-weight:600;}
+.vg-par .tt b{display:block;font-size:.9rem;color:var(--txt);font-weight:800;margin-bottom:2px;}
+.vg-par label{display:block;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--txt-s);margin-bottom:4px;}
+.vg-par select{padding:7px 10px;border:1.5px solid var(--brd);border-radius:8px;font-family:var(--fh);font-weight:700;font-size:.8rem;background:#fff;}
+.vg-par-aviso{flex:1 1 100%;font-size:.76rem;color:#92400E;font-weight:700;display:none;}
 
 .vg-info{margin-top:12px;border:1px solid var(--brd);border-radius:10px;background:#F8FAFC;padding:4px 14px;}
 .vg-row{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--brd);font-size:.8rem;line-height:1.5;}
@@ -593,7 +599,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
         <div class="vg-head">
           <div>
             <div class="vg-title">Gerar novo vídeo</div>
-            <div class="vg-sub">Escolha o artigo, o formato e o tom. O roteiro é escrito a partir do texto do artigo; artigos de lei e súmulas só entram no vídeo se estiverem escritos no artigo.</div>
+            <div class="vg-sub">Escolha o artigo, o formato e o tom (ou gere o par do dia: longo + Short ilustrado). O roteiro é escrito a partir do texto do artigo; artigos de lei e súmulas só entram no vídeo se estiverem escritos no artigo.</div>
           </div>
         </div>
         <div class="vg-grid">
@@ -611,6 +617,13 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
               <div class="vg-seg" id="vg-fmt">
                 <button type="button" data-f="short" onclick="vgFmt('short')"><span class="fm" style="width:16px;height:28px"></span><span><b>Short</b><small>Vertical 9:16 · YouTube Shorts</small></span></button>
                 <button type="button" data-f="longo" onclick="vgFmt('longo')"><span class="fm" style="width:30px;height:18px"></span><span><b>Vídeo longo</b><small>Horizontal 16:9 · canal</small></span></button>
+              </div>
+            </div>
+            <div class="fg" id="vg-estilo-box">
+              <label>Estilo do Short</label>
+              <div class="vg-seg" id="vg-estilo">
+                <button type="button" data-e="ilustrado" onclick="vgEstilo('ilustrado')"><span style="font-size:1.4rem">🎨</span><span><b>Ilustrado (IA)</b><small>Uma ilustração por cena + legenda manuscrita</small></span></button>
+                <button type="button" data-e="slides" onclick="vgEstilo('slides')"><span style="font-size:1.4rem">🧩</span><span><b>Slides</b><small>Estilo "Direto ao Ponto", sem imagens de IA</small></span></button>
               </div>
             </div>
             <div class="fg">
@@ -632,9 +645,9 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
             <div class="fg-row">
               <div class="fg"><label>Voz</label>
                 <select id="vg-voz" onchange="vgSum()">
-                  <option value="francisca">Francisca (Azure padrão)</option>
+                  <option value="francisca">Francisca (Microsoft)</option>
                   <option value="thalita-hd">Thalita (Azure HD)</option>
-                  <option value="gemini">Gemini TTS (experimental)</option>
+                  <option value="gemini">Gemini 3.8 TTS (voz do Google)</option>
                 </select>
               </div>
               <div class="fg"><label>Publicação</label>
@@ -647,6 +660,13 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
             </div>
             <div class="fg" id="vg-when" style="display:none"><label>Data e hora</label><input type="datetime-local" id="vg-quando" onchange="vgSum()"></div>
           </div>
+        </div>
+        <div class="vg-par" id="vg-par">
+          <div class="tt"><b>⚡ Par do dia: vídeo longo + Short ilustrado</b>Gera os dois do mesmo artigo, numa só execução (um depois do outro), com o tom, a voz e a publicação escolhidos acima. Se for agendar, a data e a hora valem para o longo; o Short sai 1 hora depois.</div>
+          <div><label>Vídeo longo</label><select id="vg-par-longo" onchange="vgParAviso()"><option value="120">2 min</option><option value="180" selected>3 min</option><option value="300">5 min</option><option value="480">8 min</option></select></div>
+          <div><label>Short</label><select id="vg-par-short"><option value="45">45 s</option><option value="60" selected>60 s</option><option value="90">90 s</option></select></div>
+          <button class="btn btn-p vg-go" id="vg-par-go" type="button" onclick="vgGerarPar()">⚡ Gerar o par do dia</button>
+          <div class="vg-par-aviso" id="vg-par-aviso"></div>
         </div>
         <div class="vg-foot">
           <div class="vg-summary" id="vg-sum"></div>
@@ -3626,10 +3646,10 @@ function toast(msg, type='ok'){
 // ════════════════════════════════════════
 // GERAR VÍDEO (pipeline separado: scripts/video-admin + workflow video-admin.yml + função videos-gerar)
 // ════════════════════════════════════════
-const VG={posts:[],words:{},sel:null,fmt:'short',dur:60,tom:'neutro',outro:false,timer:null,iniciado:false};
+const VG={posts:[],words:{},sel:null,fmt:'short',estilo:'ilustrado',dur:60,tom:'neutro',outro:false,timer:null,iniciado:false};
 const VG_DUR={short:[30,45,60,90],longo:[120,180,300,480]};
 const VG_PUB_ROT={privado:'Privado, para revisar',publico:'Público ao terminar',agendado:'Agendado'};
-const VG_VOZ_ROT={francisca:'Francisca (Azure)','thalita-hd':'Thalita (Azure HD)',gemini:'Gemini TTS'};
+const VG_VOZ_ROT={francisca:'Francisca (Microsoft)','thalita-hd':'Thalita (Azure HD)',gemini:'Gemini TTS'};
 const VG_TOM_ROT={neutro:'Neutro',empresa:'Pró-empresa',empregado:'Pró-empregado'};
 function vgFmtDur(s){return s<120?Math.round(s)+' s':(Math.round(s/6)/10).toString().replace('.',',')+' min';}
 function vgEsc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -3644,7 +3664,7 @@ async function callVideosGerar(action,payload={}){
 function vgIniciar(){
   VG.posts=getPosts();
   refreshPostsFromServer().finally(()=>{VG.posts=getPosts();});
-  if(!VG.iniciado){VG.iniciado=true;vgFmt('short');vgTom('neutro');vgSelRender();}
+  if(!VG.iniciado){VG.iniciado=true;vgFmt('short');vgEstilo('ilustrado');vgTom('neutro');vgSelRender();}
   vgFila();
   if(!VG.timer)VG.timer=setInterval(()=>{const pg=document.getElementById('page-videos');if(pg&&pg.classList.contains('on')&&VG.temAtivo)vgFila(true);},15000);
 }
@@ -3686,7 +3706,21 @@ function vgFmt(f){
   if(f!==VG.fmt){VG.fmt=f;VG.outro=false;VG.dur=f==='short'?60:180;}
   VG.fmt=f;
   document.querySelectorAll('#vg-fmt button').forEach(b=>b.classList.toggle('on',b.dataset.f===f));
+  const eb=document.getElementById('vg-estilo-box');if(eb)eb.style.display=f==='short'?'block':'none';
   vgChips();vgSum();
+}
+function vgEstilo(e){
+  VG.estilo=e;
+  document.querySelectorAll('#vg-estilo button').forEach(b=>b.classList.toggle('on',b.dataset.e===e));
+  vgSum();
+}
+// Quantos segundos de vídeo o artigo sustenta sem repetir conteúdo (mesma regra do vgInfo).
+function vgMaxSeg(w){return Math.max(30,Math.floor(w*.8/2.5/30)*30);}
+function vgParAviso(){
+  const box=document.getElementById('vg-par-aviso');if(!box)return;
+  const w=VG.sel?VG.words[VG.sel.id]:null,dl=Number(document.getElementById('vg-par-longo').value);
+  if(w&&dl>vgMaxSeg(w)*1.15){box.style.display='block';box.textContent=`⚠️ O artigo tem ~${w.toLocaleString('pt-BR')} palavras e só sustenta ~${vgFmtDur(vgMaxSeg(w))}. Escolha um vídeo longo mais curto para não repetir conteúdo.`;return true;}
+  box.style.display='none';return false;
 }
 function vgChips(){
   let h=VG_DUR[VG.fmt].map(d=>`<button type="button" class="${!VG.outro&&d===VG.dur?'on':''}" onclick="vgDur(${d})">${vgFmtDur(d)}</button>`).join('');
@@ -3704,7 +3738,8 @@ function vgTom(t){VG.tom=t;document.querySelectorAll('#vg-tone button').forEach(
 function vgPub(){document.getElementById('vg-when').style.display=document.getElementById('vg-pub').value==='agendado'?'block':'none';vgSum();}
 function vgInfo(){
   const pal=Math.round(VG.dur*2.5),cenas=Math.max(3,Math.round(VG.dur/(VG.fmt==='short'?5:8)));
-  const frames=VG.dur*24,lo=Math.round(frames*.3/4/60+3),hi=Math.round(frames*.3/2/60+3);
+  const frames=VG.dur*24;let lo=Math.round(frames*.3/4/60+3),hi=Math.round(frames*.3/2/60+3);
+  const ilus=VG.fmt==='short'&&VG.estilo==='ilustrado';if(ilus){lo+=Math.round(cenas*.3);hi+=Math.round(cenas*1.2);}
   const w=VG.sel?VG.words[VG.sel.id]:null;let st='',cov;
   if(!VG.sel)cov='<span class="v">Selecione um artigo.</span>';
   else if(!w)cov='<span class="v">Não consegui medir o tamanho do artigo agora; o pipeline confere na hora de gerar.</span>';
@@ -3717,18 +3752,27 @@ function vgInfo(){
   document.getElementById('vg-info').innerHTML=
    `<div class="vg-row"><span class="k">Roteiro</span><span class="v">~${pal.toLocaleString('pt-BR')} palavras · ~${cenas} cenas<small>Narração a cerca de 2,5 palavras por segundo. A duração real é medida na voz; o vídeo sempre acompanha a narração.</small></span></div>`+
    `<div class="vg-row"><span class="k">Cobertura</span>${cov}</div>`+
-   `<div class="vg-row"><span class="k">Geração</span><span class="v">≈ ${lo}–${hi} min até o vídeo ficar pronto<small>Estimativa; depende da fila do GitHub Actions.</small></span></div>`;
+   `<div class="vg-row"><span class="k">Geração</span><span class="v">≈ ${lo}–${hi} min até o vídeo ficar pronto<small>${ilus?`Inclui ~${cenas} ilustrações geradas pela IA do Google (uma por cena, com espera entre elas). `:''}Estimativa; depende da fila do GitHub Actions.</small></span></div>`;
   return st;
 }
 function vgSum(){
   const st=vgInfo(),pal=Math.round(VG.dur*2.5);
   const sm=document.getElementById('vg-sum');if(!sm)return;
   const vz=document.getElementById('vg-voz').value,pb=document.getElementById('vg-pub').value;
-  sm.innerHTML=`<b>${VG.fmt==='short'?'Short':'Vídeo longo'}</b> · <b>${vgFmtDur(VG.dur)}</b> · ~${pal.toLocaleString('pt-BR')} palavras · Tom <b>${VG_TOM_ROT[VG.tom]}</b><br>Voz ${VG_VOZ_ROT[vz]} · ${VG_PUB_ROT[pb]}`;
+  sm.innerHTML=`<b>${VG.fmt==='short'?(VG.estilo==='ilustrado'?'Short ilustrado':'Short (slides)'):'Vídeo longo'}</b> · <b>${vgFmtDur(VG.dur)}</b> · ~${pal.toLocaleString('pt-BR')} palavras · Tom <b>${VG_TOM_ROT[VG.tom]}</b><br>Voz ${VG_VOZ_ROT[vz]} · ${VG_PUB_ROT[pb]}`;
   document.getElementById('vg-go').disabled=!VG.sel||st==='err'||VG.enviando;
+  const pg=document.getElementById('vg-par-go');if(pg)pg.disabled=!VG.sel||VG.enviando;
+  vgParAviso();
+}
+// Já existe (hoje, neste computador) um vídeo desse formato que não deu erro? Evita gerar o do dia duas vezes sem querer.
+function vgJaHoje(tipo,estilo){
+  const hoje=new Date().toDateString();
+  return (window._vgJobs||[]).filter(j=>j.status!=='erro'&&j.tipo===tipo&&new Date(j.criado_em).toDateString()===hoje&&(tipo==='longo'||(j.estilo||'slides')===estilo));
 }
 async function vgGerar(){
   if(!VG.sel||VG.enviando)return;
+  const dup=vgJaHoje(VG.fmt,VG.estilo);
+  if(dup.length&&!confirm(`Hoje já foi criado ${dup.length} ${VG.fmt==='short'?'Short':'vídeo longo'} (${dup[0].titulo_youtube||dup[0].post_titulo||dup[0].post_slug}). Criar mais um mesmo assim?`))return;
   const pub=document.getElementById('vg-pub').value;let agendar=null;
   if(pub==='agendado'){
     const v=document.getElementById('vg-quando').value;
@@ -3737,10 +3781,30 @@ async function vgGerar(){
   }
   VG.enviando=true;vgSum();
   try{
-    const r=await callVideosGerar('criar',{slug:VG.sel.id,tipo:VG.fmt,duracao_seg:VG.dur,tom:VG.tom,voz:document.getElementById('vg-voz').value,publicacao:pub,agendar_em:agendar});
+    const r=await callVideosGerar('criar',{slug:VG.sel.id,tipo:VG.fmt,estilo:VG.fmt==='short'?VG.estilo:'slides',duracao_seg:VG.dur,tom:VG.tom,voz:document.getElementById('vg-voz').value,publicacao:pub,agendar_em:agendar});
     toast('Vídeo na fila! Acompanhe abaixo.','ok');
   }catch(e){
     toast(e.message||'Não foi possível criar o vídeo.','err');
+  }
+  VG.enviando=false;vgSum();vgFila();
+}
+async function vgGerarPar(){
+  if(!VG.sel||VG.enviando)return;
+  if(vgParAviso()){toast('Escolha um vídeo longo mais curto para este artigo.','err');return;}
+  const dup=[...vgJaHoje('longo','slides'),...vgJaHoje('short','ilustrado')];
+  if(dup.length&&!confirm(`Hoje já foram criados ${dup.length} vídeo(s) do par (longo + Short ilustrado). Criar o par de novo mesmo assim?`))return;
+  const pub=document.getElementById('vg-pub').value;let agLongo=null,agShort=null;
+  if(pub==='agendado'){
+    const v=document.getElementById('vg-quando').value;
+    if(!v){toast('Escolha a data e a hora do agendamento.','err');return;}
+    const d=new Date(v);agLongo=d.toISOString();agShort=new Date(d.getTime()+60*60*1000).toISOString();
+  }
+  VG.enviando=true;vgSum();
+  try{
+    await callVideosGerar('criar_par',{slug:VG.sel.id,duracao_longo_seg:Number(document.getElementById('vg-par-longo').value),duracao_short_seg:Number(document.getElementById('vg-par-short').value),tom:VG.tom,voz:document.getElementById('vg-voz').value,publicacao:pub,agendar_longo_em:agLongo,agendar_short_em:agShort});
+    toast('Par do dia na fila! O longo sai primeiro, depois o Short.','ok');
+  }catch(e){
+    toast(e.message||'Não foi possível criar o par.','err');
   }
   VG.enviando=false;vgSum();vgFila();
 }
@@ -3771,7 +3835,7 @@ async function vgFila(silencioso){
       if(j.status==='erro')acoes.push(`<button class="btn btn-danger btn-sm" type="button" onclick="vgRetomar('${vgEsc(j.id)}')">Tentar de novo</button>`);
       return `<div class="vg-fila-item"><div>
         <div class="vg-fila-tit">${vgEsc(j.titulo_youtube||j.post_titulo||j.post_slug)}</div>
-        <div class="vg-fila-meta"><span class="vg-stt ${st.cls}">${vgEsc(st.txt)}</span><span>${j.tipo==='short'?'Short':'Vídeo longo'} · ${vgEsc(dur)}</span><span>Tom ${vgEsc(VG_TOM_ROT[j.tom]||j.tom)}</span><span>${vgEsc(VG_VOZ_ROT[j.voz]||j.voz)}${j.voz_usada&&/reserva/.test(j.voz_usada)?' (usou a voz reserva)':''}</span><span>${new Date(j.criado_em).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</span></div>
+        <div class="vg-fila-meta"><span class="vg-stt ${st.cls}">${vgEsc(st.txt)}</span><span>${j.tipo==='short'?(j.estilo==='ilustrado'?'Short ilustrado':'Short'):'Vídeo longo'} · ${vgEsc(dur)}</span>${j.par_id?'<span>⚡ par do dia</span>':''}<span>Tom ${vgEsc(VG_TOM_ROT[j.tom]||j.tom)}</span><span>${vgEsc(VG_VOZ_ROT[j.voz]||j.voz)}${j.voz_usada&&/reserva/.test(j.voz_usada)?' (usou a voz reserva)':''}</span><span>${new Date(j.criado_em).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</span></div>
         ${j.status==='erro'&&j.erro_mensagem?`<div class="vg-fila-erro">${vgEsc(j.erro_mensagem.slice(0,400))}</div>`:''}
       </div><div class="vg-fila-acoes">${acoes.join('')}</div></div>`;
     }).join('');

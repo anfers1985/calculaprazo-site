@@ -18,8 +18,9 @@
 // trocar de modelo sim (pool de capacidade diferente).
 // ════════════════════════════════════════════════════════════════════════
 
-const TIMEOUT_GEMINI_MS = 60000;
-const TIMEOUT_CHAT_MS = 90000; // modelos "reasoning" gratuitos costumam demorar
+// Configuráveis por env (IA_TIMEOUT_MS, IA_MAX_TOKENS); sem env, o comportamento é o de sempre.
+const TIMEOUT_GEMINI_MS = Number(process.env.IA_TIMEOUT_MS) || 60000;
+const TIMEOUT_CHAT_MS = Number(process.env.IA_TIMEOUT_MS) || 90000; // modelos "reasoning" gratuitos costumam demorar
 
 const REGEX_ERRO_TEMPORARIO =
   /rate.?limit|429|overload|high demand|unavailable|timeout|gateway|502|503|504|524|try again|resposta vazia/i;
@@ -43,7 +44,7 @@ async function chamarGeminiComRetry({ apiKey, modelo, systemPrompt, userPrompt }
     systemInstruction: { parts: [{ text: systemPrompt }] },
     contents: [{ parts: [{ text: userPrompt }] }],
     generationConfig: {
-      maxOutputTokens: 4096,
+      maxOutputTokens: Number(process.env.IA_MAX_TOKENS) || 4096,
       // Gemini 3.x usa thinkingLevel; Gemini 2.5 usa thinkingBudget.
       ...(modelo.startsWith('gemini-3')
         ? { thinkingConfig: { thinkingLevel: 'low' } }
@@ -121,7 +122,7 @@ async function chamarChatCompletionComRetry(
     ],
     // Modelos "reasoning" gastam parte do limite pensando; 4096 podia acabar
     // antes de sair qualquer JSON (content vazio).
-    max_tokens: 8192,
+    max_tokens: Number(process.env.IA_MAX_TOKENS) || 8192,
   };
 
   for (let i = 1; i <= tentativas; i++) {

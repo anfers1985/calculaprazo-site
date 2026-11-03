@@ -39,13 +39,30 @@ function idsDoSite(cena) {
   return sprite;
 }
 
-export function montarHtml(cena, destDir) {
+// Short ilustrado: copia as imagens das cenas para assets/img e aponta o JSON para elas (caminho relativo).
+function prepararImagens(cena, destDir) {
+  const copia = JSON.parse(JSON.stringify(cena));
+  fs.mkdirSync(path.join(destDir, 'assets', 'img'), { recursive: true });
+  copia.cenas.forEach((c, i) => {
+    if (c.imagem_arquivo && fs.existsSync(c.imagem_arquivo)) {
+      const nome = `c${String(i + 1).padStart(2, '0')}${path.extname(c.imagem_arquivo) || '.jpg'}`;
+      fs.copyFileSync(c.imagem_arquivo, path.join(destDir, 'assets', 'img', nome));
+      c.imagem = `assets/img/${nome}`;
+    }
+    delete c.imagem_arquivo;
+  });
+  return copia;
+}
+
+export function montarHtml(cenaOriginal, destDir) {
+  const ilustrado = cenaOriginal.estilo === 'ilustrado';
+  const cena = ilustrado ? prepararImagens(cenaOriginal, destDir) : cenaOriginal;
   fs.mkdirSync(path.join(destDir, 'assets'), { recursive: true });
   for (const f of fs.readdirSync(path.join(SLIDES, 'fonts'))) fs.copyFileSync(path.join(SLIDES, 'fonts', f), path.join(destDir, 'assets', f));
   fs.copyFileSync(path.join(SLIDES, 'logo.png'), path.join(destDir, 'assets', 'logo.png'));
   const sprite = idsDoSite(cena);
   const extra = simbolosLucide(cena);
-  const html = fs.readFileSync(path.join(SLIDES, 'template.html'), 'utf-8')
+  const html = fs.readFileSync(path.join(SLIDES, ilustrado ? 'short-ilustrado.html' : 'template.html'), 'utf-8')
     .replaceAll('/*ICONS*/', () => sprite + extra)
     .replaceAll('/*CENA*/', () => JSON.stringify(cena));
   const arq = path.join(destDir, 'slides.html');
@@ -80,7 +97,7 @@ export async function renderizar({ cena, audio, outDir, maxSeg, workers, log = c
   const n = Math.max(1, Math.min(workers || os.cpus().length, 4));
   log(`Renderizando ${nFrames} quadros (${W}x${H}, ${FPS} fps) com ${n} navegador(es)...`);
   const t0 = Date.now();
-  const launch = { args: ['--no-sandbox'] };
+  const launch = { args: ['--no-sandbox', ...(process.env.CHROME_ARGS ? process.env.CHROME_ARGS.split(' ').filter(Boolean) : [])] };
   if (process.env.CHROME_PATH) launch.executablePath = process.env.CHROME_PATH;
   const browser = await chromium.launch(launch);
   try {

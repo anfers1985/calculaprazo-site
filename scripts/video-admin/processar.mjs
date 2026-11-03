@@ -9,6 +9,7 @@ import { etapaRoteiro } from './roteiro.mjs';
 import { etapaPublicar } from './publicar.mjs';
 import { roteiroParaCena } from './lib/cena.mjs';
 import { renderizar, duracaoDoAudio } from './render.mjs';
+import { imagensDoJob } from './lib/imagens-job.mjs';
 
 const AQUI = path.dirname(fileURLToPath(import.meta.url));
 const LIMITE_STORAGE_MB = 48; // limite de arquivo do plano gratuito do Supabase é 50 MB
@@ -22,7 +23,12 @@ async function etapaRender(jobId) {
   const job = await getJob(jobId);
   await updateJob(jobId, { etapa_atual: 'render' });
   const audio = await baixarArquivo(job.narracao_path, path.resolve('output/audio/narracao.mp3'));
-  const cena = roteiroParaCena(job.roteiro, job.tipo, duracaoDoAudio(audio));
+  const cena = roteiroParaCena(job.roteiro, job.tipo, duracaoDoAudio(audio), job.estilo || 'slides');
+  if (job.estilo === 'ilustrado') {
+    // imagens por IA (com Storage como cache); cena sem imagem vira cartão de papel
+    const arquivos = await imagensDoJob(job, path.resolve('output/imagens'));
+    cena.cenas.forEach((c, i) => { c.imagem_arquivo = arquivos[i] || null; });
+  }
   const { mp4, thumbnail } = await renderizar({ cena, audio, outDir: path.resolve('output/render') });
   const mb = fs.statSync(mp4).size / 1048576;
   const campos = { status: 'render_ok', erro_etapa: null, erro_mensagem: null, roteiro: { ...job.roteiro, cortes_reais: cena.cortes } };
@@ -52,23 +58,37 @@ export function etapaInicial(job) {
   return i < 0 ? 0 : i;
 }
 
-async function main(jobId) {
+export async function processarUm(jobId) {
   const job = await getJob(jobId);
   if (process.env.GITHUB_RUN_ID) await updateJob(jobId, { github_run_url: `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}` });
   const ini = etapaInicial(job);
-  if (ini < 0) { console.log('Job já publicado.'); return; }
+  if (ini < 0) { console.log('Job já publicado.'); return true; }
   for (let i = ini; i < ETAPAS.length; i++) {
     const e = ETAPAS[i];
     console.log(`\n===== Etapa: ${e.nome} =====`);
     await updateJob(jobId, { status: e.apos, etapa_atual: e.nome, erro_etapa: null, erro_mensagem: null });
     try { await e.run(jobId); }
-    catch (err) { console.error(`Falha na etapa ${e.nome}:`, err); await marcarErro(jobId, e.nome, err.message || err); process.exit(1); }
+    catch (err) { console.error(`Falha na etapa ${e.nome}:`, err); await marcarErro(jobId, e.nome, err.message || err); return false; }
   }
   console.log('\nJob concluído.');
+  return true;
+}
+
+// Aceita um ou vários ids separados por vírgula (o botão "Gerar o par do dia" manda os dois no mesmo workflow,
+// que roda um depois do outro). Cada job usa sua própria pasta de trabalho.
+async function main(ids) {
+  let ok = true;
+  for (const [n, id] of ids.entries()) {
+    console.log(`\n######## Job ${n + 1}/${ids.length}: ${id} ########`);
+    if (n > 0) fs.rmSync(path.resolve('output'), { recursive: true, force: true });
+    try { if (!(await processarUm(id))) ok = false; }
+    catch (e) { console.error(`Job ${id} falhou:`, e); ok = false; }
+  }
+  return ok;
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
-  const id = process.argv[2];
-  if (!id) { console.error('Uso: node processar.mjs <job_id>'); process.exit(1); }
-  main(id).catch(e => { console.error(e); process.exit(1); });
+  const ids = String(process.argv[2] || '').split(',').map(x => x.trim()).filter(Boolean);
+  if (!ids.length) { console.error('Uso: node processar.mjs <job_id>[,<job_id>...]'); process.exit(1); }
+  main(ids).then(ok => process.exit(ok ? 0 : 1)).catch(e => { console.error(e); process.exit(1); });
 }

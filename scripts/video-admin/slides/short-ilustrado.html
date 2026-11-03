@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<!-- Template do Short ILUSTRADO (Calcula Prazo): papel pontilhado, uma ilustração por cena e legenda em blocos curtos.
+     Os marcadores /*ICONS*/ e /*CENA*/ são substituídos pelo render.mjs. Contrato: window.render(t) desenha o quadro do instante t. -->
+<style>
+@font-face{font-family:'Patrick Hand';font-weight:400;src:url(assets/patrick-hand-latin-400-normal.woff2)}
+@font-face{font-family:'Plus Jakarta Sans';font-weight:700;src:url(assets/plus-jakarta-sans-latin-700-normal.woff2)}
+@font-face{font-family:'Plus Jakarta Sans';font-weight:800;src:url(assets/plus-jakarta-sans-latin-800-normal.woff2)}
+:root{--papel:#F7F2E4;--ponto:rgba(110,92,60,.22);--tinta:#2A2723;--acc:#2563EB}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--papel);font-family:'Patrick Hand','Plus Jakarta Sans',sans-serif}
+#fundo{position:absolute;inset:0;background:
+  radial-gradient(1400px 1000px at 50% 38%,rgba(255,255,255,.35),transparent 70%),
+  radial-gradient(var(--ponto) 2.2px,transparent 2.6px) 0 0/38px 38px,var(--papel)}
+#fundo::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 220px rgba(120,95,50,.22)}
+.cena{position:absolute;inset:0;overflow:hidden}
+.moldura{position:absolute;left:36px;right:36px;top:110px;height:1330px;display:flex;align-items:center;justify-content:center;transform-origin:50% 55%}
+.moldura img{max-width:100%;max-height:100%;object-fit:contain;mix-blend-mode:multiply;
+  -webkit-mask-image:radial-gradient(ellipse 66% 62% at 50% 50%,#000 78%,transparent 100%);mask-image:radial-gradient(ellipse 66% 62% at 50% 50%,#000 78%,transparent 100%);
+  filter:saturate(1.04) contrast(1.02)}
+/* cartão de papel (cena sem imagem) */
+.cartao{position:relative;width:860px;padding:90px 70px;background:#FFFDF6;border-radius:10px;box-shadow:0 26px 60px rgba(70,50,20,.28),0 2px 0 rgba(0,0,0,.05);transform:rotate(-1.6deg);text-align:center;font-size:84px;line-height:1.12;color:var(--tinta)}
+.cartao::before{content:"";position:absolute;top:-34px;left:50%;width:230px;height:70px;margin-left:-115px;background:rgba(236,196,92,.78);transform:rotate(2deg);box-shadow:0 3px 8px rgba(0,0,0,.12)}
+.cartao b{display:block;margin-top:28px;font:800 34px 'Plus Jakarta Sans',sans-serif;letter-spacing:2px;color:var(--acc)}
+/* legenda em blocos */
+#leg{position:absolute;left:60px;right:60px;bottom:292px;display:flex;justify-content:center;z-index:5;pointer-events:none}
+#leg span{display:inline-block;max-width:960px;padding:16px 40px 20px;background:rgba(245,239,221,.96);border-radius:8px;box-shadow:0 8px 24px rgba(70,50,20,.22),inset 0 0 0 2px rgba(110,92,60,.16);font-size:76px;line-height:1.1;color:var(--tinta);text-align:center;letter-spacing:.5px;white-space:nowrap}
+/* marca */
+#marca{position:absolute;left:0;right:0;bottom:104px;display:flex;align-items:center;justify-content:center;gap:16px;z-index:4;opacity:.62;font:700 30px 'Plus Jakarta Sans',sans-serif;color:#4a4235}
+#marca img{width:44px;height:44px;border-radius:11px}
+#marca b{color:var(--acc)}
+#pb{position:absolute;left:0;top:0;height:8px;background:var(--acc);z-index:9;width:0}
+</style></head><body>
+/*ICONS*/
+<div id="fundo"></div><div id="palco"></div><div id="leg"></div>
+<div id="marca"><img src="assets/logo.png"><span>Calcula <b>Prazo</b> · Direto ao Ponto</span></div><div id="pb"></div>
+<script>
+window.CENA=/*CENA*/;
+const C=window.CENA,B=C.cortes,DUR=B[B.length-1],N=C.cenas.length;
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const cl=x=>Math.max(0,Math.min(1,x));
+const eo=p=>1-Math.pow(1-p,3);
+const eb=p=>1+2.70158*Math.pow(p-1,3)+1.70158*Math.pow(p-1,2);
+const palco=document.getElementById('palco'),leg=document.getElementById('leg');
+const els=C.cenas.map((c,i)=>{
+  const d=document.createElement('div');d.className='cena';d.style.display='none';
+  const m=document.createElement('div');m.className='moldura';
+  if(c.imagem){m.innerHTML=`<img src="${esc(c.imagem)}" alt="">`;}
+  else{const txt=(c.blocos||[]).map(b=>b.texto).join(' ');m.innerHTML=`<div class="cartao">${esc(txt.length>120?txt.slice(0,117)+'…':txt)}<b>CALCULAPRAZO.COM.BR</b></div>`;}
+  d.appendChild(m);palco.appendChild(d);return{d,m};
+});
+const lbl=document.createElement('span');leg.appendChild(lbl);
+let ultimoTxt=null;
+window.render=function(t){
+  document.getElementById('pb').style.width=(t/DUR*1080)+'px';
+  els.forEach((e,i)=>{
+    const st=i==0?0:B[i]-.18,en=i==N-1?1e9:B[i+1]+.22;
+    if(t<st||t>en){e.d.style.display='none';return;}
+    e.d.style.display='block';e.d.style.zIndex=i+1;
+    e.d.style.opacity=i==0?1:cl((t-st)/.26);
+    const lt=Math.max(0,t-B[i]),dur=Math.max(1,B[i+1]-B[i]);
+    const entra=cl(lt/.5);                      // "pop" de entrada com leve overshoot
+    const esc_=(.93+.07*eb(entra))*(1+.07*cl(lt/dur));   // + zoom lento (ken burns)
+    const rot=(i%2?1:-1)*(.7-.5*eo(entra));    // levíssima inclinação, como colagem
+    const y=(1-eo(entra))*40;
+    e.m.style.transform=`translateY(${y}px) rotate(${rot}deg) scale(${esc_})`;
+  });
+  // legenda: bloco ativo no instante t
+  let alvo=null,prog=1;
+  for(let i=0;i<N;i++){const bl=C.cenas[i].blocos||[];for(const b of bl){if(t>=b.t0&&t<b.t1){alvo=b;prog=cl((t-b.t0)/.14);}}}
+  if(alvo){if(alvo.texto!==ultimoTxt){lbl.textContent=alvo.texto;ultimoTxt=alvo.texto;}leg.style.opacity=eo(prog);leg.style.transform=`translateY(${(1-eo(prog))*16}px)`;}
+  else{leg.style.opacity=0;}
+};
+window.render(0);
+</script></body></html>

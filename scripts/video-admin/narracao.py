@@ -8,12 +8,24 @@ envia a narração completa ao Storage.
 Vozes (campo `voz` do job):
   francisca   -> Azure Speech, voz neural pt-BR-FranciscaNeural (reserva: Edge TTS)
   thalita-hd  -> Azure Speech, voz HD pt-BR-Thalita:DragonHDLatestNeural (reserva: Francisca)
-  gemini      -> Gemini TTS (EXPERIMENTAL; reserva: Francisca)
+  gemini      -> Gemini 3.8 Flash TTS do Google (modelo gemini-3.8-flash-tts; gratuito no plano free da API, com limites
+                 que só aparecem no seu AI Studio). Usa a GEMINI_API_KEY (e a GEMINI_API_KEY_2, se houver, em rodízio).
+                 Nunca mistura vozes: se falhar, a narração PARA e "Tentar de novo" continua nas cenas que faltam
+                 (GEMINI_TTS_RESERVA=francisca refaz o vídeo INTEIRO com a Francisca em vez de parar).
+  clonada     -> a SUA voz clonada, rodando no seu computador (reserva: Francisca). Configure UM destes:
+                   VOZ_CLONADA_URL  = servidor de TTS compatível com a API da OpenAI (POST .../v1/audio/speech),
+                                      ex.: http://localhost:8000  (+ VOZ_CLONADA_MODEL, VOZ_CLONADA_VOICE, VOZ_CLONADA_KEY opcionais)
+                   (se a voz clonada falhar, a narração é interrompida para não misturar vozes; VOZ_CLONADA_ESTRITA=0 aceita a Francisca de reserva)
+                   VOZ_CLONADA_CMD  = comando que gera o áudio, com os marcadores {texto_arquivo} (txt UTF-8 de entrada)
+                                      e {saida} (arquivo de saída .wav/.mp3), ex.: python minha_voz.py {texto_arquivo} {saida}
 Qualquer falha numa voz melhor cai automaticamente na Francisca, para o job nunca ficar travado.
 
 Env: SUPABASE_URL, SUPABASE_SERVICE_KEY, AZURE_SPEECH_KEY, AZURE_SPEECH_REGION, GEMINI_API_KEY
-     (opcionais: GEMINI_TTS_MODEL, GEMINI_TTS_VOICE, TTS_FAKE=1 só para testes sem rede)
+     (opcionais: GEMINI_TTS_MODEL [gemini-3.8-flash-tts | gemini-3.8-flash-lite-tts], GEMINI_TTS_VOICE [Kore, Puck... ou voice_... da sua voz replicada],
+      GEMINI_TTS_STYLE, GEMINI_TTS_INTERVALO_S, GEMINI_TTS_TENTATIVAS, GEMINI_TTS_TIMEOUT_S, GEMINI_TTS_RESERVA, TTS_FAKE=1 só para testes sem rede)
 Uso: python narracao.py <job_id>
+     python narracao.py --testar-gemini "texto" --saida amostra.mp3     |     python narracao.py --listar-vozes-gemini
+     python narracao.py --local roteiro.json --voz clonada|francisca --saida pasta   (sem Supabase; atualiza o roteiro.json)
 """
 import asyncio
 import base64
@@ -133,19 +145,153 @@ async def sintetizar_edge(texto: str, rate: str, destino: Path):
     raise ultimo
 
 
+class CotaGeminiEsgotada(RuntimeError):
+    """Cota DIÁRIA (ou zero) do Gemini TTS: esperar minutos não adianta."""
+
+
+class ReservaFrancisca(RuntimeError):
+    """Sinaliza que a narração deve ser refeita INTEIRA com a Francisca (GEMINI_TTS_RESERVA=francisca)."""
+
+
+GEMINI_ESTILO_PADRAO = "narração clara, calma e profissional, em português do Brasil"
+_gem = {"ultimo": 0.0, "intervalo": None, "k": 0}
+
+
+def _gemini_chaves():
+    return [k.strip() for k in (os.environ.get("GEMINI_API_KEY"), os.environ.get("GEMINI_API_KEY_2")) if k and k.strip()]
+
+
+def _gemini_base():
+    return (os.environ.get("GEMINI_API_BASE") or "https://generativelanguage.googleapis.com").rstrip("/")
+
+
+def _atraso_sugerido(r) -> float:
+    """Segundos que a API pediu para esperar (cabeçalho Retry-After ou 'retryDelay': '34s' no corpo)."""
+    try:
+        if r.headers.get("Retry-After"):
+            return float(r.headers["Retry-After"])
+    except ValueError:
+        pass
+    m = re.search(r"retry\w*delay\W+(\d+(?:\.\d+)?)\s*s", r.text or "", re.I) or re.search(r"retry in (\d+(?:\.\d+)?)\s*s", r.text or "", re.I)
+    return float(m.group(1)) if m else 0.0
+
+
+def _audio_para_segmento(dados: bytes) -> AudioSegment:
+    """O Gemini 3.8 devolve WAV (com cabeçalho RIFF) em chamadas normais; PCM cru 24 kHz mono 16 bits em streaming."""
+    if dados[:4] == b"RIFF":
+        return AudioSegment.from_file(io.BytesIO(dados), format="wav")
+    return AudioSegment(data=dados, sample_width=2, frame_rate=24000, channels=1)
+
+
+def _extrair_audio_gemini(j: dict) -> bytes:
+    """Resposta da Interactions API: steps[].content[] com {type:'audio', data:<base64>}; pega o último bloco de áudio."""
+    achados = []
+    for step in j.get("steps") or []:
+        for c in step.get("content") or []:
+            if isinstance(c, dict) and c.get("type") == "audio" and c.get("data"):
+                achados.append(c["data"])
+    if not achados:  # tolera variações de formato
+        for o in j.get("outputs") or []:
+            if isinstance(o, dict) and o.get("type") == "audio" and o.get("data"):
+                achados.append(o["data"])
+    if not achados:
+        raise RuntimeError(f"Gemini TTS respondeu sem áudio (campos: {list(j.keys())[:8]}).")
+    return base64.b64decode(achados[-1])
+
+
 def sintetizar_gemini(texto: str, destino: Path):
-    """EXPERIMENTAL. Gemini TTS devolve PCM 24 kHz mono (base64)."""
-    chave = os.environ.get("GEMINI_API_KEY")
-    if not chave:
+    """Gemini 3.8 Flash TTS (Interactions API). Modelos antigos (2.5/3.1) usam o caminho legado."""
+    chaves = _gemini_chaves()
+    if not chaves:
         raise RuntimeError("GEMINI_API_KEY ausente.")
-    modelo = os.environ.get("GEMINI_TTS_MODEL") or "gemini-2.5-flash-preview-tts"
+    modelo = (os.environ.get("GEMINI_TTS_MODEL") or "gemini-3.8-flash-tts").strip()
+    if not modelo.startswith("gemini-3.8"):
+        return _gemini_legado(texto, destino, modelo, chaves[0])
+    voz = (os.environ.get("GEMINI_TTS_VOICE") or "Kore").strip()
+    estilo = (os.environ.get("GEMINI_TTS_STYLE") or "").strip()  # vazio = estilo padrão; "nenhum" = sem estilo
+    estilo = GEMINI_ESTILO_PADRAO if not estilo else ("" if estilo.lower() in ("nenhum", "-") else estilo)
+    limpo = re.sub(r"<[^>]*>", " ", texto)  # <...> e |...| são comandos do modelo (tags/backchannel), nunca devem vir do roteiro
+    limpo = re.sub(r"[<>|]", " ", limpo)
+    limpo = re.sub(r"\s+", " ", limpo).strip()
+    anot = [{"type": "speech_metadata", "style": estilo}] if estilo else []
+    item = {"type": "text", "text": limpo}
+    if anot:
+        item["annotations"] = anot
+    corpo = {"model": modelo, "input": [{"type": "user_input", "content": [item]}], "response_format": {"type": "audio"},
+             "generation_config": {"speech_config": [{"voice": voz}]}}
+    tentativas = int(os.environ.get("GEMINI_TTS_TENTATIVAS") or 8)
+    timeout = int(os.environ.get("GEMINI_TTS_TIMEOUT_S") or 180)
+    if _gem["intervalo"] is None:
+        _gem["intervalo"] = float(os.environ.get("GEMINI_TTS_INTERVALO_S") or 2)
+    url = f"{_gemini_base()}/v1beta/interactions"
+    ultimo = None
+    for n in range(tentativas):
+        folga = _gem["intervalo"] - (time.time() - _gem["ultimo"])  # espaçamento entre chamadas (sobe sozinho se vier 429)
+        if folga > 0:
+            time.sleep(folga)
+        chave = chaves[_gem["k"] % len(chaves)]
+        espera = 0.0
+        try:
+            r = requests.post(url, headers={"x-goog-api-key": chave, "Content-Type": "application/json"}, json=corpo, timeout=timeout)
+            _gem["ultimo"] = time.time()
+            if r.status_code == 200:
+                seg = _audio_para_segmento(_extrair_audio_gemini(r.json()))
+                if len(seg) < 200:
+                    raise RuntimeError("Gemini TTS devolveu áudio vazio.")
+                seg.export(str(destino), format="mp3")
+                return
+            msg = (r.text or "")[:300]
+            baixo = msg.lower()
+            if r.status_code == 429:
+                if "perday" in baixo.replace(" ", "").replace("_", "") or "per day" in baixo or "daily" in baixo or "limit: 0" in baixo:
+                    if len(chaves) > 1 and n < len(chaves) - 1:  # outra chave (outro projeto) pode ter cota
+                        _gem["k"] += 1
+                        ultimo = RuntimeError(f"Cota diária da chave {n + 1} esgotada; tentando a outra chave.")
+                        continue
+                    raise CotaGeminiEsgotada("A cota diária do Gemini TTS (plano gratuito) acabou para esta chave/projeto. Ela renova à meia-noite (horário do Pacífico), "
+                                             "ou use outra chave (GEMINI_API_KEY_2, de outro projeto), o modelo gemini-3.8-flash-lite-tts, ou o plano pago.")
+                _gem["intervalo"] = max(_gem["intervalo"], float(os.environ.get("GEMINI_TTS_INTERVALO_429_S") or 21))  # ≈ 3 pedidos/min: o plano gratuito é apertado
+                if len(chaves) > 1:
+                    _gem["k"] += 1  # tenta a outra chave antes de esperar
+                    espera = 0.0 if n % len(chaves) != len(chaves) - 1 else max(_atraso_sugerido(r), 15.0)
+                else:
+                    sug = _atraso_sugerido(r)  # a própria API diz quanto esperar; sem isso, espera crescente
+                    espera = (sug + 1.0) if sug else min(15.0 * (2 ** min(n, 3)), 120.0)
+                ultimo = RuntimeError(f"Gemini TTS HTTP 429 (limite por minuto): {msg[:120]}")
+            elif r.status_code in (500, 502, 503, 504):
+                ultimo = RuntimeError(f"Gemini TTS HTTP {r.status_code}: {msg[:120]}")
+                espera = min(6.0 * (n + 1), 60.0)
+            elif r.status_code in (401, 403):
+                raise RuntimeError(f"O Google recusou a GEMINI_API_KEY (HTTP {r.status_code}): {msg[:160]}")
+            elif r.status_code == 404:
+                raise RuntimeError(f"Modelo/rota não encontrado (HTTP 404): confira GEMINI_TTS_MODEL={modelo}. {msg[:160]}")
+            else:
+                raise RuntimeError(f"Gemini TTS HTTP {r.status_code}: {msg[:200]}")
+        except (CotaGeminiEsgotada,):
+            raise
+        except requests.RequestException as e:
+            ultimo = e
+            espera = min(6.0 * (n + 1), 60.0)
+        except RuntimeError as e:
+            if str(e).startswith(("O Google recusou", "Modelo/rota", "Gemini TTS HTTP")) and "HTTP 5" not in str(e) and "429" not in str(e):
+                raise
+            ultimo = e
+            espera = 4.0
+        if n < tentativas - 1 and espera > 0:
+            print(f"    Gemini TTS: {str(ultimo)[:110]} — aguardando {espera:.0f}s (tentativa {n + 1}/{tentativas})")
+            time.sleep(espera)
+    raise RuntimeError(f"Gemini TTS falhou após {tentativas} tentativas: {str(ultimo)[:200]}")
+
+
+def _gemini_legado(texto: str, destino: Path, modelo: str, chave: str):
+    """Modelos antigos (gemini-2.5-*-preview-tts, gemini-3.1-flash-tts-preview): API generateContent, PCM 24 kHz mono."""
     voz = os.environ.get("GEMINI_TTS_VOICE") or "Kore"
     corpo = {"contents": [{"parts": [{"text": "Narre em português do Brasil, com naturalidade, clareza e ritmo de apresentador de vídeo educativo: " + texto}]}],
              "generationConfig": {"responseModalities": ["AUDIO"], "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": voz}}}}}
     ultimo = None
     for tentativa in range(1, 4):
         try:
-            r = requests.post(f"https://generativelanguage.googleapis.com/v1beta/models/{modelo}:generateContent",
+            r = requests.post(f"{_gemini_base()}/v1beta/models/{modelo}:generateContent",
                               headers={"x-goog-api-key": chave, "Content-Type": "application/json"}, json=corpo, timeout=120)
             if r.status_code == 200:
                 pcm = base64.b64decode(r.json()["candidates"][0]["content"]["parts"][0]["inlineData"]["data"])
@@ -158,16 +304,79 @@ def sintetizar_gemini(texto: str, destino: Path):
     raise ultimo
 
 
+def listar_vozes_gemini(idioma: str = "pt-BR"):
+    """Vozes do Extended Voice Library para o idioma (GET /v1beta/voices). Devolve lista de dicts."""
+    chaves = _gemini_chaves()
+    if not chaves:
+        raise RuntimeError("GEMINI_API_KEY ausente.")
+    out, token = [], None
+    for _ in range(10):
+        params = [("language_code", idioma), ("page_size", "100")] + ([("page_token", token)] if token else [])
+        r = requests.get(f"{_gemini_base()}/v1beta/voices", headers={"x-goog-api-key": chaves[0]}, params=params, timeout=60)
+        if r.status_code != 200:
+            raise RuntimeError(f"Listar vozes: HTTP {r.status_code}: {r.text[:200]}")
+        j = r.json()
+        for v in j.get("voices") or []:
+            out.append({"id": v.get("id") or v.get("name"), "nome": v.get("display_name") or v.get("displayName") or v.get("id"),
+                        "genero": v.get("gender"), "sotaque": v.get("accent"), "tom": v.get("pitch"), "descricao": v.get("description")})
+        token = j.get("next_page_token") or j.get("nextPageToken")
+        if not token:
+            break
+    return out
+
+
+def sintetizar_clonada(texto: str, destino: Path):
+    """Voz clonada local: servidor compatível com OpenAI (VOZ_CLONADA_URL) ou comando próprio (VOZ_CLONADA_CMD)."""
+    import shlex
+    import subprocess
+    import tempfile
+    timeout = int(os.environ.get("VOZ_CLONADA_TIMEOUT_S") or 600)  # vozes clonadas locais podem demorar (CPU/GPU)
+    cmd = (os.environ.get("VOZ_CLONADA_CMD") or "").strip()
+    url = (os.environ.get("VOZ_CLONADA_URL") or "").strip().rstrip("/")
+    if cmd:
+        with tempfile.TemporaryDirectory() as d:
+            txt = Path(d) / "texto.txt"
+            saida = Path(d) / "saida.wav"
+            txt.write_text(texto, encoding="utf-8")
+            linha = cmd.replace("{texto_arquivo}", str(txt)).replace("{saida}", str(saida))
+            r = subprocess.run(linha if os.name == "nt" else shlex.split(linha), shell=(os.name == "nt"),
+                               capture_output=True, text=True, timeout=timeout)
+            if r.returncode != 0 or not saida.exists() or saida.stat().st_size < 1000:
+                raise RuntimeError(f"VOZ_CLONADA_CMD falhou (código {r.returncode}): {(r.stderr or r.stdout)[-300:]}")
+            AudioSegment.from_file(str(saida)).export(str(destino), format="mp3")
+        return
+    if not url:
+        raise RuntimeError("Voz clonada não configurada (defina VOZ_CLONADA_URL ou VOZ_CLONADA_CMD).")
+    endpoint = url if url.endswith("/audio/speech") else (url + "/audio/speech" if url.endswith("/v1") else url + "/v1/audio/speech")
+    headers = {"Content-Type": "application/json"}
+    if os.environ.get("VOZ_CLONADA_KEY"):
+        headers["Authorization"] = "Bearer " + os.environ["VOZ_CLONADA_KEY"]
+    corpo = {"model": os.environ.get("VOZ_CLONADA_MODEL") or "tts-1", "input": texto,
+             "voice": os.environ.get("VOZ_CLONADA_VOICE") or "clonada", "response_format": "mp3"}
+    ultimo = None
+    for tentativa in range(1, 3):
+        try:
+            r = requests.post(endpoint, headers=headers, json=corpo, timeout=timeout)
+            if r.status_code == 200 and len(r.content) > 1000:
+                destino.write_bytes(r.content)
+                return
+            ultimo = RuntimeError(f"Voz clonada HTTP {r.status_code}: {r.text[:150]}")
+        except requests.RequestException as e:
+            ultimo = e
+        time.sleep(3 * tentativa)
+    raise ultimo
+
+
 class Vozes:
     """Escolhe o motor e cai para a Francisca se a voz pedida falhar."""
     def __init__(self, voz: str):
-        self.voz = voz if voz in ("francisca", "thalita-hd", "gemini") else "francisca"
+        self.voz = voz if voz in ("francisca", "thalita-hd", "gemini", "clonada") else "francisca"
         self.rebaixada = False
         self.azure_ok = AZURE_OK
 
     @property
     def cena_inteira(self):  # vozes "contextuais" recebem a cena toda de uma vez
-        return not self.rebaixada and self.voz in ("thalita-hd", "gemini")
+        return not self.rebaixada and self.voz in ("thalita-hd", "gemini", "clonada")
 
     def _padrao(self, texto, rate, destino):
         if FAKE:
@@ -188,12 +397,26 @@ class Vozes:
             except Exception as e:  # noqa: BLE001
                 print(f"  Voz HD indisponível ({str(e)[:140]}). Usando a Francisca neste job.")
                 self.rebaixada = True
+        elif not self.rebaixada and self.voz == "clonada":
+            try:
+                return sintetizar_clonada(texto, destino)
+            except Exception as e:  # noqa: BLE001
+                # Padrão: NÃO misturar duas vozes no mesmo vídeo. Interrompe; rodar de novo tenta outra vez.
+                # Para aceitar a Francisca como reserva: VOZ_CLONADA_ESTRITA=0
+                if (os.environ.get("VOZ_CLONADA_ESTRITA") or "1") != "0":
+                    raise RuntimeError(f"A voz clonada falhou ({str(e)[:200]}). Nada foi misturado com outra voz; rode de novo para tentar outra vez "
+                                       "(ou defina VOZ_CLONADA_ESTRITA=0 para aceitar a Francisca como reserva).") from e
+                print(f"  Voz clonada falhou ({str(e)[:160]}). Usando a Francisca neste vídeo.")
+                self.rebaixada = True
         elif not self.rebaixada and self.voz == "gemini":
             try:
                 return sintetizar_gemini(texto, destino)
             except Exception as e:  # noqa: BLE001
-                print(f"  Gemini TTS falhou ({str(e)[:140]}). Usando a Francisca neste job.")
-                self.rebaixada = True
+                # Nunca mistura vozes no mesmo vídeo. Reserva opcional: refaz o vídeo INTEIRO com a Francisca.
+                if (os.environ.get("GEMINI_TTS_RESERVA") or "").lower() == "francisca":
+                    raise ReservaFrancisca(str(e)) from e
+                raise RuntimeError(f"A voz Gemini falhou: {str(e)[:260]}\n  Nada foi misturado com outra voz. Rode de novo para continuar nas cenas que faltam "
+                                   "(ou defina GEMINI_TTS_RESERVA=francisca para refazer o vídeo inteiro com a Francisca).") from e
         return self._padrao(texto, rate, destino)
 
 
@@ -202,6 +425,12 @@ def cortar_pontas(seg: AudioSegment, limiar=-42) -> AudioSegment:
     fim = detect_leading_silence(seg.reverse(), silence_threshold=limiar)
     c = seg[ini: len(seg) - fim]
     return c if len(c) > 50 else seg
+
+
+class _VozesReserva:
+    """Resultado quando o vídeo inteiro foi refeito com a Francisca (voz de reserva)."""
+    voz = "francisca"
+    rebaixada = True
 
 
 def narrar_roteiro(roteiro: dict, voz: str, saida: Path):
@@ -218,7 +447,23 @@ def narrar_roteiro(roteiro: dict, voz: str, saida: Path):
         seg_cena = AudioSegment.empty()
         if vozes.cena_inteira:
             mp3 = tmp / f"c{i:03d}.mp3"
-            vozes.sintetizar(normalizar_texto_fala(cena["narracao"]), rate, mp3)
+            texto_cena = normalizar_texto_fala(cena["narracao"])
+            # Cache por cena (vozes lentas/limitadas): numa nova execução reaproveita o que já foi gerado com a MESMA voz e texto.
+            marca = tmp / f"c{i:03d}.txt"
+            chave = f"{vozes.voz}|{os.environ.get('GEMINI_TTS_MODEL', '')}|{os.environ.get('GEMINI_TTS_VOICE', '')}|{os.environ.get('GEMINI_TTS_STYLE', '')}|{texto_cena}"
+            guardavel = (not FAKE) and vozes.voz in ("gemini", "clonada")
+            if guardavel and mp3.exists() and mp3.stat().st_size > 1000 and marca.exists() and marca.read_text(encoding="utf-8") == chave:
+                print(f"  cena {i + 1}/{len(cenas)}: reaproveitada de uma execução anterior")
+            else:
+                if guardavel:
+                    print(f"  cena {i + 1}/{len(cenas)}: gerando...")
+                try:
+                    vozes.sintetizar(texto_cena, rate, mp3)
+                except ReservaFrancisca as e:
+                    print(f"  Gemini TTS indisponível ({str(e)[:140]}). GEMINI_TTS_RESERVA=francisca: refazendo a narração INTEIRA com a Francisca.")
+                    return narrar_roteiro(roteiro, "francisca", saida)[:2] + (_VozesReserva(),)
+                if guardavel and mp3.exists():
+                    marca.write_text(chave, encoding="utf-8")
             seg_cena += cortar_pontas(AudioSegment.from_file(mp3, format="mp3"))
         if not vozes.cena_inteira or len(seg_cena) == 0:  # inclui o caso em que a voz melhor foi rebaixada no meio
             for j, (frase, pausa) in enumerate(dividir_em_frases(cena["narracao"])):
@@ -256,8 +501,52 @@ def main(job_id: str):
     print(f"Narração enviada: {caminho}")
 
 
+def main_local(argv):
+    """Modo local, sem Supabase: lê/atualiza o roteiro.json e grava <saida>/narracao.mp3."""
+    import argparse
+    import json
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--local", required=True, help="caminho do roteiro.json")
+    ap.add_argument("--voz", default="francisca")
+    ap.add_argument("--saida", required=True)
+    a = ap.parse_args(argv)
+    caminho = Path(a.local)
+    roteiro = json.loads(caminho.read_text(encoding="utf-8"))
+    final, dur, vozes = narrar_roteiro(roteiro, a.voz, Path(a.saida))
+    roteiro["duracao_real_seg"] = dur
+    roteiro["voz_usada"] = "francisca (reserva)" if vozes.rebaixada else vozes.voz
+    caminho.write_text(json.dumps(roteiro, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"Narração pronta: {final} ({dur}s, voz {roteiro['voz_usada']})")
+
+
+def main_testar_gemini(argv):
+    """Amostra de voz: python narracao.py --testar-gemini "texto" --saida amostra.mp3 (usa GEMINI_TTS_MODEL/VOICE/STYLE do ambiente)."""
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--testar-gemini", required=True)
+    ap.add_argument("--saida", required=True)
+    a = ap.parse_args(argv)
+    destino = Path(a.saida)
+    destino.parent.mkdir(parents=True, exist_ok=True)
+    sintetizar_gemini(a.testar_gemini, destino)
+    print(f"Amostra pronta: {destino} ({len(AudioSegment.from_file(destino)) / 1000:.1f}s)")
+
+
+def main_listar_vozes(argv):
+    import json
+    idioma = argv[1] if len(argv) > 1 else "pt-BR"
+    print(json.dumps(listar_vozes_gemini(idioma), ensure_ascii=False))
+
+
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Uso: python narracao.py <job_id>")
+    if len(sys.argv) > 1 and sys.argv[1] == "--local":
+        main_local(sys.argv[1:])
+    elif len(sys.argv) > 1 and sys.argv[1] == "--testar-gemini":
+        main_testar_gemini(sys.argv[1:])
+    elif len(sys.argv) > 1 and sys.argv[1] == "--listar-vozes-gemini":
+        main_listar_vozes(sys.argv[1:])
+    elif len(sys.argv) != 2:
+        print("Uso: python narracao.py <job_id>   |   python narracao.py --local roteiro.json --voz clonada --saida pasta")
         sys.exit(1)
-    main(sys.argv[1])
+    else:
+        main(sys.argv[1])
