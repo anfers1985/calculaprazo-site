@@ -1,6 +1,6 @@
 // Roteiro do Short ILUSTRADO (estilo do vídeo de referência: uma ilustração por cena + legenda em blocos).
 // Sem acesso ao banco: roda no GitHub Actions e também no computador local.
-import { extrairJson, TOM, RE_SEGUNDA, RE_DIGITOS, RE_PARCIAL, PALAVRAS_POR_SEG, CTA_FINAL } from './roteiro-regras.mjs';
+import { extrairJson, TOM, RE_SEGUNDA, RE_DIGITOS, numerosPorExtenso, RE_PARCIAL, PALAVRAS_POR_SEG, CTA_FINAL } from './roteiro-regras.mjs';
 import { normRef } from './artigo.mjs';
 
 const MAX_TENTATIVAS = 3;
@@ -148,6 +148,12 @@ export async function gerarRoteiroIlustrado({ artigo, durSeg, tom, chamarIA, log
       r = extrairJson(resp.text);
     } catch (e) { motivo = `A resposta anterior não foi um JSON válido (${e.message}). Responda apenas com o objeto JSON completo.`; log(motivo); continue; }
     (r.cenas || []).forEach(c => { if (c && typeof c === 'object' && !c.narracao) { const alt = c['narração'] ?? c.narration ?? c.fala ?? c.locucao; if (alt) c.narracao = String(alt); } });
+    // reparos determinísticos: números da narração por extenso; "texto_na_imagem" com número é descartado (a legenda do vídeo já mostra o texto)
+    (r.cenas || []).forEach((c, i) => {
+      if (!c || typeof c !== 'object') return;
+      if (c.narracao && RE_DIGITOS.test(c.narracao)) { c.narracao = numerosPorExtenso(c.narracao); log(`  reparo: cena ${i + 1}, números da narração por extenso`); }
+      if (c.texto_na_imagem && /\d/.test(String(c.texto_na_imagem))) { log(`  reparo: cena ${i + 1}, "texto_na_imagem" com número descartado`); delete c.texto_na_imagem; }
+    });
     const v = validarIlustrado(r, { durSeg, refsPermitidas, tom });
     v.avisos.slice(0, 8).forEach(a => log('  aviso: ' + a));
     const todos = [...v.erros, ...(v.erroPalavras ? [v.erroPalavras] : [])];

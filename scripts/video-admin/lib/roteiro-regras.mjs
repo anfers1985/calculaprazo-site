@@ -53,6 +53,7 @@ export function repararRoteiro(r, icones) {
     if (!c || typeof c !== 'object') return;
     // narração escrita com outro nome de campo
     if (!c.narracao) { const alt = c['narração'] ?? c.narration ?? c.fala ?? c.locucao ?? c['locução'] ?? c.texto_narracao; if (alt) { c.narracao = String(alt); log.push(`cena ${i + 1}: narração veio em outro campo`); } }
+    if (c.narracao && RE_DIGITOS.test(c.narracao)) { c.narracao = numerosPorExtenso(c.narracao); log(`cena ${i + 1}: números da narração por extenso`); }
     fix(c, 'icone'); fix(c, 'marca_dagua'); fix(c.esq, 'icone'); fix(c.dir, 'icone');
     (c.itens || []).forEach(x => fix(x, 'icone')); (c.pontos || []).forEach(x => fix(x, 'icone'));
   });
@@ -151,6 +152,51 @@ const OBRIG = {
 const TIPOS = Object.keys(OBRIG);
 export const RE_SEGUNDA = /(?<![\p{L}])(voc[êe]s?|seu|sua|seus|suas|teu|tua)(?![\p{L}])/iu;
 export const RE_DIGITOS = /[0-9]|R\$|%/;
+
+// ---------- números por extenso (a narração não pode ter dígitos; em vez de reprovar o roteiro, convertemos) ----------
+const U = ['zero','um','dois','três','quatro','cinco','seis','sete','oito','nove','dez','onze','doze','treze','quatorze','quinze','dezesseis','dezessete','dezoito','dezenove'];
+const D = ['', '', 'vinte','trinta','quarenta','cinquenta','sessenta','setenta','oitenta','noventa'];
+const C = ['', 'cento','duzentos','trezentos','quatrocentos','quinhentos','seiscentos','setecentos','oitocentos','novecentos'];
+const ORD_M = ['', 'primeiro','segundo','terceiro','quarto','quinto','sexto','sétimo','oitavo','nono','décimo'];
+const ORD_F = ['', 'primeira','segunda','terceira','quarta','quinta','sexta','sétima','oitava','nona','décima'];
+function ate999(n) {
+  if (n < 20) return U[n];
+  if (n < 100) return D[Math.floor(n / 10)] + (n % 10 ? ' e ' + U[n % 10] : '');
+  if (n === 100) return 'cem';
+  return C[Math.floor(n / 100)] + (n % 100 ? ' e ' + ate999(n % 100) : '');
+}
+export function numeroPorExtenso(n) {
+  n = Math.floor(Number(n));
+  if (!Number.isFinite(n) || n < 0) return String(n);
+  if (n < 1000) return ate999(n);
+  if (n < 1e6) {
+    const mil = Math.floor(n / 1000), r = n % 1000;
+    const m = mil === 1 ? 'mil' : ate999(mil) + ' mil';
+    return r === 0 ? m : m + (r < 100 || r % 100 === 0 ? ' e ' : ' ') + ate999(r);
+  }
+  if (n < 1e9) {
+    const mi = Math.floor(n / 1e6), r = n % 1e6;
+    const m = mi === 1 ? 'um milhão' : numeroPorExtenso(mi) + ' milhões';
+    return r === 0 ? m : m + (r < 100 || r % 100 === 0 ? ' e ' : ' ') + numeroPorExtenso(r);
+  }
+  return String(n);
+}
+/** Converte dígitos, "R$", "%" e ordinais em palavras (pt-BR). Ex.: "R$ 1.200,50" → "mil e duzentos reais e cinquenta centavos". */
+export function numerosPorExtenso(t) {
+  let x = String(t ?? '');
+  x = x.replace(/R\$\s*(\d{1,3}(?:\.\d{3})+|\d+)(?:,(\d{1,2}))?/g, (_, i, c) => {
+    const inteiro = Number(i.replace(/\./g, ''));
+    const cent = c ? Number(c.padEnd(2, '0')) : 0;
+    return numeroPorExtenso(inteiro) + (inteiro === 1 ? ' real' : ' reais') + (cent ? ' e ' + numeroPorExtenso(cent) + (cent === 1 ? ' centavo' : ' centavos') : '');
+  });
+  x = x.replace(/(\d{1,3}(?:\.\d{3})+|\d+)(?:,(\d+))?\s*%/g, (_, i, d) => numeroPorExtenso(Number(i.replace(/\./g, ''))) + (d ? ' vírgula ' + numeroPorExtenso(Number(d)) : '') + ' por cento');
+  x = x.replace(/\b(\d+)\s*([ºª°])/g, (m, n, g) => { const k = Number(n); const t2 = (g === 'ª' ? ORD_F : ORD_M)[k]; return t2 || numeroPorExtenso(k); });
+  x = x.replace(/(\d{1,3}(?:\.\d{3})+|\d+),(\d+)/g, (_, i, d) => numeroPorExtenso(Number(i.replace(/\./g, ''))) + ' vírgula ' + numeroPorExtenso(Number(d)));
+  x = x.replace(/\d{1,3}(?:\.\d{3})+/g, m => numeroPorExtenso(Number(m.replace(/\./g, ''))));
+  x = x.replace(/\d+/g, m => numeroPorExtenso(Number(m)));
+  return x.replace(/\s+/g, ' ').trim();
+}
+
 export const RE_PARCIAL = /(?<![\p{L}])(absurd[oa]s?|escandalos[oa]s?|vergonhos[oa]s?|golpe|calote|explorador[a]?|safad[oa]|patr[ãa]o mau)(?![\p{L}])/iu;
 
 export function extrairJson(texto) {
