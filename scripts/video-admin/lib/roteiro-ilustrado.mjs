@@ -37,6 +37,7 @@ export function montarPromptImagem(cena, personagem = '') {
 
 export function montarPromptIlustrado({ artigo, durSeg, tom, refsPermitidas, motivoRetentativa }) {
   const m = metasIlustrado(durSeg);
+  const porCena = Math.max(8, Math.round((m.palavras - 20) / Math.max(1, m.alvoCenas - 1)));
   const systemPrompt = [
     'Você é roteirista dos Shorts ilustrados do canal "Calcula Prazo — Direto ao Ponto". Escreve em português do Brasil, em TERCEIRA PESSOA, com linguagem clara, ritmo rápido e profissional.',
     'Seu roteiro é FIEL ao artigo-fonte: não acrescente fatos, números, prazos, valores, artigos de lei, súmulas ou decisões que não estejam no artigo. Se algo não está no artigo, não existe.',
@@ -54,7 +55,7 @@ REFERÊNCIAS LEGAIS PERMITIDAS (use EXATAMENTE estas strings no campo "refs" da 
 
 OBJETIVO: Short vertical (9:16) ILUSTRADO de ${Math.round(durSeg)} segundos. Cada cena é UMA ilustração desenhada à mão que fica na tela enquanto a narração é falada, com legenda em blocos curtos.
 - Narração total: entre ${m.min} e ${m.max} palavras (alvo ${m.palavras}; a voz fala ~${PALAVRAS_POR_SEG} palavras por segundo).
-- Número de cenas: entre ${m.cenasMin} e ${m.cenasMax} (alvo ${m.alvoCenas}); cada cena tem 1 ou 2 frases curtas (de 8 a 25 palavras).
+- Número de cenas: entre ${m.cenasMin} e ${m.cenasMax} (alvo ${m.alvoCenas}); ORÇAMENTO: cada cena (exceto a última) tem de ${Math.max(5, porCena - 4)} a ${porCena + 4} palavras (média ${porCena}), em 1 frase curta, ou 2 muito curtas. NÃO passe de ${porCena + 6} palavras em nenhuma cena: o total estouraria o limite. Some as palavras antes de responder e corte o que passar de ${m.max}.
 - Cena 1 é o GANCHO: pergunta ou situação que prende a atenção nos primeiros segundos, sem sensacionalismo. A última cena é o encerramento (a narração dela será substituída por um convite para ler o artigo; escreva só "encerramento" nela).
 - A narração NÃO pode conter dígitos, "R$", "%" nem símbolos: escreva tudo por extenso ("artigo quatrocentos e sessenta e nove", "cinco meses").
 - Se a narração de uma cena citar artigo de lei, súmula, tema ou lei, liste a norma em "refs" dessa cena (apenas as permitidas acima). Cena sem citação: "refs": [].
@@ -146,12 +147,14 @@ export async function gerarRoteiroIlustrado({ artigo, durSeg, tom, chamarIA, log
       modelo = resp.modeloUsado || '';
       r = extrairJson(resp.text);
     } catch (e) { motivo = `A resposta anterior não foi um JSON válido (${e.message}). Responda apenas com o objeto JSON completo.`; log(motivo); continue; }
+    (r.cenas || []).forEach(c => { if (c && typeof c === 'object' && !c.narracao) { const alt = c['narração'] ?? c.narration ?? c.fala ?? c.locucao; if (alt) c.narracao = String(alt); } });
     const v = validarIlustrado(r, { durSeg, refsPermitidas, tom });
     v.avisos.slice(0, 8).forEach(a => log('  aviso: ' + a));
     const todos = [...v.erros, ...(v.erroPalavras ? [v.erroPalavras] : [])];
     if (!todos.length) { r.modelo = modelo; return { roteiro: finalizarIlustrado(r), tentativas: tentativa, avisos: v.avisos }; }
     log(`  reprovado (${todos.length}): ${todos.slice(0, 6).join(' | ')}`);
-    if (!v.erros.length && v.erroPalavras && Math.abs(v.totalPalavras - v.metas.palavras) / v.metas.palavras <= 0.3) melhor = { r, modelo, v };
+    const desvio = v.erroPalavras ? Math.abs(v.totalPalavras - v.metas.palavras) / v.metas.palavras : 0;
+    if (!v.erros.length && v.erroPalavras && desvio <= 0.45 && (!melhor || desvio < melhor.desvio)) melhor = { r, modelo, v, desvio };
     motivo = todos.slice(0, 15).map(x => '- ' + x).join('\n');
   }
   if (melhor) { log('Usando a melhor tentativa (só a contagem de palavras ficou fora da faixa ideal).'); melhor.r.modelo = melhor.modelo; return { roteiro: finalizarIlustrado(melhor.r), tentativas: MAX_TENTATIVAS, avisos: [melhor.v.erroPalavras] }; }

@@ -15,6 +15,65 @@ export function catalogoIcones() {
   return { site: new Set(site), lucide: new Set(lucide), siteLista: site.join(', '), lucideTexto: listaTxt.split('\n').filter(l => l && !l.startsWith('#')).map(l => l.replace(/(^|, |: )([a-z0-9-]+)/g, (m, a, n) => `${a}lu-${n}`)).join('\n') };
 }
 
+
+// Nomes antigos (Lucide < 0.400) que a IA ainda usa -> nomes atuais. Ícone é só enfeite: em vez de reprovar o roteiro, corrigimos.
+const ICONE_ALIAS = {
+  'alert-triangle': 'triangle-alert', 'alert-circle': 'circle-alert', 'alert-octagon': 'octagon-alert', 'help-circle': 'circle-help',
+  'check-circle': 'circle-check', 'check-circle-2': 'circle-check', 'x-circle': 'circle-x', 'xcircle': 'circle-x', 'edit': 'pen-line', 'edit-2': 'pen', 'edit-3': 'pen-line',
+  'bar-chart': 'chart-column', 'bar-chart-2': 'chart-column', 'line-chart': 'chart-line', 'pie-chart': 'chart-pie', 'trending': 'trending-up',
+  'dollar-sign': 'circle-dollar-sign', 'money': 'banknote', 'user': 'user-round', 'users-2': 'users-round', 'user-circle': 'user-round', 'building-office': 'building-2', 'office': 'building-2',
+  'file': 'file-text', 'document': 'file-text', 'contract': 'file-signature', 'law': 'scale', 'justice': 'scale', 'judge': 'gavel', 'court': 'landmark', 'safety': 'shield-check', 'helmet': 'hard-hat',
+  'trash': 'package', 'trash-2': 'package', 'broom': 'wrench', 'brush': 'paint-bucket', 'sweep': 'wrench', 'road': 'route', 'street': 'route', 'city': 'building-2', 'worker': 'hard-hat',
+  'health': 'heart-pulse', 'medical': 'stethoscope', 'virus': 'biohazard', 'danger': 'triangle-alert', 'warning': 'triangle-alert', 'time': 'clock', 'calendar': 'calendar-days', 'money-bag': 'coins',
+  'handshake-simple': 'handshake', 'question': 'circle-help', 'help': 'circle-help', 'lightbulb-on': 'lightbulb', 'light-bulb': 'lightbulb',
+};
+const ICONE_RESERVA = 'lu-circle-help'; // existe na lista; usado só se nem alias nem busca acharem nada
+
+/** Corrige um id de ícone inválido: tira prefixos, aplica alias, tenta "lu-"/"ic-" e, por fim, casa por parte do nome. Devolve o id válido ou null. */
+export function repararIcone(id, icones) {
+  if (!id || typeof id !== 'string') return null;
+  const ok = x => icones.site.has(x) || icones.lucide.has(x);
+  const base = id.trim().toLowerCase().replace(/^(lu|ic|lucide)[-_:]/, '').replace(/_/g, '-');
+  const candidatos = [id.trim(), 'lu-' + base, 'ic-' + base, 'lu-' + (ICONE_ALIAS[base] || ''), ...(ICONE_ALIAS[base] ? ['lu-' + ICONE_ALIAS[base]] : [])];
+  for (const c of candidatos) if (c && ok(c)) return c;
+  const partes = base.split('-').filter(p => p.length > 2);
+  for (const p of partes) {
+    const hit = [...icones.lucide].find(x => x.slice(3).split('-').includes(p)) || [...icones.site].find(x => x.slice(3).split('-').includes(p));
+    if (hit) return hit;
+  }
+  return ok(ICONE_RESERVA) ? ICONE_RESERVA : null;
+}
+
+/** Corrige IN-PLACE tudo que é cosmético e determinístico (ícones, narração em chave alternativa, 3 cenas iguais seguidas). Devolve a lista do que mudou. */
+export function repararRoteiro(r, icones) {
+  const log = [];
+  if (!r || !Array.isArray(r.cenas)) return log;
+  const fix = (obj, k) => { if (obj && obj[k] && !(icones.site.has(obj[k]) || icones.lucide.has(obj[k]))) { const n = repararIcone(obj[k], icones); if (n) { log.push(`ícone "${obj[k]}" → "${n}"`); obj[k] = n; } } };
+  r.cenas.forEach((c, i) => {
+    if (!c || typeof c !== 'object') return;
+    // narração escrita com outro nome de campo
+    if (!c.narracao) { const alt = c['narração'] ?? c.narration ?? c.fala ?? c.locucao ?? c['locução'] ?? c.texto_narracao; if (alt) { c.narracao = String(alt); log.push(`cena ${i + 1}: narração veio em outro campo`); } }
+    fix(c, 'icone'); fix(c, 'marca_dagua'); fix(c.esq, 'icone'); fix(c.dir, 'icone');
+    (c.itens || []).forEach(x => fix(x, 'icone')); (c.pontos || []).forEach(x => fix(x, 'icone'));
+  });
+  // 3 cenas seguidas do mesmo tipo: troca a do meio entre "afirmacao" e "destaque" (campos equivalentes). Outros tipos viram só aviso na validação.
+  for (let i = 2; i < r.cenas.length - 1; i++) {
+    const a = r.cenas[i - 2], b = r.cenas[i - 1], c = r.cenas[i];
+    if (!(a.tipo === b.tipo && b.tipo === c.tipo)) continue;
+    if (c.tipo === 'afirmacao') {
+      const t = String(c.texto || '').trim();
+      c.tipo = 'destaque'; c.titulo = t.split(' ').slice(0, 6).join(' '); c.sub = t.split(' ').length > 6 ? t : ' ';
+      c.icone = c.icone || ICONE_RESERVA; delete c.texto;
+      log.push(`cena ${i + 1}: "afirmacao" repetida → "destaque"`);
+    } else if (c.tipo === 'destaque') {
+      const t = [c.titulo, c.sub].filter(x => x && String(x).trim()).join(': ').slice(0, 125);
+      c.tipo = 'afirmacao'; c.texto = t; c.icone = c.icone || ICONE_RESERVA; delete c.titulo; delete c.sub;
+      log.push(`cena ${i + 1}: "destaque" repetido → "afirmacao"`);
+    }
+  }
+  return log;
+}
+
 export function metas(tipo, durSeg) {
   const palavras = Math.round(durSeg * PALAVRAS_POR_SEG);
   const porCena = tipo === 'short' ? 5 : 8;
@@ -31,6 +90,7 @@ export const TOM = {
 export function montarPrompt({ artigo, tipo, durSeg, tom, refsPermitidas, icones, motivoRetentativa }) {
   const m = metas(tipo, durSeg);
   const longo = tipo === 'longo';
+  const porCena = Math.max(8, Math.round((m.palavras - 20) / Math.max(1, m.alvoCenas - 1)));
   const systemPrompt = [
     'Você é roteirista dos vídeos educativos de Direito do Trabalho do canal "Calcula Prazo — Direto ao Ponto". Escreve em português do Brasil, em TERCEIRA PESSOA, com linguagem clara e profissional.',
     'Seu roteiro é FIEL ao artigo-fonte: não acrescente fatos, números, prazos, valores, artigos de lei, súmulas ou decisões que não estejam no artigo. Se algo não está no artigo, não existe.',
@@ -48,23 +108,23 @@ REFERÊNCIAS LEGAIS PERMITIDAS NOS SLIDES (use EXATAMENTE estas strings, ou nenh
 
 OBJETIVO: vídeo ${longo ? 'LONGO (horizontal 16:9)' : 'SHORT (vertical 9:16)'} de ${Math.round(durSeg)} segundos.
 - Narração total: entre ${m.min} e ${m.max} palavras (alvo ${m.palavras}; a voz fala ~${PALAVRAS_POR_SEG} palavras por segundo).
-- Número de cenas: entre ${m.cenasMin} e ${m.cenasMax} (alvo ${m.alvoCenas}); cada cena tem 1 a 3 frases de narração.
+- Número de cenas: entre ${m.cenasMin} e ${m.cenasMax} (alvo ${m.alvoCenas}). ORÇAMENTO: cada cena (exceto a última) tem de ${Math.max(5, porCena - 4)} a ${porCena + 4} palavras de narração (média ${porCena}), em 1 frase curta, ou 2 muito curtas. NÃO ultrapasse ${porCena + 6} palavras em nenhuma cena: o total ficaria acima do limite. Antes de responder, some as palavras e corte o que passar de ${m.max}.\n- O campo \"narracao\" é OBRIGATÓRIO em TODAS as cenas, inclusive na capa (nunca omita nem renomeie).
 - A narração NÃO pode conter dígitos, "R$", "%" nem símbolos: escreva tudo por extenso ("artigo quatrocentos e sessenta e nove", "cinco meses"). Já o texto na TELA pode usar números e abreviações ("art. 469", "5 meses").
-- Cena 1 é SEMPRE do tipo "capa" (gancho em pergunta neutra) e a última é SEMPRE do tipo "encerramento". Nunca 3 cenas seguidas do mesmo tipo. Varie os tipos e os ícones conforme o assunto do artigo.
+- Cena 1 é SEMPRE do tipo "capa" (gancho em pergunta neutra) e a última é SEMPRE do tipo "encerramento". Nunca 3 cenas seguidas do mesmo tipo (alterne, por exemplo, afirmacao → destaque → pergunta → lista). Varie os tipos e os ícones conforme o assunto do artigo.
 - Cada cena mostra na tela uma versão CURTA do que a narração diz (texto de tela ≤ 110 caracteres; títulos ≤ 6 palavras; textos de cartão ≤ 60 caracteres).
 - Use "**termo**" para destacar 1 expressão-chave por cena (no máximo).
 
 TIPOS DE CENA E CAMPOS (além de "narracao" em todas):
-1. capa: {"tipo":"capa","kicker":"área do direito","titulo":"pergunta central em até 5 palavras, com **destaque**","sub":"gancho/resposta curta em até 2 linhas","refs":["até 3 permitidas"],"pontos_titulo":"…","pontos":[{"icone":"…","texto":"≤3 palavras"} x3]}
-2. pergunta: {"tipo":"pergunta","titulo":"…?","kicker":"opcional","marca_dagua":"ícone","refs":[]}
-3. afirmacao: {"tipo":"afirmacao","texto":"…","icone":"…","refs":[]}
-4. destaque: {"tipo":"destaque","titulo":"…","sub":"…","icone":"…","refs":[]}
-5. comparacao: {"tipo":"comparacao","titulo":"opcional","centro":"vs"|"seta","esq":{"icone":"…","titulo":"≤4 palavras","texto":"…","estilo":"normal"|"aviso"|"ok","selo":"x"|"ok"(opcional)},"dir":{…igual…},"refs":[]}  (use "aviso" para o lado errado/arriscado e "ok" para o correto)
-6. lista: {"tipo":"lista","titulo":"…","estilo":"ok"(positivo)|"aviso"(alertas),"itens":[{"icone":"…","texto":"≤4 palavras"} de 3 a 4]}
-7. citacao: {"tipo":"citacao","texto":"frase-síntese"}
+1. capa: {"tipo":"capa","narracao":"…","kicker":"área do direito","titulo":"pergunta central em até 5 palavras, com **destaque**","sub":"gancho/resposta curta em até 2 linhas","refs":["até 3 permitidas"],"pontos_titulo":"…","pontos":[{"icone":"…","texto":"≤3 palavras"} x3]}
+2. pergunta: {"tipo":"pergunta","narracao":"…","titulo":"…?","kicker":"opcional","marca_dagua":"ícone","refs":[]}
+3. afirmacao: {"tipo":"afirmacao","narracao":"…","texto":"…","icone":"…","refs":[]}
+4. destaque: {"tipo":"destaque","narracao":"…","titulo":"…","sub":"…","icone":"…","refs":[]}
+5. comparacao: {"tipo":"comparacao","narracao":"…","titulo":"opcional","centro":"vs"|"seta","esq":{"icone":"…","titulo":"≤4 palavras","texto":"…","estilo":"normal"|"aviso"|"ok","selo":"x"|"ok"(opcional)},"dir":{…igual…},"refs":[]}  (use "aviso" para o lado errado/arriscado e "ok" para o correto)
+6. lista: {"tipo":"lista","narracao":"…","titulo":"…","estilo":"ok"(positivo)|"aviso"(alertas),"itens":[{"icone":"…","texto":"≤4 palavras"} de 3 a 4]}
+7. citacao: {"tipo":"citacao","narracao":"…","texto":"frase-síntese"}
 8. encerramento: {"tipo":"encerramento","narracao":"qualquer coisa (será substituída)"}
 
-ÍCONES (campo "icone"/"marca_dagua"): use SOMENTE ids destas listas, escolhendo objetos que combinem com o assunto de cada cena (evite repetir o mesmo ícone mais de 2 vezes).
+ÍCONES (campo "icone"/"marca_dagua"): use SOMENTE ids destas listas, escolhendo objetos que combinem com o assunto de cada cena (evite repetir o mesmo ícone mais de 2 vezes). Copie o id EXATAMENTE como está na lista, com o prefixo \"lu-\" (ex.: lu-circle-help, lu-triangle-alert; NÃO invente nomes como lu-help-circle, lu-alert-triangle, lu-trash-2, lu-brush). Se nenhum servir, use lu-info.
 Ícones do site: ${icones.siteLista}
 Ícones Lucide:
 ${icones.lucideTexto}
@@ -170,7 +230,7 @@ export function validarRoteiro(r, ctx) {
     ids.forEach(id => { if (!idsOk(id)) erros.push(`Cena ${n}: ícone "${id}" não existe nas listas permitidas.`); usadosIcone[id] = (usadosIcone[id] || 0) + 1; });
     // comprimento de tela
     if (c.texto && String(c.texto).length > 130) erros.push(`Cena ${n}: texto de tela muito longo (${String(c.texto).length} > 130).`);
-    if (i >= 2 && cenas[i - 1].tipo === c.tipo && cenas[i - 2].tipo === c.tipo) erros.push(`Cena ${n}: 3 cenas seguidas do tipo "${c.tipo}".`);
+    if (i >= 2 && cenas[i - 1].tipo === c.tipo && cenas[i - 2].tipo === c.tipo) avisos.push(`Cena ${n}: 3 cenas seguidas do tipo "${c.tipo}" (só estética).`);
   });
   Object.entries(usadosIcone).forEach(([id, q]) => { if (q > 3) avisos.push(`Ícone ${id} usado ${q} vezes.`); });
   // orçamento de palavras (encerramento tem CTA fixo de ~20 palavras)
