@@ -4,6 +4,8 @@
 // Cadeia (ordem em IMG_ORDEM, padrão "9router,gemini"; cada etapa só roda se estiver configurada):
 //   9router → POST {NINEROUTER_URL}/v1/images/generations   (modelo em NINEROUTER_IMAGE_MODEL)
 //   gemini  → generateContent com saída de imagem             (modelos em GEMINI_IMAGE_MODELS; chaves GEMINI_API_KEY / GEMINI_API_KEY_2)
+//   cloudflare → Workers AI (FLUX.1 schnell), cota GRATUITA de 10.000 neurons/dia (~100+ imagens)
+//                (CLOUDFLARE_ACCOUNT_ID + CLOUDFLARE_API_TOKEN; modelo em CLOUDFLARE_IMAGE_MODEL)
 //
 // Variáveis (todas opcionais): IMG_TIMEOUT_MS (padrão 300000 = 5 min), IMG_TENTATIVAS (padrão 4),
 // IMG_INTERVALO_MS (pausa entre imagens; padrão 7000, respeita ~10 pedidos/min do plano gratuito),
@@ -97,6 +99,35 @@ async function viaGemini(prompt, { apiKey, modelo, aspecto }) {
   throw new Error(`Gemini (${modelo}): não consegui ajustar o pedido de imagem.`);
 }
 
+
+// ---------- Cloudflare Workers AI (gratuito: 10.000 neurons/dia) ----------
+// FLUX.1 schnell não escreve português com acento de forma confiável, e o vídeo já tem a legenda por cima:
+// trocamos o pedido de "texto dentro da imagem" por "sem texto".
+export function promptSemTexto(prompt) {
+  const limpo = String(prompt || '').replace(/The ONLY text visible in the image reads exactly[\s\S]*?anywhere\)\./i, '').replace(/\s+/g, ' ').trim();
+  return `${limpo} No text, letters, numbers or signs with writing anywhere in the image.`.slice(0, 2000);
+}
+
+async function viaCloudflare(prompt) {
+  const conta = process.env.CLOUDFLARE_ACCOUNT_ID, token = process.env.CLOUDFLARE_API_TOKEN;
+  const modelo = process.env.CLOUDFLARE_IMAGE_MODEL || '@cf/black-forest-labs/flux-1-schnell';
+  const url = `https://api.cloudflare.com/client/v4/accounts/${conta}/ai/run/${modelo}`;
+  const corpo = { prompt: promptSemTexto(prompt) };
+  if (/flux/i.test(modelo)) corpo.steps = Number(process.env.CLOUDFLARE_IMAGE_STEPS) || 6; // schnell: 1–8 passos
+  const r = await fetchComTimeout(url, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify(corpo) });
+  const tipo = r.headers.get('content-type') || '';
+  if (r.ok && /^image\//i.test(tipo)) return { bytes: Buffer.from(await r.arrayBuffer()), mime: tipo.split(';')[0] }; // SDXL devolve a imagem direto
+  const data = await r.json().catch(() => ({}));
+  const b64 = data?.result?.image;
+  if (r.ok && b64) return { bytes: Buffer.from(b64, 'base64'), mime: /^iVBOR/.test(b64) ? 'image/png' : 'image/jpeg' };
+  const msg = String(data?.errors?.map?.((x) => `${x.code}: ${x.message}`).join('; ') || JSON.stringify(data)).slice(0, 300);
+  const e = new Error(`Cloudflare (${modelo}) HTTP ${r.status}: ${msg}`);
+  e.cotaDiaria = /daily free allocation|10,?000 neurons|4006/i.test(msg);
+  e.bloqueio = /nsfw|3030|flagged|inappropriate/i.test(msg);
+  e.definitivo = [400, 401, 403, 404].includes(r.status);
+  throw e;
+}
+
 async function comRetry(nome, fn, log) {
   let ultimo;
   for (let i = 1; i <= TENTATIVAS; i++) {
@@ -114,13 +145,16 @@ async function comRetry(nome, fn, log) {
 }
 
 export function etapasImagem() {
-  const ordem = (process.env.IMG_ORDEM || '9router,gemini').split(',').map((x) => x.trim().toLowerCase()).filter(Boolean);
+  const ordem = (process.env.IMG_ORDEM || '9router,cloudflare,gemini').split(',').map((x) => x.trim().toLowerCase()).filter(Boolean);
   const modelos = (process.env.GEMINI_IMAGE_MODELS || 'gemini-2.5-flash-image,gemini-3.1-flash-image-preview').split(',').map((x) => x.trim()).filter(Boolean);
   const chaves = [process.env.GEMINI_API_KEY, process.env.GEMINI_API_KEY_2].filter(Boolean);
   const etapas = [];
   for (const id of ordem) {
     if (id === '9router' && process.env.NINEROUTER_URL && process.env.NINEROUTER_IMAGE_MODEL) {
       etapas.push({ nome: `9router (${process.env.NINEROUTER_IMAGE_MODEL})`, rodar: (p) => viaNineRouter(p) });
+    }
+    if (id === 'cloudflare' && process.env.CLOUDFLARE_ACCOUNT_ID && process.env.CLOUDFLARE_API_TOKEN) {
+      etapas.push({ nome: `Cloudflare (${process.env.CLOUDFLARE_IMAGE_MODEL || 'flux-1-schnell'})`, rodar: (p) => viaCloudflare(p) });
     }
     if (id === 'gemini') {
       chaves.forEach((k, ki) => modelos.forEach((m) => etapas.push({ nome: `Gemini${ki ? ' (2ª chave)' : ''} ${m}`, rodar: (p, asp) => viaGemini(p, { apiKey: k, modelo: m, aspecto: asp }) })));
@@ -132,7 +166,7 @@ export function etapasImagem() {
 /** Gera UMA imagem e salva em `destinoSemExt` + extensão. Devolve { arquivo, provedor }. */
 export async function gerarImagem({ prompt, destinoSemExt, aspecto = '9:16', log = console.log }) {
   const etapas = etapasImagem();
-  if (!etapas.length) throw new Error('Nenhum gerador de imagem configurado (defina GEMINI_API_KEY ou NINEROUTER_URL + NINEROUTER_IMAGE_MODEL).');
+  if (!etapas.length) throw new Error('Nenhum gerador de imagem configurado (defina CLOUDFLARE_ACCOUNT_ID + CLOUDFLARE_API_TOKEN, GEMINI_API_KEY ou NINEROUTER_URL + NINEROUTER_IMAGE_MODEL).');
   const erros = [];
   for (const et of etapas) {
     try {

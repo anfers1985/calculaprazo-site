@@ -32,7 +32,7 @@ env:
   IMG_TIMEOUT_MS: '480000'     # imagem: 8 min por tentativa
   IMG_TENTATIVAS: '5'          # tentativas por provedor, com espera crescente entre elas
   IMG_INTERVALO_MS: '8000'     # pausa entre imagens (plano gratuito ≈ 10 pedidos/min)
-  IMG_ORDEM: 'gemini'          # no GitHub não há 9router; só Google
+  IMG_ORDEM: 'cloudflare,gemini' # no GitHub não há 9router; Cloudflare (gratuito) primeiro, Google como reserva
   # ── Voz Gemini 3.8 TTS (opcional): defina em Settings → Secrets and variables → Actions → aba "Variables". Vazio = padrão do código.
   GEMINI_TTS_MODEL: ${{ vars.GEMINI_TTS_MODEL }}       # gemini-3.8-flash-tts (padrão) ou gemini-3.8-flash-lite-tts
   GEMINI_TTS_VOICE: ${{ vars.GEMINI_TTS_VOICE }}       # Kore (padrão), Puck... ou o ID voice_... de uma voz sua criada no AI Studio
@@ -79,6 +79,8 @@ jobs:
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}        # opcional
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}   # imagens GRÁTIS (Workers AI, FLUX.1 schnell)
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           OPENROUTER_MODEL: ${{ secrets.OPENROUTER_MODEL }}        # opcional
           NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}            # opcional
