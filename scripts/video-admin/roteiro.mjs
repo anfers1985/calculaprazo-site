@@ -1,7 +1,8 @@
 // Etapa 1 — gera o roteiro em slides (cenas com narração + visual) a partir do artigo.
 import { getJob, updateJob } from './lib/db.mjs';
 import { lerArtigo } from './lib/artigo.mjs';
-import { catalogoIcones, montarPrompt, validarRoteiro, extrairJson, CTA_FINAL } from './lib/roteiro-regras.mjs';
+import { catalogoIcones, montarPrompt, validarRoteiro, repararRoteiro, extrairJson, CTA_FINAL } from './lib/roteiro-regras.mjs';
+import { gerarRoteiroIlustrado } from './lib/roteiro-ilustrado.mjs';
 import { gerarTextoComFallback } from '../lib/ia-texto.mjs'; // somente leitura: reaproveita a cadeia de fallback (Gemini → OpenRouter → NVIDIA)
 
 const MAX_TENTATIVAS = 3;
@@ -33,13 +34,16 @@ export async function gerarRoteiroPara({ artigo, tipo, durSeg, tom, chamarIA, lo
       modelo = resp.modeloUsado || '';
       r = extrairJson(resp.text);
     } catch (e) { motivo = `A resposta anterior não foi um JSON válido (${e.message}). Responda apenas com o objeto JSON completo.`; log(motivo); continue; }
+    const reparos = repararRoteiro(r, icones); // ícones antigos, narração em outro campo, 3 cenas iguais
+    if (reparos.length) log(`  reparos automáticos (${reparos.length}): ${reparos.slice(0, 6).join(' | ')}`);
     const v = validarRoteiro(r, { tipo, durSeg, refsPermitidas, textoArtigo: artigo.texto, icones, tom });
     v.avisos.slice(0, 8).forEach(a => log('  aviso: ' + a));
     const todos = [...v.erros, ...(v.erroPalavras ? [v.erroPalavras] : [])];
     if (!todos.length) { r.modelo = modelo; return { roteiro: finalizarRoteiro(r, artigo), tentativas: tentativa, avisos: v.avisos }; }
     log(`  reprovado (${todos.length}): ${todos.slice(0, 6).join(' | ')}`);
     // guarda a melhor tentativa: só erro de contagem de palavras, dentro de ±30 %
-    if (!v.erros.length && v.erroPalavras && Math.abs(v.totalPalavras - v.metas.palavras) / v.metas.palavras <= 0.3) melhor = { r, modelo, v };
+    const desvio = v.erroPalavras ? Math.abs(v.totalPalavras - v.metas.palavras) / v.metas.palavras : 0;
+    if (!v.erros.length && v.erroPalavras && desvio <= 0.45 && (!melhor || desvio < melhor.desvio)) melhor = { r, modelo, v, desvio };
     motivo = todos.slice(0, 15).map(x => '- ' + x).join('\n');
   }
   if (melhor) { log('Usando a melhor tentativa (só a contagem de palavras ficou fora da faixa ideal).'); melhor.r.modelo = melhor.modelo; return { roteiro: finalizarRoteiro(melhor.r, artigo), tentativas: MAX_TENTATIVAS, avisos: [melhor.v.erroPalavras] }; }
@@ -51,7 +55,11 @@ export async function etapaRoteiro(jobId) {
   await updateJob(jobId, { etapa_atual: 'roteiro' });
   const artigo = await lerArtigo(job.post_url);
   console.log(`Artigo: "${artigo.titulo}" — ${artigo.palavras} palavras; referências no texto: ${JSON.stringify(artigo.refs)}`);
-  const { roteiro, tentativas } = await gerarRoteiroPara({ artigo, tipo: job.tipo, durSeg: job.duracao_alvo_seg, tom: job.tom, chamarIA: gerarTextoComFallback });
+  // Short ilustrado usa o roteiro próprio (narração + prompt de imagem por cena); o resto usa o roteiro em slides.
+  const ilustrado = job.tipo === 'short' && job.estilo === 'ilustrado';
+  const { roteiro, tentativas } = ilustrado
+    ? await gerarRoteiroIlustrado({ artigo, durSeg: job.duracao_alvo_seg, tom: job.tom, chamarIA: gerarTextoComFallback })
+    : await gerarRoteiroPara({ artigo, tipo: job.tipo, durSeg: job.duracao_alvo_seg, tom: job.tom, chamarIA: gerarTextoComFallback });
   roteiro.artigo_palavras = artigo.palavras;
   roteiro.tentativas = tentativas;
   await updateJob(jobId, { roteiro, post_titulo: artigo.titulo, status: 'roteiro_ok', erro_etapa: null, erro_mensagem: null });
