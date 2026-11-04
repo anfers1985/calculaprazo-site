@@ -49,10 +49,19 @@ AZURE_REGION = (os.environ.get("AZURE_SPEECH_REGION") or "").strip().lower()
 AZURE_OK = bool(AZURE_KEY and AZURE_REGION)
 FAKE = os.environ.get("TTS_FAKE") == "1"
 
-PAUSA_PONTO = 260
-PAUSA_INTERROGACAO = 420
-PAUSA_ENTRE_CENAS = 380
+def _ms(nome, padrao):
+    try:
+        return int(os.environ.get(nome) or padrao)
+    except ValueError:
+        return padrao
+
+
+PAUSA_PONTO = _ms("TTS_PAUSA_PONTO", 320)            # entre frases da mesma cena
+PAUSA_INTERROGACAO = _ms("TTS_PAUSA_PERGUNTA", 520)
+PAUSA_ENTRE_CENAS = _ms("TTS_PAUSA_CENA", 450)       # entre cenas comuns
+PAUSA_TOPICO = _ms("TTS_PAUSA_TOPICO", 950)          # ANTES de um novo tópico (capítulo ou cena de pergunta): respiro maior
 RATE_CTA = "-6%"
+RATE_TOPICO = os.environ.get("TTS_RATE_TOPICO") or "-6%"  # 1ª frase do tópico: um pouco mais devagar, soa como abertura
 
 _SPLIT = re.compile(r"(?<=[.!?])\s+")
 PRONUNCIAS = {
@@ -60,7 +69,31 @@ PRONUNCIAS = {
     "FGTS": "éfe gê tê ésse", "INSS": "í ene ésse ésse", "CLT": "cê éle tê",
     "CCT": "Convenção Coletiva de Trabalho", "ACT": "Acordo Coletivo de Trabalho",
     "MTE": "Ministério do Trabalho e Emprego", "ADCT": "á dê cê tê", "CF": "Constituição Federal",
+    "STF": "Supremo Tribunal Federal", "STJ": "Superior Tribunal de Justiça", "OJ": "Orientação Jurisprudencial",
+    "SDI": "ésse dê í", "NR": "norma regulamentadora", "EPI": "é pê í", "EPIs": "é pê ís", "CTPS": "cê tê pê ésse", "CPC": "cê pê cê",
+    "OIT": "ó í tê", "DSR": "dê ésse érre", "PLR": "pê éle érre", "IRR": "í érre érre", "CNJ": "cê ene jota", "PJe": "pê jota é",
+    "eSocial": "é-social", "CAGED": "Caged", "CIPA": "Cipa", "PPP": "pê pê pê", "LTCAT": "éle tê cê á tê",
 }
+# Abreviações que a voz lê errado ("art" soletrado, "§" mudo...). Aplicadas ANTES de converter números.
+MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]
+
+
+def _data_falada(m):
+    d, mes, ano = int(m.group(1)), int(m.group(2)), m.group(3)
+    return f"{d} de {MESES[mes - 1]} de {ano}" if 1 <= mes <= 12 else m.group(0)
+
+
+ABREVIACOES = [
+    (r"\barts\.?(?=\s)", "artigos"), (r"\bart\.?(?=\s)", "artigo"), (r"§§\s*", "parágrafos "), (r"§\s*", "parágrafo "),
+    (r"\bincs\.(?=\s)", "incisos"), (r"\binc\.(?=\s)", "inciso"), (r"\bal[ií]n\.(?=\s)", "alínea"), (r"\bsúm\.(?=\s)", "súmula"),
+    (r"\bex\.:?(?=\s)", "por exemplo,"), (r"\bp\.\s?ex\.", "por exemplo"), (r"\betc\.", "etcétera"),
+    (r"\bSDI[-\s]?(\d)\b", r"SDI \1"), (r"\bNR[-\s]?(\d+)", r"NR \1"),
+    (r"\bCF/(\d{2})\b", r"Constituição Federal de 19\1"), (r"\bCLT/\d{2}\b", "CLT"),
+    (r"\b(\d+)\s*[-–]\s*(\d+)\b(?=\s*(?:dias|meses|anos|horas))", r"\1 a \2"),
+    (r"\be/ou\b", "e ou"),
+    (r"\b(\d{1,2})/(\d{1,2})/(\d{4})\b", _data_falada),
+    (r"(?<=\w)/(?=\w)", " "),
+]
 
 
 def normalizar_texto_fala(texto: str) -> str:
@@ -70,6 +103,14 @@ def normalizar_texto_fala(texto: str) -> str:
     except ImportError:
         num2words = None
     t = texto
+    # Marcadores/placeholders e formatação que a voz leria em voz alta ("*número*", "[número]", "**negrito**"): somem.
+    t = re.sub(r"[*_`#~<>\[\]{}|]+\s*n[úu]meros?\s*[*_`#~<>\[\]{}|]+", " ", t, flags=re.I)
+    t = re.sub(r"[*_`#~<>\[\]{}|\\]+", " ", t)
+    # "Tema número 171", "Tema nº 171", "artigo n.º 189": a voz lê "número"; o jeito natural é "Tema cento e setenta e um".
+    t = re.sub(r"\b(tema|s[úu]mula|artigos?|art\.?|lei|oj|orienta[çc][ãa]o jurisprudencial|precedente|inciso|par[áa]grafo)\s+(?:n[úu]meros?|n\.?\s*[º°o]\.?)\s+", r"\1 ", t, flags=re.I)
+    t = re.sub(r"\bn(?:[úu]mero|\.?\s*[º°])\s*(?=\d)", "", t, flags=re.I)
+    for padrao, troca in ABREVIACOES:
+        t = re.sub(padrao, troca, t, flags=re.I)
     t = re.sub(r"R\$\s*(\d+(?:\.\d{3})*),(\d{2})", lambda m: f"{m.group(1)} reais e {m.group(2)} centavos", t)
     t = re.sub(r"R\$\s*(\d+(?:\.\d{3})*)", lambda m: f"{m.group(1)} reais", t)
     t = re.sub(r"(\d+)\s*%", r"\1 por cento", t)
@@ -77,7 +118,7 @@ def normalizar_texto_fala(texto: str) -> str:
     if num2words:
         def _n(m):
             try:
-                return num2words(int(m.group(0).replace(".", "")), lang="pt_BR")
+                return num2words(int(m.group(0).replace(".", "")), lang="pt_BR").replace(",", "")
             except Exception:
                 return m.group(0)
         t = re.sub(r"\d+(?:\.\d{3})*", _n, t)
@@ -442,6 +483,15 @@ def narrar_roteiro(roteiro: dict, voz: str, saida: Path):
     cenas = roteiro["cenas"]
     print(f"Narração: voz={vozes.voz} ({len(cenas)} cenas)")
     total = AudioSegment.empty()
+    # Início de tópico: cena listada em "capitulos" (vídeo longo) ou cena de pergunta (abre um assunto novo).
+    topicos = set()
+    for c in (roteiro.get("capitulos") or []):
+        try:
+            topicos.add(int(c.get("cena")) - 1)
+        except (TypeError, ValueError, AttributeError):
+            pass
+    topicos |= {i for i, c in enumerate(cenas) if str(c.get("tipo") or "") == "pergunta"}
+    topicos.discard(0)
     for i, cena in enumerate(cenas):
         rate = RATE_CTA if i == len(cenas) - 1 else "+0%"
         seg_cena = AudioSegment.empty()
@@ -468,10 +518,10 @@ def narrar_roteiro(roteiro: dict, voz: str, saida: Path):
         if not vozes.cena_inteira or len(seg_cena) == 0:  # inclui o caso em que a voz melhor foi rebaixada no meio
             for j, (frase, pausa) in enumerate(dividir_em_frases(cena["narracao"])):
                 mp3 = tmp / f"c{i:03d}_{j:02d}.mp3"
-                vozes.sintetizar(frase, rate, mp3)
+                vozes.sintetizar(frase, RATE_TOPICO if (j == 0 and i in topicos and rate == "+0%") else rate, mp3)
                 time.sleep(0.2 if not FAKE else 0)
                 seg_cena += cortar_pontas(AudioSegment.from_file(mp3, format="mp3")) + AudioSegment.silent(duration=pausa)
-        seg_cena += AudioSegment.silent(duration=PAUSA_ENTRE_CENAS)
+        seg_cena += AudioSegment.silent(duration=PAUSA_TOPICO if (i + 1) in topicos else PAUSA_ENTRE_CENAS)  # respiro maior antes de um novo tópico
         cena["duracao_seg"] = round(len(seg_cena) / 1000, 2)
         total += seg_cena
     final = saida / "narracao.mp3"
