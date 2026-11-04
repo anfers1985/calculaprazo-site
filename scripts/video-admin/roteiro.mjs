@@ -3,6 +3,7 @@ import { getJob, updateJob } from './lib/db.mjs';
 import { lerArtigo } from './lib/artigo.mjs';
 import { catalogoIcones, montarPrompt, validarRoteiro, repararRoteiro, extrairJson, CTA_FINAL } from './lib/roteiro-regras.mjs';
 import { gerarRoteiroIlustrado } from './lib/roteiro-ilustrado.mjs';
+import { costurarNarracao } from './lib/costura.mjs';
 import { gerarTextoComFallback } from '../lib/ia-texto.mjs'; // somente leitura: reaproveita a cadeia de fallback (Gemini → OpenRouter → NVIDIA)
 
 const MAX_TENTATIVAS = 3;
@@ -39,14 +40,15 @@ export async function gerarRoteiroPara({ artigo, tipo, durSeg, tom, chamarIA, lo
     const v = validarRoteiro(r, { tipo, durSeg, refsPermitidas, textoArtigo: artigo.texto, icones, tom });
     v.avisos.slice(0, 8).forEach(a => log('  aviso: ' + a));
     const todos = [...v.erros, ...(v.erroPalavras ? [v.erroPalavras] : [])];
-    if (!todos.length) { r.modelo = modelo; return { roteiro: finalizarRoteiro(r, artigo), tentativas: tentativa, avisos: v.avisos }; }
+    const validar = (x) => validarRoteiro(x, { tipo, durSeg, refsPermitidas, textoArtigo: artigo.texto, icones, tom });
+    if (!todos.length) { r.modelo = modelo; const costurado = await costurarNarracao({ r, chamarIA, validar, tom, log, textoArtigo: artigo.texto }); return { roteiro: finalizarRoteiro(costurado, artigo), tentativas: tentativa, avisos: v.avisos }; }
     log(`  reprovado (${todos.length}): ${todos.slice(0, 6).join(' | ')}`);
     // guarda a melhor tentativa: só erro de contagem de palavras, dentro de ±30 %
     const desvio = v.erroPalavras ? Math.abs(v.totalPalavras - v.metas.palavras) / v.metas.palavras : 0;
     if (!v.erros.length && v.erroPalavras && desvio <= 0.45 && (!melhor || desvio < melhor.desvio)) melhor = { r, modelo, v, desvio };
     motivo = todos.slice(0, 15).map(x => '- ' + x).join('\n');
   }
-  if (melhor) { log('Usando a melhor tentativa (só a contagem de palavras ficou fora da faixa ideal).'); melhor.r.modelo = melhor.modelo; return { roteiro: finalizarRoteiro(melhor.r, artigo), tentativas: MAX_TENTATIVAS, avisos: [melhor.v.erroPalavras] }; }
+  if (melhor) { log('Usando a melhor tentativa (só a contagem de palavras ficou fora da faixa ideal).'); melhor.r.modelo = melhor.modelo; const costurado = await costurarNarracao({ r: melhor.r, chamarIA, validar: (x) => validarRoteiro(x, { tipo, durSeg, refsPermitidas, textoArtigo: artigo.texto, icones, tom }), tom, log, textoArtigo: artigo.texto }); return { roteiro: finalizarRoteiro(costurado, artigo), tentativas: MAX_TENTATIVAS, avisos: [melhor.v.erroPalavras] }; }
   throw new Error(`A IA não gerou um roteiro válido em ${MAX_TENTATIVAS} tentativas. Último motivo:\n${motivo}`);
 }
 

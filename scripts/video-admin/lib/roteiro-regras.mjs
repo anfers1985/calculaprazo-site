@@ -23,7 +23,7 @@ const ICONE_ALIAS = {
   'bar-chart': 'chart-column', 'bar-chart-2': 'chart-column', 'line-chart': 'chart-line', 'pie-chart': 'chart-pie', 'trending': 'trending-up',
   'dollar-sign': 'circle-dollar-sign', 'money': 'banknote', 'user': 'user-round', 'users-2': 'users-round', 'user-circle': 'user-round', 'building-office': 'building-2', 'office': 'building-2',
   'file': 'file-text', 'document': 'file-text', 'contract': 'file-signature', 'law': 'scale', 'justice': 'scale', 'judge': 'gavel', 'court': 'landmark', 'safety': 'shield-check', 'helmet': 'hard-hat',
-  'trash': 'package', 'trash-2': 'package', 'broom': 'wrench', 'brush': 'paint-bucket', 'sweep': 'wrench', 'road': 'route', 'street': 'route', 'city': 'building-2', 'worker': 'hard-hat',
+  'home': 'house', 'house-simple': 'house', 'trash': 'package', 'trash-2': 'package', 'broom': 'wrench', 'brush': 'paint-bucket', 'sweep': 'wrench', 'road': 'route', 'street': 'route', 'city': 'building-2', 'worker': 'hard-hat',
   'health': 'heart-pulse', 'medical': 'stethoscope', 'virus': 'biohazard', 'danger': 'triangle-alert', 'warning': 'triangle-alert', 'time': 'clock', 'calendar': 'calendar-days', 'money-bag': 'coins',
   'handshake-simple': 'handshake', 'question': 'circle-help', 'help': 'circle-help', 'lightbulb-on': 'lightbulb', 'light-bulb': 'lightbulb',
 };
@@ -53,10 +53,26 @@ export function repararRoteiro(r, icones) {
     if (!c || typeof c !== 'object') return;
     // narração escrita com outro nome de campo
     if (!c.narracao) { const alt = c['narração'] ?? c.narration ?? c.fala ?? c.locucao ?? c['locução'] ?? c.texto_narracao; if (alt) { c.narracao = String(alt); log.push(`cena ${i + 1}: narração veio em outro campo`); } }
-    if (c.narracao && RE_DIGITOS.test(c.narracao)) { c.narracao = numerosPorExtenso(c.narracao); log(`cena ${i + 1}: números da narração por extenso`); }
+    if (c.narracao && RE_NARRACAO_SUJA.test(c.narracao)) { c.narracao = numerosPorExtenso(c.narracao); log.push(`cena ${i + 1}: narração limpa (números por extenso, símbolos)`); }
     fix(c, 'icone'); fix(c, 'marca_dagua'); fix(c.esq, 'icone'); fix(c.dir, 'icone');
     (c.itens || []).forEach(x => fix(x, 'icone')); (c.pontos || []).forEach(x => fix(x, 'icone'));
   });
+  // lista fora de 3–4 itens: com 5+ corta; com 1–2 vira "destaque"; item sem ícone ganha o ícone reserva
+  r.cenas.forEach((c, i) => {
+    if (c.tipo !== 'lista' || !Array.isArray(c.itens)) return;
+    c.itens.forEach(x => { if (x && !x.icone) x.icone = ICONE_RESERVA; });
+    if (c.itens.length > 4) { c.itens = c.itens.slice(0, 4); log.push(`cena ${i + 1}: lista cortada em 4 itens`); }
+    else if (c.itens.length < 3) {
+      const a = c.itens[0] || {}, b = c.itens[1] || {};
+      c.tipo = 'destaque'; c.titulo = String(a.texto || c.titulo || 'Em resumo').split(' ').slice(0, 6).join(' '); c.sub = String(b.texto || a.texto || ' ').slice(0, 120); c.icone = a.icone || ICONE_RESERVA; delete c.itens;
+      log.push(`cena ${i + 1}: lista com poucos itens → "destaque"`);
+    }
+  });
+  // a última cena tem de ser o encerramento (a narração dele é o CTA fixo, preenchida depois)
+  if (r.cenas.length && r.cenas[r.cenas.length - 1].tipo !== 'encerramento') {
+    r.cenas.push({ tipo: 'encerramento', narracao: '…', refs: [] });
+    log.push('encerramento adicionado ao final');
+  }
   // 3 cenas seguidas do mesmo tipo: troca a do meio entre "afirmacao" e "destaque" (campos equivalentes). Outros tipos viram só aviso na validação.
   for (let i = 2; i < r.cenas.length - 1; i++) {
     const a = r.cenas[i - 2], b = r.cenas[i - 1], c = r.cenas[i];
@@ -74,6 +90,8 @@ export function repararRoteiro(r, icones) {
   }
   return log;
 }
+
+export const COESAO_PROMPT = `COESÃO (muito importante): a narração é UM discurso contínuo dividido em cenas, e não uma lista de frases soltas. Antes de escrever, defina a linha de raciocínio: gancho → contexto → qual é o problema → o que a lei ou o tribunal diz → como isso se aplica na prática → resumo. Cada cena, exceto a primeira, deve COMEÇAR emendando a ideia da cena anterior, com um conector natural da fala ("Mas", "Por isso", "Nesse caso", "Na prática", "Ou seja", "Além disso", "Já", "Com isso", "Por outro lado", "E o que isso significa?", "Vamos ver"), variando-os (nunca o mesmo conector mais de duas vezes). A cena que abre um tópico novo deve ser anunciada pela anterior ("Vamos ver como isso funciona."). Não repita o assunto-título em toda cena: use referências ("essa regra", "nesse caso", "o tribunal"). A penúltima cena fecha o raciocínio e leva ao convite final, sem repeti-lo. NOVIDADE: cada cena traz uma informação NOVA do artigo (condição, exemplo, exceção, consequência); NUNCA repita uma ideia já dita só para completar o tempo, e na conclusão resuma o essencial UMA única vez (não escreva 3 ou 4 cenas finais dizendo a mesma coisa com palavras diferentes). Se faltar palavra para o alvo, aprofunde com exemplos e detalhes que estão no artigo, em vez de repetir. RITMO: alterne frases curtas (6 a 10 palavras) com frases mais longas; não faça todas as cenas com a mesma estrutura de sujeito + verbo + complemento.`;
 
 export function metas(tipo, durSeg) {
   const palavras = Math.round(durSeg * PALAVRAS_POR_SEG);
@@ -109,7 +127,8 @@ REFERÊNCIAS LEGAIS PERMITIDAS NOS SLIDES (use EXATAMENTE estas strings, ou nenh
 
 OBJETIVO: vídeo ${longo ? 'LONGO (horizontal 16:9)' : 'SHORT (vertical 9:16)'} de ${Math.round(durSeg)} segundos.
 - Narração total: entre ${m.min} e ${m.max} palavras (alvo ${m.palavras}; a voz fala ~${PALAVRAS_POR_SEG} palavras por segundo).
-- Número de cenas: entre ${m.cenasMin} e ${m.cenasMax} (alvo ${m.alvoCenas}). ORÇAMENTO: cada cena (exceto a última) tem de ${Math.max(5, porCena - 4)} a ${porCena + 4} palavras de narração (média ${porCena}), em 1 frase curta, ou 2 muito curtas. NÃO ultrapasse ${porCena + 6} palavras em nenhuma cena: o total ficaria acima do limite. Antes de responder, some as palavras e corte o que passar de ${m.max}.\n- O campo \"narracao\" é OBRIGATÓRIO em TODAS as cenas, inclusive na capa (nunca omita nem renomeie).
+- Número de cenas: entre ${Math.max(m.cenasMin, m.alvoCenas - 2)} e ${m.cenasMax} (alvo ${m.alvoCenas}); com MENOS de ${Math.max(m.cenasMin, m.alvoCenas - 2)} cenas o vídeo fica curto demais. ORÇAMENTO: cada cena (exceto a última) tem de ${Math.max(5, porCena - 4)} a ${porCena + 4} palavras de narração (média ${porCena}), em 1 frase curta, ou 2 muito curtas. NÃO ultrapasse ${porCena + 6} palavras em nenhuma cena e NÃO escreva cenas com menos de ${Math.max(5, porCena - 6)}: o total precisa ficar entre ${m.min} e ${m.max}. Antes de responder, SOME as palavras: se passar de ${m.max}, corte; se faltar para ${m.min}, acrescente cenas ou alongue as cenas.\n- O campo \"narracao\" é OBRIGATÓRIO em TODAS as cenas, inclusive na capa (nunca omita nem renomeie).
+- ${COESAO_PROMPT}
 - A narração NÃO pode conter dígitos, "R$", "%" nem símbolos: escreva tudo por extenso ("artigo quatrocentos e sessenta e nove", "cinco meses"). Já o texto na TELA pode usar números e abreviações ("art. 469", "5 meses").
 - Cena 1 é SEMPRE do tipo "capa" (gancho em pergunta neutra) e a última é SEMPRE do tipo "encerramento". Nunca 3 cenas seguidas do mesmo tipo (alterne, por exemplo, afirmacao → destaque → pergunta → lista). Varie os tipos e os ícones conforme o assunto do artigo.
 - Cada cena mostra na tela uma versão CURTA do que a narração diz (texto de tela ≤ 110 caracteres; títulos ≤ 6 palavras; textos de cartão ≤ 60 caracteres).
@@ -181,9 +200,15 @@ export function numeroPorExtenso(n) {
   }
   return String(n);
 }
+export const RE_NARRACAO_SUJA = /[0-9%]|R\$|\bn[úu]meros?\b|\bn\.?\s*[º°]|[*_`#~<>\[\]{}|\\]/i;
 /** Converte dígitos, "R$", "%" e ordinais em palavras (pt-BR). Ex.: "R$ 1.200,50" → "mil e duzentos reais e cinquenta centavos". */
 export function numerosPorExtenso(t) {
   let x = String(t ?? '');
+  // Marcadores/placeholders e formatação que a voz leria em voz alta ("*número*", "[número]", "**negrito**", "#"): somem.
+  x = x.replace(/[*_`#~<>\[\]{}|]+\s*n[úu]meros?\s*[*_`#~<>\[\]{}|]+/gi, ' ').replace(/[*_`#~<>\[\]{}|\\]+/g, ' ');
+  // "Tema número 171" / "Tema nº 171": a voz lê "número"; o natural é "Tema cento e setenta e um".
+  x = x.replace(/\b(tema|s[úu]mula|artigos?|art\.?|lei|oj|orienta[çc][ãa]o jurisprudencial|precedente|inciso|par[áa]grafo)\s+(?:n[úu]meros?|n\.?\s*[º°o]\.?)\s+/gi, '$1 ');
+  x = x.replace(/\bn(?:[úu]mero|\.?\s*[º°])\s*(?=\d)/gi, '');
   x = x.replace(/R\$\s*(\d{1,3}(?:\.\d{3})+|\d+)(?:,(\d{1,2}))?/g, (_, i, c) => {
     const inteiro = Number(i.replace(/\./g, ''));
     const cent = c ? Number(c.padEnd(2, '0')) : 0;
@@ -283,7 +308,13 @@ export function validarRoteiro(r, ctx) {
   const total = palavras + 20;
   const faixa = { min: m.min, max: m.max };
   let erroPalavras = null;
-  if (total < faixa.min || total > faixa.max) erroPalavras = `Narração total com ${total} palavras; o alvo é ${m.palavras} (aceito ${faixa.min}–${faixa.max}).${total < faixa.min ? ' Escreva MAIS.' : ' Escreva MENOS.'}`;
+  if (total < faixa.min || total > faixa.max) {
+    const n = Math.max(1, cenas.length - 1), media = Math.max(1, Math.round(palavras / n)), diff = Math.abs(m.palavras - total);
+    const guia = total < faixa.min
+      ? ` Escreva MAIS: faltam ~${diff} palavras. As ${cenas.length} cenas têm em média ${media} palavras; escreva ~${Math.ceil(diff / media)} cenas a mais OU alongue cada cena para ~${Math.round((m.palavras - 20) / n)} palavras.`
+      : ` Escreva MENOS: sobram ~${diff} palavras. Corte ~${Math.round(diff / n)} palavras de cada cena ou remova ~${Math.ceil(diff / media)} cenas.`;
+    erroPalavras = `Narração total com ${total} palavras; o alvo é ${m.palavras} (aceito ${faixa.min}–${faixa.max}).${guia}`;
+  }
   return { erros, avisos, erroPalavras, totalPalavras: total, metas: m };
 }
 

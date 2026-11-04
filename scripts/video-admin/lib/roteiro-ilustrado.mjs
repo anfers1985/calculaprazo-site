@@ -1,6 +1,7 @@
 // Roteiro do Short ILUSTRADO (estilo do vídeo de referência: uma ilustração por cena + legenda em blocos).
 // Sem acesso ao banco: roda no GitHub Actions e também no computador local.
-import { extrairJson, TOM, RE_SEGUNDA, RE_DIGITOS, numerosPorExtenso, RE_PARCIAL, PALAVRAS_POR_SEG, CTA_FINAL } from './roteiro-regras.mjs';
+import { costurarNarracao } from './costura.mjs';
+import { extrairJson, COESAO_PROMPT, TOM, RE_SEGUNDA, RE_DIGITOS, RE_NARRACAO_SUJA, numerosPorExtenso, RE_PARCIAL, PALAVRAS_POR_SEG, CTA_FINAL } from './roteiro-regras.mjs';
 import { normRef } from './artigo.mjs';
 
 const MAX_TENTATIVAS = 3;
@@ -57,11 +58,13 @@ OBJETIVO: Short vertical (9:16) ILUSTRADO de ${Math.round(durSeg)} segundos. Cad
 - Narração total: entre ${m.min} e ${m.max} palavras (alvo ${m.palavras}; a voz fala ~${PALAVRAS_POR_SEG} palavras por segundo).
 - Número de cenas: entre ${m.cenasMin} e ${m.cenasMax} (alvo ${m.alvoCenas}); ORÇAMENTO: cada cena (exceto a última) tem de ${Math.max(5, porCena - 4)} a ${porCena + 4} palavras (média ${porCena}), em 1 frase curta, ou 2 muito curtas. NÃO passe de ${porCena + 6} palavras em nenhuma cena: o total estouraria o limite. Some as palavras antes de responder e corte o que passar de ${m.max}.
 - Cena 1 é o GANCHO: pergunta ou situação que prende a atenção nos primeiros segundos, sem sensacionalismo. A última cena é o encerramento (a narração dela será substituída por um convite para ler o artigo; escreva só "encerramento" nela).
-- A narração NÃO pode conter dígitos, "R$", "%" nem símbolos: escreva tudo por extenso ("artigo quatrocentos e sessenta e nove", "cinco meses").
+- ${COESAO_PROMPT}
+- A narração NÃO pode conter dígitos, "R$", "%" nem símbolos, e nunca use a palavra "número" nem "nº" antes de tema, súmula ou artigo (diga "Tema cento e setenta e um", não "Tema número…"): escreva tudo por extenso ("artigo quatrocentos e sessenta e nove", "cinco meses").
 - Se a narração de uma cena citar artigo de lei, súmula, tema ou lei, liste a norma em "refs" dessa cena (apenas as permitidas acima). Cena sem citação: "refs": [].
-- Use no máximo uma cena com situação de pessoa (o "personagem"); nas demais prefira objetos simbólicos (documento, contrato, calculadora, relógio, celular, balança, carteira de trabalho, calendário, martelo de juiz, pastas).
+- ASSUNTO VISUAL: antes de escrever, identifique o assunto CONCRETO do artigo (a atividade, o local, os objetos e as pessoas de que ele fala; ex.: varrição de ruas → gari, vassoura, calçada, lixo, uniforme, luvas) e use-o para ilustrar a maioria das cenas (pelo menos 2 de cada 3). Cada imagem deve mostrar algo que a narração DAQUELA cena diz; nunca ilustre com uma balança, martelo ou pilha de livros genéricos quando a cena fala de uma situação concreta. Símbolos jurídicos (balança, martelo, documento) só nas poucas cenas que falam da lei ou do tribunal.
+- Use no máximo duas cenas com a pessoa (o "personagem"), no ambiente do assunto; as demais mostram objetos e lugares do assunto ou, quando a cena for sobre a norma ou o tribunal, um símbolo jurídico.
 
-PEDIDO DE IMAGEM (campo "prompt_imagem", SEMPRE EM INGLÊS, 1 a 2 frases): descreva APENAS o assunto e a ação da ilustração (o estilo visual é aplicado automaticamente). Uma ideia visual por cena, concreta e desenhável, que combine com o que a narração diz. Sem pessoas reais, sem logotipos, sem marcas. Se houver uma pessoa, copie literalmente a descrição do "personagem" definido abaixo para ela ficar igual em todas as cenas.
+PEDIDO DE IMAGEM (campo "prompt_imagem", SEMPRE EM INGLÊS, 1 a 2 frases): descreva APENAS o assunto e a ação da ilustração (o estilo visual é aplicado automaticamente). Uma ideia visual por cena, concreta e desenhável, que combine com o que a narração diz. Cite no prompt os substantivos concretos da narração (ex.: "a street sweeper with a broom on a city sidewalk"). NÃO peça itens com escrita legível (calendário com mês, placa, página de livro, tela de celular, documento com texto): a IA escreve letras erradas ou em inglês; peça o item sem texto ou deixe-o de fora. Sem pessoas reais, sem logotipos, sem marcas. Se houver uma pessoa, copie literalmente a descrição do "personagem" definido abaixo para ela ficar igual em todas as cenas.
 Texto dentro da imagem (campo opcional "texto_na_imagem"): só quando ajuda muito (ex.: "CONTRATO", "ERRO", "PRAZO"); em português, MAIÚSCULAS, no máximo 3 palavras e sem números. Na dúvida, omita.
 
 CAMPOS DE PUBLICAÇÃO: "titulo_seo" (≤ 70 caracteres, em pergunta/benefício, sem clickbait), "descricao" (2 a 3 frases informativas), "hashtags" (3 a 5, começando com #), "personagem" (descrição em inglês, 1 frase, de um personagem fixo: idade aproximada, cabelo, roupa).
@@ -151,18 +154,19 @@ export async function gerarRoteiroIlustrado({ artigo, durSeg, tom, chamarIA, log
     // reparos determinísticos: números da narração por extenso; "texto_na_imagem" com número é descartado (a legenda do vídeo já mostra o texto)
     (r.cenas || []).forEach((c, i) => {
       if (!c || typeof c !== 'object') return;
-      if (c.narracao && RE_DIGITOS.test(c.narracao)) { c.narracao = numerosPorExtenso(c.narracao); log(`  reparo: cena ${i + 1}, números da narração por extenso`); }
+      if (c.narracao && RE_NARRACAO_SUJA.test(c.narracao)) { c.narracao = numerosPorExtenso(c.narracao); log(`  reparo: cena ${i + 1}, números da narração por extenso`); }
       if (c.texto_na_imagem && /\d/.test(String(c.texto_na_imagem))) { log(`  reparo: cena ${i + 1}, "texto_na_imagem" com número descartado`); delete c.texto_na_imagem; }
     });
     const v = validarIlustrado(r, { durSeg, refsPermitidas, tom });
     v.avisos.slice(0, 8).forEach(a => log('  aviso: ' + a));
     const todos = [...v.erros, ...(v.erroPalavras ? [v.erroPalavras] : [])];
-    if (!todos.length) { r.modelo = modelo; return { roteiro: finalizarIlustrado(r), tentativas: tentativa, avisos: v.avisos }; }
+    const validar = (x) => validarIlustrado(x, { durSeg, refsPermitidas, tom });
+    if (!todos.length) { r.modelo = modelo; const costurado = await costurarNarracao({ r, chamarIA, validar, tom, log, textoArtigo: artigo.texto }); return { roteiro: finalizarIlustrado(costurado), tentativas: tentativa, avisos: v.avisos }; }
     log(`  reprovado (${todos.length}): ${todos.slice(0, 6).join(' | ')}`);
     const desvio = v.erroPalavras ? Math.abs(v.totalPalavras - v.metas.palavras) / v.metas.palavras : 0;
     if (!v.erros.length && v.erroPalavras && desvio <= 0.45 && (!melhor || desvio < melhor.desvio)) melhor = { r, modelo, v, desvio };
     motivo = todos.slice(0, 15).map(x => '- ' + x).join('\n');
   }
-  if (melhor) { log('Usando a melhor tentativa (só a contagem de palavras ficou fora da faixa ideal).'); melhor.r.modelo = melhor.modelo; return { roteiro: finalizarIlustrado(melhor.r), tentativas: MAX_TENTATIVAS, avisos: [melhor.v.erroPalavras] }; }
+  if (melhor) { log('Usando a melhor tentativa (só a contagem de palavras ficou fora da faixa ideal).'); melhor.r.modelo = melhor.modelo; const costurado = await costurarNarracao({ r: melhor.r, chamarIA, validar: (x) => validarIlustrado(x, { durSeg, refsPermitidas, tom }), tom, log, textoArtigo: artigo.texto }); return { roteiro: finalizarIlustrado(costurado), tentativas: MAX_TENTATIVAS, avisos: [melhor.v.erroPalavras] }; }
   throw new Error(`A IA não gerou um roteiro ilustrado válido em ${MAX_TENTATIVAS} tentativas. Último motivo:\n${motivo}`);
 }
