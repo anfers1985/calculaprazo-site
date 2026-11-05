@@ -5,7 +5,8 @@ import { fileURLToPath } from 'node:url';
 import { normRef } from './artigo.mjs';
 
 const SLIDES = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'slides');
-export const PALAVRAS_POR_SEG = 2.5;
+// Medido nos vídeos reais (voz Francisca, com pausas entre cenas): ~2,2 palavras por segundo. Ajustável por ROTEIRO_PPS.
+export const PALAVRAS_POR_SEG = Number(process.env.ROTEIRO_PPS) || 2.2;
 
 export function catalogoIcones() {
   const sprite = fs.readFileSync(path.join(SLIDES, 'icons.svg'), 'utf-8');
@@ -54,8 +55,44 @@ export function repararRoteiro(r, icones) {
     // narração escrita com outro nome de campo
     if (!c.narracao) { const alt = c['narração'] ?? c.narration ?? c.fala ?? c.locucao ?? c['locução'] ?? c.texto_narracao; if (alt) { c.narracao = String(alt); log.push(`cena ${i + 1}: narração veio em outro campo`); } }
     if (c.narracao && RE_NARRACAO_SUJA.test(c.narracao)) { c.narracao = numerosPorExtenso(c.narracao); log.push(`cena ${i + 1}: narração limpa (números por extenso, símbolos)`); }
-    fix(c, 'icone'); fix(c, 'marca_dagua'); fix(c.esq, 'icone'); fix(c.dir, 'icone');
+    fix(c, 'icone'); fix(c, 'marca_dagua'); fix(c.esq, 'icone'); fix(c.dir, 'icone'); (c.cards || []).forEach(x => fix(x, 'icone'));
     (c.itens || []).forEach(x => fix(x, 'icone')); (c.pontos || []).forEach(x => fix(x, 'icone'));
+  });
+  // chips (etiquetas): só texto curto, no máximo 3; tipo "numero" precisa de número válido (senão vira "destaque")
+  r.cenas.forEach((c, i) => {
+    if (Array.isArray(c.chips)) {
+      c.chips = c.chips.filter(x => typeof x === 'string' && x.trim()).map(x => { const t = x.replace(/[*_`#]/g, '').trim(); return t.length > 28 ? t.split(/\s+/).slice(0, 3).join(' ') : t; }).slice(0, 3);
+      if (!c.chips.length || !['afirmacao', 'destaque', 'numero'].includes(c.tipo)) delete c.chips;
+    } else if (c.chips !== undefined) delete c.chips;
+    if (c.tipo === 'numero') {
+      const bruto = String(c.numero ?? '').replace(/\s+/g, '');
+      const ok = /^\d{1,4}([.,]\d{1,2})?$/.test(bruto);
+      if (!ok) {
+        const t = [c.prefixo, c.numero, c.sufixo, c.unidade].filter(Boolean).join(' ').trim();
+        c.tipo = 'destaque'; c.titulo = (t || 'Em destaque').split(/\s+/).slice(0, 6).join(' '); c.sub = String(c.sub || ' '); delete c.numero; delete c.prefixo; delete c.unidade; delete c.sufixo;
+        log.push(`cena ${i + 1}: "numero" inválido → "destaque"`);
+      } else { c.numero = bruto; if (c.sufixo && String(c.sufixo).length > 2) delete c.sufixo; if (!c.icone) c.icone = ICONE_RESERVA; }
+    }
+  });
+  // grade / passos / decisao: ajusta contagens e converte em "destaque" quando faltar conteúdo
+  const corta = (t, n) => { const x = String(t ?? '').replace(/[*_`#]/g, '').trim(); if (x.length <= n) return x; const k = x.slice(0, n).replace(/\s+\S*$/, '').replace(/[,;:\s]+$/, ''); return k || x.slice(0, n); };
+  const virarDestaque = (c, i, titulo, sub, motivo) => { c.tipo = 'destaque'; c.titulo = corta(titulo || 'Em destaque', 60).split(/\s+/).slice(0, 8).join(' '); c.sub = corta(sub || ' ', 120) || ' '; c.icone = c.icone || ICONE_RESERVA; delete c.cards; delete c.passos; delete c.pergunta; delete c.sim; delete c.nao; log.push(`cena ${i + 1}: ${motivo} → "destaque"`); };
+  r.cenas.forEach((c, i) => {
+    if (c.tipo === 'grade') {
+      const cards = (Array.isArray(c.cards) ? c.cards : []).filter(x => x && typeof x === 'object' && x.titulo).slice(0, 4);
+      cards.forEach(x => { x.titulo = corta(x.titulo, 40); x.texto = x.texto ? corta(x.texto, 90) : ''; if (!x.icone) x.icone = ICONE_RESERVA; });
+      if (cards.length < 2) virarDestaque(c, i, c.titulo || (cards[0] && cards[0].titulo), cards[0] && cards[0].texto, 'grade com poucos cartões');
+      else c.cards = cards;
+    } else if (c.tipo === 'passos') {
+      const ps = (Array.isArray(c.passos) ? c.passos : []).filter(x => x && typeof x === 'object' && x.titulo).slice(0, 5);
+      ps.forEach(x => { x.titulo = corta(x.titulo, 40); x.texto = x.texto ? corta(x.texto, 80) : ''; });
+      if (ps.length < 3) virarDestaque(c, i, c.titulo || (ps[0] && ps[0].titulo), ps.map(x => x.titulo).join(' · '), 'passos insuficientes');
+      else c.passos = ps;
+    } else if (c.tipo === 'decisao') {
+      const ok = o => o && typeof o === 'object' && o.titulo;
+      if (!c.pergunta || !ok(c.sim) || !ok(c.nao)) virarDestaque(c, i, c.pergunta || c.titulo, [c.sim && c.sim.titulo, c.nao && c.nao.titulo].filter(Boolean).join(' · '), 'decisão incompleta');
+      else { c.pergunta = corta(c.pergunta, 110); ['sim', 'nao'].forEach(k => { c[k].titulo = corta(c[k].titulo, 40); c[k].texto = c[k].texto ? corta(c[k].texto, 90) : ''; }); }
+    }
   });
   // lista fora de 3–4 itens: com 5+ corta; com 1–2 vira "destaque"; item sem ícone ganha o ícone reserva
   r.cenas.forEach((c, i) => {
@@ -109,7 +146,7 @@ export const TOM = {
 export function montarPrompt({ artigo, tipo, durSeg, tom, refsPermitidas, icones, motivoRetentativa }) {
   const m = metas(tipo, durSeg);
   const longo = tipo === 'longo';
-  const porCena = Math.max(8, Math.round((m.palavras - 20) / Math.max(1, m.alvoCenas - 1)));
+  const porCena = Math.max(8, Math.round((m.palavras - 26) / Math.max(1, m.alvoCenas - 1)));
   const systemPrompt = [
     'Você é roteirista dos vídeos educativos de Direito do Trabalho do canal "Calcula Prazo — Direto ao Ponto". Escreve em português do Brasil, em TERCEIRA PESSOA, com linguagem clara e profissional.',
     'Seu roteiro é FIEL ao artigo-fonte: não acrescente fatos, números, prazos, valores, artigos de lei, súmulas ou decisões que não estejam no artigo. Se algo não está no artigo, não existe.',
@@ -130,7 +167,9 @@ OBJETIVO: vídeo ${longo ? 'LONGO (horizontal 16:9)' : 'SHORT (vertical 9:16)'} 
 - Número de cenas: entre ${Math.max(m.cenasMin, m.alvoCenas - 2)} e ${m.cenasMax} (alvo ${m.alvoCenas}); com MENOS de ${Math.max(m.cenasMin, m.alvoCenas - 2)} cenas o vídeo fica curto demais. ORÇAMENTO: cada cena (exceto a última) tem de ${Math.max(5, porCena - 4)} a ${porCena + 4} palavras de narração (média ${porCena}), em 1 frase curta, ou 2 muito curtas. NÃO ultrapasse ${porCena + 6} palavras em nenhuma cena e NÃO escreva cenas com menos de ${Math.max(5, porCena - 6)}: o total precisa ficar entre ${m.min} e ${m.max}. Antes de responder, SOME as palavras: se passar de ${m.max}, corte; se faltar para ${m.min}, acrescente cenas ou alongue as cenas.\n- O campo \"narracao\" é OBRIGATÓRIO em TODAS as cenas, inclusive na capa (nunca omita nem renomeie).
 - ${COESAO_PROMPT}
 - A narração NÃO pode conter dígitos, "R$", "%" nem símbolos: escreva tudo por extenso ("artigo quatrocentos e sessenta e nove", "cinco meses"). Já o texto na TELA pode usar números e abreviações ("art. 469", "5 meses").
-- Cena 1 é SEMPRE do tipo "capa" (gancho em pergunta neutra) e a última é SEMPRE do tipo "encerramento". Nunca 3 cenas seguidas do mesmo tipo (alterne, por exemplo, afirmacao → destaque → pergunta → lista). Varie os tipos e os ícones conforme o assunto do artigo.
+- Cena 1 é SEMPRE do tipo "capa" (gancho em pergunta neutra) e a última é SEMPRE do tipo "encerramento". Nunca 3 cenas seguidas do mesmo tipo (alterne, por exemplo, afirmacao → destaque → pergunta → lista). A cena 2 NUNCA é do tipo "pergunta": a capa já é a pergunta e a cena 2 começa a responder. Use "pergunta" só para abrir um tópico novo (no máximo ${longo ? 3 : 1} no vídeo), sempre respondida pela cena seguinte; nunca duas perguntas seguidas. Varie os tipos e os ícones conforme o assunto do artigo.
+- VARIEDADE E INFORMAÇÃO NOS SLIDES: os slides são INFOGRÁFICOS que se montam enquanto o narrador fala, e não frases com um símbolo. Escolha o tipo pelo conteúdo da cena: "decisao" quando a regra é um teste sim/não (ex.: "trabalha mais de dois dias por semana?"); "grade" para requisitos, elementos, critérios ou direitos (2 a 4 cartões); "passos" para etapas ou ordem de análise (3 a 5); "comparacao" quando o artigo contrapõe dois conceitos (ex.: diarista × doméstica); "numero" para um número-chave que esteja no artigo; "lista" para o resumo; "citacao" para a frase-síntese de uma regra. "afirmacao" e "destaque" são o ÚLTIMO recurso: no máximo ${longo ? '40%' : '50%'} das cenas de conteúdo. Cite nos textos dos cartões, passos e opções as MESMAS palavras que a narração usa para cada item, e na MESMA ordem (o item aparece na tela quando o narrador o menciona). ${longo ? 'No vídeo longo use pelo menos 4 tipos diferentes. A PENÚLTIMA cena é o RESUMO: tipo "lista" com 3 itens, titulo "Em resumo", e narração que começa com "Em resumo," e retoma os pontos principais.' : 'No Short use pelo menos 3 tipos diferentes.'}
+- O texto de tela carrega a INFORMAÇÃO-CHAVE da cena (um critério, um dado ou uma conclusão, em 6 a 12 palavras), e não só um rótulo de 2 ou 3 palavras. Ruim: "Autonomia na prestação". Bom: "Atende várias casas, com autonomia: diarista".
 - Cada cena mostra na tela uma versão CURTA do que a narração diz (texto de tela ≤ 110 caracteres; títulos ≤ 6 palavras; textos de cartão ≤ 60 caracteres).
 - Use "**termo**" para destacar 1 expressão-chave por cena (no máximo).
 
@@ -143,6 +182,11 @@ TIPOS DE CENA E CAMPOS (além de "narracao" em todas):
 6. lista: {"tipo":"lista","narracao":"…","titulo":"…","estilo":"ok"(positivo)|"aviso"(alertas),"itens":[{"icone":"…","texto":"≤4 palavras"} de 3 a 4]}
 7. citacao: {"tipo":"citacao","narracao":"…","texto":"frase-síntese"}
 8. encerramento: {"tipo":"encerramento","narracao":"qualquer coisa (será substituída)"}
+9. numero (OPCIONAL, para destacar um número-chave que ESTÁ NO ARTIGO: prazo, quantidade de dias/meses, percentual): {"tipo":"numero","narracao":"…","numero":"só dígitos, ex.: 2","prefixo":"opcional, ≤3 palavras (ex.: Mais de)","unidade":"≤4 palavras (ex.: dias por semana)","sufixo":"opcional: % ou +","sub":"≤90 caracteres","icone":"…","refs":[]}
+10. grade (REQUISITOS, ELEMENTOS, CRITÉRIOS ou DIREITOS em cartões lado a lado): {"tipo":"grade","narracao":"…","titulo":"≤6 palavras","cards":[{"icone":"…","titulo":"≤3 palavras","texto":"≤60 caracteres"} de 2 a 4],"refs":[]}
+11. passos (PROCESSO, ETAPAS ou ORDEM de análise, ligados por uma linha): {"tipo":"passos","narracao":"…","titulo":"≤6 palavras","passos":[{"titulo":"≤3 palavras","texto":"≤50 caracteres"} de 3 a 5],"refs":[]}
+12. decisao (FLUXO SIM/NÃO: uma pergunta que leva a dois resultados): {"tipo":"decisao","narracao":"…","pergunta":"≤90 caracteres, termina com ?","sim":{"titulo":"≤4 palavras","texto":"≤60 caracteres"},"nao":{"titulo":"≤4 palavras","texto":"≤60 caracteres"},"refs":[]}
+CHIPS (opcional em afirmacao, destaque e numero): "chips":["termo-chave","termo-chave"] com 2 a 3 etiquetas de até 3 palavras cada, que aparecem na tela como resumo visual do que a narração diz.
 
 ÍCONES (campo "icone"/"marca_dagua"): use SOMENTE ids destas listas, escolhendo objetos que combinem com o assunto de cada cena (evite repetir o mesmo ícone mais de 2 vezes). Copie o id EXATAMENTE como está na lista, com o prefixo \"lu-\" (ex.: lu-circle-help, lu-triangle-alert; NÃO invente nomes como lu-help-circle, lu-alert-triangle, lu-trash-2, lu-brush). Se nenhum servir, use lu-info.
 Ícones do site: ${icones.siteLista}
@@ -166,6 +210,10 @@ const OBRIG = {
   comparacao: ['esq', 'dir'],
   lista: ['titulo', 'itens'],
   citacao: ['texto'],
+  numero: ['numero', 'unidade'],
+  grade: ['titulo', 'cards'],
+  passos: ['titulo', 'passos'],
+  decisao: ['pergunta', 'sim', 'nao'],
   encerramento: [],
 };
 const TIPOS = Object.keys(OBRIG);
@@ -269,6 +317,10 @@ export function validarRoteiro(r, ctx) {
     OBRIG[c.tipo].forEach(f => { if (!c[f] || (Array.isArray(c[f]) && !c[f].length)) erros.push(`Cena ${n} (${c.tipo}): falta "${f}".`); });
     if (c.tipo === 'afirmacao' && !c.icone && !c.painel) erros.push(`Cena ${n}: afirmacao precisa de "icone".`);
     if (c.tipo === 'destaque' && !c.icone) erros.push(`Cena ${n}: destaque precisa de "icone".`);
+    if (c.tipo === 'numero' && !c.icone) erros.push(`Cena ${n}: numero precisa de "icone".`);
+    if (c.tipo === 'grade' && Array.isArray(c.cards) && (c.cards.length < 2 || c.cards.length > 4 || c.cards.some(x => !x || !x.icone || !x.titulo))) erros.push(`Cena ${n}: grade precisa de 2 a 4 cartões com icone e titulo.`);
+    if (c.tipo === 'passos' && Array.isArray(c.passos) && (c.passos.length < 3 || c.passos.length > 5 || c.passos.some(x => !x || !x.titulo))) erros.push(`Cena ${n}: passos precisa de 3 a 5 passos com titulo.`);
+    if (c.tipo === 'decisao' && (!c.sim || !c.sim.titulo || !c.nao || !c.nao.titulo)) erros.push(`Cena ${n}: decisao precisa de sim e nao com titulo.`);
     if (c.tipo === 'comparacao') ['esq', 'dir'].forEach(l => { if (!c[l] || !c[l].icone || !c[l].titulo) erros.push(`Cena ${n}: comparacao.${l} precisa de icone e titulo.`); });
     if (c.tipo === 'lista' && Array.isArray(c.itens) && (c.itens.length < 3 || c.itens.length > 4 || c.itens.some(x => !x.icone || !x.texto))) erros.push(`Cena ${n}: lista precisa de 3 a 4 itens com icone e texto.`);
     if (c.tipo === 'capa' && (!Array.isArray(c.pontos) || c.pontos.length !== 3)) erros.push('Capa: informe exatamente 3 "pontos".');
@@ -297,15 +349,20 @@ export function validarRoteiro(r, ctx) {
     (c.refs || []).forEach(rf => { if (!permitidas.has(normRef(rf))) erros.push(`Cena ${n}: referência "${rf}" não está entre as permitidas.`); });
     if ((c.refs || []).length > 3) erros.push(`Cena ${n}: no máximo 3 refs.`);
     // ícones
-    const ids = [c.icone, c.marca_dagua, c.esq && c.esq.icone, c.dir && c.dir.icone, ...(c.itens || []).map(x => x.icone), ...(c.pontos || []).map(x => x.icone)].filter(Boolean);
+    const ids = [c.icone, c.marca_dagua, c.esq && c.esq.icone, c.dir && c.dir.icone, ...(c.cards || []).map(x => x && x.icone), ...(c.itens || []).map(x => x.icone), ...(c.pontos || []).map(x => x.icone)].filter(Boolean);
     ids.forEach(id => { if (!idsOk(id)) erros.push(`Cena ${n}: ícone "${id}" não existe nas listas permitidas.`); usadosIcone[id] = (usadosIcone[id] || 0) + 1; });
     // comprimento de tela
     if (c.texto && String(c.texto).length > 130) erros.push(`Cena ${n}: texto de tela muito longo (${String(c.texto).length} > 130).`);
     if (i >= 2 && cenas[i - 1].tipo === c.tipo && cenas[i - 2].tipo === c.tipo) avisos.push(`Cena ${n}: 3 cenas seguidas do tipo "${c.tipo}" (só estética).`);
   });
   Object.entries(usadosIcone).forEach(([id, q]) => { if (q > 3) avisos.push(`Ícone ${id} usado ${q} vezes.`); });
+  // variedade: afirmacao/destaque (frase + ícone) em excesso. Erro "suave": pede nova tentativa, mas não derruba o roteiro.
+  const conteudo = cenas.filter(c => c.tipo !== 'capa' && c.tipo !== 'encerramento');
+  const fracos = conteudo.filter(c => c.tipo === 'afirmacao' || c.tipo === 'destaque').length;
+  const limite = Math.floor(conteudo.length * (tipo === 'longo' ? 0.4 : 0.5));
+  const erroVariedade = conteudo.length >= 6 && fracos > limite ? `Variedade: ${fracos} de ${conteudo.length} cenas são afirmacao/destaque (máx. ${limite}). Troque algumas por decisao (teste sim/não), grade (requisitos/critérios), passos (etapas), comparacao, numero ou lista.` : null;
   // orçamento de palavras (encerramento tem CTA fixo de ~20 palavras)
-  const total = palavras + 20;
+  const total = palavras + PALAVRAS_CTA;
   const faixa = { min: m.min, max: m.max };
   let erroPalavras = null;
   if (total < faixa.min || total > faixa.max) {
@@ -315,7 +372,8 @@ export function validarRoteiro(r, ctx) {
       : ` Escreva MENOS: sobram ~${diff} palavras. Corte ~${Math.round(diff / n)} palavras de cada cena ou remova ~${Math.ceil(diff / media)} cenas.`;
     erroPalavras = `Narração total com ${total} palavras; o alvo é ${m.palavras} (aceito ${faixa.min}–${faixa.max}).${guia}`;
   }
-  return { erros, avisos, erroPalavras, totalPalavras: total, metas: m };
+  return { erros, avisos, erroPalavras, erroVariedade, totalPalavras: total, metas: m };
 }
 
-export const CTA_FINAL = 'Leia o artigo completo no Calcula Prazo, com o link na descrição. E se inscreva no canal para acompanhar mais conteúdos.';
+export const CTA_FINAL = 'Para se aprofundar no assunto, leia o artigo completo no Calcula Prazo, com o link na descrição. E, se este conteúdo ajudou, inscreva-se no canal para acompanhar mais.';
+export const PALAVRAS_CTA = CTA_FINAL.split(/\s+/).length;

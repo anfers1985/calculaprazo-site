@@ -1,7 +1,7 @@
 // Roteiro do Short ILUSTRADO (estilo do vídeo de referência: uma ilustração por cena + legenda em blocos).
 // Sem acesso ao banco: roda no GitHub Actions e também no computador local.
 import { costurarNarracao } from './costura.mjs';
-import { extrairJson, COESAO_PROMPT, TOM, RE_SEGUNDA, RE_DIGITOS, RE_NARRACAO_SUJA, numerosPorExtenso, RE_PARCIAL, PALAVRAS_POR_SEG, CTA_FINAL } from './roteiro-regras.mjs';
+import { extrairJson, COESAO_PROMPT, TOM, RE_SEGUNDA, RE_DIGITOS, RE_NARRACAO_SUJA, numerosPorExtenso, RE_PARCIAL, PALAVRAS_POR_SEG, CTA_FINAL, PALAVRAS_CTA } from './roteiro-regras.mjs';
 import { normRef } from './artigo.mjs';
 
 const MAX_TENTATIVAS = 3;
@@ -38,7 +38,7 @@ export function montarPromptImagem(cena, personagem = '') {
 
 export function montarPromptIlustrado({ artigo, durSeg, tom, refsPermitidas, motivoRetentativa }) {
   const m = metasIlustrado(durSeg);
-  const porCena = Math.max(8, Math.round((m.palavras - 20) / Math.max(1, m.alvoCenas - 1)));
+  const porCena = Math.max(8, Math.round((m.palavras - 26) / Math.max(1, m.alvoCenas - 1)));
   const systemPrompt = [
     'Você é roteirista dos Shorts ilustrados do canal "Calcula Prazo — Direto ao Ponto". Escreve em português do Brasil, em TERCEIRA PESSOA, com linguagem clara, ritmo rápido e profissional.',
     'Seu roteiro é FIEL ao artigo-fonte: não acrescente fatos, números, prazos, valores, artigos de lei, súmulas ou decisões que não estejam no artigo. Se algo não está no artigo, não existe.',
@@ -65,12 +65,14 @@ OBJETIVO: Short vertical (9:16) ILUSTRADO de ${Math.round(durSeg)} segundos. Cad
 - Use no máximo duas cenas com a pessoa (o "personagem"), no ambiente do assunto; as demais mostram objetos e lugares do assunto ou, quando a cena for sobre a norma ou o tribunal, um símbolo jurídico.
 
 PEDIDO DE IMAGEM (campo "prompt_imagem", SEMPRE EM INGLÊS, 1 a 2 frases): descreva APENAS o assunto e a ação da ilustração (o estilo visual é aplicado automaticamente). Uma ideia visual por cena, concreta e desenhável, que combine com o que a narração diz. Cite no prompt os substantivos concretos da narração (ex.: "a street sweeper with a broom on a city sidewalk"). NÃO peça itens com escrita legível (calendário com mês, placa, página de livro, tela de celular, documento com texto): a IA escreve letras erradas ou em inglês; peça o item sem texto ou deixe-o de fora. Sem pessoas reais, sem logotipos, sem marcas. Se houver uma pessoa, copie literalmente a descrição do "personagem" definido abaixo para ela ficar igual em todas as cenas.
+INFORMAÇÃO EM CIMA DA ILUSTRAÇÃO (a ilustração sozinha não informa; estes campos fazem o vídeo ensinar): "rotulos" (opcional, de 1 a 2 termos-chave da cena, até 3 palavras cada, ex.: ["Mais de dois dias", "Subordinação"]) aparecem como post-its no momento em que a narração os menciona; use as MESMAS palavras da narração, na mesma ordem. "numero_destaque" (opcional, só quando a cena traz um número-chave que está NO ARTIGO): {"valor":"2","unidade":"dias por semana"}, aparece como carimbo com contagem. Use rótulos em pelo menos 2 de cada 3 cenas e numero_destaque no máximo 2 vezes no vídeo.
+VARIEDADE VISUAL: alterne os planos nos pedidos de imagem (um plano aberto do ambiente, um plano médio da ação, um close de um detalhe) e não repita a mesma composição em cenas seguidas.
 Texto dentro da imagem (campo opcional "texto_na_imagem"): só quando ajuda muito (ex.: "CONTRATO", "ERRO", "PRAZO"); em português, MAIÚSCULAS, no máximo 3 palavras e sem números. Na dúvida, omita.
 
 CAMPOS DE PUBLICAÇÃO: "titulo_seo" (≤ 70 caracteres, em pergunta/benefício, sem clickbait), "descricao" (2 a 3 frases informativas), "hashtags" (3 a 5, começando com #), "personagem" (descrição em inglês, 1 frase, de um personagem fixo: idade aproximada, cabelo, roupa).
 
 FORMATO DE SAÍDA:
-{"titulo_seo":"…","descricao":"…","hashtags":["#…"],"personagem":"…","cenas":[{"narracao":"…","prompt_imagem":"…","texto_na_imagem":"opcional","refs":[]}, …]}
+{"titulo_seo":"…","descricao":"…","hashtags":["#…"],"personagem":"…","cenas":[{"narracao":"…","prompt_imagem":"…","texto_na_imagem":"opcional","rotulos":["termo-chave"],"numero_destaque":{"valor":"2","unidade":"dias por semana"},"refs":[]}, …]}
 ${motivoRetentativa ? `\nATENÇÃO — a tentativa anterior foi REPROVADA pelos motivos abaixo. Corrija TODOS:\n${motivoRetentativa}\n` : ''}`;
   return { systemPrompt, userPrompt, metas: m };
 }
@@ -118,7 +120,7 @@ export function validarIlustrado(r, ctx) {
     if (refs.length > 3) erros.push(`Cena ${n}: no máximo 3 refs.`);
     if (!ultima && RE_CITA_NORMA.test(nar) && !refs.length) erros.push(`Cena ${n}: a narração cita uma norma, mas "refs" está vazio (liste a norma permitida ou reescreva sem citar).`);
   });
-  const total = palavras + 20; // encerramento tem CTA fixo de ~20 palavras
+  const total = palavras + PALAVRAS_CTA; // encerramento tem CTA fixo
   let erroPalavras = null;
   if (total < m.min || total > m.max) erroPalavras = `Narração total com ${total} palavras; o alvo é ${m.palavras} (aceito ${m.min}–${m.max}).${total < m.min ? ' Escreva MAIS.' : ' Escreva MENOS.'}`;
   return { erros, avisos, erroPalavras, totalPalavras: total, metas: m };
@@ -156,6 +158,20 @@ export async function gerarRoteiroIlustrado({ artigo, durSeg, tom, chamarIA, log
       if (!c || typeof c !== 'object') return;
       if (c.narracao && RE_NARRACAO_SUJA.test(c.narracao)) { c.narracao = numerosPorExtenso(c.narracao); log(`  reparo: cena ${i + 1}, números da narração por extenso`); }
       if (c.texto_na_imagem && /\d/.test(String(c.texto_na_imagem))) { log(`  reparo: cena ${i + 1}, "texto_na_imagem" com número descartado`); delete c.texto_na_imagem; }
+    });
+    // rótulos e número em destaque: só texto curto e válido; o que não servir é descartado (são enfeite informativo, não motivo para reprovar)
+    (r.cenas || []).forEach((c, i) => {
+      if (!c || typeof c !== 'object') return;
+      if (Array.isArray(c.rotulos)) {
+        c.rotulos = c.rotulos.filter((x) => typeof x === 'string' && x.trim()).map((x) => { const t = x.replace(/[*_`#]/g, '').trim(); return t.length > 28 ? t.split(/\s+/).slice(0, 3).join(' ') : t; }).slice(0, 2);
+        if (!c.rotulos.length) delete c.rotulos;
+      } else if (c.rotulos !== undefined) delete c.rotulos;
+      const nd = c.numero_destaque;
+      if (nd !== undefined) {
+        const valor = nd && typeof nd === 'object' ? String(nd.valor ?? '').replace(/\s+/g, '') : '';
+        if (/^\d{1,4}([.,]\d{1,2})?$/.test(valor)) c.numero_destaque = { valor, unidade: String(nd.unidade || '').split(/\s+/).slice(0, 4).join(' ') };
+        else delete c.numero_destaque;
+      }
     });
     const v = validarIlustrado(r, { durSeg, refsPermitidas, tom });
     v.avisos.slice(0, 8).forEach(a => log('  aviso: ' + a));

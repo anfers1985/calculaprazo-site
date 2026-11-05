@@ -25,6 +25,13 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:var(--papel);fon
 /* legenda em blocos */
 #leg{position:absolute;left:60px;right:60px;bottom:292px;display:flex;justify-content:center;z-index:5;pointer-events:none}
 #leg span{display:inline-block;max-width:960px;padding:16px 40px 20px;background:rgba(245,239,221,.96);border-radius:8px;box-shadow:0 8px 24px rgba(70,50,20,.22),inset 0 0 0 2px rgba(110,92,60,.16);font-size:76px;line-height:1.1;color:var(--tinta);text-align:center;letter-spacing:.5px;white-space:nowrap}
+/* etiquetas (post-its) e carimbo de número: informação que aparece quando o narrador a menciona */
+.stk{position:absolute;z-index:6;max-width:480px;padding:14px 38px 20px;background:#FFE88A;color:var(--tinta);font-size:72px;line-height:1.04;border-radius:6px;box-shadow:0 14px 30px rgba(70,50,20,.28),inset 0 -6px 0 rgba(0,0,0,.05);opacity:0;text-align:center}
+.stk::before{content:"";position:absolute;top:-22px;left:50%;width:150px;height:44px;margin-left:-75px;background:rgba(255,255,255,.6);transform:rotate(-3deg);box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.stk.b{background:#BFE0FF}
+.stamp{position:absolute;z-index:6;right:52px;top:1000px;width:420px;height:420px;border-radius:50%;background:#FFFDF6;border:9px dashed var(--acc);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 18px 40px rgba(70,50,20,.26);opacity:0}
+.stamp .v{font:800 188px/1 'Plus Jakarta Sans',sans-serif;color:var(--acc);letter-spacing:-6px}
+.stamp .u{font-size:46px;line-height:1.05;text-align:center;padding:0 44px;margin-top:8px;color:var(--tinta)}
 /* marca */
 #marca{position:absolute;left:0;right:0;bottom:104px;display:flex;align-items:center;justify-content:center;gap:16px;z-index:4;opacity:.62;font:700 30px 'Plus Jakarta Sans',sans-serif;color:#4a4235}
 #marca img{width:44px;height:44px;border-radius:11px}
@@ -47,7 +54,17 @@ const els=C.cenas.map((c,i)=>{
   const m=document.createElement('div');m.className='moldura';
   if(c.imagem){m.innerHTML=`<img src="${esc(c.imagem)}" alt="">`;}
   else{const txt=(c.blocos||[]).map(b=>b.texto).join(' ');m.innerHTML=`<div class="cartao">${esc(txt.length>120?txt.slice(0,117)+'…':txt)}<b>CALCULAPRAZO.COM.BR</b></div>`;}
-  d.appendChild(m);palco.appendChild(d);return{d,m};
+  d.appendChild(m);
+  // post-its com os termos-chave da cena (aparecem na hora em que a fala os menciona)
+  const stk=(c.rotulos||[]).slice(0,2).map((t,k)=>{const e=document.createElement('div');e.className='stk'+(k?' b':'');e.textContent=t;
+    if(k===0){e.style.left='48px';e.style.top='150px';}else{e.style.right='48px';e.style.top='330px';}
+    d.appendChild(e);return{e,q:(c.quando||[])[k]??1+k*1.2,rot:k?3.5:-4};});
+  // carimbo com número que "sobe" (só quando a cena traz um número-chave)
+  let st=null;
+  if(c.numero&&c.numero.valor){const e=document.createElement('div');e.className='stamp';const raw=String(c.numero.valor).replace(',','.').replace(/[^0-9.]/g,'');
+    e.innerHTML=`<div class="v">0</div><div class="u">${esc(c.numero.unidade||'')}</div>`;d.appendChild(e);
+    st={e,v:e.querySelector('.v'),n:parseFloat(raw)||0,dec:(raw.split('.')[1]||'').length,q:c.numero.quando??1.5};}
+  palco.appendChild(d);return{d,m,stk,st};
 });
 const lbl=document.createElement('span');leg.appendChild(lbl);
 let ultimoTxt=null;
@@ -59,11 +76,19 @@ window.render=function(t){
     e.d.style.display='block';e.d.style.zIndex=i+1;
     e.d.style.opacity=i==0?1:cl((t-st)/.26);
     const lt=Math.max(0,t-B[i]),dur=Math.max(1,B[i+1]-B[i]);
-    const entra=cl(lt/.5);                      // "pop" de entrada com leve overshoot
-    const esc_=(.93+.07*eb(entra))*(1+.07*cl(lt/dur));   // + zoom lento (ken burns)
-    const rot=(i%2?1:-1)*(.7-.5*eo(entra));    // levíssima inclinação, como colagem
-    const y=(1-eo(entra))*40;
-    e.m.style.transform=`translateY(${y}px) rotate(${rot}deg) scale(${esc_})`;
+    const entra=cl(lt/.5),p=cl(lt/dur),modo=i%4;
+    // 4 entradas e 4 movimentos de câmera, em rodízio: a cena nunca se repete igual à anterior
+    let tx=0,ty=0,sc=1,kb=1;
+    if(modo===0){ty=(1-eo(entra))*40;sc=.93+.07*eb(entra);kb=1+.09*p;}
+    else if(modo===1){tx=(1-eo(entra))*170;sc=.96+.04*eo(entra);kb=1.10-.09*p;}
+    else if(modo===2){tx=-(1-eo(entra))*170;sc=.96+.04*eo(entra);kb=1.08;tx+=(.5-p)*56;}
+    else{ty=-(1-eb(entra))*110;sc=.97+.03*eo(entra);kb=1.08;tx+=(p-.5)*56;}
+    const rot=(i%2?1:-1)*(.7-.5*eo(entra));
+    e.m.style.transform=`translate(${tx}px,${ty}px) rotate(${rot}deg) scale(${sc*kb})`;
+    const w=1-eo(cl(lt/.55));                    // "pincelada": a ilustração é revelada de um lado ao outro
+    e.m.style.clipPath=modo===1?`inset(0 ${w*100}% 0 0)`:modo===2?`inset(0 0 0 ${w*100}%)`:'none';
+    e.stk.forEach(o=>{const q=cl((lt-o.q)/.45);o.e.style.opacity=q>0?1:0;o.e.style.transform=`rotate(${o.rot*(1+(1-eo(q))*2)}deg) scale(${q>0?Math.max(.01,eb(q)):.01})`;});
+    if(e.st){const q=cl((lt-e.st.q)/.5),cn=eo(cl((lt-e.st.q-.1)/1.0));e.st.e.style.opacity=q>0?1:0;e.st.e.style.transform=`rotate(${5+(1-eo(q))*-12}deg) scale(${q>0?Math.max(.01,eb(q)):.01})`;e.st.v.textContent=(e.st.n*cn).toFixed(e.st.dec).replace('.',',');}
   });
   // legenda: bloco ativo no instante t
   let alvo=null,prog=1;
