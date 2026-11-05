@@ -61,6 +61,26 @@ PAUSA_INTERROGACAO = _ms("TTS_PAUSA_PERGUNTA", 520)
 PAUSA_ENTRE_CENAS = _ms("TTS_PAUSA_CENA", 450)       # entre cenas comuns
 PAUSA_TOPICO = _ms("TTS_PAUSA_TOPICO", 950)          # ANTES de um novo tópico (capítulo ou cena de pergunta): respiro maior
 RATE_CTA = "-6%"
+TEMPO_LEITURA = float(os.environ.get("TTS_TEMPO_LEITURA") or 1.0)   # multiplica o tempo mínimo de tela por slide; 0 desliga
+MAX_EXTRA_LEITURA = 4.0                                             # segundos de silêncio acrescentados, no máximo, por cena
+
+
+def minimo_tela(c: dict) -> float:
+    """Tempo mínimo (s) que o slide precisa ficar na tela para dar tempo de ler (infográficos têm vários itens)."""
+    t = str(c.get("tipo") or "")
+    if not TEMPO_LEITURA or t in ("", "capa", "encerramento", "ilustracao"):
+        return 0.0
+    n = len(c.get("cards") or c.get("passos") or c.get("itens") or [])
+    if t == "grade":
+        base = 3.2 + 1.6 * n
+    elif t == "passos":
+        base = 3.2 + 1.7 * n
+    elif t == "lista":
+        base = 3.2 + 1.4 * n
+    else:
+        base = {"decisao": 8.0, "comparacao": 6.5, "numero": 5.5, "afirmacao": 4.5, "destaque": 4.5, "citacao": 4.5, "pergunta": 3.8}.get(t, 0.0)
+    return base * TEMPO_LEITURA
+
 RATE_TOPICO = os.environ.get("TTS_RATE_TOPICO") or "-6%"  # 1ª frase do tópico: um pouco mais devagar, soa como abertura
 
 _SPLIT = re.compile(r"(?<=[.!?])\s+")
@@ -91,6 +111,7 @@ ABREVIACOES = [
     (r"\bCF/(\d{2})\b", r"Constituição Federal de 19\1"), (r"\bCLT/\d{2}\b", "CLT"),
     (r"\b(\d+)\s*[-–]\s*(\d+)\b(?=\s*(?:dias|meses|anos|horas))", r"\1 a \2"),
     (r"\be/ou\b", "e ou"),
+    (r"\bCalcula\s?Prazo\b", "Calcula Prazo"),
     (r"\b(\d{1,2})/(\d{1,2})/(\d{4})\b", _data_falada),
     (r"(?<=\w)/(?=\w)", " "),
 ]
@@ -103,6 +124,10 @@ def normalizar_texto_fala(texto: str) -> str:
     except ImportError:
         num2words = None
     t = texto
+    # Conectores raros que a voz lê mal ("Aliás" virou "Elias"): troca por equivalentes comuns, mantendo a maiúscula inicial.
+    _raros = {"aliás": "além disso", "alias": "além disso", "outrossim": "além disso", "ademais": "além disso", "destarte": "assim", "porquanto": "pois"}
+    t = re.sub(r"\b(ali[aá]s|outrossim|destarte|ademais|porquanto)\b",
+               lambda m: (_raros[m.group(0).lower()].capitalize() if m.group(0)[0].isupper() else _raros[m.group(0).lower()]), t, flags=re.I)
     # Marcadores/placeholders e formatação que a voz leria em voz alta ("*número*", "[número]", "**negrito**"): somem.
     t = re.sub(r"[*_`#~<>\[\]{}|]+\s*n[úu]meros?\s*[*_`#~<>\[\]{}|]+", " ", t, flags=re.I)
     t = re.sub(r"[*_`#~<>\[\]{}|\\]+", " ", t)
@@ -491,6 +516,8 @@ def narrar_roteiro(roteiro: dict, voz: str, saida: Path):
         except (TypeError, ValueError, AttributeError):
             pass
     topicos |= {i for i, c in enumerate(cenas) if str(c.get("tipo") or "") == "pergunta"}
+    if len(cenas) > 1:
+        topicos.add(len(cenas) - 1)  # o convite final também ganha um respiro maior (não cai direto do último ponto)
     topicos.discard(0)
     for i, cena in enumerate(cenas):
         rate = RATE_CTA if i == len(cenas) - 1 else "+0%"
@@ -522,6 +549,9 @@ def narrar_roteiro(roteiro: dict, voz: str, saida: Path):
                 time.sleep(0.2 if not FAKE else 0)
                 seg_cena += cortar_pontas(AudioSegment.from_file(mp3, format="mp3")) + AudioSegment.silent(duration=pausa)
         seg_cena += AudioSegment.silent(duration=PAUSA_TOPICO if (i + 1) in topicos else PAUSA_ENTRE_CENAS)  # respiro maior antes de um novo tópico
+        falta = minimo_tela(cena) - len(seg_cena) / 1000
+        if falta > 0.05:   # slide com informação demais para a fala curta: segura a tela um pouco mais (silêncio)
+            seg_cena += AudioSegment.silent(duration=int(min(falta, MAX_EXTRA_LEITURA) * 1000))
         cena["duracao_seg"] = round(len(seg_cena) / 1000, 2)
         total += seg_cena
     final = saida / "narracao.mp3"

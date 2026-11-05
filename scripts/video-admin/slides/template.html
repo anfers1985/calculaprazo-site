@@ -307,7 +307,7 @@ const panel=ic=>`<div class="panel" data-a="pop:.25:.8"><svg class="si" data-f="
 const PAINEL={transferencia:()=>`<div class="panel" data-a="pop:.25:.8"><div class="mv">${U('ic-inicio','si h','data-a="left:.7:.6"')}<svg class="si ar"><use href="#x-arrow"/></svg>${U('ic-inicio','si h','data-a="right:1.0:.6"')}${U('x-ban','si ban','data-a="pop:1.7:.6"')}</div></div>`};
 const D_=i=>Math.max(2,B[i]-B[i-1]);
 // instante (s, relativo ao início da cena) em que o item k de n aparece: vem de c.quando (calculado pela fala) ou é espalhado pela cena
-const T=(c,i,k,n)=>{const q=c.quando;return q&&typeof q[k]==='number'?Math.max(.4,q[k]):Math.max(.9,D_(i)*(.2+.55*k/Math.max(1,n)));};
+const T=(c,i,k,n)=>{const q=c.quando;return q&&typeof q[k]==='number'?Math.max(.4,q[k]):Math.max(.9,D_(i)*(.15+.5*k/Math.max(1,n)));};
 const TT=(c,i,k,n)=>T(c,i,k,n).toFixed(2);
 const ttl=c=>c.titulo?`<div class="ttl" data-a="up:.1:.6">${md(c.titulo)}</div>`:'';
 const card=(c,side,d)=>{const cls=c.estilo==='aviso'?'warn':c.estilo==='ok'?'ok':'';

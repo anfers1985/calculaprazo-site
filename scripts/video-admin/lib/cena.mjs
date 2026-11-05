@@ -47,7 +47,7 @@ const normTxt = (t) => String(t || '').toLowerCase().normalize('NFD').replace(/[
 export function calcularQuando(narracao, rotulos, dur, { primeiroFixo = null } = {}) {
   const nar = normTxt(narracao), len = Math.max(1, nar.length);
   const fala = Math.max(1.5, dur - 0.5);          // a fala ocupa a cena menos a pausa final
-  const min = 0.7, max = Math.max(min + 0.5, dur - 0.9), gap = 0.55;
+  const min = 0.7, max = Math.max(min + 0.5, dur - 1.8), gap = 0.55; // o último item fica ~1,8 s completo na tela antes de a cena acabar
   let ult = -1;
   const pos = rotulos.map((r) => {
     const palavras = normTxt(r).split(' ').filter((w) => w.length >= 5);

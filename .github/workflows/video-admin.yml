@@ -57,15 +57,33 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Instalar dependências do sistema (ffmpeg)
+      # O espelho de pacotes do Ubuntu às vezes trava (um download parado por muitos minutos). Falhar rápido e tentar de novo, em vez de esperar.
+      - name: Configurar apt (falhar rápido e tentar de novo)
+        run: |
+          printf 'Acquire::Retries "5";\nAcquire::http::Timeout "25";\nAcquire::https::Timeout "25";\n' | sudo tee /etc/apt/apt.conf.d/99rapido
+
+      # ffmpeg como binário estático (um download só), em vez de "apt install ffmpeg", que baixa ~80 pacotes e foi o que travou por 17 min.
+      - name: Instalar ffmpeg
+        id: ffmpeg_estatico
+        uses: FedericoCarboni/setup-ffmpeg@v3
+        continue-on-error: true
+        timeout-minutes: 5
+        with:
+          ffmpeg-version: release
+
+      # Reserva: se o download do binário estático falhar, cai no apt (com tempo limite, para não ficar preso).
+      - name: Instalar ffmpeg (reserva via apt)
+        if: steps.ffmpeg_estatico.outcome != 'success'
+        timeout-minutes: 12
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y ffmpeg
+          sudo apt-get install -y --no-install-recommends ffmpeg
 
       - name: Instalar dependências Node
         run: npm ci
 
       - name: Instalar Chromium do Playwright
+        timeout-minutes: 15
         run: npx playwright install --with-deps chromium
 
       - name: Instalar dependências Python (narração)
