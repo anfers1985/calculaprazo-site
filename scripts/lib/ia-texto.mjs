@@ -175,8 +175,10 @@ async function chamarChatCompletionComRetry(
       mensagemErro = `resposta vazia (finish_reason=${finish})`;
     }
 
+    // Modelo de raciocínio que gastou todo o limite pensando (finish_reason=length) vai repetir o mesmo resultado: não adianta tentar de novo.
+    const vazioPorTamanho = /finish_reason=length/.test(mensagemErro);
     const valeRetry =
-      !configuracaoInvalida && REGEX_ERRO_TEMPORARIO.test(`${r.ok ? '' : r.status} ${mensagemErro}`);
+      !configuracaoInvalida && !vazioPorTamanho && REGEX_ERRO_TEMPORARIO.test(`${r.ok ? '' : r.status} ${mensagemErro}`);
 
     if (configuracaoInvalida) {
       throw new Error(mensagemErro || `${provedor}: chave inválida, modelo pago ou créditos insuficientes (HTTP ${r.status})`);
@@ -221,7 +223,14 @@ const chamarNvidiaComRetry = ({ apiKey, modelo, systemPrompt, userPrompt }) =>
  * ordem até um funcionar. `logPrefix` é só cosmético (aparece no log,
  * ex: "roteiro", "análise semanal").
  */
-export async function gerarTextoComFallback({ systemPrompt, userPrompt, logPrefix = 'texto' }) {
+// Disjuntor: provedor de reserva que já falhou "de forma estrutural" neste processo (resposta vazia por tamanho, timeout) não é tentado de novo.
+const provedoresInviaveis = new Set();
+
+export async function gerarTextoComFallback({ systemPrompt, userPrompt, logPrefix = 'texto', rapido = false }) {
+  // Orçamento de tempo por chamada: IA_ORCAMENTO_MIN (0 = sem limite). Em modo "rapido" (etapas opcionais): só o Gemini, 1 tentativa, no máximo 90 s.
+  const limiteMs = rapido ? 90000 : (Number(process.env.IA_ORCAMENTO_MIN) || 0) * 60000;
+  const inicioChamada = Date.now();
+  const estourou = () => limiteMs > 0 && Date.now() - inicioChamada > limiteMs;
   const modeloGemini = process.env.AI_MODEL || 'gemini-3.5-flash-lite';
   // Modelo Gemini alternativo: OPCIONAL. Na chave gratuita só o Flash-Lite tem cota folgada,
   // então por padrão não há alternativo (a etapa é ignorada se o secret não existir).
@@ -229,7 +238,7 @@ export async function gerarTextoComFallback({ systemPrompt, userPrompt, logPrefi
   const modeloOpenRouter = process.env.OPENROUTER_MODEL || 'nvidia/nemotron-3.5-lightning:free';
   const modeloNvidia = process.env.NVIDIA_MODEL || 'nvidia/nemotron-3.5-lightning-30b-a3b';
 
-  const gemini = (apiKey, modelo) => chamarGeminiComRetry({ apiKey, modelo, systemPrompt, userPrompt });
+  const gemini = (apiKey, modelo) => chamarGeminiComRetry({ apiKey, modelo, systemPrompt, userPrompt }, rapido ? 1 : 3);
 
   const etapas = [
     {
@@ -270,10 +279,11 @@ export async function gerarTextoComFallback({ systemPrompt, userPrompt, logPrefi
   const erros = [];
   const nomesVistos = new Set();
   // Picos de 503 costumam passar em 1-2 minutos: se TODOS falharem, espera e repete a cadeia.
-  const rodadas = Number(process.env.IA_RODADAS) || 2;
+  const rodadas = rapido ? 1 : Number(process.env.IA_RODADAS) || 2;
   const esperaEntreRodadasMs = 60000;
 
   for (let rodada = 1; rodada <= rodadas; rodada++) {
+    if (rodada > 1 && estourou()) break;
     if (rodada > 1) {
       console.warn(`Todos os provedores falharam. Aguardando ${esperaEntreRodadasMs / 1000}s e tentando de novo (rodada ${rodada}/${rodadas})...`);
       await aguardar(esperaEntreRodadasMs);
@@ -287,6 +297,9 @@ export async function gerarTextoComFallback({ systemPrompt, userPrompt, logPrefi
         if (rodada === 1 && !etapa.silenciosa) console.warn(`${etapa.nome}: chave não configurada, pulando.`);
         continue;
       }
+      if (rapido && !/^Gemini/.test(etapa.nome)) continue;                       // etapa opcional: não vale esperar provedores lentos
+      if (provedoresInviaveis.has(etapa.nome)) { if (rodada === 1) console.warn(`${etapa.nome}: pulado (já falhou de forma estrutural nesta execução).`); continue; }
+      if (estourou()) { erros.push(`orçamento de tempo esgotado (${Math.round(limiteMs / 60000 * 10) / 10} min)`); break; }
 
       console.log(`Gerando ${logPrefix} com: ${etapa.nome}...`);
 
@@ -297,6 +310,7 @@ export async function gerarTextoComFallback({ systemPrompt, userPrompt, logPrefi
       } catch (erro) {
         console.warn(`${etapa.nome} falhou: ${erro.message}`);
         erros.push(`[rodada ${rodada}] ${etapa.nome}: ${erro.message}`);
+        if (!/^Gemini/.test(etapa.nome) && /finish_reason=length|Timeout/i.test(erro.message)) provedoresInviaveis.add(etapa.nome);
       }
     }
   }

@@ -26,9 +26,10 @@ permissions:
 
 env:
   # ── Tempos de espera GENEROSOS (o Google pode levar minutos sob demanda alta; abortar cedo só gasta a cota) ──
-  IA_TIMEOUT_MS: '240000'      # texto (Gemini/OpenRouter/NVIDIA): 4 min por chamada (antes: 60–90 s)
+  IA_TIMEOUT_MS: '150000'      # texto (Gemini/OpenRouter/NVIDIA): 2,5 min por chamada
   IA_MAX_TOKENS: '16384'       # roteiros longos não podem ser cortados no meio do JSON
-  IA_RODADAS: '3'              # se todos os provedores de texto falharem, espera 1 min e repete a cadeia (até 3 rodadas)
+  IA_ORCAMENTO_MIN: '6'         # teto de tempo por chamada de texto (todos os provedores somados); passou disso, o job falha e você clica em "Tentar de novo"
+  IA_RODADAS: '2'              # se todos os provedores de texto falharem, espera 1 min e repete a cadeia (até 3 rodadas)
   IMG_TIMEOUT_MS: '480000'     # imagem: 8 min por tentativa
   IMG_TENTATIVAS: '5'          # tentativas por provedor, com espera crescente entre elas
   IMG_INTERVALO_MS: '8000'     # pausa entre imagens (plano gratuito ≈ 10 pedidos/min)
@@ -92,6 +93,15 @@ jobs:
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
           IDS: ${{ inputs.job_id }}${{ inputs.job_id_2 != '' && format(',{0}', inputs.job_id_2) || '' }}
         run: node scripts/video-admin/processar.mjs "$IDS"
+
+      # Cancelou a execução (ou ela caiu)? Os jobs não ficam presos "em andamento" ocupando as vagas: viram "erro" com "Tentar de novo".
+      - name: Liberar jobs interrompidos
+        if: always()
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          IDS: ${{ inputs.job_id }}${{ inputs.job_id_2 != '' && format(',{0}', inputs.job_id_2) || '' }}
+        run: node scripts/video-admin/liberar-travados.mjs "$IDS"
 
       - name: Limpar arquivos antigos do Storage (admin-videos/)
         if: always()

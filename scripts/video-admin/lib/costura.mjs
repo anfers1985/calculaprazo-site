@@ -32,7 +32,7 @@ REGRAS:
 - Tamanho: cada texto com quase o mesmo número de palavras do original (variação de no máximo 25%); o total não pode passar do original em mais de 10%.
 - Terceira pessoa (nunca "você"). Sem dígitos, "R$", "%" ou símbolos: tudo por extenso. Sem listas, sem aspas, sem emojis.
 - A última cena da lista fecha o raciocínio e conduz ao convite final, sem repetir o convite (o convite é acrescentado depois).`;
-    const resp = await chamarIA({ systemPrompt, userPrompt, logPrefix: 'roteiro-costura' });
+    const resp = await chamarIA({ systemPrompt, userPrompt, logPrefix: 'roteiro-costura', rapido: true });
     const novas = extrairJson(resp.text)?.narracoes;
     if (!Array.isArray(novas) || novas.length !== n || novas.some(x => typeof x !== 'string' || x.trim().length < 8)) throw new Error(`resposta com ${Array.isArray(novas) ? novas.length : 'formato inválido de'} textos; esperava ${n}`);
     const copia = JSON.parse(JSON.stringify(r));

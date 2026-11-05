@@ -101,8 +101,21 @@ function lerPedido(b: any, extra: Partial<Pedido> = {}): Pedido | Response {
   return { slug, tipo, dur, tom, voz, publicacao, agendarEm, estilo };
 }
 
+const STATUS_ATIVOS = ['na_fila', 'roteiro_ok', 'narracao_ok', 'render_ok'];
+const MINUTOS_TRAVADO = 60;   // job "em andamento" sem nenhuma atualização há mais que isso = execução cancelada/derrubada
+
+// Quando você cancela a execução no GitHub (ou ela cai), o banco não fica sabendo e o job fica "em andamento" pra sempre,
+// ocupando uma das 3 vagas. Aqui eles viram "erro" (com "Tentar de novo" liberado) assim que passam do prazo.
+async function expirarTravados() {
+  const limite = new Date(Date.now() - MINUTOS_TRAVADO * 60 * 1000).toISOString();
+  await supabase.from('video_admin_jobs')
+    .update({ status: 'erro', erro_etapa: 'interrompido', erro_mensagem: `Sem andamento há mais de ${MINUTOS_TRAVADO} minutos (execução cancelada ou interrompida no GitHub). Use "Tentar de novo".` })
+    .in('status', STATUS_ATIVOS).lt('atualizado_em', limite);
+}
+
 async function conferirLimites(novos: number): Promise<Response | null> {
-  const { count: ativos } = await supabase.from('video_admin_jobs').select('id', { count: 'exact', head: true }).in('status', ['na_fila', 'roteiro_ok', 'narracao_ok', 'render_ok']);
+  await expirarTravados();
+  const { count: ativos } = await supabase.from('video_admin_jobs').select('id', { count: 'exact', head: true }).in('status', STATUS_ATIVOS);
   if ((ativos ?? 0) + novos > MAX_ATIVOS) return json({ error: `Já existem ${ativos} vídeos em andamento (limite ${MAX_ATIVOS}). Aguarde terminar.` }, 429);
   const desde = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
   const { count: hoje } = await supabase.from('video_admin_jobs').select('id', { count: 'exact', head: true }).gte('criado_em', desde);
@@ -177,6 +190,7 @@ Deno.serve(async (req) => {
       }
 
       case 'listar': {
+        await expirarTravados();   // a lista já mostra como "erro" o que ficou preso
         const limite = Math.min(Math.max(Number(body.limite) || 20, 1), 50);
         const { data: jobs, error } = await supabase.from('video_admin_jobs')
           .select('id, post_slug, post_url, post_titulo, tipo, duracao_alvo_seg, duracao_real_seg, tom, voz, publicacao, agendar_em, estilo, par_id, status, etapa_atual, erro_etapa, erro_mensagem, youtube_url, github_run_url, video_path, thumbnail_path, criado_em, publicado_em, arquivos_apagados_em, roteiro')
