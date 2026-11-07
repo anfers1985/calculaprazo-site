@@ -42,6 +42,9 @@ from pydub import AudioSegment
 from pydub.generators import Sine
 from pydub.silence import detect_leading_silence
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from qa_voz import QAVoz  # noqa: E402  (QA da voz: transcreve cada cena e compara com o texto esperado)
+
 VOZ_PADRAO = "pt-BR-FranciscaNeural"
 VOZ_HD = {"thalita-hd": "pt-BR-Thalita:DragonHDLatestNeural"}
 AZURE_KEY = (os.environ.get("AZURE_SPEECH_KEY") or "").strip()
@@ -81,6 +84,27 @@ def minimo_tela(c: dict) -> float:
         base = {"decisao": 8.0, "comparacao": 6.5, "numero": 5.5, "afirmacao": 4.5, "destaque": 4.5, "citacao": 4.5, "pergunta": 3.8}.get(t, 0.0)
     return base * TEMPO_LEITURA
 
+TTS_CORTE_DBFS = float(os.environ.get("TTS_CORTE_DBFS") or -50)      # silêncio nas pontas (era -42: raspava finais suaves de palavra)
+TTS_MARGEM_FIM_MS = int(os.environ.get("TTS_MARGEM_FIM_MS") or 120)  # folga que sobra depois da última sílaba
+TTS_FONEMAS = (os.environ.get("TTS_FONEMAS") or "0") == "1"          # SSML <phoneme> na Francisca: DESLIGADO por padrão (IPA não validado de ouvido); ligue com TTS_FONEMAS=1
+# Palavras que a Francisca lê errado ("jornada" saía "rornada"): IPA pt-BR. Só vozes Azure sem Dragon (HD não aceita phoneme).
+FONEMAS_AZURE = {
+    "jornadas": "ʒoɾˈnadɐs", "jornada": "ʒoɾˈnadɐ",
+    "intrajornada": "ĩtɾɐʒoɾˈnadɐ", "interjornada": "ĩteɾʒoɾˈnadɐ",
+}
+def _carregar_pronuncias_aprendidas():
+    """pronuncias.json: respelling por palavra, valendo para QUALQUER voz. É alimentado pelo relatório do QA (qa-voz.json):
+    as trocas que se repetem lá são as candidatas; entra aqui o que você aprovar."""
+    caminho = Path(__file__).resolve().parent / "pronuncias.json"
+    try:
+        import json
+        dados = json.loads(caminho.read_text(encoding="utf-8"))
+        return {k: v for k, v in dados.items() if not str(k).startswith("_") and isinstance(v, str) and v.strip()}
+    except (OSError, ValueError):
+        return {}
+
+
+PRONUNCIAS_APRENDIDAS = _carregar_pronuncias_aprendidas()
 RATE_TOPICO = os.environ.get("TTS_RATE_TOPICO") or "-6%"  # 1ª frase do tópico: um pouco mais devagar, soa como abertura
 
 _SPLIT = re.compile(r"(?<=[.!?])\s+")
@@ -92,7 +116,7 @@ PRONUNCIAS = {
     "STF": "Supremo Tribunal Federal", "STJ": "Superior Tribunal de Justiça", "OJ": "Orientação Jurisprudencial",
     "SDI": "ésse dê í", "NR": "norma regulamentadora", "EPI": "é pê í", "EPIs": "é pê ís", "CTPS": "cê tê pê ésse", "CPC": "cê pê cê",
     "OIT": "ó í tê", "DSR": "dê ésse érre", "PLR": "pê éle érre", "IRR": "í érre érre", "CNJ": "cê ene jota", "PJe": "pê jota é",
-    "eSocial": "é-social", "CAGED": "Caged", "CIPA": "Cipa", "PPP": "pê pê pê", "LTCAT": "éle tê cê á tê",
+    "eSocial": "é-social", "LC": "Lei Complementar", "DAE": "dê á é", "CAGED": "Caged", "CIPA": "Cipa", "PPP": "pê pê pê", "LTCAT": "éle tê cê á tê",
 }
 # Abreviações que a voz lê errado ("art" soletrado, "§" mudo...). Aplicadas ANTES de converter números.
 MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]
@@ -117,8 +141,9 @@ ABREVIACOES = [
 ]
 
 
-def normalizar_texto_fala(texto: str) -> str:
-    """Rede de segurança: números/R$/% viram extenso e siglas ganham pronúncia clara."""
+def normalizar_texto_fala(texto: str, siglas: bool = True) -> str:
+    """Rede de segurança: números/R$/% viram extenso e siglas ganham pronúncia clara. siglas=False devolve só o texto falado
+    (sem respelling), que é o que o QA compara com a transcrição do áudio."""
     try:
         from num2words import num2words
     except ImportError:
@@ -134,11 +159,15 @@ def normalizar_texto_fala(texto: str) -> str:
     # "Tema número 171", "Tema nº 171", "artigo n.º 189": a voz lê "número"; o jeito natural é "Tema cento e setenta e um".
     t = re.sub(r"\b(tema|s[úu]mula|artigos?|art\.?|lei|oj|orienta[çc][ãa]o jurisprudencial|precedente|inciso|par[áa]grafo)\s+(?:n[úu]meros?|n\.?\s*[º°o]\.?)\s+", r"\1 ", t, flags=re.I)
     t = re.sub(r"\bn(?:[úu]mero|\.?\s*[º°])\s*(?=\d)", "", t, flags=re.I)
+    # "150/2015" (lei/ano): "cento e cinquenta de dois mil e quinze" (a barra viraria espaço e a voz leria dois números soltos)
+    t = re.sub(r"(?<![\d/])(\d{1,4})/(\d{4})(?![\d/])", r"\1 de \2", t)
     for padrao, troca in ABREVIACOES:
         t = re.sub(padrao, troca, t, flags=re.I)
     t = re.sub(r"R\$\s*(\d+(?:\.\d{3})*),(\d{2})", lambda m: f"{m.group(1)} reais e {m.group(2)} centavos", t)
     t = re.sub(r"R\$\s*(\d+(?:\.\d{3})*)", lambda m: f"{m.group(1)} reais", t)
+    t = re.sub(r"(\d+),(\d+)\s*%", r"\1 vírgula \2 por cento", t)  # 3,2% → "3 vírgula 2 por cento" (antes saía "três,dois")
     t = re.sub(r"(\d+)\s*%", r"\1 por cento", t)
+    t = re.sub(r"(?<![\d.,])(\d+),(\d+)(?!\d)", r"\1 vírgula \2", t)  # decimais soltos: 0,8 → "zero vírgula oito"
     t = re.sub(r"(\d+)\s*[ºª°]", r"\1", t)
     if num2words:
         def _n(m):
@@ -147,8 +176,11 @@ def normalizar_texto_fala(texto: str) -> str:
             except Exception:
                 return m.group(0)
         t = re.sub(r"\d+(?:\.\d{3})*", _n, t)
-    for sigla, falado in PRONUNCIAS.items():
-        t = re.sub(rf"\b{sigla}\b", falado, t)
+    if siglas:
+        for sigla, falado in PRONUNCIAS.items():
+            t = re.sub(rf"\b{sigla}\b", falado, t)
+        for palavra, falado in PRONUNCIAS_APRENDIDAS.items():
+            t = re.sub(rf"\b{re.escape(palavra)}\b", falado, t, flags=re.I)
     return re.sub(r"\s+", " ", t).strip()
 
 
@@ -171,6 +203,9 @@ def sintetizar_fake(texto: str, destino: Path):
 def sintetizar_azure(texto: str, rate: str, destino: Path, voz: str = VOZ_PADRAO):
     url = f"https://{AZURE_REGION}.tts.speech.microsoft.com/cognitiveservices/v1"
     corpo = xml_escape(texto)
+    if TTS_FONEMAS and "Dragon" not in voz:
+        for palavra, ipa in FONEMAS_AZURE.items():
+            corpo = re.sub(rf"\b{palavra}\b", lambda m, ipa=ipa: f"<phoneme alphabet='ipa' ph='{ipa}'>{m.group(0)}</phoneme>", corpo, flags=re.I)
     if "Dragon" not in voz:  # vozes HD não aceitam ajuste de velocidade
         corpo = f"<prosody rate='{rate}'>{corpo}</prosody>"
     ssml = ("<speak version='1.0' xml:lang='pt-BR' xmlns='http://www.w3.org/2001/10/synthesis'>"
@@ -486,9 +521,16 @@ class Vozes:
         return self._padrao(texto, rate, destino)
 
 
-def cortar_pontas(seg: AudioSegment, limiar=-42) -> AudioSegment:
-    ini = detect_leading_silence(seg, silence_threshold=limiar)
-    fim = detect_leading_silence(seg.reverse(), silence_threshold=limiar)
+def _rate_mais(rate: str, delta: int) -> str:
+    """"+0%" com delta -4 → "-4%" (variação de velocidade das tentativas do QA)."""
+    m = re.fullmatch(r"([+-]?\d+)%", str(rate).strip())
+    return f"{int(m.group(1)) + int(delta):+d}%" if m else rate
+
+
+def cortar_pontas(seg: AudioSegment, limiar=None) -> AudioSegment:
+    limiar = TTS_CORTE_DBFS if limiar is None else limiar
+    ini = max(0, detect_leading_silence(seg, silence_threshold=limiar) - 40)
+    fim = max(0, detect_leading_silence(seg.reverse(), silence_threshold=limiar) - TTS_MARGEM_FIM_MS)
     c = seg[ini: len(seg) - fim]
     return c if len(c) > 50 else seg
 
@@ -499,7 +541,7 @@ class _VozesReserva:
     rebaixada = True
 
 
-def narrar_roteiro(roteiro: dict, voz: str, saida: Path):
+def narrar_roteiro(roteiro: dict, voz: str, saida: Path, qa=None):
     """Gera o áudio. Preenche cena['duracao_seg'] e devolve (mp3_final, duracao_total_seg)."""
     saida.mkdir(parents=True, exist_ok=True)
     tmp = saida / "_trechos"
@@ -521,33 +563,50 @@ def narrar_roteiro(roteiro: dict, voz: str, saida: Path):
     topicos.discard(0)
     for i, cena in enumerate(cenas):
         rate = RATE_CTA if i == len(cenas) - 1 else "+0%"
-        seg_cena = AudioSegment.empty()
-        if vozes.cena_inteira:
-            mp3 = tmp / f"c{i:03d}.mp3"
-            texto_cena = normalizar_texto_fala(cena["narracao"])
-            # Cache por cena (vozes lentas/limitadas): numa nova execução reaproveita o que já foi gerado com a MESMA voz e texto.
-            marca = tmp / f"c{i:03d}.txt"
-            chave = f"{vozes.voz}|{os.environ.get('GEMINI_TTS_MODEL', '')}|{os.environ.get('GEMINI_TTS_VOICE', '')}|{os.environ.get('GEMINI_TTS_STYLE', '')}|{texto_cena}"
-            guardavel = (not FAKE) and vozes.voz in ("gemini", "clonada")
-            if guardavel and mp3.exists() and mp3.stat().st_size > 1000 and marca.exists() and marca.read_text(encoding="utf-8") == chave:
-                print(f"  cena {i + 1}/{len(cenas)}: reaproveitada de uma execução anterior")
-            else:
-                if guardavel:
-                    print(f"  cena {i + 1}/{len(cenas)}: gerando...")
+
+        def gerar_fala(delta=0, refazer=False, i=i, cena=cena, rate=rate):
+            """Sintetiza a fala da cena (sem a pausa final). delta = variação de velocidade (%) das novas tentativas do QA; refazer ignora o cache."""
+            seg_cena = AudioSegment.empty()
+            if vozes.cena_inteira:
+                mp3 = tmp / f"c{i:03d}.mp3"
+                texto_cena = normalizar_texto_fala(cena["narracao"])
+                # Cache por cena (vozes lentas/limitadas): numa nova execução reaproveita o que já foi gerado com a MESMA voz e texto.
+                marca = tmp / f"c{i:03d}.txt"
+                chave = f"{vozes.voz}|{os.environ.get('GEMINI_TTS_MODEL', '')}|{os.environ.get('GEMINI_TTS_VOICE', '')}|{os.environ.get('GEMINI_TTS_STYLE', '')}|{texto_cena}"
+                guardavel = (not FAKE) and vozes.voz in ("gemini", "clonada") and not refazer
+                if guardavel and mp3.exists() and mp3.stat().st_size > 1000 and marca.exists() and marca.read_text(encoding="utf-8") == chave:
+                    print(f"  cena {i + 1}/{len(cenas)}: reaproveitada de uma execução anterior")
+                else:
+                    if guardavel:
+                        print(f"  cena {i + 1}/{len(cenas)}: gerando...")
+                    vozes.sintetizar(texto_cena, _rate_mais(rate, delta), mp3)   # ReservaFrancisca sobe para o chamador
+                    if guardavel and mp3.exists():
+                        marca.write_text(chave, encoding="utf-8")
+                seg_cena += cortar_pontas(AudioSegment.from_file(mp3, format="mp3"))
+            if not vozes.cena_inteira or len(seg_cena) == 0:  # inclui o caso em que a voz melhor foi rebaixada no meio
+                for j, (frase, pausa) in enumerate(dividir_em_frases(cena["narracao"])):
+                    mp3 = tmp / f"c{i:03d}_{j:02d}.mp3"
+                    base = RATE_TOPICO if (j == 0 and i in topicos and rate == "+0%") else rate
+                    vozes.sintetizar(frase, _rate_mais(base, delta), mp3)
+                    time.sleep(0.2 if not FAKE else 0)
+                    seg_cena += cortar_pontas(AudioSegment.from_file(mp3, format="mp3")) + AudioSegment.silent(duration=pausa)
+            return seg_cena
+
+        try:
+            seg_cena = gerar_fala()
+        except ReservaFrancisca as e:
+            print(f"  Gemini TTS indisponível ({str(e)[:140]}). GEMINI_TTS_RESERVA=francisca: refazendo a narração INTEIRA com a Francisca.")
+            return narrar_roteiro(roteiro, "francisca", saida, qa)[:2] + (_VozesReserva(),)
+        if qa:
+            def _regerar(delta, gerar=gerar_fala):
                 try:
-                    vozes.sintetizar(texto_cena, rate, mp3)
-                except ReservaFrancisca as e:
-                    print(f"  Gemini TTS indisponível ({str(e)[:140]}). GEMINI_TTS_RESERVA=francisca: refazendo a narração INTEIRA com a Francisca.")
-                    return narrar_roteiro(roteiro, "francisca", saida)[:2] + (_VozesReserva(),)
-                if guardavel and mp3.exists():
-                    marca.write_text(chave, encoding="utf-8")
-            seg_cena += cortar_pontas(AudioSegment.from_file(mp3, format="mp3"))
-        if not vozes.cena_inteira or len(seg_cena) == 0:  # inclui o caso em que a voz melhor foi rebaixada no meio
-            for j, (frase, pausa) in enumerate(dividir_em_frases(cena["narracao"])):
-                mp3 = tmp / f"c{i:03d}_{j:02d}.mp3"
-                vozes.sintetizar(frase, RATE_TOPICO if (j == 0 and i in topicos and rate == "+0%") else rate, mp3)
-                time.sleep(0.2 if not FAKE else 0)
-                seg_cena += cortar_pontas(AudioSegment.from_file(mp3, format="mp3")) + AudioSegment.silent(duration=pausa)
+                    return gerar(delta, True)
+                except ReservaFrancisca:
+                    return None
+            seg_cena = qa.garantir(i, normalizar_texto_fala(cena["narracao"], siglas=False), seg_cena, _regerar)
+        _chars = len(normalizar_texto_fala(cena["narracao"])); _fala = max(len(seg_cena) / 1000, 0.1)
+        if _chars >= 40 and _chars / _fala > float(os.environ.get("TTS_MAX_CHARS_SEG") or 22):
+            print(f"  AVISO cena {i + 1}: {_chars} caracteres em {_fala:.1f}s ({_chars / _fala:.0f} car/s): possível áudio truncado ou palavras engolidas; ouça este trecho.")
         seg_cena += AudioSegment.silent(duration=PAUSA_TOPICO if (i + 1) in topicos else PAUSA_ENTRE_CENAS)  # respiro maior antes de um novo tópico
         falta = minimo_tela(cena) - len(seg_cena) / 1000
         if falta > 0.05:   # slide com informação demais para a fala curta: segura a tela um pouco mais (silêncio)
@@ -559,13 +618,41 @@ def narrar_roteiro(roteiro: dict, voz: str, saida: Path):
     return final, round(len(total) / 1000, 2), vozes
 
 
+def _relatar_qa(sb, job_id: str, qa, roteiro: dict):
+    """Guarda o relatório do QA da voz (por cena) e soma as trocas observadas ao dicionário de candidatas (pasta fora do job: não é apagada na limpeza)."""
+    import json
+    from datetime import datetime, timezone
+    resumo = qa.resumo()
+    roteiro["qa_voz"] = resumo
+    print(f"QA da voz: {resumo['cenas_avaliadas']} cena(s) avaliada(s), {resumo['cenas_refeitas']} refeita(s), {resumo['cenas_reprovadas_final']} ainda divergente(s).")
+    for t in resumo["trocas_top"][:8]:
+        print(f"  voz trocou \"{t['esperado']}\" por \"{t['ouvido']}\" ({t['vezes']}x)")
+    try:
+        corpo = json.dumps({"job": job_id, "resumo": resumo, "cenas": qa.relatorio}, ensure_ascii=False, indent=1).encode("utf-8")
+        sb.storage.from_("pipeline").upload(f"admin-videos/{job_id}/qa-voz.json", corpo, {"upsert": "true", "content-type": "application/json"})
+        caminho = "admin-videos/_pronuncias/observadas.json"
+        try:
+            obs = json.loads(sb.storage.from_("pipeline").download(caminho).decode("utf-8"))
+        except Exception:  # noqa: BLE001  (primeira vez ou arquivo ilegível)
+            obs = {}
+        agora = datetime.now(timezone.utc).isoformat(timespec="seconds")
+        for esp, ouv in qa.observadas:
+            e = obs.setdefault(f"{esp} -> {ouv}", {"vezes": 0})
+            e["vezes"] += 1
+            e["ultima"] = agora
+        sb.storage.from_("pipeline").upload(caminho, json.dumps(obs, ensure_ascii=False, indent=1).encode("utf-8"), {"upsert": "true", "content-type": "application/json"})
+    except Exception as e:  # noqa: BLE001  (o relatório nunca derruba o job)
+        print(f"  Aviso: não consegui guardar o relatório do QA ({str(e)[:140]}).")
+
+
 def main(job_id: str):
     from supabase import create_client
     sb = create_client(os.environ["SUPABASE_URL"], os.environ["SUPABASE_SERVICE_KEY"])
     job = sb.table("video_admin_jobs").select("*").eq("id", job_id).single().execute().data
     sb.table("video_admin_jobs").update({"etapa_atual": "narracao"}).eq("id", job_id).execute()
     roteiro = job["roteiro"]
-    final, dur, vozes = narrar_roteiro(roteiro, job.get("voz") or "francisca", Path("output/audio"))
+    qa = None if FAKE else QAVoz.criar(AZURE_KEY, AZURE_REGION, {k.lower() for k in PRONUNCIAS})
+    final, dur, vozes = narrar_roteiro(roteiro, job.get("voz") or "francisca", Path("output/audio"), qa)
     alvo = job["duracao_alvo_seg"]
     desvio = round((dur - alvo) / alvo * 100, 1)
     roteiro["duracao_real_seg"] = dur
@@ -574,6 +661,8 @@ def main(job_id: str):
     print(f"Duração real {dur}s (alvo {alvo}s, desvio {desvio:+.1f}%)")
     if abs(desvio) > 25:
         print("AVISO: a duração real ficou a mais de 25% do alvo.")
+    if qa:
+        _relatar_qa(sb, job_id, qa, roteiro)
     caminho = f"admin-videos/{job_id}/narracao.mp3"
     sb.storage.from_("pipeline").upload(caminho, final.read_bytes(), {"upsert": "true", "content-type": "audio/mpeg"})
     sb.table("video_admin_jobs").update({"narracao_path": caminho, "roteiro": roteiro, "duracao_real_seg": dur,
@@ -592,7 +681,11 @@ def main_local(argv):
     a = ap.parse_args(argv)
     caminho = Path(a.local)
     roteiro = json.loads(caminho.read_text(encoding="utf-8"))
-    final, dur, vozes = narrar_roteiro(roteiro, a.voz, Path(a.saida))
+    qa = None if FAKE else QAVoz.criar(AZURE_KEY, AZURE_REGION, {k.lower() for k in PRONUNCIAS})
+    final, dur, vozes = narrar_roteiro(roteiro, a.voz, Path(a.saida), qa)
+    if qa:
+        roteiro["qa_voz"] = qa.resumo()
+        print(f"QA da voz: {roteiro['qa_voz']}")
     roteiro["duracao_real_seg"] = dur
     roteiro["voz_usada"] = "francisca (reserva)" if vozes.rebaixada else vozes.voz
     caminho.write_text(json.dumps(roteiro, ensure_ascii=False, indent=2), encoding="utf-8")

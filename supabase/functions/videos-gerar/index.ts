@@ -36,6 +36,15 @@ const WORKFLOW = 'video-admin.yml';
 const MAX_ATIVOS = 3;   // jobs simultâneos em andamento
 const MAX_POR_DIA = 15; // proteção de minutos do GitHub Actions e cota do YouTube
 const SIGNED_URL_EXPIRA_EM = 60 * 60 * 6;
+const RETENCAO_DIAS = 5; // mesmo valor de scripts/video-admin/limpar.mjs e da função videos-admin
+
+function montarDescricaoCompleta(roteiro: any, postUrl: string | null): string {
+  const partes = [String(roteiro?.descricao || '').trim()];
+  if (postUrl) partes.push(`Saiba mais: ${postUrl}`);
+  const tags: string[] = roteiro?.hashtags || [];
+  if (tags.length) partes.push(tags.join(' '));
+  return partes.filter(Boolean).join('\n\n');
+}
 
 const LIMITES: Record<string, [number, number]> = { short: [15, 180], longo: [60, 900] };
 const TONS = ['neutro', 'empresa', 'empregado'];
@@ -201,6 +210,9 @@ Deno.serve(async (req) => {
           return {
             ...resto,
             titulo_youtube: roteiro?.titulo_seo || null,
+            qa_voz: roteiro?.qa_voz || null,
+            descricao_completa: montarDescricaoCompleta(roteiro, (resto as any).post_url || null),
+            expira_em: (resto as any).publicado_em && !(resto as any).arquivos_apagados_em ? new Date(new Date((resto as any).publicado_em).getTime() + RETENCAO_DIAS * 86400000).toISOString() : null,
             voz_usada: roteiro?.voz_usada || null,
             video_url: await signedUrl(video_path),
             thumbnail_url: await signedUrl(thumbnail_path),

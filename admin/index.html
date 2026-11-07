@@ -593,7 +593,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
     <!-- VÍDEOS P/ REDES -->
     <div class="page" id="page-videos">
       <div class="page-header">
-        <div><div class="page-title">🎬 Vídeos p/ Redes</div><div class="page-sub">Vídeo, capa, título e descrição dos Shorts publicados no YouTube — baixe aqui pra postar manualmente no X, Instagram, Facebook, LinkedIn e TikTok</div></div>
+        <div><div class="page-title">🎬 Vídeos p/ Redes</div><div class="page-sub">Vídeo, capa, título e descrição dos vídeos (longos e Shorts) publicados no YouTube, disponíveis por 5 dias — baixe aqui pra postar manualmente no X, Instagram, Facebook, LinkedIn e TikTok</div></div>
       </div>
       <div class="vg-card" id="vg-card">
         <div class="vg-head">
@@ -3163,8 +3163,9 @@ async function loadVideos() {
       const corDias = dias <= 1 ? '#DC2626' : (dias <= 2 ? '#B45309' : 'var(--txt-s)');
       return `
       <div class="post-item" style="align-items:flex-start;">
-        ${v.thumbnail_url ? `<img src="${v.thumbnail_url}" style="width:96px;height:170px;object-fit:cover;border-radius:8px;flex-shrink:0;" alt="Capa">` : ''}
+        ${v.thumbnail_url ? `<img src="${v.thumbnail_url}" style="${v.formato === 'longo' ? 'width:170px;height:96px' : 'width:96px;height:170px'};object-fit:cover;border-radius:8px;flex-shrink:0;" alt="Capa">` : ''}
         <div style="flex:1;min-width:0;">
+          <div style="font-size:.7rem;color:var(--txt-s);font-weight:600;margin-bottom:2px;">${v.formato === 'longo' ? 'Vídeo longo' : (v.estilo === 'ilustrado' ? 'Short ilustrado' : 'Short')}</div>
           <div class="post-title" style="white-space:normal;">${v.titulo}</div>
           <div style="font-size:.76rem;color:${corDias};font-weight:600;margin:2px 0 8px;">
             ${dias > 0 ? `⏳ expira em ${dias} dia(s)` : '⚠️ expira hoje'}
@@ -3825,17 +3826,20 @@ async function vgFila(silencioso){
     VG.temAtivo=jobs.some(j=>j.status!=='publicado'&&j.status!=='erro');
     if(!jobs.length){box.innerHTML='<div class="vg-vazio">Nenhum vídeo gerado por aqui ainda.</div>';return;}
     window._vgJobs=jobs;
-    box.innerHTML=jobs.map(j=>{
+    box.innerHTML=jobs.map((j,ix)=>{
       const st=vgStatus(j),dur=j.duracao_real_seg?vgFmtDur(Number(j.duracao_real_seg)):vgFmtDur(j.duracao_alvo_seg)+' (alvo)';
       const acoes=[];
       if(j.youtube_url)acoes.push(`<a class="btn btn-p btn-sm" href="${vgEsc(j.youtube_url)}" target="_blank" rel="noopener">Abrir no YouTube</a>`);
       if(j.video_url)acoes.push(`<a class="btn btn-g btn-sm" href="${vgEsc(j.video_url)}" target="_blank" rel="noopener">Baixar vídeo</a>`);
       if(j.thumbnail_url)acoes.push(`<a class="btn btn-g btn-sm" href="${vgEsc(j.thumbnail_url)}" target="_blank" rel="noopener">Baixar capa</a>`);
+      if(j.descricao_completa)acoes.push(`<button class="btn btn-g btn-sm" type="button" onclick="copiarTexto((window._vgJobs[${ix}].titulo_youtube||'')+'\\n\\n'+window._vgJobs[${ix}].descricao_completa,'Legenda')">Copiar título e descrição</button>`);
+      if(j.expira_em&&(j.video_url||j.thumbnail_url))acoes.push(`<span style="font-size:.74rem;color:var(--txt-s);align-self:center;">⏳ arquivos por mais ${diasRestantes(j.expira_em)} dia(s)</span>`);
       if(j.github_run_url)acoes.push(`<a class="btn btn-g btn-sm" href="${vgEsc(j.github_run_url)}" target="_blank" rel="noopener">Ver execução</a>`);
       if(j.status==='erro')acoes.push(`<button class="btn btn-danger btn-sm" type="button" onclick="vgRetomar('${vgEsc(j.id)}')">Tentar de novo</button>`);
       return `<div class="vg-fila-item"><div>
         <div class="vg-fila-tit">${vgEsc(j.titulo_youtube||j.post_titulo||j.post_slug)}</div>
         <div class="vg-fila-meta"><span class="vg-stt ${st.cls}">${vgEsc(st.txt)}</span><span>${j.tipo==='short'?(j.estilo==='ilustrado'?'Short ilustrado':'Short'):'Vídeo longo'} · ${vgEsc(dur)}</span>${j.par_id?'<span>⚡ par do dia</span>':''}<span>Tom ${vgEsc(VG_TOM_ROT[j.tom]||j.tom)}</span><span>${vgEsc(VG_VOZ_ROT[j.voz]||j.voz)}${j.voz_usada&&/reserva/.test(j.voz_usada)?' (usou a voz reserva)':''}</span><span>${new Date(j.criado_em).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</span></div>
+        ${j.qa_voz&&(j.qa_voz.cenas_refeitas||j.qa_voz.cenas_reprovadas_final)?`<div class="vg-fila-meta"><span>🎙️ Voz: ${j.qa_voz.cenas_refeitas} cena(s) refeita(s)${j.qa_voz.cenas_reprovadas_final?`, ${j.qa_voz.cenas_reprovadas_final} ainda divergente(s)`:''}${(j.qa_voz.trocas_top||[]).length?` · palavras trocadas: ${(j.qa_voz.trocas_top||[]).slice(0,3).map(t=>vgEsc(t.esperado+' → '+t.ouvido)).join(', ')}`:''}</span></div>`:''}
         ${j.status==='erro'&&j.erro_mensagem?`<div class="vg-fila-erro">${vgEsc(j.erro_mensagem.slice(0,400))}</div>`:''}
       </div><div class="vg-fila-acoes">${acoes.join('')}</div></div>`;
     }).join('');

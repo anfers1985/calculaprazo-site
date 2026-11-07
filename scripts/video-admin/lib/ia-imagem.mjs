@@ -11,6 +11,7 @@
 // IMG_INTERVALO_MS (pausa entre imagens; padrão 7000, respeita ~10 pedidos/min do plano gratuito),
 // GEMINI_IMAGE_MODELS (padrão "gemini-2.5-flash-image,gemini-3.1-flash-image-preview").
 import fs from 'node:fs';
+import { detectarTexto } from './ocr-imagem.mjs';
 import path from 'node:path';
 
 const TIMEOUT_MS = Number(process.env.IMG_TIMEOUT_MS) || 300000;
@@ -103,8 +104,20 @@ async function viaGemini(prompt, { apiKey, modelo, aspecto }) {
 // ---------- Cloudflare Workers AI (gratuito: 10.000 neurons/dia) ----------
 // FLUX.1 schnell não escreve português com acento de forma confiável, e o vídeo já tem a legenda por cima:
 // trocamos o pedido de "texto dentro da imagem" por "sem texto".
+// O FLUX desenha as palavras que aparecem no pedido ("law book" virou "Law", "final judgment stamp" virou "FINAL JUDGEMEON"): troca-as por descrições visuais sem nome escrito.
+const TROCAS_TEXTO_NA_IMAGEM = [
+  [/\b(?:open\s+)?law books?\b/gi, 'closed leather book with a plain blank cover'],
+  [/\b(?:final\s+)?judg(?:e)?ments?(?:\s+(?:stamp|seal|document|paper|sign))?\b/gi, 'wooden gavel on a sound block'],
+  [/\b(?:stamps?|seals?|labels?|signs?|signage|banners?|posters?|certificates?|diplomas?|tags?)\b/gi, 'plain blank object'],
+  [/\b(?:words?|letters?|text|writing|written|inscriptions?|captions?|titles?)\b/gi, ''],
+];
+export function limparPalavrasQueViramTexto(prompt) {
+  let x = String(prompt || '');
+  for (const [re, por] of TROCAS_TEXTO_NA_IMAGEM) x = x.replace(re, por);
+  return x.replace(/\s{2,}/g, ' ').replace(/\s+([.,;])/g, '$1').trim();
+}
 export function promptSemTexto(prompt) {
-  const limpo = String(prompt || '').replace(/The ONLY text visible in the image reads exactly[\s\S]*?anywhere\)\./i, '').replace(/\s+/g, ' ').trim();
+  const limpo = limparPalavrasQueViramTexto(String(prompt || '').replace(/The ONLY text visible in the image reads exactly[\s\S]*?anywhere\)\./i, '')).replace(/\s+/g, ' ').trim();
   return `${limpo} No text, letters, numbers or signs with writing anywhere in the image.`.slice(0, 2000);
 }
 
@@ -144,6 +157,11 @@ async function comRetry(nome, fn, log) {
   throw ultimo;
 }
 
+// Reforço positivo usado nas novas tentativas depois que o OCR achou letras na imagem (o gerador não entende "sem texto", mas segue o que se pede).
+const REFORCO_SEM_ESCRITA = ' Every object in the scene has a clean, blank, unmarked surface: plain book covers, empty paper, blank screens, unlabeled objects.';
+const OCR_RETENTATIVAS = Number.isFinite(Number(process.env.IMG_OCR_TENTATIVAS)) && process.env.IMG_OCR_TENTATIVAS !== undefined && process.env.IMG_OCR_TENTATIVAS !== '' ? Number(process.env.IMG_OCR_TENTATIVAS) : 2;
+const OCR_MAX_REJEICOES = Number(process.env.IMG_OCR_MAX_REJEICOES) || 4; // teto por imagem, somando todos os provedores (cada rejeição gasta cota)
+
 export function etapasImagem() {
   const ordem = (process.env.IMG_ORDEM || '9router,cloudflare,gemini').split(',').map((x) => x.trim().toLowerCase()).filter(Boolean);
   const modelos = (process.env.GEMINI_IMAGE_MODELS || 'gemini-2.5-flash-image,gemini-3.1-flash-image-preview').split(',').map((x) => x.trim()).filter(Boolean);
@@ -168,15 +186,24 @@ export async function gerarImagem({ prompt, destinoSemExt, aspecto = '9:16', log
   const etapas = etapasImagem();
   if (!etapas.length) throw new Error('Nenhum gerador de imagem configurado (defina CLOUDFLARE_ACCOUNT_ID + CLOUDFLARE_API_TOKEN, GEMINI_API_KEY ou NINEROUTER_URL + NINEROUTER_IMAGE_MODEL).');
   const erros = [];
+  let rejeicoes = 0;
   for (const et of etapas) {
     try {
-      const { bytes, mime } = await comRetry(et.nome, () => et.rodar(prompt, aspecto), log);
-      if (!bytes || bytes.length < 2000) throw new Error('imagem vazia ou corrompida');
-      const arquivo = `${destinoSemExt}.${extPorMime(mime)}`;
-      fs.mkdirSync(path.dirname(arquivo), { recursive: true });
-      fs.writeFileSync(arquivo, bytes);
-      return { arquivo, provedor: et.nome };
-    } catch (e) { erros.push(`${et.nome}: ${e.message}`); log(`    ${et.nome} falhou: ${e.message.slice(0, 200)}`); }
+      for (let t = 0; t <= OCR_RETENTATIVAS; t++) {
+        if (rejeicoes >= OCR_MAX_REJEICOES) throw new Error(`imagem com letras em ${rejeicoes} tentativas (limite do OCR)`);
+        const { bytes, mime } = await comRetry(et.nome, () => et.rodar(t === 0 ? prompt : prompt + REFORCO_SEM_ESCRITA, aspecto), log);
+        if (!bytes || bytes.length < 2000) throw new Error('imagem vazia ou corrompida');
+        const arquivo = `${destinoSemExt}.${extPorMime(mime)}`;
+        fs.mkdirSync(path.dirname(arquivo), { recursive: true });
+        fs.writeFileSync(arquivo, bytes);
+        const ocr = detectarTexto(arquivo);   // { disponivel:false } se o Tesseract não existir: não bloqueia
+        if (!ocr.temTexto) return { arquivo, provedor: et.nome, rejeicoesOcr: rejeicoes };
+        rejeicoes++;
+        log(`    ${et.nome}: a imagem tem letras (${ocr.palavras.slice(0, 4).join(', ')}) — descartada, gerando outra (${rejeicoes})`);
+        try { fs.unlinkSync(arquivo); } catch { /* já removido */ }
+      }
+      erros.push(`${et.nome}: letras na imagem em todas as tentativas`);
+    } catch (e) { erros.push(`${et.nome}: ${e.message}`); log(`    ${et.nome} falhou: ${e.message.slice(0, 200)}`); if (/limite do OCR/.test(e.message)) break; }
   }
   throw new Error(`Nenhum provedor gerou a imagem:\n${erros.join('\n')}`);
 }
@@ -189,15 +216,16 @@ export async function gerarImagem({ prompt, destinoSemExt, aspecto = '9:16', log
 export async function gerarImagensDoRoteiro({ cenas, montarPrompt, dir, existentes = [], aspecto = '9:16', maxFalhaPct = 0.4, log = console.log, aoGerar }) {
   fs.mkdirSync(dir, { recursive: true });
   const arquivos = [];
-  let falhas = 0, geradas = 0;
+  let falhas = 0, geradas = 0, rejeitadasOcr = 0;
   for (let i = 0; i < cenas.length; i++) {
     const nn = String(i + 1).padStart(2, '0');
     if (existentes[i]) { arquivos.push(existentes[i]); continue; }
     if (geradas > 0 && INTERVALO_MS) await esperar(INTERVALO_MS);
     log(`  Imagem ${i + 1}/${cenas.length}...`);
     try {
-      const { arquivo, provedor } = await gerarImagem({ prompt: montarPrompt(cenas[i], i), destinoSemExt: path.join(dir, `img_${nn}`), aspecto, log });
-      log(`    ok (${provedor})`);
+      const { arquivo, provedor, rejeicoesOcr = 0 } = await gerarImagem({ prompt: montarPrompt(cenas[i], i), destinoSemExt: path.join(dir, `img_${nn}`), aspecto, log });
+      rejeitadasOcr += rejeicoesOcr;
+      log(`    ok (${provedor}${rejeicoesOcr ? `; ${rejeicoesOcr} descartada(s) por ter letras` : ''})`);
       arquivos.push(arquivo);
       geradas++;
       if (aoGerar) await aoGerar(i, arquivo);
@@ -207,5 +235,6 @@ export async function gerarImagensDoRoteiro({ cenas, montarPrompt, dir, existent
     }
   }
   if (falhas / cenas.length > maxFalhaPct) throw new Error(`Imagens: ${falhas} de ${cenas.length} cenas ficaram sem imagem (limite ${Math.round(maxFalhaPct * 100)}%). As geradas foram guardadas; "Tentar de novo" completa só as que faltam.`);
-  return { arquivos, falhas, geradas };
+  if (rejeitadasOcr) log(`  OCR: ${rejeitadasOcr} imagem(ns) descartada(s) por ter letras e refeita(s).`);
+  return { arquivos, falhas, geradas, rejeitadasOcr };
 }

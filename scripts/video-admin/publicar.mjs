@@ -2,7 +2,12 @@
 // SEPARADO do 08-publicar-youtube.mjs do pipeline antigo (que continua publicando sempre como privado).
 import fs from 'node:fs';
 import path from 'node:path';
-import { getJob, updateJob, baixarArquivo } from './lib/db.mjs';
+import { getJob, updateJob, baixarArquivo, limparIntermediarios } from './lib/db.mjs';
+
+async function liberarEspaco(jobId) {
+  try { const n = await limparIntermediarios(jobId); if (n) console.log(`Storage: ${n} arquivo(s) intermediário(s) apagado(s) (ficam só o vídeo e a capa, por 5 dias).`); }
+  catch (e) { console.warn(`Aviso: não consegui apagar os intermediários (${e.message}); a limpeza diária cuida deles.`); }
+}
 import { montarMetadados } from './lib/metadados.mjs';
 import { enviarAoYoutube, enviarMiniatura } from './lib/youtube.mjs';
 
@@ -13,6 +18,7 @@ export async function etapaPublicar(jobId) {
   if (job.youtube_video_id) {
     console.log(`Job já publicado (${job.youtube_video_id}); nada a fazer.`);
     await updateJob(jobId, { status: 'publicado', publicado_em: job.publicado_em || new Date().toISOString() });
+    await liberarEspaco(jobId);
     return;
   }
   await updateJob(jobId, { etapa_atual: 'publicacao' });
@@ -27,4 +33,5 @@ export async function etapaPublicar(jobId) {
   if (thumb) await enviarMiniatura({ yt, videoId, thumb });
   await updateJob(jobId, { status: 'publicado', etapa_atual: null, publicado_em: new Date().toISOString(), erro_etapa: null, erro_mensagem: null });
   console.log(`Publicado: https://youtube.com/watch?v=${videoId}`);
+  await liberarEspaco(jobId);
 }

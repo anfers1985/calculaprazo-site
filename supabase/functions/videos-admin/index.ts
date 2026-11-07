@@ -91,7 +91,7 @@ Deno.serve(async (req) => {
       case 'list_videos': {
         const cutoff = new Date(Date.now() - RETENCAO_DIAS * 24 * 60 * 60 * 1000).toISOString();
 
-        const { data: jobs, error } = await supabase
+        const { data: jobsAntigos, error } = await supabase
           .from('video_jobs')
           .select('id, post_slug, post_url, roteiro, video_path, thumbnail_path, youtube_video_id, publicado_em, criado_em')
           .eq('status', 'publicado')
@@ -100,7 +100,23 @@ Deno.serve(async (req) => {
 
         if (error) throw error;
 
-        const videos = await Promise.all((jobs || []).map(async (job) => {
+        // Vídeos gerados pelo admin (longos e Shorts; tabela video_admin_jobs): mesma janela de retenção, mesmo painel.
+        const { data: jobsAdmin, error: erroAdmin } = await supabase
+          .from('video_admin_jobs')
+          .select('id, post_slug, post_url, post_titulo, tipo, estilo, roteiro, video_path, thumbnail_path, youtube_video_id, youtube_url, publicado_em, criado_em')
+          .eq('status', 'publicado')
+          .is('arquivos_apagados_em', null)
+          .gte('publicado_em', cutoff)
+          .order('publicado_em', { ascending: false });
+
+        if (erroAdmin) throw erroAdmin;
+
+        const jobs = [
+          ...(jobsAntigos || []).map((j: any) => ({ ...j, origem: 'automatico', formato: 'short', estilo: null })),
+          ...(jobsAdmin || []).map((j: any) => ({ ...j, origem: 'admin', formato: j.tipo === 'longo' ? 'longo' : 'short' })),
+        ].sort((a: any, b: any) => new Date(b.publicado_em || b.criado_em).getTime() - new Date(a.publicado_em || a.criado_em).getTime());
+
+        const videos = await Promise.all(jobs.map(async (job: any) => {
           const roteiro = job.roteiro || {};
           const publicadoEm = job.publicado_em || job.criado_em;
           const expiraEm = new Date(new Date(publicadoEm).getTime() + RETENCAO_DIAS * 24 * 60 * 60 * 1000).toISOString();
@@ -110,8 +126,11 @@ Deno.serve(async (req) => {
             post_slug: job.post_slug,
             post_url: job.post_url,
             youtube_video_id: job.youtube_video_id,
-            youtube_url: job.youtube_video_id ? `https://youtube.com/watch?v=${job.youtube_video_id}` : null,
-            titulo: roteiro.titulo_seo || job.post_slug,
+            youtube_url: job.youtube_url || (job.youtube_video_id ? `https://youtube.com/watch?v=${job.youtube_video_id}` : null),
+            origem: job.origem,
+            formato: job.formato,
+            estilo: job.estilo,
+            titulo: roteiro.titulo_seo || job.post_titulo || job.post_slug,
             descricao_completa: montarDescricaoCompleta(job),
             hashtags: roteiro.hashtags || [],
             publicado_em: publicadoEm,

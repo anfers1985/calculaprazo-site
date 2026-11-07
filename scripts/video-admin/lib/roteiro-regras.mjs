@@ -55,6 +55,7 @@ export function repararRoteiro(r, icones) {
     // narração escrita com outro nome de campo
     if (!c.narracao) { const alt = c['narração'] ?? c.narration ?? c.fala ?? c.locucao ?? c['locução'] ?? c.texto_narracao; if (alt) { c.narracao = String(alt); log.push(`cena ${i + 1}: narração veio em outro campo`); } }
     if (c.narracao && RE_NARRACAO_SUJA.test(c.narracao)) { c.narracao = numerosPorExtenso(c.narracao); log.push(`cena ${i + 1}: narração limpa (números por extenso, símbolos)`); }
+    aplicarNumerosNaTela(c); // tela sempre em algarismos ("Tema 176", "art. 227", "50%"); a voz lê por extenso
     fix(c, 'icone'); fix(c, 'marca_dagua'); fix(c.esq, 'icone'); fix(c.dir, 'icone'); (c.cards || []).forEach(x => fix(x, 'icone'));
     (c.itens || []).forEach(x => fix(x, 'icone')); (c.pontos || []).forEach(x => fix(x, 'icone'));
   });
@@ -101,7 +102,7 @@ export function repararRoteiro(r, icones) {
     if (c.itens.length > 4) { c.itens = c.itens.slice(0, 4); log.push(`cena ${i + 1}: lista cortada em 4 itens`); }
     else if (c.itens.length < 3) {
       const a = c.itens[0] || {}, b = c.itens[1] || {};
-      c.tipo = 'destaque'; c.titulo = String(a.texto || c.titulo || 'Em resumo').split(' ').slice(0, 6).join(' '); c.sub = String(b.texto || a.texto || ' ').slice(0, 120); c.icone = a.icone || ICONE_RESERVA; delete c.itens;
+      c.tipo = 'destaque'; c.titulo = dividirTitulo(String(a.texto || c.titulo || 'Em resumo'), 6)[0]; c.sub = String(b.texto || a.texto || ' ').slice(0, 120); c.icone = a.icone || ICONE_RESERVA; delete c.itens;
       log.push(`cena ${i + 1}: lista com poucos itens → "destaque"`);
     }
   });
@@ -116,7 +117,7 @@ export function repararRoteiro(r, icones) {
     if (!(a.tipo === b.tipo && b.tipo === c.tipo)) continue;
     if (c.tipo === 'afirmacao') {
       const t = String(c.texto || '').trim();
-      c.tipo = 'destaque'; c.titulo = t.split(' ').slice(0, 6).join(' '); c.sub = t.split(' ').length > 6 ? t : ' ';
+      c.tipo = 'destaque'; { const [tt, ss] = dividirTitulo(t, 6); c.titulo = tt; c.sub = ss || ' '; }
       c.icone = c.icone || ICONE_RESERVA; delete c.texto;
       log.push(`cena ${i + 1}: "afirmacao" repetida → "destaque"`);
     } else if (c.tipo === 'destaque') {
@@ -166,7 +167,7 @@ OBJETIVO: vídeo ${longo ? 'LONGO (horizontal 16:9)' : 'SHORT (vertical 9:16)'} 
 - Narração total: entre ${m.min} e ${m.max} palavras (alvo ${m.palavras}; a voz fala ~${PALAVRAS_POR_SEG} palavras por segundo).
 - Número de cenas: entre ${Math.max(m.cenasMin, m.alvoCenas - 2)} e ${m.cenasMax} (alvo ${m.alvoCenas}); com MENOS de ${Math.max(m.cenasMin, m.alvoCenas - 2)} cenas o vídeo fica curto demais. ORÇAMENTO: cada cena (exceto a última) tem de ${Math.max(5, porCena - 4)} a ${porCena + 4} palavras de narração (média ${porCena}), em 1 frase curta, ou 2 muito curtas, nas cenas de TEXTO (afirmacao, destaque, pergunta, citacao, numero). NÃO ultrapasse ${porCena + 6} palavras nem escreva menos de ${Math.max(5, porCena - 6)} nessas cenas. As cenas de INFOGRÁFICO (decisao, grade, passos, comparacao, lista) têm de ${porCena + 5} a ${porCena + 16} palavras: a narração percorre CADA item na ordem em que ele aparece na tela (a pergunta, depois o sim e o não; cartão a cartão; passo a passo), porque o espectador precisa de tempo para ler. O total precisa ficar entre ${m.min} e ${m.max}. Antes de responder, SOME as palavras: se passar de ${m.max}, corte; se faltar para ${m.min}, acrescente cenas ou alongue as cenas.\n- O campo \"narracao\" é OBRIGATÓRIO em TODAS as cenas, inclusive na capa (nunca omita nem renomeie).
 - ${COESAO_PROMPT}
-- A narração NÃO pode conter dígitos, "R$", "%" nem símbolos: escreva tudo por extenso ("artigo quatrocentos e sessenta e nove", "cinco meses"). Já o texto na TELA pode usar números e abreviações ("art. 469", "5 meses").
+- A narração NÃO pode conter dígitos, "R$", "%" nem símbolos: escreva tudo por extenso ("artigo quatrocentos e sessenta e nove", "cinco meses"). O texto na TELA, ao contrário, usa SEMPRE algarismos e abreviações, nunca números por extenso ("art. 469", "5 meses", "Tema 176", "LC 150/2015", "25 horas", "50%", "3,2%"): o espectador lê a tela e ouve a voz. TUDO o que aparece na tela (cada item de grade, passo, lista ou comparação, e o subtítulo) tem de ser dito pela narração DA MESMA CENA: não coloque na tela um dado que a voz não menciona, e faça a narração citar cada item na ordem. Cada cena é uma frase COMPLETA: começa com maiúscula e termina com ponto, "?" ou "!"; nunca divida uma frase entre duas cenas. Título de tela nunca termina em preposição, artigo ou vírgula.
 - Cena 1 é SEMPRE do tipo "capa" (gancho em pergunta neutra) e a última é SEMPRE do tipo "encerramento". Nunca 3 cenas seguidas do mesmo tipo (alterne, por exemplo, afirmacao → destaque → pergunta → lista). A cena 2 NUNCA é do tipo "pergunta": a capa já é a pergunta e a cena 2 começa a responder. Use "pergunta" só para abrir um tópico novo (no máximo ${longo ? 3 : 1} no vídeo), sempre respondida pela cena seguinte; nunca duas perguntas seguidas. Varie os tipos e os ícones conforme o assunto do artigo.
 - VARIEDADE E INFORMAÇÃO NOS SLIDES: os slides são INFOGRÁFICOS que se montam enquanto o narrador fala, e não frases com um símbolo. Escolha o tipo pelo conteúdo da cena: "decisao" quando a regra é um teste sim/não (ex.: "trabalha mais de dois dias por semana?"); "grade" para requisitos, elementos, critérios ou direitos (2 a 4 cartões); "passos" para etapas ou ordem de análise (3 a 5); "comparacao" quando o artigo contrapõe dois conceitos (ex.: diarista × doméstica); "numero" para um número-chave que esteja no artigo; "lista" para o resumo; "citacao" para a frase-síntese de uma regra. "afirmacao" e "destaque" são o ÚLTIMO recurso: no máximo ${longo ? '40%' : '50%'} das cenas de conteúdo. Cite nos textos dos cartões, passos e opções as MESMAS palavras que a narração usa para cada item, e na MESMA ordem (o item aparece na tela quando o narrador o menciona). ${longo ? 'No vídeo longo use pelo menos 4 tipos diferentes. A PENÚLTIMA cena é o RESUMO: tipo "lista" com 3 itens, titulo "Em resumo", e narração que começa com "Em resumo," e retoma os pontos principais.' : 'No Short use pelo menos 3 tipos diferentes.'}
 - O texto de tela carrega a INFORMAÇÃO-CHAVE da cena (um critério, um dado ou uma conclusão, em 6 a 12 palavras), e não só um rótulo de 2 ou 3 palavras. Ruim: "Autonomia na prestação". Bom: "Atende várias casas, com autonomia: diarista".
@@ -248,9 +249,137 @@ export function numeroPorExtenso(n) {
   }
   return String(n);
 }
+// ---------- TELA: números e leis em ALGARISMOS (a voz continua lendo por extenso) ----------
+const _CAT = new Map(); const _VAL = new Map();
+const _reg = (cat, obj) => Object.entries(obj).forEach(([w, v]) => { _CAT.set(w, cat); _VAL.set(w, v); });
+_reg('U', { zero: 0, um: 1, uma: 1, dois: 2, duas: 2, 'três': 3, tres: 3, quatro: 4, cinco: 5, seis: 6, sete: 7, oito: 8, nove: 9 });
+_reg('T', { dez: 10, onze: 11, doze: 12, treze: 13, catorze: 14, quatorze: 14, quinze: 15, dezesseis: 16, dezessete: 17, dezoito: 18, dezenove: 19 });
+_reg('D', { vinte: 20, trinta: 30, quarenta: 40, cinquenta: 50, sessenta: 60, setenta: 70, oitenta: 80, noventa: 90 });
+_reg('C', { cem: 100, cento: 100, duzentos: 200, duzentas: 200, trezentos: 300, trezentas: 300, quatrocentos: 400, quatrocentas: 400, quinhentos: 500, quinhentas: 500, seiscentos: 600, seiscentas: 600, setecentos: 700, setecentas: 700, oitocentos: 800, oitocentas: 800, novecentos: 900, novecentas: 900 });
+_reg('M', { mil: 1000 });
+const _UNIDADES = new Set(['hora', 'horas', 'dia', 'dias', 'mês', 'mes', 'meses', 'ano', 'anos', 'semana', 'semanas', 'minuto', 'minutos', 'vez', 'vezes', 'real', 'reais', 'centavo', 'centavos', 'parcela', 'parcelas']);
+const _MARCADORES = new Set(['artigo', 'artigos', 'art', 'tema', 'súmula', 'sumula', 'lei', 'complementar', 'oj', 'inciso', 'parágrafo', 'paragrafo', 'anexo', 'nr', 'sdi']);
+function _podeSeguir(ant, prox, viaE) {
+  if (ant === 'D') return viaE && prox === 'U';
+  if (ant === 'C') return viaE && (prox === 'U' || prox === 'T' || prox === 'D');
+  if (ant === 'M') return viaE ? ['U', 'T', 'D', 'C'].includes(prox) : prox === 'C';
+  return false; // U e T encerram o número
+}
+/** Converte numerais por extenso em algarismos no texto de TELA. Ex.: "Lei Complementar cento e cinquenta" → "Lei Complementar 150";
+ *  "três vírgula dois por cento" → "3,2%"; "vinte e cinco horas" → "25 horas". Números pequenos (até vinte) só mudam junto de unidade/norma
+ *  ("seis horas", "Tema ..."), para não trocar o artigo "um" nem "os dois lados". */
+export function numerosParaTela(texto) {
+  const s = String(texto ?? '');
+  const toks = s.match(/[\p{L}]+|[^\p{L}]+/gu) || [];
+  const low = toks.map(t => t.toLowerCase());
+  const ehPal = k => k >= 0 && k < toks.length && /^\p{L}/u.test(toks[k]);
+  const ehNum = k => ehPal(k) && _CAT.has(low[k]);
+  const fmt = n => String(n);
+  // lê um numeral a partir de i: { fim, valor, palavras, cat } ou null
+  const ler = (i) => {
+    if (!ehNum(i)) return null;
+    let k = i, total = 0, cur = 0, n = 0, ant = null;
+    for (;;) {
+      const w = low[k], cat = _CAT.get(w), v = _VAL.get(w);
+      if (cat === 'M') total += (cur || 1) * 1000, cur = 0; else cur += v;
+      n++; ant = cat;
+      // próximo componente: "<espaço>[e<espaço>]<numeral>"
+      let j = k + 1, viaE = false;
+      if (j < toks.length && /^\s+$/.test(toks[j])) j++; else break;
+      if (ehPal(j) && low[j] === 'e') { viaE = true; j++; if (j < toks.length && /^\s+$/.test(toks[j])) j++; else break; }
+      if (!ehNum(j)) break;
+      const prox = _CAT.get(low[j]);
+      const multiplicador = prox === 'M' && !viaE && ['U', 'T', 'D', 'C'].includes(ant) && total === 0;
+      if (!multiplicador && !_podeSeguir(ant, prox, viaE)) break;
+      k = j;
+    }
+    return { fim: k + 1, valor: total + cur, palavras: n, cat: ant };
+  };
+  const proxPalavra = (k) => { let j = k; while (j < toks.length && /^\s+$/.test(toks[j])) j++; return ehPal(j) ? j : -1; };
+  const antPalavra = (k) => { let j = k - 1; while (j >= 0 && /^[^\p{L}]+$/u.test(toks[j]) && /^\s+$/.test(toks[j])) j--; return ehPal(j) ? j : -1; };
+  const out = [];
+  let i = 0;
+  while (i < toks.length) {
+    const r = ler(i);
+    if (!r) { out.push(toks[i]); i++; continue; }
+    let fim = r.fim, texto2 = fmt(r.valor), decimal = false, pct = false;
+    // decimal: "<n> vírgula <n>"
+    const pv = proxPalavra(fim);
+    if (pv > 0 && /^v[ií]rgula$/.test(low[pv])) {
+      const pn = proxPalavra(pv + 1);
+      const r2 = pn > 0 ? ler(pn) : null;
+      if (r2) { texto2 += ',' + String(r2.valor); fim = r2.fim; decimal = true; }
+    }
+    // percentual: "<n> por cento"
+    const p1 = proxPalavra(fim);
+    if (p1 > 0 && low[p1] === 'por') { const p2 = proxPalavra(p1 + 1); if (p2 > 0 && low[p2] === 'cento') { pct = true; fim = p2 + 1; } }
+    const pu = proxPalavra(fim);
+    const unidade = pu > 0 && _UNIDADES.has(low[pu]);
+    const pa = antPalavra(i);
+    const marcador = pa >= 0 && _MARCADORES.has(low[pa]);
+    const grande = r.valor >= 21 || r.palavras > 1;
+    const pequenoOk = unidade || marcador;
+    const ehUmArtigo = r.palavras === 1 && (low[i] === 'um' || low[i] === 'uma') && !unidade;
+    if (!decimal && r.valor >= 1000 && (r.valor >= 10000 || (pu > 0 && /^reais?$/.test(low[pu])))) texto2 = r.valor.toLocaleString('pt-BR'); // 1.200 reais, mas ano fica 2015
+    const converter = !ehUmArtigo && (decimal || pct || grande || pequenoOk);
+    if (!converter) { for (let q = i; q < r.fim; q++) out.push(toks[q]); i = r.fim; continue; }
+    out.push(texto2 + (pct ? '%' : '')); i = fim;
+  }
+  return out.join('');
+}
+const _SEM_CONVERTER = new Set(['narracao', 'prompt_imagem', 'tipo', 'icone', 'marca_dagua', 'centro', 'estilo', 'selo', 'personagem', 'refs', 'texto_na_imagem']);
+/** Aplica numerosParaTela a todos os textos de tela de uma cena (tudo, menos narração, prompt de imagem, ícones e tipos). */
+export function aplicarNumerosNaTela(c) {
+  const visita = (v, k) => {
+    if (typeof v === 'string') return _SEM_CONVERTER.has(k) ? v : numerosParaTela(v);
+    if (Array.isArray(v)) return v.map(x => visita(x, k));
+    if (v && typeof v === 'object') { Object.keys(v).forEach(kk => { v[kk] = visita(v[kk], kk); }); return v; }
+    return v;
+  };
+  if (c && typeof c === 'object') Object.keys(c).forEach(k => { c[k] = visita(c[k], k); });
+  return c;
+}
+const _FUNC_FIM = /(?:^|\s)(?:de|do|da|dos|das|o|a|os|as|e|ou|em|no|na|nos|nas|para|com|que|um|uma|por|ao|aos|pelo|pela|sem|sob|entre)$/i;
+/** Texto de tela que termina no meio da frase (preposição, artigo, vírgula): sinal de corte ruim. */
+export function telaCortada(t) {
+  const x = String(t ?? '').trim();
+  if (x.split(/\s+/).length < 3) return false;
+  return /[,;:]$/.test(x) || _FUNC_FIM.test(x);
+}
+/** Divide um texto em título curto + resto, sem cortar no meio da frase e sem repetir o texto inteiro no subtítulo. */
+export function dividirTitulo(t, n = 6) {
+  const x = String(t ?? '').trim();
+  const pal = x.split(/\s+/);
+  if (pal.length <= n + 2) return [x, '']; // até 2 palavras de folga: melhor um título completo do que cortado
+  let corte = n;
+  for (let k = Math.min(pal.length - 1, n + 2); k >= 3; k--) if (/[,;:]$/.test(pal[k - 1])) { corte = k; break; } // prefere fechar numa vírgula
+  while (corte > 3 && _FUNC_FIM.test(pal.slice(0, corte).join(' ').replace(/[,;:]+$/, ''))) corte--;
+  const titulo = pal.slice(0, corte).join(' ').replace(/[,;:\s]+$/, '');
+  let resto = pal.slice(corte).join(' ').trim();
+  if (resto) resto = resto[0].toUpperCase() + resto.slice(1);
+  return [titulo, resto];
+}
+const _SEM_ACENTO = t => String(t).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+const _GENERICAS = new Set(['sobre', 'quando', 'sempre', 'ainda', 'outros', 'outras', 'apenas', 'depois', 'antes', 'esses', 'essas', 'dessa', 'desse']);
+function _radicais(t) { return (_SEM_ACENTO(t).match(/[a-z]{5,}/g) || []).filter(w => !_GENERICAS.has(w)).map(w => w.slice(0, 5)); }
+const _CHAVES_NAO_FALADAS = new Set(['tipo', 'icone', 'marca_dagua', 'centro', 'estilo', 'selo', 'narracao', 'refs', 'chips', 'pontos', 'prompt_imagem']);
+function textosFalaveis(c) {
+  const out = [];
+  const visit = (v, k) => { if (typeof v === 'string') { if (!_CHAVES_NAO_FALADAS.has(k)) out.push(v); } else if (Array.isArray(v)) v.forEach(x => visit(x, k)); else if (v && typeof v === 'object') Object.entries(v).forEach(([kk, vv]) => visit(vv, kk)); };
+  Object.entries(c).forEach(([k, v]) => visit(v, k));
+  return out;
+}
+/** Fração das palavras de conteúdo do texto de tela que aparecem (pelo radical) na narração da cena. */
+export function coberturaTelaNarracao(tela, narracao) {
+  const alvo = _radicais(tela); if (!alvo.length) return { total: 0, cobertura: 1 };
+  const falado = new Set(_radicais(narracao));
+  const achou = alvo.filter(w => falado.has(w)).length;
+  return { total: alvo.length, cobertura: achou / alvo.length };
+}
+export const RE_JUNK_SEM_NUM = /\bn[úu]meros?\b|\bn\.?\s*[º°]|[*_`#~<>\[\]{}|\\]|\b(?:ali[aá]s|outrossim|destarte|ademais|porquanto)\b/i;
 export const RE_NARRACAO_SUJA = /[0-9%]|R\$|\bn[úu]meros?\b|\bn\.?\s*[º°]|[*_`#~<>\[\]{}|\\]|\b(?:ali[aá]s|outrossim|destarte|ademais|porquanto)\b/i;
 /** Converte dígitos, "R$", "%" e ordinais em palavras (pt-BR). Ex.: "R$ 1.200,50" → "mil e duzentos reais e cinquenta centavos". */
-export function numerosPorExtenso(t) {
+export function numerosPorExtenso(t, { manterNumeros = false } = {}) {
   let x = String(t ?? '');
   // Conectores raros que a voz sintética lê mal ("Aliás" saiu como "Elias"): troca por equivalentes comuns, mantendo a maiúscula inicial.
   const RAROS = { 'aliás': 'além disso', 'alias': 'além disso', 'outrossim': 'além disso', 'ademais': 'além disso', 'destarte': 'assim', 'porquanto': 'pois' };
@@ -260,6 +389,7 @@ export function numerosPorExtenso(t) {
   // "Tema número 171" / "Tema nº 171": a voz lê "número"; o natural é "Tema cento e setenta e um".
   x = x.replace(/\b(tema|s[úu]mula|artigos?|art\.?|lei|oj|orienta[çc][ãa]o jurisprudencial|precedente|inciso|par[áa]grafo)\s+(?:n[úu]meros?|n\.?\s*[º°o]\.?)\s+/gi, '$1 ');
   x = x.replace(/\bn(?:[úu]mero|\.?\s*[º°])\s*(?=\d)/gi, '');
+  if (manterNumeros) return x.replace(/\s+/g, ' ').trim();
   x = x.replace(/R\$\s*(\d{1,3}(?:\.\d{3})+|\d+)(?:,(\d{1,2}))?/g, (_, i, c) => {
     const inteiro = Number(i.replace(/\./g, ''));
     const cent = c ? Number(c.padEnd(2, '0')) : 0;
@@ -335,12 +465,22 @@ export function validarRoteiro(r, ctx) {
       if (w < 4) erros.push(`Cena ${n}: narração curta demais.`);
       if (w > 70) erros.push(`Cena ${n}: narração longa demais (${w} palavras; máx. 70).`);
       if (RE_DIGITOS.test(nar)) erros.push(`Cena ${n}: a narração não pode ter dígitos, "R$" ou "%" — escreva por extenso.`);
+      if (!/[.!?…]["”')\]]*\s*$/.test(nar.trim())) erros.push(`Cena ${n}: a narração termina no meio da frase (feche com ponto, "?" ou "!").`);
+      if (/^[a-zà-ÿ]/.test(nar.trim())) erros.push(`Cena ${n}: a narração começa em minúscula (continua a frase da cena anterior); cada cena é uma frase completa.`);
       if (RE_SEGUNDA.test(nar)) erros.push(`Cena ${n}: não use segunda pessoa na narração.`);
       if (ctx.tom === 'neutro' && RE_PARCIAL.test(nar)) avisos.push(`Cena ${n}: palavra parcial na narração (tom neutro).`);
     }
     // texto de tela
     const telas = textosDeTela(c);
     telas.forEach(t => { if (RE_SEGUNDA.test(t)) erros.push(`Cena ${n}: não use segunda pessoa no texto da tela ("${t.slice(0, 40)}").`); });
+    telas.forEach(t => { if (telaCortada(t)) erros.push(`Cena ${n}: texto de tela cortado no meio da frase ("${String(t).slice(0, 50)}"): reescreva completo e curto.`); });
+    if (c.tipo !== 'capa' && c.tipo !== 'encerramento' && c.tipo !== 'numero') {
+      textosFalaveis(c).forEach(t => {
+        const { total, cobertura } = coberturaTelaNarracao(t, c.narracao);
+        if (total >= 3 && cobertura < 0.25) erros.push(`Cena ${n}: a tela mostra "${String(t).slice(0, 50)}" mas a narração desta cena não menciona isso; narre o item ou tire-o da tela.`);
+        else if (total >= 2 && cobertura < 0.5) avisos.push(`Cena ${n}: pouco do texto de tela "${String(t).slice(0, 40)}" aparece na narração.`);
+      });
+    }
     // números de normas na tela precisam existir no artigo
     telas.concat(c.refs || []).forEach(t => {
       for (const mm of String(t).matchAll(/\b(art(?:igo)?s?\.?|s[úu]mula|tema|oj|lei(?:\s+complementar)?)\s*(?:n[ºo°.]?\s*)?(\d[\d.]*)/gi)) {

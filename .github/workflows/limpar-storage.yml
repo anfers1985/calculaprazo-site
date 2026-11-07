@@ -17,3 +17,9 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+      # vídeos gerados pelo admin (video_admin_jobs, pasta admin-videos/): mesma janela de 5 dias, todo dia (antes só limpava junto de uma nova geração)
+      - run: node scripts/video-admin/limpar.mjs
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          RETENCAO_DIAS: '5'

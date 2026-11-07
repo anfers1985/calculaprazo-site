@@ -64,3 +64,14 @@ Apague `scripts/video-admin/`, `.github/workflows/video-admin.yml`, `supabase/fu
 - No formulário, escolha a voz **"Gemini 3.8 TTS (voz do Google)"**. Usa o secret `GEMINI_API_KEY` que já existe (e `GEMINI_API_KEY_2`, se houver, em rodízio). Modelo padrão `gemini-3.8-flash-tts`, voz padrão `Kore`.
 - Para mudar modelo/voz/estilo sem editar arquivos: GitHub → Settings → Secrets and variables → Actions → aba **Variables** → crie `GEMINI_TTS_MODEL` (ex.: `gemini-3.8-flash-lite-tts`), `GEMINI_TTS_VOICE` (ex.: `Puck`, ou o ID `voice_...` de uma voz sua criada no AI Studio), `GEMINI_TTS_STYLE`, `GEMINI_TTS_RESERVA` (`francisca` = se o Google falhar, refaz o vídeo inteiro com a Francisca em vez de parar). Para escolher a voz com calma, use o app do computador (Configurações → "Buscar vozes em português" / "Ouvir amostra").
 - Gratuito no plano gratuito, mas os limites só aparecem no seu AI Studio. O pipeline espera o que o Google mandar, para com mensagem clara se a cota **diária** acabar e **nunca mistura vozes**: se parar, use "Tentar de novo" (no GitHub as cenas já feitas não ficam salvas entre execuções; no app do computador ficam).
+
+## Controle de qualidade automático (voz e imagem)
+
+**Voz (qa_voz.py, dentro do narracao.py).** Cada cena é transcrita com o Azure Speech-to-Text (mesma chave da narração) e comparada com o texto que deveria ter sido falado.
+Cena com palavra mal lida ("jornada" → "rornada"), final cortado, 2+ palavras curtas engolidas ou nota acima de `QA_LIMITE` é regenerada (até `QA_TENTATIVAS`, variando a velocidade) e fica a melhor versão.
+O que continuar divergente entra em `admin-videos/<job>/qa-voz.json`; as trocas observadas somam-se em `admin-videos/_pronuncias/observadas.json` (pasta que a limpeza não apaga).
+Pronúncia que você confirmar de ouvido entra em `scripts/video-admin/pronuncias.json` (`"palavra": "respelling"`) e vale para qualquer voz.
+Se o STT falhar, a narração segue sem a checagem. `TTS_QA=0` desliga. Ajustes: `QA_LIMITE` (0,22), `QA_TENTATIVAS` (2), `QA_TOLERANCIA` (0,90), `QA_QUASE` (0,60), `QA_FUNCIONAIS` (2).
+
+**Imagem (lib/ocr-imagem.mjs, dentro do ia-imagem.mjs).** Toda imagem gerada passa por OCR (Tesseract); com letras, é descartada e refeita (até `IMG_OCR_TENTATIVAS` vezes por provedor, `IMG_OCR_MAX_REJEICOES` no total, cada uma gasta cota).
+Sem imagem limpa, a cena usa o cartão de papel. Sem Tesseract instalado, nada é bloqueado. `IMG_OCR=0` desliga; `IMG_OCR_CONF` ajusta a sensibilidade.

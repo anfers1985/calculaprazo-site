@@ -1,9 +1,9 @@
 // Costura da narração: o roteiro sai cena a cena (frases soltas). Esta etapa pede UMA segunda passada à IA só para
 // reescrever as narrações como um discurso contínuo (conectores, retomadas), sem mexer em fatos nem na quantidade de cenas.
 // Falha "fechada": se a resposta não passar na MESMA validação do roteiro, o roteiro original é mantido.
-import { extrairJson, numerosPorExtenso, TOM } from './roteiro-regras.mjs';
+import { extrairJson, numerosPorExtenso, numerosParaTela, TOM } from './roteiro-regras.mjs';
 
-export async function costurarNarracao({ r, chamarIA, validar, tom, textoArtigo = '', log = console.log }) {
+export async function costurarNarracao({ r, chamarIA, validar, tom, textoArtigo = '', log = console.log, manterNumeros = false }) {
   if (process.env.ROTEIRO_COSTURA === '0') return r;
   const cenas = r.cenas || [];
   const n = cenas.length - 1; // a última cena (encerramento) tem texto fixo
@@ -30,13 +30,14 @@ REGRAS:
 - Quando a cena seguinte abre um tópico novo, a cena atual termina anunciando-o de forma natural (ex.: "Vamos ver como isso funciona.").
 - Evite repetir o assunto-título em toda cena: use "essa regra", "nesse caso", "o tribunal" etc.
 - Tamanho: cada texto com quase o mesmo número de palavras do original (variação de no máximo 25%); o total não pode passar do original em mais de 10%.
-- Terceira pessoa (nunca "você"). Sem dígitos, "R$", "%" ou símbolos: tudo por extenso. Sem listas, sem aspas, sem emojis.
+- Terceira pessoa (nunca "você"). ${manterNumeros ? 'Escreva números, artigos, leis, temas, prazos e porcentagens em ALGARISMOS ("Tema 176", "art. 227", "LC 150/2015", "25 horas", "50%", "3,2%"): a voz lê por extenso sozinha. Sem "R$" solto e sem símbolos.' : 'Sem dígitos, "R$", "%" ou símbolos: tudo por extenso.'} Sem listas, sem aspas, sem emojis.
+- Cada texto é uma frase (ou duas) COMPLETA: começa com maiúscula e termina com ponto, "?" ou "!". Nunca termine ou comece uma cena no meio de uma frase.
 - A última cena da lista fecha o raciocínio e conduz ao convite final, sem repetir o convite (o convite é acrescentado depois).`;
     const resp = await chamarIA({ systemPrompt, userPrompt, logPrefix: 'roteiro-costura', rapido: true });
     const novas = extrairJson(resp.text)?.narracoes;
     if (!Array.isArray(novas) || novas.length !== n || novas.some(x => typeof x !== 'string' || x.trim().length < 8)) throw new Error(`resposta com ${Array.isArray(novas) ? novas.length : 'formato inválido de'} textos; esperava ${n}`);
     const copia = JSON.parse(JSON.stringify(r));
-    copia.cenas.slice(0, n).forEach((c, i) => { c.narracao = numerosPorExtenso(novas[i]).trim(); });
+    copia.cenas.slice(0, n).forEach((c, i) => { c.narracao = (manterNumeros ? numerosParaTela(numerosPorExtenso(novas[i], { manterNumeros: true })) : numerosPorExtenso(novas[i])).trim(); });
     // cada cena precisa manter tamanho parecido (evita a IA fundir ideias ou inflar uma cena)
     const fora = copia.cenas.slice(0, n).findIndex((c, i) => { const a = originais[i].split(/\s+/).length, b = c.narracao.split(/\s+/).length; return b < a * 0.6 || b > a * 1.5; });
     if (fora >= 0) throw new Error(`a cena ${fora + 1} mudou demais de tamanho`);

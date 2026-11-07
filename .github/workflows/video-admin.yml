@@ -86,6 +86,12 @@ jobs:
         timeout-minutes: 15
         run: npx playwright install --with-deps chromium
 
+      # OCR das imagens por IA (descarta e refaz imagem que veio com letras). Se falhar, o pipeline segue sem a checagem.
+      - name: Instalar Tesseract (OCR das imagens)
+        continue-on-error: true
+        timeout-minutes: 4
+        run: sudo apt-get install -y --no-install-recommends tesseract-ocr tesseract-ocr-eng tesseract-ocr-por
+
       - name: Instalar dependências Python (narração)
         run: pip install edge-tts pydub supabase requests num2words
 

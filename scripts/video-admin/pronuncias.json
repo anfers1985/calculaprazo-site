@@ -1,0 +1,3 @@
+{
+  "_como_usar": "Respelling por palavra, aplicado a qualquer voz (o texto da tela e das legendas não muda). As candidatas aparecem em admin-videos/_pronuncias/observadas.json (Storage) e no qa-voz.json de cada vídeo: 'esperado -> ouvido'. Só entra aqui o que você confirmar de ouvido. Exemplo de formato: \"palavra\": \"grafia que a voz lê certo\""
+}

@@ -114,21 +114,25 @@ export async function renderizar({ cena, audio, outDir, maxSeg, workers, log = c
     '-i', audio, '-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-maxrate', '8000k', '-bufsize', '16000k', '-pix_fmt', 'yuv420p',
     '-r', String(FPS), '-c:a', 'aac', '-b:a', '192k', '-t', String(durRender), '-movflags', '+faststart', mp4], { stdio: 'inherit' });
 
-  // Capa = primeiro quadro (miniatura do YouTube em 1280x720 só no vídeo horizontal).
+  // Capa = primeiro quadro. Vídeo horizontal: miniatura do YouTube em 1280x720. Short vertical: PNG 1080x1920, guardada só para
+  // baixar no admin (o YouTube pega a capa do próprio vídeo; publicar.mjs só envia miniatura nos longos).
   let thumb = null;
-  if (!vertical) {
+  {
     const b2 = await chromium.launch(launch);
     try {
-      const pg = await b2.newPage({ viewport: { width: 1920, height: 1080 } });
+      const pg = await b2.newPage({ viewport: { width: W, height: H } });
       await pg.goto('file://' + path.resolve(htmlPath), { waitUntil: 'domcontentloaded' });
       await pg.evaluate(() => document.fonts.ready);
-      await pg.waitForTimeout(500);
       await pg.evaluate(() => window.render(0));
-      const grande = path.join(outDir, 'capa_1920.png');
+      await pg.evaluate(() => Promise.all([...document.images].map((im) => (im.complete ? 0 : new Promise((ok) => { im.onload = im.onerror = ok; })))));
+      await pg.waitForTimeout(500);
+      const grande = path.join(outDir, vertical ? 'capa_vertical.png' : 'capa_1920.png');
       await pg.screenshot({ path: grande });
       thumb = path.join(outDir, 'thumbnail.png');
-      execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', grande, '-vf', 'scale=1280:720:flags=lanczos', thumb]);
-    } finally { await b2.close(); }
+      if (vertical) fs.copyFileSync(grande, thumb);
+      else execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', grande, '-vf', 'scale=1280:720:flags=lanczos', thumb]);
+    } catch (e) { console.warn('Capa não gerada (o vídeo segue sem ela):', e.message); thumb = null; }
+    finally { await b2.close(); }
   }
   return { mp4, thumbnail: thumb, htmlPath };
 }

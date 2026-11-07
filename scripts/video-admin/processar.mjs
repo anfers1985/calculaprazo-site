@@ -1,6 +1,6 @@
 // Orquestrador do pipeline de vídeos do admin:  node processar.mjs <job_id>
 // Etapas: roteiro → narração → render → publicação. Retoma de onde parou se o job estiver em "erro".
-import { spawnSync } from 'node:child_process';
+import { spawnSync, execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -13,6 +13,15 @@ import { imagensDoJob } from './lib/imagens-job.mjs';
 
 const AQUI = path.dirname(fileURLToPath(import.meta.url));
 const LIMITE_STORAGE_MB = 48; // limite de arquivo do plano gratuito do Supabase é 50 MB
+
+// Cópia para download que cabe no limite do Storage: recodifica com bitrate calculado a partir da duração (o original segue para o YouTube).
+function compactarParaStorage(mp4, durSeg) {
+  const saida = mp4.replace(/\.mp4$/i, '_download.mp4');
+  const alvoKbps = Math.floor(((LIMITE_STORAGE_MB * 0.9 * 8 * 1024) / Math.max(durSeg, 1)) - 128);
+  if (alvoKbps < 300) return null;
+  execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', mp4, '-c:v', 'libx264', '-preset', 'medium', '-b:v', `${alvoKbps}k`, '-maxrate', `${Math.floor(alvoKbps * 1.2)}k`, '-bufsize', `${alvoKbps * 2}k`, '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '128k', '-movflags', '+faststart', saida], { stdio: 'inherit' });
+  return fs.statSync(saida).size / 1048576 <= LIMITE_STORAGE_MB ? saida : null;
+}
 
 async function etapaNarracao(jobId) {
   const r = spawnSync('python3', [path.join(AQUI, 'narracao.py'), jobId], { stdio: 'inherit', env: process.env });
@@ -33,7 +42,12 @@ async function etapaRender(jobId) {
   const mb = fs.statSync(mp4).size / 1048576;
   const campos = { status: 'render_ok', erro_etapa: null, erro_mensagem: null, roteiro: { ...job.roteiro, cortes_reais: cena.cortes } };
   if (mb <= LIMITE_STORAGE_MB) campos.video_path = await enviarArquivo(mp4, caminhoStorage(jobId, 'video.mp4'), 'video/mp4');
-  else console.log(`Vídeo com ${mb.toFixed(0)} MB: acima do limite do Storage; segue direto para o YouTube sem guardar cópia.`);
+  else {
+    let copia = null;
+    try { copia = compactarParaStorage(mp4, duracaoDoAudio(audio)); } catch (e) { console.warn('Recompressão para o Storage falhou:', e.message); }
+    if (copia) { campos.video_path = await enviarArquivo(copia, caminhoStorage(jobId, 'video.mp4'), 'video/mp4'); console.log(`Vídeo com ${mb.toFixed(0)} MB: guardada uma cópia recomprimida (${(fs.statSync(copia).size / 1048576).toFixed(0)} MB) para baixar no admin; o original segue para o YouTube.`); }
+    else console.log(`Vídeo com ${mb.toFixed(0)} MB: acima do limite do Storage e não coube nem recomprimido; segue direto para o YouTube sem guardar cópia.`);
+  }
   if (thumbnail) campos.thumbnail_path = await enviarArquivo(thumbnail, caminhoStorage(jobId, 'thumbnail.png'), 'image/png');
   await updateJob(jobId, campos);
   console.log(`Render concluído (${mb.toFixed(1)} MB).`);

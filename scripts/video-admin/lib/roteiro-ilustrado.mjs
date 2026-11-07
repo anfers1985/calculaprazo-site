@@ -1,7 +1,7 @@
 // Roteiro do Short ILUSTRADO (estilo do vídeo de referência: uma ilustração por cena + legenda em blocos).
 // Sem acesso ao banco: roda no GitHub Actions e também no computador local.
 import { costurarNarracao } from './costura.mjs';
-import { extrairJson, COESAO_PROMPT, TOM, RE_SEGUNDA, RE_DIGITOS, RE_NARRACAO_SUJA, numerosPorExtenso, RE_PARCIAL, PALAVRAS_POR_SEG, CTA_FINAL, PALAVRAS_CTA } from './roteiro-regras.mjs';
+import { extrairJson, COESAO_PROMPT, TOM, RE_SEGUNDA, RE_DIGITOS, RE_NARRACAO_SUJA, numerosPorExtenso, numerosParaTela, RE_JUNK_SEM_NUM, RE_PARCIAL, PALAVRAS_POR_SEG, CTA_FINAL, PALAVRAS_CTA } from './roteiro-regras.mjs';
 import { normRef } from './artigo.mjs';
 
 const MAX_TENTATIVAS = 3;
@@ -59,12 +59,13 @@ OBJETIVO: Short vertical (9:16) ILUSTRADO de ${Math.round(durSeg)} segundos. Cad
 - Número de cenas: entre ${m.cenasMin} e ${m.cenasMax} (alvo ${m.alvoCenas}); ORÇAMENTO: cada cena (exceto a última) tem de ${Math.max(5, porCena - 4)} a ${porCena + 4} palavras (média ${porCena}), em 1 frase curta, ou 2 muito curtas. NÃO passe de ${porCena + 6} palavras em nenhuma cena: o total estouraria o limite. Some as palavras antes de responder e corte o que passar de ${m.max}.
 - Cena 1 é o GANCHO: pergunta ou situação que prende a atenção nos primeiros segundos, sem sensacionalismo. A última cena é o encerramento (a narração dela será substituída por um convite para ler o artigo; escreva só "encerramento" nela).
 - ${COESAO_PROMPT}
-- A narração NÃO pode conter dígitos, "R$", "%" nem símbolos, e nunca use a palavra "número" nem "nº" antes de tema, súmula ou artigo (diga "Tema cento e setenta e um", não "Tema número…"): escreva tudo por extenso ("artigo quatrocentos e sessenta e nove", "cinco meses").
+- Na narração, escreva números, artigos, leis, temas, prazos e porcentagens em ALGARISMOS ("Tema 176", "art. 227 da CLT", "LC 150/2015", "25 horas", "50%", "3,2%"): a legenda e as etiquetas mostram o texto como escrito e a voz lê por extenso sozinha. Nunca use "R$" solto, símbolos, nem a palavra "número"/"nº" antes de tema, súmula ou artigo ("Tema 176", não "Tema número…").
+- Cada cena é uma frase (ou duas) COMPLETA: começa com maiúscula e termina com ponto, "?" ou "!". Nunca divida uma frase entre duas cenas (a voz fecha a entonação no fim de cada cena).
 - Se a narração de uma cena citar artigo de lei, súmula, tema ou lei, liste a norma em "refs" dessa cena (apenas as permitidas acima). Cena sem citação: "refs": [].
 - ASSUNTO VISUAL: antes de escrever, identifique o assunto CONCRETO do artigo (a atividade, o local, os objetos e as pessoas de que ele fala; ex.: varrição de ruas → gari, vassoura, calçada, lixo, uniforme, luvas) e use-o para ilustrar a maioria das cenas (pelo menos 2 de cada 3). Cada imagem deve mostrar algo que a narração DAQUELA cena diz; nunca ilustre com uma balança, martelo ou pilha de livros genéricos quando a cena fala de uma situação concreta. Símbolos jurídicos (balança, martelo, documento) só nas poucas cenas que falam da lei ou do tribunal.
 - Use no máximo duas cenas com a pessoa (o "personagem"), no ambiente do assunto; as demais mostram objetos e lugares do assunto ou, quando a cena for sobre a norma ou o tribunal, um símbolo jurídico.
 
-PEDIDO DE IMAGEM (campo "prompt_imagem", SEMPRE EM INGLÊS, 1 a 2 frases): descreva APENAS o assunto e a ação da ilustração (o estilo visual é aplicado automaticamente). Uma ideia visual por cena, concreta e desenhável, que combine com o que a narração diz. Cite no prompt os substantivos concretos da narração (ex.: "a street sweeper with a broom on a city sidewalk"). NÃO peça itens com escrita legível (calendário com mês, placa, página de livro, tela de celular, documento com texto): a IA escreve letras erradas ou em inglês; peça o item sem texto ou deixe-o de fora. Sem pessoas reais, sem logotipos, sem marcas. Se houver uma pessoa, copie literalmente a descrição do "personagem" definido abaixo para ela ficar igual em todas as cenas.
+PEDIDO DE IMAGEM (campo "prompt_imagem", SEMPRE EM INGLÊS, 1 a 2 frases): descreva APENAS o assunto e a ação da ilustração (o estilo visual é aplicado automaticamente). Uma ideia visual por cena, concreta e desenhável, que combine com o que a narração diz. Cite no prompt os substantivos concretos da narração (ex.: "a street sweeper with a broom on a city sidewalk"). NÃO peça itens com escrita legível (calendário com mês, placa, página de livro, tela de celular, documento com texto, carimbo, selo, etiqueta, "law book", "final judgment"): o gerador ESCREVE no desenho as palavras que aparecem no pedido (saiu "Law" e "FINAL JUDGEMEON" assim): a IA escreve letras erradas ou em inglês; peça o item sem texto ou deixe-o de fora. Sem pessoas reais, sem logotipos, sem marcas. Se houver uma pessoa, copie literalmente a descrição do "personagem" definido abaixo para ela ficar igual em todas as cenas.
 INFORMAÇÃO EM CIMA DA ILUSTRAÇÃO (a ilustração sozinha não informa; estes campos fazem o vídeo ensinar): "rotulos" (opcional, de 1 a 2 termos-chave da cena, até 3 palavras cada, ex.: ["Mais de dois dias", "Subordinação"]) aparecem como post-its no momento em que a narração os menciona; use as MESMAS palavras da narração, na mesma ordem. "numero_destaque" (opcional, só quando a cena traz um número-chave que está NO ARTIGO): {"valor":"2","unidade":"dias por semana"}, aparece como carimbo com contagem. Use rótulos em pelo menos 2 de cada 3 cenas e numero_destaque no máximo 2 vezes no vídeo.
 VARIEDADE VISUAL: alterne os planos nos pedidos de imagem (um plano aberto do ambiente, um plano médio da ação, um close de um detalhe) e não repita a mesma composição em cenas seguidas.
 Texto dentro da imagem (campo opcional "texto_na_imagem"): só quando ajuda muito (ex.: "CONTRATO", "ERRO", "PRAZO"); em português, MAIÚSCULAS, no máximo 3 palavras e sem números. Na dúvida, omita.
@@ -103,7 +104,8 @@ export function validarIlustrado(r, ctx) {
       palavras += w;
       if (w < 5) erros.push(`Cena ${n}: narração curta demais.`);
       if (w > 45) erros.push(`Cena ${n}: narração longa demais (${w} palavras; máx. 45).`);
-      if (RE_DIGITOS.test(nar)) erros.push(`Cena ${n}: a narração não pode ter dígitos, "R$" ou "%" — escreva por extenso.`);
+      if (!/[.!?…]["”')\]]*\s*$/.test(nar.trim())) erros.push(`Cena ${n}: a narração termina no meio da frase (feche com ponto, "?" ou "!").`);
+      if (/^[a-zà-ÿ]/.test(nar.trim())) erros.push(`Cena ${n}: a narração começa em minúscula (continua a frase da cena anterior); cada cena é uma frase completa.`);
       if (RE_SEGUNDA.test(nar)) erros.push(`Cena ${n}: não use segunda pessoa na narração.`);
       if (tom === 'neutro' && RE_PARCIAL.test(nar)) avisos.push(`Cena ${n}: palavra parcial na narração (tom neutro).`);
       const pi = String(c.prompt_imagem || '').trim();
@@ -156,7 +158,8 @@ export async function gerarRoteiroIlustrado({ artigo, durSeg, tom, chamarIA, log
     // reparos determinísticos: números da narração por extenso; "texto_na_imagem" com número é descartado (a legenda do vídeo já mostra o texto)
     (r.cenas || []).forEach((c, i) => {
       if (!c || typeof c !== 'object') return;
-      if (c.narracao && RE_NARRACAO_SUJA.test(c.narracao)) { c.narracao = numerosPorExtenso(c.narracao); log(`  reparo: cena ${i + 1}, números da narração por extenso`); }
+      if (c.narracao) { let n0 = String(c.narracao); if (RE_JUNK_SEM_NUM.test(n0)) n0 = numerosPorExtenso(n0, { manterNumeros: true }); const n1 = numerosParaTela(n0); if (n1 !== c.narracao) { c.narracao = n1; log(`  reparo: cena ${i + 1}, números da narração em algarismos (a voz lê por extenso)`); } }
+      if (Array.isArray(c.rotulos)) c.rotulos = c.rotulos.map((x) => (typeof x === 'string' ? numerosParaTela(x) : x));
       if (c.texto_na_imagem && /\d/.test(String(c.texto_na_imagem))) { log(`  reparo: cena ${i + 1}, "texto_na_imagem" com número descartado`); delete c.texto_na_imagem; }
     });
     // rótulos e número em destaque: só texto curto e válido; o que não servir é descartado (são enfeite informativo, não motivo para reprovar)
@@ -177,12 +180,12 @@ export async function gerarRoteiroIlustrado({ artigo, durSeg, tom, chamarIA, log
     v.avisos.slice(0, 8).forEach(a => log('  aviso: ' + a));
     const todos = [...v.erros, ...(v.erroPalavras ? [v.erroPalavras] : [])];
     const validar = (x) => validarIlustrado(x, { durSeg, refsPermitidas, tom });
-    if (!todos.length) { r.modelo = modelo; const costurado = await costurarNarracao({ r, chamarIA, validar, tom, log, textoArtigo: artigo.texto }); return { roteiro: finalizarIlustrado(costurado), tentativas: tentativa, avisos: v.avisos }; }
+    if (!todos.length) { r.modelo = modelo; const costurado = await costurarNarracao({ r, chamarIA, validar, tom, log, textoArtigo: artigo.texto, manterNumeros: true }); return { roteiro: finalizarIlustrado(costurado), tentativas: tentativa, avisos: v.avisos }; }
     log(`  reprovado (${todos.length}): ${todos.slice(0, 6).join(' | ')}`);
     const desvio = v.erroPalavras ? Math.abs(v.totalPalavras - v.metas.palavras) / v.metas.palavras : 0;
     if (!v.erros.length && v.erroPalavras && desvio <= 0.45 && (!melhor || desvio < melhor.desvio)) melhor = { r, modelo, v, desvio };
     motivo = todos.slice(0, 15).map(x => '- ' + x).join('\n');
   }
-  if (melhor) { log('Usando a melhor tentativa (só a contagem de palavras ficou fora da faixa ideal).'); melhor.r.modelo = melhor.modelo; const costurado = await costurarNarracao({ r: melhor.r, chamarIA, validar: (x) => validarIlustrado(x, { durSeg, refsPermitidas, tom }), tom, log, textoArtigo: artigo.texto }); return { roteiro: finalizarIlustrado(costurado), tentativas: MAX_TENTATIVAS, avisos: [melhor.v.erroPalavras] }; }
+  if (melhor) { log('Usando a melhor tentativa (só a contagem de palavras ficou fora da faixa ideal).'); melhor.r.modelo = melhor.modelo; const costurado = await costurarNarracao({ r: melhor.r, chamarIA, validar: (x) => validarIlustrado(x, { durSeg, refsPermitidas, tom }), tom, log, textoArtigo: artigo.texto, manterNumeros: true }); return { roteiro: finalizarIlustrado(costurado), tentativas: MAX_TENTATIVAS, avisos: [melhor.v.erroPalavras] }; }
   throw new Error(`A IA não gerou um roteiro ilustrado válido em ${MAX_TENTATIVAS} tentativas. Último motivo:\n${motivo}`);
 }

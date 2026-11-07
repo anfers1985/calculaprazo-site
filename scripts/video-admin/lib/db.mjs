@@ -53,4 +53,14 @@ export async function apagarArquivos(caminhos) {
   if (error) throw new Error(`Falha ao apagar arquivos: ${error.message}`);
   return caminhos.length;
 }
+// Depois de publicado só o que alimenta o download no admin precisa ficar no Storage: o vídeo, a capa e o relatório da voz.
+// Imagens por IA (dezenas de MB num Short ilustrado), áudio da narração e arquivos de cache são apagados na hora, para não estourar a cota.
+const MANTER_APOS_PUBLICAR = new Set(['video.mp4', 'thumbnail.png', 'qa-voz.json']);
+export const arquivosIntermediarios = (caminhos) => caminhos.filter((c) => !MANTER_APOS_PUBLICAR.has(path.basename(c)));
+export async function limparIntermediarios(jobId) {
+  const apagar = arquivosIntermediarios(await listarArquivos(`${PREFIXO}/${jobId}`));
+  const n = await apagarArquivos(apagar);
+  await updateJob(jobId, { narracao_path: null });
+  return n;
+}
 export { TABELA };
