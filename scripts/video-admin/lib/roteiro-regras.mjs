@@ -167,7 +167,7 @@ OBJETIVO: vídeo ${longo ? 'LONGO (horizontal 16:9)' : 'SHORT (vertical 9:16)'} 
 - Narração total: entre ${m.min} e ${m.max} palavras (alvo ${m.palavras}; a voz fala ~${PALAVRAS_POR_SEG} palavras por segundo).
 - Número de cenas: entre ${Math.max(m.cenasMin, m.alvoCenas - 2)} e ${m.cenasMax} (alvo ${m.alvoCenas}); com MENOS de ${Math.max(m.cenasMin, m.alvoCenas - 2)} cenas o vídeo fica curto demais. ORÇAMENTO: cada cena (exceto a última) tem de ${Math.max(5, porCena - 4)} a ${porCena + 4} palavras de narração (média ${porCena}), em 1 frase curta, ou 2 muito curtas, nas cenas de TEXTO (afirmacao, destaque, pergunta, citacao, numero). NÃO ultrapasse ${porCena + 6} palavras nem escreva menos de ${Math.max(5, porCena - 6)} nessas cenas. As cenas de INFOGRÁFICO (decisao, grade, passos, comparacao, lista) têm de ${porCena + 5} a ${porCena + 16} palavras: a narração percorre CADA item na ordem em que ele aparece na tela (a pergunta, depois o sim e o não; cartão a cartão; passo a passo), porque o espectador precisa de tempo para ler. O total precisa ficar entre ${m.min} e ${m.max}. Antes de responder, SOME as palavras: se passar de ${m.max}, corte; se faltar para ${m.min}, acrescente cenas ou alongue as cenas.\n- O campo \"narracao\" é OBRIGATÓRIO em TODAS as cenas, inclusive na capa (nunca omita nem renomeie).
 - ${COESAO_PROMPT}
-- A narração NÃO pode conter dígitos, "R$", "%" nem símbolos: escreva tudo por extenso ("artigo quatrocentos e sessenta e nove", "cinco meses"). O texto na TELA, ao contrário, usa SEMPRE algarismos e abreviações, nunca números por extenso ("art. 469", "5 meses", "Tema 176", "LC 150/2015", "25 horas", "50%", "3,2%"): o espectador lê a tela e ouve a voz. TUDO o que aparece na tela (cada item de grade, passo, lista ou comparação, e o subtítulo) tem de ser dito pela narração DA MESMA CENA: não coloque na tela um dado que a voz não menciona, e faça a narração citar cada item na ordem. Cada cena é uma frase COMPLETA: começa com maiúscula e termina com ponto, "?" ou "!"; nunca divida uma frase entre duas cenas. Título de tela nunca termina em preposição, artigo ou vírgula.
+- A narração NÃO pode conter dígitos, "R$", "%" nem símbolos: escreva tudo por extenso ("artigo quatrocentos e sessenta e nove", "cinco meses"). O texto na TELA, ao contrário, usa SEMPRE algarismos e abreviações, nunca números por extenso ("art. 469", "5 meses", "Tema 176", "LC 150/2015", "25 horas", "50%", "3,2%"): o espectador lê a tela e ouve a voz. TUDO o que aparece na tela (cada item de grade, passo, lista ou comparação, e o subtítulo) tem de ser dito pela narração DA MESMA CENA: não coloque na tela um dado que a voz não menciona, e faça a narração citar cada item na ordem. Cada cena é uma frase COMPLETA: começa com maiúscula e termina com ponto, "?" ou "!"; nunca divida uma frase entre duas cenas. Textos de tela são curtos (até 8 palavras) e completos (não terminam em preposição, artigo ou vírgula).
 - Cena 1 é SEMPRE do tipo "capa" (gancho em pergunta neutra) e a última é SEMPRE do tipo "encerramento". Nunca 3 cenas seguidas do mesmo tipo (alterne, por exemplo, afirmacao → destaque → pergunta → lista). A cena 2 NUNCA é do tipo "pergunta": a capa já é a pergunta e a cena 2 começa a responder. Use "pergunta" só para abrir um tópico novo (no máximo ${longo ? 3 : 1} no vídeo), sempre respondida pela cena seguinte; nunca duas perguntas seguidas. Varie os tipos e os ícones conforme o assunto do artigo.
 - VARIEDADE E INFORMAÇÃO NOS SLIDES: os slides são INFOGRÁFICOS que se montam enquanto o narrador fala, e não frases com um símbolo. Escolha o tipo pelo conteúdo da cena: "decisao" quando a regra é um teste sim/não (ex.: "trabalha mais de dois dias por semana?"); "grade" para requisitos, elementos, critérios ou direitos (2 a 4 cartões); "passos" para etapas ou ordem de análise (3 a 5); "comparacao" quando o artigo contrapõe dois conceitos (ex.: diarista × doméstica); "numero" para um número-chave que esteja no artigo; "lista" para o resumo; "citacao" para a frase-síntese de uma regra. "afirmacao" e "destaque" são o ÚLTIMO recurso: no máximo ${longo ? '40%' : '50%'} das cenas de conteúdo. Cite nos textos dos cartões, passos e opções as MESMAS palavras que a narração usa para cada item, e na MESMA ordem (o item aparece na tela quando o narrador o menciona). ${longo ? 'No vídeo longo use pelo menos 4 tipos diferentes. A PENÚLTIMA cena é o RESUMO: tipo "lista" com 3 itens, titulo "Em resumo", e narração que começa com "Em resumo," e retoma os pontos principais.' : 'No Short use pelo menos 3 tipos diferentes.'}
 - O texto de tela carrega a INFORMAÇÃO-CHAVE da cena (um critério, um dado ou uma conclusão, em 6 a 12 palavras), e não só um rótulo de 2 ou 3 palavras. Ruim: "Autonomia na prestação". Bom: "Atende várias casas, com autonomia: diarista".
@@ -331,7 +331,7 @@ const _SEM_CONVERTER = new Set(['narracao', 'prompt_imagem', 'tipo', 'icone', 'm
 /** Aplica numerosParaTela a todos os textos de tela de uma cena (tudo, menos narração, prompt de imagem, ícones e tipos). */
 export function aplicarNumerosNaTela(c) {
   const visita = (v, k) => {
-    if (typeof v === 'string') return _SEM_CONVERTER.has(k) ? v : numerosParaTela(v);
+    if (typeof v === 'string') return _SEM_CONVERTER.has(k) ? v : numerosParaTela(v.replace(/\*\*|__|`/g, ''));  // tira marcação de markdown que a IA às vezes põe na tela
     if (Array.isArray(v)) return v.map(x => visita(x, k));
     if (v && typeof v === 'object') { Object.keys(v).forEach(kk => { v[kk] = visita(v[kk], kk); }); return v; }
     return v;
@@ -339,6 +339,9 @@ export function aplicarNumerosNaTela(c) {
   if (c && typeof c === 'object') Object.keys(c).forEach(k => { c[k] = visita(c[k], k); });
   return c;
 }
+// Tela × fala e tela cortada: por padrão só AVISAM (a IA de roteiro nem sempre consegue cumprir e o job não pode cair por isso).
+// ROTEIRO_TELA_ESTRITA=1 volta a reprovar o roteiro.
+const TELA_ESTRITA = process.env.ROTEIRO_TELA_ESTRITA === '1';
 const _FUNC_FIM = /(?:^|\s)(?:de|do|da|dos|das|o|a|os|as|e|ou|em|no|na|nos|nas|para|com|que|um|uma|por|ao|aos|pelo|pela|sem|sob|entre)$/i;
 /** Texto de tela que termina no meio da frase (preposição, artigo, vírgula): sinal de corte ruim. */
 export function telaCortada(t) {
@@ -473,11 +476,11 @@ export function validarRoteiro(r, ctx) {
     // texto de tela
     const telas = textosDeTela(c);
     telas.forEach(t => { if (RE_SEGUNDA.test(t)) erros.push(`Cena ${n}: não use segunda pessoa no texto da tela ("${t.slice(0, 40)}").`); });
-    telas.forEach(t => { if (telaCortada(t)) erros.push(`Cena ${n}: texto de tela cortado no meio da frase ("${String(t).slice(0, 50)}"): reescreva completo e curto.`); });
+    telas.forEach(t => { if (telaCortada(t)) (TELA_ESTRITA ? erros : avisos).push(`Cena ${n}: texto de tela cortado no meio da frase ("${String(t).slice(0, 50)}"): reescreva completo e curto.`); });
     if (c.tipo !== 'capa' && c.tipo !== 'encerramento' && c.tipo !== 'numero') {
       textosFalaveis(c).forEach(t => {
         const { total, cobertura } = coberturaTelaNarracao(t, c.narracao);
-        if (total >= 3 && cobertura < 0.25) erros.push(`Cena ${n}: a tela mostra "${String(t).slice(0, 50)}" mas a narração desta cena não menciona isso; narre o item ou tire-o da tela.`);
+        if (total >= 3 && cobertura < 0.25) (TELA_ESTRITA ? erros : avisos).push(`Cena ${n}: a tela mostra "${String(t).slice(0, 50)}" mas a narração desta cena não menciona isso; narre o item ou tire-o da tela.`);
         else if (total >= 2 && cobertura < 0.5) avisos.push(`Cena ${n}: pouco do texto de tela "${String(t).slice(0, 40)}" aparece na narração.`);
       });
     }
