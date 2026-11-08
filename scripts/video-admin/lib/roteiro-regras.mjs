@@ -129,7 +129,7 @@ export function repararRoteiro(r, icones) {
   return log;
 }
 
-export const COESAO_PROMPT = `COESÃO (muito importante): a narração é UM discurso contínuo dividido em cenas, e não uma lista de frases soltas. Antes de escrever, defina a linha de raciocínio: gancho → contexto → qual é o problema → o que a lei ou o tribunal diz → como isso se aplica na prática → resumo. Cada cena, exceto a primeira, deve COMEÇAR emendando a ideia da cena anterior, com um conector natural da fala ("Mas", "Por isso", "Nesse caso", "Na prática", "Ou seja", "Além disso", "Já", "Com isso", "Por outro lado", "E o que isso significa?", "Vamos ver"), variando-os (nunca o mesmo conector mais de duas vezes). Use só conectores comuns da fala: não use "aliás", "outrossim", "destarte", "ademais" nem expressões raras, que a voz sintética pronuncia mal. A cena que abre um tópico novo deve ser anunciada pela anterior ("Vamos ver como isso funciona."). Não repita o assunto-título em toda cena: use referências ("essa regra", "nesse caso", "o tribunal"). A penúltima cena fecha o raciocínio e leva ao convite final, sem repeti-lo. NOVIDADE: cada cena traz uma informação NOVA do artigo (condição, exemplo, exceção, consequência); NUNCA repita uma ideia já dita só para completar o tempo, e na conclusão resuma o essencial UMA única vez (não escreva 3 ou 4 cenas finais dizendo a mesma coisa com palavras diferentes). Se faltar palavra para o alvo, aprofunde com exemplos e detalhes que estão no artigo, em vez de repetir. RITMO: alterne frases curtas (6 a 10 palavras) com frases mais longas; não faça todas as cenas com a mesma estrutura de sujeito + verbo + complemento.`;
+export const COESAO_PROMPT = `COESÃO (muito importante): a narração é UM discurso contínuo dividido em cenas, e não uma lista de frases soltas. Antes de escrever, defina a linha de raciocínio: gancho → contexto → qual é o problema → o que a lei ou o tribunal diz → como isso se aplica na prática → resumo. Cada cena, exceto a primeira, deve COMEÇAR emendando a ideia da cena anterior, com um conector natural da fala ("Mas", "Por isso", "Nesse caso", "Na prática", "Ou seja", "Além disso", "Já", "Com isso", "Por outro lado", "E o que isso significa?", "Vamos ver"), variando-os (nunca o mesmo conector mais de duas vezes). Use só conectores comuns da fala: não use "aliás", "outrossim", "destarte", "ademais" nem expressões raras, que a voz sintética pronuncia mal. A cena que abre um tópico novo deve ser anunciada pela anterior ("Vamos ver como isso funciona."). Não repita o assunto-título em toda cena: use referências ("essa regra", "nesse caso", "o tribunal"). A penúltima cena fecha o raciocínio e leva ao convite final, sem repeti-lo. NOVIDADE: cada cena traz uma informação NOVA do artigo (condição, exemplo, exceção, consequência); NUNCA repita uma ideia já dita só para completar o tempo, e na conclusão resuma o essencial UMA única vez (não escreva 3 ou 4 cenas finais dizendo a mesma coisa com palavras diferentes). Se faltar palavra para o alvo, aprofunde com exemplos e detalhes que estão no artigo, em vez de repetir. RITMO: alterne frases curtas (6 a 10 palavras) com frases mais longas; não faça todas as cenas com a mesma estrutura de sujeito + verbo + complemento. ABERTURA: se a cena 1 é uma PERGUNTA, a cena 2 a RESPONDE logo no início, em poucas palavras (\"Não, em regra.\", \"Depende.\", \"Sim.\", \"O TST firmou que…\"), SEM conector de contraste ou consequência (\"Mas\", \"Por isso\", \"Com isso\", \"Portanto\"), porque ainda não há nada a contrastar. Faça no máximo UMA pergunta em todo o vídeo (a da abertura): nunca faça outra pergunta depois da resposta. Conector só quando existe ligação lógica real com a frase anterior; sem ligação, comece a frase direto.`;
 
 export function metas(tipo, durSeg) {
   const palavras = Math.round(durSeg * PALAVRAS_POR_SEG);
@@ -378,6 +378,67 @@ export function coberturaTelaNarracao(tela, narracao) {
   const falado = new Set(_radicais(narracao));
   const achou = alvo.filter(w => falado.has(w)).length;
   return { total: alvo.length, cobertura: achou / alvo.length };
+}
+// ---------- REPAROS que evitam derrubar o job por problema que dá para consertar sozinho ----------
+/** Tira das cenas as referências (chips) que não estão entre as permitidas e limita a 3. Chip é enfeite: o artigo-fonte continua sendo a verdade. */
+export function filtrarRefs(r, refsPermitidas) {
+  const ok = new Set((refsPermitidas || []).map(normRef));
+  const reparos = [];
+  (r.cenas || []).forEach((c, i) => {
+    if (!c || !Array.isArray(c.refs)) return;
+    const boas = c.refs.filter(x => ok.has(normRef(x))).slice(0, 3);
+    if (boas.length !== c.refs.length) reparos.push(`cena ${i + 1}: ${c.refs.length - boas.length} referência(s) fora das permitidas removida(s)`);
+    c.refs = boas;
+  });
+  return reparos;
+}
+/** Nada na tela que a voz não diga: tira da cena chips, subtítulo e itens de grade/passos/lista que a narração não menciona (a tela segue a fala, nunca o contrário).
+ *  Se sobrarem itens de menos, a cena vira "afirmacao" só com o título. Devolve a lista de reparos feitos. */
+export function alinharTelaComFala(r) {
+  const reparos = [];
+  const MIN_ITENS = { cards: 2, passos: 3, itens: 3 };
+  (r.cenas || []).forEach((c, i) => {
+    if (!c || typeof c !== 'object' || ['capa', 'encerramento', 'numero'].includes(c.tipo)) return;
+    const nar = c.narracao || '';
+    const falado = (t) => { const x = coberturaTelaNarracao(t, nar); return x.total < 2 || x.cobertura >= 0.3; }; // pouco conteúdo para medir: mantém
+    if (Array.isArray(c.chips)) {
+      const ok = c.chips.filter(falado);
+      if (ok.length !== c.chips.length) { reparos.push(`cena ${i + 1}: etiqueta(s) não faladas removida(s)`); if (ok.length >= 2) c.chips = ok; else delete c.chips; }
+    }
+    if (typeof c.sub === 'string' && c.sub.trim() && !falado(c.sub)) { reparos.push(`cena ${i + 1}: subtítulo não falado removido`); c.sub = ' '; }
+    for (const campo of ['cards', 'passos', 'itens']) {
+      const lista = c[campo];
+      if (!Array.isArray(lista)) continue;
+      const ok = lista.filter(it => falado([it && it.titulo, it && it.texto].filter(Boolean).join(' ')));
+      if (ok.length === lista.length) continue;
+      if (ok.length >= MIN_ITENS[campo]) { c[campo] = ok; reparos.push(`cena ${i + 1}: ${lista.length - ok.length} item(ns) não falado(s) removido(s)`); }
+      else {
+        const titulo = String(c.titulo || (ok[0] && ok[0].titulo) || (lista[0] && lista[0].titulo) || 'Em resumo');
+        const refs = Array.isArray(c.refs) ? c.refs : [];
+        Object.keys(c).forEach(k => { if (k !== 'narracao') delete c[k]; });
+        Object.assign(c, { tipo: 'afirmacao', texto: titulo, icone: 'lu-info', refs });
+        reparos.push(`cena ${i + 1}: itens da tela não falados; cena virou afirmação só com o título`);
+        break;
+      }
+    }
+  });
+  return reparos;
+}
+const _CONECTORES_APOS_PERGUNTA = /^(?:mas|por isso|com isso|portanto|assim|então|por outro lado|al[ée]m disso|ou seja)\b[,\s]+/i;
+/** Depois de uma pergunta de abertura a cena seguinte RESPONDE; conector que liga a "algo dito antes" (Mas…, Por isso…) fica sem sentido e é retirado. */
+export function corrigirAberturaPergunta(cenas) {
+  const reparos = [];
+  for (let i = 1; i < (cenas || []).length; i++) {
+    const ant = String((cenas[i - 1] && cenas[i - 1].narracao) || '').trim();
+    const c = cenas[i];
+    if (!c || !c.narracao || !/\?["”')\]]*$/.test(ant)) continue;
+    const m = String(c.narracao).match(_CONECTORES_APOS_PERGUNTA);
+    if (!m) continue;
+    const resto = String(c.narracao).slice(m[0].length);
+    c.narracao = resto.charAt(0).toUpperCase() + resto.slice(1);
+    reparos.push(`cena ${i + 1}: conector "${m[0].trim()}" retirado (vinha logo depois de uma pergunta)`);
+  }
+  return reparos;
 }
 export const RE_JUNK_SEM_NUM = /\bn[úu]meros?\b|\bn\.?\s*[º°]|[*_`#~<>\[\]{}|\\]|\b(?:ali[aá]s|outrossim|destarte|ademais|porquanto)\b/i;
 export const RE_NARRACAO_SUJA = /[0-9%]|R\$|\bn[úu]meros?\b|\bn\.?\s*[º°]|[*_`#~<>\[\]{}|\\]|\b(?:ali[aá]s|outrossim|destarte|ademais|porquanto)\b/i;

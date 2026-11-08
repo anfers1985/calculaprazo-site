@@ -1,3 +1,7 @@
 {
-  "_como_usar": "Respelling por palavra, aplicado a qualquer voz (o texto da tela e das legendas não muda). As candidatas aparecem em admin-videos/_pronuncias/observadas.json (Storage) e no qa-voz.json de cada vídeo: 'esperado -> ouvido'. Só entra aqui o que você confirmar de ouvido. Exemplo de formato: \"palavra\": \"grafia que a voz lê certo\""
+  "_como_usar": "Pronúncia por palavra, para qualquer vídeo. Texto simples = respelling (vale para todas as vozes: a voz lê a grafia nova; a tela e as legendas não mudam). Objeto {\"ipa\": \"...\"} = fonema IPA, só para a Francisca (Azure). As candidatas aparecem em admin-videos/_pronuncias/observadas.json (Storage) e no qa-voz.json de cada vídeo; para escolher a melhor versão de OUVIDO, rode o workflow 'Testar pronúncia'.",
+  "jornada": { "ipa": "ʒoɾˈnadɐ" },
+  "jornadas": { "ipa": "ʒoɾˈnadɐs" },
+  "intrajornada": { "ipa": "ĩtɾɐʒoɾˈnadɐ" },
+  "interjornada": { "ipa": "ĩteɾʒoɾˈnadɐ" }
 }

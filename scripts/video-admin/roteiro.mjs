@@ -1,7 +1,7 @@
 // Etapa 1 — gera o roteiro em slides (cenas com narração + visual) a partir do artigo.
 import { getJob, updateJob } from './lib/db.mjs';
 import { lerArtigo } from './lib/artigo.mjs';
-import { catalogoIcones, montarPrompt, validarRoteiro, repararRoteiro, extrairJson, CTA_FINAL } from './lib/roteiro-regras.mjs';
+import { catalogoIcones, montarPrompt, validarRoteiro, repararRoteiro, filtrarRefs, alinharTelaComFala, extrairJson, CTA_FINAL } from './lib/roteiro-regras.mjs';
 import { gerarRoteiroIlustrado } from './lib/roteiro-ilustrado.mjs';
 import { costurarNarracao } from './lib/costura.mjs';
 import { gerarTextoComFallback } from '../lib/ia-texto.mjs'; // somente leitura: reaproveita a cadeia de fallback (Gemini → OpenRouter → NVIDIA)
@@ -36,6 +36,7 @@ export async function gerarRoteiroPara({ artigo, tipo, durSeg, tom, chamarIA, lo
       r = extrairJson(resp.text);
     } catch (e) { motivo = `A resposta anterior não foi um JSON válido (${e.message}). Responda apenas com o objeto JSON completo.`; log(motivo); continue; }
     const reparos = repararRoteiro(r, icones); // ícones antigos, narração em outro campo, 3 cenas iguais
+    reparos.push(...filtrarRefs(r, refsPermitidas), ...alinharTelaComFala(r)); // referência fora das permitidas e tela que a voz não diz: consertados, não reprovados
     if (reparos.length) log(`  reparos automáticos (${reparos.length}): ${reparos.slice(0, 6).join(' | ')}`);
     const v = validarRoteiro(r, { tipo, durSeg, refsPermitidas, textoArtigo: artigo.texto, icones, tom });
     v.avisos.slice(0, 8).forEach(a => log('  aviso: ' + a));

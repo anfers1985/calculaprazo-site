@@ -1,0 +1,40 @@
+name: Testar pronúncia
+
+# Gera amostras da voz Francisca com variações de pronúncia de uma palavra, para você ouvir e escolher.
+# Como usar: Actions → "Testar pronúncia" → Run workflow → baixe o artefato "amostras-pronuncia" (mp3) no fim da execução.
+on:
+  workflow_dispatch:
+    inputs:
+      palavra:
+        description: 'Palavra a testar (como aparece na frase)'
+        default: 'jornadas'
+      texto:
+        description: 'Frase de teste'
+        default: 'Para jornadas superiores a seis horas, a lei prevê intervalo mínimo de uma hora.'
+      ipa:
+        description: 'IPA base da palavra (opcional)'
+        default: 'ʒoɾˈnadɐs'
+
+jobs:
+  amostras:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests pydub num2words
+      - name: Gerar amostras
+        working-directory: scripts/video-admin
+        env:
+          AZURE_SPEECH_KEY: ${{ secrets.AZURE_SPEECH_KEY }}
+          AZURE_SPEECH_REGION: ${{ secrets.AZURE_SPEECH_REGION }}
+          PALAVRA: ${{ inputs.palavra }}
+          TEXTO: ${{ inputs.texto }}
+          IPA: ${{ inputs.ipa }}
+        run: python3 testar_pronuncia.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: amostras-pronuncia
+          path: scripts/video-admin/amostras/

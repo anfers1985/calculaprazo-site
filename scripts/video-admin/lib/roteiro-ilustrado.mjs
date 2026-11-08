@@ -1,7 +1,7 @@
 // Roteiro do Short ILUSTRADO (estilo do vídeo de referência: uma ilustração por cena + legenda em blocos).
 // Sem acesso ao banco: roda no GitHub Actions e também no computador local.
 import { costurarNarracao } from './costura.mjs';
-import { extrairJson, COESAO_PROMPT, TOM, RE_SEGUNDA, RE_DIGITOS, RE_NARRACAO_SUJA, numerosPorExtenso, numerosParaTela, RE_JUNK_SEM_NUM, RE_PARCIAL, PALAVRAS_POR_SEG, CTA_FINAL, PALAVRAS_CTA } from './roteiro-regras.mjs';
+import { extrairJson, COESAO_PROMPT, TOM, RE_SEGUNDA, RE_DIGITOS, RE_NARRACAO_SUJA, numerosPorExtenso, numerosParaTela, RE_JUNK_SEM_NUM, filtrarRefs, corrigirAberturaPergunta, RE_PARCIAL, PALAVRAS_POR_SEG, CTA_FINAL, PALAVRAS_CTA } from './roteiro-regras.mjs';
 import { normRef } from './artigo.mjs';
 
 const MAX_TENTATIVAS = 3;
@@ -176,6 +176,7 @@ export async function gerarRoteiroIlustrado({ artigo, durSeg, tom, chamarIA, log
         else delete c.numero_destaque;
       }
     });
+    [...filtrarRefs(r, refsPermitidas), ...corrigirAberturaPergunta(r.cenas)].forEach(x => log('  reparo: ' + x));
     const v = validarIlustrado(r, { durSeg, refsPermitidas, tom });
     v.avisos.slice(0, 8).forEach(a => log('  aviso: ' + a));
     const todos = [...v.erros, ...(v.erroPalavras ? [v.erroPalavras] : [])];

@@ -86,12 +86,7 @@ def minimo_tela(c: dict) -> float:
 
 TTS_CORTE_DBFS = float(os.environ.get("TTS_CORTE_DBFS") or -50)      # silêncio nas pontas (era -42: raspava finais suaves de palavra)
 TTS_MARGEM_FIM_MS = int(os.environ.get("TTS_MARGEM_FIM_MS") or 120)  # folga que sobra depois da última sílaba
-TTS_FONEMAS = (os.environ.get("TTS_FONEMAS") or "0") == "1"          # SSML <phoneme> na Francisca: DESLIGADO por padrão (IPA não validado de ouvido); ligue com TTS_FONEMAS=1
-# Palavras que a Francisca lê errado ("jornada" saía "rornada"): IPA pt-BR. Só vozes Azure sem Dragon (HD não aceita phoneme).
-FONEMAS_AZURE = {
-    "jornadas": "ʒoɾˈnadɐs", "jornada": "ʒoɾˈnadɐ",
-    "intrajornada": "ĩtɾɐʒoɾˈnadɐ", "interjornada": "ĩteɾʒoɾˈnadɐ",
-}
+TTS_FONEMAS = (os.environ.get("TTS_FONEMAS") or "1") != "0"          # SSML <phoneme> na Francisca para as palavras de pronuncias.json que têm "ipa" (desligue com TTS_FONEMAS=0)
 def _carregar_pronuncias_aprendidas():
     """pronuncias.json: respelling por palavra, valendo para QUALQUER voz. É alimentado pelo relatório do QA (qa-voz.json):
     as trocas que se repetem lá são as candidatas; entra aqui o que você aprovar."""
@@ -99,12 +94,15 @@ def _carregar_pronuncias_aprendidas():
     try:
         import json
         dados = json.loads(caminho.read_text(encoding="utf-8"))
-        return {k: v for k, v in dados.items() if not str(k).startswith("_") and isinstance(v, str) and v.strip()}
+        validos = {k: v for k, v in dados.items() if not str(k).startswith("_")}
+        respelling = {k: v for k, v in validos.items() if isinstance(v, str) and v.strip()}
+        ipa = {k: v["ipa"] for k, v in validos.items() if isinstance(v, dict) and str(v.get("ipa") or "").strip()}
+        return respelling, ipa
     except (OSError, ValueError):
-        return {}
+        return {}, {}
 
 
-PRONUNCIAS_APRENDIDAS = _carregar_pronuncias_aprendidas()
+PRONUNCIAS_APRENDIDAS, FONEMAS_AZURE = _carregar_pronuncias_aprendidas()
 RATE_TOPICO = os.environ.get("TTS_RATE_TOPICO") or "-6%"  # 1ª frase do tópico: um pouco mais devagar, soa como abertura
 
 _SPLIT = re.compile(r"(?<=[.!?])\s+")

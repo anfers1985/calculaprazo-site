@@ -1,7 +1,7 @@
 // Costura da narração: o roteiro sai cena a cena (frases soltas). Esta etapa pede UMA segunda passada à IA só para
 // reescrever as narrações como um discurso contínuo (conectores, retomadas), sem mexer em fatos nem na quantidade de cenas.
 // Falha "fechada": se a resposta não passar na MESMA validação do roteiro, o roteiro original é mantido.
-import { extrairJson, numerosPorExtenso, numerosParaTela, TOM } from './roteiro-regras.mjs';
+import { extrairJson, numerosPorExtenso, numerosParaTela, corrigirAberturaPergunta, TOM } from './roteiro-regras.mjs';
 
 export async function costurarNarracao({ r, chamarIA, validar, tom, textoArtigo = '', log = console.log, manterNumeros = false }) {
   if (process.env.ROTEIRO_COSTURA === '0') return r;
@@ -26,7 +26,7 @@ REGRAS:
 - Mantenha os fatos, números e referências de cada cena. Não acrescente normas, valores ou prazos que não estejam no artigo e não mude o sentido.
 - REPETIÇÃO: se duas ou mais cenas dizem a mesma ideia com palavras diferentes (comum no fim do vídeo, em várias cenas de "conclusão", e quando um critério aparece duas vezes), mantenha a ideia só na primeira vez e TROQUE as repetições por outro ponto do artigo-fonte que ainda não foi dito (condição, exemplo, exceção ou consequência), com o mesmo tamanho. A conclusão resume o essencial uma única vez.
 - RITMO: alterne frases curtas (6 a 10 palavras) com frases mais longas; não deixe todas as cenas com a mesma estrutura.
-- Cada cena (exceto a primeira) começa emendando a anterior, com conector natural da fala (Mas, Por isso, Nesse caso, Na prática, Ou seja, Além disso, Já, Com isso, Por outro lado…), variados. A primeira cena é o gancho e dá o contexto.
+- Cada cena (exceto a primeira) pode começar emendando a anterior com conector natural da fala (Mas, Por isso, Nesse caso, Na prática, Ou seja, Além disso, Já, Com isso, Por outro lado…), variados, SÓ quando há ligação lógica real. Se a cena 1 é uma PERGUNTA, a cena 2 começa respondendo direto ("Não, em regra.", "Depende.", "O TST firmou que…"), sem "Mas"/"Por isso"/"Com isso". Não acrescente perguntas novas: a única pergunta do vídeo é a da abertura. A primeira cena é o gancho e dá o contexto.
 - Quando a cena seguinte abre um tópico novo, a cena atual termina anunciando-o de forma natural (ex.: "Vamos ver como isso funciona.").
 - Evite repetir o assunto-título em toda cena: use "essa regra", "nesse caso", "o tribunal" etc.
 - Tamanho: cada texto com quase o mesmo número de palavras do original (variação de no máximo 25%); o total não pode passar do original em mais de 10%.
@@ -46,9 +46,11 @@ REGRAS:
     const alvo = depois.metas.palavras;
     if (Math.abs(depois.totalPalavras - alvo) > Math.abs(antes.totalPalavras - alvo) + 0.05 * alvo) throw new Error(`contagem de palavras piorou (${antes.totalPalavras} → ${depois.totalPalavras})`);
     log(`  costura da narração aplicada (${antes.totalPalavras} → ${depois.totalPalavras} palavras)`);
+    corrigirAberturaPergunta(copia.cenas).forEach(x => log('  reparo: ' + x));
     return copia;
   } catch (e) {
     log(`  costura da narração ignorada (${e.message}); mantendo o roteiro original.`);
+    corrigirAberturaPergunta(r.cenas).forEach(x => log('  reparo: ' + x));
     return r;
   }
 }

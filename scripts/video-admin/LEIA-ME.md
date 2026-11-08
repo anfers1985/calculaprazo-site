@@ -75,3 +75,10 @@ Se o STT falhar, a narração segue sem a checagem. `TTS_QA=0` desliga. Ajustes:
 
 **Imagem (lib/ocr-imagem.mjs, dentro do ia-imagem.mjs).** Toda imagem gerada passa por OCR (Tesseract); com letras, é descartada e refeita (até `IMG_OCR_TENTATIVAS` vezes por provedor, `IMG_OCR_MAX_REJEICOES` no total, cada uma gasta cota).
 Sem imagem limpa, a cena usa o cartão de papel. Sem Tesseract instalado, nada é bloqueado. `IMG_OCR=0` desliga; `IMG_OCR_CONF` ajusta a sensibilidade.
+
+## Reparos automáticos do roteiro (para o job não cair por problema que dá para consertar)
+- **Referências (chips) fora das permitidas** são removidas, em vez de reprovar o roteiro.
+- **Tela × fala:** chips, subtítulos e itens de grade/passos/lista que a narração da cena não menciona são retirados (a tela segue a fala); se sobrarem itens de menos, a cena vira uma afirmação só com o título. Antes isso aparecia como silêncio com o texto na tela.
+- **Abertura:** se a cena 1 é uma pergunta, a cena 2 responde direto; conectores como "Mas…" e "Por isso…" logo depois da pergunta são retirados, e o prompt pede no máximo uma pergunta por vídeo.
+- **Modelo alternativo do Gemini:** o 503 "high demand" é capacidade do modelo, não da chave. O workflow passa `AI_MODEL_FALLBACK` (padrão `gemini-3.5-flash`; o secret de mesmo nome tem prioridade).
+- **Pronúncia:** `pronuncias.json` aceita respelling (texto) e IPA (`{"ipa": "..."}`, só Francisca). Para escolher de ouvido, rode o workflow **Testar pronúncia** e baixe as amostras.

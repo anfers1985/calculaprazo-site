@@ -104,6 +104,9 @@ jobs:
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}        # opcional
+          # 503 "high demand" é capacidade do MODELO no Google: trocar de chave não ajuda, trocar de modelo sim.
+          # Se o principal estiver sobrecarregado, a cadeia tenta este modelo (o secret AI_MODEL_FALLBACK, se existir, tem prioridade).
+          AI_MODEL_FALLBACK: ${{ secrets.AI_MODEL_FALLBACK || 'gemini-3.5-flash' }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}   # imagens GRÁTIS (Workers AI, FLUX.1 schnell)
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
