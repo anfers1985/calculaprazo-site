@@ -693,8 +693,3 @@ export function validarRoteiro(r, ctx) {
 
 export const CTA_FINAL = 'Para se aprofundar no assunto, leia o artigo completo no Calcula Prazo, com o link na descrição. E, se este conteúdo ajudou, inscreva-se no canal para acompanhar mais.';
 export const PALAVRAS_CTA = CTA_FINAL.split(/\s+/).length;
-// No Short o link da descrição NÃO é clicável (o YouTube desligou em 31/08/2023; clicáveis são os links do perfil do canal e o "vídeo relacionado"). Se o canal tiver o site nos
-// links do perfil, defina CTA_LINK_SHORT (ex.: "no perfil do canal") e o convite dos Shorts passa a dizer isso. Sem a variável, o texto continua como estava.
-const _linkShort = () => String(process.env.CTA_LINK_SHORT || '').trim();
-export const ctaFinal = (ehShort) => (ehShort && _linkShort() ? CTA_FINAL.replace('com o link na descrição', `com o link ${_linkShort()}`) : CTA_FINAL);
-export const ctaSubCartao = (ehShort) => (ehShort && _linkShort() ? _linkShort() : 'no link da descrição');

@@ -39,7 +39,6 @@ env:
   # ROTEIRO_REVISAO_TELA: '0'   # desliga a revisão de português/rótulos dos slides por IA (1 chamada extra)
   # ROTEIRO_REPETICAO: '0'      # desliga a checagem de cenas que repetem a mesma ideia (1 chamada extra por tentativa válida)
   # ROTEIRO_NORMAS_ESTRITAS: '0' # norma/número da fala que não está no artigo vira aviso em vez de erro
-  # CTA_LINK_SHORT: 'no perfil do canal'  # nos Shorts o link da descrição não é clicável: troca "link na descrição" no convite final
   IMG_ORDEM: 'cloudflare,gemini' # no GitHub não há 9router; Cloudflare (gratuito) primeiro, Google como reserva
   # ── Voz Gemini 3.8 TTS (opcional): defina em Settings → Secrets and variables → Actions → aba "Variables". Vazio = padrão do código.
   GEMINI_TTS_MODEL: ${{ vars.GEMINI_TTS_MODEL }}       # gemini-3.8-flash-tts (padrão) ou gemini-3.8-flash-lite-tts

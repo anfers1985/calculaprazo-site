@@ -2,7 +2,7 @@
 // Sem acesso ao banco: roda no GitHub Actions e também no computador local.
 import { polirNarracao } from './roteiro-core.mjs'; // costura + conferência de fidelidade ao artigo
 import { verificarRepeticao } from './fidelidade.mjs';
-import { extrairJson, COESAO_PROMPT, TOM, RE_SEGUNDA, RE_DIGITOS, RE_NARRACAO_SUJA, numerosPorExtenso, numerosParaTela, RE_JUNK_SEM_NUM, filtrarRefs, corrigirAberturaPergunta, RE_PARCIAL, PALAVRAS_POR_SEG, CTA_FINAL, PALAVRAS_CTA, ctaFinal, errosNormasNaNarracao, numeroNoArtigo, NORMAS_ESTRITAS } from './roteiro-regras.mjs';
+import { extrairJson, COESAO_PROMPT, TOM, RE_SEGUNDA, RE_DIGITOS, RE_NARRACAO_SUJA, numerosPorExtenso, numerosParaTela, RE_JUNK_SEM_NUM, filtrarRefs, corrigirAberturaPergunta, RE_PARCIAL, PALAVRAS_POR_SEG, CTA_FINAL, PALAVRAS_CTA, errosNormasNaNarracao, numeroNoArtigo, NORMAS_ESTRITAS } from './roteiro-regras.mjs';
 import { normRef } from './artigo.mjs';
 
 const MAX_TENTATIVAS = 3;
@@ -141,7 +141,7 @@ export function validarIlustrado(r, ctx) {
 export function finalizarIlustrado(r) {
   const cenas = r.cenas;
   const ult = cenas[cenas.length - 1];
-  ult.narracao = ctaFinal(true);
+  ult.narracao = CTA_FINAL;
   ult.tipo = 'encerramento';
   ult.prompt_imagem = PROMPT_IMAGEM_FINAL;
   ult.texto_na_imagem = TEXTO_IMAGEM_FINAL;

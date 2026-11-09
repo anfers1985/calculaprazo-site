@@ -2,19 +2,19 @@
 // FONTE ÚNICA: roteiro.mjs (etapa do GitHub) importa daqui. Antes havia duas cópias divergentes: esta, sem os reparos automáticos, sem a costura da
 // narração e sem a escolha da "melhor tentativa", e a de roteiro.mjs. Quem usasse a cópia antiga (o cabeçalho dizia que ela era para o app do computador,
 // que não veio no ZIP e por isso não foi verificado) geraria roteiros piores que os do GitHub.
-import { catalogoIcones, montarPrompt, validarRoteiro, repararRoteiro, filtrarRefs, alinharTelaComFala, repararNumerosDaTela, extrairJson, ctaFinal, ctaSubCartao } from './roteiro-regras.mjs';
+import { catalogoIcones, montarPrompt, validarRoteiro, repararRoteiro, filtrarRefs, alinharTelaComFala, repararNumerosDaTela, extrairJson, CTA_FINAL } from './roteiro-regras.mjs';
 import { costurarNarracao } from './costura.mjs';
 import { verificarFidelidade, verificarRepeticao } from './fidelidade.mjs';
 import { revisarTextosDeTela } from './revisao-tela.mjs';
 
 const MAX_TENTATIVAS = 3;
 
-export function finalizarRoteiro(r, artigo, tipo = 'longo') {
+export function finalizarRoteiro(r, artigo) {
   const cenas = r.cenas;
   const ult = cenas[cenas.length - 1];
-  ult.narracao = ctaFinal(tipo === 'short');
+  ult.narracao = CTA_FINAL;
   ult.titulo = 'Leia o artigo completo';
-  ult.sub = ctaSubCartao(tipo === 'short');
+  ult.sub = 'no link da descrição';
   ult.botao = 'calculaprazo.com.br';
   ult.artigo = { url_exibida: artigo.urlExibida, categoria: ['Início', 'Conteúdo', artigo.categoria].filter(Boolean).join(' › '), titulo: artigo.titulo, autor: `Por ${artigo.autor}`, data: artigo.data ? `Publicado em: ${artigo.data}` : '', resumo: artigo.resumo };
   const primeira = cenas[0];
@@ -55,7 +55,7 @@ export async function gerarRoteiroPara({ artigo, tipo, durSeg, tom, chamarIA, lo
     if (!todos.length) {
       r.modelo = modelo;
       if (tentativa < MAX_TENTATIVAS) { const rep = await verificarRepeticao({ r, chamarIA, textoArtigo: artigo.texto, log }); if (rep) { reserva = reserva || { r, modelo, v }; motivo = rep; continue; } }
-      const pronto = await polirNarracao({ r, chamarIA, validar, tom, log, textoArtigo: artigo.texto, revisarTela: true }); return { roteiro: finalizarRoteiro(pronto, artigo, tipo), tentativas: tentativa, avisos: v.avisos };
+      const pronto = await polirNarracao({ r, chamarIA, validar, tom, log, textoArtigo: artigo.texto, revisarTela: true }); return { roteiro: finalizarRoteiro(pronto, artigo), tentativas: tentativa, avisos: v.avisos };
     }
     log(`  reprovado (${todos.length}): ${todos.slice(0, 6).join(' | ')}`);
     // melhor tentativa: sem erro grave; a contagem de palavras pode ficar até 45 % fora e a variedade pode estar fraca (erros "suaves")
@@ -68,13 +68,13 @@ export async function gerarRoteiroPara({ artigo, tipo, durSeg, tom, chamarIA, lo
     log('Usando o roteiro válido da tentativa com repetição de ideias (as seguintes não produziram outro válido).');
     reserva.r.modelo = reserva.modelo;
     const pronto = await polirNarracao({ r: reserva.r, chamarIA, validar, tom, log, textoArtigo: artigo.texto, revisarTela: true });
-    return { roteiro: finalizarRoteiro(pronto, artigo, tipo), tentativas: MAX_TENTATIVAS, avisos: reserva.v.avisos };
+    return { roteiro: finalizarRoteiro(pronto, artigo), tentativas: MAX_TENTATIVAS, avisos: reserva.v.avisos };
   }
   if (melhor) {
     log('Usando a melhor tentativa (só a contagem de palavras e/ou a variedade de slides ficaram fora do ideal).');
     melhor.r.modelo = melhor.modelo;
     const pronto = await polirNarracao({ r: melhor.r, chamarIA, validar, tom, log, textoArtigo: artigo.texto, revisarTela: true });
-    return { roteiro: finalizarRoteiro(pronto, artigo, tipo), tentativas: MAX_TENTATIVAS, avisos: [melhor.v.erroPalavras] };
+    return { roteiro: finalizarRoteiro(pronto, artigo), tentativas: MAX_TENTATIVAS, avisos: [melhor.v.erroPalavras] };
   }
   throw new Error(`A IA não gerou um roteiro válido em ${MAX_TENTATIVAS} tentativas. Último motivo:\n${motivo}`);
 }

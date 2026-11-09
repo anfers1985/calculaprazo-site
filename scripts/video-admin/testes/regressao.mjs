@@ -102,15 +102,11 @@ console.log('== Revisão dos textos de tela (IA simulada)');
   t('IA fora do ar: slides intactos (falha aberta)', c.cenas[0].titulo === 'Estabilidade da gestante no experiência');
   t('distanciaRelativa separa ajuste de reescrita', RT.distanciaRelativa('no experiência', 'na experiência') < 0.2 && RT.distanciaRelativa('Impactos práticos', 'Verificar gravidez e incidência') > 0.5);
 }
-console.log('== Repetição de ideias e convite');
+console.log('== Repetição de ideias');
 { const { verificarRepeticao } = F; const r = { cenas: [...Array.from({ length: 6 }, (_, i) => ({ narracao: `Cena ${i + 1}.` })), { narracao: 'x' }] };
   const txt = await verificarRepeticao({ r, chamarIA: async () => ({ text: JSON.stringify({ repeticoes: [{ cenas: [3, 8], ideia: 'lesão concreta' }], faltou: ['fundamentos legais'] }) }), textoArtigo: 'artigo', log: () => {} });
   t('repetição devolve o retorno para regenerar o roteiro', /cenas 3 e 8/.test(txt) && /fundamentos legais/.test(txt));
   t('sem repetição: texto vazio; IA fora do ar: texto vazio', (await verificarRepeticao({ r, chamarIA: async () => ({ text: '{"repeticoes":[],"faltou":[]}' }), textoArtigo: 'a', log: () => {} })) === '' && (await verificarRepeticao({ r, chamarIA: async () => { throw new Error('x'); }, textoArtigo: 'a', log: () => {} })) === '');
-  process.env.CTA_LINK_SHORT = 'no perfil do canal';
-  t('convite do Short troca "link na descrição" quando CTA_LINK_SHORT existe', /link no perfil do canal/.test(R.ctaFinal(true)) && /link na descrição/.test(R.ctaFinal(false)));
-  delete process.env.CTA_LINK_SHORT;
-  t('sem a variável o convite não muda', /link na descrição/.test(R.ctaFinal(true)));
 }
 
 console.log(`\n${ok} ok, ${falhas} falha(s)`);
