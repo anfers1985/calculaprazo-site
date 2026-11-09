@@ -63,6 +63,20 @@ PAUSA_PONTO = _ms("TTS_PAUSA_PONTO", 320)            # entre frases da mesma cen
 PAUSA_INTERROGACAO = _ms("TTS_PAUSA_PERGUNTA", 520)
 PAUSA_ENTRE_CENAS = _ms("TTS_PAUSA_CENA", 450)       # entre cenas comuns
 PAUSA_TOPICO = _ms("TTS_PAUSA_TOPICO", 950)          # ANTES de um novo tópico (capítulo ou cena de pergunta): respiro maior
+PAUSA_CONTINUA = _ms("TTS_PAUSA_CONTINUA", 200)      # entre duas cenas quando a seguinte EMENDA a anterior ("Mas…", "Por isso…", "Na prática…"): a fala é contínua, não há por que esperar quase 1 s
+# Antes, o fim de cada cena somava a pausa de fim de frase (PAUSA_PONTO) + PAUSA_ENTRE_CENAS + as folgas do corte das pontas: ≈0,93 s de silêncio medido
+# entre TODAS as cenas dos vídeos analisados (≈15% de um Short de 60 s), mesmo quando a cena seguinte continuava o raciocínio. Agora a última frase da cena não
+# leva a pausa de frase (ela já é a pausa da cena) e cenas encadeadas usam PAUSA_CONTINUA.
+_RE_CONTINUA = re.compile(r"^\W*(?:mas|por isso|com isso|nesse caso|nessa hip[óo]tese|na pr[áa]tica|ou seja|al[ée]m disso|j[áa]|por outro lado|assim|ent[ãa]o|portanto|em resumo|dessa forma|desse modo|logo|tamb[ée]m|e|ainda|isso)\b", re.I)
+
+
+def pausa_entre_cenas(cenas, i: int, topicos) -> int:
+    """Pausa (ms) depois da cena i: respiro maior antes de um tópico novo; curta quando a cena seguinte emenda a atual; senão a padrão."""
+    if (i + 1) in topicos:
+        return PAUSA_TOPICO
+    if i + 1 < len(cenas) and _RE_CONTINUA.match(str(cenas[i + 1].get("narracao") or "")):
+        return min(PAUSA_CONTINUA, PAUSA_ENTRE_CENAS)
+    return PAUSA_ENTRE_CENAS
 RATE_CTA = "-6%"
 TEMPO_LEITURA = float(os.environ.get("TTS_TEMPO_LEITURA") or 1.0)   # multiplica o tempo mínimo de tela por slide; 0 desliga
 MAX_EXTRA_LEITURA = 4.0                                             # segundos de silêncio acrescentados, no máximo, por cena
@@ -582,12 +596,14 @@ def narrar_roteiro(roteiro: dict, voz: str, saida: Path, qa=None):
                         marca.write_text(chave, encoding="utf-8")
                 seg_cena += cortar_pontas(AudioSegment.from_file(mp3, format="mp3"))
             if not vozes.cena_inteira or len(seg_cena) == 0:  # inclui o caso em que a voz melhor foi rebaixada no meio
-                for j, (frase, pausa) in enumerate(dividir_em_frases(cena["narracao"])):
+                frases = dividir_em_frases(cena["narracao"])
+                for j, (frase, pausa) in enumerate(frases):
                     mp3 = tmp / f"c{i:03d}_{j:02d}.mp3"
                     base = RATE_TOPICO if (j == 0 and i in topicos and rate == "+0%") else rate
                     vozes.sintetizar(frase, _rate_mais(base, delta), mp3)
                     time.sleep(0.2 if not FAKE else 0)
-                    seg_cena += cortar_pontas(AudioSegment.from_file(mp3, format="mp3")) + AudioSegment.silent(duration=pausa)
+                    # a pausa de fim de frase só existe ENTRE frases: depois da última vale a pausa da cena (evita somar as duas)
+                    seg_cena += cortar_pontas(AudioSegment.from_file(mp3, format="mp3")) + (AudioSegment.silent(duration=pausa) if j < len(frases) - 1 else AudioSegment.empty())
             return seg_cena
 
         try:
@@ -605,7 +621,8 @@ def narrar_roteiro(roteiro: dict, voz: str, saida: Path, qa=None):
         _chars = len(normalizar_texto_fala(cena["narracao"])); _fala = max(len(seg_cena) / 1000, 0.1)
         if _chars >= 40 and _chars / _fala > float(os.environ.get("TTS_MAX_CHARS_SEG") or 22):
             print(f"  AVISO cena {i + 1}: {_chars} caracteres em {_fala:.1f}s ({_chars / _fala:.0f} car/s): possível áudio truncado ou palavras engolidas; ouça este trecho.")
-        seg_cena += AudioSegment.silent(duration=PAUSA_TOPICO if (i + 1) in topicos else PAUSA_ENTRE_CENAS)  # respiro maior antes de um novo tópico
+        cena["fala_seg"] = round(len(seg_cena) / 1000, 2)   # duração só da FALA da cena (sem a pausa final): o render usa para temporizar a legenda em blocos
+        seg_cena += AudioSegment.silent(duration=pausa_entre_cenas(cenas, i, topicos))  # respiro maior antes de um novo tópico; curto quando a próxima cena emenda esta
         falta = minimo_tela(cena) - len(seg_cena) / 1000
         if falta > 0.05:   # slide com informação demais para a fala curta: segura a tela um pouco mais (silêncio)
             seg_cena += AudioSegment.silent(duration=int(min(falta, MAX_EXTRA_LEITURA) * 1000))

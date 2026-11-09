@@ -92,7 +92,14 @@ export function repararRoteiro(r, icones) {
     } else if (c.tipo === 'decisao') {
       const ok = o => o && typeof o === 'object' && o.titulo;
       if (!c.pergunta || !ok(c.sim) || !ok(c.nao)) virarDestaque(c, i, c.pergunta || c.titulo, [c.sim && c.sim.titulo, c.nao && c.nao.titulo].filter(Boolean).join(' · '), 'decisão incompleta');
-      else { c.pergunta = corta(c.pergunta, 110); ['sim', 'nao'].forEach(k => { c[k].titulo = corta(c[k].titulo, 40); c[k].texto = c[k].texto ? corta(c[k].texto, 90) : ''; }); }
+      else {
+        // O rótulo "SIM"/"NÃO" da caixa vem do slot (c.sim / c.nao), não do texto: a IA às vezes escreve a RESPOSTA no slot errado (sim.titulo = "Não"),
+        // e o vídeo mostrava a etiqueta SIM sobre o título "Não" (vídeo da jornada de 42 h). Se os dois estão trocados, troca; se só um está incoerente, a cena não é confiável.
+        const diz = (x, re) => re.test(String(x.titulo).trim());
+        if (diz(c.sim, /^n[ãa]o\b/i) && diz(c.nao, /^sim\b/i)) { [c.sim, c.nao] = [c.nao, c.sim]; log.push(`cena ${i + 1}: ramos sim/não estavam trocados → corrigidos`); }
+        if (diz(c.sim, /^n[ãa]o\b/i) || diz(c.nao, /^sim\b/i)) virarDestaque(c, i, c.pergunta || c.titulo, [c.sim && c.sim.titulo, c.nao && c.nao.titulo].filter(Boolean).join(' · '), 'ramos sim/não incoerentes com o rótulo');
+        else { c.pergunta = corta(c.pergunta, 110); ['sim', 'nao'].forEach(k => { c[k].titulo = corta(c[k].titulo, 40); c[k].texto = c[k].texto ? corta(c[k].texto, 90) : ''; }); }
+      }
     }
   });
   // lista fora de 3–4 itens: com 5+ corta; com 1–2 vira "destaque"; item sem ícone ganha o ícone reserva
@@ -175,7 +182,7 @@ OBJETIVO: vídeo ${longo ? 'LONGO (horizontal 16:9)' : 'SHORT (vertical 9:16)'} 
 - Use "**termo**" para destacar 1 expressão-chave por cena (no máximo).
 
 TIPOS DE CENA E CAMPOS (além de "narracao" em todas):
-1. capa: {"tipo":"capa","narracao":"…","kicker":"área do direito","titulo":"pergunta central em até 5 palavras, com **destaque**","sub":"gancho/resposta curta em até 2 linhas","refs":["até 3 permitidas"],"pontos_titulo":"…","pontos":[{"icone":"…","texto":"≤3 palavras"} x3]}
+1. capa: {"tipo":"capa","narracao":"…","kicker":"área do direito","titulo":"pergunta central ou tese em frase COMPLETA e gramatical, de 3 a 8 palavras, com **destaque** (nunca corte uma expressão ao meio: 'no contrato de experiência' não pode virar 'no experiência')","sub":"gancho/resposta curta em até 2 linhas","refs":["até 3 permitidas"],"pontos_titulo":"…","pontos":[{"icone":"…","texto":"≤3 palavras"} x3]}
 2. pergunta: {"tipo":"pergunta","narracao":"…","titulo":"…?","kicker":"opcional","marca_dagua":"ícone","refs":[]}
 3. afirmacao: {"tipo":"afirmacao","narracao":"…","texto":"…","icone":"…","refs":[]}
 4. destaque: {"tipo":"destaque","narracao":"…","titulo":"…","sub":"…","icone":"…","refs":[]}
@@ -186,7 +193,7 @@ TIPOS DE CENA E CAMPOS (além de "narracao" em todas):
 9. numero (OPCIONAL, para destacar um número-chave que ESTÁ NO ARTIGO: prazo, quantidade de dias/meses, percentual): {"tipo":"numero","narracao":"…","numero":"só dígitos, ex.: 2","prefixo":"opcional, ≤3 palavras (ex.: Mais de)","unidade":"≤4 palavras (ex.: dias por semana)","sufixo":"opcional: % ou +","sub":"≤90 caracteres","icone":"…","refs":[]}
 10. grade (REQUISITOS, ELEMENTOS, CRITÉRIOS ou DIREITOS em cartões lado a lado): {"tipo":"grade","narracao":"…","titulo":"≤6 palavras","cards":[{"icone":"…","titulo":"≤3 palavras","texto":"≤60 caracteres"} de 2 a 4],"refs":[]}
 11. passos (PROCESSO, ETAPAS ou ORDEM de análise, ligados por uma linha): {"tipo":"passos","narracao":"…","titulo":"≤6 palavras","passos":[{"titulo":"≤3 palavras","texto":"≤50 caracteres"} de 3 a 5],"refs":[]}
-12. decisao (FLUXO SIM/NÃO: uma pergunta que leva a dois resultados): {"tipo":"decisao","narracao":"…","pergunta":"≤90 caracteres, termina com ?","sim":{"titulo":"≤4 palavras","texto":"≤60 caracteres"},"nao":{"titulo":"≤4 palavras","texto":"≤60 caracteres"},"refs":[]}
+12. decisao (FLUXO SIM/NÃO: uma pergunta que leva a dois resultados; o ramo "sim" vale quando a resposta à pergunta é SIM e o "nao" quando é NÃO: o titulo de "sim" nunca começa com "Não" e o de "nao" nunca começa com "Sim"): {"tipo":"decisao","narracao":"…","pergunta":"≤90 caracteres, termina com ?","sim":{"titulo":"≤4 palavras","texto":"≤60 caracteres"},"nao":{"titulo":"≤4 palavras","texto":"≤60 caracteres"},"refs":[]}
 CHIPS (opcional em afirmacao, destaque e numero): "chips":["termo-chave","termo-chave"] com 2 a 3 etiquetas de até 3 palavras cada, que aparecem na tela como resumo visual do que a narração diz.
 
 ÍCONES (campo "icone"/"marca_dagua"): use SOMENTE ids destas listas, escolhendo objetos que combinem com o assunto de cada cena (evite repetir o mesmo ícone mais de 2 vezes). Copie o id EXATAMENTE como está na lista, com o prefixo \"lu-\" (ex.: lu-circle-help, lu-triangle-alert; NÃO invente nomes como lu-help-circle, lu-alert-triangle, lu-trash-2, lu-brush). Se nenhum servir, use lu-info.
@@ -394,13 +401,71 @@ export function filtrarRefs(r, refsPermitidas) {
 }
 /** Nada na tela que a voz não diga: tira da cena chips, subtítulo e itens de grade/passos/lista que a narração não menciona (a tela segue a fala, nunca o contrário).
  *  Se sobrarem itens de menos, a cena vira "afirmacao" só com o título. Devolve a lista de reparos feitos. */
+const _GENERO = [[/\bdois\b/g, 'duas'], [/\bum\b/g, 'uma'], [/\bduzentos\b/g, 'duzentas'], [/\btrezentos\b/g, 'trezentas']];
+/** O número que aparece na tela ("42", "14,29", "3.000") é dito na narração, em algarismos ou por extenso (com concordância de gênero)? */
+export function numeroFalado(n, narracao) {
+  const t = _SEM_ACENTO(narracao);
+  const pedacos = String(n).replace(/\.(?=\d{3}(?!\d))/g, '').split(/[,.]/).filter(Boolean);
+  return pedacos.every((p) => {
+    if (new RegExp(`(?<![\\d])${p}(?![\\d])`).test(t)) return true;
+    const v = Number(p); if (!Number.isInteger(v) || v < 0 || v >= 1e6) return true; // não sabe ler: não reprova
+    const ext = _SEM_ACENTO(numeroPorExtenso(v));
+    const variantes = new Set([ext, ext.replace('quatorze', 'catorze'), ext.replace('catorze', 'quatorze')]); // as duas grafias são corretas
+    for (const e of [...variantes]) { let g = e; for (const [re, to] of _GENERO) g = g.replace(re, to); variantes.add(g); }
+    return [...variantes].some(e => new RegExp(`(?<![a-z])${_escRe(e)}(?![a-z])`).test(t));
+  });
+}
+/** Texto de tela tirado da própria fala: a primeira frase se couber (≤ 100 caracteres) ou o trecho até a última vírgula/palavra inteira, sem terminar em artigo/preposição. */
+export function textoDaFala(narracao) {
+  const frase = String(narracao || '').trim().split(/(?<=[.!?])\s+/)[0].replace(/[.!?]+$/, '');
+  if (frase.length <= 100) return frase;
+  let corte = frase.slice(0, 100); const v = corte.lastIndexOf(','); if (v >= 40) corte = corte.slice(0, v); else corte = corte.slice(0, corte.lastIndexOf(' '));
+  let pal = corte.split(/\s+/); while (pal.length > 3 && _FUNC_FIM.test(pal.join(' '))) pal.pop();
+  return pal.join(' ');
+}
+/** Reparos nos slides "numero" que dependem do artigo: o selo "%" só vale se o artigo traz esse número em porcentagem (o vídeo da jornada de 42 h mostrava
+ *  "21,43" com "%" para um valor de R$ 21,43), e valor em reais precisa dizer "reais" (o círculo só mostra o número). */
+export function repararNumerosDaTela(r, textoArtigo) {
+  const reparos = [];
+  if (!textoArtigo) return reparos;
+  (r.cenas || []).forEach((c, i) => {
+    if (!c || c.tipo !== 'numero' || !c.numero) return;
+    const n = String(c.numero).replace(/\s+/g, '');
+    const v = [...new Set([n, n.replace('.', ','), n.replace(',', '.')])].map(_escRe).join('|');
+    const emReais = new RegExp(`R\\$\\s*(?:${v})(?![\\d])`).test(textoArtigo);
+    const emPct = new RegExp(`(?<![\\d])(?:${v})\\s*(?:%|por cento)`, 'i').test(textoArtigo);
+    if (c.sufixo && /%/.test(c.sufixo) && !emPct) { delete c.sufixo; reparos.push(`cena ${i + 1}: selo "%" removido (o artigo não traz ${n} em porcentagem)`); }
+    if (emReais && !/reais|R\$/i.test([c.prefixo, c.unidade, c.sufixo].filter(Boolean).join(' '))) {
+      c.unidade = c.unidade ? `${String(c.unidade).trim()} em reais` : 'reais';
+      reparos.push(`cena ${i + 1}: valor em reais sem a palavra "reais" → acrescentada à unidade`);
+    }
+  });
+  return reparos;
+}
 export function alinharTelaComFala(r) {
   const reparos = [];
   const MIN_ITENS = { cards: 2, passos: 3, itens: 3 };
   (r.cenas || []).forEach((c, i) => {
     if (!c || typeof c !== 'object' || ['capa', 'encerramento', 'numero'].includes(c.tipo)) return;
     const nar = c.narracao || '';
-    const falado = (t) => { const x = coberturaTelaNarracao(t, nar); return x.total < 2 || x.cobertura >= 0.3; }; // pouco conteúdo para medir: mantém
+    // Número na tela que a voz não diz é informação nova para o espectador (no vídeo da jornada de 42 h, a tela mostrava "44 h → 220" e "40 h → 200" e a voz só explicava a regra).
+    const numerosOk = (t) => (String(t).match(/\d[\d.,]*/g) || []).map(n => n.replace(/[.,]+$/, '')).every(n => numeroFalado(n, nar));
+    const falado = (t) => { if (!numerosOk(t)) return false; const x = coberturaTelaNarracao(t, nar); return x.total < 2 || x.cobertura >= 0.3; }; // pouco conteúdo para medir: mantém
+    // Decisão/comparação cujo conteúdo a voz NÃO menciona em nada (a tela mostrava "Há redução salarial?… Sim: apenas para horas reduzidas" e a voz falava de outra coisa):
+    // vira afirmação com o que a voz diz. Só age no caso flagrante (pergunta/título e ramos sem nenhuma relação com a fala), porque o radical não enxerga sinônimo.
+    if (c.tipo === 'decisao' || c.tipo === 'comparacao') {
+      const cab = c.tipo === 'decisao' ? c.pergunta : c.titulo;
+      const ramos = (c.tipo === 'decisao' ? [c.sim, c.nao] : [c.esq, c.dir]).map(x => [x && x.titulo, x && x.texto].filter(Boolean).join(' ')).join(' ');
+      const cCab = coberturaTelaNarracao(cab || '', nar), cRamos = coberturaTelaNarracao(ramos, nar);
+      const cabNaoFalado = (cab ? (cCab.total >= 2 && cCab.cobertura < 0.34) : true);
+      if (cabNaoFalado && cRamos.total >= 2 && cRamos.cobertura < 0.2) {
+        const refs = Array.isArray(c.refs) ? c.refs : [], tipoAntigo = c.tipo;
+        Object.keys(c).forEach(k => { if (k !== 'narracao') delete c[k]; });
+        Object.assign(c, { tipo: 'afirmacao', texto: textoDaFala(nar), icone: 'lu-info', refs });
+        reparos.push(`cena ${i + 1}: ${tipoAntigo} sem relação com a fala; virou afirmação com o que a voz diz`);
+        return;
+      }
+    }
     if (Array.isArray(c.chips)) {
       const ok = c.chips.filter(falado);
       if (ok.length !== c.chips.length) { reparos.push(`cena ${i + 1}: etiqueta(s) não faladas removida(s)`); if (ok.length >= 2) c.chips = ok; else delete c.chips; }
@@ -440,6 +505,47 @@ export function corrigirAberturaPergunta(cenas) {
   }
   return reparos;
 }
+// ---------- FIDELIDADE: normas e números que a FALA cita precisam existir no artigo-fonte ----------
+// Antes, só o texto de TELA e as "refs" eram conferidas contra o artigo; a narração podia citar "artigo 999" ou "Súmula 777" sem nenhum erro
+// (no Short ilustrado a fala usa algarismos, e o RE_CITA_NORMA só reconhece numerais por extenso: a checagem nunca disparava).
+const RE_NORMA_FALADA = /(?<![\p{L}])(?:artigos?|arts?\.?|s[úu]mulas?|s[úu]m\.?|temas?|oj|orienta[cç][aã]o jurisprudencial|lei complementar|lei|lc)\s+(?:(?:n[úu]meros?|n[ºo°]\.?)\s*)?(\d[\d.]*(?:\s*(?:,|e)\s*\d[\d.]*)*)/giu;
+/** Normas citadas num texto falado: [{ trecho, numero }], um item por número ("artigos 468, 469 e 483" gera três). Números por extenso são lidos ("artigo quatrocentos e setenta e sete"). */
+export function normasCitadas(texto) {
+  const t = numerosParaTela(String(texto ?? ''));
+  const out = [];
+  for (const m of t.matchAll(RE_NORMA_FALADA)) {
+    for (const n of m[1].split(/\s*(?:,|\se)\s*/)) {
+      const numero = n.replace(/\.+$/, '').trim();
+      if (numero) out.push({ trecho: m[0].trim(), numero });
+    }
+  }
+  return out;
+}
+// ROTEIRO_NORMAS_ESTRITAS=0 rebaixa o erro a aviso (válvula de escape se a IA passar a reprovar demais por norma que o artigo cita de outro jeito).
+export const NORMAS_ESTRITAS = process.env.ROTEIRO_NORMAS_ESTRITAS !== '0';
+const _escRe = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+/** O número ("477", "14,29", "1.200") aparece no artigo, como algarismo isolado ou por extenso? */
+export function numeroNoArtigo(numero, textoArtigo) {
+  const texto = String(textoArtigo ?? '');
+  const n = String(numero ?? '').replace(/\s+/g, '');
+  if (!n) return true;
+  const variantes = [...new Set([n, n.replace('.', ','), n.replace(',', '.')])];
+  if (variantes.some((v) => new RegExp(`(?<![\\d])${_escRe(v)}(?![\\d])`).test(texto))) return true;
+  const inteiro = Number(n.replace(/\./g, '').replace(',', '.'));
+  if (Number.isInteger(inteiro) && inteiro >= 0 && inteiro < 1e6) {
+    const ext = numeroPorExtenso(inteiro);
+    if (new RegExp(`(?<![\\p{L}])${_escRe(ext)}(?![\\p{L}])`, 'iu').test(texto)) return true;
+  }
+  return false;
+}
+/** Erros de fidelidade da narração de UMA cena (lista vazia = ok). Sem texto do artigo, não verifica. */
+export function errosNormasNaNarracao(narracao, textoArtigo, n) {
+  if (!textoArtigo) return [];
+  return normasCitadas(narracao)
+    .filter(({ numero }) => !numeroNoArtigo(numero, textoArtigo))
+    .map(({ trecho, numero }) => `Cena ${n}: a narração cita "${trecho}", mas o número ${numero} NÃO está no artigo-fonte (cite só normas do artigo ou reescreva sem citar).`);
+}
+
 export const RE_JUNK_SEM_NUM = /\bn[úu]meros?\b|\bn\.?\s*[º°]|[*_`#~<>\[\]{}|\\]|\b(?:ali[aá]s|outrossim|destarte|ademais|porquanto)\b/i;
 export const RE_NARRACAO_SUJA = /[0-9%]|R\$|\bn[úu]meros?\b|\bn\.?\s*[º°]|[*_`#~<>\[\]{}|\\]|\b(?:ali[aá]s|outrossim|destarte|ademais|porquanto)\b/i;
 /** Converte dígitos, "R$", "%" e ordinais em palavras (pt-BR). Ex.: "R$ 1.200,50" → "mil e duzentos reais e cinquenta centavos". */
@@ -533,7 +639,10 @@ export function validarRoteiro(r, ctx) {
       if (/^[a-zà-ÿ]/.test(nar.trim())) erros.push(`Cena ${n}: a narração começa em minúscula (continua a frase da cena anterior); cada cena é uma frase completa.`);
       if (RE_SEGUNDA.test(nar)) erros.push(`Cena ${n}: não use segunda pessoa na narração.`);
       if (ctx.tom === 'neutro' && RE_PARCIAL.test(nar)) avisos.push(`Cena ${n}: palavra parcial na narração (tom neutro).`);
+      errosNormasNaNarracao(nar, textoArtigo, n).forEach(e => (NORMAS_ESTRITAS ? erros : avisos).push(e));
     }
+    if (c.tipo === 'numero' && c.numero && textoArtigo && !numeroNoArtigo(c.numero, textoArtigo)) (NORMAS_ESTRITAS ? erros : avisos).push(`Cena ${n}: o número em destaque "${c.numero}" NÃO está no artigo-fonte (use só um número que o artigo traz).`);
+    if (c.tipo === 'capa' && c.titulo) { const pt = String(c.titulo).replace(/\*\*/g, '').trim().split(/\s+/).length; if (pt > 9) erros.push(`Capa: "titulo" com ${pt} palavras (máx. 9): reescreva curto, em frase completa.`); }
     // texto de tela
     const telas = textosDeTela(c);
     telas.forEach(t => { if (RE_SEGUNDA.test(t)) erros.push(`Cena ${n}: não use segunda pessoa no texto da tela ("${t.slice(0, 40)}").`); });
@@ -584,3 +693,8 @@ export function validarRoteiro(r, ctx) {
 
 export const CTA_FINAL = 'Para se aprofundar no assunto, leia o artigo completo no Calcula Prazo, com o link na descrição. E, se este conteúdo ajudou, inscreva-se no canal para acompanhar mais.';
 export const PALAVRAS_CTA = CTA_FINAL.split(/\s+/).length;
+// No Short o link da descrição NÃO é clicável (o YouTube desligou em 31/08/2023; clicáveis são os links do perfil do canal e o "vídeo relacionado"). Se o canal tiver o site nos
+// links do perfil, defina CTA_LINK_SHORT (ex.: "no perfil do canal") e o convite dos Shorts passa a dizer isso. Sem a variável, o texto continua como estava.
+const _linkShort = () => String(process.env.CTA_LINK_SHORT || '').trim();
+export const ctaFinal = (ehShort) => (ehShort && _linkShort() ? CTA_FINAL.replace('com o link na descrição', `com o link ${_linkShort()}`) : CTA_FINAL);
+export const ctaSubCartao = (ehShort) => (ehShort && _linkShort() ? _linkShort() : 'no link da descrição');

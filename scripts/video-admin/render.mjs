@@ -110,9 +110,11 @@ export async function renderizar({ cena, audio, outDir, maxSeg, workers, log = c
   log(`Quadros prontos em ${Math.round((Date.now() - t0) / 1000)} s.`);
 
   const mp4 = path.join(outDir, 'video.mp4');
+  // Volume: a voz sintetizada saía a ≈ −19 LUFS (medido nos 3 vídeos analisados), ~5 dB abaixo do −14 LUFS que o YouTube usa de referência (ele só abaixa o que passa disso,
+  // não sobe o que é baixo), e fraco no celular. loudnorm leva a −14 LUFS com teto de −1,5 dBTP; −ar 48000 evita a saída em 192 kHz que o loudnorm gera por padrão.
   execFileSync('ffmpeg', ['-v', 'error', '-y', '-framerate', String(FPS), '-i', path.join(dirFrames, '%05d.jpg'),
     '-i', audio, '-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-maxrate', '8000k', '-bufsize', '16000k', '-pix_fmt', 'yuv420p',
-    '-r', String(FPS), '-c:a', 'aac', '-b:a', '192k', '-t', String(durRender), '-movflags', '+faststart', mp4], { stdio: 'inherit' });
+    '-r', String(FPS), '-af', 'loudnorm=I=-14:TP=-1.5:LRA=11', '-ar', '48000', '-c:a', 'aac', '-b:a', '192k', '-t', String(durRender), '-movflags', '+faststart', mp4], { stdio: 'inherit' });
 
   // Capa = primeiro quadro. Vídeo horizontal: miniatura do YouTube em 1280x720. Short vertical: PNG 1080x1920, guardada só para
   // baixar no admin (o YouTube pega a capa do próprio vídeo; publicar.mjs só envia miniatura nos longos).

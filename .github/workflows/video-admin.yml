@@ -33,6 +33,13 @@ env:
   IMG_TIMEOUT_MS: '480000'     # imagem: 8 min por tentativa
   IMG_TENTATIVAS: '5'          # tentativas por provedor, com espera crescente entre elas
   IMG_INTERVALO_MS: '8000'     # pausa entre imagens (plano gratuito ≈ 10 pedidos/min)
+  IMG_ORCAMENTO_MIN: '12'      # teto de tempo para gerar UMA imagem (todos os provedores e tentativas somados); antes só havia o tempo por tentativa (8 min × 5 × provedores)
+  # IMG_FALHA_MAX_PCT: '0.4'    # fração de cenas sem imagem tolerada antes de o job falhar (padrão do código)
+  # ROTEIRO_FIDELIDADE: '0'     # desliga a conferência da narração contra o artigo (1 chamada extra de IA por roteiro)
+  # ROTEIRO_REVISAO_TELA: '0'   # desliga a revisão de português/rótulos dos slides por IA (1 chamada extra)
+  # ROTEIRO_REPETICAO: '0'      # desliga a checagem de cenas que repetem a mesma ideia (1 chamada extra por tentativa válida)
+  # ROTEIRO_NORMAS_ESTRITAS: '0' # norma/número da fala que não está no artigo vira aviso em vez de erro
+  # CTA_LINK_SHORT: 'no perfil do canal'  # nos Shorts o link da descrição não é clicável: troca "link na descrição" no convite final
   IMG_ORDEM: 'cloudflare,gemini' # no GitHub não há 9router; Cloudflare (gratuito) primeiro, Google como reserva
   # ── Voz Gemini 3.8 TTS (opcional): defina em Settings → Secrets and variables → Actions → aba "Variables". Vazio = padrão do código.
   GEMINI_TTS_MODEL: ${{ vars.GEMINI_TTS_MODEL }}       # gemini-3.8-flash-tts (padrão) ou gemini-3.8-flash-lite-tts

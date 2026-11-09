@@ -7,6 +7,20 @@ const PAUSA_FINAL_CENA = 0.38; // mesma pausa que narracao.py coloca ao fim de c
 const PAUSA_FRASE = 0.3;
 const SEG_POR_CHAR = 0.062;    // ~16 caracteres/s: ritmo médio da voz
 
+// Abreviações jurídicas cujo ponto NÃO encerra a frase ("art.", "inc.", "Súm.", "dr."...). Antes, o ponto virava fim de bloco e fim de frase:
+// a legenda mostrava "art." sozinho na tela (Short do Tema 143) e a temporização somava uma pausa de frase que a voz não faz.
+const RE_ABREV = /^(?:arts?|incs?|al|aln|al[ií]n|par|pars|par[áa]g|s[úu]m|ex|p|dr|dra|sr|sra|prof|fls?|cap|cf|obs|vs?|min|des|rel|ed|p[áa]gs?|pp|ac|proc|rec|rr|ag|ed|trt|tst|stf|stj)\.$/i;
+const RE_INICIAL = /^[A-ZÀ-Ý]\.$/;
+/** O token termina uma frase de verdade? (pontuação final que não seja ponto de abreviação ou de inicial de nome) */
+export function fimDeFrase(token) {
+  const t = String(token || '').replace(/["”')\]]+$/, '');
+  if (!/[.!?…]$/.test(t)) return false;
+  if (/[!?…]$/.test(t)) return true;
+  return !(RE_ABREV.test(t) || RE_INICIAL.test(t));
+}
+// Tokens que não podem terminar um bloco: pedem o próximo ("art." + "477", "nº" + "14", "§" + "8º").
+const eAbreviacaoPendente = (w) => RE_ABREV.test(w) || /^(?:n[º°o]\.?|n\.[º°]|§§?|art|arts)$/i.test(w);
+
 export function dividirEmBlocos(narracao, { maxPalavras = 3, maxChars = 26 } = {}) {
   const palavras = String(narracao || '').replace(/\s+/g, ' ').trim().split(' ').filter(Boolean);
   const blocos = [];
@@ -14,23 +28,27 @@ export function dividirEmBlocos(narracao, { maxPalavras = 3, maxChars = 26 } = {
   const fechar = () => { if (atual.length) { blocos.push(atual.join(' ')); atual = []; } };
   for (const p of palavras) {
     const tentativa = [...atual, p].join(' ');
-    if (atual.length && (atual.length >= maxPalavras || tentativa.length > maxChars)) fechar();
+    const pendente = atual.length && eAbreviacaoPendente(atual[atual.length - 1]); // "art." nunca fica sozinho no fim de um bloco
+    if (atual.length && !pendente && (atual.length >= maxPalavras || tentativa.length > maxChars)) fechar();
     atual.push(p);
-    if (/[.!?;:,…]$/.test(p)) fechar(); // quebra na pontuação
+    if (/[;:,]$/.test(p) || fimDeFrase(p)) fechar(); // quebra na pontuação (ponto de abreviação não conta)
   }
   fechar();
   // não deixa sobrar um bloco de uma palavra curta (de, a, e, o...) sozinho no fim
-  if (blocos.length > 1 && blocos[blocos.length - 1].length <= 3 && !/[.!?]$/.test(blocos[blocos.length - 1])) {
+  if (blocos.length > 1 && blocos[blocos.length - 1].length <= 3 && !fimDeFrase(blocos[blocos.length - 1])) {
     const ult = blocos.pop(); blocos[blocos.length - 1] += ' ' + ult;
   }
   return blocos;
 }
 
-/** Distribui os blocos no tempo da cena [t0, t1]: peso proporcional ao tamanho + pausa ao fim de frase. */
-export function temporizarBlocos(blocos, t0, t1) {
+/** Distribui os blocos no tempo da cena [t0, t1]: peso proporcional ao tamanho + pausa ao fim de frase.
+ *  `falaSeg` (opcional) = duração real da fala da cena, medida em narracao.py; sem ele, supõe a pausa final fixa de antes (0,38 s). */
+export function temporizarBlocos(blocos, t0, t1, falaSeg = null) {
   if (!blocos.length) return [];
-  const janela = Math.max(0.6, (t1 - t0) - PAUSA_FINAL_CENA);
-  const pesos = blocos.map(b => b.length * SEG_POR_CHAR + (/[.!?]$/.test(b) ? PAUSA_FRASE : /[,;:]$/.test(b) ? PAUSA_FRASE / 2 : 0));
+  const dur = t1 - t0;
+  const janela = Number(falaSeg) > 0.3 ? Math.min(Number(falaSeg), dur) : Math.max(0.6, dur - PAUSA_FINAL_CENA);
+  const ultimaPalavra = (b) => String(b).trim().split(' ').pop();
+  const pesos = blocos.map(b => b.length * SEG_POR_CHAR + (fimDeFrase(ultimaPalavra(b)) ? PAUSA_FRASE : /[,;:]$/.test(b) ? PAUSA_FRASE / 2 : 0));
   const soma = pesos.reduce((a, b) => a + b, 0);
   let t = t0;
   return blocos.map((texto, i) => {
@@ -128,7 +146,7 @@ export function roteiroParaCena(roteiro, tipo, duracaoAudioSeg, estilo = 'slides
       marca: MARCA,
       cortes,
       cenas: cenas.map((c, i) => {
-        const blocos = temporizarBlocos(dividirEmBlocos(c.narracao), cortes[i], cortes[i + 1]);
+        const blocos = temporizarBlocos(dividirEmBlocos(c.narracao), cortes[i], cortes[i + 1], c.fala_seg);
         const rotulos = (Array.isArray(c.rotulos) ? c.rotulos : []).filter((x) => typeof x === 'string' && x.trim()).slice(0, 2);
         const nd = c.numero_destaque && c.numero_destaque.valor ? c.numero_destaque : null;
         return {
@@ -148,7 +166,7 @@ export function roteiroParaCena(roteiro, tipo, duracaoAudioSeg, estilo = 'slides
     marca: MARCA,
     cortes,
     cenas: cenas.map((c, i) => {
-      const { narracao, duracao_seg, ...visual } = c; // narração e duração não vão pro visual
+      const { narracao, duracao_seg, fala_seg, ...visual } = c; // narração e durações não vão pro visual
       const rot = rotulosDaCena(c);
       if (rot && rot.length) visual.quando = calcularQuando(narracao, rot, cortes[i + 1] - cortes[i], { primeiroFixo: c.tipo === 'decisao' ? 0.3 : null });
       return visual;

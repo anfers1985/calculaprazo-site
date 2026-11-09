@@ -1,7 +1,8 @@
 // Roteiro do Short ILUSTRADO (estilo do vídeo de referência: uma ilustração por cena + legenda em blocos).
 // Sem acesso ao banco: roda no GitHub Actions e também no computador local.
-import { costurarNarracao } from './costura.mjs';
-import { extrairJson, COESAO_PROMPT, TOM, RE_SEGUNDA, RE_DIGITOS, RE_NARRACAO_SUJA, numerosPorExtenso, numerosParaTela, RE_JUNK_SEM_NUM, filtrarRefs, corrigirAberturaPergunta, RE_PARCIAL, PALAVRAS_POR_SEG, CTA_FINAL, PALAVRAS_CTA } from './roteiro-regras.mjs';
+import { polirNarracao } from './roteiro-core.mjs'; // costura + conferência de fidelidade ao artigo
+import { verificarRepeticao } from './fidelidade.mjs';
+import { extrairJson, COESAO_PROMPT, TOM, RE_SEGUNDA, RE_DIGITOS, RE_NARRACAO_SUJA, numerosPorExtenso, numerosParaTela, RE_JUNK_SEM_NUM, filtrarRefs, corrigirAberturaPergunta, RE_PARCIAL, PALAVRAS_POR_SEG, CTA_FINAL, PALAVRAS_CTA, ctaFinal, errosNormasNaNarracao, numeroNoArtigo, NORMAS_ESTRITAS } from './roteiro-regras.mjs';
 import { normRef } from './artigo.mjs';
 
 const MAX_TENTATIVAS = 3;
@@ -28,12 +29,20 @@ export function metasIlustrado(durSeg) {
 }
 
 /** Texto do pedido de imagem que realmente vai para o gerador (estilo fixo + cena + regra de texto). */
+const RE_PESSOA_NO_PROMPT = /\b(?:man|woman|person|people|worker|employee|employer|character|boy|girl|manager|boss|lawyer|judge|clerk|guard|sweeper|driver|nurse|doctor|pregnant|he|she)\b/i;
 export function montarPromptImagem(cena, personagem = '') {
   const texto = String(cena.texto_na_imagem || '').trim();
+  // O prompt manda copiar a descrição do "personagem" em toda cena com pessoa, mas nada garantia isso: o mesmo Short mostrou um homem ruivo de camisa amarela,
+  // depois um barbudo de óculos e depois outro de gravata vermelha. Se a cena fala de uma pessoa e a descrição não está no pedido, ela é acrescentada aqui.
+  const perso = String(personagem || '').trim();
+  const pedido = String(cena.prompt_imagem || '').trim();
+  const chave = perso.toLowerCase().slice(0, 24);
+  const comPessoa = perso && cena.tipo !== 'encerramento' && RE_PESSOA_NO_PROMPT.test(pedido) && !pedido.toLowerCase().includes(chave);
+  const cenaTexto = comPessoa ? `${pedido} The person in the scene is: ${perso.replace(/[.\s]+$/, '')}.` : pedido;
   const regraTexto = texto
     ? `The ONLY text visible in the image reads exactly "${texto}" (Brazilian Portuguese, clean capital letters, no other text, letters or numbers anywhere).`
     : 'No text, letters, numbers or signs with writing anywhere in the image.';
-  return `${ESTILO_IMAGEM} Scene: ${String(cena.prompt_imagem || '').trim()} ${regraTexto}`.replace(/\s+/g, ' ').trim();
+  return `${ESTILO_IMAGEM} Scene: ${cenaTexto} ${regraTexto}`.replace(/\s+/g, ' ').trim();
 }
 
 export function montarPromptIlustrado({ artigo, durSeg, tom, refsPermitidas, motivoRetentativa }) {
@@ -82,7 +91,7 @@ const NUMERAIS = '(?:um|uma|dois|duas|tr[êe]s|quatro|cinco|seis|sete|oito|nove|
 const RE_CITA_NORMA = new RegExp(`(?<![\\p{L}])(?:artigos?|s[úu]mulas?|temas?|orienta[cç][aã]o jurisprudencial|lei(?:\\s+complementar)?)\\s+(?:(?:n[úu]mero|n[ºo°])\\s*)?${NUMERAIS}(?![\\p{L}])`, 'iu');
 
 export function validarIlustrado(r, ctx) {
-  const { durSeg, refsPermitidas, tom } = ctx;
+  const { durSeg, refsPermitidas, tom, textoArtigo } = ctx;
   const m = metasIlustrado(durSeg);
   const erros = [], avisos = [];
   if (!r || typeof r !== 'object') return { erros: ['Resposta não é um objeto.'], avisos };
@@ -108,6 +117,7 @@ export function validarIlustrado(r, ctx) {
       if (/^[a-zà-ÿ]/.test(nar.trim())) erros.push(`Cena ${n}: a narração começa em minúscula (continua a frase da cena anterior); cada cena é uma frase completa.`);
       if (RE_SEGUNDA.test(nar)) erros.push(`Cena ${n}: não use segunda pessoa na narração.`);
       if (tom === 'neutro' && RE_PARCIAL.test(nar)) avisos.push(`Cena ${n}: palavra parcial na narração (tom neutro).`);
+      errosNormasNaNarracao(nar, textoArtigo, n).forEach(e => (NORMAS_ESTRITAS ? erros : avisos).push(e)); // a fala usa algarismos aqui: o RE_CITA_NORMA (só por extenso) nunca pegava norma inventada
       const pi = String(c.prompt_imagem || '').trim();
       if (pi.length < 20) erros.push(`Cena ${n}: "prompt_imagem" ausente ou curto demais (escreva em inglês, 1 a 2 frases).`);
       if (pi.length > 700) erros.push(`Cena ${n}: "prompt_imagem" longo demais (máx. 700 caracteres).`);
@@ -131,11 +141,12 @@ export function validarIlustrado(r, ctx) {
 export function finalizarIlustrado(r) {
   const cenas = r.cenas;
   const ult = cenas[cenas.length - 1];
-  ult.narracao = CTA_FINAL;
+  ult.narracao = ctaFinal(true);
   ult.tipo = 'encerramento';
   ult.prompt_imagem = PROMPT_IMAGEM_FINAL;
   ult.texto_na_imagem = TEXTO_IMAGEM_FINAL;
   ult.refs = [];
+  delete ult.rotulos; delete ult.numero_destaque; // a IA põe etiqueta na cena final (saiu "Jurisprudência" sobre o convite); a fala do convite não a menciona
   cenas.forEach((c, i) => { if (i < cenas.length - 1) c.tipo = i === 0 ? 'gancho' : 'ilustracao'; });
   r.personagem = String(r.personagem || '').trim();
   return r;
@@ -145,6 +156,7 @@ export async function gerarRoteiroIlustrado({ artigo, durSeg, tom, chamarIA, log
   const refsPermitidas = artigo.refs;
   let motivo = '';
   let melhor = null;
+  let reserva = null; // roteiro válido que repetia ideias: só é usado se as tentativas seguintes não derem outro válido
   for (let tentativa = 1; tentativa <= MAX_TENTATIVAS; tentativa++) {
     const { systemPrompt, userPrompt } = montarPromptIlustrado({ artigo, durSeg, tom, refsPermitidas, motivoRetentativa: motivo });
     log(`Roteiro ilustrado — tentativa ${tentativa}/${MAX_TENTATIVAS} (${durSeg}s, tom ${tom})`);
@@ -172,21 +184,32 @@ export async function gerarRoteiroIlustrado({ artigo, durSeg, tom, chamarIA, log
       const nd = c.numero_destaque;
       if (nd !== undefined) {
         const valor = nd && typeof nd === 'object' ? String(nd.valor ?? '').replace(/\s+/g, '') : '';
-        if (/^\d{1,4}([.,]\d{1,2})?$/.test(valor)) c.numero_destaque = { valor, unidade: String(nd.unidade || '').split(/\s+/).slice(0, 4).join(' ') };
-        else delete c.numero_destaque;
+        if (/^\d{1,4}([.,]\d{1,2})?$/.test(valor) && numeroNoArtigo(valor, artigo.texto)) c.numero_destaque = { valor, unidade: String(nd.unidade || '').split(/\s+/).slice(0, 4).join(' ') };
+        else { if (valor) log(`  reparo: cena ${i + 1}, número em destaque "${valor}" descartado (inválido ou fora do artigo)`); delete c.numero_destaque; }
       }
     });
     [...filtrarRefs(r, refsPermitidas), ...corrigirAberturaPergunta(r.cenas)].forEach(x => log('  reparo: ' + x));
-    const v = validarIlustrado(r, { durSeg, refsPermitidas, tom });
+    const v = validarIlustrado(r, { durSeg, refsPermitidas, tom, textoArtigo: artigo.texto });
     v.avisos.slice(0, 8).forEach(a => log('  aviso: ' + a));
     const todos = [...v.erros, ...(v.erroPalavras ? [v.erroPalavras] : [])];
-    const validar = (x) => validarIlustrado(x, { durSeg, refsPermitidas, tom });
-    if (!todos.length) { r.modelo = modelo; const costurado = await costurarNarracao({ r, chamarIA, validar, tom, log, textoArtigo: artigo.texto, manterNumeros: true }); return { roteiro: finalizarIlustrado(costurado), tentativas: tentativa, avisos: v.avisos }; }
+    const validar = (x) => validarIlustrado(x, { durSeg, refsPermitidas, tom, textoArtigo: artigo.texto });
+    if (!todos.length) {
+      r.modelo = modelo;
+      if (tentativa < MAX_TENTATIVAS) { const rep = await verificarRepeticao({ r, chamarIA, textoArtigo: artigo.texto, log }); if (rep) { reserva = reserva || { r, modelo, v }; motivo = rep; continue; } }
+      const costurado = await polirNarracao({ r, chamarIA, validar, tom, log, textoArtigo: artigo.texto, manterNumeros: true });
+      return { roteiro: finalizarIlustrado(costurado), tentativas: tentativa, avisos: v.avisos };
+    }
     log(`  reprovado (${todos.length}): ${todos.slice(0, 6).join(' | ')}`);
     const desvio = v.erroPalavras ? Math.abs(v.totalPalavras - v.metas.palavras) / v.metas.palavras : 0;
     if (!v.erros.length && v.erroPalavras && desvio <= 0.45 && (!melhor || desvio < melhor.desvio)) melhor = { r, modelo, v, desvio };
     motivo = todos.slice(0, 15).map(x => '- ' + x).join('\n');
   }
-  if (melhor) { log('Usando a melhor tentativa (só a contagem de palavras ficou fora da faixa ideal).'); melhor.r.modelo = melhor.modelo; const costurado = await costurarNarracao({ r: melhor.r, chamarIA, validar: (x) => validarIlustrado(x, { durSeg, refsPermitidas, tom }), tom, log, textoArtigo: artigo.texto, manterNumeros: true }); return { roteiro: finalizarIlustrado(costurado), tentativas: MAX_TENTATIVAS, avisos: [melhor.v.erroPalavras] }; }
+  if (reserva) {
+    log('Usando o roteiro válido da tentativa com repetição de ideias (as seguintes não produziram outro válido).');
+    reserva.r.modelo = reserva.modelo;
+    const costurado = await polirNarracao({ r: reserva.r, chamarIA, validar: (x) => validarIlustrado(x, { durSeg, refsPermitidas, tom, textoArtigo: artigo.texto }), tom, log, textoArtigo: artigo.texto, manterNumeros: true });
+    return { roteiro: finalizarIlustrado(costurado), tentativas: MAX_TENTATIVAS, avisos: reserva.v.avisos };
+  }
+  if (melhor) { log('Usando a melhor tentativa (só a contagem de palavras ficou fora da faixa ideal).'); melhor.r.modelo = melhor.modelo; const costurado = await polirNarracao({ r: melhor.r, chamarIA, validar: (x) => validarIlustrado(x, { durSeg, refsPermitidas, tom, textoArtigo: artigo.texto }), tom, log, textoArtigo: artigo.texto, manterNumeros: true }); return { roteiro: finalizarIlustrado(costurado), tentativas: MAX_TENTATIVAS, avisos: [melhor.v.erroPalavras] }; }
   throw new Error(`A IA não gerou um roteiro ilustrado válido em ${MAX_TENTATIVAS} tentativas. Último motivo:\n${motivo}`);
 }

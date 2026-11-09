@@ -9,7 +9,12 @@
 //
 // Variáveis (todas opcionais): IMG_TIMEOUT_MS (padrão 300000 = 5 min), IMG_TENTATIVAS (padrão 4),
 // IMG_INTERVALO_MS (pausa entre imagens; padrão 7000, respeita ~10 pedidos/min do plano gratuito),
-// GEMINI_IMAGE_MODELS (padrão "gemini-2.5-flash-image,gemini-3.1-flash-image-preview").
+// GEMINI_IMAGE_MODELS (padrão "gemini-2.5-flash-image,gemini-3.1-flash-image-preview"),
+// IMG_ORCAMENTO_MIN (teto de tempo para gerar UMA imagem, somando provedores e tentativas; padrão 12; 0 = sem limite),
+// IMG_FALHA_MAX_PCT (fração de cenas sem imagem tolerada antes de falhar o job; padrão 0.4).
+//
+// Cota DIÁRIA esgotada (Cloudflare 4006 / Gemini 429 "exceeded your current quota"): o provedor é marcado como esgotado e NÃO é tentado de novo
+// nesta execução; se todos esgotarem, o job para na hora, com mensagem clara, em vez de repetir 5 chamadas inúteis por cena.
 import fs from 'node:fs';
 import { detectarTexto } from './ocr-imagem.mjs';
 import path from 'node:path';
@@ -17,6 +22,14 @@ import path from 'node:path';
 const TIMEOUT_MS = Number(process.env.IMG_TIMEOUT_MS) || 300000;
 const TENTATIVAS = Number(process.env.IMG_TENTATIVAS) || 4;
 const INTERVALO_MS = process.env.IMG_INTERVALO_MS !== undefined && process.env.IMG_INTERVALO_MS !== '' ? Number(process.env.IMG_INTERVALO_MS) : 7000;
+const ORCAMENTO_IMG_MS = (Number.isFinite(Number(process.env.IMG_ORCAMENTO_MIN)) && process.env.IMG_ORCAMENTO_MIN !== undefined && process.env.IMG_ORCAMENTO_MIN !== '' ? Number(process.env.IMG_ORCAMENTO_MIN) : 12) * 60000;
+const FALHA_MAX_PCT = Number.isFinite(Number(process.env.IMG_FALHA_MAX_PCT)) && process.env.IMG_FALHA_MAX_PCT !== undefined && process.env.IMG_FALHA_MAX_PCT !== '' ? Number(process.env.IMG_FALHA_MAX_PCT) : 0.4;
+// Provedores cuja cota diária já se esgotou NESTA execução (chave = nome da etapa). Vale para todas as cenas e para o outro job do "par do dia".
+const esgotados = new Map();
+export function _resetarEsgotados() { esgotados.clear(); }
+export class CotaImagensEsgotada extends Error {
+  constructor(msg) { super(msg); this.name = 'CotaImagensEsgotada'; this.cotaEsgotada = true; }
+}
 const RE_TEMPORARIO = /rate.?limit|429|overload|high demand|unavailable|timeout|gateway|500|502|503|504|524|try again|internal|sem imagem|fetch failed|ECONN|socket|network/i;
 
 const esperar = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -69,6 +82,22 @@ export function extrairImagemGemini(data) {
   return null;
 }
 
+/** Extrai de error.details (QuotaFailure / RetryInfo) a métrica e o limite da cota: a mensagem curta do Google não diz se o limite é 0 (modelo sem cota gratuita). */
+export function detalheCotaGemini(data) {
+  const det = Array.isArray(data?.error?.details) ? data.error.details : [];
+  const partes = [];
+  for (const d of det) {
+    for (const v of d?.violations || []) {
+      const metrica = String(v.quotaMetric || v.quotaId || '').split('/').pop();
+      if (metrica) partes.push(metrica + (v.quotaValue !== undefined ? `=${v.quotaValue}` : ''));
+    }
+    if (d?.retryDelay) partes.push(`retryDelay=${d.retryDelay}`);
+  }
+  const bruto = JSON.stringify(data?.error || {});
+  if (/limit['"]?\s*[:=]\s*['"]?0\b/i.test(bruto) || /quotaValue['"]?\s*:\s*['"]?0['"]?[,}]/.test(bruto)) partes.push('limite 0: sem cota gratuita para este modelo/chave');
+  return partes.length ? ` [${[...new Set(partes)].join('; ').slice(0, 220)}]` : '';
+}
+
 async function viaGemini(prompt, { apiKey, modelo, aspecto }) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent`;
   const corpo = (comAspecto, modalidades) => ({
@@ -88,12 +117,12 @@ async function viaGemini(prompt, { apiKey, modelo, aspecto }) {
       e.bloqueio = /SAFETY|BLOCK|PROHIBITED|RECITATION/i.test(motivo);
       throw e;
     }
-    const msg = String(data?.error?.message || JSON.stringify(data?.error || data)).slice(0, 300);
+    const msg = String(data?.error?.message || JSON.stringify(data?.error || data)).slice(0, 300) + detalheCotaGemini(data);
     // O modelo não aceita imageConfig / só IMAGE: ajusta o pedido e tenta de novo na hora.
     if (r.status === 400 && comAspecto && /imageConfig|aspect/i.test(msg)) { comAspecto = false; continue; }
     if (r.status === 400 && modalidades.length === 1 && /modalit/i.test(msg)) { modalidades = ['TEXT', 'IMAGE']; continue; }
     const e = new Error(`Gemini (${modelo}) HTTP ${r.status}: ${msg}`);
-    e.cotaDiaria = /exceeded your current quota|quota exceeded|per day/i.test(msg) && !/per minute/i.test(msg);
+    e.cotaDiaria = /exceeded your current quota|quota exceeded|per\s?day|limite 0/i.test(msg) && !/per\s?minute/i.test(msg);
     e.definitivo = r.status === 400 || r.status === 401 || r.status === 403 || r.status === 404;
     throw e;
   }
@@ -106,7 +135,9 @@ async function viaGemini(prompt, { apiKey, modelo, aspecto }) {
 // trocamos o pedido de "texto dentro da imagem" por "sem texto".
 // O FLUX desenha as palavras que aparecem no pedido ("law book" virou "Law", "final judgment stamp" virou "FINAL JUDGEMEON"): troca-as por descrições visuais sem nome escrito.
 const TROCAS_TEXTO_NA_IMAGEM = [
-  [/\b(?:open\s+)?law books?\b/gi, 'closed leather book with a plain blank cover'],
+  [/\b(?:open\s+)?(?:law|legal|statute|code)\s*books?\b/gi, 'closed leather book with a plain blank cover'],
+  [/\b(?:statutes?|legal codes?|codes? of law|bylaws?)\b/gi, 'closed leather book with a plain blank cover'],
+  [/\b(?:wall\s+|desk\s+|paper\s+)?calendars?\b/gi, 'analog wall clock'],   // calendário vira grade com letras/números inventados ("DAIM", "M T W")
   [/\b(?:final\s+)?judg(?:e)?ments?(?:\s+(?:stamp|seal|document|paper|sign))?\b/gi, 'wooden gavel on a sound block'],
   [/\b(?:stamps?|seals?|labels?|signs?|signage|banners?|posters?|certificates?|diplomas?|tags?)\b/gi, 'plain blank object'],
   [/\b(?:words?|letters?|text|writing|written|inscriptions?|captions?|titles?)\b/gi, ''],
@@ -141,14 +172,14 @@ async function viaCloudflare(prompt) {
   throw e;
 }
 
-async function comRetry(nome, fn, log) {
+async function comRetry(nome, fn, log, estourou = () => false) {
   let ultimo;
   for (let i = 1; i <= TENTATIVAS; i++) {
     try { return await fn(); }
     catch (e) {
       ultimo = e;
       const temporario = !e.definitivo && !e.cotaDiaria && !e.bloqueio && RE_TEMPORARIO.test(e.message);
-      if (!temporario || i === TENTATIVAS) break;
+      if (!temporario || i === TENTATIVAS || estourou()) break; // estourou(): orçamento de tempo da imagem esgotado — não espera mais um backoff
       const ms = backoff(i);
       log(`    ${nome}: ${e.message.slice(0, 140)} — nova tentativa em ${Math.round(ms / 1000)}s (${i}/${TENTATIVAS})`);
       await esperar(ms);
@@ -182,16 +213,20 @@ export function etapasImagem() {
 }
 
 /** Gera UMA imagem e salva em `destinoSemExt` + extensão. Devolve { arquivo, provedor }. */
-export async function gerarImagem({ prompt, destinoSemExt, aspecto = '9:16', log = console.log }) {
-  const etapas = etapasImagem();
+export async function gerarImagem({ prompt, destinoSemExt, aspecto = '9:16', log = console.log, etapas = etapasImagem() }) {
   if (!etapas.length) throw new Error('Nenhum gerador de imagem configurado (defina CLOUDFLARE_ACCOUNT_ID + CLOUDFLARE_API_TOKEN, GEMINI_API_KEY ou NINEROUTER_URL + NINEROUTER_IMAGE_MODEL).');
   const erros = [];
+  const inicio = Date.now();
+  const estourou = () => ORCAMENTO_IMG_MS > 0 && Date.now() - inicio > ORCAMENTO_IMG_MS;
   let rejeicoes = 0;
   for (const et of etapas) {
+    if (esgotados.has(et.nome)) { erros.push(`${et.nome}: cota diária já esgotada nesta execução`); continue; }   // circuito aberto: não gasta chamada nem tempo
+    if (estourou()) { erros.push(`${et.nome}: não tentado (orçamento de ${Math.round(ORCAMENTO_IMG_MS / 60000)} min por imagem esgotado)`); continue; }
     try {
       for (let t = 0; t <= OCR_RETENTATIVAS; t++) {
         if (rejeicoes >= OCR_MAX_REJEICOES) throw new Error(`imagem com letras em ${rejeicoes} tentativas (limite do OCR)`);
-        const { bytes, mime } = await comRetry(et.nome, () => et.rodar(t === 0 ? prompt : prompt + REFORCO_SEM_ESCRITA, aspecto), log);
+        if (t > 0 && estourou()) throw new Error('orçamento de tempo por imagem esgotado durante as novas tentativas do OCR');
+        const { bytes, mime } = await comRetry(et.nome, () => et.rodar(t === 0 ? prompt : prompt + REFORCO_SEM_ESCRITA, aspecto), log, estourou);
         if (!bytes || bytes.length < 2000) throw new Error('imagem vazia ou corrompida');
         const arquivo = `${destinoSemExt}.${extPorMime(mime)}`;
         fs.mkdirSync(path.dirname(arquivo), { recursive: true });
@@ -203,7 +238,17 @@ export async function gerarImagem({ prompt, destinoSemExt, aspecto = '9:16', log
         try { fs.unlinkSync(arquivo); } catch { /* já removido */ }
       }
       erros.push(`${et.nome}: letras na imagem em todas as tentativas`);
-    } catch (e) { erros.push(`${et.nome}: ${e.message}`); log(`    ${et.nome} falhou: ${e.message.slice(0, 200)}`); if (/limite do OCR/.test(e.message)) break; }
+    } catch (e) {
+      erros.push(`${et.nome}: ${e.message}`);
+      log(`    ${et.nome} falhou: ${e.message.slice(0, 260)}`);
+      if (e.cotaDiaria) { esgotados.set(et.nome, e.message.replace(/^.*?(HTTP \d{3}:\s*)/, '$1').slice(0, 230)); log(`    ${et.nome}: cota diária esgotada — não será tentado de novo nesta execução.`); }
+      if (/limite do OCR/.test(e.message)) break;
+    }
+  }
+  // Todos os provedores configurados esgotaram a cota diária: tentar mais cenas não adianta. Para agora, dizendo claramente por quê.
+  if (etapas.length && etapas.every((et) => esgotados.has(et.nome))) {
+    const quem = etapas.map((et) => `${et.nome}: ${esgotados.get(et.nome)}`).join(' | ');
+    throw new CotaImagensEsgotada(`Cota diária de imagens esgotada em todos os provedores (${quem}). As imagens já geradas ficaram guardadas: use "Tentar de novo" depois que a cota renovar (ela é diária), ou configure outra chave/provedor (GEMINI_API_KEY_2, NINEROUTER_URL).`);
   }
   throw new Error(`Nenhum provedor gerou a imagem:\n${erros.join('\n')}`);
 }
@@ -213,10 +258,11 @@ export async function gerarImagem({ prompt, destinoSemExt, aspecto = '9:16', log
  * Devolve { arquivos: [caminho|null], falhas }. Não lança erro por falhas isoladas: a cena fica sem imagem
  * (o vídeo usa um cartão de papel com o texto) — só falha o job se passar de `maxFalhaPct`.
  */
-export async function gerarImagensDoRoteiro({ cenas, montarPrompt, dir, existentes = [], aspecto = '9:16', maxFalhaPct = 0.4, log = console.log, aoGerar }) {
+export async function gerarImagensDoRoteiro({ cenas, montarPrompt, dir, existentes = [], aspecto = '9:16', maxFalhaPct = FALHA_MAX_PCT, log = console.log, aoGerar }) {
   fs.mkdirSync(dir, { recursive: true });
   const arquivos = [];
   let falhas = 0, geradas = 0, rejeitadasOcr = 0;
+  const motivos = [];
   for (let i = 0; i < cenas.length; i++) {
     const nn = String(i + 1).padStart(2, '0');
     if (existentes[i]) { arquivos.push(existentes[i]); continue; }
@@ -230,11 +276,21 @@ export async function gerarImagensDoRoteiro({ cenas, montarPrompt, dir, existent
       geradas++;
       if (aoGerar) await aoGerar(i, arquivo);
     } catch (e) {
+      if (e.cotaEsgotada) {
+        // para na hora: as cenas restantes só gastariam chamadas que já sabemos que falham. O que foi gerado já está no Storage (aoGerar).
+        log(`  Parando na cena ${i + 1}/${cenas.length}: ${e.message}`);
+        throw new Error(`Imagens: ${arquivos.filter(Boolean).length} de ${cenas.length} cenas prontas; parei na cena ${i + 1}. ${e.message}`);
+      }
       falhas++; arquivos.push(null);
-      log(`    SEM IMAGEM na cena ${i + 1}: ${e.message.split('\n')[0].slice(0, 200)}`);
+      const linhas = e.message.split('\n');
+      motivos.push(linhas.slice(0, 3).join(' / ').slice(0, 240));
+      log(`    SEM IMAGEM na cena ${i + 1}: ${linhas.slice(0, 2).join(' ').slice(0, 260)}`);
     }
   }
-  if (falhas / cenas.length > maxFalhaPct) throw new Error(`Imagens: ${falhas} de ${cenas.length} cenas ficaram sem imagem (limite ${Math.round(maxFalhaPct * 100)}%). As geradas foram guardadas; "Tentar de novo" completa só as que faltam.`);
+  if (falhas / cenas.length > maxFalhaPct) {
+    const causa = [...new Set(motivos)].slice(0, 2).join(' || ');
+    throw new Error(`Imagens: ${falhas} de ${cenas.length} cenas ficaram sem imagem (limite ${Math.round(maxFalhaPct * 100)}%). Causa: ${causa || 'desconhecida'}. As geradas foram guardadas; "Tentar de novo" completa só as que faltam.`);
+  }
   if (rejeitadasOcr) log(`  OCR: ${rejeitadasOcr} imagem(ns) descartada(s) por ter letras e refeita(s).`);
   return { arquivos, falhas, geradas, rejeitadasOcr };
 }
