@@ -1,7 +1,21 @@
 {
   "_como_usar": "Pronúncia por palavra, para qualquer vídeo. Texto simples = respelling (vale para todas as vozes: a voz lê a grafia nova; a tela e as legendas não mudam). Objeto {\"ipa\": \"...\"} = fonema IPA, só para a Francisca (Azure). As candidatas aparecem em admin-videos/_pronuncias/observadas.json (Storage) e no qa-voz.json de cada vídeo; para escolher a melhor versão de OUVIDO, rode o workflow 'Testar pronúncia'.",
-  "jornada": { "ipa": "ʒoɾˈnadɐ" },
-  "jornadas": { "ipa": "ʒoɾˈnadɐs" },
-  "intrajornada": { "ipa": "ĩtɾɐʒoɾˈnadɐ" },
-  "interjornada": { "ipa": "ĩteɾʒoɾˈnadɐ" }
+  "jornada": {
+    "ipa": "ʒoɾˈnadɐ"
+  },
+  "jornadas": {
+    "ipa": "ʒoɾˈnadɐs"
+  },
+  "intrajornada": {
+    "ipa": "ĩtɾɐʒoɾˈnadɐ"
+  },
+  "interjornada": {
+    "ipa": "ĩteɾʒoɾˈnadɐ"
+  },
+  "base": {
+    "ipa": "ˈbaze"
+  },
+  "bases": {
+    "ipa": "ˈbazes"
+  }
 }

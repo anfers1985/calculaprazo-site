@@ -43,7 +43,9 @@ TAREFA: aponte, no máximo ${MAX_PROBLEMAS}, os trechos da narração que:
 (a) afirmam fato, número, prazo, valor, norma, órgão ou consequência que NÃO está no artigo;
 (b) dão recomendação ou orientação prática ("a empresa deve…", "o trabalhador deve…", "antes de…") que o artigo não faz;
 (c) tiram uma ressalva ou condição do artigo e, sem ela, o sentido jurídico muda (ex.: "quando presentes os requisitos", "em regra", "salvo…");
-(d) atribuem a uma fonte (lei, tribunal, tese) algo que o artigo não atribui a ela.
+(d) atribuem a uma fonte (lei, tribunal, tese) algo que o artigo não atribui a ela;
+(e) CONTRADIZEM o artigo (ex.: a narração diz que "existem orientações divergentes" e o artigo diz que o TST consolidou entendimento único; "pode gerar debates" onde o artigo é categórico);
+(f) fazem uma PERGUNTA que a narração da própria cena ou da cena seguinte não responde, ou a respondem com algo que o artigo não diz (pergunta sem resposta). Nesse caso reescreva a cena que deveria responder, respondendo com o que o artigo diz.
 Para cada um, devolva a cena INTEIRA reescrita em "correcao", só com fatos do artigo, com quase o mesmo tamanho (±25% das palavras), mantendo o conector de abertura e o encadeamento com as cenas vizinhas, em terceira pessoa, frase(s) completa(s) começando com maiúscula e terminando em ponto, "?" ou "!". ${manterNumeros ? 'Escreva números, artigos, leis, temas e prazos em ALGARISMOS ("Tema 176", "art. 227", "50%").' : 'Sem dígitos, "R$", "%" ou símbolos: tudo por extenso.'} Não crie perguntas novas.
 Se a narração está fiel, devolva a lista vazia.
 

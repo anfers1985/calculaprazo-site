@@ -62,10 +62,10 @@ export function temporizarBlocos(blocos, t0, t1, falaSeg = null) {
 
 // ---- Sincronia item × fala (slides): estima, pela posição da palavra-chave na narração, quando cada item deve aparecer ----
 const normTxt = (t) => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ');
-export function calcularQuando(narracao, rotulos, dur, { primeiroFixo = null } = {}) {
+export function calcularQuando(narracao, rotulos, dur, { primeiroFixo = null, sobra = 1.8 } = {}) {
   const nar = normTxt(narracao), len = Math.max(1, nar.length);
   const fala = Math.max(1.5, dur - 0.5);          // a fala ocupa a cena menos a pausa final
-  const min = 0.7, max = Math.max(min + 0.5, dur - 1.8), gap = 0.55; // o último item fica ~1,8 s completo na tela antes de a cena acabar
+  const min = 0.7, max = Math.max(min + 0.5, dur - sobra), gap = 0.55; // o último item fica `sobra` s completo na tela antes de a cena acabar (decisão: 3 s; no vídeo do Tema 142 as respostas Sim/Não apareciam ~1 s antes do corte)
   let ult = -1;
   const pos = rotulos.map((r) => {
     const palavras = normTxt(r).split(' ').filter((w) => w.length >= 5);
@@ -168,7 +168,7 @@ export function roteiroParaCena(roteiro, tipo, duracaoAudioSeg, estilo = 'slides
     cenas: cenas.map((c, i) => {
       const { narracao, duracao_seg, fala_seg, ...visual } = c; // narração e durações não vão pro visual
       const rot = rotulosDaCena(c);
-      if (rot && rot.length) visual.quando = calcularQuando(narracao, rot, cortes[i + 1] - cortes[i], { primeiroFixo: c.tipo === 'decisao' ? 0.3 : null });
+      if (rot && rot.length) visual.quando = calcularQuando(narracao, rot, cortes[i + 1] - cortes[i], { primeiroFixo: c.tipo === 'decisao' ? 0.3 : null, sobra: c.tipo === 'decisao' ? 3.2 : 1.8 });
       return visual;
     }),
   };

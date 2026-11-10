@@ -2,7 +2,7 @@
 // FONTE ÚNICA: roteiro.mjs (etapa do GitHub) importa daqui. Antes havia duas cópias divergentes: esta, sem os reparos automáticos, sem a costura da
 // narração e sem a escolha da "melhor tentativa", e a de roteiro.mjs. Quem usasse a cópia antiga (o cabeçalho dizia que ela era para o app do computador,
 // que não veio no ZIP e por isso não foi verificado) geraria roteiros piores que os do GitHub.
-import { catalogoIcones, montarPrompt, validarRoteiro, repararRoteiro, filtrarRefs, alinharTelaComFala, repararNumerosDaTela, extrairJson, CTA_FINAL } from './roteiro-regras.mjs';
+import { catalogoIcones, montarPrompt, validarRoteiro, repararRoteiro, filtrarRefs, alinharTelaComFala, repararNumerosDaTela, refsSoSeFaladas, enriquecerSlidesFracos, juntarCenasCurtas, fundirPerguntaRepetida, extrairJson, CTA_FINAL } from './roteiro-regras.mjs';
 import { costurarNarracao } from './costura.mjs';
 import { verificarFidelidade, verificarRepeticao } from './fidelidade.mjs';
 import { revisarTextosDeTela } from './revisao-tela.mjs';
@@ -47,7 +47,7 @@ export async function gerarRoteiroPara({ artigo, tipo, durSeg, tom, chamarIA, lo
       r = extrairJson(resp.text);
     } catch (e) { motivo = `A resposta anterior não foi um JSON válido (${e.message}). Responda apenas com o objeto JSON completo.`; log(motivo); continue; }
     const reparos = repararRoteiro(r, icones); // ícones antigos, narração em outro campo, 3 cenas iguais, decisão sim/não trocada
-    reparos.push(...filtrarRefs(r, refsPermitidas), ...alinharTelaComFala(r), ...repararNumerosDaTela(r, artigo.texto)); // referência fora das permitidas e tela que a voz não diz: consertados, não reprovados
+    reparos.push(...juntarCenasCurtas(r), ...filtrarRefs(r, refsPermitidas), ...alinharTelaComFala(r, { tipo }), ...(tipo === 'short' ? fundirPerguntaRepetida(r) : []), ...repararNumerosDaTela(r, artigo.texto), ...refsSoSeFaladas(r), ...enriquecerSlidesFracos(r)); // referência fora das permitidas e tela que a voz não diz: consertados, não reprovados
     if (reparos.length) log(`  reparos automáticos (${reparos.length}): ${reparos.slice(0, 6).join(' | ')}`);
     const v = validar(r);
     v.avisos.slice(0, 8).forEach(a => log('  aviso: ' + a));

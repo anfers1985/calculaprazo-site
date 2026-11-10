@@ -193,7 +193,7 @@ TIPOS DE CENA E CAMPOS (além de "narracao" em todas):
 9. numero (OPCIONAL, para destacar um número-chave que ESTÁ NO ARTIGO: prazo, quantidade de dias/meses, percentual): {"tipo":"numero","narracao":"…","numero":"só dígitos, ex.: 2","prefixo":"opcional, ≤3 palavras (ex.: Mais de)","unidade":"≤4 palavras (ex.: dias por semana)","sufixo":"opcional: % ou +","sub":"≤90 caracteres","icone":"…","refs":[]}
 10. grade (REQUISITOS, ELEMENTOS, CRITÉRIOS ou DIREITOS em cartões lado a lado): {"tipo":"grade","narracao":"…","titulo":"≤6 palavras","cards":[{"icone":"…","titulo":"≤3 palavras","texto":"≤60 caracteres"} de 2 a 4],"refs":[]}
 11. passos (PROCESSO, ETAPAS ou ORDEM de análise, ligados por uma linha): {"tipo":"passos","narracao":"…","titulo":"≤6 palavras","passos":[{"titulo":"≤3 palavras","texto":"≤50 caracteres"} de 3 a 5],"refs":[]}
-12. decisao (FLUXO SIM/NÃO: uma pergunta que leva a dois resultados; o ramo "sim" vale quando a resposta à pergunta é SIM e o "nao" quando é NÃO: o titulo de "sim" nunca começa com "Não" e o de "nao" nunca começa com "Sim"): {"tipo":"decisao","narracao":"…","pergunta":"≤90 caracteres, termina com ?","sim":{"titulo":"≤4 palavras","texto":"≤60 caracteres"},"nao":{"titulo":"≤4 palavras","texto":"≤60 caracteres"},"refs":[]}
+12. decisao (FLUXO SIM/NÃO, no máximo 1 por vídeo e NUNCA no Short. A narração DESSA cena (mínimo 25 palavras) faz a pergunta E explica os DOIS ramos com as mesmas palavras dos textos "sim" e "nao": "…? Sim, … Já quando … , …". A pergunta NUNCA usa "apenas", "só" ou "somente" (inverte o Sim/Não). O ramo "sim" vale quando a resposta à pergunta é SIM e o "nao" quando é NÃO: o titulo de "sim" nunca começa com "Não" e o de "nao" nunca começa com "Sim"): {"tipo":"decisao","narracao":"…","pergunta":"≤90 caracteres, termina com ?","sim":{"titulo":"≤4 palavras","texto":"≤60 caracteres"},"nao":{"titulo":"≤4 palavras","texto":"≤60 caracteres"},"refs":[]}
 CHIPS (opcional em afirmacao, destaque e numero): "chips":["termo-chave","termo-chave"] com 2 a 3 etiquetas de até 3 palavras cada, que aparecem na tela como resumo visual do que a narração diz.
 
 ÍCONES (campo "icone"/"marca_dagua"): use SOMENTE ids destas listas, escolhendo objetos que combinem com o assunto de cada cena (evite repetir o mesmo ícone mais de 2 vezes). Copie o id EXATAMENTE como está na lista, com o prefixo \"lu-\" (ex.: lu-circle-help, lu-triangle-alert; NÃO invente nomes como lu-help-circle, lu-alert-triangle, lu-trash-2, lu-brush). Se nenhum servir, use lu-info.
@@ -416,13 +416,94 @@ export function numeroFalado(n, narracao) {
   });
 }
 /** Texto de tela tirado da própria fala: a primeira frase se couber (≤ 100 caracteres) ou o trecho até a última vírgula/palavra inteira, sem terminar em artigo/preposição. */
+const _RE_CONECTOR_ABERTURA = /^(?:mas|por isso|com isso|nesse caso|nessa hip[óo]tese|na pr[áa]tica|ou seja|al[ée]m disso|j[áa]|assim|ent[ãa]o|portanto|dessa forma|desse modo|por outro lado|em resumo|vamos ver[^.!?]*[.!?])[,\s]+/i;
 export function textoDaFala(narracao) {
-  const frase = String(narracao || '').trim().split(/(?<=[.!?])\s+/)[0].replace(/[.!?]+$/, '');
+  let bruto = String(narracao || '').trim().replace(_RE_CONECTOR_ABERTURA, '');
+  bruto = bruto.charAt(0).toUpperCase() + bruto.slice(1);
+  const frase = bruto.split(/(?<=[.!?])\s+/)[0].replace(/[.!?]+$/, '');
   if (frase.length <= 100) return frase;
   let corte = frase.slice(0, 100); const v = corte.lastIndexOf(','); if (v >= 40) corte = corte.slice(0, v); else corte = corte.slice(0, corte.lastIndexOf(' '));
   let pal = corte.split(/\s+/); while (pal.length > 3 && _FUNC_FIM.test(pal.join(' '))) pal.pop();
   return pal.join(' ');
 }
+const _RE_TIPO_NORMA = [[/s[úu]mula/i, /s[úu]mula/i], [/^\s*lei\b/i, /\blei\b/i], [/tema/i, /\btema\b/i], [/\bOJ\b|orienta/i, /\boj\b|orienta[cç][aã]o/i], [/\bart\b|artigo|CLT|CF\b|CC\b|CPC|ADCT/i, /\bartigo|\bclt\b|consolida[cç][aã]o|constitui[cç][aã]o|\bcf\b|c[óo]digo|\badct\b|\bcpc\b/i]];
+/** O chip de norma só aparece na cena cuja narração fala dessa norma (pelo número ou pelo tipo: "a lei", "a súmula", "a CLT"). A IA espalhava a norma principal por todas as cenas:
+ *  "Lei nº 12.506/2011" saiu sobre FGTS, desconto e término natural, e "Súmula 441" sobre 13º e férias (o artigo cita a Súmula 371 para isso). A capa lista as referências do vídeo e fica de fora. */
+export function refsSoSeFaladas(r) {
+  const reparos = [];
+  (r.cenas || []).forEach((c, i) => {
+    if (!c || !Array.isArray(c.refs) || !c.refs.length || ['capa', 'encerramento'].includes(c.tipo)) return;
+    const nar = String(c.narracao || ''), narNorm = _SEM_ACENTO(nar);
+    const mencionaNumero = (n) => {
+      const limpo = n.replace(/\./g, '');
+      if ([n, limpo].some(v => new RegExp(`(?<![\\d])${_escRe(v)}(?![\\d])`).test(nar))) return true;
+      const v = Number(limpo); if (!Number.isInteger(v) || v >= 1e6) return false;
+      return new RegExp(`(?<![a-z])${_escRe(_SEM_ACENTO(numeroPorExtenso(v)))}(?![a-z])`).test(narNorm);
+    };
+    const ok = c.refs.filter((ref) => {
+      const nums = (String(ref).match(/\d[\d.]*/g) || []).map(n => n.replace(/\.+$/, '')).filter(n => n.length >= 2);
+      return nums.some(mencionaNumero) || _RE_TIPO_NORMA.some(([naRef, naFala]) => naRef.test(ref) && naFala.test(nar));
+    });
+    if (ok.length !== c.refs.length) { reparos.push(`cena ${i + 1}: ${c.refs.length - ok.length} referência(s) de norma que a cena não menciona removida(s)`); c.refs = ok; }
+  });
+  return reparos;
+}
+
+/** Slides que só têm um título genérico ganham a frase que a voz diz; títulos repetidos em cenas seguidas são trocados. */
+export function enriquecerSlidesFracos(r) {
+  const reparos = [];
+  const cenas = r.cenas || [];
+  let anterior = '';
+  cenas.forEach((c, i) => {
+    if (!c || ['capa', 'encerramento'].includes(c.tipo)) { anterior = ''; return; }
+    const nar = c.narracao || '';
+    if (c.tipo === 'destaque' && (!c.sub || !String(c.sub).trim()) && nar) {
+      const x = coberturaTelaNarracao(c.titulo || '', nar);
+      if (!(x.total >= 2 && x.cobertura >= 0.67)) { c.sub = textoDaFala(nar) || ' '; reparos.push(`cena ${i + 1}: destaque só com título ganhou a frase que a voz diz`); }
+    } else if (c.tipo === 'afirmacao' && nar && String(c.texto || '').trim().split(/\s+/).length <= 4) {
+      const x = coberturaTelaNarracao(c.texto || '', nar);
+      if (!(x.total >= 2 && x.cobertura >= 0.67)) { const tit = c.texto; const refs = Array.isArray(c.refs) ? c.refs : [], icone = c.icone || 'lu-info'; Object.keys(c).forEach(k => { if (k !== 'narracao') delete c[k]; }); Object.assign(c, { tipo: 'destaque', titulo: tit, sub: textoDaFala(nar) || ' ', icone, refs }); reparos.push(`cena ${i + 1}: afirmação de poucas palavras virou destaque com a frase que a voz diz`); }
+    }
+    const t = _SEM_ACENTO(c.titulo || c.texto || '').replace(/\s+/g, ' ').trim();
+    if (t && t === anterior && nar) {
+      const f = textoDaFala(nar); const virg = f.indexOf(',');
+      let tit = virg >= 12 && f.slice(0, virg).split(/\s+/).length <= 8 ? f.slice(0, virg) : f.split(/\s+/).slice(0, 7).join(' ');
+      let pal = tit.split(/\s+/); while (pal.length > 3 && _FUNC_FIM.test(pal.join(' '))) pal.pop(); tit = pal.join(' ');
+      if (c.titulo !== undefined) { c.titulo = tit; if (c.tipo === 'destaque') c.sub = f.slice(tit.length).replace(/^[,;:\s]+/, '') || c.sub || ' '; reparos.push(`cena ${i + 1}: título igual ao da cena anterior trocado`); }
+    }
+    anterior = _SEM_ACENTO(c.titulo || c.texto || '').replace(/\s+/g, ' ').trim();
+  });
+  return reparos;
+}
+
+/** Cena de uma frase curta (< 8 palavras, ex.: "Vamos ver os elementos considerados pelo Tribunal.") fica só ~3 s na tela e é só ponte: vai para o começo da cena seguinte.
+ *  Ajusta os capítulos (numeração das cenas). Não mexe na capa, na pergunta, no resumo nem no encerramento. */
+export function juntarCenasCurtas(r) {
+  const reparos = [];
+  const cenas = r.cenas || [];
+  for (let i = cenas.length - 4; i >= 1; i--) {
+    const c = cenas[i], prox = cenas[i + 1];
+    if (!c || !prox || ['capa', 'pergunta', 'encerramento'].includes(c.tipo) || ['encerramento'].includes(prox.tipo)) continue;
+    const nar = String(c.narracao || '').trim();
+    if (nar.split(/\s+/).filter(Boolean).length >= 8 || /\?\s*$/.test(nar)) continue;
+    prox.narracao = `${nar} ${String(prox.narracao || '').trim()}`.trim();
+    cenas.splice(i, 1);
+    if (Array.isArray(r.capitulos)) r.capitulos.forEach(k => { if (Number(k.cena) - 1 > i) k.cena = Number(k.cena) - 1; });
+    reparos.push(`cena ${i + 1}: frase curta de ponte ("${nar.slice(0, 40)}") juntada à cena seguinte`);
+  }
+  return reparos;
+}
+
+/** Short: uma segunda pergunta logo depois da pergunta da capa (cena 2) só atrasa a resposta (no Short do Tema 142 a resposta veio aos 14 s de 47 s). A fala dela vira o começo da cena seguinte. */
+export function fundirPerguntaRepetida(r) {
+  const cenas = r.cenas || [];
+  if (cenas.length < 4 || !cenas[1] || cenas[1].tipo !== 'pergunta' || !cenas[2] || cenas[2].tipo === 'encerramento') return [];
+  cenas[2].narracao = `${String(cenas[1].narracao || '').trim()} ${String(cenas[2].narracao || '').trim()}`.trim();
+  cenas.splice(1, 1);
+  if (Array.isArray(r.capitulos)) r.capitulos.forEach(k => { if (Number(k.cena) - 1 > 1) k.cena = Number(k.cena) - 1; });
+  return ['cena 2: pergunta logo depois da pergunta da capa juntada à cena seguinte (Short)'];
+}
+
 /** Reparos nos slides "numero" que dependem do artigo: o selo "%" só vale se o artigo traz esse número em porcentagem (o vídeo da jornada de 42 h mostrava
  *  "21,43" com "%" para um valor de R$ 21,43), e valor em reais precisa dizer "reais" (o círculo só mostra o número). */
 export function repararNumerosDaTela(r, textoArtigo) {
@@ -442,49 +523,71 @@ export function repararNumerosDaTela(r, textoArtigo) {
   });
   return reparos;
 }
-export function alinharTelaComFala(r) {
+/** Conteúdo de slide que a voz não sustenta é retirado, MAS nunca deixando o slide vazio: o que sobra é a própria fala (textoDaFala). Antes, itens/subtítulos "não falados"
+ *  eram só apagados e a cena virava um cartão com o título ("Etapas da análise", "Impactos práticos", "Em resumo" sem os 3 itens): 13 de 19 slides do vídeo do Tema 142. */
+export function alinharTelaComFala(r, { tipo = '' } = {}) {
   const reparos = [];
   const MIN_ITENS = { cards: 2, passos: 3, itens: 3 };
   (r.cenas || []).forEach((c, i) => {
     if (!c || typeof c !== 'object' || ['capa', 'encerramento', 'numero'].includes(c.tipo)) return;
     const nar = c.narracao || '';
-    // Número na tela que a voz não diz é informação nova para o espectador (no vídeo da jornada de 42 h, a tela mostrava "44 h → 220" e "40 h → 200" e a voz só explicava a regra).
-    const numerosOk = (t) => (String(t).match(/\d[\d.,]*/g) || []).map(n => n.replace(/[.,]+$/, '')).every(n => numeroFalado(n, nar));
+    // Número "pesado" na tela (≥ 3 algarismos ou com vírgula/ponto) que a voz não diz é informação nova (a tela mostrava "44 h → 220" e "40 h → 200" e a voz só explicava a regra).
+    // Números pequenos e ordinais ("1º", "§ 8º", "3") ficam de fora: a voz diz "primeiro", "oitavo"... e o radical não enxerga isso.
+    const numerosOk = (t) => (String(t).match(/\d[\d.,]*\d|\d/g) || []).filter(n => /[.,]/.test(n) || n.length >= 3).every(n => numeroFalado(n, nar));
     const falado = (t) => { if (!numerosOk(t)) return false; const x = coberturaTelaNarracao(t, nar); return x.total < 2 || x.cobertura >= 0.3; }; // pouco conteúdo para medir: mantém
-    // Decisão/comparação cujo conteúdo a voz NÃO menciona em nada (a tela mostrava "Há redução salarial?… Sim: apenas para horas reduzidas" e a voz falava de outra coisa):
-    // vira afirmação com o que a voz diz. Só age no caso flagrante (pergunta/título e ramos sem nenhuma relação com a fala), porque o radical não enxerga sinônimo.
-    if (c.tipo === 'decisao' || c.tipo === 'comparacao') {
-      const cab = c.tipo === 'decisao' ? c.pergunta : c.titulo;
-      const ramos = (c.tipo === 'decisao' ? [c.sim, c.nao] : [c.esq, c.dir]).map(x => [x && x.titulo, x && x.texto].filter(Boolean).join(' ')).join(' ');
-      const cCab = coberturaTelaNarracao(cab || '', nar), cRamos = coberturaTelaNarracao(ramos, nar);
-      const cabNaoFalado = (cab ? (cCab.total >= 2 && cCab.cobertura < 0.34) : true);
-      if (cabNaoFalado && cRamos.total >= 2 && cRamos.cobertura < 0.2) {
-        const refs = Array.isArray(c.refs) ? c.refs : [], tipoAntigo = c.tipo;
-        Object.keys(c).forEach(k => { if (k !== 'narracao') delete c[k]; });
-        Object.assign(c, { tipo: 'afirmacao', texto: textoDaFala(nar), icone: 'lu-info', refs });
-        reparos.push(`cena ${i + 1}: ${tipoAntigo} sem relação com a fala; virou afirmação com o que a voz diz`);
+    const comoDestaque = (titulo, motivo) => {
+      const refs = Array.isArray(c.refs) ? c.refs : [], icone = c.icone || 'lu-info', tipoAntigo = c.tipo;
+      const tit = String(titulo || 'Em destaque').replace(/\s+/g, ' ').trim();
+      Object.keys(c).forEach(k => { if (k !== 'narracao') delete c[k]; });
+      Object.assign(c, { tipo: 'destaque', titulo: tit, sub: textoDaFala(nar) || ' ', icone, refs });
+      reparos.push(`cena ${i + 1}: ${tipoAntigo} ${motivo}; virou destaque com a frase que a voz diz`);
+    };
+
+    // ---- DECISÃO ("pergunta-chave"). Nos vídeos analisados: a narração só fazia a pergunta, as respostas (Sim/Não) entravam na tela sem ninguém explicar (ou no último segundo
+    // da cena) e a caixa azul destacava o "SIM" mesmo quando a resposta certa era "NÃO" ("A multa incide SÓ sobre o salário-base?" → SIM: "Todas as parcelas integram a base").
+    // Só fica uma decisão que (a) não é Short, (b) tem pergunta sem "apenas/só/somente" (que inverte o sentido), (c) tem narração longa o bastante para explicar e (d) fala os DOIS ramos.
+    if (c.tipo === 'decisao') {
+      const perg = String(c.pergunta || '');
+      const palavras = nar.trim().split(/\s+/).filter(Boolean).length;
+      const ramo = (x) => coberturaTelaNarracao([x && x.titulo, x && x.texto].filter(Boolean).join(' '), nar);
+      const cs = ramo(c.sim), cn = ramo(c.nao);
+      const explicaDois = (cs.total < 2 || cs.cobertura >= 0.3) && (cn.total < 2 || cn.cobertura >= 0.3);
+      let motivo = '';
+      if (tipo === 'short') motivo = 'não se usa no Short';
+      else if (/\b(?:apenas|somente|s[óo]|exclusivamente|unicamente)\b/i.test(perg)) motivo = 'pergunta com "apenas/só" inverte o sentido do Sim/Não';
+      else if (palavras < 22) motivo = 'a narração só faz a pergunta (não explica os ramos)';
+      else if (!explicaDois) motivo = 'a narração não fala os dois ramos';
+      if (motivo) {
+        if (/\?\s*$/.test(nar.trim()) && palavras <= 30) {
+          const refs = Array.isArray(c.refs) ? c.refs : [];
+          Object.keys(c).forEach(k => { if (k !== 'narracao') delete c[k]; });
+          Object.assign(c, { tipo: 'pergunta', titulo: perg || textoDaFala(nar), refs });
+          reparos.push(`cena ${i + 1}: decisão ${motivo}; virou slide de pergunta`);
+        } else comoDestaque(perg || c.titulo, `decisão ${motivo}`);
         return;
       }
+    }
+    // Comparação cujo conteúdo a voz NÃO menciona em nada: vira destaque com o que a voz diz.
+    if (c.tipo === 'comparacao') {
+      const ramos = [c.esq, c.dir].map(x => [x && x.titulo, x && x.texto].filter(Boolean).join(' ')).join(' ');
+      const cCab = coberturaTelaNarracao(c.titulo || '', nar), cRamos = coberturaTelaNarracao(ramos, nar);
+      if ((c.titulo ? (cCab.total >= 2 && cCab.cobertura < 0.34) : true) && cRamos.total >= 2 && cRamos.cobertura < 0.2) { comoDestaque(c.titulo, 'comparação sem relação com a fala'); return; }
     }
     if (Array.isArray(c.chips)) {
       const ok = c.chips.filter(falado);
       if (ok.length !== c.chips.length) { reparos.push(`cena ${i + 1}: etiqueta(s) não faladas removida(s)`); if (ok.length >= 2) c.chips = ok; else delete c.chips; }
     }
-    if (typeof c.sub === 'string' && c.sub.trim() && !falado(c.sub)) { reparos.push(`cena ${i + 1}: subtítulo não falado removido`); c.sub = ' '; }
+    if (typeof c.sub === 'string' && c.sub.trim() && !falado(c.sub)) {
+      if (c.tipo === 'destaque') { c.sub = textoDaFala(nar) || ' '; reparos.push(`cena ${i + 1}: subtítulo não falado trocado pela frase que a voz diz`); }
+      else { c.sub = ' '; reparos.push(`cena ${i + 1}: subtítulo não falado removido`); }
+    }
     for (const campo of ['cards', 'passos', 'itens']) {
       const lista = c[campo];
       if (!Array.isArray(lista)) continue;
       const ok = lista.filter(it => falado([it && it.titulo, it && it.texto].filter(Boolean).join(' ')));
       if (ok.length === lista.length) continue;
       if (ok.length >= MIN_ITENS[campo]) { c[campo] = ok; reparos.push(`cena ${i + 1}: ${lista.length - ok.length} item(ns) não falado(s) removido(s)`); }
-      else {
-        const titulo = String(c.titulo || (ok[0] && ok[0].titulo) || (lista[0] && lista[0].titulo) || 'Em resumo');
-        const refs = Array.isArray(c.refs) ? c.refs : [];
-        Object.keys(c).forEach(k => { if (k !== 'narracao') delete c[k]; });
-        Object.assign(c, { tipo: 'afirmacao', texto: titulo, icone: 'lu-info', refs });
-        reparos.push(`cena ${i + 1}: itens da tela não falados; cena virou afirmação só com o título`);
-        break;
-      }
+      else { comoDestaque(c.titulo || (ok[0] && ok[0].titulo) || (lista[0] && lista[0].titulo) || 'Em resumo', 'itens não falados'); break; }
     }
   });
   return reparos;
