@@ -22,6 +22,9 @@
  *   GET  /view/:slug     → { slug, views }
  *   POST /view/:slug     → { slug, views }   (incrementa +1)
  *   GET  /top/:limit     → { top: [{slug, views}, ...] }
+ *   POST /pv/:slug       → { slug, views }   (acesso a PÁGINA de ferramenta; +1 total e +1 no dia)
+ *   GET  /pv-stats       → { pages:[{slug,views,d1,d7,d30}], calcs:[{slug,views}] }
+ *                          (acessos às ferramentas + cálculos concluídos, para o painel /admin)
  *   GET  /health         → { ok: true }
  *   POST /index-google   → notifica Google via Indexing API (URL_UPDATED)
  *   POST /ai-generate    → proxy para Gemini/OpenAI/Grok/DeepSeek/Claude
@@ -53,6 +56,33 @@ function json(data, status, origin) {
       ...corsHeaders(origin)
     }
   });
+}
+
+/* ── Acessos às páginas de ferramentas ─────────────────────────
+ * Ficam no prefixo "p:" (e NÃO em "v:") de propósito: /top lista todo "v:" e é
+ * consumido pela home e pelo admin só para artigos; misturar as ferramentas ali
+ * ocuparia as vagas do ranking. O metadata guarda o total e os últimos 35 dias
+ * (chave AAMMDD, horário de Brasília) — assim cada acesso custa 1 única escrita no KV.
+ */
+const PV_SLUG_RE = /^[a-z0-9][a-z0-9-]{0,60}$/;
+function brDay(daysAgo) {
+  const d = new Date(Date.now() - 3 * 3600 * 1000 - (daysAgo || 0) * 86400000);
+  return d.toISOString().slice(2, 10).replace(/-/g, '');
+}
+function sumDays(days, n) {
+  let t = 0;
+  for (let i = 0; i < n; i++) t += (days && days[brDay(i)]) || 0;
+  return t;
+}
+async function listAll(env, prefix) {
+  const out = [];
+  let cursor;
+  do {
+    const l = await env.VIEWS.list({ prefix, cursor });
+    out.push(...l.keys);
+    cursor = l.list_complete ? undefined : l.cursor;
+  } while (cursor);
+  return out;
 }
 
 export default {
@@ -95,6 +125,45 @@ export default {
       // Salvar valor E metadata — /top usa metadata para evitar N gets adicionais
       await env.VIEWS.put(key, String(views), { metadata: { views } });
       return json({ slug, views }, 200, origin);
+    }
+
+    // ── POST /pv/:slug — acesso a uma página de ferramenta ────
+    if (request.method === 'POST' && path.startsWith('/pv/')) {
+      // só aceita chamadas vindas do próprio site (evita lixo de curl/bots no KV)
+      if (!ALLOWED_ORIGINS.includes(origin)) return json({ error: 'origin' }, 403, origin);
+      const slug = decodeURIComponent(path.slice(4));
+      if (!PV_SLUG_RE.test(slug)) return json({ error: 'slug inválido' }, 400, origin);
+
+      const key = 'p:' + slug;
+      const cur = await env.VIEWS.getWithMetadata(key);
+      const views = (cur.value ? parseInt(cur.value, 10) : 0) + 1;
+      const days = Object.assign({}, (cur.metadata && cur.metadata.d) || {});
+      const today = brDay(0);
+      days[today] = (days[today] || 0) + 1;
+      const keep = new Set();
+      for (let i = 0; i < 35; i++) keep.add(brDay(i));
+      Object.keys(days).forEach(k => { if (!keep.has(k)) delete days[k]; });
+      await env.VIEWS.put(key, String(views), { metadata: { views, d: days } });
+      return json({ slug, views }, 200, origin);
+    }
+
+    // ── GET /pv-stats — acessos às ferramentas + cálculos feitos ──
+    if (request.method === 'GET' && path === '/pv-stats') {
+      const pages = (await listAll(env, 'p:')).map(({ name, metadata }) => ({
+        slug:  name.slice(2),
+        views: (metadata && metadata.views) || 0,
+        d1:    sumDays(metadata && metadata.d, 1),
+        d7:    sumDays(metadata && metadata.d, 7),
+        d30:   sumDays(metadata && metadata.d, 30)
+      }));
+      // cálculos concluídos: já gravados pelo trackCalc em "v:calc-*"
+      const calcs = (await listAll(env, 'v:calc-')).map(({ name, metadata }) => ({
+        slug:  name.slice(2),
+        views: (metadata && metadata.views) || 0
+      }));
+      const res = json({ pages, calcs, ts: Date.now() }, 200, origin);
+      res.headers.set('Cache-Control', 'no-store');
+      return res;
     }
 
     // ── GET /top/:limit   ───────────────────────────────────────

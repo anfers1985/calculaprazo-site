@@ -1806,6 +1806,9 @@ img[src*="m.media-amazon.com"] {
 /* ═══ TOOL-GRID + SIDEBAR + ADS (rollout ferramentas/calculadoras) ═══ */
 .tool-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:32px;align-items:start;width:92%;max-width:1560px;margin:0 auto;padding:0 16px;}
 .tool-sidebar{display:flex;flex-direction:column;gap:20px;}
+/* Respiro entre o fim do conteúdo da ferramenta ("Outras ferramentas úteis", cards, anúncio) e o rodapé.
+   Vem ANTES do @media(max-width:767px) abaixo, que zera o padding no celular (lá o bloco nem aparece). */
+.tool-grid{padding-bottom:56px;}
 .sidebar-card{background:var(--card);border:1.5px solid var(--brd);border-radius:14px;padding:18px;}
 .sidebar-card h3{font-size:.92rem;font-weight:800;margin-bottom:10px;letter-spacing:-.2px;display:flex;align-items:center;gap:6px;}
 .sidebar-list{display:flex;flex-direction:column;}

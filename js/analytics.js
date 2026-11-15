@@ -102,10 +102,77 @@
     });
   }
 
+  /* ── Acessos às PÁGINAS de ferramentas/calculadoras ────────────
+     Conta 1 acesso por aba/sessão para cada ferramenta (sessionStorage), depois de 3s
+     na página, e fica visível só no admin ("Acessos às Ferramentas"). Vai para
+     POST /pv/:slug (prefixo "p:" no KV), separado dos artigos (/view/) e dos
+     cálculos concluídos (trackCalc). Para a ferramenta nova entrar na contagem,
+     basta incluir o slug do diretório em TOOL_PAGES (e em TOOLS no admin, p/ nome). */
+  var TOOL_PAGES = {
+    'calculadora-de-prazo-processual':1, 'calculadora-de-datas':1, 'calculadora-de-prescricao':1,
+    'calculadora-verbas-trabalhistas':1, 'calculadora-salario-liquido':1, 'calculadora-salario-intermitente':1,
+    'calculadora-horas-extras':1, 'calculadora-seguro-desemprego':1, 'calculadora-rescisao-domestica':1,
+    'calculadora-de-juros':1, 'calculadora-de-porcentagem':1, 'calculadora-imc':1,
+    'correcao-monetaria':1, 'conversor-de-moedas':1, 'numero-por-extenso':1,
+    'validador-cpf-cnpj':1, 'gerador-de-qr-code':1, 'gerador-de-senhas':1,
+    'ferramentas':1
+  };
+  var PV_KEY   = 'cp_pv_';
+  var PV_DELAY = 3000; // 3s na página antes de contar (filtra bots e aberturas acidentais)
+
+  function toolSlugFromPath(path) {
+    // /calculadora-de-datas  /calculadora-de-datas/  /calculadora-de-datas/index.html
+    var m = (path || '').match(/^\/([a-z0-9-]+)(?:\/index\.html|\/)?$/);
+    return (m && TOOL_PAGES[m[1]]) ? m[1] : null;
+  }
+
+  var pvPending = {};
+  function trackPage(slug) {
+    if (!slug) return;
+    try { if (navigator.webdriver) return; } catch(e) {}
+    if (pvPending[slug]) return;
+    try { if (sessionStorage.getItem(PV_KEY + slug)) return; } catch(e) {}
+    pvPending[slug] = true;
+
+    setTimeout(function() {
+      pvPending[slug] = false;
+      // só conta se a pessoa ainda estiver nessa ferramenta depois do atraso
+      // (na home/SPA, quem sai antes dos 3s não é contado e pode ser contado numa próxima visita)
+      if (toolSlugFromPath(window.location.pathname) !== slug) return;
+      try { sessionStorage.setItem(PV_KEY + slug, '1'); } catch(e) {}
+      var ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+      var tid  = ctrl ? setTimeout(function() { ctrl.abort(); }, 5000) : null;
+      fetch(WORKER_URL + '/pv/' + encodeURIComponent(slug), {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        mode:    'cors',
+        keepalive: true,
+        signal:  ctrl ? ctrl.signal : undefined
+      })
+      .then(function() { if (tid) clearTimeout(tid); })
+      .catch(function(e) { if (tid) clearTimeout(tid); });
+    }, PV_DELAY);
+  }
+
+  function onRoute() { trackPage(toolSlugFromPath(window.location.pathname)); }
+
+  /* A home é uma SPA: abrir uma calculadora por ali troca a URL com pushState,
+     sem recarregar a página. Observamos pushState/popstate para não perder esses acessos. */
+  try {
+    var _push = window.history.pushState;
+    window.history.pushState = function() {
+      var r = _push.apply(this, arguments);
+      try { onRoute(); } catch(e) {}
+      return r;
+    };
+    window.addEventListener('popstate', function() { try { onRoute(); } catch(e) {} });
+  } catch(e) {}
+
   /* ── API pública ─────────────────────────────────────────── */
   window.CPViews = {
     trackView: trackView,
     trackCalc: trackCalc,
+    trackPage: trackPage,
     getViews:  getViews,
     getTop:    getTop,
     render:    renderViewCount
@@ -117,5 +184,8 @@
     // Track imediato (o setTimeout interno já tem delay de 8s)
     trackView(currentSlug);
   }
+
+  // Página de ferramenta aberta direto pela URL (o setTimeout interno já tem delay de 3s)
+  onRoute();
 
 })();

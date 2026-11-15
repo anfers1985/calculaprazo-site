@@ -230,6 +230,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
       <a onclick="goPage('dashboard')" id="nav-dashboard" class="on"><span class="s-icon">📊</span> Dashboard</a>
       <a onclick="goPage('new')" id="nav-new"><span class="s-icon">✏️</span> Novo Post</a>
       <a onclick="goPage('list')" id="nav-list"><span class="s-icon">📄</span> Gerenciar Posts</a>
+      <a onclick="goPage('tools')" id="nav-tools"><span class="s-icon">🧮</span> Acessos às Ferramentas</a>
       <a onclick="goPage('scheduled')" id="nav-scheduled"><span class="s-icon">🗓️</span> Agendados</a>
       <a onclick="goPage('newsletter')" id="nav-newsletter"><span class="s-icon">📧</span> Newsletter</a>
       <a onclick="goPage('videos')" id="nav-videos"><span class="s-icon">🎬</span> Vídeos p/ Redes</a>
@@ -483,6 +484,37 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
       </div>
       <div id="views-status" style="font-size:.78rem;color:var(--txt-s);margin:-6px 0 12px;"></div>
       <div class="posts-list" id="posts-list"></div>
+    </div>
+
+    <!-- ACESSOS ÀS FERRAMENTAS -->
+    <div class="page" id="page-tools">
+      <div class="page-header">
+        <div><div class="page-title">Acessos às Ferramentas</div><div class="page-sub">Quantas pessoas abrem cada calculadora e ferramenta — para saber onde focar melhorias</div></div>
+        <button class="btn btn-g" id="btn-tools-refresh" onclick="loadToolStats()">🔄 Atualizar</button>
+      </div>
+      <div id="tools-alert" style="display:none;margin-bottom:16px;padding:12px 14px;border-radius:var(--r);font-size:.84rem;line-height:1.5;"></div>
+      <div class="stats-grid" id="tools-stats"></div>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div style="overflow-x:auto;">
+          <table id="tools-table" style="width:100%;border-collapse:collapse;font-size:.84rem;min-width:640px;">
+            <thead>
+              <tr style="background:var(--b50);text-align:right;">
+                <th style="padding:11px 14px;text-align:left;font-size:.74rem;color:var(--txt-m);">Ferramenta</th>
+                <th data-k="d1"  onclick="sortToolStats('d1')"  style="padding:11px 14px;font-size:.74rem;color:var(--txt-m);cursor:pointer;white-space:nowrap;">Hoje</th>
+                <th data-k="d7"  onclick="sortToolStats('d7')"  style="padding:11px 14px;font-size:.74rem;color:var(--txt-m);cursor:pointer;white-space:nowrap;">7 dias</th>
+                <th data-k="d30" onclick="sortToolStats('d30')" style="padding:11px 14px;font-size:.74rem;color:var(--txt-m);cursor:pointer;white-space:nowrap;">30 dias</th>
+                <th data-k="views" onclick="sortToolStats('views')" style="padding:11px 14px;font-size:.74rem;color:var(--txt-m);cursor:pointer;white-space:nowrap;">Total de acessos</th>
+                <th data-k="calcs" onclick="sortToolStats('calcs')" style="padding:11px 14px;font-size:.74rem;color:var(--txt-m);cursor:pointer;white-space:nowrap;" title="Cálculos concluídos com sucesso desde que o contador existe (histórico completo)">Cálculos feitos</th>
+              </tr>
+            </thead>
+            <tbody id="tools-tbody"><tr><td colspan="6" style="padding:24px;text-align:center;color:var(--txt-s);">Carregando…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <p style="font-size:.76rem;color:var(--txt-s);margin-top:12px;line-height:1.6;">
+        <b>Acesso</b> = uma pessoa (aba/sessão) que abriu a página e ficou pelo menos 3 segundos; voltar à mesma ferramenta na mesma sessão não conta de novo. Vale tanto para quem entra direto pela URL quanto para quem abre a ferramenta a partir da página inicial. O dia segue o horário de Brasília.
+        A contagem de acessos começa quando esta versão entra no ar; <b>Cálculos feitos</b> já vinha sendo contado desde antes, então só compare os dois números quando houver dados do mesmo período. Clique no título de uma coluna para ordenar.
+      </p>
     </div>
 
     <!-- SCHEDULED -->
@@ -1269,6 +1301,7 @@ function goPage(id){
   if(nav) nav.classList.add('on');
   if(id==='dashboard') refreshPostsFromServer().finally(renderDashboard);
   if(id==='list'){ refreshPostsFromServer().finally(renderList); loadTopViews(); }
+  if(id==='tools') loadToolStats();
   if(id==='scheduled') renderScheduled();
   if(id==='newsletter') renderNewsletter();
   if(id==='videos') renderVideos();
@@ -1357,6 +1390,116 @@ function paintViewsChip(slug){
     el.textContent = '👁 ' + viewsLabel(n);
   });
 }
+// ════════════════════════════════════════
+// ACESSOS ÀS FERRAMENTAS  (Worker: GET /pv-stats)
+// ════════════════════════════════════════
+// slug = diretório da página; calc = chave do contador de cálculos concluídos (trackCalcUsage no app.js)
+const TOOLS = [
+  {slug:'calculadora-de-prazo-processual', name:'Calculadora de Prazo Processual', calc:'calc-prazos'},
+  {slug:'calculadora-verbas-trabalhistas', name:'Verbas Trabalhistas (Rescisão)',  calc:'calc-trabalhista'},
+  {slug:'calculadora-salario-liquido',     name:'Salário Líquido',                 calc:'calc-salario'},
+  {slug:'correcao-monetaria',              name:'Correção Monetária',              calc:'calc-correcao'},
+  {slug:'calculadora-horas-extras',        name:'Horas Extras',                    calc:'calc-horas-extras'},
+  {slug:'calculadora-seguro-desemprego',   name:'Seguro-Desemprego',               calc:'calc-seguro-desemprego'},
+  {slug:'calculadora-de-prescricao',       name:'Prescrição',                      calc:'calc-prescricao'},
+  {slug:'calculadora-de-datas',            name:'Operações com Datas',             calc:'calc-datas'},
+  {slug:'calculadora-rescisao-domestica',  name:'Rescisão Doméstica',              calc:'calc-rescisao-domestica'},
+  {slug:'calculadora-salario-intermitente',name:'Salário Intermitente',            calc:'calc-intermitente'},
+  {slug:'calculadora-de-juros',            name:'Juros',                           calc:'calc-juros'},
+  {slug:'calculadora-de-porcentagem',      name:'Porcentagem',                     calc:'calc-porcentagem'},
+  {slug:'conversor-de-moedas',             name:'Conversor de Moedas',             calc:'calc-moedas'},
+  {slug:'numero-por-extenso',              name:'Número por Extenso',              calc:'calc-extenso'},
+  {slug:'validador-cpf-cnpj',              name:'Validador de CPF/CNPJ',           calc:'calc-valid'},
+  {slug:'calculadora-imc',                 name:'Calculadora de IMC',              calc:'calc-imc'},
+  {slug:'gerador-de-qr-code',              name:'Gerador de QR Code',              calc:'calc-qrcode'},
+  {slug:'gerador-de-senhas',               name:'Gerador de Senhas',               calc:null},
+  {slug:'ferramentas',                     name:'Página "Todas as Ferramentas"',   calc:null}
+];
+let TOOLS_DATA = null;
+let TOOLS_SORT = { key:'d30', dir:-1 };
+const _escT = t => String(t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const _nT   = n => (n||0).toLocaleString('pt-BR');
+
+function toolsAlert(kind, html){
+  const el = document.getElementById('tools-alert');
+  if(!html){ el.style.display='none'; return; }
+  const c = kind==='err' ? ['#FEF2F2','#FCA5A5','#991B1B'] : ['#FFFBEB','#FCD34D','#92400E'];
+  el.style.cssText += `;display:block;background:${c[0]};border:1px solid ${c[1]};color:${c[2]};`;
+  el.innerHTML = html;
+}
+async function loadToolStats(){
+  const btn = document.getElementById('btn-tools-refresh');
+  if(btn){ btn.disabled = true; btn.textContent = '⏳ Atualizando…'; }
+  try{
+    const r = await fetch(`${WORKER_URL}/pv-stats`, { cache:'no-store' });
+    if(r.status === 404){
+      toolsAlert('warn', '⚠️ O Worker publicado ainda é a versão antiga (sem o endpoint <code>/pv-stats</code>). Publique o <code>worker.js</code> novo na Cloudflare (Workers → calculaprazo-views-api → Edit code → colar → Deploy). Os números de <b>Cálculos feitos</b> abaixo só aparecem depois disso.');
+      TOOLS_DATA = { pages:[], calcs:[] };
+    } else if(!r.ok){
+      throw new Error('HTTP '+r.status);
+    } else {
+      TOOLS_DATA = await r.json();
+      toolsAlert('', '');
+    }
+    renderToolStats();
+  }catch(e){
+    toolsAlert('err', '❌ Não foi possível carregar os acessos agora ('+_escT(e.message)+'). Confira se o Worker está no ar e tente de novo.');
+    if(!TOOLS_DATA){ TOOLS_DATA = { pages:[], calcs:[] }; renderToolStats(); }
+  }finally{
+    if(btn){ btn.disabled = false; btn.textContent = '🔄 Atualizar'; }
+  }
+}
+function toolStatRows(){
+  const pages = Object.fromEntries((TOOLS_DATA.pages||[]).map(p=>[p.slug,p]));
+  const calcs = Object.fromEntries((TOOLS_DATA.calcs||[]).map(c=>[c.slug,c.views]));
+  const known = new Set(TOOLS.map(t=>t.slug));
+  const rows = TOOLS.map(t=>{
+    const p = pages[t.slug] || {};
+    return { slug:t.slug, name:t.name, d1:p.d1||0, d7:p.d7||0, d30:p.d30||0, views:p.views||0, calcs:t.calc ? (calcs[t.calc]||0) : null };
+  });
+  // ferramenta nova que já está sendo contada mas ainda não foi nomeada em TOOLS
+  (TOOLS_DATA.pages||[]).filter(p=>!known.has(p.slug)).forEach(p=>rows.push({ slug:p.slug, name:p.slug+' (adicione em TOOLS)', d1:p.d1||0, d7:p.d7||0, d30:p.d30||0, views:p.views||0, calcs:null }));
+  return rows;
+}
+function sortToolStats(key){
+  TOOLS_SORT = { key, dir: (TOOLS_SORT.key===key ? -TOOLS_SORT.dir : -1) };
+  if(TOOLS_DATA) renderToolStats();
+}
+function renderToolStats(){
+  const rows = toolStatRows();
+  const sum  = k => rows.reduce((a,r)=>a+(r[k]||0),0);
+  const top  = [...rows].sort((a,b)=>b.d30-a.d30)[0];
+  document.getElementById('tools-stats').innerHTML = [
+    ['👀', _nT(sum('d1')),    'Acessos hoje'],
+    ['📅', _nT(sum('d7')),    'Acessos nos últimos 7 dias'],
+    ['🗓️', _nT(sum('d30')),   'Acessos nos últimos 30 dias'],
+    ['🧮', _nT(sum('calcs')), 'Cálculos feitos (histórico)'],
+    ['🏆', top && top.d30 ? _escT(top.name) : '—', 'Mais acessada (30 dias)']
+  ].map(([ic,n,l])=>`<div class="stat-card"><div class="stat-icon">${ic}</div><div class="stat-num" style="${n.length>12?'font-size:1rem;line-height:1.3;':''}">${n}</div><div class="stat-lbl">${l}</div></div>`).join('');
+
+  const { key, dir } = TOOLS_SORT;
+  rows.sort((a,b)=>{
+    const av = a[key]==null ? -1 : a[key], bv = b[key]==null ? -1 : b[key];
+    return (av===bv) ? a.name.localeCompare(b.name,'pt-BR') : (av-bv)*dir;
+  });
+  const max = Math.max(1, ...rows.map(r=>r[key]||0));
+  document.getElementById('tools-tbody').innerHTML = rows.map(r=>{
+    const cell = (k)=>{
+      const v = r[k];
+      if(v==null) return `<td style="padding:11px 14px;text-align:right;color:var(--txt-s);">—</td>`;
+      const w = k===key ? Math.round((v/max)*100) : 0;
+      const bar = k===key ? `background:linear-gradient(90deg,var(--b100) ${w}%,transparent ${w}%);` : '';
+      return `<td style="padding:11px 14px;text-align:right;font-variant-numeric:tabular-nums;${bar}${k===key?'font-weight:800;color:var(--acc);':''}">${_nT(v)}</td>`;
+    };
+    return `<tr style="border-top:1px solid var(--brd);"><td style="padding:11px 14px;font-weight:600;"><a href="/${_escT(r.slug)}/" target="_blank" style="color:inherit;text-decoration:none;">${_escT(r.name)}</a></td>${cell('d1')}${cell('d7')}${cell('d30')}${cell('views')}${cell('calcs')}</tr>`;
+  }).join('');
+  document.querySelectorAll('#tools-table th[data-k]').forEach(th=>{
+    const on = th.getAttribute('data-k')===key;
+    th.style.color = on ? 'var(--acc)' : 'var(--txt-m)';
+    th.textContent = th.textContent.replace(/ [▼▲]$/,'') + (on ? (dir<0?' ▼':' ▲') : '');
+  });
+}
+
 // 1 requisição só: os 50 mais lidos (limite do endpoint /top do Worker)
 async function loadTopViews(){
   if(VIEWS_TOP_DONE) return;
