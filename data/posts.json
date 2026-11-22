@@ -1,5 +1,41 @@
 [
   {
+    "id": "domestico-pode-negociar-jornada-5x2-por-acordo-individual",
+    "title": "Doméstico pode negociar jornada 5x2 por acordo individual?",
+    "category": "legislacao-normas",
+    "category_label": "Legislação e Normas",
+    "excerpt": "Entenda se o empregador doméstico pode adotar 42 horas semanais na escala 5x2 por acordo individual e o que exige a EC 141/2026.",
+    "image": "https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-11-18",
+    "updatedAt": "2026-11-18",
+    "tags": []
+  },
+  {
+    "id": "13-salario-como-calcular-os-avos-e-a-remuneracao",
+    "title": "13º salário: como calcular os avos e a remuneração",
+    "category": "rh-salario",
+    "category_label": "Salário",
+    "excerpt": "Entenda como calcular os avos do 13º salário, o impacto das faltas injustificadas, as parcelas que integram a base e os critérios de proporcionalidade.",
+    "image": "https://images.unsplash.com/photo-1758876020204-0ce6075ca42c?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-11-17",
+    "updatedAt": "2026-11-17",
+    "tags": []
+  },
+  {
+    "id": "ter-carro-e-moto-nao-cancela-justica-gratuita",
+    "title": "Ter carro e moto não cancela justiça gratuita",
+    "category": "jurisprudencia-tst",
+    "category_label": "TST",
+    "excerpt": "TST restabeleceu a justiça gratuita a trabalhador com carro e moto. Renda acima de 40% do teto do RGPS não elimina o benefício automaticamente.",
+    "image": "https://images.unsplash.com/photo-1767972159871-b9f5d320be2b?q=80&w=1432&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+    "imageCaption": "Fonte: unsplash",
+    "date": "2026-11-16",
+    "updatedAt": "2026-11-16",
+    "tags": []
+  },
+  {
     "id": "escala-5x2-dino-permite-jornada-de-8h24-na-transicao",
     "title": "Escala 5x2: Dino permite jornada de 8h24 na transição",
     "category": "geral",
