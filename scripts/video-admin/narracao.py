@@ -44,6 +44,7 @@ from pydub.silence import detect_leading_silence
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from qa_voz import QAVoz  # noqa: E402  (QA da voz: transcreve cada cena e compara com o texto esperado)
+from leitor_numeros import converter_numeros  # noqa: E402  (ordinais, frações, 5x2, 8h24, concordância feminina...)
 
 VOZ_PADRAO = "pt-BR-FranciscaNeural"
 VOZ_HD = {"thalita-hd": "pt-BR-Thalita:DragonHDLatestNeural"}
@@ -61,6 +62,7 @@ def _ms(nome, padrao):
 
 PAUSA_PONTO = _ms("TTS_PAUSA_PONTO", 320)            # entre frases da mesma cena
 PAUSA_INTERROGACAO = _ms("TTS_PAUSA_PERGUNTA", 520)
+PAUSA_RESPOSTA = _ms("TTS_PAUSA_RESPOSTA", 380)       # entre um "Não."/"Sim."/"Depende." solto (resposta a uma pergunta) e o resto da cena
 PAUSA_ENTRE_CENAS = _ms("TTS_PAUSA_CENA", 450)       # entre cenas comuns
 PAUSA_TOPICO = _ms("TTS_PAUSA_TOPICO", 950)          # ANTES de um novo tópico (capítulo ou cena de pergunta): respiro maior
 PAUSA_CONTINUA = _ms("TTS_PAUSA_CONTINUA", 200)      # entre duas cenas quando a seguinte EMENDA a anterior ("Mas…", "Por isso…", "Na prática…"): a fala é contínua, não há por que esperar quase 1 s
@@ -136,7 +138,7 @@ MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "a
 
 def _data_falada(m):
     d, mes, ano = int(m.group(1)), int(m.group(2)), m.group(3)
-    return f"{d} de {MESES[mes - 1]} de {ano}" if 1 <= mes <= 12 else m.group(0)
+    return f"{'primeiro' if d == 1 else d} de {MESES[mes - 1]} de {ano}" if 1 <= mes <= 12 else m.group(0)
 
 
 ABREVIACOES = [
@@ -149,17 +151,12 @@ ABREVIACOES = [
     (r"\be/ou\b", "e ou"),
     (r"\bCalcula\s?Prazo\b", "Calcula Prazo"),
     (r"\b(\d{1,2})/(\d{1,2})/(\d{4})\b", _data_falada),
-    (r"(?<=\w)/(?=\w)", " "),
 ]
 
 
 def normalizar_texto_fala(texto: str, siglas: bool = True) -> str:
     """Rede de segurança: números/R$/% viram extenso e siglas ganham pronúncia clara. siglas=False devolve só o texto falado
     (sem respelling), que é o que o QA compara com a transcrição do áudio."""
-    try:
-        from num2words import num2words
-    except ImportError:
-        num2words = None
     t = texto
     # Conectores raros que a voz lê mal ("Aliás" virou "Elias"): troca por equivalentes comuns, mantendo a maiúscula inicial.
     _raros = {"aliás": "além disso", "alias": "além disso", "outrossim": "além disso", "ademais": "além disso", "destarte": "assim", "porquanto": "pois"}
@@ -175,19 +172,9 @@ def normalizar_texto_fala(texto: str, siglas: bool = True) -> str:
     t = re.sub(r"(?<![\d/])(\d{1,4})/(\d{4})(?![\d/])", r"\1 de \2", t)
     for padrao, troca in ABREVIACOES:
         t = re.sub(padrao, troca, t, flags=re.I)
-    t = re.sub(r"R\$\s*(\d+(?:\.\d{3})*),(\d{2})", lambda m: f"{m.group(1)} reais e {m.group(2)} centavos", t)
-    t = re.sub(r"R\$\s*(\d+(?:\.\d{3})*)", lambda m: f"{m.group(1)} reais", t)
-    t = re.sub(r"(\d+),(\d+)\s*%", r"\1 vírgula \2 por cento", t)  # 3,2% → "3 vírgula 2 por cento" (antes saía "três,dois")
-    t = re.sub(r"(\d+)\s*%", r"\1 por cento", t)
-    t = re.sub(r"(?<![\d.,])(\d+),(\d+)(?!\d)", r"\1 vírgula \2", t)  # decimais soltos: 0,8 → "zero vírgula oito"
-    t = re.sub(r"(\d+)\s*[ºª°]", r"\1", t)
-    if num2words:
-        def _n(m):
-            try:
-                return num2words(int(m.group(0).replace(".", "")), lang="pt_BR").replace(",", "")
-            except Exception:
-                return m.group(0)
-        t = re.sub(r"\d+(?:\.\d{3})*", _n, t)
+    # Números, ordinais, frações, escalas (5x2), horas (8h24), dinheiro e concordância feminina: tudo em leitor_numeros.py
+    t = converter_numeros(t)
+    t = re.sub(r"(?<=\w)/(?=\w)", " ", t)  # barra que sobrou (SDI/TST...) vira espaço
     if siglas:
         for sigla, falado in PRONUNCIAS.items():
             t = re.sub(rf"\b{sigla}\b", falado, t)
@@ -196,13 +183,46 @@ def normalizar_texto_fala(texto: str, siglas: bool = True) -> str:
     return re.sub(r"\s+", " ", t).strip()
 
 
-def dividir_em_frases(texto: str):
+_RE_RESPOSTA_SECA = re.compile(r"^(sim|não|depende)\s*,\s+(.{12,})$", re.I | re.S)
+
+
+def separar_resposta_seca(texto: str, anterior):
+    """Cena que RESPONDE uma pergunta (a anterior termina em "?") e começa com "Não," / "Sim," / "Depende," emendado: a voz diz a palavra e já engata
+    a frase seguinte (a vírgula quase não gera pausa: medido ≈0,06 s), e a resposta sai seca e rápida demais. Devolve [palavra + ".", resto] para
+    dizer a palavra como frase própria, com uma pausa curta (PAUSA_RESPOSTA) antes do resto; ou None quando não é o caso.
+    A correção principal está no roteiro (a resposta vem em frase completa); isto é a rede de segurança."""
+    if not anterior or not re.search(r"\?[\"”')\]]*\s*$", str(anterior).strip()):
+        return None
+    m = _RE_RESPOSTA_SECA.match(str(texto).strip())
+    if not m or len(m.group(2).split()) < 3:
+        return None
+    resto = m.group(2).strip()
+    return [m.group(1).capitalize() + ".", resto[0].upper() + resto[1:]]
+
+
+def dividir_em_frases(texto: str, anterior=None):
     out = []
-    for f in [x.strip() for x in _SPLIT.split(normalizar_texto_fala(texto)) if x.strip()]:
+    frases = [x.strip() for x in _SPLIT.split(normalizar_texto_fala(texto)) if x.strip()]
+    if frases:
+        partes = separar_resposta_seca(frases[0], anterior)
+        if partes:
+            frases = [partes[0], partes[1]] + frases[1:]
+    for k, f in enumerate(frases):
         if f[-1] not in ".!?":
             f += "."
-        out.append((f, PAUSA_INTERROGACAO if f.endswith("?") else PAUSA_PONTO))
+        pausa = PAUSA_RESPOSTA if (k == 0 and len(frases) > 1 and separar_resposta_seca(f"{f[:-1]}, {frases[1]}", anterior)) else (PAUSA_INTERROGACAO if f.endswith("?") else PAUSA_PONTO)
+        out.append((f, pausa))
     return out
+
+
+def sintetizar_resposta_separada(vozes, partes, rate, destino: Path):
+    """Voz que lê a cena inteira: sintetiza a palavra da resposta e o resto em separado e junta com PAUSA_RESPOSTA entre eles."""
+    seg = AudioSegment.empty()
+    for k, parte in enumerate(partes):
+        p = destino.with_name(f"{destino.stem}_r{k}.mp3")
+        vozes.sintetizar(parte, rate, p)
+        seg += cortar_pontas(AudioSegment.from_file(p, format="mp3")) + (AudioSegment.silent(duration=PAUSA_RESPOSTA) if k == 0 else AudioSegment.empty())
+    seg.export(str(destino), format="mp3", bitrate="128k")
 
 
 # ------------------------------------------------------------------ motores
@@ -582,21 +602,25 @@ def narrar_roteiro(roteiro: dict, voz: str, saida: Path, qa=None):
             if vozes.cena_inteira:
                 mp3 = tmp / f"c{i:03d}.mp3"
                 texto_cena = normalizar_texto_fala(cena["narracao"])
+                partes_resp = separar_resposta_seca(texto_cena, cenas[i - 1].get("narracao") if i else None)
                 # Cache por cena (vozes lentas/limitadas): numa nova execução reaproveita o que já foi gerado com a MESMA voz e texto.
                 marca = tmp / f"c{i:03d}.txt"
-                chave = f"{vozes.voz}|{os.environ.get('GEMINI_TTS_MODEL', '')}|{os.environ.get('GEMINI_TTS_VOICE', '')}|{os.environ.get('GEMINI_TTS_STYLE', '')}|{texto_cena}"
+                chave = f"{vozes.voz}|{os.environ.get('GEMINI_TTS_MODEL', '')}|{os.environ.get('GEMINI_TTS_VOICE', '')}|{os.environ.get('GEMINI_TTS_STYLE', '')}|{texto_cena}{'|resp' if partes_resp else ''}"
                 guardavel = (not FAKE) and vozes.voz in ("gemini", "clonada") and not refazer
                 if guardavel and mp3.exists() and mp3.stat().st_size > 1000 and marca.exists() and marca.read_text(encoding="utf-8") == chave:
                     print(f"  cena {i + 1}/{len(cenas)}: reaproveitada de uma execução anterior")
                 else:
                     if guardavel:
                         print(f"  cena {i + 1}/{len(cenas)}: gerando...")
-                    vozes.sintetizar(texto_cena, _rate_mais(rate, delta), mp3)   # ReservaFrancisca sobe para o chamador
+                    if partes_resp:
+                        sintetizar_resposta_separada(vozes, partes_resp, _rate_mais(rate, delta), mp3)
+                    else:
+                        vozes.sintetizar(texto_cena, _rate_mais(rate, delta), mp3)   # ReservaFrancisca sobe para o chamador
                     if guardavel and mp3.exists():
                         marca.write_text(chave, encoding="utf-8")
                 seg_cena += cortar_pontas(AudioSegment.from_file(mp3, format="mp3"))
             if not vozes.cena_inteira or len(seg_cena) == 0:  # inclui o caso em que a voz melhor foi rebaixada no meio
-                frases = dividir_em_frases(cena["narracao"])
+                frases = dividir_em_frases(cena["narracao"], cenas[i - 1].get("narracao") if i else None)
                 for j, (frase, pausa) in enumerate(frases):
                     mp3 = tmp / f"c{i:03d}_{j:02d}.mp3"
                     base = RATE_TOPICO if (j == 0 and i in topicos and rate == "+0%") else rate

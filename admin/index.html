@@ -493,6 +493,7 @@ body{font-family:var(--fh);background:var(--bg);color:var(--txt);min-height:100v
         <button class="btn btn-g" id="btn-tools-refresh" onclick="loadToolStats()">🔄 Atualizar</button>
       </div>
       <div id="tools-alert" style="display:none;margin-bottom:16px;padding:12px 14px;border-radius:var(--r);font-size:.84rem;line-height:1.5;"></div>
+      <div id="tools-note" style="display:none;margin-bottom:16px;padding:12px 14px;border-radius:var(--r);font-size:.84rem;line-height:1.5;background:#EFF6FF;border:1px solid #BFDBFE;color:#1E3A8A;"></div>
       <div class="stats-grid" id="tools-stats"></div>
       <div class="card" style="padding:0;overflow:hidden;">
         <div style="overflow-x:auto;">
@@ -1468,6 +1469,13 @@ function sortToolStats(key){
 function renderToolStats(){
   const rows = toolStatRows();
   const sum  = k => rows.reduce((a,r)=>a+(r[k]||0),0);
+  // Contador novo: enquanto nada do que foi contado é mais antigo que a janela, as colunas 7 dias / 30 dias / Total coincidem. Não é erro: avisa.
+  const nota = document.getElementById('tools-note');
+  if(nota){
+    const jovem = sum('views') > 0 && sum('views') === sum('d30');
+    nota.style.display = jovem ? 'block' : 'none';
+    if(jovem) nota.innerHTML = 'ℹ️ O contador de acessos às ferramentas é recente: tudo o que foi contado até agora cabe na janela de 30 dias, por isso <b>30 dias</b> e <b>Total de acessos</b> ainda são iguais' + (sum('d7') === sum('d30') ? ' (e o de 7 dias também, enquanto a contagem tiver menos de uma semana)' : '') + '. A coluna 30 dias só passa a diferir depois de 30 dias de contagem. “Cálculos feitos” vem de outro contador, mais antigo.';
+  }
   const top  = [...rows].sort((a,b)=>b.d30-a.d30)[0];
   document.getElementById('tools-stats').innerHTML = [
     ['👀', _nT(sum('d1')),    'Acessos hoje'],

@@ -1,5 +1,6 @@
 // Converte o roteiro do job (cenas com narração + campos visuais + duracao_seg)
 // no "cena.json" que o motor visual (slides/template.html) entende.
+import { numerosParaTela } from './roteiro-regras.mjs';
 export const MARCA = { nome1: 'Calcula', nome2: 'Prazo', site: 'calculaprazo.com.br', tag: 'Direto ao Ponto' };
 
 // ---- Legenda em blocos curtos (Short ilustrado): 1 a 3 palavras por vez, sincronizadas com a fala ----
@@ -168,7 +169,10 @@ export function roteiroParaCena(roteiro, tipo, duracaoAudioSeg, estilo = 'slides
     cenas: cenas.map((c, i) => {
       const { narracao, duracao_seg, fala_seg, ...visual } = c; // narração e durações não vão pro visual
       const rot = rotulosDaCena(c);
-      if (rot && rot.length) visual.quando = calcularQuando(narracao, rot, cortes[i + 1] - cortes[i], { primeiroFixo: c.tipo === 'decisao' ? 0.3 : null, sobra: c.tipo === 'decisao' ? 3.2 : 1.8 });
+      if (rot && rot.length) visual.quando = calcularQuando(narracao, rot, cortes[i + 1] - cortes[i], { primeiroFixo: c.tipo === 'decisao' ? 0.3 : (tipo === 'short' && c.tipo !== 'comparacao' ? 0.9 : null), sobra: c.tipo === 'decisao' ? 3.2 : 1.8 });
+      // Short de slides: legenda em blocos curtos (como no Short ilustrado), com números e normas em algarismos como no resto da tela.
+      // Sem isso, quem assiste sem som ou lê mais rápido que a voz não tem o que acompanhar.
+      if (tipo === 'short') visual.legenda = temporizarBlocos(dividirEmBlocos(numerosParaTela(narracao)), cortes[i], cortes[i + 1], fala_seg);
       return visual;
     }),
   };

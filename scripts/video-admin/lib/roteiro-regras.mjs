@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { normRef } from './artigo.mjs';
+import { lerNumeros } from './leitor-numeros.mjs';
 
 const SLIDES = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'slides');
 // Medido nos vídeos reais (voz Francisca, com pausas entre cenas): ~2,2 palavras por segundo. Ajustável por ROTEIRO_PPS.
@@ -136,7 +137,7 @@ export function repararRoteiro(r, icones) {
   return log;
 }
 
-export const COESAO_PROMPT = `COESÃO (muito importante): a narração é UM discurso contínuo dividido em cenas, e não uma lista de frases soltas. Antes de escrever, defina a linha de raciocínio: gancho → contexto → qual é o problema → o que a lei ou o tribunal diz → como isso se aplica na prática → resumo. Cada cena, exceto a primeira, deve COMEÇAR emendando a ideia da cena anterior, com um conector natural da fala ("Mas", "Por isso", "Nesse caso", "Na prática", "Ou seja", "Além disso", "Já", "Com isso", "Por outro lado", "E o que isso significa?", "Vamos ver"), variando-os (nunca o mesmo conector mais de duas vezes). Use só conectores comuns da fala: não use "aliás", "outrossim", "destarte", "ademais" nem expressões raras, que a voz sintética pronuncia mal. A cena que abre um tópico novo deve ser anunciada pela anterior ("Vamos ver como isso funciona."). Não repita o assunto-título em toda cena: use referências ("essa regra", "nesse caso", "o tribunal"). A penúltima cena fecha o raciocínio e leva ao convite final, sem repeti-lo. NOVIDADE: cada cena traz uma informação NOVA do artigo (condição, exemplo, exceção, consequência); NUNCA repita uma ideia já dita só para completar o tempo, e na conclusão resuma o essencial UMA única vez (não escreva 3 ou 4 cenas finais dizendo a mesma coisa com palavras diferentes). Se faltar palavra para o alvo, aprofunde com exemplos e detalhes que estão no artigo, em vez de repetir. RITMO: alterne frases curtas (6 a 10 palavras) com frases mais longas; não faça todas as cenas com a mesma estrutura de sujeito + verbo + complemento. ABERTURA: se a cena 1 é uma PERGUNTA, a cena 2 a RESPONDE logo no início, em poucas palavras (\"Não, em regra.\", \"Depende.\", \"Sim.\", \"O TST firmou que…\"), SEM conector de contraste ou consequência (\"Mas\", \"Por isso\", \"Com isso\", \"Portanto\"), porque ainda não há nada a contrastar. Faça no máximo UMA pergunta em todo o vídeo (a da abertura): nunca faça outra pergunta depois da resposta. Conector só quando existe ligação lógica real com a frase anterior; sem ligação, comece a frase direto.`;
+export const COESAO_PROMPT = `COESÃO (muito importante): a narração é UM discurso contínuo dividido em cenas, e não uma lista de frases soltas. Antes de escrever, defina a linha de raciocínio: gancho → contexto → qual é o problema → o que a lei ou o tribunal diz → como isso se aplica na prática → resumo. Cada cena, exceto a primeira, deve COMEÇAR emendando a ideia da cena anterior, com um conector natural da fala ("Mas", "Por isso", "Nesse caso", "Na prática", "Ou seja", "Além disso", "Já", "Com isso", "Por outro lado", "E o que isso significa?", "Vamos ver"), variando-os (nunca o mesmo conector mais de duas vezes). Use só conectores comuns da fala: não use "aliás", "outrossim", "destarte", "ademais" nem expressões raras, que a voz sintética pronuncia mal. A cena que abre um tópico novo deve ser anunciada pela anterior ("Vamos ver como isso funciona."). Não repita o assunto-título em toda cena: use referências ("essa regra", "nesse caso", "o tribunal"). A penúltima cena fecha o raciocínio e leva ao convite final, sem repeti-lo. NOVIDADE: cada cena traz uma informação NOVA do artigo (condição, exemplo, exceção, consequência); NUNCA repita uma ideia já dita só para completar o tempo, e na conclusão resuma o essencial UMA única vez (não escreva 3 ou 4 cenas finais dizendo a mesma coisa com palavras diferentes). Se faltar palavra para o alvo, aprofunde com exemplos e detalhes que estão no artigo, em vez de repetir. RITMO: alterne frases curtas (6 a 10 palavras) com frases mais longas; não faça todas as cenas com a mesma estrutura de sujeito + verbo + complemento. ABERTURA: se a cena 1 é uma PERGUNTA, a cena 2 a RESPONDE logo no início com uma FRASE COMPLETA que retoma o assunto da pergunta e já traz a resposta e o porquê (ex.: pergunta \"Ter carro e moto cancela a justiça gratuita?\" → \"Ter carro e moto, por si só, não cancela a gratuidade da justiça, segundo o TST.\"; \"Depende do caso: o TST olha a renda e as despesas essenciais.\"). NUNCA abra a cena 2 com um \"Sim\", \"Não\" ou \"Depende\" solto seguido de vírgula e de outra ideia (\"Não, segundo decisão recente…\"): a palavra isolada sai seca e rápida, e o ouvinte não esperava a resposta tão cedo, SEM conector de contraste ou consequência (\"Mas\", \"Por isso\", \"Com isso\", \"Portanto\"), porque ainda não há nada a contrastar. Faça no máximo UMA pergunta em todo o vídeo (a da abertura): nunca faça outra pergunta depois da resposta. Conector só quando existe ligação lógica real com a frase anterior; sem ligação, comece a frase direto.`;
 
 export function metas(tipo, durSeg) {
   const palavras = Math.round(durSeg * PALAVRAS_POR_SEG);
@@ -663,16 +664,8 @@ export function numerosPorExtenso(t, { manterNumeros = false } = {}) {
   x = x.replace(/\b(tema|s[úu]mula|artigos?|art\.?|lei|oj|orienta[çc][ãa]o jurisprudencial|precedente|inciso|par[áa]grafo)\s+(?:n[úu]meros?|n\.?\s*[º°o]\.?)\s+/gi, '$1 ');
   x = x.replace(/\bn(?:[úu]mero|\.?\s*[º°])\s*(?=\d)/gi, '');
   if (manterNumeros) return x.replace(/\s+/g, ' ').trim();
-  x = x.replace(/R\$\s*(\d{1,3}(?:\.\d{3})+|\d+)(?:,(\d{1,2}))?/g, (_, i, c) => {
-    const inteiro = Number(i.replace(/\./g, ''));
-    const cent = c ? Number(c.padEnd(2, '0')) : 0;
-    return numeroPorExtenso(inteiro) + (inteiro === 1 ? ' real' : ' reais') + (cent ? ' e ' + numeroPorExtenso(cent) + (cent === 1 ? ' centavo' : ' centavos') : '');
-  });
-  x = x.replace(/(\d{1,3}(?:\.\d{3})+|\d+)(?:,(\d+))?\s*%/g, (_, i, d) => numeroPorExtenso(Number(i.replace(/\./g, ''))) + (d ? ' vírgula ' + numeroPorExtenso(Number(d)) : '') + ' por cento');
-  x = x.replace(/\b(\d+)\s*([ºª°])/g, (m, n, g) => { const k = Number(n); const t2 = (g === 'ª' ? ORD_F : ORD_M)[k]; return t2 || numeroPorExtenso(k); });
-  x = x.replace(/(\d{1,3}(?:\.\d{3})+|\d+),(\d+)/g, (_, i, d) => numeroPorExtenso(Number(i.replace(/\./g, ''))) + ' vírgula ' + numeroPorExtenso(Number(d)));
-  x = x.replace(/\d{1,3}(?:\.\d{3})+/g, m => numeroPorExtenso(Number(m.replace(/\./g, ''))));
-  x = x.replace(/\d+/g, m => numeroPorExtenso(Number(m)));
+  // Ordinais (13º), frações (1/12), escalas (5x2), horas (8h24), concordância feminina, dinheiro, %: lib/leitor-numeros.mjs (mesma lógica da narração em Python)
+  x = lerNumeros(x);
   return x.replace(/\s+/g, ' ').trim();
 }
 

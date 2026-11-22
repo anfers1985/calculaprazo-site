@@ -9,7 +9,8 @@ import { chromium } from 'playwright';
 
 const AQUI = path.dirname(fileURLToPath(import.meta.url));
 const SLIDES = path.join(AQUI, 'slides');
-export const FPS = 24;
+export const FPS = 24;        // Shorts (tela de celular)
+export const FPS_LONGO = 30;  // vídeo horizontal: mais quadros + imagem mais limpa, para não cintilar em tela grande
 
 export function duracaoDoAudio(arquivo) {
   const out = execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', arquivo]).toString().trim();
@@ -70,14 +71,14 @@ export function montarHtml(cenaOriginal, destDir) {
   return arq;
 }
 
-async function renderizarTrecho(browser, htmlPath, largura, altura, dirFrames, ini, fim) {
+async function renderizarTrecho(browser, htmlPath, largura, altura, dirFrames, ini, fim, fps = FPS, qualidade = 88) {
   const page = await browser.newPage({ viewport: { width: largura, height: altura } });
   await page.goto('file://' + path.resolve(htmlPath), { waitUntil: 'domcontentloaded' });
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(500);
   for (let i = ini; i < fim; i++) {
-    await page.evaluate(t => window.render(t), i / FPS);
-    await page.screenshot({ path: path.join(dirFrames, String(i).padStart(5, '0') + '.jpg'), type: 'jpeg', quality: 88 });
+    await page.evaluate(t => window.render(t), i / fps);
+    await page.screenshot({ path: path.join(dirFrames, String(i).padStart(5, '0') + '.jpg'), type: 'jpeg', quality: qualidade });
   }
   await page.close();
 }
@@ -89,13 +90,14 @@ export async function renderizar({ cena, audio, outDir, maxSeg, workers, log = c
   const [W, H] = vertical ? [1080, 1920] : [1920, 1080];
   const total = cena.cortes[cena.cortes.length - 1];
   const durRender = maxSeg ? Math.min(total, maxSeg) : total;
-  const nFrames = Math.round(durRender * FPS);
+  const fps = vertical ? FPS : FPS_LONGO;
+  const nFrames = Math.round(durRender * fps);
   const dirFrames = path.join(outDir, 'frames');
   fs.rmSync(dirFrames, { recursive: true, force: true });
   fs.mkdirSync(dirFrames, { recursive: true });
 
   const n = Math.max(1, Math.min(workers || os.cpus().length, 4));
-  log(`Renderizando ${nFrames} quadros (${W}x${H}, ${FPS} fps) com ${n} navegador(es)...`);
+  log(`Renderizando ${nFrames} quadros (${W}x${H}, ${fps} fps) com ${n} navegador(es)...`);
   const t0 = Date.now();
   const launch = { args: ['--no-sandbox', ...(process.env.CHROME_ARGS ? process.env.CHROME_ARGS.split(' ').filter(Boolean) : [])] };
   if (process.env.CHROME_PATH) launch.executablePath = process.env.CHROME_PATH;
@@ -104,7 +106,7 @@ export async function renderizar({ cena, audio, outDir, maxSeg, workers, log = c
     const por = Math.ceil(nFrames / n);
     await Promise.all(Array.from({ length: n }, (_, k) => {
       const ini = k * por, fim = Math.min(nFrames, ini + por);
-      return ini < fim ? renderizarTrecho(browser, htmlPath, W, H, dirFrames, ini, fim) : null;
+      return ini < fim ? renderizarTrecho(browser, htmlPath, W, H, dirFrames, ini, fim, fps, vertical ? 88 : 93) : null;
     }));
   } finally { await browser.close(); }
   log(`Quadros prontos em ${Math.round((Date.now() - t0) / 1000)} s.`);
@@ -112,9 +114,9 @@ export async function renderizar({ cena, audio, outDir, maxSeg, workers, log = c
   const mp4 = path.join(outDir, 'video.mp4');
   // Volume: a voz sintetizada saía a ≈ −19 LUFS (medido nos 3 vídeos analisados), ~5 dB abaixo do −14 LUFS que o YouTube usa de referência (ele só abaixa o que passa disso,
   // não sobe o que é baixo), e fraco no celular. loudnorm leva a −14 LUFS com teto de −1,5 dBTP; −ar 48000 evita a saída em 192 kHz que o loudnorm gera por padrão.
-  execFileSync('ffmpeg', ['-v', 'error', '-y', '-framerate', String(FPS), '-i', path.join(dirFrames, '%05d.jpg'),
-    '-i', audio, '-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-maxrate', '8000k', '-bufsize', '16000k', '-pix_fmt', 'yuv420p',
-    '-r', String(FPS), '-af', 'loudnorm=I=-14:TP=-1.5:LRA=11', '-ar', '48000', '-c:a', 'aac', '-b:a', '192k', '-t', String(durRender), '-movflags', '+faststart', mp4], { stdio: 'inherit' });
+  execFileSync('ffmpeg', ['-v', 'error', '-y', '-framerate', String(fps), '-i', path.join(dirFrames, '%05d.jpg'),
+    '-i', audio, '-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'medium', '-crf', vertical ? '20' : '18', '-maxrate', '8000k', '-bufsize', '16000k', '-pix_fmt', 'yuv420p',
+    '-r', String(fps), '-af', 'loudnorm=I=-14:TP=-1.5:LRA=11', '-ar', '48000', '-c:a', 'aac', '-b:a', '192k', '-t', String(durRender), '-movflags', '+faststart', mp4], { stdio: 'inherit' });
 
   // Capa = primeiro quadro. Vídeo horizontal: miniatura do YouTube em 1280x720. Short vertical: PNG 1080x1920, guardada só para
   // baixar no admin (o YouTube pega a capa do próprio vídeo; publicar.mjs só envia miniatura nos longos).
