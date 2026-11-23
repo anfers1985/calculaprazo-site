@@ -140,5 +140,20 @@ console.log('== Tempo das respostas e pronúncia');
 t('decisão: a última resposta fica ≥ 3 s na tela (antes ~1 s)', Math.max(...C.calcularQuando('Nesse caso o tribunal concluiu que a multa considera as parcelas de natureza salarial.', ['A multa abrange?', 'Sim A tese abrange toda verba salarial', 'Não Inclui outras parcelas salariais'], 8, { primeiroFixo: 0.3, sobra: 3.2 })) <= 8 - 3.2 + 1e-9);
 { const pron = JSON.parse(fs.readFileSync(path.join(LIB, '..', 'pronuncias.json'), 'utf8')); t('"base" tem fonema próprio (a voz lia "bazi")', pron.base && /ˈbaze/.test(pron.base.ipa)); }
 
+// Incidentes de 22/11/2026 (jobs #81 e vídeo longo do 13º)
+{
+  const mkPassos = () => ({ cenas: [{ tipo: 'passos', titulo: 'Meses computados', passos: [{ titulo: '3 meses', texto: 'Direito a 3/12 da remuneração' }, { titulo: '6 meses', texto: 'Direito a 6/12 da remuneração' }, { titulo: '12 meses', texto: 'Direito a 12/12 da remuneração' }], narracao: 'Vamos ver como a contagem funciona na prática, considerando o número de meses computados ao longo do ano.' }] });
+  const r1 = mkPassos(); R.alinharTelaComFala(r1);
+  t('passo a passo com "3 meses / 3/12" que a voz não diz vira destaque (a tela mostrava dados sem a voz falar)', r1.cenas[0].tipo === 'destaque');
+  const r2 = mkPassos(); r2.cenas[0].narracao = 'Com três meses o direito é a três doze avos, com seis meses a seis doze avos e com doze meses a doze doze avos da remuneração.';
+  R.alinharTelaComFala(r2);
+  t('mesmo passo a passo, quando a voz diz os números, continua passo a passo', r2.cenas[0].tipo === 'passos');
+  const r3 = { cenas: [{ tipo: 'destaque', narracao: 'Quem entra no meio do ano recebe proporcional aos meses trabalhados.' }, { tipo: 'lista', titulo: '  ', itens: [], narracao: 'Entram na base as horas extras e as comissões.' }] };
+  R.repararTitulosFaltando(r3);
+  t('cena sem "titulo" ganha título tirado da própria fala (antes derrubava o roteiro)', !!r3.cenas[0].titulo && !!r3.cenas[1].titulo);
+  const pron = JSON.parse(fs.readFileSync(path.join(LIB, '..', 'pronuncias.json'), 'utf8'));
+  t('"avo" (singular) e "avos" têm pronúncia própria (a voz lia "avó")', pron.avo === 'ávu' && pron.avos === 'ávus');
+}
+
 console.log(`\n${ok} ok, ${falhas} falha(s)`);
 process.exit(falhas ? 1 : 0);

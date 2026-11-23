@@ -534,7 +534,15 @@ export function alinharTelaComFala(r, { tipo = '' } = {}) {
     const nar = c.narracao || '';
     // Número "pesado" na tela (≥ 3 algarismos ou com vírgula/ponto) que a voz não diz é informação nova (a tela mostrava "44 h → 220" e "40 h → 200" e a voz só explicava a regra).
     // Números pequenos e ordinais ("1º", "§ 8º", "3") ficam de fora: a voz diz "primeiro", "oitavo"... e o radical não enxerga isso.
-    const numerosOk = (t) => (String(t).match(/\d[\d.,]*\d|\d/g) || []).filter(n => /[.,]/.test(n) || n.length >= 3).every(n => numeroFalado(n, nar));
+    // Também conta como informação nova o número pequeno COM UNIDADE ("3 meses", "15 dias", "2 parcelas", "40%") e a fração ("3/12") que a voz não diz: o passo a passo
+    // "3 meses → 3/12 · 6 meses → 6/12 · 12 meses → 12/12" ia ao ar com a voz falando só "o número de meses computados".
+    const numerosOk = (t) => {
+      const x = String(t);
+      if (!(x.match(/\d[\d.,]*\d|\d/g) || []).filter(n => /[.,]/.test(n) || n.length >= 3).every(n => numeroFalado(n, nar))) return false;
+      const comUnidade = [...x.matchAll(/(?<![\d/.,])(\d{1,2})\s*(?:(?:meses|m[êe]s|dias?|horas?|anos?|semanas?|parcelas?|vezes)(?![\p{L}])|%)/giu)].map(m => m[1]);
+      const fracoes = [...x.matchAll(/(?<![\d/.,])(\d{1,3})\/(\d{1,3})(?![\d/])/g)];
+      return comUnidade.every(n => numeroFalado(n, nar)) && fracoes.every(f => numeroFalado(f[1], nar) && numeroFalado(f[2], nar));
+    };
     const falado = (t) => { if (!numerosOk(t)) return false; const x = coberturaTelaNarracao(t, nar); return x.total < 2 || x.cobertura >= 0.3; }; // pouco conteúdo para medir: mantém
     const comoDestaque = (titulo, motivo) => {
       const refs = Array.isArray(c.refs) ? c.refs : [], icone = c.icone || 'lu-info', tipoAntigo = c.tipo;
@@ -590,6 +598,29 @@ export function alinharTelaComFala(r, { tipo = '' } = {}) {
       if (ok.length >= MIN_ITENS[campo]) { c[campo] = ok; reparos.push(`cena ${i + 1}: ${lista.length - ok.length} item(ns) não falado(s) removido(s)`); }
       else { comoDestaque(c.titulo || (ok[0] && ok[0].titulo) || (lista[0] && lista[0].titulo) || 'Em resumo', 'itens não falados'); break; }
     }
+  });
+  return reparos;
+}
+// Cena que a IA devolveu sem "titulo" (destaque/lista/grade/passos/pergunta), erro "falta titulo" que derruba o roteiro inteiro depois de 3 tentativas:
+// deriva um título curto do subtítulo ou do começo da fala da própria cena (nunca inventa conteúdo que a voz não diga).
+export function repararTitulosFaltando(r) {
+  const reparos = [];
+  const limpa = (t) => String(t ?? '').replace(/[*_`#]/g, '').replace(/\s+/g, ' ').trim();
+  const curto = (t, n = 6) => {
+    const primeira = limpa(t).split(/[.!?;:]/)[0].replace(/^[,\s—-]+/, '');
+    let ws = primeira.split(/\s+/).filter(Boolean).slice(0, n);
+    while (ws.length > 2 && /^(?:de|do|da|dos|das|e|a|o|as|os|em|no|na|nos|nas|que|para|por|com|um|uma)$/i.test(ws[ws.length - 1])) ws.pop();
+    let out = ws.join(' ').replace(/[,\s]+$/, '');
+    if (out.length > 56) out = out.slice(0, 56).replace(/\s+\S*$/, '');
+    return out ? out[0].toUpperCase() + out.slice(1) : '';
+  };
+  (r.cenas || []).forEach((c, i) => {
+    if (!c || !['destaque', 'lista', 'grade', 'passos', 'pergunta'].includes(c.tipo)) return;
+    if (!limpa(c.titulo)) {
+      const t = curto(c.sub && limpa(c.sub).split(/\s+/).length >= 3 ? c.sub : '') || curto(c.narracao) || 'Em destaque';
+      c.titulo = t; reparos.push(`cena ${i + 1}: título que faltava (${c.tipo}) tirado da própria cena`);
+    }
+    if (c.tipo === 'destaque' && (c.sub === undefined || c.sub === null || c.sub === '')) c.sub = ' ';
   });
   return reparos;
 }

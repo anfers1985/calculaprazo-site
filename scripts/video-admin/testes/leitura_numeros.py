@@ -14,6 +14,7 @@ FRASES = [  # frase completa (com abreviações, siglas e pronúncias) → o que
     ("Como funciona a contagem dos avos do 13º salário?", "Como funciona a contagem dos ávus do décimo terceiro salário?"),
     ("Escala 5x2 com jornada de 42 horas.", "Escala cinco por dois com jornada de quarenta e duas horas."),
     ("Conforme o art. 7º, inciso XIII, da CF/88.", "Conforme o artigo sétimo, inciso treze, da Constituição Federal de mil novecentos e oitenta e oito."),
+    ("Para adquirir um avo, são 15 dias; cada avo vale 1/12.", "Para adquirir um ávu, são quinze dias; cada ávu vale um doze ávus."),
     ("Prazo até 1/5/2026.", "Prazo até primeiro de maio de dois mil e vinte e seis."),
 ]
 

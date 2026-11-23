@@ -17,6 +17,7 @@
 // nesta execução; se todos esgotarem, o job para na hora, com mensagem clara, em vez de repetir 5 chamadas inúteis por cena.
 import fs from 'node:fs';
 import { detectarTexto } from './ocr-imagem.mjs';
+import { visaoTemEscrita } from './visao-texto.mjs';
 import path from 'node:path';
 
 const TIMEOUT_MS = Number(process.env.IMG_TIMEOUT_MS) || 300000;
@@ -140,11 +141,21 @@ const TROCAS_TEXTO_NA_IMAGEM = [
   [/\b(?:wall\s+|desk\s+|paper\s+)?calendars?\b/gi, 'analog wall clock'],   // calendário vira grade com letras/números inventados ("DAIM", "M T W")
   [/\b(?:final\s+)?judg(?:e)?ments?(?:\s+(?:stamp|seal|document|paper|sign))?\b/gi, 'wooden gavel on a sound block'],
   [/\b(?:stamps?|seals?|labels?|signs?|signage|banners?|posters?|certificates?|diplomas?|tags?)\b/gi, 'plain blank object'],
+  // holerite/contrato/aviso e afins: o gerador escreve a PALAVRA do pedido no papel ("PAYROLL", "Termination") — vira papel em branco
+  [/\b(?:pay\s*rolls?|pay\s*slips?|pay\s*stubs?|pay\s*checks?|invoices?|receipts?|bills?|statements?|contracts?|agreements?|documents?|paperwork|memos?|reports?|notices?|certificates?|diplomas?|licen[cs]es?|termination|resignation|dismissal|severance|layoffs?)\b/gi, 'plain blank paper sheet'],
+  // nomes de mês e de dia da semana viram etiqueta de calendário em inglês
+  [/\b(?:january|february|march|april|may|june|july|august|september|october|november|december|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/gi, ''],
+  // "etiquetado/escrito/mostrando o texto ..." pede escrita de forma explícita
+  [/\b(?:labell?ed|titled|marked|printed|written|inscribed|stamped)\s+(?:with\s+|as\s+|by\s+)?[^,.;]*/gi, ''],
+  // folha de ponto, cartão de ponto, agenda, escala e formulário viram tabelas cheias de letras inventadas ("TIME", "DAY", "NOW")
+  [/\b(?:time\s*sheets?|time\s*cards?|timecards?|punch\s*cards?|time\s*clocks?|attendance\s+(?:sheets?|lists?|records?|logs?)|work\s*schedules?|shift\s*schedules?|rosters?)\b/gi, 'plain blank paper sheet on a clipboard'],
+  [/\b(?:schedules?|timetables?|agendas?|planners?|checklists?|forms?|spreadsheets?|tables?\s+of\s+(?:hours|dates))\b/gi, 'plain blank clipboard'],
   [/\b(?:words?|letters?|text|writing|written|inscriptions?|captions?|titles?)\b/gi, ''],
 ];
 export function limparPalavrasQueViramTexto(prompt) {
   let x = String(prompt || '');
   for (const [re, por] of TROCAS_TEXTO_NA_IMAGEM) x = x.replace(re, por);
+  x = x.replace(/\b(plain blank (?:paper sheet(?: on a clipboard)?|clipboard))(?:\s+(?:and\s+)?(?:an?\s+)?\1)+/gi, '$1').replace(/\b(?:an|a)\s+(plain blank)/gi, 'a $1');
   return x.replace(/\s{2,}/g, ' ').replace(/\s+([.,;])/g, '$1').trim();
 }
 export function promptSemTexto(prompt) {
@@ -231,10 +242,13 @@ export async function gerarImagem({ prompt, destinoSemExt, aspecto = '9:16', log
         const arquivo = `${destinoSemExt}.${extPorMime(mime)}`;
         fs.mkdirSync(path.dirname(arquivo), { recursive: true });
         fs.writeFileSync(arquivo, bytes);
-        const ocr = detectarTexto(arquivo);   // { disponivel:false } se o Tesseract não existir: não bloqueia
+        let ocr = detectarTexto(arquivo);   // { disponivel:false } se o Tesseract não existir: não bloqueia
+        let quem = 'OCR';
+        // O Tesseract não lê palavra desenhada à mão/torta ("Termination", "PAYRLID", "November" passaram por ele e foram ao ar): segunda checagem com modelo que enxerga.
+        if (!ocr.temTexto) { const vis = await visaoTemEscrita(arquivo); if (vis.disponivel && vis.temTexto) { ocr = vis; quem = 'visão'; } }
         if (!ocr.temTexto) return { arquivo, provedor: et.nome, rejeicoesOcr: rejeicoes };
         rejeicoes++;
-        log(`    ${et.nome}: a imagem tem letras (${ocr.palavras.slice(0, 4).join(', ')}) — descartada, gerando outra (${rejeicoes})`);
+        log(`    ${et.nome}: a imagem tem letras${(ocr.palavras || []).length ? ` (${ocr.palavras.slice(0, 4).join(', ')})` : ''} [${quem}] — descartada, gerando outra (${rejeicoes})`);
         try { fs.unlinkSync(arquivo); } catch { /* já removido */ }
       }
       erros.push(`${et.nome}: letras na imagem em todas as tentativas`);
