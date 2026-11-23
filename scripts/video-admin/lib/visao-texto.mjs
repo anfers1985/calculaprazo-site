@@ -10,7 +10,7 @@ import path from 'node:path';
 const MODELO = process.env.IMG_VISAO_MODELO || 'gemini-3.5-flash-lite';
 const PROMPT = 'You are checking an AI-generated illustration for writing. Does the image contain ANY visible writing: words, letters, numbers, captions, labels, ' +
   'signs, stamps, page titles, or letter-like scribbles (even if misspelled, garbled, handwritten, curved, tilted, tiny or in the background, in any language)? ' +
-  'Digits on a clock face or calculator keys do NOT count. Answer ONLY with JSON: {"escrita": true or false, "palavras": ["up to 5 words you can read"]}.';
+  'Digits on a clock face or calculator keys do NOT count, and neither do plain horizontal lines or wavy strokes that merely suggest lines of text on paper when no individual letter can be distinguished. Answer ONLY with JSON: {"escrita": true or false, "palavras": ["up to 5 words you can read"]}.';
 let desligado = process.env.IMG_VISAO === '0';
 let avisou = false;
 
